@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Next.js Reader page that loads HTML chapters from public/books via ?u=... and maps choices to MBTI
 // Example: /reader?u=/books/SYNTHOMA-NULL/0-%E2%88%9E%20%5BRESTART%5D.html
@@ -18,10 +19,27 @@ type Block = BlockText | BlockChoices;
 
 type Scores = { I: number; E: number; N: number; S: number; F: number; T: number; J: number; P: number };
 
+// Client component that uses searchParams
 export default function ReaderPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ReaderPageContent />
+    </Suspense>
+  );
+}
+
+// Separate component to use useSearchParams
+export function ReaderPageContent() {
   const params = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
   const effectiveUrl = params?.get("u") || defaultUrl;
+  
+  return <ReaderContent initialUrl={effectiveUrl} />;
+}
+
+// Inner component that handles the actual content
+function ReaderContent({ initialUrl }: { initialUrl: string }) {
+  const effectiveUrl = initialUrl;
 
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [i, setI] = useState(0);
@@ -522,6 +540,15 @@ export default function ReaderPage() {
 
       {/* MBTI výsledky se dočasně nesmí zobrazovat */}
       {/* ControlPanelClient je nyní montován v layoutu globálně */}
+    </div>
+  );
+}
+
+// Loading component for Suspense fallback
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-neutral-900 text-white flex items-center justify-center">
+      <div className="animate-pulse text-2xl">Načítání čtečky...</div>
     </div>
   );
 }
