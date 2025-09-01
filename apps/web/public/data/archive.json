@@ -68,10 +68,10 @@
     {
       "id": "frakce",
       "title": "Frakce",
-      "teaser": "Archiváři, Sběrači šumu, Kult Acidové žluti, Koalice artefaktů, liščí diaspora.",
+      "teaser": "Archiváři, Sběrači šumu, Kult Acidové žluti, Koalice artefaktů, Diaspora Na-Iv.",
       "body": [
         "Konflikty: vlastnictví vzpomínek a smysl restartu.",
-        "Liščí diaspora je navázaná na Glitchku; zásahy do běhů jsou často asymetrické."
+        "Diaspora Na-Iv je navázaná na Glitchku; zásahy do běhů jsou často asymetrické a chaotické."
       ]
     },
     {
@@ -111,10 +111,9 @@
       "body": [
         "1) Vždy tlač na jednu dominantní emoci v běhu.",
         "2) Každé řešení zanechá viditelný otisk v architektuře/UI/dialogu/inventáři.",
-        "3) Humor SARKASMY dávkuj jako skalpel, ne únik.",
-        "4) Smrt není konec, jen dražší restart.",
-        "5) Svět mluví diegeticky: terminály, bannery, logy; žádné metavyprávěcí berličky.",
-        "6) Pravda je méně důležitá než následek."
+        "3) Smrt není konec, jen dražší restart.",
+        "4) Svět mluví diegeticky: terminály, bannery, logy; žádné metavyprávěcí berličky.",
+        "5) Pravda je méně důležitá než následek."
       ]
     },
     {
@@ -197,11 +196,10 @@
     },
     {
       "id": "velka-tajemstvi-fragmenty",
-      "title": "Velká tajemství: osm fragmentů jména",
+      "title": "Velká tajemství: osm fragmentů",
       "teaser": "LOG‑fragmenty nejsou dekorace – jsou to spínače reality.",
       "body": [
-        "V kapitolách 'GLITCHKA vs SARKASMA', 'KŘIVKY V HLAVĚ' a 'NEEXISTUJEŠ' NULL‑1 nalézá písmena s významem: O jako odpor, M jako marnost, A jako absence.",
-        "Existuje osm fragmentů. Kdo složí celé jméno, přesměruje T‑AI z archivace na dialog alespoň na jediný běh.",
+        "Existuje osm fragmentů. Kdo je složí, přesměruje T‑AI z archivace na dialog alespoň na jediný běh.",
         "Nikdo to nepotvrdil – potvrzení by musel někdo přežít. Diegetická legenda z paměťových slumů."
       ],
       "related": ["beh", "restart", "bytosti-archetypy"]
