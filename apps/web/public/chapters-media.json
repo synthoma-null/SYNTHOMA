@@ -1,0 +1,18 @@
+{
+  "/books/SYNTHOMA-NULL/0-∞ [RESTART].html": {
+    "video": "/video/SYNTHOMA32.webm",
+    "audio": "/media/restart-ambience.mp3"
+  },
+  "/books/SYNTHOMA-NULL/0-0 [NULL].html": {
+    "video": "/media/null-bg.mp4",
+    "audio": "/media/null-ambience.mp3"
+  },
+  "/books/SYNTHOMA-NULL/0-1 [START].html": {
+    "video": "/media/start-bg.mp4",
+    "audio": "/media/start-ambience.mp3"
+  },
+  "/books/SYNTHOMA-NULL/0-2 [RUN].html": {
+    "video": "/media/run-bg.mp4",
+    "audio": "/media/run-ambience.mp3"
+  }
+}

@@ -1,0 +1,164 @@
+/* Synthoma – neon/glitch základ */
+:root {
+  --neon-cyan: #00ffcc;
+  --neon-magenta: #ff00ff;
+  --bg-deep: #0f0f0f;
+  --bg-dark: #1a1a1a;
+}
+
+html, body {
+  background: linear-gradient(45deg, var(--bg-deep), var(--bg-dark));
+  color: var(--neon-cyan);
+}
+
+.neon-reader {
+  background: linear-gradient(45deg, #0f0f0f, #1a1a1a);
+  color: #00ffcc;
+  text-shadow: 0 0 5px #00ffcc, 0 0 10px #ff00ff;
+  border: 1px solid rgba(255, 0, 255, 0.15);
+  border-radius: 12px;
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 1s linear infinite;
+}
+
+@keyframes glitch {
+  2%, 64% { transform: translate(2px, 0) skew(0.5deg); }
+  4%, 60% { transform: translate(-2px, 0) skew(-0.5deg); }
+  62% { transform: translate(0, 0) skew(0); }
+}
+
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.glitch::before { left: 2px; text-shadow: -2px 0 var(--neon-magenta); clip-path: inset(0 0 45% 0); }
+.glitch::after  { left: -2px; text-shadow: -2px 0 #00f; clip-path: inset(55% 0 0 0); }
+
+.neon-text { text-shadow: 0 0 10px #00ffcc; }
+
+.paywall {
+  border: 2px solid #ff00ff;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px #ff00ff; }
+  50% { box-shadow: 0 0 22px #ff00ff; }
+  100% { box-shadow: 0 0 10px #ff00ff; }
+}
+
+/* Subtilní neonové linky v pozadí */
+.bg-lines {
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(0,255,204,0.07) 0, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(255,0,255,0.06) 0, transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(0,120,255,0.05) 0, transparent 40%);
+}
+
+/* Tlačítka */
+.btn-neon {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(0,255,204,0.3);
+  color: var(--neon-cyan);
+  transition: all .2s ease;
+}
+.btn-neon:hover {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+  box-shadow: 0 0 12px rgba(255,0,255,0.4);
+}
+
+/* --- Book content helpers --- */
+.title { 
+  font-size: 1.125rem; 
+  font-weight: 700; 
+  letter-spacing: .02em;
+  margin: .5rem 0; 
+}
+.text { 
+  line-height: 1.7; 
+  opacity: .95; 
+}
+.dialog { 
+  padding-left: .75rem; 
+  border-left: 2px solid rgba(0,255,204,.3); 
+  margin: .25rem 0; 
+}
+.log { 
+  color: #f0f; 
+  text-shadow: 0 0 8px #f0f; 
+  font-variant: small-caps; 
+  opacity: .9; 
+}
+.fx-glitch { 
+  position: relative; 
+  display: inline-block; 
+}
+.fx-glitch::after { 
+  content: attr(data-glitch);
+  position: absolute; 
+  left: 0; top: 0; 
+  color: #0ff; 
+  transform: translate(1px, 0); 
+  mix-blend-mode: screen; 
+  opacity: .6; 
+  animation: glitch 1s linear infinite; 
+}
+.alarm-emote { 
+  color: #faff00; 
+  text-shadow: 0 0 8px #faff00; 
+}
+
+/* --- Choice paragraphs behave like buttons on standalone chapter pages --- */
+p.choice {
+  display: block;
+  margin: .5rem 0;
+  padding: .6rem .9rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,255,204,0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .18s ease, box-shadow .18s ease, border-color .18s ease, transform .12s ease;
+  outline: none;
+}
+p.choice:hover {
+  background: rgba(0,255,204,0.06);
+  border-color: rgba(0,255,204,0.4);
+  box-shadow: 0 0 10px rgba(0,255,204,0.18);
+}
+p.choice:focus-visible {
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 0 2px rgba(255,0,255,0.25), 0 0 14px rgba(255,0,255,0.25);
+}
+
+/* Selected state with checkmark */
+p.choice.selected {
+  background: rgba(0,255,204,0.08);
+  border-color: rgba(0,255,204,0.6);
+  box-shadow: 0 0 14px rgba(0,255,204,0.35);
+  position: relative;
+}
+p.choice.selected::after {
+  content: '✔';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 6px var(--neon-cyan);
+  opacity: 0;
+  animation: choiceCheckPop 260ms ease forwards;
+}
+@keyframes choiceCheckPop { to { opacity: 1; transform: translateY(-50%) scale(1); } }
+
+/* Disabled state */
+p.choice.disabled {
+  opacity: .55;
+  filter: grayscale(.1) saturate(.85);
+  pointer-events: none;
+}

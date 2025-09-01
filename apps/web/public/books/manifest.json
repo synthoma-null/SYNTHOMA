@@ -1,0 +1,130 @@
+{
+  "collections": [
+    {
+      "slug": "SYNTHOMA-NULL",
+      "title": "SYNTHOMA: NULL-1",
+      "chapters": [
+        {
+          "title": "0 - ∞ [RESTART]",
+          "path": "/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
+          "free": true
+        },
+        {
+          "title": "0 - 0 [NULL]",
+          "path": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+          "free": true
+        },
+        {
+          "title": "0 - 1 [START]",
+          "path": "/books/SYNTHOMA-NULL/0-1 [START].html",
+          "free": true
+        },
+        {
+          "title": "0 - 2 [RUN]",
+          "path": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+          "free": true
+        },
+        {
+          "title": "0 - 3 [DISCONTINUUM]",
+          "path": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+          "free": true
+        },
+        {
+          "title": "0 - 4 [DEFRAGMENTATION]",
+          "path": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+          "free": true
+        },
+        {
+          "title": "0 - 5 [PAUSE]",
+          "path": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
+          "free": true
+        },
+        {
+          "title": "0 - 6 [SEARCHING]",
+          "path": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+          "free": true
+        },
+        {
+          "title": "0 - 7 [RUINS]",
+          "path": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
+          "free": true
+        },
+        {
+          "title": "0 - 8 [REZIDUUM]",
+          "path": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+          "free": true
+        },
+        {
+          "title": "0 - 9 [SECTOR]",
+          "path": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
+          "free": true
+        },
+        {
+          "title": "0 - 10 [REST]",
+          "path": "/books/SYNTHOMA-NULL/0-10 [REST].html",
+          "free": true
+        },
+        {
+          "title": "0 - 11 [ORGIE]",
+          "path": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 12 [CONFLICT]",
+          "path": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 13 [LUST]",
+          "path": "/books/SYNTHOMA-NULL/0-13 [LUST].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 14 [ABSENCE]",
+          "path": "/books/SYNTHOMA-NULL/0-14 [ABSENCE].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 15 [REBIRTH]",
+          "path": "/books/SYNTHOMA-NULL/0-15 [REBIRTH].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 16 [ILLUSION]",
+          "path": "/books/SYNTHOMA-NULL/0-16 [ILLUSION].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 17 [DISCONNECT]",
+          "path": "/books/SYNTHOMA-NULL/0-17 [DISCONNECT].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 18 [AWAKENING]",
+          "path": "/books/SYNTHOMA-NULL/0-18 [AWAKENING].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 19 [ECHO]",
+          "path": "/books/SYNTHOMA-NULL/0-19 [ECHO].html",
+          "free": false
+        },
+
+        {
+          "title": "0 - 20 [GENESIS]",
+          "path": "/books/SYNTHOMA-NULL/0-20 [GENESIS].html",
+          "free": false
+        }
+
+      ]
+    }
+  ]
+}

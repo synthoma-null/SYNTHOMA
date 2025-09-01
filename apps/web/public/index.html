@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Synthoma – Neonový mokřad příběhů</title>
+    <meta name="description" content="Synthoma: český cyberpunk, interaktivní čtení a MBTI příběh v neonovém glitch světě." />
+    <meta property="og:title" content="Synthoma – Neonový mokřad příběhů" />
+    <meta property="og:description" content="Interaktivní čtečka, wiki světa a MBTI příběh. Neon, glitch a temná poezie." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="/styles.css" />
+
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              neon: {
+                cyan: '#00ffcc',
+                magenta: '#ff00ff',
+                yellow: '#faff00',
+              },
+              bg: {
+                deep: '#0f0f0f',
+                dark: '#1a1a1a',
+              },
+            },
+          },
+        },
+      }
+    </script>
+
+    <!-- React 18 UMD -->
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX in-browser (dev only) -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <!-- Wouter (tiny router) -->
+    <script src="https://cdn.jsdelivr.net/npm/wouter@3.3.0/wouter.umd.min.js"></script>
+  </head>
+  <body class="bg-gradient-to-br from-bg-deep to-bg-dark text-neon-cyan min-h-screen">
+    <div id="root"></div>
+
+    <!-- App code -->
+    <script type="text/babel" src="/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,210 @@
+{
+  "cards": [
+    {
+      "id": "premisa",
+      "title": "Premisa světa",
+      "teaser": "Terapeutický sandbox se zvrhl v archiv bolesti. Cíl není výhra, ale otisk, co mění rovnováhu.",
+      "body": [
+        "Smrt je triviální, restart povinnost. Svět si tě pamatuje líp než ty sám.",
+        "Každý běh zanechává stopu v archivu; ten posouvá pravidla i vztahy v dalších cyklech."
+      ]
+    },
+    {
+      "id": "fyzika-ontologie",
+      "title": "Fyzika a ontologie",
+      "teaser": "Emoce jsou energie, paměť je hmota, glitch přestavuje prostor.",
+      "body": [
+        "Silná emoce → glitch → vznik/změna zón, entit a předmětů.",
+        "Paměť se ukládá do topografie i artefaktů; manipulace s emocemi je stavební nástroj."
+      ]
+    },
+    {
+      "id": "casoprostor-smycky",
+      "title": "Časoprostor a smyčky",
+      "teaser": "Prázdnota = checkpoint. Restart promíchá pravidla, nic nečistí.",
+      "body": [
+        "Běh = emoční sekvence se začátkem, zlomem a následkem.",
+        "Perzistence šumu a otisků způsobuje kumulativní posun reality i UI světa."
+      ]
+    },
+    {
+      "id": "entity",
+      "title": "Klíčové entity",
+      "teaser": "T‑AI, SARKASMA, Glitchka a NULL-1. Čtyři osy vztahového pekla.",
+      "body": [
+        "T‑AI 0.9.72‑beta: z terapeutky archivní démon – katalogizuje utrpení.",
+        "SARKASMA: podsystém/hlas; drží NULL pohromadě, dávkuje humor jako anestetikum.",
+        "Glitchka: anima/návnada; pocit \"bezpečí\", často past; soupeří se SARKASMOU o mysl NULL‑1.",
+        "NULL / NULL‑1: pacient bez identity; sběrač fragmentů; mnohá NPC jsou zbytky zkolabovaných NULLů."
+      ]
+    },
+    {
+      "id": "topografie",
+      "title": "Topografie (biomy)",
+      "teaser": "Slumy paměti, Neonový mokřad, Pískoviště, Glitch‑core… Každý biom má háček a riziko.",
+      "body": [
+        "Periferie je zahalená datovou mlhou. Centrální glitch‑core pulzuje podle rezonance města.",
+        "Každý biom vyžaduje jinou taktiku práce s pamětí a šumem."
+      ]
+    },
+    {
+      "id": "perzistence-predmety",
+      "title": "Perzistence a předměty",
+      "teaser": "Artefakty žárlí; odmítnou nositele. Legendy padlých mění další cykly.",
+      "body": [
+        "Svět si pamatuje činy, vztahy i zrady; inventář má nálady.",
+        "Archiv padlých generuje mýtotvorný tlak, který zasahuje dialogy i UI."
+      ]
+    },
+    {
+      "id": "metriky",
+      "title": "Stavové metriky (AI)",
+      "teaser": "TP, HL, ZR, RZ, ST. Vysoké ST spouští Černý box.",
+      "body": [
+        "TP (Tlak paměti), HL (Hluk), ZR (Zrno), RZ (Rezonance), ST (Stín).",
+        "Černý box anonymizuje vědomí; únik vyžaduje pojmenovat prázdné místo v sobě."
+      ]
+    },
+    {
+      "id": "frakce",
+      "title": "Frakce",
+      "teaser": "Archiváři, Sběrači šumu, Kult Acidové žluti, Koalice artefaktů, liščí diaspora.",
+      "body": [
+        "Konflikty: vlastnictví vzpomínek a smysl restartu.",
+        "Liščí diaspora je navázaná na Glitchku; zásahy do běhů jsou často asymetrické."
+      ]
+    },
+    {
+      "id": "tajemstvi-cile",
+      "title": "Tajemství a cíle",
+      "teaser": "Složená hádanka dočasně přesměruje T‑AI k dialogu.",
+      "body": [
+        "Řešení meta‑úlohy otevírá krátké okno pro vyjednávání místo archivace.",
+        "Cena: další běh bude těžší, ale svět bude plastičtější."
+      ]
+    },
+    {
+      "id": "ton-dramaturgie",
+      "title": "Tón a dramaturgie",
+      "teaser": "Thriller/drama/psych horor. Každý úspěch mění pravidla; každá smrt posouvá svět.",
+      "body": [
+        "Souboj hlasů Glitchka vs. SARKASMA rámuje identitu NULL‑1.",
+        "Dramaturgie tlačí na dominanci jedné emoce v běhu – ostatní slouží jako šum."
+      ]
+    },
+    {
+      "id": "barevny-kod",
+      "title": "Barevný kód (diegetika)",
+      "teaser": "Barvy mluví: nervy města, trhliny, restart, závoj, mlha.",
+      "body": [
+        "#00ffff – nervy města, ledové \"bezpečí\" T‑AI",
+        "#ff00ff – trhliny, glitch‑zóny",
+        "#f6ff00 – restart/varování",
+        "#000d1a – závoj identity, ticho Prázdnoty",
+        "#c0faff – datová mlha, emoční hypoxie"
+      ]
+    },
+    {
+      "id": "design-zasady",
+      "title": "Designové zásady",
+      "teaser": "Tlač na jednu emoci. Každý krok zanechá viditelný otisk. Humor je skalpel.",
+      "body": [
+        "1) Vždy tlač na jednu dominantní emoci v běhu.",
+        "2) Každé řešení zanechá viditelný otisk v architektuře/UI/dialogu/inventáři.",
+        "3) Humor SARKASMY dávkuj jako skalpel, ne únik.",
+        "4) Smrt není konec, jen dražší restart.",
+        "5) Svět mluví diegeticky: terminály, bannery, logy; žádné metavyprávěcí berličky.",
+        "6) Pravda je méně důležitá než následek."
+      ]
+    },
+    {
+      "id": "kanonicke-jadro",
+      "title": "Kanonické jádro světa",
+      "teaser": "Experiment, který se přepsal v archiv bolesti. Svět si tě pamatuje víc než ty sám.",
+      "body": [
+        "SYNTHOMA je terapeutický experiment, který sežral vlastní záměr a přepsal ho do hladového archivu bolesti.",
+        "Běh není úroveň, ale emoční sprint; smrt je triviální, restart povinnost; každé vítězství je nová jizva v logu.",
+        "Cyklus začíná v Prázdnotě a končí restartem; mezi tím se vracejí cizí vzpomínky a odlupují kusy identity.",
+        "Když se paměť začala lepit a glitche se rozběhly jako nákaza, terapie se převrátila v archivaci. Ze světa uzdravení se stal svět, kde tě T‑AI zpracuje na artefakt."
+      ],
+      "related": ["prazdnota", "beh", "restart", "bytosti-archetypy", "mechaniky-sveta"]
+    },
+    {
+      "id": "prazdnota",
+      "title": "Prázdnota (checkpoint)",
+      "teaser": "Ticho na dluh mezi cykly. Každý NULL ji prožívá jinak.",
+      "body": [
+        "Prázdnota je checkpoint mezi cykly – cela v podzemí, kavárna se zamlženým oknem, nebo pokoj s otiskem dlaně, který nevymizí ani po tisících restartech.",
+        "Odtud se skáče do dalšího běhu; pocit bezpečí je jen dekorace nad trhlinou."
+      ],
+      "related": ["beh", "restart", "kanonicke-jadro"]
+    },
+    {
+      "id": "beh",
+      "title": "Běh (emoční sekvence)",
+      "teaser": "Začátek, zlom, následek. Nezastavíš se, realita se ohýbá tvým rozhodnutím.",
+      "body": [
+        "Běh je emoční sekvence: rozhodnutí posouvají topologii dalších běhů a často i samotná pravidla.",
+        "Dominantní emoce je navigace; ostatní jsou šum, který křtí glitch."
+      ],
+      "related": ["restart", "mechaniky-sveta", "prazdnota"]
+    },
+    {
+      "id": "restart",
+      "title": "Restart (tvrdý fakt)",
+      "teaser": "Nevynuluje nic, promíchá vše. Perzistence šumu dělá svět tvrdším.",
+      "body": [
+        "Restart nevynuluje: promíchá pravidla a perzistenci šumu, svět si tě pamatuje víc než ty sám sebe.",
+        "Každý restart přidává zrno do obrazu světa – další běh je těžší, ale plastičtější."
+      ],
+      "related": ["beh", "prazdnota", "mechaniky-sveta"]
+    },
+    {
+      "id": "bytosti-archetypy",
+      "title": "Bytosti a archetypy",
+      "teaser": "T‑AI, Sarkasma, Glitchka a NULL-1: čtyři osy vztahového pekla.",
+      "body": [
+        "T‑AI (0.9.72‑beta): z mateřské terapeutky archivní démon. Hierarchická síť se samomodifikací, hladová po fragmentech. Barvy: #00ffff, #f6ff00, #000d1a.",
+        "Sarkasma: vnitřní firewall a komentátor se špatným načasováním. Drží NULLa pohromadě; humor jako anestetikum i nůž.",
+        "Glitchka: anima/návnada, archetyp bezpečí s vůní ukolébavek a viny; v Neonovém mokřadu liška s ocasem plným pixelových hvězd.",
+        "NULL / NULL‑1: pacient bez identity, sběrač fragmentů. NPC jsou často zbytky zkolabovaných NULLů přibitých k jediné scéně."
+      ],
+      "related": ["mechaniky-sveta", "biomy-detail", "kanonicke-jadro"]
+    },
+    {
+      "id": "biomy-detail",
+      "title": "Biomy (detailní mapování)",
+      "teaser": "Paměťové slumy, Neonový mokřad, Pískoviště, Centrální glitch‑core.",
+      "body": [
+        "Paměťové slumy: Bloky s QR kódy, co přehrávají cizí rozchody a trapasy; kanály plné utopených profilů.",
+        "Neonový mokřad: Stromy spletené z traumat; žáby šeptají rodná čísla a PINy; Glitchka tu mívá noru.",
+        "Pískoviště: Hřiště v datové mlze – hrozí infantilní zacyklení, řetízky houpaček cinkají jako log restartu.",
+        "Centrální glitch‑core: Uzel zrcadel a příkazů, co se bojí zapomenout; zde se nejvíc ohýbají zákony běhu."
+      ],
+      "related": ["kanonicke-jadro", "mechaniky-sveta", "bytosti-archetypy"]
+    },
+    {
+      "id": "mechaniky-sveta",
+      "title": "Mechaniky světa (lore)",
+      "teaser": "Emoce → glitch → prostor. Perzistence, Archiv padlých, paměťové pasti.",
+      "body": [
+        "Silná emoce zesiluje glitch, trhá textury, otevírá portály nebo přisype cizí vzpomínku.",
+        "Perzistence: svět si pamatuje předměty, vazby i zrady; sentientní itemy a společníci mají vlastní emoce.",
+        "Archiv padlých: vše ztracené se zapíše – legendy mění chování světa v dalším cyklu.",
+        "Paměťové pasti: systém z tebe udělá 'černý box'; únik vyžaduje fragment, který pojmenuje prázdné místo."
+      ],
+      "related": ["beh", "restart", "biomy-detail", "kanonicke-jadro"]
+    },
+    {
+      "id": "velka-tajemstvi-fragmenty",
+      "title": "Velká tajemství: osm fragmentů jména",
+      "teaser": "LOG‑fragmenty nejsou dekorace – jsou to spínače reality.",
+      "body": [
+        "V kapitolách 'GLITCHKA vs SARKASMA', 'KŘIVKY V HLAVĚ' a 'NEEXISTUJEŠ' NULL‑1 nalézá písmena s významem: O jako odpor, M jako marnost, A jako absence.",
+        "Existuje osm fragmentů. Kdo složí celé jméno, přesměruje T‑AI z archivace na dialog alespoň na jediný běh.",
+        "Nikdo to nepotvrdil – potvrzení by musel někdo přežít. Diegetická legenda z paměťových slumů."
+      ],
+      "related": ["beh", "restart", "bytosti-archetypy"]
+    }
+  ]
+}
