@@ -1,0 +1,31 @@
+/* Global variables and fonts for landing-intro route segment */
+
+@font-face {
+  font-family: "LI-Inter";
+  src: url("/landing-intro/fonts/Inter-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LI-JetBrainsMono";
+  src: url("/landing-intro/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* font variables to be consumed by CSS Modules */
+  --li-font-sans: "LI-Inter", ui-sans-serif, system-ui, Segoe UI, Roboto, Inter, sans-serif;
+  --li-font-mono: "LI-JetBrainsMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --li-bg: #0b0b0c;
+  --li-fg: #f2f2f2;
+  --li-muted: #b3b3b3;
+  --li-accent: #7c5cff;
+  --li-accent-2: #00d4ff;
+  --li-glass: rgba(255, 255, 255, 0.06);
+  --li-border: rgba(255, 255, 255, 0.12);
+  --li-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
