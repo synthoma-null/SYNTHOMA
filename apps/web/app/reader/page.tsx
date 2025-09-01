@@ -21,20 +21,15 @@ type Scores = { I: number; E: number; N: number; S: number; F: number; T: number
 
 // Client component that uses searchParams
 export default function ReaderPage() {
-  return (
-    <Suspense fallback={<LoadingFallback />}>
-      <ReaderPageContent />
-    </Suspense>
-  );
-}
-
-// Separate component to use useSearchParams
-export function ReaderPageContent() {
   const params = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
   const effectiveUrl = params?.get("u") || defaultUrl;
   
-  return <ReaderContent initialUrl={effectiveUrl} />;
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ReaderContent initialUrl={effectiveUrl} />
+    </Suspense>
+  );
 }
 
 // Inner component that handles the actual content
