@@ -190,6 +190,102 @@
   .title-sm { font-size: calc(1.3rem * var(--font-size-multiplier)) !important; }
   .ff-text01 { font-family: 'Text01', monospace !important; }
   .popup-tip { cursor: help; text-decoration: underline dotted; text-underline-offset: 2px; }
+
+  /* =========================
+     TEXT FX (utilities)
+     ========================= */
+  /* 1) Neon cyan glow */
+  .fx-neon {
+    color: var(--text-primary);
+    text-shadow: 0 0 6px var(--glow-primary), 0 0 12px var(--glow-primary), 0 0 18px var(--glow-secondary);
+  }
+
+  /* 2) Strong magenta glow */
+  .fx-glow-magenta { text-shadow: 0 0 4px #f0f, 0 0 10px #f0f, 0 0 18px #f0f; }
+
+  /* 3) Deep shadow for contrast on bright bg */
+  .fx-shadow-lg { text-shadow: 0 2px 0 rgba(0,0,0,.35), 0 4px 12px rgba(0,0,0,.5); }
+
+  /* 4) Outline stroke using multiple text-shadows (fallback for -webkit-text-stroke) */
+  .fx-outline {
+    text-shadow:
+      -1px -1px 0 currentColor,
+       1px -1px 0 currentColor,
+      -1px  1px 0 currentColor,
+       1px  1px 0 currentColor;
+    color: transparent;
+    -webkit-text-stroke: 1px currentColor;
+  }
+
+  /* 5) Scanline shimmer (subtle CRT-like pass) */
+  .fx-scanline { position: relative; }
+  .fx-scanline::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode: overlay; opacity: .35;
+  }
+
+  /* 6) Flicker (arcade bulb) */
+  .fx-flicker { animation: fx-flicker 2.2s infinite; }
+  @keyframes fx-flicker {
+    0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; text-shadow: 0 0 8px var(--glow-primary), 0 0 16px var(--glow-secondary); }
+    20%, 22% { opacity: .4; text-shadow: none; }
+    81% { opacity: .85; }
+  }
+
+  /* 7) Wave (apply to inline elements or wrap words in spans) */
+  .fx-wave { display: inline-block; animation: fx-wave 1.8s ease-in-out infinite; }
+  @keyframes fx-wave { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-2px) } }
+
+  /* 8) Gradient text (static) */
+  .fx-gradient {
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: none;
+  }
+
+  /* 9) Animated rainbow text */
+  .fx-rainbow {
+    background: linear-gradient(90deg, #ff004c, #ffbf00, #00ff95, #00b3ff, #c300ff, #ff004c);
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: fx-rainbow 6s linear infinite;
+  }
+  @keyframes fx-rainbow { 0%{ background-position: 0% 50% } 100%{ background-position: 100% 50% } }
+
+  /* 10) Noise mask for gritty text */
+  .fx-noise { position: relative; }
+  .fx-noise::after {
+    content: ""; position: absolute; inset: -2px; mix-blend-mode: overlay; pointer-events: none; opacity: .35;
+    /* CSS-only speckle noise using layered gradients */
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,.07) 2px, transparent 2px),
+      radial-gradient(circle at 40% 80%, rgba(255,255,255,.05) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 75% 35%, rgba(255,255,255,.06) 1px, transparent 1px),
+      radial-gradient(circle at 90% 60%, rgba(255,255,255,.04) 1px, transparent 1px),
+      radial-gradient(circle at 25% 55%, rgba(255,255,255,.05) 1.5px, transparent 1.5px);
+    background-size: 8px 8px, 10px 10px, 12px 12px, 14px 14px, 16px 16px;
+    background-repeat: repeat;
+    filter: contrast(1.12) brightness(1.04);
+  }
+
+  /* 11) Uppercase with tracking */
+  .fx-uppercase-wide { text-transform: uppercase; letter-spacing: .12em; }
+
+  /* 12) Cyber underline (glow line under text) */
+  .fx-underline {
+    position: relative; text-decoration: none;
+  }
+  .fx-underline::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+    background: linear-gradient(90deg, var(--accent-primary), transparent, var(--accent-secondary));
+    box-shadow: 0 0 8px var(--glow-primary);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .fx-flicker, .fx-wave, .fx-rainbow { animation: none !important; }
+  }
   
   /* =========================
      TYPOGRAPHY (theme-aware)

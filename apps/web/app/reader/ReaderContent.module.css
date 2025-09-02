@@ -68,6 +68,10 @@
   }
 }
 
+.chapter-content {
+  padding: 1rem;
+}
+
 /* removed .readerBackground – background and opacity are managed by .SYNTHOMAREADER */
 
 .readerContent {

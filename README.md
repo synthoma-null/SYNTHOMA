@@ -247,3 +247,43 @@ Deploy: Vercel, root `apps/web`, doména viz výše.
 
 ---
 Autor: Synthoma
+
+## 10) Textové efekty (fx-*)
+
+Protože text bez šminek je jako apokalypsa bez zombíků. Nuda. Používej jen tam, kde to dává smysl – ať čtenáři neprasknou oči. ☠️
+
+### Přehled tříd
+
+- **fx-neon** – neonový glow podle motivu
+- **fx-glow-magenta** – silný purpurový glow
+- **fx-shadow-lg** – výrazný stín pro kontrast na světlém pozadí
+- **fx-outline** – obrys písma (fallback přes text-shadow + `-webkit-text-stroke`)
+- **fx-scanline** – jemný CRT scanline overlay
+- **fx-flicker** – poblikávání jak líná zářivka
+- **fx-wave** – vertikální vlnění (inline-block)
+- **fx-gradient** – statický přechod textu podle accent barev
+- **fx-rainbow** – animovaná duhová výplň textu
+- **fx-noise** – zrnitý šumový overlay (čistě CSS, bez assetů)
+- **fx-uppercase-wide** – kapitálky s roztaženým kerningem
+- **fx-underline** – cyber podtržení s jemným glow
+
+### Použití v obsahu (HTML)
+
+```html
+<p class="text fx-neon">Neonový šepot kabeláže.</p>
+<p class="log fx-shadow-lg">LOG: Systém nasadil černou kávu.</p>
+<p class="warning fx-outline">VAROVÁNÍ: Tady to poblikává.</p>
+<p class="text fx-scanline">CRT nostalgie přibalena.</p>
+<p class="text"><span class="fx-wave">Vlna</span> ve tvém <span class="fx-wave">oku</span>.</p>
+<h2 class="title fx-gradient">Gradientní výkřik do tmy</h2>
+<h2 class="title fx-rainbow">Duhová pěst pravdy</h2>
+<p class="text fx-noise">Zrnko chaosu pro lepší chuť.</p>
+<p class="text fx-uppercase-wide">TICHÝ KŘIK.</p>
+<p class="text fx-underline">Linka pod pravdou.</p>
+```
+
+### Poznámky a přístupnost
+
+- **Reduced motion:** `fx-flicker`, `fx-wave`, `fx-rainbow` respektují `prefers-reduced-motion` a animace se vypnou.
+- **Čitelnost:** Nesmí degradovat kontrast důležitých textů (logy, warningy nech ať jsou čitelné i bez efektu). Testuj ve `.SYNTHOMAREADER`.
+- **Kompozice:** `fx-*` jsou utility – vrstvi je střídmě s `.text`, `.log`, `.warning`, `.title` atd. Žádné inline styly.
