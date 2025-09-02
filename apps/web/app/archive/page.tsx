@@ -118,7 +118,7 @@ export default function ArchivePage() {
       <a id="top" aria-hidden="true" className="top-anchor" />
       <main className="story archive-story">
         <section className="story-block" data-theme="synthoma">
-          <div id="glitch-archive" className="glitch-master title " ref={glitchRootRef as any} aria-label={TITLE}>
+          <h1 id="glitch-archive" className="glitch-master title" ref={glitchRootRef as any} aria-label={TITLE}>
             <span className="glitch-fake1">{TITLE}</span>
             <span className="glitch-fake2">{TITLE}</span>
             <span className="glitch-real" aria-hidden="true">
@@ -127,7 +127,7 @@ export default function ArchivePage() {
               ))}
             </span>
             <span className="sr-only">{TITLE}</span>
-          </div>
+          </h1>
         </section>
 
         <section className="story-block">

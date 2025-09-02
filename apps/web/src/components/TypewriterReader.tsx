@@ -205,6 +205,25 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         }
         e.preventDefault();
         if (!href) {
+          // lock contiguous block and mark selected
+          try {
+            let sib: Element | null;
+            sib = node.previousElementSibling;
+            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
+              (sib as HTMLElement).classList.add('disabled');
+              (sib as HTMLElement).classList.remove('selected');
+              sib = sib.previousElementSibling;
+            }
+            sib = node.nextElementSibling;
+            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
+              (sib as HTMLElement).classList.add('disabled');
+              (sib as HTMLElement).classList.remove('selected');
+              sib = sib.nextElementSibling;
+            }
+            node.classList.add('selected');
+            node.classList.remove('disabled');
+            node.setAttribute('aria-pressed', 'true');
+          } catch {}
           try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
           const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
           if (label) announce(`Zvoleno: ${label}.`);
@@ -215,6 +234,25 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         } else if (href.startsWith('#')) {
           const section = document.querySelector(href);
           section?.scrollIntoView({ behavior: 'smooth' });
+          // lock contiguous block and mark selected
+          try {
+            let sib: Element | null;
+            sib = node.previousElementSibling;
+            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
+              (sib as HTMLElement).classList.add('disabled');
+              (sib as HTMLElement).classList.remove('selected');
+              sib = sib.previousElementSibling;
+            }
+            sib = node.nextElementSibling;
+            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
+              (sib as HTMLElement).classList.add('disabled');
+              (sib as HTMLElement).classList.remove('selected');
+              sib = sib.nextElementSibling;
+            }
+            node.classList.add('selected');
+            node.classList.remove('disabled');
+            node.setAttribute('aria-pressed', 'true');
+          } catch {}
           try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
           const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
           if (label) announce(`Zvoleno: ${label}.`);
@@ -443,74 +481,76 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
                 if (label) announce(`Možnosti jsou připravené. Fokus na: ${label}`);
               } catch {}
               // Prepare continuation if there is any remainder
-              if (remainderHtml && remainderHtml.trim()) {
-                continueRef.current = () => {
-                  // Process next segment: find next block inside remainderHtml and append typing
-                  const parser2 = new DOMParser();
-                  const doc2 = parser2.parseFromString(remainderHtml, 'text/html');
-                  const root2 = (doc2.querySelector('.content') as HTMLElement) || (doc2.body as HTMLElement);
-                  const cutoff2 = root2.querySelector('#story-cache');
-                  const firstCh2 = root2.querySelector('p.choice, .choice-link');
-                  let pre2 = '';
-                  let block2 = '';
-                  let rem2 = '';
-                  if (firstCh2) {
-                    const rPre2 = doc2.createRange(); rPre2.setStart(root2, 0); rPre2.setEndBefore(firstCh2);
-                    const w1 = doc2.createElement('div'); w1.appendChild(rPre2.cloneContents()); pre2 = w1.innerHTML;
-                    let last2: Element = firstCh2 as Element; let cur2 = firstCh2.nextElementSibling;
-                    while (cur2 && cur2.tagName.toLowerCase() === 'p' && (cur2 as HTMLElement).classList.contains('choice')) { last2 = cur2; cur2 = cur2.nextElementSibling; }
-                    const rBlk2 = doc2.createRange(); rBlk2.setStartBefore(firstCh2); rBlk2.setEndAfter(last2);
-                    const w2 = doc2.createElement('div'); w2.appendChild(rBlk2.cloneContents()); block2 = w2.innerHTML;
-                    const rRem2 = doc2.createRange(); rRem2.setStartAfter(last2);
-                    if (cutoff2 && cutoff2.parentNode) rRem2.setEndBefore(cutoff2); else {
-                      const end2: Node = (root2.lastChild ?? root2) as Node;
-                      rRem2.setEndAfter(end2);
-                    }
-                    const w3 = doc2.createElement('div'); w3.appendChild(rRem2.cloneContents()); rem2 = w3.innerHTML;
-                  } else {
-                    const rAll2 = doc2.createRange(); rAll2.setStart(root2, 0);
-                    if (cutoff2 && cutoff2.parentNode) rAll2.setEndBefore(cutoff2); else {
-                      const endAll2: Node = (root2.lastChild ?? root2) as Node;
-                      rAll2.setEndAfter(endAll2);
-                    }
-                    const wAll = doc2.createElement('div'); wAll.appendChild(rAll2.cloneContents()); pre2 = wAll.innerHTML; block2 = ''; rem2 = '';
+              let buildNextSegment: (() => void) | null = null;
+              buildNextSegment = () => {
+                // Process next segment: find next block inside remainderHtml and append typing
+                const parser2 = new DOMParser();
+                const doc2 = parser2.parseFromString(remainderHtml, 'text/html');
+                const root2 = (doc2.querySelector('.content') as HTMLElement) || (doc2.body as HTMLElement);
+                const cutoff2 = root2.querySelector('#story-cache');
+                const firstCh2 = root2.querySelector('p.choice, .choice-link');
+                let pre2 = '';
+                let block2 = '';
+                let rem2 = '';
+                if (firstCh2) {
+                  const rPre2 = doc2.createRange(); rPre2.setStart(root2, 0); rPre2.setEndBefore(firstCh2);
+                  const w1 = doc2.createElement('div'); w1.appendChild(rPre2.cloneContents()); pre2 = w1.innerHTML;
+                  let last2: Element = firstCh2 as Element; let cur2 = firstCh2.nextElementSibling;
+                  while (cur2 && cur2.tagName.toLowerCase() === 'p' && (cur2 as HTMLElement).classList.contains('choice')) { last2 = cur2; cur2 = cur2.nextElementSibling; }
+                  const rBlk2 = doc2.createRange(); rBlk2.setStartBefore(firstCh2); rBlk2.setEndAfter(last2);
+                  const w2 = doc2.createElement('div'); w2.appendChild(rBlk2.cloneContents()); block2 = w2.innerHTML;
+                  const rRem2 = doc2.createRange(); rRem2.setStartAfter(last2);
+                  if (cutoff2 && cutoff2.parentNode) rRem2.setEndBefore(cutoff2); else {
+                    const end2: Node = (root2.lastChild ?? root2) as Node;
+                    rRem2.setEndAfter(end2);
                   }
-                  const typing2 = normalizeChoicesToPlainText(pre2 + block2);
-                  const transformed2 = transformChoicesToButtons(pre2 + block2);
-                  const baseHtml = typedBox.innerHTML; // append after current content
-                  const tmp2 = document.createElement('div'); tmp2.innerHTML = typing2; const text2 = (tmp2.textContent || '').trim();
-                  if (!text2) {
+                  const w3 = doc2.createElement('div'); w3.appendChild(rRem2.cloneContents()); rem2 = w3.innerHTML;
+                } else {
+                  const rAll2 = doc2.createRange(); rAll2.setStart(root2, 0);
+                  if (cutoff2 && cutoff2.parentNode) rAll2.setEndBefore(cutoff2); else {
+                    const endAll2: Node = (root2.lastChild ?? root2) as Node;
+                    rAll2.setEndAfter(endAll2);
+                  }
+                  const wAll = doc2.createElement('div'); wAll.appendChild(rAll2.cloneContents()); pre2 = wAll.innerHTML; block2 = ''; rem2 = '';
+                }
+                const typing2 = normalizeChoicesToPlainText(pre2 + block2);
+                const transformed2 = transformChoicesToButtons(pre2 + block2);
+                const baseHtml = typedBox.innerHTML; // append after current content
+                const tmp2 = document.createElement('div'); tmp2.innerHTML = typing2; const text2 = (tmp2.textContent || '').trim();
+                if (!text2) {
+                  try { typedBox.innerHTML = sanitizeHTML(baseHtml + transformed2); } catch {}
+                  bindChoiceHandlers();
+                  try { (typedBox.querySelector('.choice-link') as HTMLElement | null)?.focus(); } catch {}
+                  if (rem2 && rem2.trim()) { remainderHtml = rem2; continueRef.current = buildNextSegment!; } else { continueRef.current = null; }
+                  return;
+                }
+                const len2 = text2.length; const getDur2 = () => {
+                  const cs2 = getComputedStyle(hostRef.current!); const var2 = cs2.getPropertyValue('--typewriter-duration').trim();
+                  if (var2.endsWith('ms')) return parseFloat(var2); if (var2.endsWith('s')) return parseFloat(var2) * 1000; return Math.min(24000, Math.max(2500, Math.round(len2 * 16)));
+                };
+                let t2 = 0; const dur2 = getDur2(); const step2 = Math.max(10, Math.round(dur2 / Math.max(1, len2)));
+                const tick2 = () => {
+                  t2 = Math.min(len2, t2 + 1);
+                  try { typedBox.innerHTML = sanitizeHTML(baseHtml + renderRevealed(typing2, t2)); } catch {}
+                  if (t2 >= len2) {
                     try { typedBox.innerHTML = sanitizeHTML(baseHtml + transformed2); } catch {}
                     bindChoiceHandlers();
-                    try { (typedBox.querySelector('.choice-link') as HTMLElement | null)?.focus(); } catch {}
-                    if (rem2 && rem2.trim()) { remainderHtml = rem2; continueRef.current = () => (continueRef.current = null); } else { continueRef.current = null; }
+                    try {
+                      const first2 = (typedBox.querySelector('.choice-link') as HTMLElement | null);
+                      first2?.focus();
+                      const label2 = (first2?.textContent || '').replace(/\s+/g, ' ').trim();
+                      if (label2) announce(`Nové možnosti jsou připravené. Fokus na: ${label2}`);
+                    } catch {}
+                    if (rem2 && rem2.trim()) { remainderHtml = rem2; continueRef.current = buildNextSegment!; }
+                    else { continueRef.current = null; }
                     return;
                   }
-                  const len2 = text2.length; const getDur2 = () => {
-                    const cs2 = getComputedStyle(hostRef.current!); const var2 = cs2.getPropertyValue('--typewriter-duration').trim();
-                    if (var2.endsWith('ms')) return parseFloat(var2); if (var2.endsWith('s')) return parseFloat(var2) * 1000; return Math.min(24000, Math.max(2500, Math.round(len2 * 16)));
-                  };
-                  let t2 = 0; const dur2 = getDur2(); const step2 = Math.max(10, Math.round(dur2 / Math.max(1, len2)));
-                  const tick2 = () => {
-                    t2 = Math.min(len2, t2 + 1);
-                    try { typedBox.innerHTML = sanitizeHTML(baseHtml + renderRevealed(typing2, t2)); } catch {}
-                    if (t2 >= len2) {
-                      try { typedBox.innerHTML = sanitizeHTML(baseHtml + transformed2); } catch {}
-                      bindChoiceHandlers();
-                      try {
-                        const first2 = (typedBox.querySelector('.choice-link') as HTMLElement | null);
-                        first2?.focus();
-                        const label2 = (first2?.textContent || '').replace(/\s+/g, ' ').trim();
-                        if (label2) announce(`Nové možnosti jsou připravené. Fokus na: ${label2}`);
-                      } catch {}
-                      if (rem2 && rem2.trim()) { remainderHtml = rem2; continueRef.current = () => { /* will be reset by next segment build */ }; }
-                      else { continueRef.current = null; }
-                      return;
-                    }
-                    window.setTimeout(tick2, step2);
-                  };
                   window.setTimeout(tick2, step2);
                 };
+                window.setTimeout(tick2, step2);
+              };
+              if (remainderHtml && remainderHtml.trim()) {
+                continueRef.current = buildNextSegment;
               }
               return;
             }
@@ -535,7 +575,11 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   }, [srcUrl, autoStart, bindChoiceHandlers, announce]);
 
   return (
-    <div id={id} className={`SYNTHOMAREADER ${isTyping ? 'typing' : ''} ${choicesShown ? 'choices-shown' : ''} ${className || ''}`.trim()} aria-label={ariaLabel}>
+    <div
+      id={id}
+      className={`SYNTHOMAREADER ${isTyping ? 'typing' : ''} ${choicesShown ? 'choices-shown' : ''} ${className || ''}`.trim()}
+      aria-label={ariaLabel}
+    >
       <div className={"chapter-content"}>
         <div ref={hostRef} className="reader-host prose prose-invert max-w-none" />
         {/* ARIA live region for screen reader announcements */}

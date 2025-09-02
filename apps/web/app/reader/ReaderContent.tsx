@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import TypewriterReader from '../../src/components/TypewriterReader';
 import styles from './ReaderContent.module.css';
+import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { useSearchParams } from 'next/navigation';
 
 interface BackgroundSettings {
@@ -35,6 +36,27 @@ export default function ReaderContent() {
     opacity: 0.9,
     blur: 0
   });
+
+  // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      try {
+        // Toggle help on Shift+/
+        if ((e.key === '?' || (e.key === '/' && e.shiftKey)) && !e.altKey && !e.metaKey && !e.ctrlKey) {
+          e.preventDefault();
+          setShowHelp(prev => !prev);
+          return;
+        }
+        // Close on Escape
+        if (e.key === 'Escape') {
+          setShowHelp(false);
+          return;
+        }
+      } catch {}
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   // Handle background changes
   const handleBackgroundChange = (property: string, value: string | number) => {
@@ -86,15 +108,17 @@ export default function ReaderContent() {
     return () => { cancelled = true; };
   }, [bookId, chapterPath]);
 
-  const containerStyle = useMemo(() => {
-    const clampedOpacity = Math.max(0, Math.min(1, Number(background.opacity)));
-    return {
-      ['--bg-image' as any]: background.image ? `url(${background.image})` : 'none',
-      ['--bg-color' as any]: background.color,
-      ['--bg-opacity' as any]: String(clampedOpacity),
-      ['--bg-blur' as any]: background.blur > 0 ? `blur(${background.blur}px)` : 'none',
-    } as React.CSSProperties;
-  }, [background]);
+  // Glitch heading setup
+  const TITLE = "Č T E Č K A";
+  const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
+  useEffect(() => {
+    const prefersReduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+    const root = glitchRootRef.current as HTMLElement | null;
+    if (!root) return;
+    const detach = attachGlitchHeading(root, TITLE, { intervalMs: 260, chance: 0.08 });
+    return () => { try { detach && detach(); } catch {} };
+  }, []);
 
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
@@ -131,11 +155,7 @@ export default function ReaderContent() {
 
   // Render content
   return (
-    <div 
-      className={`${styles.readerContainer}`}
-      style={containerStyle}
-      data-testid="reader-container"
-    >
+    <>
       {recModal.visible ? (
         <div role="dialog" aria-modal="true" aria-label="Doporučená skladba" className={styles.recModalOverlay}>
           <div className={`panel glass ${styles.recModalPanel}`}>
@@ -157,9 +177,31 @@ export default function ReaderContent() {
           </div>
         </div>
       ) : null}
-      <div className={styles.readerContent}>
-        <TypewriterReader id="hero-info" srcUrl={effectiveUrl} className={`${styles.readerMain}`} ariaLabel="Čtečka" autoStart />
-      </div>
+
+      <main className="story" aria-label="Čtečka">
+        <section className="story-block" data-theme="synthoma">
+          <h1 id="glitch-reader" className="glitch-master title" ref={glitchRootRef as any} aria-label={TITLE}>
+            <span className="glitch-fake1">{TITLE}</span>
+            <span className="glitch-fake2">{TITLE}</span>
+            <span className="glitch-real" aria-hidden="true">
+              {TITLE.split("").map((ch, idx) => (
+                <span key={idx} className="glitch-char">{ch}</span>
+              ))}
+            </span>
+            <span className="sr-only">{TITLE}</span>
+          </h1>
+        </section>
+
+        <section>
+          <TypewriterReader
+            id="hero-info"
+            srcUrl={effectiveUrl}
+            className={`readerOverlay-35 readerOverlay-blur ${styles.readerMain}`}
+            ariaLabel="Čtečka"
+            autoStart
+          />
+        </section>
+      </main>
 
       {/* Help Modal */}
       {showHelp && (
@@ -213,6 +255,6 @@ export default function ReaderContent() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

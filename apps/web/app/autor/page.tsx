@@ -46,10 +46,13 @@ export default function AutorPage() {
 
         </section>
 
-        <section className="story-block">
-          <article className="panel glass">
-            <TypewriterReader srcUrl="/data/SYNTHOMAAUTOR.html" ariaLabel="O autorovi" autoStart />
-          </article>
+        <section>
+          <TypewriterReader
+            srcUrl="/data/SYNTHOMAAUTOR.html"
+            ariaLabel="O autorovi"
+            autoStart
+            className="readerOverlay-35 readerOverlay-blur"
+          />
         </section>
 
         <section className="story-block" aria-label="Navigace zpět">

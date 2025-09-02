@@ -251,3 +251,27 @@ p.choice.disabled {
   text-underline-offset: 3px;
   text-shadow: 0 0 10px rgba(0,255,204,.35);
 }
+
+/* --- Reader isolation: prevent global helpers from shifting/overriding unified reader styles --- */
+.SYNTHOMAREADER .title,
+.SYNTHOMAREADER .text,
+.SYNTHOMAREADER .textV,
+.SYNTHOMAREADER .dialog,
+.SYNTHOMAREADER .dialogS,
+.SYNTHOMAREADER .dialogN,
+.SYNTHOMAREADER .log {
+  /* neutralize global margins/paddings that cause indentation drift */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-left: none !important;
+  text-shadow: none; /* glow handled by components.css */
+  left: 0;
+}
+
+/* Make titles span full container width in reader and align decorative bar at the edge */
+.SYNTHOMAREADER .title {
+  width: 100%;
+  box-sizing: border-box;
+}

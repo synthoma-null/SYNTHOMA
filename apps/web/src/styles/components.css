@@ -1635,3 +1635,19 @@
     box-shadow: 0 4px 14px rgba(0,0,0,.35);
   }
   .archive-card .card-close:hover { filter: brightness(1.1); }
+
+  /* =========================
+     READER OVERLAY UTILS (no inline styles)
+     -------------------------
+     Nastavují proměnné pro .SYNTHOMAREADER::before
+     ========================= */
+  .readerOverlay-none { --bg-image: none; }
+  .readerOverlay-blur-xs { --bg-blur: blur(4px); }
+  .readerOverlay-blur-sm { --bg-blur: blur(8px); }
+  .readerOverlay-blur { --bg-blur: blur(12px); }
+  .readerOverlay-blur-lg { --bg-blur: blur(16px); }
+  .readerOverlay-10 { --bg-opacity: .10; }
+  .readerOverlay-20 { --bg-opacity: .20; }
+  .readerOverlay-35 { --bg-opacity: .35; }
+  .readerOverlay-50 { --bg-opacity: .50; }
+  .readerOverlay-65 { --bg-opacity: .65; }

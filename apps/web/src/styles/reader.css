@@ -243,6 +243,23 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   z-index: 5;
 }
 
+/* Unified background overlay for all readers using CSS variables. */
+.SYNTHOMAREADER::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  /* Respect app-level vars first, then reader vars, with sensible defaults */
+  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
+  background-image: var(--bg-image, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: var(--app-bg-blur, var(--bg-blur, none));
+  pointer-events: none;
+}
+
 /* Zmenšení mezer mezi odstavci uvnitř čtečky */
 .SYNTHOMAREADER p,
 .SYNTHOMAREADER .text,
@@ -251,7 +268,7 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
 .SYNTHOMAREADER .dialogG,
 .SYNTHOMAREADER .log {
   margin-left: 0rem;
-  margin-right: 0.5rem;
+  margin-right: 0rem;
   margin-bottom: 0rem;
 }
 
@@ -267,6 +284,12 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   /* drž čtečku nad #noise-canvas (z=1) a #glitch-bg (z=2) */
   z-index: 5;
   will-change: backdrop-filter;
+}
+
+/* In glass mode, do not paint the ::before overlay (so the blur is visible). */
+.SYNTHOMAREADER.glass::before {
+  content: none !important;
+  background: none !important;
 }
 
 @supports not (background: color-mix(in oklab, red, transparent)) {

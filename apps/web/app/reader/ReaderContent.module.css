@@ -100,9 +100,11 @@
   background-color: transparent;
 }
 
-/* In glass mode, make base background transparent (blur is handled separately) */
-.readerMain:global(.SYNTHOMAREADER.glass) {
-  background-color: transparent;
+/* In glass mode, let global reader.css provide the glass background + backdrop-filter.
+   Disable the local ::before overlay so it doesn't block the blur. */
+.readerMain:global(.SYNTHOMAREADER.glass)::before {
+  content: none !important;
+  background: none !important;
 }
 
 @media (min-width: 768px) {
@@ -336,11 +338,20 @@
   background-color: rgba(82, 82, 82, 0.6);
 }
 
+/* Selected and disabled states for button choices */
+.readerMain :global(.choice-link.selected) {
+  background-color: rgba(37, 99, 235, 0.35);
+  outline: 2px solid rgba(37, 99, 235, 0.6);
+}
+
+.readerMain :global(.choice-link.disabled) {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 /* Hide choices during typing to avoid "ghost" buttons appearing early */
 .readerMain :global(.SYNTHOMAREADER.typing .choice-link),
-.readerMain :global(.SYNTHOMAREADER.typing .choice),
-.readerMain :global(.SYNTHOMAREADER:not(.choices-shown) .choice-link),
-.readerMain :global(.SYNTHOMAREADER:not(.choices-shown) .choice) {
+.readerMain :global(.SYNTHOMAREADER:not(.choices-shown) .choice-link) {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
