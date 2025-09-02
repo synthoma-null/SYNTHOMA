@@ -51,13 +51,16 @@ export default function LandingIntroPage() {
         if (existingAnchor) { return; }
         const next = p.getAttribute('data-next') || '';
         const ui = p.getAttribute('data-ui') || '';
+        // Insert button INSIDE the existing <p class="choice"> to preserve block layout
         const btn = document.createElement('button');
         btn.className = 'choice-link';
         if (next) btn.setAttribute('data-next', next);
         if (ui) btn.setAttribute('data-ui', ui);
         btn.type = 'button';
         btn.innerHTML = p.innerHTML;
-        p.replaceWith(btn);
+        // Clear the paragraph and append the button as its only child
+        p.innerHTML = '';
+        p.appendChild(btn);
       });
       return root.innerHTML;
     } catch { return html; }

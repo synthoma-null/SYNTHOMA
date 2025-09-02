@@ -116,5 +116,31 @@
         if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); handleChoiceElementActivate(el); }
       }, false);
     });
+
+    // Toggle for fx-outline: faint by default, lights up on interaction
+    (function wireOutlineToggles(){
+      var nodes = document.querySelectorAll('.fx-outline');
+      nodes.forEach(function(el){
+        // a11y: make focusable and expose state if not already interactive
+        if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+        if(!el.hasAttribute('role')) el.setAttribute('role','button');
+        el.setAttribute('aria-pressed', el.classList.contains('is-lit') ? 'true' : 'false');
+
+        function toggle(){
+          el.classList.toggle('is-lit');
+          el.setAttribute('aria-pressed', el.classList.contains('is-lit') ? 'true' : 'false');
+        }
+
+        el.addEventListener('click', function(e){
+          // Don't block anchors from navigating; for other elements prevent default so the click only toggles
+          if(el.tagName !== 'A') { e.preventDefault(); }
+          toggle();
+        }, false);
+
+        el.addEventListener('keydown', function(e){
+          if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+        }, false);
+      });
+    })();
   });
 })();

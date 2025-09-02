@@ -1,9 +1,9 @@
 <!-- 🎭 SYNTHOMA: větvící se glitch-noir příběh (prodloužený vstup + nevtíravý průvodce + víc LOGů/DIALOGů + plynulý přechod) -->
 
 <!-- ÚVOD – průvodce pro nováčky -->
-<p class="text">„Vítej v SYNTHOMĚ, <span class="glitching-word">@&SĐYŁ</span> !!! Tady jméno nikoho nezajímá, ale chyby? Ty jsou v paměti věčně.“</p>
+<p class="text">„Vítej v SYNTHOMĚ, <span class="glitching-word fx-noise">@&SĐYŁ</span> !!! Tady jméno nikoho nezajímá, ale chyby? Ty jsou v paměti věčně.“</p>
 
-<p class="log">LOG [VSTUP]:</p>
+<p class="log fx-scanline">LOG [VSTUP]:</p>
 <p class="dialog">„Jsi tu správně? Možná. Tohle je rozcestník.“</p>
 
 <p class="text">
@@ -34,18 +34,18 @@
   <section class="story-block" id="ui-help" data-theme="synthoma">
     <h3 class="title">Ovládací panel — rychlý přehled </h3>
 
-    <p class="log">LOG [NÁPOVĚDA]:</p>
+    <p class="log fx-scanline">LOG [NÁPOVĚDA]:</p>
     <p class="dialog">„Panel je vždy vidět a reaguje i během čtení. Tři věci: pohodlí očí, nálada prostředí, hudební podkres. Protože kdo chce číst glitch-noir s bolavýma očima? 😜“</p>
 
     <p class="text">
       <strong>Displej</strong><br/>
       • <em>Velikost písma</em> — nastav tak, aby pracoval příběh, ne tvoje zorničky. Jinak ti Synthoma pošle chybovou hlášku do mozku. ⚠️<br/>
       • <em>Průhlednost pozadí</em> — ztiší svět za textem, když má mluvit obsah. Ideální pro ty, kdo se bojí vlastních stínů.<br/>
-      • <em>Sklo</em> — jemný „skleněný“ efekt pro soustředění i atmosféru. Jako bys četl skrz rozbitý firewall.
+      • <em class="fx-underline">Sklo</em> — jemný „skleněný“ efekt pro soustředění i atmosféru. Jako bys četl skrz rozbitý firewall.<br/>
       • <em>Animace</em> — klidné čtení? Vypni. Chceš pulz? Zapni. Ale pozor, příliš mnoho glitchů a crashneš sám.<br/>
     </p>
 
-    <p class="log">LOG [DEBUG]:</p>
+    <p class="log fx-scanline">LOG [DEBUG]:</p>
     <p class="dialogS">„Nastav to špatně a Synthoma ti to vrátí – s úsměvem. 😈“</p>
 
     <p class="text">
@@ -87,7 +87,7 @@
       • MBTI vibrace: pár voleb si dělá srandu z tvé preference (ber to s nadhledem).<br/>
     </p>
 
-    <p class="log">LOG [KDE-ZAČÍT]:</p>
+    <p class="log fx-scanline">LOG [KDE-ZAČÍT]:</p>
     <p class="dialogS">„Nejsi si jistý? Začni v Knihovně – kapitola 0-∞ [RESTART]. Nebo si dej pár krátkých okruhů ve Městě a teprve pak skoč do příběhu.“</p>
 
     <p class="choice" data-next="library" data-ui="toast-success">
@@ -102,7 +102,7 @@
   <section class="story-block" id="tour-start" data-theme="synthoma">
     <h2 class="title">První kroky (protože každý NULL začíná ztracený)</h2>
 
-    <p class="log">LOG [PRŮVOD]:</p>
+    <p class="log fx-scanline">LOG [PRŮVOD]:</p>
     <p class="dialog">„Tři krátké kroky. Nastavíš si čtení, zkusíš sklo, pustíš hudbu. Pak teprve rozcestí. A pamatuj, Synthoma sleduje každý tvůj glitch. 😉“</p>
 
     <p class="text">
@@ -398,7 +398,7 @@
     <h3 class="title">Prázdnota (checkpoint NULL)</h3>
 
     <p class="log">LOG [CHECKPOINT]:</p>
-    <p class="dialog">„Ticho na dluh. Na stěně otisk, který se nesmaže ani po tisících restartech. Vítej zpátky, NULL-1. 😏“</p>
+    <p class="dialog">„Ticho na dluh. Na stěně otisk, který se nesmaže ani po tisících restartech. Vítej zpátky, <span class="fx-outline">NULL-1</span>. 😏“</p>
 
     <p class="choice" data-next="city-hub" data-ui="modal">
       <span>▼ </span>Vytvořit z ticha mapu dalšího běhu (pokračovat)
@@ -413,7 +413,7 @@
 
   <!-- Plynulý přechod do další kapitoly -->
   <section class="story-block" id="next-chapter-bridge" data-theme="synthoma">
-    <h2 class="title">0–∞ (nekonečný cyklus)</h2>
+    <h2 class="title"><span class="fx-gradient">0–∞</span> (nekonečný cyklus)</h2>
 
     <p class="log">LOG [PULS]:</p>
     <p class="dialogN">„Město na okamžik ztichne. Z hlubin zazní jediný takt. Když se rozběhne, tvoje kroky se srovnají s jeho rytmem – nebo crashnou. 😂“</p>
@@ -421,7 +421,7 @@
     <p class="textV">Na následujícím místě už nevede mapa, ale puls. A Synthoma má hlad.</p>
 
     <p class="choice" data-next="null-start" data-ui="toast-success">
-      <span>▼ </span>Pokračovat (k probuzení NULL-1)
+      <span>▼ </span>Pokračovat (k probuzení <span class="fx-outline">NULL-1</span>)
     </p>
     <p class="choice" data-next="city-hub" data-ui="toast-info">
       <span>▼ </span>Ještě ne. Zpátky do Města (odložit restart)

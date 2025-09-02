@@ -208,13 +208,40 @@
 
   /* 4) Outline stroke using multiple text-shadows (fallback for -webkit-text-stroke) */
   .fx-outline {
+    /* Default: faint ghosted outline, barely readable until toggled */
     text-shadow:
-      -1px -1px 0 currentColor,
-       1px -1px 0 currentColor,
-      -1px  1px 0 currentColor,
-       1px  1px 0 currentColor;
-    color: transparent;
-    -webkit-text-stroke: 1px currentColor;
+      -1px -1px 0 color-mix(in oklab, currentColor 18%, transparent),
+       1px -1px 0 color-mix(in oklab, currentColor 18%, transparent),
+      -1px  1px 0 color-mix(in oklab, currentColor 18%, transparent),
+       1px  1px 0 color-mix(in oklab, currentColor 18%, transparent);
+    color: transparent; /* keep layout stable */
+    /* Fallback for older browsers */
+    -webkit-text-stroke: 0.6px currentColor;
+    /* Modern nicer mix for subtle stroke */
+    -webkit-text-stroke: 0.6px color-mix(in oklab, currentColor 35%, transparent);
+    opacity: .65;
+    transition: color .18s ease, text-shadow .18s ease, opacity .18s ease, -webkit-text-stroke-color .18s ease, -webkit-text-stroke-width .18s ease;
+  }
+
+  /* Lit state: filled + bright glow */
+  .fx-outline.is-lit {
+    color: var(--text-primary);
+    /* Fallback first */
+    -webkit-text-stroke: 0.5px currentColor;
+    /* Then modern mix for richer look */
+    -webkit-text-stroke: 0.5px color-mix(in oklab, var(--text-primary) 55%, transparent);
+    text-shadow:
+      0 0 6px var(--glow-primary),
+      0 0 12px var(--glow-primary),
+      0 0 18px var(--glow-secondary);
+    opacity: 1;
+  }
+
+  /* Keyboard focus hint for togglable outline items */
+  .fx-outline:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-outline { transition: none !important; }
   }
 
   /* 5) Scanline shimmer (subtle CRT-like pass) */
