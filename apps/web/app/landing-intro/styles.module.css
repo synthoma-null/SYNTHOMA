@@ -12,6 +12,42 @@
   font-family: var(--li-font-sans);
 }
 
+/* Standalone title video box for iOS-friendly playback */
+.title-video-box {
+  position: relative;
+  display: inline-block;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+
+.title-video {
+  display: block;
+  width: min(86vw, 980px);
+  max-width: 100%;
+  height: auto;
+}
+
+.title-video-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.45));
+  color: #fff;
+  font-size: clamp(2rem, 8vw, 4rem);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .25s ease, background .25s ease;
+}
+
+.title-video-play.visible { opacity: 1; }
+.title-video-play:hover { background: linear-gradient(to bottom, rgba(0,0,0,.3), rgba(0,0,0,.55)); }
+
+/* Scoped helper for CSS Modules toggling */
+.visible { opacity: 1; }
+
 .liVideo {
   position: fixed;
   inset: 0;
@@ -196,3 +232,5 @@
   --li-glass: rgba(255, 255, 255, 0.04);
   --li-border: rgba(255, 255, 255, 0.08);
 }
+
+

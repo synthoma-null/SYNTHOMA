@@ -1,5 +1,24 @@
 type CancelFn = () => void;
 
+// Types for /books/manifest.json
+type BooksManifest = {
+  collections: Array<{
+    slug?: string;
+    title?: string;
+    chapters?: Array<{
+      title?: string;
+      path?: string;
+    }>;
+  }>;
+};
+
+function isBooksManifest(u: unknown): u is BooksManifest {
+  if (!u || typeof u !== 'object') return false;
+  const m = u as { collections?: unknown };
+  if (!Array.isArray(m.collections)) return false;
+  return true;
+}
+
 export function runTypewriter(opts: {
   text: string;
   host: HTMLElement;
@@ -39,7 +58,7 @@ export function runTypewriter(opts: {
     const ch = chars[i++];
     const el = document.createElement('span');
     el.className = 'tw-char noising-char';
-    el.textContent = ch;
+    el.textContent = String(ch);
     span!.appendChild(el);
     window.setTimeout(tick, per);
   }
@@ -86,10 +105,10 @@ export async function typeBooksList(): Promise<void> {
     const span = document.createElement('span'); span.className = 'noising-text'; block.appendChild(span);
     extra.appendChild(block);
     const res = await fetch('/books/manifest.json', { cache: 'no-store' });
-    const data = await res.json();
+    const raw = (await res.json()) as unknown;
     const lines: string[] = [];
-    if (data && Array.isArray(data.collections)) {
-      for (const col of data.collections) {
+    if (isBooksManifest(raw)) {
+      for (const col of raw.collections) {
         lines.push(`• ${col.title || col.slug}`);
         if (Array.isArray(col.chapters)) {
           for (const ch of col.chapters) {

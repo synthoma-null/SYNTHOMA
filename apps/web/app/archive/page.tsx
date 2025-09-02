@@ -89,12 +89,12 @@ export default function ArchivePage() {
       if (e.shiftKey) {
         if (active === first || !container.contains(active)) {
           e.preventDefault();
-          last.focus();
+          if (last) last.focus();
         }
       } else {
         if (active === last) {
           e.preventDefault();
-          first.focus();
+          if (first) first.focus();
         }
       }
     };
@@ -128,8 +128,6 @@ export default function ArchivePage() {
             </span>
             <span className="sr-only">{TITLE}</span>
           </div>
-          <p className="log">LOG [WIKI]:</p>
-          <p className="dialog">„Tady najdeš pojmy, frakce, postavy a další radosti.“</p>
         </section>
 
         <section className="story-block">

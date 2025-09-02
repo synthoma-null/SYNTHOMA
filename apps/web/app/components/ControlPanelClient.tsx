@@ -33,7 +33,7 @@ export default function ControlPanelClient() {
       try {
         const ls = (typeof localStorage !== 'undefined') ? localStorage.getItem('debug') : null;
         const enabled = (ls === '1' || ls === 'true' || (typeof process !== 'undefined' && (process as any).env && (process as any).env.NODE_ENV !== 'production'));
-        if (enabled) console.log(...args);
+        if (enabled) console.warn(...args);
       } catch {}
     }
     // Nepoužívej tvrdý guard, HMR může DOM vyměnit a listenery zaniknou.
@@ -75,6 +75,14 @@ export default function ControlPanelClient() {
       },
     };
 
+    function getReaderContainer(): HTMLElement | null {
+      try { return document.querySelector('[data-testid="reader-container"]') as HTMLElement | null; } catch { return null; }
+    }
+
+    function getReaderEl(): HTMLElement | null {
+      try { return document.getElementById('hero-info'); } catch { return null; }
+    }
+
     function initPersisted() {
       try {
         const areDisabled = localStorage.getItem("animationsDisabled") === "true";
@@ -98,8 +106,29 @@ export default function ControlPanelClient() {
         }
         const fs = localStorage.getItem("fontSizeMultiplier");
         if (fs) root.style.setProperty("--font-size-multiplier", fs);
+        // Initialize global panel opacity for glass panels
+        const pa = localStorage.getItem("panelAlpha");
+        if (pa) {
+          const v = Math.max(0, Math.min(1, parseFloat(pa)));
+          root.style.setProperty("--panel-alpha", String(v));
+        } else {
+          // provide a sane default if not set yet
+          if (!getComputedStyle(root).getPropertyValue('--panel-alpha')) {
+            root.style.setProperty("--panel-alpha", "0.6");
+          }
+        }
         const op = localStorage.getItem("readerBgOpacity");
-        if (op) root.style.setProperty("--reader-bg-opacity", op);
+        if (op) {
+          const v = parseFloat(op);
+          const c = Math.max(0, Math.min(1, v));
+          // jednotná root proměnná pro neprůhlednost overlaye
+          root.style.setProperty("--app-bg-opacity", String(c));
+          // glow mapování – ponechat pro ne-glass režim
+          const radius = Math.max(0, Math.min(20, 2 + v * 18));
+          const alpha = Math.max(0, Math.min(100, Math.round(20 + v * 40)));
+          root.style.setProperty("--reader-glow-radius", radius.toFixed(1) + "px");
+          root.style.setProperty("--reader-glow-alpha", alpha + "%");
+        }
         // Glass mode
         const isGlass = localStorage.getItem("glassMode") === "true";
         body.classList.toggle("glass-mode", isGlass);
@@ -121,6 +150,8 @@ export default function ControlPanelClient() {
           el.classList.toggle("glass", isGlass);
         });
         const savedBlur = localStorage.getItem("glassBlur") || "12";
+        // jednotná root proměnná pro blur + kompatibilní --glass-blur
+        root.style.setProperty("--app-bg-blur", savedBlur + "px");
         root.style.setProperty("--glass-blur", savedBlur + "px");
       } catch {}
     }
@@ -232,23 +263,22 @@ export default function ControlPanelClient() {
         if (isGlass) {
           if (reader) {
             reader.classList.add('glass');
-            try {
-              reader.style.removeProperty('background-color');
-              (reader.style as any).backdropFilter = `blur(${currentBlur}px)`;
-              (reader.style as any).webkitBackdropFilter = `blur(${currentBlur}px)`;
-            } catch {}
           }
+          // nastav pouze root proměnné, styly si vezme CSS
+          root.style.setProperty("--app-bg-blur", `${currentBlur}px`);
           root.style.setProperty("--glass-blur", `${currentBlur}px`);
         } else {
           if (reader) {
             reader.classList.remove('glass');
-            try {
-              (reader.style as any).backdropFilter = 'none';
-              (reader.style as any).webkitBackdropFilter = 'none';
-              reader.style.backgroundColor = `rgba(var(--bg-secondary-rgb), ${currentOpacity})`;
-            } catch {}
           }
-          root.style.setProperty("--reader-bg-opacity", currentOpacity.toString());
+          // v ne-glass režimu slider nastavuje opacity přes root proměnnou
+          const c = Math.max(0, Math.min(1, currentOpacity));
+          root.style.setProperty("--app-bg-opacity", String(c));
+          // glow mapování držíme kvůli vizuálnímu efektu
+          const radius = Math.max(0, Math.min(20, 2 + currentOpacity * 18));
+          const alpha = Math.max(0, Math.min(100, Math.round(20 + currentOpacity * 40)));
+          root.style.setProperty("--reader-glow-radius", radius.toFixed(1) + "px");
+          root.style.setProperty("--reader-glow-alpha", alpha + "%");
         }
         const opacitySlider = document.getElementById("opacity-slider") as HTMLInputElement | null;
         if (opacitySlider && updateSlider) {
@@ -285,17 +315,7 @@ export default function ControlPanelClient() {
         const ensureReaderSync = () => {
           const reader = document.querySelector('.SYNTHOMAREADER') as HTMLElement | null;
           if (!reader) return;
-          if (currentGlassMode) {
-            if (!reader.classList.contains('glass')) {
-              reader.classList.add('glass');
-              try { reader.style.removeProperty('background-color'); } catch {}
-            }
-          } else {
-            if (reader.classList.contains('glass')) {
-              reader.classList.remove('glass');
-            }
-            try { reader.style.removeProperty('background-color'); } catch {}
-          }
+          reader.classList.toggle('glass', currentGlassMode);
         };
         ensureReaderSync();
         const mo = new MutationObserver(() => { requestAnimationFrame(ensureReaderSync); });
@@ -303,20 +323,43 @@ export default function ControlPanelClient() {
         (window as any).__cpReaderObserver = mo;
       } catch {}
       if (opacitySlider) {
-        const onSlider = function (e: Event) {
-          const target = e.target as HTMLInputElement;
-          const val = parseFloat(target.value);
+        let rafId: number | null = null;
+        let pendingVal: number | null = null;
+        const applyVal = (val: number) => {
           if (currentGlassMode) {
             currentBlur = Math.round(val * 24);
+            // nastav root proměnné
+            root.style.setProperty("--app-bg-blur", `${currentBlur}px`);
             root.style.setProperty("--glass-blur", `${currentBlur}px`);
             try { localStorage.setItem("glassBlur", String(currentBlur)); } catch {}
           } else {
             currentOpacity = val;
-            root.style.setProperty("--reader-bg-opacity", val.toString());
-            const reader = document.querySelector('.SYNTHOMAREADER') as HTMLElement;
-            if (reader) { reader.style.backgroundColor = `rgba(var(--bg-secondary-rgb), ${val})`; }
+            const c = Math.max(0, Math.min(1, val));
+            root.style.setProperty("--app-bg-opacity", String(c));
             try { localStorage.setItem("readerBgOpacity", val.toString()); } catch {}
+            // glow doplněk
+            const radius = Math.max(0, Math.min(20, 2 + val * 18));
+            const alpha = Math.max(0, Math.min(100, Math.round(20 + val * 40)));
+            root.style.setProperty("--reader-glow-radius", radius.toFixed(1) + "px");
+            root.style.setProperty("--reader-glow-alpha", alpha + "%");
           }
+          const c = Math.max(0, Math.min(1, val));
+          root.style.setProperty("--panel-alpha", String(c));
+          try { localStorage.setItem("panelAlpha", String(c)); } catch {}
+        };
+        const scheduleApply = (val: number) => {
+          pendingVal = val;
+          if (rafId != null) return;
+          rafId = requestAnimationFrame(() => {
+            if (pendingVal != null) applyVal(pendingVal);
+            rafId = null;
+            pendingVal = null;
+          });
+        };
+        const onSlider = function (e: Event) {
+          const target = e.target as HTMLInputElement;
+          const val = parseFloat(target.value);
+          scheduleApply(val);
         };
         opacitySlider.addEventListener("input", onSlider);
         opacitySlider.addEventListener("change", onSlider);
@@ -385,6 +428,7 @@ export default function ControlPanelClient() {
       if (!window.__synthomaAudio) { window.__synthomaAudio = audio; }
       // Expose simple control helpers so other pages can use the same player
       window.audioPanelPlay = function(file?: string){
+        try { localStorage.setItem('audioAutoplayBlocked', 'false'); } catch {}
         if (file){
           const idx = audioTracks.findIndex(t => t.file === file);
           if (idx >= 0) currentTrackIndex = idx; else currentTrackIndex = -1;
@@ -396,6 +440,11 @@ export default function ControlPanelClient() {
         else { playAudio(); }
       };
       window.audioPanelEnsurePlaying = function(){
+        // Do NOT autostart if user previously paused/stopped explicitly
+        try {
+          const blocked = localStorage.getItem('audioAutoplayBlocked') === 'true';
+          if (blocked) return;
+        } catch {}
         if (!audio.src || audio.ended || audio.currentTime === 0){
           currentTrackIndex = -1; // start from first
           playNextTrack();
@@ -420,6 +469,7 @@ export default function ControlPanelClient() {
         if (!audioTracks.length) return;
         currentTrackIndex = (currentTrackIndex + 1) % audioTracks.length;
         const track = audioTracks[currentTrackIndex];
+        if (!track) return;
         playAudio(track.file);
         updatePlaylistActiveState();
       }
@@ -427,6 +477,7 @@ export default function ControlPanelClient() {
         if (!audioTracks.length) return;
         currentTrackIndex = (currentTrackIndex - 1 + audioTracks.length) % audioTracks.length;
         const track = audioTracks[currentTrackIndex];
+        if (!track) return;
         playAudio(track.file);
         updatePlaylistActiveState();
       }
@@ -457,6 +508,8 @@ export default function ControlPanelClient() {
       });
       audio.addEventListener("pause", function () {
         if (playPauseBtn) { (playPauseBtn as HTMLElement).textContent = "▶️"; (playPauseBtn as HTMLElement).setAttribute('aria-pressed','false'); }
+        // Mark autoplay as blocked if user paused during playback (not initial state)
+        try { if (audio.currentTime > 0 && !audio.ended) localStorage.setItem('audioAutoplayBlocked', 'true'); } catch {}
       });
       audio.addEventListener("error", function(){
         try { console.warn('[Audio] Chyba přehrávání, přeskakuji na další skladbu'); } catch {}
@@ -472,6 +525,134 @@ export default function ControlPanelClient() {
       }
       audio.addEventListener("ended", playNextTrack);
 
+      // =====================
+      // TTS (Web Speech API)
+      // =====================
+      const synth: SpeechSynthesis | null = (typeof window !== 'undefined' && 'speechSynthesis' in window) ? window.speechSynthesis : null;
+      let ttsEnabled = false;
+      let ttsQueue: string[] = [];
+      let ttsSpeaking = false;
+      let ttsUtterance: SpeechSynthesisUtterance | null = null;
+
+      function setTtsButtonState(enabled: boolean) {
+        const btn = document.getElementById('toggle-tts') as HTMLButtonElement | null;
+        if (!btn) return;
+        try {
+          btn.setAttribute('aria-pressed', String(enabled));
+          btn.textContent = enabled ? 'TTS: Zapnuto 🔊' : 'TTS: Vypnuto 🔇';
+        } catch {}
+      }
+
+      function collectReadableText(): string {
+        // Preferuj čtečku
+        const reader = document.querySelector('.SYNTHOMAREADER');
+        const main = document.querySelector('main');
+        const target = (reader as HTMLElement) || (main as HTMLElement) || document.body;
+        let text = target?.textContent || '';
+        // zmenšit whitespace, odstranit duplicitní mezery
+        text = text.replace(/\s+/g, ' ').trim();
+        return text;
+      }
+
+      function chunkTextToSentences(text: string): string[] {
+        if (!text) return [];
+        // Zkusit rozdělení podle vět, zachovat přirozenost
+        const rough = text.match(/[^.!?\n]+[.!?]?/g) || [text];
+        const chunks: string[] = [];
+        let buf = '';
+        for (const part of rough) {
+          const candidate = (buf ? buf + ' ' : '') + part.trim();
+          if (candidate.length > 220) {
+            if (buf) chunks.push(buf);
+            if (part.length > 220) {
+              // tvrdé dělení dlouhých segmentů
+              for (let i = 0; i < part.length; i += 200) {
+                chunks.push(part.slice(i, i + 200));
+              }
+              buf = '';
+            } else {
+              buf = part.trim();
+            }
+          } else {
+            buf = candidate;
+          }
+        }
+        if (buf) chunks.push(buf);
+        return chunks;
+      }
+
+      function ttsSpeakNext() {
+        if (!synth || ttsSpeaking) return;
+        const next = ttsQueue.shift();
+        if (!next) { ttsSpeaking = false; return; }
+        try {
+          ttsSpeaking = true;
+          const utt = new SpeechSynthesisUtterance(next);
+          ttsUtterance = utt;
+          // Prefer češtinu, fallback en
+          utt.lang = 'cs-CZ';
+          utt.rate = 1.0;
+          utt.pitch = 1.0;
+          utt.volume = 1.0;
+          utt.onend = () => { ttsSpeaking = false; ttsSpeakNext(); };
+          utt.onerror = () => { ttsSpeaking = false; ttsSpeakNext(); };
+          synth.speak(utt);
+        } catch {
+          ttsSpeaking = false;
+        }
+      }
+
+      function ttsStartFromCurrentContent() {
+        if (!synth) return;
+        try { synth.cancel(); } catch {}
+        const text = collectReadableText();
+        ttsQueue = chunkTextToSentences(text);
+        ttsSpeaking = false;
+        ttsSpeakNext();
+      }
+
+      function ttsStop() {
+        if (!synth) return;
+        try { synth.cancel(); } catch {}
+        ttsQueue = [];
+        ttsSpeaking = false;
+      }
+
+      // Reaguj na toggle event z panelu
+      const onTtsToggle = () => {
+        const on = (localStorage.getItem('ttsOn') === 'true');
+        ttsEnabled = on;
+        setTtsButtonState(on);
+        if (synth) {
+          if (on) ttsStartFromCurrentContent(); else ttsStop();
+        }
+      };
+      document.addEventListener('synthoma:tts-toggle' as any, onTtsToggle, { signal });
+
+      // Počáteční stav TTS tlačítka a auto-start dle localStorage
+      const ttsInitOn = (localStorage.getItem('ttsOn') === 'true');
+      ttsEnabled = ttsInitOn;
+      setTtsButtonState(ttsInitOn);
+      if (ttsInitOn && synth) {
+        // Odlož start po renderu, ať se stihne dom 
+        setTimeout(() => ttsStartFromCurrentContent(), 200);
+      }
+
+      // Sleduj změny obsahu a případně znovu přečti
+      try {
+        const observed = document.querySelector('main') || document.body;
+        const ttsMo = new MutationObserver(() => {
+          if (!ttsEnabled || !synth) return;
+          // pokud se výrazně změnil DOM, restartni čtení
+          // jednoduché: pokud zrovna nemluvíme (mezi větami), načni nový text
+          if (!ttsSpeaking) {
+            ttsStartFromCurrentContent();
+          }
+        });
+        if (observed) ttsMo.observe(observed, { childList: true, subtree: true, characterData: true });
+        (window as any).__cpTtsObserver = ttsMo;
+      } catch {}
+
       if (!(window as any).__cpAudioDelegationAttached) {
         document.addEventListener('click', function(ev){
           const t = ev.target as HTMLElement | null;
@@ -480,16 +661,18 @@ export default function ControlPanelClient() {
           if (!btn) return;
           if ((btn as HTMLElement).id === 'play-pause-btn'){
             try { ev.preventDefault(); ev.stopPropagation(); } catch {}
-            try { console.debug('[Audio] play/pause click; paused=', audio.paused, 'src=', !!audio.src); } catch {}
+            try { console.warn('[Audio] play/pause click; paused=', audio.paused, 'src=', !!audio.src); } catch {}
             if (audio.paused) {
+              try { localStorage.setItem('audioAutoplayBlocked', 'false'); } catch {}
               if (audio.src) { audio.play().catch(() => {}); }
               else { currentTrackIndex = -1; playNextTrack(); }
             } else { audio.pause(); }
           } else if ((btn as HTMLElement).id === 'stop-btn'){
             try { ev.preventDefault(); ev.stopPropagation(); } catch {}
-            try { console.debug('[Audio] stop click'); } catch {}
+            try { console.warn('[Audio] stop click'); } catch {}
             audio.pause();
             audio.currentTime = 0;
+            try { localStorage.setItem('audioAutoplayBlocked', 'true'); } catch {}
           } else if ((btn as HTMLElement).id === 'toggle-tts') {
             try { ev.preventDefault(); ev.stopPropagation(); } catch {}
             const el = btn as HTMLButtonElement;
@@ -512,7 +695,7 @@ export default function ControlPanelClient() {
           if (!btn) return;
           if ((btn as HTMLElement).id === 'toggle-animations') {
             try { ev.preventDefault(); ev.stopPropagation(); } catch {}
-            try { console.debug('[ControlPanel] click toggle-animations'); } catch {}
+            try { console.warn('[ControlPanel] click toggle-animations'); } catch {}
             window.animationManager?.toggleAll();
             try { document.dispatchEvent(new CustomEvent('synthoma:animations-changed')); } catch {}
             updateButtonState();

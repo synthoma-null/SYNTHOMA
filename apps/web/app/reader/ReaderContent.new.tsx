@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import styles from "./ReaderContent.module.css";
 
 interface ChoiceItem {
   text: string;
@@ -59,8 +60,7 @@ export default function ReaderContent() {
     blur: 0
   });
   
-  const contentRef = useRef<HTMLDivElement>(null);
-  const synthRef = useRef<SpeechSynthesis | null>(null);
+  // Removed unused refs to satisfy strict TS
   
   // Handle background changes
   const handleBackgroundChange = (property: keyof BackgroundSettings, value: string | number) => {
@@ -101,11 +101,12 @@ export default function ReaderContent() {
                   content: element.innerHTML
                 });
               } else if (element.tagName === 'DIV' && element.classList.contains('choices')) {
-                const choices = Array.from(element.querySelectorAll('a')).map(choice => ({
-                  text: choice.innerHTML,
-                  href: choice.getAttribute('href') || undefined,
-                  tags: Array.from(choice.classList)
-                }));
+                const choices = Array.from(element.querySelectorAll('a')).map(choice => {
+                  const href = choice.getAttribute('href');
+                  const base = { text: choice.innerHTML, tags: Array.from(choice.classList) } as { text: string; tags: string[] } & Partial<ChoiceItem>;
+                  if (href) (base as any).href = href;
+                  return base as ChoiceItem;
+                });
                 parsedBlocks.push({
                   type: 'choices',
                   items: choices
@@ -130,6 +131,18 @@ export default function ReaderContent() {
 
     loadChapter();
   }, [effectiveUrl]);
+  
+  // Apply background settings to host via CSS variables (avoid JSX inline style)
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const clampedOpacity = Math.max(0, Math.min(1, Number(background.opacity)));
+    el.style.setProperty("--bg-image", background.image ? `url(${background.image})` : "none");
+    el.style.setProperty("--bg-color", background.color);
+    el.style.setProperty("--bg-opacity", String(clampedOpacity));
+    el.style.setProperty("--bg-blur", background.blur > 0 ? `blur(${background.blur}px)` : "none");
+  }, [background]);
 
   // Handle choice selection
   const handleChoice = (choice: ChoiceItem) => {
@@ -167,18 +180,23 @@ export default function ReaderContent() {
             case 'choices':
               return (
                 <div key={index} className="my-8 space-y-4">
-                  {block.items.map((item, idx) => (
-                    <a
-                      key={idx}
-                      href={item.href ? `/reader?u=${encodeURIComponent(item.href)}` : '#'}
-                      className="block p-4 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors text-lg"
-                      onClick={(e) => {
-                        if (!item.href) e.preventDefault();
-                        handleChoice(item);
-                      }}
-                      dangerouslySetInnerHTML={{ __html: item.text }}
-                    />
-                  ))}
+                  {block.items.map((item, idx) => {
+                    const plain = (item.text || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+                    return (
+                      <a
+                        key={idx}
+                        href={item.href ? `/reader?u=${encodeURIComponent(item.href)}` : '#'}
+                        className="block p-4 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors text-lg"
+                        onClick={(e) => {
+                          if (!item.href) e.preventDefault();
+                          handleChoice(item);
+                        }}
+                        aria-label={plain || undefined}
+                        title={plain || undefined}
+                        dangerouslySetInnerHTML={{ __html: item.text }}
+                      />
+                    );
+                  })}
                 </div>
               );
             default:
@@ -211,6 +229,7 @@ export default function ReaderContent() {
               value={background.color}
               onChange={(e) => handleBackgroundChange('color', e.target.value)}
               className="w-full h-10 rounded"
+              title="Barva pozadí"
             />
           </div>
           
@@ -224,6 +243,8 @@ export default function ReaderContent() {
               value={background.opacity}
               onChange={(e) => handleBackgroundChange('opacity', parseFloat(e.target.value))}
               className="w-full"
+              aria-label="Průhlednost pozadí"
+              title="Průhlednost pozadí"
             />
           </div>
           
@@ -237,6 +258,8 @@ export default function ReaderContent() {
               value={background.blur}
               onChange={(e) => handleBackgroundChange('blur', parseInt(e.target.value))}
               className="w-full"
+              aria-label="Rozostření pozadí"
+              title="Rozostření pozadí"
             />
           </div>
           
@@ -248,6 +271,7 @@ export default function ReaderContent() {
               onChange={(e) => handleBackgroundChange('image', e.target.value)}
               placeholder="https://example.com/image.jpg"
               className="w-full p-2 rounded bg-neutral-700 text-white text-sm"
+              title="Adresa obrázku pozadí"
             />
           </div>
         </div>
@@ -256,12 +280,7 @@ export default function ReaderContent() {
   );
 
   return (
-    <div className="min-h-screen text-gray-100 p-4 md:p-8 relative" style={{
-      backgroundImage: background.image ? `url(${background.image})` : 'none',
-      backgroundColor: background.color,
-      opacity: background.opacity,
-      filter: background.blur > 0 ? `blur(${background.blur}px)` : 'none',
-    }}>
+    <div ref={containerRef} className={`min-h-screen text-gray-100 p-4 md:p-8 relative ${styles.bgHost}`}>
       {renderBackgroundPanel()}
       
       <div className="max-w-4xl mx-auto bg-neutral-800/90 backdrop-blur-sm rounded-lg shadow-xl overflow-hidden">

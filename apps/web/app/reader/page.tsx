@@ -8,7 +8,7 @@ const ReaderContent = dynamic(
   () => import('./ReaderContent'),
   { 
     loading: () => (
-      <div className="min-h-screen bg-neutral-900 text-white flex items-center justify-center">
+      <div className="min-h-screen text-white flex items-center justify-center">
         <div className="animate-pulse text-2xl">Načítání čtečky...</div>
       </div>
     ),

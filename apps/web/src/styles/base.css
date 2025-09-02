@@ -27,6 +27,17 @@ body {
   --font-family-ui: "Text02", system-ui, sans-serif;
   --font-family-primary-italic: "Text03i", "VT323", monospace;
   --font-family-primary-bold: "Text03b", "VT323", monospace;
+
+  /* ===== Unifikované proměnné pro pozadí napříč aplikací ===== */
+  /* Globální průhlednost tmavého overlaye (0..1). Ovládá slider v ControlPanelu */
+  --app-bg-opacity: 0.8;
+  /* Globální blur pro "glass" režim. Ovládá slider v ControlPanelu */
+  --app-bg-blur: 12px;
+  /* Průhlednost pro UI panely (tl. tlačítek/panelů), sjednocená s posuvníkem */
+  --panel-alpha: 0.6;
+  /* Glow čtečky v normálním režimu (slider mapuje 0..1 na tyto tokeny) */
+  --reader-glow-radius: 8px;
+  --reader-glow-alpha: 40%;
 }
 
 /* Vypnutí animací pro uživatele s preferencí "reduced motion" */

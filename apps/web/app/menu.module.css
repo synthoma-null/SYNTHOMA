@@ -1,0 +1,63 @@
+.home{min-height:100dvh;display:grid;place-items:center;padding:4.75rem 1.1rem}
+
+.menu{max-width:900px;width:100%;border-radius:20px;padding:1.25rem}
+
+/* Offset for homepage menu to tuck under the glitch title without inline styles */
+.menuOffset{margin-top:-10rem}
+
+.title{font-size:clamp(2.6rem,6vw,4rem);letter-spacing:.06em;text-transform:uppercase;margin:0 0 .2rem;color:#fff}
+
+.subtitle{margin:0 0 .9rem;color:#cfcfe3;opacity:.9}
+
+.menuList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;list-style:none;margin:0;padding:0}
+
+.link,.linkAccent{display:block;text-decoration:none;padding:1rem 1.1rem;border-radius:14px;border:1px solid rgba(255,255,255,.08);color:#f7f7ff;background:rgba(18,18,22,.65);transition:transform .15s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease}
+.link:hover{transform:translateY(-2px);background:rgba(18,18,22,.85);border-color:rgba(255,255,255,.16);box-shadow:0 8px 26px rgba(0,0,0,.35)}
+
+.linkAccent{background:linear-gradient(135deg, var(--color-accent), var(--color-secondary));border-color:var(--color-accent)}
+.linkAccent:hover{transform:translateY(-2px);background:linear-gradient(135deg, var(--color-secondary), var(--color-accent));border-color:var(--color-accent);box-shadow:0 10px 30px var(--color-accent)}
+
+@media (max-width:640px){.menu{padding:1rem}.menuList{grid-template-columns:1fr}.title{font-size:clamp(2rem,7vw,2.8rem)}}
+
+/* Mikro-breakpointy pro nízké displeje – ať si panel a menu nelezou po krku */
+@media (max-height: 740px){
+  .home{padding:3.75rem 1rem}
+}
+@media (max-height: 620px){
+  .home{padding:3rem 0.9rem}
+}
+@media (max-height: 520px){
+  .home{padding:2.25rem 0.75rem}
+}
+
+/* Karty v menu – místo holých tlačítek, ale stále přístupné jako odkazy */
+.card{border-radius:16px;background:rgba(18,18,22,.5);border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 8px 26px rgba(0,0,0,.25), 0 0 var(--reader-glow-radius, 10px) rgba(124,92,255,.25);
+  transition:transform .16s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; overflow:hidden}
+.card:hover{transform:translateY(-3px);border-color:rgba(124,92,255,.45);
+  background:linear-gradient(135deg, rgba(124,92,255,.08), rgba(0,212,255,.06));
+  box-shadow:0 12px 30px rgba(0,0,0,.35), 0 0 16px rgba(124,92,255,.35)}
+.cardLink{display:block;padding:1.1rem 1.2rem;text-decoration:none;color:#f7f7ff}
+.cardTitle{margin:0 0 .35rem;font-size:1.15rem;letter-spacing:.04em;text-transform:uppercase}
+.cardTeaser{margin:0;color:var(--color-text);opacity:.9;font-size:.95rem}
+
+@media (max-width:640px){
+  .cardLink{padding:1rem 1rem}
+  .cardTitle{font-size:1.05rem}
+  .cardTeaser{font-size:.9rem}
+}
+
+/* --- Lore section on homepage --- */
+.loreSection{position:relative;z-index:2;margin:64px auto 96px;padding:0 24px;max-width:1200px}
+.loreIntro{text-align:center;margin-bottom:2px}
+.loreH2{font-family:var(--li-font-sans, ui-sans-serif);font-size:clamp(1.6rem,3.5vw,2.2rem);letter-spacing:.04em;margin:0 0 6px 0;background:linear-gradient(90deg,#fff,var(--li-accent-2, #00d4ff));-webkit-background-clip:text;background-clip:text;color:transparent}
+.loreLead{color:var(--color-text); shadow: 0 0 var(--reader-glow-radius, 10px) rgba(124,92,255,.25);max-width:880px;margin:0 auto}
+.loreGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:18px}
+@media (max-width:1100px){.loreGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:720px){.loreGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.loreGrid{grid-template-columns:1fr}}
+.loreCard{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:14px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:8px;min-height:160px}
+.loreCardTitle{margin:0;font-size:1.1rem}
+.loreCardBody{margin:0;color:#f7f7ff;opacity:.9}
+.loreCardLink{margin-top:auto;align-self:flex-start;text-decoration:none;color:var(--li-accent-2, #00d4ff);font-weight:600;border:1px solid transparent;padding:6px 10px;border-radius:10px;transition:all .2s ease}
+.loreCardLink:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.08)}

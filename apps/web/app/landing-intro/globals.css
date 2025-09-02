@@ -29,3 +29,23 @@
   --li-border: rgba(255, 255, 255, 0.12);
   --li-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
+
+/* Hero info choices visibility control (global, not CSS Modules) */
+.SYNTHOMAREADER.typing button.choice-link,
+.SYNTHOMAREADER:not(.choices-shown) button.choice-link {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.SYNTHOMAREADER.choices-shown button.choice-link {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Hide empty choice artifacts completely */
+.SYNTHOMAREADER button.choice-link.choice-empty {
+  display: none !important;
+}

@@ -17,6 +17,14 @@ function prefersReducedMotion(): boolean {
   try { return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
 }
 
+function setDataAttr(el: Element, key: string, value: string) {
+  try { el.setAttribute(`data-${key}`, value); } catch {}
+}
+
+function getDataAttr(el: Element, key: string): string | null {
+  try { return el.getAttribute(`data-${key}`); } catch { return null; }
+}
+
 export function attachGlitchHeading(
   root: HTMLElement,
   originalText?: string,
@@ -34,16 +42,13 @@ export function attachGlitchHeading(
   const container = (root.querySelector('.glitch-real') as HTMLElement) || root;
   const charSpans = Array.from(container.querySelectorAll('.glitch-char')) as HTMLElement[];
   const baseText = (originalText ?? (charSpans.length ? charSpans.map(s => s.textContent || '').join('') : container.textContent ?? '')).toString();
-  try {
-    (container as any).dataset.originalText = baseText;
-    container.setAttribute('data-original-text', baseText);
-  } catch {}
+  try { setDataAttr(container, 'original-text', baseText); } catch {}
 
   // Cache per-span original glyph
   if (charSpans.length) {
     for (const s of charSpans) {
       const t = (s.textContent ?? '');
-      try { (s as any).dataset.orig = t; s.setAttribute('data-orig', t); } catch {}
+      try { setDataAttr(s, 'orig', t); } catch {}
     }
   }
 
@@ -54,7 +59,7 @@ export function attachGlitchHeading(
   function glitchSpan(s: HTMLElement) {
     // Skip if already in transient glitch (marked via class)
     if (s.classList.contains('glitchy')) return;
-    const orig = (s as any).dataset?.orig ?? s.getAttribute('data-orig') ?? (s.textContent ?? '');
+    const orig = getDataAttr(s, 'orig') ?? (s.textContent ?? '');
     const ch = chars[Math.floor(Math.random() * chars.length)] || orig;
     s.textContent = ch;
     s.classList.add('glitchy');
@@ -115,13 +120,12 @@ export function attachGlitchHeading(
     try {
       if (charSpans.length) {
         for (const s of charSpans) {
-          const orig = (s as any).dataset?.orig ?? s.getAttribute('data-orig') ?? (s.textContent ?? '');
+          const orig = getDataAttr(s, 'orig') ?? (s.textContent ?? '');
           s.textContent = String(orig);
           s.classList.remove('glitchy');
         }
       } else {
-        const ds = (container as any).dataset as DOMStringMap | undefined;
-        const orig = (ds && (ds as any).originalText) || container.getAttribute('data-original-text') || baseText;
+        const orig = getDataAttr(container, 'original-text') || baseText;
         container.textContent = String(orig);
       }
     } catch {}

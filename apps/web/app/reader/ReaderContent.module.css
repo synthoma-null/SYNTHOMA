@@ -7,6 +7,34 @@
   margin-top: 0.75rem;
 }
 
+/* Recommended track modal (replaces inline styles) */
+.recModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.recModalPanel {
+  max-width: 520px;
+  width: 92%;
+  padding: 1rem;
+}
+
+.recModalTitle {
+  margin-top: 0;
+}
+
+.recModalActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
 .progressFill {
   height: 100%;
   width: var(--progress-width, 0%);
@@ -15,4 +43,313 @@
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
+}
+
+.readerContainer {
+  min-height: 100vh;
+  color: white;
+  padding: 1rem;
+  position: relative; /* layout padding only */
+}
+
+/* Background overlay is now attached ONLY to the reader element (.SYNTHOMAREADER) within our scoped readerMain */
+.readerMain:global(.SYNTHOMAREADER) {
+  position: relative; /* containing block for ::before */
+  /* Fallback solid overlay directly on the element (in case ::before is not applied) */
+  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Background layer driven by CSS variables inherited from container
+   --bg-image: url(...) | none
+   --bg-color: any css color (default black)
+   --bg-opacity: 0..1
+   --bg-blur: e.g. blur(8px) | none */
+.readerMain:global(.SYNTHOMAREADER)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Prefer explicit RGBA using --bg-opacity for reliable support */
+  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
+  background-image: var(--bg-image, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: var(--app-bg-blur, var(--bg-blur, none));
+  pointer-events: none;
+}
+
+/* Ensure content sits above the overlay */
+.readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content),
+.readerMain:global(.SYNTHOMAREADER) > :global(.reader-host),
+.readerMain:global(.SYNTHOMAREADER) * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Paint black backdrop directly under text as a safety net (non-glass mode) */
+.readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content) {
+  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
+}
+
+/* In glass mode, clear the direct backdrop so blur rules apply visually */
+.readerMain:global(.SYNTHOMAREADER.glass) > :global(.chapter-content) {
+  background-color: transparent;
+}
+
+/* In glass mode, make base background transparent (blur is handled separately) */
+.readerMain:global(.SYNTHOMAREADER.glass) {
+  background-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .readerContainer {
+    padding: 2rem;
+  }
+}
+
+/* removed .readerBackground – background and opacity are managed by .SYNTHOMAREADER */
+
+.readerContent {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  position: relative;
+  z-index: 1; /* render above bg layer */
+}
+
+/* Generic background host for reader variants that don't use TypewriterReader */
+.bgHost {
+  position: relative;
+  min-height: 100vh;
+  /* Use the same variable names as containerStyle in ReaderContent.tsx */
+  background-image: var(--bg-image, none);
+  /* Solid base overlay driven by opacity var (color is unified as black for readability) */
+  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: var(--bg-blur, none);
+}
+
+.readerHeader {
+  background-color: #262626;
+  padding: 1rem;
+  border-bottom: 1px solid #404040;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.readerTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.readerHelpButton {
+  color: #9ca3af;
+  transition: color 0.15s ease-in-out;
+}
+
+.readerHelpButton:hover {
+  color: #ffffff;
+}
+
+.readerMain {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .readerMain {
+    padding: 2rem;
+  }
+}
+
+.readerFooter {
+  background-color: #262626;
+  padding: 1rem;
+  border-top: 1px solid #404040;
+  font-size: 0.875rem;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.errorMessage {
+  padding: 2rem;
+  text-align: center;
+  color: #ef4444;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.helpModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.helpModal {
+  background-color: #262626;
+  border-radius: 0.5rem;
+  max-width: 42rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.helpModalContent {
+  padding: 1.5rem;
+}
+
+.helpModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.helpModalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.helpModalCloseButton {
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.helpModalCloseButton:hover {
+  color: #ffffff;
+}
+
+.helpModalSection {
+  margin-bottom: 1rem;
+}
+
+.helpModalSectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.helpModalList {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.helpModalListItem {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.helpModalKey {
+  background-color: #404040;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+  margin-right: 0.5rem;
+}
+
+.helpModalFooter {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #404040;
+}
+
+.helpModalButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.helpModalButton:hover {
+  background-color: #1d4ed8;
+}
+
+/* Global styles for injected chapter content (scoped under local .readerMain) */
+.readerMain :global(p.choice) {
+  cursor: pointer;
+  margin: 0.5rem auto;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(64, 64, 64, 0.35);
+  transition: background-color 0.15s ease-in-out, transform 0.08s ease-in-out;
+  max-width: 720px;
+}
+
+.readerMain :global(p.choice:hover) {
+  background-color: rgba(82, 82, 82, 0.6);
+}
+
+.readerMain :global(p.choice.selected) {
+  background-color: rgba(37, 99, 235, 0.35);
+  outline: 2px solid rgba(37, 99, 235, 0.6);
+}
+
+.readerMain :global(p.choice.disabled) {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.readerMain :global(.choice-link) {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 0.5rem auto;
+  text-align: left;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(64, 64, 64, 0.35);
+  color: inherit;
+  border: none;
+}
+
+.readerMain :global(.choice-link:hover) {
+  background-color: rgba(82, 82, 82, 0.6);
+}
+
+/* Hide choices during typing to avoid "ghost" buttons appearing early */
+.readerMain :global(.SYNTHOMAREADER.typing .choice-link),
+.readerMain :global(.SYNTHOMAREADER.typing .choice),
+.readerMain :global(.SYNTHOMAREADER:not(.choices-shown) .choice-link),
+.readerMain :global(.SYNTHOMAREADER:not(.choices-shown) .choice) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* When choices are shown, ensure they are visible and interactive */
+.readerMain :global(.SYNTHOMAREADER.choices-shown .choice-link),
+.readerMain :global(.SYNTHOMAREADER.choices-shown .choice) {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }

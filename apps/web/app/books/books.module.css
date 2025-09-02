@@ -1,0 +1,81 @@
+.cardButton {
+  display: block;
+  text-align: left;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.bookCard {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #334155;
+}
+.bookCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.coverThumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.coverHero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.noCover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.coverImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.sectionTitleSpacing {
+  margin-top: 0.75rem;
+}
+
+.cardBody {
+  padding: 1.25rem;
+}
+
+.sectionTitleReset {
+  margin: 0;
+}
+
+.fullWidthSection {
+  grid-column: 1 / -1;
+}
+
+/* spacing helper for inline badges */
+.badgeSpace {
+  margin-left: 0.5rem;
+}

@@ -45,21 +45,7 @@ body::-webkit-scrollbar,
   margin: 0.75rem 0;
 }
 
-/* Panel: pevná typografie, aby ho globální změny velikosti písma neustřelily */
-.reader-controls,
-#control-panel.control-panel {
-  font-size: 14px; /* fixní základna pro panel */
-}
-#control-panel .btn,
-#control-panel .panel-button,
-#control-panel .theme-button,
-.reader-controls button,
-#control-panel label,
-#control-panel input,
-#control-panel .progress,
-#control-panel .audio-buttons {
-  font-size: 1em; /* drž se fixní základny panelu */
-}
+/* Panel typografie přesunuta do components.css (#control-panel base) */
 
 .reader-controls::before {
   content: '';
@@ -230,7 +216,7 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   width: 100%;
   max-width: 900px;
   border-radius: 15px;
-  border: none;
+  border: 1px solid var(--border-secondary);
   /* Center the reader and keep reasonable vertical spacing */
   margin-left: auto;
   margin-right: auto;
@@ -244,7 +230,12 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   overflow: visible;
   min-height: 200px;
   opacity: 1;
-  background-color: rgba(var(--bg-secondary-rgb), var(--reader-bg-opacity, 0.75));
+  /* Transparent background with subtle neon border glow */
+  background: transparent;
+  /* Neon glow řízený kontrolním panelem přes CSS proměnné */
+  --reader-glow-radius: var(--reader-glow-radius, 10px);
+  --reader-glow-alpha: var(--reader-glow-alpha, 35%);
+  box-shadow: 0 0 var(--reader-glow-radius) color-mix(in oklab, var(--glow-secondary) var(--reader-glow-alpha), transparent);
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   -webkit-user-select: none; -moz-user-select: none; user-select: none;
   --use-components-styles: true;
@@ -753,4 +744,29 @@ a.chapter-link:focus-visible {
 .reader-controls button {
   will-change: transform, opacity;
 }
+
+/* ===== Utilities for reader components (avoid inline styles) ===== */
+/* Screen reader only (visually hidden) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Full overlay center helper inside chapter-content */
+.chapter-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chapter-overlay.loading { color: var(--text-primary); }
+.chapter-overlay.warning { color: var(--accent-warning, #ffb300); }
 

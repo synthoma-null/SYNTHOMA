@@ -15,3 +15,4 @@ fi
 # uklid neplatné npm config (to tvoje http-proxy)
 npm config delete http-proxy || true
 npm config delete https-proxy || true
+npm config list -l | grep -i proxy || true

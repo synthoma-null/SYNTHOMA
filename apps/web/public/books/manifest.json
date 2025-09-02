@@ -2,12 +2,14 @@
   "collections": [
     {
       "slug": "SYNTHOMA-NULL",
-      "title": "SYNTHOMA: NULL-1",
+      "title": "SYNTHOMA-NULL",
+      "cover": "/books/SYNTHOMA-NULL/SYNTHOMA_cover.png",
       "chapters": [
         {
           "title": "0 - ∞ [RESTART]",
           "path": "/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
-          "free": true
+          "free": true,
+          "track": "/audio/SYNTHOMA1.mp3"
         },
         {
           "title": "0 - 0 [NULL]",
@@ -17,12 +19,14 @@
         {
           "title": "0 - 1 [START]",
           "path": "/books/SYNTHOMA-NULL/0-1 [START].html",
-          "free": true
+          "free": true,
+          "track": "/audio/SynthBachmoff.mp3"
         },
         {
           "title": "0 - 2 [RUN]",
           "path": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
-          "free": true
+          "free": true,
+          "track": "/audio/Nuova.mp3"
         },
         {
           "title": "0 - 3 [DISCONTINUUM]",

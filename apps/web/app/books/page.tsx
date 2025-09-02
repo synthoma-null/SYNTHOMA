@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import Link from "next/link";
+import styles from "./books.module.css";
 
 interface Chapter {
   title: string;
@@ -12,6 +13,7 @@ interface Chapter {
 interface Collection {
   slug: string;
   title: string;
+  cover?: string; // optional cover image path from manifest.json
   chapters: Chapter[];
 }
 interface Manifest { collections: Collection[] }
@@ -20,6 +22,8 @@ export default function BooksPage() {
   const TITLE = "K N I H O V N A";
   const [data, setData] = useState<Manifest>({ collections: [] });
   const [err, setErr] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Collection | null>(null);
+  const [progress, setProgress] = useState<Record<string, { path: string; percent: number; updatedAt: number }>>({});
   const bgVideoRef = useRef<HTMLVideoElement | null>(null);
   const pixelCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -29,6 +33,25 @@ export default function BooksPage() {
     // Ensure global background audio keeps playing on pages without assigned music
     try { (window as any).audioPanelEnsurePlaying?.(); } catch {}
   }, []);
+
+  // Load reading progress for all known collections from localStorage
+  useEffect(() => {
+    try {
+      const map: Record<string, { path: string; percent: number; updatedAt: number }> = {};
+      for (const col of data.collections || []) {
+        try {
+          const raw = localStorage.getItem(`readingProgress:${col.slug}`);
+          if (raw) {
+            const p = JSON.parse(raw);
+            if (p && typeof p.path === 'string') {
+              map[col.slug] = { path: p.path, percent: Number(p.percent) || 0, updatedAt: Number(p.updatedAt) || 0 };
+            }
+          }
+        } catch {}
+      }
+      setProgress(map);
+    } catch {}
+  }, [data.collections]);
 
   useEffect(() => {
     const prefersReduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -171,37 +194,103 @@ export default function BooksPage() {
           <span className="sr-only">{TITLE}</span>
         </h1>
 
-        {err && <p className="library-error">Manifest selhal: {err}</p>}
+        {err && (
+          <article className="panel glass">
+            <p className="library-error">Manifest selhal: {err}</p>
+          </article>
+        )}
 
         {!data.collections.length ? (
-          <p className="library-empty">Prázdnota. Přidej kapitoly ať máme co žrát. 📚</p>
+          <article className="panel glass">
+            <p className="library-empty">Knihovna se načítá...</p>
+          </article>
         ) : (
-          <div className="lib-grid">
-            {data.collections.map((col, idx) => (
-              <section key={idx} className="lib-section">
-                <h2 className="lib-section-title">{col.title}</h2>
-                <ul className="lib-list">
-                  {col.chapters?.map((ch, cidx) => (
-                    <li key={cidx}>
-                      <Link
-                        className="lib-link"
-                        href={`/reader?u=${encodeURIComponent(ch.path)}`}
-                        data-echo={ch.title}
-                      >
-                        {ch.title} {!ch.free ? <span className="lib-badge">Nedostupné</span> : null}
-                      </Link>
-                    </li>
+          <>
+            {!selected ? (
+              <article className="panel glass">
+                <div className="lib-grid">
+                  {data.collections.map((col, idx) => (
+                    <article key={idx} className="lib-section">
+                      <div className={styles.bookCard}>
+                        <button
+                          className={`lib-link ${styles.cardButton}`}
+                          onClick={() => setSelected(col)}
+                          aria-label={`Otevřít kolekci ${col.title}`}
+                        >
+                          <div className={`lib-cover ${styles.coverThumb} ${!col.cover ? styles.noCover : ''}`} aria-hidden>
+                            {col.cover ? (
+                              <img className={styles.coverImg} src={col.cover} alt="" />
+                            ) : null}
+                          </div>
+                          <div className={styles.cardBody}>
+                            <h2 className={`lib-section-title ${styles.sectionTitleReset}`}>{col.title}</h2>
+                            {progress[col.slug] ? (
+                              <p className="lib-note" aria-live="polite">
+                                Pokračovat: {(() => {
+                                  const p = progress[col.slug];
+                                  if (!p) return 'Poslední kapitola';
+                                  const ch = col.chapters?.find(c => c.path === p.path);
+                                  return ch ? ch.title : 'Poslední kapitola';
+                                })()} ({Math.max(0, Math.min(100, Math.round(progress[col.slug]?.percent ?? 0)))}%)
+                              </p>
+                            ) : null}
+                          </div>
+                        </button>
+                      </div>
+                    </article>
                   ))}
-                </ul>
-              </section>
-            ))}
-          </div>
+                </div>
+              </article>
+            ) : (
+              <article className="panel glass">
+                <div className="lib-grid">
+                  <section className={`lib-section ${styles.fullWidthSection}`}>
+                    <div className={`lib-cover ${styles.coverHero} ${!selected.cover ? styles.noCover : ''}`} aria-hidden>
+                      {selected.cover ? (
+                        <img className={styles.coverImg} src={selected.cover} alt="" />
+                      ) : null}
+                    </div>
+                    <div className={`lib-section-title ${styles.sectionHeader}`}>
+                      <h2 className={styles.sectionTitleReset}>{selected.title}</h2>
+                      <div className="hero-cta">
+                        {progress[selected.slug] ? (
+                          <Link className="btn btn-lg" href={`/reader?u=${encodeURIComponent(progress[selected.slug]!.path)}`} aria-label="Pokračovat ve čtení">
+                            ▶ Pokračovat ({Math.max(0, Math.min(100, Math.round(progress[selected.slug]?.percent ?? 0)))}%)
+                          </Link>
+                        ) : null}
+                        <button className="btn btn-lg" onClick={() => setSelected(null)} aria-label="Zpět na seznam knih">⟵ Zpět</button>
+                      </div>
+                    </div>
+                    <ul className="lib-list">
+                      {selected.chapters?.map((ch, cidx) => (
+                        <li key={cidx}>
+                          <Link
+                            className="lib-link"
+                            href={`/reader?u=${encodeURIComponent(ch.path)}`}
+                            data-echo={ch.title}
+                          >
+                            {ch.title}
+                            {progress[selected.slug]?.path === ch.path ? (
+                              <span className={`lib-badge ${styles.badgeSpace}`}>Pokračovat {Math.max(0, Math.min(100, Math.round(progress[selected.slug]!.percent)))}%</span>
+                            ) : null}
+                            {!ch.free ? <span className={`lib-badge ${styles.badgeSpace}`}>Nedostupné</span> : null}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
+              </article>
+            )}
+          </>
         )}
-        <section className="story-block" aria-label="Navigace zpět">
-          <div className="hero-cta">
-            <Link className="btn btn-lg" href="/">⟵ Hlavní stránka</Link>
-          </div>
-        </section>
+        <article className="panel glass" aria-label="Navigace zpět">
+          <section className="story-block">
+            <div className="hero-cta">
+              <Link className="btn btn-lg" href="/">⟵ Hlavní stránka</Link>
+            </div>
+          </section>
+        </article>
       </div>
     </div>
   );
