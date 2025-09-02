@@ -89,4 +89,161 @@ npm run lint
 - Citlivé údaje dávejte do `.env` (nenahrávat do Gitu). Můžete vytvořit `apps/web/.env` a v Vercelu je nastavit v Project -> Settings -> Environment Variables.
 
 ---
+
+# Uživatelský manuál: SYNTHOMA
+
+Ano, i tvoje babička to přečte. A když ne, glitch efekt ji hypnotizuje, takže to bude aspoň vypadat kouzelně. ☠️
+
+## 1) Jak aplikaci používat
+
+- **Spuštění lokálně**: `cd apps/web && npm run dev` → http://localhost:3000
+- **Hlavní navigace**:
+  - `/` – domovská stránka
+  - `/books` – knihovna kolekcí/knížek
+  - `/reader?u=/books/<kolekce>/<kapitola>.html` – čtečka konkrétní kapitoly
+  - `/autor` – prezentační stránka autora se sjednoceným glitch nadpisem a ukázkou čtečky
+  - `/archive` – interaktivní archiv s kartami
+
+- **Klávesové zkratky (čtečka)**:
+  - `?` nebo `Shift+/` – otevřít/zavřít nápovědu
+  - `Esc` – zavřít nápovědu
+  - Průběh čtení se průběžně ukládá (per kolekce) podle scrollu.
+
+## 2) Struktura obsahu
+
+- Kapitoly jsou statické HTML soubory pod `apps/web/public/books/<kolekce>/...`. Příklad cesty:
+  - `/public/books/SYNTHOMA-NULL/0-∞ [RESTART].html`
+- Manifest knih pod `/public/books/manifest.json` definuje kolekce, názvy kapitol a volitelná metadata (např. vybraná hudba pro kapitolu).
+
+### 2.1) Manifest – přehled
+
+- Umístění: `apps/web/public/books/manifest.json`
+- Struktura (zjednodušeně):
+
+```jsonc
+{
+  "collections": [
+    {
+      "slug": "SYNTHOMA-NULL",
+      "title": "SYNTHOMA NULL",
+      "cover": "/covers/synthoma-null.jpg",
+      "chapters": [
+        { "title": "0-∞ [RESTART]", "path": "/books/SYNTHOMA-NULL/0-∞ [RESTART].html", "free": true, "track": "/audio/intro.mp3" }
+      ]
+    }
+  ]
+}
+```
+
+- `track` je volitelné a použije se k doporučení hudby při otevření kapitoly.
+
+## 3) Jak psát kapitoly (HTML)
+
+Základní pravidla: žádné inline styly, používej sjednocené CSS utility a semantické třídy. Čtečka `TypewriterReader` obsah vykreslí tak, jak ho napíšeš.
+
+### 3.1) Doporučená kostra kapitoly
+
+```html
+<article class="story-content">
+  <h2 class="title">Název kapitoly</h2>
+
+  <p class="text">Úvodní odstavec, který neslibuje nic, co bys pak musel splnit.</p>
+
+  <p class="dialog">
+    <strong>AI:</strong> Jsem jen šepot v kabeláži.
+  </p>
+
+  <p class="log">LOG: Systémová anomálie zaznamenána.</p>
+
+  <p class="warning">Pozor, tady to začíná být křupavé.</p>
+
+  <hr class="divider" />
+
+  <p class="text">Pokračování…</p>
+</article>
+```
+
+Tipy:
+- Používej semantiku (`h2.title`, odstavce `p.text`, dialogy `p.dialog`, záznamy `p.log`, varování `p.warning`).
+- Vyhni se inline `style=...` – layout v čtečce je sjednocený a ladí s motivem.
+- Dekorativní levé proužky a heading offsety jsou už opravené v `.SYNTHOMAREADER` – nekompenzuj je vlastním CSS.
+
+## 4) Sjednocený layout a nadpisy (stránky)
+
+Na stránkách s titulkem (Autor, Knihovna, Archiv, Reader) používáme jednotný glitch nadpis:
+
+```tsx
+<section className="story-block" data-theme="synthoma">
+  <h1 id="glitch-XYZ" className="glitch-master title" ref={glitchRootRef as any} aria-label={TITLE}>
+    <span className="glitch-fake1">{TITLE}</span>
+    <span className="glitch-fake2">{TITLE}</span>
+    <span className="glitch-real" aria-hidden="true">
+      {TITLE.split("").map((ch, idx) => (
+        <span key={idx} className="glitch-char">{ch}</span>
+      ))}
+    </span>
+    <span className="sr-only">{TITLE}</span>
+  </h1>
+}</section>
+```
+
+- Nadpis je vždy ve `section.story-block` uvnitř `main.story`.
+- Glitch animace: `attachGlitchHeading(...)` (respektuje `prefers-reduced-motion`).
+
+## 5) Čtečka – pozadí, průhlednost, blur
+
+Čtečka běží v komponentě `TypewriterReader`. Styling pozadí ovládej přes utility třídy (žádné inline styly):
+
+- Průhlednost overlay: `readerOverlay-10 | 20 | 35 | 50 | 65`
+- Rozostření overlay: `readerOverlay-blur | readerOverlay-blur-xs | readerOverlay-blur-sm | readerOverlay-blur-lg`
+- Vypnutí background image: `readerOverlay-none`
+
+Použití na komponentě:
+
+```tsx
+<TypewriterReader
+  id="hero-info"
+  srcUrl={"/books/SYNTHOMA-NULL/0-∞ [RESTART].html"}
+  className="readerOverlay-35 readerOverlay-blur"
+  ariaLabel="Čtečka"
+  autoStart
+/>
+```
+
+## 6) Stylový slovník (výběr)
+
+- `title` – nadpis kapitoly uvnitř obsahu
+- `text` – základní odstavec
+- `dialog` – dialogová replika
+- `log` – systémový záznam
+- `warning` – upozornění
+- `divider` – horizontální oddělovač
+- `panel glass` – skleněný panel (Cards, upozornění v knihovně)
+- `btn btn-lg` – velká akční tlačítka (např. CTA)
+- `story` / `story-block` – sjednocená stránková mřížka, do které pasuje glitch nadpis i čtečka
+
+Pozn.: Vše je skopované tak, aby se uvnitř čtečky (`.SYNTHOMAREADER`) nescházela nechtěná odsazení a pseudo-prvky seděly vlevo.
+
+## 7) Hudba a doporučení skladeb
+
+- Pokud kapitola v manifestu obsahuje `track`, čtečka může zobrazit dialog s doporučením přehrát skladbu.
+- Respektujeme blokace autoplay (LocalStorage `audioAutoplayBlocked`).
+
+## 8) Přístupnost a použitelnost
+
+- Klávesové zkratky viz výše.
+- Fokus se v archivních kartách drží uvnitř otevřené karty (focus trap).
+- Živé oblasti a aria-labely jsou u čtečky zachované.
+
+## 9) Lint/Build/Deploy (rychlá rekapitulace)
+
+```bash
+cd apps/web
+npm run lint
+npm run build && npm start
+```
+
+Deploy: Vercel, root `apps/web`, doména viz výše.
+
+---
 Autor: Synthoma

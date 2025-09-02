@@ -52,59 +52,14 @@
   position: relative; /* layout padding only */
 }
 
-/* Background overlay is now attached ONLY to the reader element (.SYNTHOMAREADER) within our scoped readerMain */
-.readerMain:global(.SYNTHOMAREADER) {
-  position: relative; /* containing block for ::before */
-  /* Fallback solid overlay directly on the element (in case ::before is not applied) */
-  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
-  display: block;
-  width: 100%;
-  min-height: 100vh;
-}
-
-/* Background layer driven by CSS variables inherited from container
-   --bg-image: url(...) | none
-   --bg-color: any css color (default black)
-   --bg-opacity: 0..1
-   --bg-blur: e.g. blur(8px) | none */
-.readerMain:global(.SYNTHOMAREADER)::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  /* Prefer explicit RGBA using --bg-opacity for reliable support */
-  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
-  background-image: var(--bg-image, none);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  filter: var(--app-bg-blur, var(--bg-blur, none));
-  pointer-events: none;
-}
-
-/* Ensure content sits above the overlay */
+/* Let global reader.css handle .SYNTHOMAREADER overlay and backgrounds.
+   No local background painting here to avoid double overlays. */
+/* Ensure content sits above any global ::before overlay */
 .readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content),
 .readerMain:global(.SYNTHOMAREADER) > :global(.reader-host),
 .readerMain:global(.SYNTHOMAREADER) * {
   position: relative;
   z-index: 1;
-}
-
-/* Paint black backdrop directly under text as a safety net (non-glass mode) */
-.readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content) {
-  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
-}
-
-/* In glass mode, clear the direct backdrop so blur rules apply visually */
-.readerMain:global(.SYNTHOMAREADER.glass) > :global(.chapter-content) {
-  background-color: transparent;
-}
-
-/* In glass mode, let global reader.css provide the glass background + backdrop-filter.
-   Disable the local ::before overlay so it doesn't block the blur. */
-.readerMain:global(.SYNTHOMAREADER.glass)::before {
-  content: none !important;
-  background: none !important;
 }
 
 @media (min-width: 768px) {
