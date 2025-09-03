@@ -213,10 +213,14 @@ export default function LandingIntroPage() {
                 for (const node of nodes) {
                   processNode(node);
                 }
-                container.querySelectorAll('button.choice-link').forEach((btn) => {
-                  const t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
-                  if (!t) btn.classList.add('choice-empty');
-                });
+                if (count >= totalChars) {
+                  container.querySelectorAll('button.choice-link').forEach((btn) => {
+                    const t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+                    if (!t) btn.classList.add('choice-empty');
+                  });
+                } else {
+                  container.querySelectorAll('button.choice-link').forEach((btn) => btn.remove());
+                }
                 return container.innerHTML;
               } catch { return srcHtml; }
             };
