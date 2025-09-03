@@ -15,6 +15,11 @@
     border: 1px solid var(--border-tertiary);
   }
 
+/* Fine-tune per heading level without wrapping */
+h2.title { --title-size: clamp(1.35rem, 5.2vw, 2.8rem); }
+h3.title { --title-size: clamp(1.2rem, 4.6vw, 2.3rem); }
+
+
   /* Retro Arcade: pixelated background video */
   body[data-theme="retro-arcade"] .video-background video {
     /* Keep same sizing as other themes */
@@ -349,6 +354,13 @@
     margin: 0 .1rem;
     padding: .5rem 1rem .5rem .5rem;
     z-index: 10;
+    /* Keep titles on a single line and scale to fit viewport */
+    display: block;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: visible; /* allow glow/shadows */
+    text-overflow: clip;
+    font-size: var(--title-size, clamp(1.2rem, 4.8vw, 2.4rem));
   }
   
   h4, h5, h6 {
@@ -407,20 +419,20 @@
     background: rgb(0, 255, 255, 0);
     box-shadow: -1px 0 4px 0px #0ff, 1px 0 8px 0px #ff00ff, 0px 0 12px 0px #faff00;
     animation: border-glow 2.6s infinite cubic-bezier(.8,0,.23,1.1);
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.6;
 }
 
-  .glitch-master {
-    color: var(--text-primary);
-    text-shadow: 0 0 6px var(--glow-secondary), 0 0 14px var(--glow-primary);
-    letter-spacing: .03em;
-  }
-
-  /* Do not wrap glitch headings on archive and library pages */
-  #glitch-archive,
-  #glitch-library {
+/* Lit state: filled + bright glow */
+.fx-outline.is-lit {
+color: var(--text-primary);
+/* Fallback first */
+-webkit-text-stroke: 0.5px currentColor;
+/* Then modern mix for richer look */
+-webkit-text-stroke: 0.5px color-mix(in oklab, var(--text-primary) 55%, transparent);
+text-shadow:
+0 0 6px var(--glow-primary),
+0 0 12px var(--glow-primary),
+0 0 18px var(--glow-secondary);
+opacity: 1;
     white-space: nowrap;
     overflow: visible; /* allow glow/char jitter */
     display: inline-block;
