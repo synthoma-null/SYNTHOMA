@@ -256,28 +256,20 @@
 
 /* Global styles for injected chapter content (scoped under local .readerMain) */
 .readerMain :global(p.choice) {
-  cursor: pointer;
+  cursor: default; /* wrapper itself no longer interactive; button handles it */
   margin: 0.5rem auto;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  background-color: rgba(64, 64, 64, 0.35);
-  transition: background-color 0.15s ease-in-out, transform 0.08s ease-in-out;
+  padding: 0; /* prevent double padding with inner button */
+  border-radius: 0; /* handled by button */
+  background-color: transparent; /* avoid visual conflict with button */
+  transition: none;
   max-width: 720px;
 }
 
-.readerMain :global(p.choice:hover) {
-  background-color: rgba(82, 82, 82, 0.6);
-}
+.readerMain :global(p.choice:hover) { background-color: transparent; }
 
-.readerMain :global(p.choice.selected) {
-  background-color: rgba(37, 99, 235, 0.35);
-  outline: 2px solid rgba(37, 99, 235, 0.6);
-}
+.readerMain :global(p.choice.selected) { background-color: transparent; outline: none; }
 
-.readerMain :global(p.choice.disabled) {
-  opacity: 0.6;
-  pointer-events: none;
-}
+.readerMain :global(p.choice.disabled) { opacity: 1; pointer-events: none; }
 
 .readerMain :global(.choice-link) {
   display: block;
@@ -288,24 +280,47 @@
   cursor: pointer;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  background-color: rgba(64, 64, 64, 0.35);
+  background-color: rgba(64, 64, 64, 0.25);
   color: inherit;
   border: none;
 }
 
 .readerMain :global(.choice-link:hover) {
-  background-color: rgba(82, 82, 82, 0.6);
+  background-color: rgba(82, 82, 82, 0.45);
 }
 
 /* Selected and disabled states for button choices */
 .readerMain :global(.choice-link.selected) {
-  background-color: rgba(37, 99, 235, 0.35);
-  outline: 2px solid rgba(37, 99, 235, 0.6);
+  background-color: #2563eb; /* blue-600 solid */
+  color: #ffffff;
+  outline: 2px solid rgba(37, 99, 235, 0.9);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  font-weight: 600;
+  opacity: 1 !important; /* always override any disabled opacity bleed */
 }
 
 .readerMain :global(.choice-link.disabled) {
-  opacity: 0.6;
+  opacity: 0.35 !important;
   pointer-events: none;
+  transition: none !important; /* avoid flash */
+  background-color: rgba(64, 64, 64, 0.25) !important; /* lock base color */
+  filter: none !important;
+}
+
+/* Ensure hover does not overpower selected/disabled */
+.readerMain :global(.choice-link:hover) {
+  filter: brightness(1.05);
+}
+.readerMain :global(.choice-link.disabled:hover) {
+  filter: none;
+  background-color: rgba(64, 64, 64, 0.25) !important; /* no hover color */
+}
+.readerMain :global(.choice-link.disabled:active) {
+  filter: none !important;
+  background-color: rgba(64, 64, 64, 0.25) !important;
+}
+.readerMain :global(.choice-link.selected:hover) {
+  filter: brightness(1.02);
 }
 
 /* Hide choices during typing to avoid "ghost" buttons appearing early */
@@ -322,4 +337,48 @@
   display: block !important;
   visibility: visible !important;
   pointer-events: auto !important;
+}
+
+/* Glitch header: prevent clipping last character and make effect breathe a bit */
+.readerMain :global(#glitch-reader) {
+  display: inline-block;
+  overflow: visible; /* allow glitch layers to overflow safely */
+  padding-right: 2.5ch; /* more breathing room to prevent clipping the last glyph */
+  margin-right: 0.25ch; /* extra guard for containers playing dirty */
+  letter-spacing: 0.08em; /* looser tracking like GH version */
+  white-space: nowrap; /* match GH style: keep on one line */
+}
+
+/* Extra spacer to mimic GH layout and avoid any edge clipping */
+.readerMain :global(#glitch-reader)::after {
+  content: '';
+  display: inline-block;
+  width: 0.75ch;
+}
+
+.readerMain :global(#glitch-reader .glitch-real),
+.readerMain :global(#glitch-reader .glitch-fake1),
+.readerMain :global(#glitch-reader .glitch-fake2) {
+  will-change: transform, text-shadow;
+}
+
+/* Space out individual characters a touch and ensure they don't collapse at the edge */
+.readerMain :global(#glitch-reader .glitch-real .glitch-char),
+.readerMain :global(#glitch-reader .glitch-fake1 .glitch-char),
+.readerMain :global(#glitch-reader .glitch-fake2 .glitch-char) {
+  display: inline-block;
+  padding-right: 0.05ch;
+}
+
+.readerMain :global(#glitch-reader .glitch-real .glitch-char:last-child),
+.readerMain :global(#glitch-reader .glitch-fake1 .glitch-char:last-child),
+.readerMain :global(#glitch-reader .glitch-fake2 .glitch-char:last-child) {
+  padding-right: 0.4ch; /* nudge last character further from the edge */
+}
+
+@media (max-width: 640px) {
+  .readerMain :global(#glitch-reader) {
+    letter-spacing: 0.06em;
+    padding-right: 1.5ch;
+  }
 }

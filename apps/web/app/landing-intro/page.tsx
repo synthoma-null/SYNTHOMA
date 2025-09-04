@@ -11,6 +11,8 @@ import styles from "./styles.module.css";
 const TITLE = "SYNTHOMA";
 const MANIFEST = "Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.";
 const BTN_LABEL = "Pokračovat";
+// Re-enabled: follow-up typewriter (watchdogs + click-to-complete keep it safe)
+const enableFollowupTypewriter = true;
 
 export default function LandingIntroPage() {
   const router = useRouter();
@@ -62,6 +64,15 @@ export default function LandingIntroPage() {
         p.innerHTML = '';
         p.appendChild(btn);
       });
+      // Mark containers that hold multiple sibling choices so we can lock only that group later
+      try {
+        const parents = new Set<HTMLElement>();
+        nodes.forEach((p) => { const par = p.parentElement as HTMLElement | null; if (par) parents.add(par); });
+        parents.forEach((par) => {
+          const count = par.querySelectorAll('p.choice').length;
+          if (count > 1) { par.setAttribute('data-choice-group', '1'); par.classList.add('choice-group'); }
+        });
+      } catch {}
       return root.innerHTML;
     } catch { return html; }
   }, []);
@@ -123,8 +134,32 @@ export default function LandingIntroPage() {
       if (a) {
         const href = a.getAttribute('href') || '';
         if (href) {
+          // Respect local lock: ignore if aria-disabled=true
+          if (a.getAttribute('aria-disabled') === 'true' || a.closest('.choices-locked')) { ev.preventDefault(); ev.stopPropagation(); return; }
           ev.preventDefault(); ev.stopPropagation();
           if (infoIsTyping) { try { setInfoIsTyping(false); setInfoTypedCount(infoTotalLen); } catch {} }
+          // Mirror button behavior: mark chosen/faded and lock only the local group
+          try {
+            const hostEl = document.getElementById('hero-info') as HTMLElement | null;
+            let group = (a.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null);
+            if (!group) {
+              let cur: HTMLElement | null = a.parentElement as HTMLElement | null;
+              while (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length < 2) {
+                cur = cur.parentElement as HTMLElement | null;
+              }
+              if (cur && cur.querySelectorAll('p.choice').length >= 2) group = cur;
+            }
+            if (!group) group = (a.parentElement as HTMLElement | null) || (a as unknown as HTMLElement);
+            const choiceNodes = Array.from(group.querySelectorAll('button.choice-link, a.choice-link[href]')) as HTMLElement[];
+            choiceNodes.forEach((node) => {
+              const isClicked = node === (a as unknown as HTMLElement);
+              if (isClicked) node.classList.add('chosen'); else node.classList.add('faded');
+              if (node.tagName === 'BUTTON') { (node as HTMLButtonElement).disabled = true; }
+              node.setAttribute('aria-disabled', 'true');
+            });
+            group.classList.add('choices-locked');
+          } catch {}
+          // Navigate
           try {
             if (href.startsWith('/')) { router.push(href); } else { window.location.href = href; }
           } catch {}
@@ -148,33 +183,69 @@ export default function LandingIntroPage() {
         if (section) {
           const hostEl = document.getElementById('hero-info') as HTMLElement | null;
           if (hostEl) {
-            let group: HTMLElement = hostEl;
-            {
-              let node: HTMLElement | null = p.parentElement as HTMLElement | null;
-              while (node && node !== hostEl) {
-                const list = Array.from(node.querySelectorAll('button.choice-link')) as HTMLButtonElement[];
-                if (list.length > 1 && list.includes(p as HTMLButtonElement)) { group = node; break; }
-                node = node.parentElement as HTMLElement | null;
+            // Hard guard 1: prevent starting multiple follow-ups at once if one is already running
+            const activeTW = document.querySelector('.hero-followup-block.tw-running');
+            if (activeTW) { return; }
+            // Hard guard 2: immediate busy flag on host to avoid a race before .tw-running exists
+            if (hostEl.getAttribute('data-followup-busy') === '1') { return; }
+            hostEl.setAttribute('data-followup-busy', '1');
+            // Prefer explicit choice group markers injected during normalization
+            let group = (p.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null);
+            if (!group) {
+              // Walk up until a container that contains at least two p.choice descendants
+              let cur: HTMLElement | null = p.parentElement as HTMLElement | null;
+              while (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length < 2) {
+                cur = cur.parentElement as HTMLElement | null;
               }
+              if (cur && cur.querySelectorAll('p.choice').length >= 2) group = cur;
             }
-            const btns = Array.from(group.querySelectorAll('button.choice-link')) as HTMLButtonElement[];
-            btns.forEach((btn) => {
-              if (btn === p) { btn.classList.add('chosen'); } else { btn.classList.add('faded'); }
-              btn.disabled = true; btn.setAttribute('aria-disabled', 'true');
+            if (!group) group = (p.parentElement as HTMLElement | null) || (p as HTMLElement);
+            // Lock both button and anchor choices within the local group
+            const choiceNodes = Array.from(group.querySelectorAll('button.choice-link, a.choice-link[href]')) as HTMLElement[];
+            choiceNodes.forEach((node) => {
+              const isClicked = node === (p as HTMLElement);
+              if (isClicked) node.classList.add('chosen'); else node.classList.add('faded');
+              if (node.tagName === 'BUTTON') { (node as HTMLButtonElement).disabled = true; }
+              node.setAttribute('aria-disabled', 'true');
             });
+            // Only lock this local group, never the entire host
             group.classList.add('choices-locked');
             let follow = document.getElementById('hero-info-followup');
-            if (!follow) { follow = document.createElement('div'); follow.id = 'hero-info-followup'; hostEl.appendChild(follow); }
+            if (!follow) { 
+              follow = document.createElement('div'); 
+              follow.id = 'hero-info-followup'; 
+              follow.setAttribute('role', 'region');
+              follow.setAttribute('aria-live', 'polite');
+              follow.setAttribute('aria-label', 'Pokračování');
+              hostEl.appendChild(follow); 
+            } else {
+              // ensure ARIA stays applied if element existed
+              follow.setAttribute('role', 'region');
+              follow.setAttribute('aria-live', 'polite');
+              if (!follow.getAttribute('aria-label')) follow.setAttribute('aria-label', 'Pokračování');
+            }
             const normalized = transformChoicesToButtons(section.innerHTML);
+            // Build a text-only version for typing (choices removed entirely)
+            const buildTextOnly = (srcHtml: string): string => {
+              try {
+                const c = document.createElement('div');
+                c.innerHTML = srcHtml;
+                c.querySelectorAll('#story-cache, .hidden').forEach(el => el.remove());
+                // Remove all choice paragraphs entirely so they are not part of typing
+                c.querySelectorAll('p.choice').forEach(el => el.remove());
+                return c.innerHTML;
+              } catch { return srcHtml; }
+            };
+            const textOnlyNormalized = buildTextOnly(normalized);
             const wrapper = document.createElement('div');
             wrapper.className = 'hero-followup-block';
             follow.appendChild(wrapper);
 
             const tmp = document.createElement('div');
-            tmp.innerHTML = normalized;
+            tmp.innerHTML = textOnlyNormalized;
             tmp.querySelectorAll('#story-cache, .hidden').forEach(el => el.remove());
             let plain = (tmp.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!plain) plain = normalized.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            if (!plain) plain = textOnlyNormalized.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
             const totalChars = Math.max(1, plain.length);
             const computeDuration = () => {
@@ -182,10 +253,12 @@ export default function LandingIntroPage() {
               if (mw) {
                 const cs = getComputedStyle(mw);
                 const durVar = cs.getPropertyValue('--typewriter-duration').trim();
-                if (durVar.endsWith('ms')) return Math.min(26000, Math.max(1200, parseFloat(durVar) * Math.min(4, totalChars / 80)));
-                if (durVar.endsWith('s')) return Math.min(26000, Math.max(1200, parseFloat(durVar) * 1000 * Math.min(4, totalChars / 80)));
+                // Faster scaling: lower caps and multiplier
+                if (durVar.endsWith('ms')) return Math.min(16000, Math.max(700, parseFloat(durVar) * Math.min(2.2, totalChars / 120)));
+                if (durVar.endsWith('s')) return Math.min(16000, Math.max(700, parseFloat(durVar) * 1000 * Math.min(2.2, totalChars / 120)));
               }
-              return Math.min(26000, Math.max(1200, totalChars * 28));
+              // Default faster baseline
+              return Math.min(16000, Math.max(700, totalChars * 14));
             };
 
             const renderRevealed = (srcHtml: string, count: number): string => {
@@ -203,7 +276,7 @@ export default function LandingIntroPage() {
                     else { node.nodeValue = text.slice(0, Math.max(0, remaining)); remaining = 0; }
                     return;
                   }
-                  const kids = node.childNodes;
+                  const kids = Array.from(node.childNodes);
                   for (const child of kids) {
                     if (remaining > 0) { processNode(child); continue; }
                     stripNode(child);
@@ -213,28 +286,207 @@ export default function LandingIntroPage() {
                 for (const node of nodes) {
                   processNode(node);
                 }
-                container.querySelectorAll('button.choice-link').forEach((btn) => {
-                  const t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
-                  if (!t) btn.classList.add('choice-empty');
-                });
                 return container.innerHTML;
               } catch { return srcHtml; }
             };
 
+            if (!enableFollowupTypewriter) {
+              try {
+                // Instant render as hotfix
+                wrapper.innerHTML = normalized;
+                // ensure choices are visible and unlocked
+                wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                wrapper.querySelectorAll('.choices, .choice-group, [data-choice-group]')
+                  .forEach(el => el.classList.remove('choices-locked'));
+                wrapper.classList.remove('choices-locked');
+                wrapper.querySelectorAll('.choice-link').forEach((el: Element) => {
+                  (el as HTMLElement).classList.remove('faded');
+                  (el as HTMLElement).removeAttribute('disabled');
+                  (el as HTMLElement).removeAttribute('aria-disabled');
+                });
+                try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                // Focus first interactive element in the new block for a11y
+                const focusable = wrapper.querySelector('button.choice-link, a.choice-link[href]') as HTMLElement | null;
+                if (focusable) { try { focusable.focus(); } catch {} } else { wrapper.setAttribute('tabindex','-1'); try { (wrapper as HTMLElement).focus(); } catch {} }
+              } catch (e) { console.warn('follow-up instant render failed', e); }
+              try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+              return;
+            }
             try {
               let typed = 0;
               const duration = computeDuration();
               const stepMs = Math.max(10, Math.round(duration / totalChars));
               let cancelled = false;
+              // While typing, hide choices to keep strict order: 1) text, 2) choices
+              wrapper.classList.add('tw-running');
+              // Watchdog timings
+              const watchdogMs = Math.min(14000, Math.max(2000, duration + 1500));
+              // Soft watchdog that force-completes if time exceeded
+              const watchdogId = window.setTimeout(() => {
+                if (cancelled) return;
+                try {
+                  typed = totalChars;
+                  wrapper.innerHTML = normalized;
+                  wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                  wrapper.querySelectorAll('.choices, .choice-group, [data-choice-group]').forEach(el => el.classList.remove('choices-locked'));
+                  wrapper.classList.remove('choices-locked');
+                  wrapper.querySelectorAll('.choice-link').forEach((el: Element) => {
+                    (el as HTMLElement).classList.remove('faded');
+                    (el as HTMLElement).removeAttribute('disabled');
+                    (el as HTMLElement).removeAttribute('aria-disabled');
+                  });
+                } catch {}
+                wrapper.classList.remove('tw-running');
+                try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+              }, watchdogMs);
+
+              // No-progress watchdog (heartbeat)
+              let lastTyped = -1;
+              let stagnantMs = 0;
+              const stagnantLimit = Math.min(1600, Math.max(800, Math.round(duration * 0.35)));
+              let lastRenderedLen = -1;
+              let lastHTML: string | null = null;
+              const getRenderedLen = () => { try { return (wrapper.textContent || '').length; } catch { return -1; } };
+              const heartbeat = window.setInterval(() => {
+                if (cancelled) { try { window.clearInterval(heartbeat); } catch {}; return; }
+                const currRendered = getRenderedLen();
+                const currHTML = (() => { try { return wrapper.innerHTML; } catch { return null; } })();
+                const noProgress = (typed === lastTyped && currRendered === lastRenderedLen) || (currHTML !== null && lastHTML !== null && currHTML === lastHTML);
+                if (noProgress) { stagnantMs += 500; } else { lastTyped = typed; lastRenderedLen = currRendered; lastHTML = currHTML; stagnantMs = 0; }
+                if (stagnantMs >= stagnantLimit) {
+                  try {
+                    typed = totalChars;
+                    wrapper.innerHTML = normalized;
+                    wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                    wrapper.querySelectorAll('.choices, .choice-group, [data-choice-group]').forEach(el => el.classList.remove('choices-locked'));
+                    wrapper.classList.remove('choices-locked');
+                    wrapper.querySelectorAll('.choice-link').forEach((el: Element) => {
+                      (el as HTMLElement).classList.remove('faded');
+                      (el as HTMLElement).removeAttribute('disabled');
+                      (el as HTMLElement).removeAttribute('aria-disabled');
+                    });
+                  } catch {}
+                  wrapper.classList.remove('tw-running');
+                  try { window.clearTimeout(watchdogId); } catch {}
+                  try { window.clearInterval(heartbeat); } catch {}
+                  try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                  try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+                }
+              }, 500);
+
+              // Post-completion verifier: if .tw-running is gone but choices are missing, restore full content
+              const verifier = window.setInterval(() => {
+                try {
+                  if (cancelled) { window.clearInterval(verifier); return; }
+                  const running = wrapper.classList.contains('tw-running');
+                  if (!running) {
+                    const hasChoice = !!wrapper.querySelector('button.choice-link, a.choice-link[href]');
+                    if (!hasChoice && /<p\s+class=["']choice["']/.test(normalized)) {
+                      wrapper.innerHTML = normalized;
+                      wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                      wrapper.querySelectorAll('.choices, .choice-group, [data-choice-group]').forEach(el => el.classList.remove('choices-locked'));
+                      wrapper.classList.remove('choices-locked');
+                      wrapper.querySelectorAll('.choice-link').forEach((el: Element) => {
+                        (el as HTMLElement).classList.remove('faded');
+                        (el as HTMLElement).removeAttribute('disabled');
+                        (el as HTMLElement).removeAttribute('aria-disabled');
+                      });
+                      const focusable = wrapper.querySelector('button.choice-link, a.choice-link[href]') as HTMLElement | null;
+                      if (focusable) focusable.focus();
+                      try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                    }
+                    try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+                    window.clearInterval(verifier);
+                  }
+                } catch { try { window.clearInterval(verifier); } catch {} }
+              }, 600);
+
+              // Absolute hard timeout as a final safety net (covers background tabs, throttling, etc.)
+              const absoluteHardTimeout = window.setTimeout(() => {
+                if (cancelled) return;
+                try {
+                  typed = totalChars;
+                  wrapper.innerHTML = normalized;
+                  wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                  wrapper.querySelectorAll('.choices, .choice-group, [data-choice-group]')
+                    .forEach(el => el.classList.remove('choices-locked'));
+                  wrapper.classList.remove('choices-locked');
+                  wrapper.querySelectorAll('.choice-link').forEach((el: Element) => {
+                    (el as HTMLElement).classList.remove('faded');
+                    (el as HTMLElement).removeAttribute('disabled');
+                    (el as HTMLElement).removeAttribute('aria-disabled');
+                  });
+                  wrapper.classList.remove('tw-running');
+                  try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                } catch {}
+                try { window.clearTimeout(watchdogId); } catch {}
+                try { window.clearInterval(heartbeat); } catch {}
+                try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+              }, Math.min(20000, Math.max(5000, duration + 5000)));
+
+              const forceComplete = () => {
+                if (cancelled) return;
+                try {
+                  typed = totalChars;
+                  wrapper.innerHTML = normalized;
+                  wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                  wrapper.classList.remove('tw-running');
+                  wrapper.classList.remove('choices-locked');
+                  try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                } catch {}
+                try { window.clearTimeout(watchdogId); } catch {}
+                try { window.clearInterval(heartbeat); } catch {}
+                try { window.clearInterval(verifier); } catch {}
+                try { window.clearTimeout(absoluteHardTimeout); } catch {}
+                try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+              };
+
               const tick = () => {
                 if (cancelled) return;
-                typed = Math.min(totalChars, typed + 1);
-                wrapper.innerHTML = renderRevealed(normalized, typed);
-                if (typed >= totalChars) return; else window.setTimeout(tick, stepMs);
+                try {
+                  typed = Math.min(totalChars, typed + 1);
+                  // Type only the narrative (without choices)
+                  wrapper.innerHTML = renderRevealed(textOnlyNormalized, typed);
+                } catch (err) {
+                  // If rendering throws, do not stall: force-complete to avoid freeze
+                  try { typed = totalChars; wrapper.innerHTML = normalized; } catch {}
+                } finally {
+                  if (typed >= totalChars) { 
+                    try { window.clearTimeout(watchdogId); } catch {};
+                    try { window.clearInterval(heartbeat); } catch {};
+                    try { window.clearTimeout(absoluteHardTimeout); } catch {};
+                    try { window.clearInterval(verifier); } catch {};
+                    // Swap in full content including choices before finishing
+                    try {
+                      wrapper.innerHTML = normalized;
+                      wrapper.querySelectorAll('button.choice-link.choice-empty').forEach(el => el.classList.remove('choice-empty'));
+                      wrapper.querySelectorAll('.choices, .choice-group, [data-choice-group]')
+                        .forEach(el => el.classList.remove('choices-locked'));
+                      wrapper.classList.remove('choices-locked');
+                      wrapper.querySelectorAll('.choice-link').forEach((el: Element) => {
+                        (el as HTMLElement).classList.remove('faded');
+                        (el as HTMLElement).removeAttribute('disabled');
+                        (el as HTMLElement).removeAttribute('aria-disabled');
+                      });
+                    } catch {}
+                    wrapper.classList.remove('tw-running');
+                    // After completion, move focus to first interactive choice for a11y
+                    try {
+                      const focusable = wrapper.querySelector('button.choice-link, a.choice-link[href]') as HTMLElement | null;
+                      if (focusable) focusable.focus(); else { wrapper.setAttribute('tabindex','-1'); (wrapper as HTMLElement).focus(); }
+                    } catch {}
+                    try { (hostEl as HTMLElement).classList.add('choices-shown'); } catch {}
+                    try { hostEl.removeAttribute('data-followup-busy'); } catch {}
+                    return;
+                  }
+                  window.setTimeout(tick, stepMs);
+                }
               };
-              wrapper.innerHTML = renderRevealed(normalized, 0);
+              // Start with empty narrative, choices are not part of typing
+              wrapper.innerHTML = renderRevealed(textOnlyNormalized, 0);
               window.setTimeout(tick, stepMs);
-              (wrapper as any).__cancelTW = () => { cancelled = true; };
+              (wrapper as any).__cancelTW = () => { cancelled = true; try { window.clearTimeout(watchdogId); } catch {}; try { window.clearInterval(heartbeat); } catch {}; try { window.clearInterval(verifier); } catch {}; };
             } catch {}
           } else {
             setInfoFromHtml(section.innerHTML);
@@ -287,6 +539,42 @@ export default function LandingIntroPage() {
     const t = window.setTimeout(() => setInfoTypedCount((c) => Math.min(c + 1, infoTotalLen)), speed);
     return () => window.clearTimeout(t);
   }, [showHeroInfo, infoIsTyping, infoTypedCount, infoTotalLen]);
+
+  // Watchdog for main info typing: force-complete if progress stalls or exceeds reasonable duration
+  useEffect(() => {
+    if (!showHeroInfo) return;
+    if (!infoIsTyping) return;
+    let cancelled = false;
+    let last = infoTypedCount;
+    let stagnantMs = 0;
+    const baseDur = (() => {
+      try {
+        const mw = document.getElementById('manifest-container');
+        if (mw) {
+          const cs = getComputedStyle(mw);
+          const varv = cs.getPropertyValue('--typewriter-duration').trim();
+          if (varv.endsWith('ms')) return Math.min(26000, Math.max(1200, parseFloat(varv) * Math.min(4, infoTotalLen / 120)));
+          if (varv.endsWith('s')) return Math.min(26000, Math.max(1200, parseFloat(varv) * 1000 * Math.min(4, infoTotalLen / 120)));
+        }
+      } catch {}
+      return Math.min(26000, Math.max(1200, infoTotalLen * 18));
+    })();
+    const hardTimeout = window.setTimeout(() => {
+      if (cancelled) return;
+      try { setInfoTypedCount(infoTotalLen); setInfoIsTyping(false); } catch {}
+    }, Math.min(32000, Math.max(2000, baseDur + 4000)));
+    const heartbeat = window.setInterval(() => {
+      if (cancelled) { try { window.clearInterval(heartbeat); } catch {}; return; }
+      if (infoTypedCount === last) { stagnantMs += 1000; } else { last = infoTypedCount; stagnantMs = 0; }
+      const stagnantLimit = Math.min(12000, Math.max(2500, Math.round(baseDur * 0.6)));
+      if (stagnantMs >= stagnantLimit) {
+        try { setInfoTypedCount(infoTotalLen); setInfoIsTyping(false); } catch {}
+        try { window.clearInterval(heartbeat); } catch {}
+        try { window.clearTimeout(hardTimeout); } catch {}
+      }
+    }, 1000);
+    return () => { cancelled = true; try { window.clearTimeout(hardTimeout); } catch {}; try { window.clearInterval(heartbeat); } catch {}; };
+  }, [showHeroInfo, infoIsTyping, infoTotalLen, infoTypedCount]);
 
   useEffect(() => {
     if (!showHeroInfo) return;
@@ -433,6 +721,8 @@ export default function LandingIntroPage() {
         let container = bodyHost.querySelector('.noising-text') as HTMLElement | null;
         if (!container) { container = document.createElement('span'); container.className = 'noising-text'; bodyHost.appendChild(container); }
         (container.style as any).whiteSpace = 'pre-wrap'; (container.style as any).display = 'block';
+        // Ensure CSS wrapper classes for follow-up typing flow
+        try { bodyHost.classList.add('hero-followup-block'); bodyHost.classList.add('tw-running'); } catch {}
         const computeTotalDuration = () => {
           const mw = document.getElementById('manifest-container');
           if (mw) {
@@ -464,11 +754,11 @@ export default function LandingIntroPage() {
           cancels.push(cancel);
         };
         cancel2 = () => { aborted = true; try { cancels.forEach(c => { if (c) c(); }); } catch {} };
-        try { startLine(0, () => { if (!aborted) scrollTerminalBottom(); }); } catch (err) { console.error('typewriter: body sequence error', err); }
+        try { startLine(0, () => { if (!aborted) { try { bodyHost.classList.remove('tw-running'); } catch {}; scrollTerminalBottom(); } }); } catch (err) { console.error('typewriter: body sequence error', err); }
       }
     });
 
-    return () => { try { if (cancel1) cancel1(); } catch {}; try { if (cancel2) cancel2(); } catch {} };
+    return () => { try { if (cancel1) cancel1(); } catch {}; try { if (cancel2) cancel2(); } catch {}; try { bodyHost?.classList.remove('tw-running'); } catch {} };
   }, [showReader, showReaderDetails]);
 
   useEffect(() => {

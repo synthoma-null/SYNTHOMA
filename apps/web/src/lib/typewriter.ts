@@ -27,43 +27,82 @@ export function runTypewriter(opts: {
   onDone?: () => void;
 }): CancelFn {
   const { text, host, getDurationMs, onStart, onDone } = opts;
-  let cancelled = false;
-  // If host itself is the noising target, use it directly to avoid nested spans.
-  let span: HTMLElement | null = null;
+  // Normalize host/target span
+  let target: HTMLElement | null = null;
   if (host.classList?.contains('noising-text')) {
-    span = host;
-    span.textContent = '';
+    target = host;
   } else {
-    span = host.querySelector('.noising-text') as HTMLElement | null;
-    if (!span) {
-      span = document.createElement('span');
-      span.className = 'noising-text';
-      host.appendChild(span);
-    } else {
-      span.textContent = '';
+    target = host.querySelector('.noising-text') as HTMLElement | null;
+    if (!target) {
+      target = document.createElement('span');
+      target.className = 'noising-text';
+      host.appendChild(target);
     }
   }
-  const duration = Math.max(100, Number(getDurationMs?.() ?? 1200));
+  // Prepare
+  try { target!.textContent = ''; } catch {}
+  let cancelled = false;
+  let timerId: number | null = null;
+  let rafId: number | null = null;
+  const prefersReduced = (() => {
+    try { return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches; } catch { return false; }
+  })();
   const chars = Array.from(text);
-  const total = chars.length || 1;
-  const per = Math.max(8, Math.round(duration / total));
-  let i = 0;
-  onStart && onStart();
-  function tick() {
+  const total = Math.max(1, chars.length);
+  const durationRaw = Number(getDurationMs?.() ?? 1200);
+  const duration = Math.max(80, isFinite(durationRaw) ? durationRaw : 1200);
+  const per = Math.max(6, Math.round(duration / total));
+
+  const cleanup = () => {
+    if (timerId !== null) { try { window.clearTimeout(timerId); } catch {} timerId = null; }
+    if (rafId !== null) { try { window.cancelAnimationFrame(rafId); } catch {} rafId = null; }
+    try { host.classList.remove('tw-running'); } catch {}
+  };
+
+  const finish = () => {
     if (cancelled) return;
-    if (i >= chars.length) {
-      onDone && onDone();
-      return;
+    cleanup();
+    try { onDone && onDone(); } catch {}
+  };
+
+  // Instant render for reduced motion or degenerate cases
+  if (prefersReduced || duration <= 90 || total === 1) {
+    try {
+      for (const ch of chars) {
+        const el = document.createElement('span');
+        el.className = 'tw-char noising-char';
+        el.textContent = String(ch);
+        target!.appendChild(el);
+      }
+    } finally {
+      finish();
     }
-    const ch = chars[i++];
-    const el = document.createElement('span');
-    el.className = 'tw-char noising-char';
-    el.textContent = String(ch);
-    span!.appendChild(el);
-    window.setTimeout(tick, per);
+    return () => { cancelled = true; cleanup(); };
   }
-  tick();
-  return () => { cancelled = true; };
+
+  // Mark running state for CSS coordination
+  try { host.classList.add('tw-running'); } catch {}
+  try { onStart && onStart(); } catch {}
+
+  // Deterministic timer using setTimeout step to avoid rAF throttling on bg tabs
+  let i = 0;
+  const step = () => {
+    if (cancelled) return;
+    if (i >= chars.length) { finish(); return; }
+    try {
+      const el = document.createElement('span');
+      el.className = 'tw-char noising-char';
+      el.textContent = String(chars[i]);
+      target!.appendChild(el);
+    } catch {}
+    i++;
+    timerId = window.setTimeout(step, per) as unknown as number;
+  };
+  // Kick off
+  timerId = window.setTimeout(step, per) as unknown as number;
+
+  // Return cancel fn (safe, idempotent)
+  return () => { cancelled = true; cleanup(); };
 }
 
 function ensureExtraHost(): HTMLElement | null {

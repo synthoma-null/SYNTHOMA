@@ -156,6 +156,42 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
         if (label) announce(`Fokus na volbu: ${label}`);
       });
+      // Pre-lock visuals ASAP to avoid hover/active flash on siblings
+      node.addEventListener('pointerdown', (e: Event) => {
+        try {
+          let sib: Element | null;
+          sib = node.previousElementSibling;
+          while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
+            const sh = sib as HTMLElement;
+            sh.classList.add('disabled');
+            sh.classList.remove('selected');
+            sh.setAttribute?.('aria-disabled', 'true');
+            sh.classList.add('faded');
+            sh.classList.remove('chosen');
+            try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
+            sib = sib.previousElementSibling;
+          }
+          sib = node.nextElementSibling;
+          while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
+            const sh = sib as HTMLElement;
+            sh.classList.add('disabled');
+            sh.classList.remove('selected');
+            sh.setAttribute?.('aria-disabled', 'true');
+            sh.classList.add('faded');
+            sh.classList.remove('chosen');
+            try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
+            sib = sib.nextElementSibling;
+          }
+          node.classList.add('selected');
+          node.classList.remove('disabled');
+          node.setAttribute('aria-pressed', 'true');
+          node.classList.add('chosen');
+          node.classList.remove('faded');
+          try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
+          try { node.parentElement?.classList.add('choices-locked'); } catch {}
+        } catch {}
+      });
+
       node.addEventListener('click', (e: Event) => {
         const href = node.getAttribute('href') || node.getAttribute('data-next') || '';
         // If we have a pending continuation segment, use it instead of navigating
@@ -164,23 +200,37 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           // visual lock of the whole contiguous block of buttons
           try {
             let sib: Element | null;
-            // backward
+            // backward across any contiguous .choice-link siblings
             sib = node.previousElementSibling;
-            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
-              (sib as HTMLElement).classList.add('disabled');
-              (sib as HTMLElement).classList.remove('selected');
+            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
+              const sh = sib as HTMLElement;
+              sh.classList.add('disabled');
+              sh.classList.remove('selected');
+              sh.setAttribute?.('aria-disabled', 'true');
+              sh.classList.add('faded');
+              sh.classList.remove('chosen');
+              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
               sib = sib.previousElementSibling;
             }
             // forward
             sib = node.nextElementSibling;
-            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
-              (sib as HTMLElement).classList.add('disabled');
-              (sib as HTMLElement).classList.remove('selected');
+            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
+              const sh = sib as HTMLElement;
+              sh.classList.add('disabled');
+              sh.classList.remove('selected');
+              sh.setAttribute?.('aria-disabled', 'true');
+              sh.classList.add('faded');
+              sh.classList.remove('chosen');
+              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
               sib = sib.nextElementSibling;
             }
             node.classList.add('selected');
             node.classList.remove('disabled');
             node.setAttribute('aria-pressed', 'true');
+            node.classList.add('chosen');
+            node.classList.remove('faded');
+            try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
+            try { node.parentElement?.classList.add('choices-locked'); } catch {}
           } catch {}
           // MBTI scoring from data-tags (first tag)
           try {
@@ -209,20 +259,34 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           try {
             let sib: Element | null;
             sib = node.previousElementSibling;
-            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
-              (sib as HTMLElement).classList.add('disabled');
-              (sib as HTMLElement).classList.remove('selected');
+            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
+              const sh = sib as HTMLElement;
+              sh.classList.add('disabled');
+              sh.classList.remove('selected');
+              sh.setAttribute?.('aria-disabled', 'true');
+              sh.classList.add('faded');
+              sh.classList.remove('chosen');
+              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
               sib = sib.previousElementSibling;
             }
             sib = node.nextElementSibling;
-            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
-              (sib as HTMLElement).classList.add('disabled');
-              (sib as HTMLElement).classList.remove('selected');
+            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
+              const sh = sib as HTMLElement;
+              sh.classList.add('disabled');
+              sh.classList.remove('selected');
+              sh.setAttribute?.('aria-disabled', 'true');
+              sh.classList.add('faded');
+              sh.classList.remove('chosen');
+              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
               sib = sib.nextElementSibling;
             }
             node.classList.add('selected');
             node.classList.remove('disabled');
             node.setAttribute('aria-pressed', 'true');
+            node.classList.add('chosen');
+            node.classList.remove('faded');
+            try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
+            try { node.parentElement?.classList.add('choices-locked'); } catch {}
           } catch {}
           try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
           const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
@@ -263,51 +327,6 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       node.dataset.boundGeneral = '1';
     });
 
-    // lokální MBTI-like
-    root.querySelectorAll('p.choice[data-tags]').forEach((el) => {
-      const node = el as HTMLElement;
-      if (node.dataset.boundPchoice === '1') return;
-      if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '0');
-      if (!node.hasAttribute('role')) node.setAttribute('role', 'button');
-      if (!node.hasAttribute('aria-pressed')) node.setAttribute('aria-pressed', 'false');
-      node.addEventListener('focus', () => {
-        const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
-        if (label) announce(`Fokus na volbu: ${label}`);
-      });
-      const activate = () => {
-        const tags = (node.getAttribute('data-tags') || '')
-          .split(',').map(s => s.trim()).filter(Boolean);
-        if (tags.length) {
-          try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
-        }
-        // vizuální feedback v rámci souvislého bloku
-        try {
-          let sib: Element | null;
-          sib = node.previousElementSibling;
-          while (sib && sib.tagName.toLowerCase() === 'p' && (sib as HTMLElement).classList.contains('choice')) {
-            (sib as HTMLElement).classList.remove('selected');
-            (sib as HTMLElement).classList.add('disabled');
-            sib = sib.previousElementSibling;
-          }
-          sib = node.nextElementSibling;
-          while (sib && sib.tagName.toLowerCase() === 'p' && (sib as HTMLElement).classList.contains('choice')) {
-            (sib as HTMLElement).classList.remove('selected');
-            (sib as HTMLElement).classList.add('disabled');
-            sib = sib.nextElementSibling;
-          }
-          node.classList.add('selected');
-          node.classList.remove('disabled');
-          node.setAttribute('aria-pressed', 'true');
-        } catch {}
-        const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
-        if (label) announce(`Zvoleno: ${label}.`);
-      };
-      node.addEventListener('click', (e) => { e.preventDefault(); activate(); });
-      node.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
-      });
-      node.dataset.boundPchoice = '1';
-    });
   }, [router, announce]);
 
   useEffect(() => {
@@ -444,12 +463,13 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           const durVar = cs.getPropertyValue('--typewriter-duration').trim();
           if (durVar.endsWith('ms')) return parseFloat(durVar);
           if (durVar.endsWith('s')) return parseFloat(durVar) * 1000;
-          const len = typingPhaseHtml.length;
-          // rychlejší fallback heuristika
-          return Math.min(24000, Math.max(2500, Math.round(len * 16)));
+          const len = textOnly.length;
+          // ještě rychlejší fallback (agresivní), cílově ~0.3–6s
+          return Math.min(6000, Math.max(300, Math.round(len * 5)));
         };
 
-        if (!autoStart || textOnly.length === 0) {
+        const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        if (!autoStart || textOnly.length === 0 || prefersReduced) {
           // Nic k psaní nebo autoStart off – rovnou zobraz HTML a interakce
           typedBox.innerHTML = sanitizeHTML(transformed);
           bindChoiceHandlers();
@@ -459,15 +479,17 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           // Progressive reveal of HTML like landing-intro
           const totalChars = Math.max(1, textOnly.length);
           const duration = getDurationMs();
-          const stepMs = Math.max(10, Math.round(duration / totalChars));
           let cancelledLocal = false;
-          let typed = 0;
           setIsTyping(true);
-          const tick = () => {
+          let startTs: number | null = null;
+          const rafTick = (ts: number) => {
             if (cancelledLocal) return;
-            typed = Math.min(totalChars, typed + 1);
-            try { typedBox.innerHTML = sanitizeHTML(renderRevealed(typingPhaseHtml, typed)); } catch {}
-            if (typed >= totalChars) {
+            if (startTs == null) startTs = ts;
+            const elapsed = Math.max(0, ts - startTs);
+            const progress = Math.min(1, elapsed / Math.max(1, duration));
+            const typedCount = Math.max(0, Math.floor(progress * totalChars));
+            try { typedBox.innerHTML = sanitizeHTML(renderRevealed(typingPhaseHtml, typedCount)); } catch {}
+            if (progress >= 1) {
               // Swap in final HTML with buttons (pre + choices) and bind interactions
               try { typedBox.innerHTML = sanitizeHTML(transformed); } catch {}
               bindChoiceHandlers();
@@ -524,15 +546,23 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
                   if (rem2 && rem2.trim()) { remainderHtml = rem2; continueRef.current = buildNextSegment!; } else { continueRef.current = null; }
                   return;
                 }
-                const len2 = text2.length; const getDur2 = () => {
-                  const cs2 = getComputedStyle(hostRef.current!); const var2 = cs2.getPropertyValue('--typewriter-duration').trim();
-                  if (var2.endsWith('ms')) return parseFloat(var2); if (var2.endsWith('s')) return parseFloat(var2) * 1000; return Math.min(24000, Math.max(2500, Math.round(len2 * 16)));
+                const len2 = text2.length;
+                const getDur2 = () => {
+                  const cs2 = getComputedStyle(hostRef.current!);
+                  const var2 = cs2.getPropertyValue('--typewriter-duration').trim();
+                  if (var2.endsWith('ms')) return parseFloat(var2);
+                  if (var2.endsWith('s')) return parseFloat(var2) * 1000;
+                  return Math.min(6000, Math.max(300, Math.round(len2 * 5)));
                 };
-                let t2 = 0; const dur2 = getDur2(); const step2 = Math.max(10, Math.round(dur2 / Math.max(1, len2)));
-                const tick2 = () => {
-                  t2 = Math.min(len2, t2 + 1);
-                  try { typedBox.innerHTML = sanitizeHTML(baseHtml + renderRevealed(typing2, t2)); } catch {}
-                  if (t2 >= len2) {
+                const dur2 = getDur2();
+                let start2: number | null = null;
+                const raf2 = (t: number) => {
+                  if (start2 == null) start2 = t;
+                  const el2 = Math.max(0, t - start2);
+                  const pr2 = Math.min(1, el2 / Math.max(1, dur2));
+                  const cnt2 = Math.max(0, Math.floor(pr2 * Math.max(1, len2)));
+                  try { typedBox.innerHTML = sanitizeHTML(baseHtml + renderRevealed(typing2, cnt2)); } catch {}
+                  if (pr2 >= 1) {
                     try { typedBox.innerHTML = sanitizeHTML(baseHtml + transformed2); } catch {}
                     bindChoiceHandlers();
                     try {
@@ -545,20 +575,20 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
                     else { continueRef.current = null; }
                     return;
                   }
-                  window.setTimeout(tick2, step2);
+                  requestAnimationFrame(raf2);
                 };
-                window.setTimeout(tick2, step2);
+                requestAnimationFrame(raf2);
               };
               if (remainderHtml && remainderHtml.trim()) {
                 continueRef.current = buildNextSegment;
               }
               return;
             }
-            window.setTimeout(tick, stepMs);
+            requestAnimationFrame(rafTick);
           };
           // initial render empty
           try { typedBox.innerHTML = sanitizeHTML(renderRevealed(typingPhaseHtml, 0)); } catch { typedBox.innerHTML = ''; }
-          window.setTimeout(tick, stepMs);
+          requestAnimationFrame(rafTick);
           cancelRef.current = () => { cancelledLocal = true; };
         }
       } catch (e: any) {
