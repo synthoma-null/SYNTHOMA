@@ -10,6 +10,7 @@ export type GlitchOptions = {
   glitchMaxMs?: number;       // max duration a char stays glitched
   chars?: string;             // pool of glitch characters
   fullScramble?: boolean;     // if true, scramble all chars each tick (legacy behavior)
+  respectReducedMotion?: boolean; // default true; if false, ignore reduced-motion for this instance
 };
 
 const DEFAULT_CHARS = "!@#$%^&*_-+=/?\\|<>[]{};:~NYHSMT#¤%&@§÷×¤░▒▓█▄▀●◊ O|/\\\\_^-~.*+";
@@ -39,6 +40,7 @@ export function attachGlitchHeading(
   const glitchMaxMs = Math.max(glitchMinMs, Math.floor(opts.glitchMaxMs ?? 220));
   const chars = (opts.chars && opts.chars.length > 0 ? opts.chars : DEFAULT_CHARS);
   const fullScramble = !!opts.fullScramble;
+  const respectReduced = (opts.respectReducedMotion !== undefined) ? !!opts.respectReducedMotion : true;
 
   // Prefer working on span.glitch-char children to avoid DOM churn and keep layout stable
   const container = (root.querySelector('.glitch-real') as HTMLElement) || root;
@@ -114,7 +116,7 @@ export function attachGlitchHeading(
 
   function start() {
     if (id) return;
-    if (prefersReducedMotion()) return; // A11y: respect reduced motion
+    if (respectReduced && prefersReducedMotion()) return; // A11y: respect reduced motion unless overridden
     id = (setInterval(() => {
       // avoid spamming when tab is hidden
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {

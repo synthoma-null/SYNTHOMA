@@ -144,6 +144,29 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     } catch {}
   }, []);
 
+  // Ensure any choices in the given container are fully interactive and not faded/disabled
+  const cleanupChoices = useCallback((container: HTMLElement | null) => {
+    if (!container) return;
+    try {
+      // Remove any accidental faded/disabled states from choices
+      container.querySelectorAll('.choice-link').forEach((el) => {
+        const node = el as HTMLElement;
+        node.classList.remove('faded');
+        node.classList.remove('disabled');
+        node.classList.remove('choice-empty');
+        if (node instanceof HTMLButtonElement) { node.disabled = false; }
+        node.removeAttribute('aria-disabled');
+      });
+      // Unlock any local groups that might have leaked state
+      container.querySelectorAll('.choices, .choice-group, [data-choice-group]').forEach((el) => {
+        (el as HTMLElement).classList.remove('choices-locked');
+      });
+      // Mark visible state on the closest SYNTHOMAREADER host for CSS to show choices
+      const host = container.closest('.SYNTHOMAREADER');
+      if (host) { (host as HTMLElement).classList.add('choices-shown'); }
+    } catch {}
+  }, []);
+
   const bindChoiceHandlers = useCallback(() => {
     const root = hostRef.current;
     if (!root) return;
@@ -472,6 +495,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         if (!autoStart || textOnly.length === 0 || prefersReduced) {
           // Nic k psaní nebo autoStart off – rovnou zobraz HTML a interakce
           typedBox.innerHTML = sanitizeHTML(transformed);
+          // Safety: ensure no choice starts as faded/disabled
+          cleanupChoices(typedBox);
           bindChoiceHandlers();
           setChoicesShown(true);
           setIsTyping(false);
@@ -492,6 +517,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
             if (progress >= 1) {
               // Swap in final HTML with buttons (pre + choices) and bind interactions
               try { typedBox.innerHTML = sanitizeHTML(transformed); } catch {}
+              // Safety: ensure no choice starts as faded/disabled
+              cleanupChoices(typedBox);
               bindChoiceHandlers();
               setChoicesShown(true);
               setIsTyping(false);
@@ -541,6 +568,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
                 const tmp2 = document.createElement('div'); tmp2.innerHTML = typing2; const text2 = (tmp2.textContent || '').trim();
                 if (!text2) {
                   try { typedBox.innerHTML = sanitizeHTML(baseHtml + transformed2); } catch {}
+                  // Safety: ensure no choice starts as faded/disabled
+                  cleanupChoices(typedBox);
                   bindChoiceHandlers();
                   try { (typedBox.querySelector('.choice-link') as HTMLElement | null)?.focus(); } catch {}
                   if (rem2 && rem2.trim()) { remainderHtml = rem2; continueRef.current = buildNextSegment!; } else { continueRef.current = null; }
@@ -564,6 +593,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
                   try { typedBox.innerHTML = sanitizeHTML(baseHtml + renderRevealed(typing2, cnt2)); } catch {}
                   if (pr2 >= 1) {
                     try { typedBox.innerHTML = sanitizeHTML(baseHtml + transformed2); } catch {}
+                    // Safety: ensure no choice starts as faded/disabled
+                    cleanupChoices(typedBox);
                     bindChoiceHandlers();
                     try {
                       const first2 = (typedBox.querySelector('.choice-link') as HTMLElement | null);

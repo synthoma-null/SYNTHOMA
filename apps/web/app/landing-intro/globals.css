@@ -95,17 +95,17 @@
 }
 
 .glitch-fake1 {
-  color: var(--accent-primary);
+  color: #ff00c8; /* magenta layer */
   opacity: 0.58;
-  text-shadow: 2px 0 var(--accent-primary), 0 0 10px var(--glow-primary), 0 0 28px var(--text-primary);
+  text-shadow: 2px 0 #ff00c8, 0 0 10px #ff00c8, 0 0 28px rgba(255, 0, 200, 0.6);
   z-index: 1;
   animation: glitchLayer1 2.2s infinite linear alternate;
 }
 
 .glitch-fake2 {
-  color: var(--accent-secondary);
+  color: #0ff; /* cyan layer */
   opacity: 0.44;
-  text-shadow: -2px 0 var(--accent-secondary), 0 0 8px var(--glow-secondary), 0 0 28px var(--text-primary);
+  text-shadow: -2px 0 #0ff, 0 0 8px #0ff, 0 0 28px rgba(0, 255, 255, 0.5);
   z-index: 2;
   animation: glitchLayer2 1.7s infinite linear alternate;
 }
@@ -122,11 +122,17 @@
 }
 
 .glitch-char.glitchy {
-  color: var(--accent-primary);
+  color: #f0f; /* magenta blink */
   filter: blur(1.5px) brightness(2.2);
-  text-shadow: 0 0 15px var(--glow-secondary), 0 0 8px var(--glow-primary), 0 0 2px var(--glow-secondary);
+  text-shadow: 0 0 15px #f0f, 0 0 8px #f0f, 0 0 2px #f0f;
   animation: glitchjump 0.12s linear 2;
   transform: translateY(-2px) scale(1.07) skewX(3deg);
+}
+
+/* front cyan layer glow */
+#glitch-synthoma .glitch-real {
+  color: #0ff;
+  text-shadow: 0 0 6px #0ff, 0 0 12px #0ff, 2px 2px 10px rgba(255, 0, 200, 0.35);
 }
 
 @keyframes glitch {

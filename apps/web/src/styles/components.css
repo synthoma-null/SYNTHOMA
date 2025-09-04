@@ -769,49 +769,35 @@ opacity: 1;
 
   /* Main H1 visual reset + effects */
   #glitch-synthoma.glitch-master {
-    color: var(--text-primary);
+    /* Keep only neutral structural properties here; colors/animations come from route-scoped CSS */
     text-transform: uppercase;
     letter-spacing: 0.08em;
     position: relative;
     text-align: center;
     margin: .5rem 0;
     z-index: 10;
-    opacity: 0; /* prevent FOUC – revealed by intro */
     -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-    text-shadow:
-      0 0 6px var(--glow-secondary),
-      0 0 16px var(--glow-primary),
-      0 0 36px var(--glow-secondary),
-      2px 2px 12px var(--glow-primary);
-    /* Cinematic intro (4s), then endless gentle glitch */
-    animation: glitchIntro 4s cubic-bezier(.2,.9,.1,1) both 0s, glitch 1.2s linear 4s infinite alternate-reverse;
-    will-change: opacity, transform, text-shadow;
+    will-change: transform, text-shadow;
     font-family: 'Synthoma', monospace;
     font-variant-ligatures: none;
     font-kerning: none;
-    filter: var(--filter-primary);
     display: inline-block; /* Ensure no stray gaps */
     white-space: nowrap;   /* Keep on one line visually */
     overflow: visible;     /* Let glows render outside */
   }
 
-  /* Fake color layers for chromatic aberration */
-  #glitch-synthoma .glitch-fake1,
-  #glitch-synthoma .glitch-fake2,
-  #glitch-synthoma .glitch-real { display: inline-block; position: relative; }
+  /* Fake color layers for chromatic aberration
+     Note: Do not force display/position here; leave it to route-scoped CSS (landing-intro/globals.css)
+     to use absolute positioning and sizing for proper overlay alignment. */
 
   #glitch-synthoma .glitch-fake1 {
-    color: var(--accent-primary);
-    opacity: 0.44;
-    text-shadow: 2px 0 var(--accent-primary), 0 0 10px var(--accent-primary), 0 0 28px var(--accent-secondary);
+    /* Colors and glows are controlled by route-scoped CSS to avoid conflicts */
     z-index: 1;
     animation: glitchLayer1 2.2s infinite linear alternate;
     pointer-events: none;
   }
   #glitch-synthoma .glitch-fake2 {
-    color: var(--accent-secondary);
-    opacity: 0.28;
-    text-shadow: -2px 0 var(--accent-secondary), 0 0 8px var(--accent-secondary), 0 0 28px var(--accent-primary);
+    /* Colors and glows are controlled by route-scoped CSS to avoid conflicts */
     z-index: 2;
     animation: glitchLayer2 1.7s infinite linear alternate;
     pointer-events: none;
@@ -820,8 +806,7 @@ opacity: 1;
   /* Per-character layout to keep width stable */
   #glitch-synthoma .glitch-real { font-variant-ligatures: none; font-kerning: none; letter-spacing: 0.08em; }
   #glitch-synthoma .glitch-char {
-    display: inline-block;
-    width: 1.2ch;
+    display: inline; /* avoid gaps between characters */
     text-align: center;
     box-sizing: border-box;
     position: relative;
@@ -829,14 +814,8 @@ opacity: 1;
     transition: color 0.06s, filter 0.12s, transform 0.10s;
     will-change: color, filter, transform;
     margin: 0;
-    padding: 0.5rem; /* protects last glyph clipping on some engines */
-  }
-  #glitch-synthoma .glitch-char.glitchy {
-    color: var(--accent-primary);
-    filter: blur(1.5px) brightness(2.2);
-    text-shadow: 0 0 15px var(--accent-primary), 0 0 8px var(--accent-secondary), 0 0 2px var(--accent-primary);
-    animation: glitchjump 0.12s linear 2;
-    transform: translateY(-2px) scale(1.07) skewX(3deg);
+    padding: 0; /* no extra padding to keep tight tracking */
+    letter-spacing: 0.08em; /* match background layers */
   }
 
   /* Keyframes */
@@ -862,6 +841,26 @@ opacity: 1;
   .hero-intro .manifest {
     font-size: clamp(0.72rem, 3.8vw, 1.62rem) !important; line-height: 1.4;
     text-align: center; position: relative; z-index: 100; margin: 0 auto 2.75rem !important; padding-bottom: .5rem;
+  }
+
+  /* Disable all glitch effects when .no-animations is present */
+  .no-animations #glitch-synthoma.glitch-master,
+  .no-animations #glitch-synthoma .glitch-fake1,
+  .no-animations #glitch-synthoma .glitch-fake2,
+  .no-animations #glitch-synthoma .glitch-char,
+  .no-animations #glitch-synthoma .glitch-char.glitchy {
+    animation: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .no-animations #glitch-synthoma .glitch-fake1,
+  .no-animations #glitch-synthoma .glitch-fake2 { display: none !important; }
+  .no-animations #glitch-synthoma.glitch-master {
+    text-shadow: 0 0 6px var(--primary-color) !important;
+    color: var(--primary-color) !important;
   }
 
   /* CTA container a zkrácení mezery pod manifestem, když je CTA přítomné */
@@ -1445,71 +1444,75 @@ opacity: 1;
   }
   .glitch-span{
     position: absolute;
-    letter-spacing: 0.17em;
+    letter-spacing: 0.08em;
     left: 0%;
     top: 0%;
     width: 1.2ch;
     height: 100%;
     pointer-events: none;
-    color: #f0f;
-
-}
+    color: #0ff;
+  }
   .glitch-fake1{
     position: absolute;
-    letter-spacing: 0.165em;
+    letter-spacing: 0.08em;
     left: 0.25%;
     top: 4%;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    color: #f0f;
-
-}
+    color: #ff00c8;
+  }
   .glitch-fake2 {
       position: absolute;
-      letter-spacing: 0.17em;
+      letter-spacing: 0.08em;
       left: 0.25%;
       top: 6%;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      color: #f0f;
-
+      color: #0ff;
   }
 
   .glitch-fake1 {
-      color: #f0f;
+      color: #ff00c8;
       opacity: 0.44;
-      text-shadow: 2px 0 #f0f, 0 0 10px #f0f, 0 0 28px #f0f;
+      text-shadow: 2px 0 #ff00c8, 0 0 10px #ff00c8, 0 0 28px #ff00c8;
       z-index: 1;
       animation: glitchLayer1 2.2s infinite linear alternate;
       pointer-events: none;
   }
 
   .glitch-fake2 {
-      color: #f0f;
+      color: #0ff;
       opacity: 0.28;
-      text-shadow: -2px 0 #f0f, 0 0 8px #f0f, 0 0 28px #f0f;
+      text-shadow: -2px 0 #0ff, 0 0 8px #0ff, 0 0 28px #0ff;
       z-index: 2;
       animation: glitchLayer2 1.7s infinite linear alternate;
       pointer-events: none;
   }
   .glitching-word { display: inline-block; white-space: nowrap; position: relative; font-variant-ligatures: none; font-kerning: none; letter-spacing: 0.08em; }
+  /* Front layer: cyan neon glow like in the SVG reference */
+  #glitch-synthoma .glitch-real {
+    color: #0ff;
+    text-shadow: 0 0 6px #0ff, 0 0 12px #0ff, 2px 2px 10px rgba(255, 0, 200, 0.35);
+    position: relative;
+    z-index: 10;
+  }
   .glitch-char {
-    display: inline-block; /* pevná šířka znaku bez kolísání slova */
-    width: 1.2ch; /* 1ch = šířka znaku '0' v aktuálním fontu */
-    text-align: center;
-    box-sizing: border-box; /* zachovej celkovou šířku 1ch i s paddingem */
+    display: inline; /* inline, aby nevznikaly mezery a vrstvy seděly přes sebe */
     position: relative;
     z-index: 20;
     transition: color 0.06s, filter 0.12s, transform 0.10s;
     will-change: color, filter, transform;
+    letter-spacing: 0.08em; /* sjednocení s vrstvami */
     margin: 0;
-    padding: 0.5rem;
+    padding: 0;
+    text-align: inherit;
+    box-sizing: content-box;
 }
 
 .glitch-char.glitchy {
-    color: #f0f;
+    color: #f0f; /* magenta záblesk pro vybraný znak */
     filter: blur(1.5px) brightness(2.2);
     text-shadow: 0 0 15px #f0f, 0 0 8px #f0f, 0 0 2px #f0f;
     animation: glitchjump 0.12s linear 2;

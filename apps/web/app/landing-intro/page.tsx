@@ -862,7 +862,16 @@ export default function LandingIntroPage() {
     if (prefersReduced) return;
     const root = glitchRootRef.current as HTMLElement | null;
     if (!root) return;
-    const detach = attachGlitchHeading(root, TITLE, { intervalMs: 100, chance: 0.1, fullScramble: true });
+    // Gentle per-character glitching: stable baseline, occasional jitter
+    const detach = attachGlitchHeading(root, TITLE, {
+      intervalMs: 110,
+      chance: 0.08,
+      perCharChance: 0.12,
+      perTickMax: 2,
+      glitchMinMs: 85,
+      glitchMaxMs: 180,
+      fullScramble: false,
+    });
     return () => { try { detach(); } catch {} };
   }, []);
 

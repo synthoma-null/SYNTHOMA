@@ -13,7 +13,8 @@ function getSecurityHeaders() {
     "img-src 'self' data: https:",
     "media-src 'self' https:",
     "style-src 'self' 'unsafe-inline' https:",
-    "font-src 'self' data: https:",+    // In dev allow unsafe-eval for React Refresh/HMR runtime
+    "font-src 'self' data: https:",
+    // In dev allow unsafe-eval for React Refresh/HMR runtime
     isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'",
     // HMR/websockets in dev
     isDev ? "connect-src 'self' ws: https:" : "connect-src 'self'",
