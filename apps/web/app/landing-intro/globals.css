@@ -28,6 +28,14 @@
   --li-glass: rgba(255, 255, 255, 0.06);
   --li-border: rgba(255, 255, 255, 0.12);
   --li-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  /* Additional variables reused by shared glitch styles */
+  --text-primary: var(--li-fg);
+  --accent-primary: var(--li-accent);
+  --accent-secondary: var(--li-accent-2);
+  --glow-primary: var(--li-accent);
+  --glow-secondary: var(--li-accent-2);
+  --primary-color: var(--li-accent);
+  --filter-primary: none;
 }
 
 /* Hero info choices visibility control (global, not CSS Modules) */
@@ -48,4 +56,102 @@
 /* Hide empty choice artifacts completely */
 .SYNTHOMAREADER button.choice-link.choice-empty {
   display: none !important;
+}
+
+/* Glitch heading styles scoped for landing-intro */
+#glitch-synthoma.glitch-master {
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  text-align: center;
+  margin: 0.5rem 0;
+  z-index: 10;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-shadow:
+    0 0 6px var(--glow-secondary),
+    0 0 16px var(--glow-primary),
+    0 0 36px var(--glow-secondary),
+    2px 2px 12px var(--glow-primary);
+  animation: glitch 1.2s infinite linear alternate-reverse;
+  will-change: transform, text-shadow;
+  font-family: 'Synthoma', monospace;
+}
+
+.glitch-span,
+.glitch-fake1,
+.glitch-fake2 {
+  position: absolute;
+  left: -10%;
+  top: 0;
+  margin: 0;
+  width: 120%;
+  height: 100%;
+  pointer-events: none;
+  letter-spacing: 0.08em;
+}
+
+.glitch-fake1 {
+  color: var(--accent-primary);
+  opacity: 0.58;
+  text-shadow: 2px 0 var(--accent-primary), 0 0 10px var(--glow-primary), 0 0 28px var(--text-primary);
+  z-index: 1;
+  animation: glitchLayer1 2.2s infinite linear alternate;
+}
+
+.glitch-fake2 {
+  color: var(--accent-secondary);
+  opacity: 0.44;
+  text-shadow: -2px 0 var(--accent-secondary), 0 0 8px var(--glow-secondary), 0 0 28px var(--text-primary);
+  z-index: 2;
+  animation: glitchLayer2 1.7s infinite linear alternate;
+}
+
+.glitch-char {
+  display: inline;
+  position: relative;
+  z-index: 20;
+  transition: color 0.06s, filter 0.12s, transform 0.10s;
+  will-change: color, filter, transform;
+  letter-spacing: 0.08em;
+  margin: 0;
+  padding: 0;
+}
+
+.glitch-char.glitchy {
+  color: var(--accent-primary);
+  filter: blur(1.5px) brightness(2.2);
+  text-shadow: 0 0 15px var(--glow-secondary), 0 0 8px var(--glow-primary), 0 0 2px var(--glow-secondary);
+  animation: glitchjump 0.12s linear 2;
+  transform: translateY(-2px) scale(1.07) skewX(3deg);
+}
+
+@keyframes glitch {
+  0% { transform: translate(-1px, 0); opacity: .8; }
+  25% { transform: translate(1px, 0); opacity: .9; }
+  50% { transform: translate(-1px, 1px); opacity: .7; }
+  75% { transform: translate(1px, -1px); opacity: .8; }
+  100% { transform: translate(0); opacity: 1; }
+}
+
+@keyframes glitchLayer1 {
+  0% { transform: translate(0, 0) skewX(0deg); }
+  50% { transform: translate(-3px, 1px) skewX(2deg); }
+  100% { transform: translate(0, 0) skewX(0deg); }
+}
+
+@keyframes glitchLayer2 {
+  0% { transform: translate(0, 0) skewY(0deg); }
+  60% { transform: translate(-2px, 1px) skewY(-1deg); }
+  100% { transform: translate(0, 0) skewY(0deg); }
+}
+
+@keyframes glitchjump {
+  0% { transform: translateY(0) scale(1) skewX(0deg); }
+  40% { transform: translateY(-2px) scale(1.09) skewX(4deg); }
+  70% { transform: translateY(2px) scale(0.96) skewX(-2deg); }
+  100% { transform: translateY(0) scale(1) skewX(0deg); }
 }
