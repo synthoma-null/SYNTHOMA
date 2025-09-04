@@ -862,7 +862,7 @@ export default function LandingIntroPage() {
     if (prefersReduced) return;
     const root = glitchRootRef.current as HTMLElement | null;
     if (!root) return;
-    const detach = attachGlitchHeading(root, TITLE, { intervalMs: 260, chance: 0.08 });
+    const detach = attachGlitchHeading(root, TITLE, { intervalMs: 100, chance: 0.1, fullScramble: true });
     return () => { try { detach(); } catch {} };
   }, []);
 

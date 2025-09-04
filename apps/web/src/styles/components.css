@@ -759,6 +759,106 @@ opacity: 1;
   .hero-intro h1#glitch-synthoma {
     font-size: clamp(2.2rem, 10vw, 7.8rem) !important; line-height: 1.05;
   }
+
+  /* Glitch title core (landing H1) */
+  .glitch-master {
+    color: var(--text-primary);
+    text-shadow: 0 0 6px var(--glow-secondary), 0 0 14px var(--glow-primary);
+    letter-spacing: .03em;
+  }
+
+  /* Main H1 visual reset + effects */
+  #glitch-synthoma.glitch-master {
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    text-align: center;
+    margin: .5rem 0;
+    z-index: 10;
+    opacity: 0; /* prevent FOUC – revealed by intro */
+    -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+    text-shadow:
+      0 0 6px var(--glow-secondary),
+      0 0 16px var(--glow-primary),
+      0 0 36px var(--glow-secondary),
+      2px 2px 12px var(--glow-primary);
+    /* Cinematic intro (4s), then endless gentle glitch */
+    animation: glitchIntro 4s cubic-bezier(.2,.9,.1,1) both 0s, glitch 1.2s linear 4s infinite alternate-reverse;
+    will-change: opacity, transform, text-shadow;
+    font-family: 'Synthoma', monospace;
+    font-variant-ligatures: none;
+    font-kerning: none;
+    filter: var(--filter-primary);
+    display: inline-block; /* Ensure no stray gaps */
+    white-space: nowrap;   /* Keep on one line visually */
+    overflow: visible;     /* Let glows render outside */
+  }
+
+  /* Fake color layers for chromatic aberration */
+  #glitch-synthoma .glitch-fake1,
+  #glitch-synthoma .glitch-fake2,
+  #glitch-synthoma .glitch-real { display: inline-block; position: relative; }
+
+  #glitch-synthoma .glitch-fake1 {
+    color: var(--accent-primary);
+    opacity: 0.44;
+    text-shadow: 2px 0 var(--accent-primary), 0 0 10px var(--accent-primary), 0 0 28px var(--accent-secondary);
+    z-index: 1;
+    animation: glitchLayer1 2.2s infinite linear alternate;
+    pointer-events: none;
+  }
+  #glitch-synthoma .glitch-fake2 {
+    color: var(--accent-secondary);
+    opacity: 0.28;
+    text-shadow: -2px 0 var(--accent-secondary), 0 0 8px var(--accent-secondary), 0 0 28px var(--accent-primary);
+    z-index: 2;
+    animation: glitchLayer2 1.7s infinite linear alternate;
+    pointer-events: none;
+  }
+
+  /* Per-character layout to keep width stable */
+  #glitch-synthoma .glitch-real { font-variant-ligatures: none; font-kerning: none; letter-spacing: 0.08em; }
+  #glitch-synthoma .glitch-char {
+    display: inline-block;
+    width: 1.2ch;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 20;
+    transition: color 0.06s, filter 0.12s, transform 0.10s;
+    will-change: color, filter, transform;
+    margin: 0;
+    padding: 0.5rem; /* protects last glyph clipping on some engines */
+  }
+  #glitch-synthoma .glitch-char.glitchy {
+    color: var(--accent-primary);
+    filter: blur(1.5px) brightness(2.2);
+    text-shadow: 0 0 15px var(--accent-primary), 0 0 8px var(--accent-secondary), 0 0 2px var(--accent-primary);
+    animation: glitchjump 0.12s linear 2;
+    transform: translateY(-2px) scale(1.07) skewX(3deg);
+  }
+
+  /* Keyframes */
+  @keyframes glitchIntro {
+    0% { opacity: 0; transform: translateY(6px) scale(0.99); filter: brightness(.95) saturate(.98); }
+    60% { opacity: 1; transform: translateY(0) scale(1); filter: var(--filter-primary, none); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes glitchLayer1 {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(0.25%, 4%); }
+  }
+  @keyframes glitchLayer2 {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(0.25%, 6%); }
+  }
+  @keyframes glitchjump {
+    0% { transform: translateY(0) scale(1) skewX(0deg); }
+    50% { transform: translateY(-2px) scale(1.07) skewX(3deg); }
+    100% { transform: translateY(0) scale(1) skewX(0deg); }
+  }
+  @keyframes glitchWordPulse { 0%{ opacity:1 } 50%{ opacity:.9 } 100%{ opacity:1 } }
   .hero-intro .manifest {
     font-size: clamp(0.72rem, 3.8vw, 1.62rem) !important; line-height: 1.4;
     text-align: center; position: relative; z-index: 100; margin: 0 auto 2.75rem !important; padding-bottom: .5rem;

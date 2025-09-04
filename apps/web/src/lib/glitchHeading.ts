@@ -9,6 +9,7 @@ export type GlitchOptions = {
   glitchMinMs?: number;       // min duration a char stays glitched
   glitchMaxMs?: number;       // max duration a char stays glitched
   chars?: string;             // pool of glitch characters
+  fullScramble?: boolean;     // if true, scramble all chars each tick (legacy behavior)
 };
 
 const DEFAULT_CHARS = "!@#$%^&*_-+=/?\\|<>[]{};:~NYHSMT#¤%&@§÷×¤░▒▓█▄▀●◊ O|/\\\\_^-~.*+";
@@ -37,6 +38,7 @@ export function attachGlitchHeading(
   const glitchMinMs = Math.max(40, Math.floor(opts.glitchMinMs ?? 90));
   const glitchMaxMs = Math.max(glitchMinMs, Math.floor(opts.glitchMaxMs ?? 220));
   const chars = (opts.chars && opts.chars.length > 0 ? opts.chars : DEFAULT_CHARS);
+  const fullScramble = !!opts.fullScramble;
 
   // Prefer working on span.glitch-char children to avoid DOM churn and keep layout stable
   const container = (root.querySelector('.glitch-real') as HTMLElement) || root;
@@ -97,6 +99,19 @@ export function attachGlitchHeading(
     container.textContent = out;
   }
 
+  // Legacy-like: scramble every character independently each tick
+  function tickFullSpans() {
+    if (!charSpans.length) return false;
+    for (const s of charSpans) {
+      const orig = getDataAttr(s, 'orig') ?? (s.textContent ?? '');
+      const useRand = Math.random() < fallbackChance;
+      const ch = useRand ? (chars[Math.floor(Math.random() * chars.length)] || orig) : String(orig);
+      s.textContent = ch;
+      // no timers, no classes
+    }
+    return true;
+  }
+
   function start() {
     if (id) return;
     if (prefersReducedMotion()) return; // A11y: respect reduced motion
@@ -106,7 +121,12 @@ export function attachGlitchHeading(
         return;
       }
       raf = requestAnimationFrame(() => {
-        if (!tickSpans()) tickFallback();
+        if (fullScramble && charSpans.length) {
+          // Legacy-like continuous scramble for per-char spans
+          if (!tickFullSpans()) tickFallback();
+        } else {
+          if (!tickSpans()) tickFallback();
+        }
       });
     }, interval) as unknown) as number;
   }
