@@ -834,18 +834,9 @@ export default function LandingIntroPage() {
     return () => { try { cancel(); } catch {} };
   }, [showManifest]);
 
+  // Disable any random shining effect on the manifest after typing completes
   useEffect(() => {
-    if (!typedDone) return;
-    if (document.body?.classList.contains('no-animations')) return;
-    let tries = 0;
-    const startNow = () => { try { const w: any = window as any; if (typeof w.startShinning === 'function') w.startShinning(); } catch {} };
-    const id = window.setInterval(() => {
-      tries++;
-      const w: any = window as any;
-      if (typeof w.startShinning === 'function') { startNow(); window.clearInterval(id); }
-      if (tries > 40) { window.clearInterval(id); }
-    }, 50);
-    return () => { window.clearInterval(id); };
+    // intentionally no-op per request to remove random effects
   }, [typedDone]);
 
   useEffect(() => {
@@ -919,7 +910,7 @@ export default function LandingIntroPage() {
         </div>
 
         <div className={`manifest-wrapper ${typedDone ? 'has-cta' : ''}`.trim()}>
-          <p className="manifest typewriter shinning" id="manifest-container" aria-live="polite" aria-atomic>
+          <p className="manifest typewriter" id="manifest-container" aria-live="polite" aria-atomic>
             <span className="noising-text" aria-hidden="true"></span>
             <span className="sr-only">{MANIFEST}</span>
           </p>

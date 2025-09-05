@@ -92,6 +92,8 @@
   height: 100%;
   pointer-events: none;
   letter-spacing: 0.08em;
+  /* Inherit the monospace font to keep overlay alignment exact */
+  font-family: inherit;
 }
 
 .glitch-fake1 {
@@ -111,6 +113,7 @@
 }
 
 .glitch-char {
+  /* Default inline to avoid affecting other glitch uses (e.g., buttons) */
   display: inline;
   position: relative;
   z-index: 20;
@@ -121,11 +124,17 @@
   padding: 0;
 }
 
+/* Main heading: fixed-width glyphs to keep width constant across glitches */
+#glitch-synthoma .glitch-char {
+  display: inline-block;
+  width: 1ch;
+}
+
 .glitch-char.glitchy {
   color: #f0f; /* magenta blink */
   filter: blur(1.5px) brightness(2.2);
   text-shadow: 0 0 15px #f0f, 0 0 8px #f0f, 0 0 2px #f0f;
-  animation: glitchjump 0.12s linear 2;
+  animation: glitchjump 0.10s linear 3; /* snappier multi-jump */
   transform: translateY(-2px) scale(1.07) skewX(3deg);
 }
 
@@ -156,8 +165,10 @@
 }
 
 @keyframes glitchjump {
-  0% { transform: translateY(0) scale(1) skewX(0deg); }
-  40% { transform: translateY(-2px) scale(1.09) skewX(4deg); }
-  70% { transform: translateY(2px) scale(0.96) skewX(-2deg); }
-  100% { transform: translateY(0) scale(1) skewX(0deg); }
+  0%   { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
+  20%  { transform: translate(-1px, -2px) scale(1.08) skewX(4deg); opacity: .95; }
+  40%  { transform: translate(1px, -1px) scale(1.05) skewX(-2deg); opacity: .9; }
+  70%  { transform: translate(-1px, 2px) scale(0.98) skewX(2deg); opacity: .95; }
+  85%  { transform: translate(1px, 1px) scale(1.02) skewX(-1deg); opacity: .98; }
+  100% { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
 }
