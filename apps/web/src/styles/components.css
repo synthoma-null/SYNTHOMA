@@ -503,7 +503,7 @@ opacity: 1;
   .SYNTHOMAREADER .tw-line.dialogN,
   .SYNTHOMAREADER .tw-line.text,
   .SYNTHOMAREADER .tw-line.title {
-    margin-left: 0rem;                 /* remove per-class margin drift */
+    margin-left: -1rem;                 /* remove per-class margin drift */
     line-height: 1.2;
   }
 
@@ -519,7 +519,7 @@ opacity: 1;
   
   .log {
     position: relative;
-    left: 0.75rem;
+    left: 0rem;
     bottom: -1rem;
     margin-top: -1rem;
     color: var(--text-primary);
@@ -549,10 +549,10 @@ opacity: 1;
     opacity: 0.6;
 }
   
-  .dialog, .dialogN, .dialogS, .text, .textV {
+  .dialog, .dialogN, .dialogS, .text, .textV ,.title {
     position: relative;
     line-height: 1.2;
-    left: 0.75rem;
+    left: 0rem;
     text-align: left;
     /* spacing controlled by .SYNTHOMAREADER unified rule */
     z-index: 10;

@@ -42,7 +42,7 @@ body::-webkit-scrollbar,
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin: 0.75rem 0;
+  margin: 0rem 0;
 }
 
 /* Panel typografie přesunuta do components.css (#control-panel base) */
@@ -50,7 +50,7 @@ body::-webkit-scrollbar,
 .reader-controls::before {
   content: '';
   position: absolute;
-  left: 0.2rem;
+  left: -1px;
   width: 4px;
   height: 130%;
   border-radius: 2px;
@@ -222,7 +222,8 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   margin-right: auto;
   margin-top: 3vh;
   margin-bottom: 4vh;
-  padding: 1rem;
+  /* Remove left padding so the neon column can sit flush to the edge */
+  padding: 1rem 1rem 1rem 0;
   box-sizing: border-box;
   color: var(--text-primary);
   line-height: 1.2;
@@ -260,17 +261,9 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   pointer-events: none;
 }
 
-/* Zmenšení mezer mezi odstavci uvnitř čtečky */
-.SYNTHOMAREADER p,
-.SYNTHOMAREADER .text,
-.SYNTHOMAREADER .dialog,
-.SYNTHOMAREADER .dialogS,
-.SYNTHOMAREADER .dialogG,
-.SYNTHOMAREADER .log {
-  margin-left: 0rem;
-  margin-right: 0rem;
-  margin-bottom: 0rem;
-}
+
+
+
 
 /* Performance hints for large scroll containers removed to prevent pop-in on mobile */
 
@@ -297,27 +290,7 @@ body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote {
   .SYNTHOMAREADER.glass { background: rgba(0,0,0,0.28) !important; }
 }
 
-/* Původně jsme brutálně nastavovali overflow:visible všude. To zabilo scroll. */
-/* Nechme scroll na kontejneru .SYNTHOMAREADER a jen hosty nechme přetékat vizuálně. */
-#reader-content,
-#reader-body,
-#reader-extra,
-#reader-log,
-#reader-dialog,
-#reader-title { overflow: visible; max-height: none; margin-left: 0rem; }
 
-/* Zajisti, že boot-binary a následná .noising-text v logu budou na vlastních řádcích */
-#reader-log .boot-binary,
-#reader-log .noising-text {
-  display: block;
-}
-#reader-log {
-  text-align: center;
-}
-#reader-log .boot-binary { margin-bottom: 0rem; }
-
-/* trocha místa pod tlačítky, ať se knihovna nelepí */
-#reader-extra { margin-top: 0rem; }
 
 .SYNTHOMAREADER.chapter-loaded { animation: fadeIn 0.5s ease-in-out; }
 
@@ -559,7 +532,7 @@ a.chapter-link:focus-visible {
 }
 
 /* Title and log spacing without inline styles */
-.SYNTHOMAREADER .title { margin-bottom: 0.5rem; }
+
 .SYNTHOMAREADER .log { opacity: 0.75; margin-bottom: 0.75rem; }
 
 #reader-body img, #reader-extra img,
@@ -633,8 +606,8 @@ a.chapter-link:focus-visible {
     border-radius: 8px;
     font-size: calc(0.9rem * var(--font-size-multiplier, 1));
     /* drž postranní odsazení od okrajů displeje */
-    margin-left: 0.1rem;
-    margin-right: 0.1rem;
+    margin-left: 0;
+    margin-right: 0;
     max-width: calc(100% - 4px);
   }
   
@@ -728,7 +701,8 @@ a.chapter-link:focus-visible {
 /* Chapter meta box (MBTI summary) */
 .chapter-content.meta {
   margin-top: 1rem;
-  padding: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0rem;
   border: 1px solid var(--border-secondary);
   border-radius: 10px;
 }
