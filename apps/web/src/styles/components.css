@@ -503,7 +503,8 @@ opacity: 1;
   .SYNTHOMAREADER .tw-line.dialogN,
   .SYNTHOMAREADER .tw-line.text,
   .SYNTHOMAREADER .tw-line.title {
-    margin-left: -1rem;                 /* remove per-class margin drift */
+    margin-left: -1rem;  
+    margin-right: -1rem;               /* remove per-class margin drift */
     line-height: 1.2;
   }
 
