@@ -39,22 +39,22 @@
 }
 
 /* Hero info choices visibility control (global, not CSS Modules) */
-.SYNTHOMAREADER.typing button.choice-link,
-.SYNTHOMAREADER:not(.choices-shown) button.choice-link {
+.SYNTHOMAREADER.typing .choice-link,
+.SYNTHOMAREADER:not(.choices-shown) .choice-link {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity .2s ease;
 }
 
-.SYNTHOMAREADER.choices-shown button.choice-link {
+.SYNTHOMAREADER.choices-shown .choice-link {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
 
 /* Hide empty choice artifacts completely */
-.SYNTHOMAREADER button.choice-link.choice-empty {
+.SYNTHOMAREADER .choice-link.choice-empty {
   display: none !important;
 }
 

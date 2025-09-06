@@ -5,6 +5,7 @@ import "../src/styles/themes.css";
 import "../src/styles/reader.css";
 import ControlPanelClient from "./components/ControlPanelClient";
 import GlobalAudioClient from "./components/GlobalAudioClient";
+import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
@@ -46,6 +47,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="cs" data-theme="default">
       <body>
+        {/* Retro Arcade pixelation canvas overlay (controlled by CSS vars in themes.css) */}
+        <RetroPixelCanvasClient />
         {/* Global background video so it persists across routes */}
         <video className="bg-video" autoPlay muted loop playsInline preload="metadata" aria-hidden>
           <source src="/video/SYNTHOMA1.webm" type="video/webm" />

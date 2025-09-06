@@ -438,7 +438,13 @@ body:not(.force-shine) .no-animations .noising-char.noising-static {
 .library-error { color: #ff6; margin-top: 8px; }
 .library-empty { margin-top: 12px; opacity: .85; }
 
-.lib-grid { margin-top: 16px; display: grid; gap: 16px; }
+.lib-grid {
+  margin-top: 16px;
+  display: grid;
+  gap: 16px;
+  /* Responsive grid: make cards smaller and fit more per row */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
 .lib-section {
   border: 1px solid var(--border-tertiary, rgba(255,255,255,0.15));
   border-radius: 12px;

@@ -207,7 +207,12 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           }
           node.classList.add('selected');
           node.classList.remove('disabled');
-          node.setAttribute('aria-pressed', 'true');
+          {
+            const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
+            if (!isAnchorWithHref) {
+              node.setAttribute('aria-pressed', 'true');
+            }
+          }
           node.classList.add('chosen');
           node.classList.remove('faded');
           try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
@@ -249,7 +254,12 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
             }
             node.classList.add('selected');
             node.classList.remove('disabled');
-            node.setAttribute('aria-pressed', 'true');
+            {
+              const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
+              if (!isAnchorWithHref) {
+                node.setAttribute('aria-pressed', 'true');
+              }
+            }
             node.classList.add('chosen');
             node.classList.remove('faded');
             try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
@@ -305,7 +315,12 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
             }
             node.classList.add('selected');
             node.classList.remove('disabled');
-            node.setAttribute('aria-pressed', 'true');
+            {
+              const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
+              if (!isAnchorWithHref) {
+                node.setAttribute('aria-pressed', 'true');
+              }
+            }
             node.classList.add('chosen');
             node.classList.remove('faded');
             try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
@@ -338,7 +353,12 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
             }
             node.classList.add('selected');
             node.classList.remove('disabled');
-            node.setAttribute('aria-pressed', 'true');
+            {
+              const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
+              if (!isAnchorWithHref) {
+                node.setAttribute('aria-pressed', 'true');
+              }
+            }
           } catch {}
           try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
           const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
