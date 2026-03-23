@@ -9,15 +9,27 @@ import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
 import ScrollGuardClient from "./components/ScrollGuardClient";
 import MBTIProviderClient from "./components/MBTIProviderClient";
 import MBTIHudClient from "./components/MBTIHudClient";
+import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
+
+// Dynamic import for debug panel (development only)
+const DebugPanel = () => {
+  if (process.env.NODE_ENV === 'development') {
+    const DebugPanelComp = require('./components/DebugPanel').default;
+    return <DebugPanelComp />;
+  }
+  return null;
+};
 
 export const metadata: Metadata = {
   title: "SYNTHOMA",
   description: "Cyberpunková interaktivní čtečka a knihovna.",
   icons: {
     icon: "/assets/favicon.ico",
+    apple: "/assets/icon-152x152.png",
   },
+  manifest: "/manifest.json",
   metadataBase: new URL("https://synthoma.cz"),
   alternates: {
     canonical: "https://synthoma.cz/",
@@ -118,6 +130,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <ControlPanelClient />
           <GlobalAudioClient />
           <ScrollGuardClient />
+          <ServiceWorkerRegister />
+          <DebugPanel />
           {/* MBTI HUD (fixed, non-intrusive) */}
           <MBTIHudClient />
         </MBTIProviderClient>
