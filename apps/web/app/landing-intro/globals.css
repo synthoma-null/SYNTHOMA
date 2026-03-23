@@ -1,0 +1,174 @@
+/* Global variables and fonts for landing-intro route segment */
+
+@font-face {
+  font-family: "LI-Inter";
+  src: url("/landing-intro/fonts/Inter-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LI-JetBrainsMono";
+  src: url("/landing-intro/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* font variables to be consumed by CSS Modules */
+  --li-font-sans: "LI-Inter", ui-sans-serif, system-ui, Segoe UI, Roboto, Inter, sans-serif;
+  --li-font-mono: "LI-JetBrainsMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --li-bg: #0b0b0c;
+  --li-fg: #f2f2f2;
+  --li-muted: #b3b3b3;
+  --li-accent: #7c5cff;
+  --li-accent-2: #00d4ff;
+  --li-glass: rgba(255, 255, 255, 0.06);
+  --li-border: rgba(255, 255, 255, 0.12);
+  --li-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  /* Additional variables reused by shared glitch styles */
+  --text-primary: var(--li-fg);
+  --accent-primary: var(--li-accent);
+  --accent-secondary: var(--li-accent-2);
+  --glow-primary: var(--li-accent);
+  --glow-secondary: var(--li-accent-2);
+  --primary-color: var(--li-accent);
+  --filter-primary: none;
+}
+
+/* Hero info choices visibility control (global, not CSS Modules) */
+.SYNTHOMAREADER.typing .choice-link,
+.SYNTHOMAREADER:not(.choices-shown) .choice-link {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.SYNTHOMAREADER.choices-shown .choice-link {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Hide empty choice artifacts completely */
+.SYNTHOMAREADER .choice-link.choice-empty {
+  display: none !important;
+}
+
+/* Glitch heading styles scoped for landing-intro */
+#glitch-synthoma.glitch-master {
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  text-align: center;
+  margin: 0.5rem 0;
+  z-index: 10;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-shadow:
+    0 0 6px var(--glow-secondary),
+    0 0 16px var(--glow-primary),
+    0 0 36px var(--glow-secondary),
+    2px 2px 12px var(--glow-primary);
+  animation: glitch 1.2s infinite linear alternate-reverse;
+  will-change: transform, text-shadow;
+  font-family: 'Synthoma', monospace;
+}
+
+.glitch-span,
+.glitch-fake1,
+.glitch-fake2 {
+  position: absolute;
+  left: -10%;
+  top: 0;
+  margin: 0;
+  width: 120%;
+  height: 100%;
+  pointer-events: none;
+  letter-spacing: 0.08em;
+  /* Inherit the monospace font to keep overlay alignment exact */
+  font-family: inherit;
+}
+
+.glitch-fake1 {
+  color: #ff00c8; /* magenta layer */
+  opacity: 0.58;
+  text-shadow: 2px 0 #ff00c8, 0 0 10px #ff00c8, 0 0 28px rgba(255, 0, 200, 0.6);
+  z-index: 1;
+  animation: glitchLayer1 2.2s infinite linear alternate;
+}
+
+.glitch-fake2 {
+  color: #0ff; /* cyan layer */
+  opacity: 0.44;
+  text-shadow: -2px 0 #0ff, 0 0 8px #0ff, 0 0 28px rgba(0, 255, 255, 0.5);
+  z-index: 2;
+  animation: glitchLayer2 1.7s infinite linear alternate;
+}
+
+.glitch-char {
+  /* Default inline to avoid affecting other glitch uses (e.g., buttons) */
+  display: inline;
+  position: relative;
+  z-index: 20;
+  transition: color 0.06s, filter 0.12s, transform 0.10s;
+  will-change: color, filter, transform;
+  letter-spacing: 0.08em;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main heading: fixed-width glyphs to keep width constant across glitches */
+#glitch-synthoma .glitch-char {
+  display: inline-block;
+  width: 1ch;
+}
+
+.glitch-char.glitchy {
+  color: #f0f; /* magenta blink */
+  filter: blur(1.5px) brightness(2.2);
+  text-shadow: 0 0 15px #f0f, 0 0 8px #f0f, 0 0 2px #f0f;
+  animation: glitchjump 0.10s linear 3; /* snappier multi-jump */
+  transform: translateY(-2px) scale(1.07) skewX(3deg);
+}
+
+/* front cyan layer glow */
+#glitch-synthoma .glitch-real {
+  color: #0ff;
+  text-shadow: 0 0 6px #0ff, 0 0 12px #0ff, 2px 2px 10px rgba(255, 0, 200, 0.35);
+}
+
+@keyframes glitch {
+  0% { transform: translate(-1px, 0); opacity: .8; }
+  25% { transform: translate(1px, 0); opacity: .9; }
+  50% { transform: translate(-1px, 1px); opacity: .7; }
+  75% { transform: translate(1px, -1px); opacity: .8; }
+  100% { transform: translate(0); opacity: 1; }
+}
+
+@keyframes glitchLayer1 {
+  0% { transform: translate(0, 0) skewX(0deg); }
+  50% { transform: translate(-3px, 1px) skewX(2deg); }
+  100% { transform: translate(0, 0) skewX(0deg); }
+}
+
+@keyframes glitchLayer2 {
+  0% { transform: translate(0, 0) skewY(0deg); }
+  60% { transform: translate(-2px, 1px) skewY(-1deg); }
+  100% { transform: translate(0, 0) skewY(0deg); }
+}
+
+@keyframes glitchjump {
+  0%   { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
+  20%  { transform: translate(-1px, -2px) scale(1.08) skewX(4deg); opacity: .95; }
+  40%  { transform: translate(1px, -1px) scale(1.05) skewX(-2deg); opacity: .9; }
+  70%  { transform: translate(-1px, 2px) scale(0.98) skewX(2deg); opacity: .95; }
+  85%  { transform: translate(1px, 1px) scale(1.02) skewX(-1deg); opacity: .98; }
+  100% { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
+}

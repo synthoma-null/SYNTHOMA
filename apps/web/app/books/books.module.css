@@ -1,0 +1,141 @@
+.cardButton {
+  display: block;
+  text-align: left;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.bookCard {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #334155;
+}
+.bookCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.coverThumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.coverHero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.noCover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.coverImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sectionTitleSpacing {
+  margin-top: 0.75rem;
+}
+
+.cardBody {
+  padding: 0.9rem;
+}
+
+.sectionTitleReset {
+  margin: 0;
+}
+
+.fullWidthSection {
+  grid-column: 1 / -1;
+}
+
+/* spacing helper for inline badges */
+.badgeSpace {
+  margin-left: 0.5rem;
+}
+
+/* Description block under header */
+.descBlock {
+  margin-top: 0.5rem;
+}
+.descExcerpt {
+  margin: 0.25rem 0 0 0;
+}
+.descActions { margin-top: 0.35rem; display: flex; gap: .5rem; }
+
+/* CTA row for header buttons (Pokračovat/Zpět) */
+.ctaRow { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.ctaRow > .btn { flex: 0 0 auto; }
+
+/* Chapters list spacing/touch targets */
+.libListReset { list-style: none; padding-left: 0; margin: 0.5rem 0 0 0; }
+.libListReset li { padding: 0; }
+.libListReset li { overflow: hidden; }
+/* Make chapter anchors behave like full-width buttons */
+.libListReset :global(.lib-link),
+.libListReset .lib-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  flex-wrap: wrap;            /* allow content to wrap to next line */
+  overflow: hidden;           /* prevent horizontal overflow */
+  word-break: break-word;     /* break long tokens like [DISCONTINUUM] */
+  overflow-wrap: anywhere;    /* allow wrapping anywhere if needed */
+  white-space: normal;
+}
+.libListReset :global(.lib-badge),
+.libListReset .lib-badge { margin-left: auto; }
+
+/* Responsive tweaks */
+@media (max-width: 800px) {
+  .coverHero { aspect-ratio: 16 / 9; }
+  .sectionHeader { gap: .6rem; }
+  .ctaRow { width: 100%; }
+  .ctaRow > .btn { width: 100%; justify-content: center; }
+  .descActions { flex-direction: column; }
+  /* Mobile-friendly chapter buttons */
+  .libListReset :global(.lib-link),
+  .libListReset .lib-link {
+    padding: 12px 14px; /* larger touch target */
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+  .libListReset :global(.lib-badge),
+  .libListReset .lib-badge {
+    display: block;
+    margin: 4px 0 0 0;
+    align-self: flex-start; /* badge goes under title on mobile */
+  }
+}

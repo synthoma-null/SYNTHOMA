@@ -1,0 +1,851 @@
+<!-- 🎭 SYNTHOMA: větvící se glitch-noir příběh (prodloužený vstup + nevtíravý průvodce + víc LOGů/DIALOGů + plynulý přechod) -->
+<link rel="stylesheet" href="/styles.css" />
+<script src="/books/mbti.js" defer></script>
+
+<!-- ÚVOD – průvodce pro nováčky -->
+<p class="text">„Vítej v <span class="fx-glitch">SYNTHOMĚ</span>, <span class="glitching">@&SĐYŁ</span> !!! Tady jméno nikoho nezajímá, ale chyby? Ty jsou v paměti <span class="fx-glitch">věčně</span>.“</p>
+
+<p class="log fx-scanline">LOG [VSTUP]:</p>
+<p class="dialog">„Jsi tu správně? Možná. Tohle je rozcestník.“</p>
+
+<p class="text">
+  Synthoma je glitch‑noir svět o <span class="echo-ghost" data-echo="identitě">paměti</span>. Čteš interaktivně, volby někdy větví <span class="halo fx-flicker">tón</span> a cestu, ne nutně pravdu. <span class="echo-ghost" data-echo="Pravda">Lež</span> se totiž ráda převléká.
+</p>
+
+<p class="text">
+  <span class="alarm-emote">⚠</span> Vpravo dole je panel: <span class="fx-scanline">velikost</span> písma, <span class="fx-glitch">sklo</span>, <span class="halo fx-flicker">animace</span>, <span class="effect-riftGlow">motivy</span>, <span class="effect-pulseWave">hudba</span>.   <span class="alarm-emote"> ⚠</span>
+</p>
+
+<p class="choice" data-next="ui-help" data-ui="toast-info" data-tags="J">
+  <span>▼ </span>Tutoriál ovládacího panelu
+</p>
+<p class="choice" data-next="about" data-ui="toast-success" data-tags="N">
+  <span>▼ </span>O Synthomě (co to je, jak číst)
+</p>
+<p class="choice" data-ui="toast-info" data-tags="J">
+  <a href="/books" class="choice-link" aria-label="Přejít do Knihovny">
+    <span>▼ </span>Knihovna (otevře seznam kapitol – čti, neplač)
+  </a>
+  <!-- původně externí odkaz /books; nyní opět jako přímý odkaz -->
+</p>
+<p class="choice" data-ui="toast-success" data-tags="T">
+  <a href="/archive" class="choice-link" aria-label="Přejít do Archivu">
+    <span>▼ </span>Archiv (wiki Synthomy: svět, frakce, pojmy…)
+  </a>
+  <!-- původně externí odkaz /archive; nyní opět jako přímý odkaz -->
+</p>
+
+<!-- 🌃 SKRYTÉ SEKCE PRO DYNAMICKÉ NAČÍTÁNÍ -->
+<div id="story-cache" class="hidden">
+
+  <!-- UI-HELP: tutoriál panelu bez technických řečí ✨ -->
+  <section class="story-block" id="ui-help" data-theme="synthoma">
+    <h3 class="title">Ovládací panel — rychlý přehled </h3>
+
+    <p class="log fx-scanline">LOG [NÁPOVĚDA]:</p>
+    <p class="dialog">„Panel je vždy vidět a reaguje i během čtení. Tři věci: pohodlí očí, nálada prostředí, hudební podkres. Protože kdo chce číst glitch-noir s bolavýma očima? 😜“</p>
+
+    <p class="text">
+      <strong>Displej</strong><br/>
+      • <em>Velikost písma</em> — nastav tak, aby pracoval příběh, ne tvoje <span class="fx-glitch">zorničky</span>. Jinak ti Synthoma pošle <span class="corrupt fx-noise">chybovou</span> hlášku do mozku. <span class="alarm-emote">⚠</span><br/>
+      • <em>Průhlednost pozadí</em> — ztiší svět za textem, když má mluvit <span class="fx-outline is-lit">obsah</span>. Ideální pro ty, kdo se bojí vlastních <span class="halo fx-flicker">stínů</span>.<br/>
+      • <em class="fx-underline">Sklo</em> — jemný „skleněný“ efekt pro soustředění i <span class="effect-riftGlow">atmosféru</span>. Jako bys četl skrz <span class="fx-glitch">rozbitý</span> firewall.<br/>
+      • <em>Animace</em> — klidné čtení? Vypni. Chceš <span class="effect-pulseWave">pulz</span>? Zapni. Ale pozor, příliš mnoho <span class="fx-glitch">glitchů</span> a <span class="corrupt fx-noise">crashneš</span> sám.<br/>
+    </p>
+
+    <p class="log fx-scanline">LOG [DEBUG]:</p>
+    <p class="dialogS">„Nastav to špatně a Synthoma ti to vrátí – s úsměvem. 😈“</p>
+
+    <p class="text">
+      <strong>Motivy</strong><br/>
+      <span class="fx-glitch">Synthoma</span> · Green Matrix · <span class="halo fx-flicker">Neon Hellfire</span> · <span class="effect-riftGlow">Cyber Dystopia</span> · <span class="effect-fogNoise">Acid Glitch</span> · <span class="fx-outline is-lit">Retro Arcade</span>.
+      Mění rám a náladu rozhraní, ne obsah <span class="fx-glitch">příběhu</span>. Vyber si ten, ve kterém se cítíš jako <span class="echo-ghost" data-echo="NULL">NULL</span> – prázdný, ale plný potenciálu.
+    </p>
+
+    <p class="text">
+      <strong>Audio přehrávač</strong><br/>
+      <span class="fx-outline is-lit">Play/Stop</span>, <span class="effect-pulseWave">hlasitost</span>, výběr skladeb („SynthBachmoff“, „Glitch Ambient“, „<span class="halo fx-flicker">Nuova</span>“).
+      Hraje vždy jedna a pokračuje i mezi scénami. Protože ticho v Synthomě je nebezpečnější než <span class="corrupt fx-noise">šum</span>.
+    </p>
+
+    <p class="log">LOG [TIPY]:</p>
+    <p class="dialogN">„Text má vystoupit? <span class="fx-glitch">Sklo</span> vypnout, <span class="effect-riftGlow">pozadí</span> mírně ztlumit. Jinak tě pohltí vlastní reflexe. 😂“</p>
+    <p class="dialogN">„Chceš ‚skleněný‘ look? <span class="fx-glitch">Sklo</span> zapnout a držet jemné <span class="halo fx-flicker">rozostření</span> – jako bys hleděl skrz <span class="corrupt fx-noise">cizí</span> vzpomínky.“</p>
+    <p class="dialogN">„Klidné tempo? <span class="fx-glitch">Animace</span> vypnout, <span class="effect-pulseWave">hudbu</span> stáhnout, <span class="fx-glitch">sklo</span> nastavit podle chuti. Ať se ti nevrátí bolest hlavy z předchozího cyklu.“</p>
+
+    <p class="choice" data-next="tour-start" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Rozumím. Pojďme na průvod (s trochou ironie navíc)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="E">
+      <span>▼ </span>Jsem připraven. Do Města (nebo do pasti?)
+    </p>
+  </section>
+
+  <!-- ABOUT: stručné "O Synthomě" (nahrazuje dříve odstraněnou sekci) -->
+  <section class="story-block" id="about" data-theme="synthoma">
+    <h3 class="title">O Synthomě (krátce a k věci)</h3>
+
+    <p class="log fx-scanline">LOG [ABOUT]:</p>
+    <p class="dialog">„Glitch‑noir svět o <span class="echo-ghost" data-echo="identitě">paměti</span>. Čteš interaktivně; volby často větví <span class="halo fx-flicker">tón</span> a cestu, ne nutně pravdu. <span class="echo-ghost" data-echo="Lež">Pravda</span> se tu totiž ráda převléká.“</p>
+
+    <p class="text">
+      • <span class="fx-outline is-lit">Forma</span>: krátké scény, návraty do rozcestníků, žádné <span class="fx-glitch">jumpscary</span>, jen pomalé <span class="echo-ghost" data-echo="zrcadlení">zrcadlení</span>.<br/>
+      • <span class="fx-underline">Panel</span>: kdykoli změň <span class="effect-riftGlow">kontrast</span>, motiv, „<span class="fx-underline">Sklo</span>“ a <span class="effect-pulseWave">hudbu</span> – klid na oči je priorita.<br/>
+      • <span class="halo fx-flicker">Tempo</span>: když je <span class="corrupt fx-noise">rušno</span>, vypni <span class="fx-glitch">animace</span>; když mdlé, dej jiný <span class="echo-ghost" data-echo="motiv">motiv</span>/<span class="echo-ghost" data-echo="hudbu">hudbu</span>.
+    </p>
+
+    <p class="choice" data-next="tour-start" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Jdeme na průvod (rychlé seznámení)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="E">
+      <span>▼ </span>Přeskočit a do Města (hned do rozcestníku)
+    </p>
+  </section>
+
+  <section class="story-block glitch-border" id="tour-start" data-theme="synthoma">
+    <h2 class="title fx-glitch is-lit">První kroky (protože každý NULL začíná jako chyba v logu, ne jako hrdina)</h2>
+
+    <p class="log fx-scanline corrupt fx-noise">LOG [PRŮVOD]: „Tři kroky.“</p>
+    
+    <p class="dialog halo fx-flicker">„Tři krátké kroky. Nastavíš si čtení, zkusíš sklo, pustíš hudbu – a pak se nevrátíš. Synthoma sleduje každý tvůj glitch, a já? Já se směju. 😉“</p>
+    <p class="text">
+      Město čeká, ale ne jako <span class="fx-outline is-lit">přítel</span>, spíš jako archivář, co si bere tvou <span class="effect-pulseWave">duši</span> na dluh. Všimni si, jak i drobná změna – <span class="halo fx-flicker">písmo</span>, co bliká jako <span class="corrupt fx-noise">varování</span> – ovlivní <span class="effect-riftGlow">náladu</span>. Jako když se vzdáš svého <span class="fx-glitch">smyslu</span> a staneš se součástí neonu, co páchne spálenou <span class="effect-fogNoise">historií</span>. První <span class="fx-glitch">glitch</span>? Ten je zdarma. Další? Platíš <span class="echo-ghost" data-echo="kousky">fragmenty</span> identity.
+    </p>
+
+    <p class="log fx-outline">LOG [CYKLUS]: „Zvaž krok.“</p>
+    
+    <p class="choice" data-next="tour-loop" data-ui="toast-success" data-tags="J" data-glitch="low">
+      <span>▼ </span>Průvod přeskočit a vstoupit do Města (pro ty, co se nebojí crashnout hned na startu)
+    </p>
+    <p class="choice hidden" data-next="hidden-quest-start" data-ui="toast-info" data-tags="P"> <!-- Skrytý hook pro quest -->
+      <span>▼ </span>Aktivovat skrytý quest: Sbírat fragmenty (protože proč by to mělo být snadné?)
+    </p>
+  </section>
+
+  <section class="story-block" id="tour-loop" data-theme="retro-arcade">
+    <h3 class="title effect-kernelBlink">Zkouška v praxi (tempo bez slitování)</h3>
+
+    <p class="log fx-noise">LOG [TEMPO]: „Nastav rytmus.“</p>
+    
+    <p class="dialogS halo fx-wave">„Ach, ty jsi ten typ, co testuje hranice? Dobře, glitchuju ti tempo: rychlejší čtení, pomalejší bolest. Ale pamatuj, v Synthomě není tempo volba – je to daň za přežití. 😂“</p>
+
+    <p class="text effect-fogNoise">
+      Když se necháš houpat příliš dlouho v téhle smyčce, zapomeneš, proč jsi vůbec přišel. Ale teď je to jen test – zatím. Zkus si představit: tvůj první fragment identity se tu schovává jako easter egg v kódu. Najdeš ho? Nebo ho Synthoma sežere za tebe?
+    </p>
+
+    <p class="choice" data-next="tour-recap" data-ui="toast-success" data-tags="J" data-glitch="medium">
+      <span>▼ </span>Upraveno. Shrnutí a dál (nebo další cyklus? Protože proč končit, když můžeš trpět věčně?)
+    </p>
+    <p class="choice" data-next="echo-loop" data-ui="toast-info" data-tags="P"> <!-- Early hook do echo -->
+      <span>▼ </span>Zůstat v smyčce a riskovat první ozvěnu (pro odvážné glitche)
+    </p>
+  </section>
+
+  <section class="story-block" id="tour-recap" data-theme="synthoma">
+    <h3 class="title fx-glitch per-char">Průvod dokončen (vitaj v pekle – s extra ironií)</h3>
+
+    <p class="log fx-scanline">LOG [SHRNUTÍ]: „Hotovo. Dál.“</p>
+    
+    <p class="dialog effect-pulseWave">„Jsi připraven? Ne? Dobře, protože v Synthomě nikdo není. Ale aspoň máš volby – ty iluzorní kraby, co tě táhnou hlouběji.“</p>
+
+    <p class="textV echo-ghost" data-echo="Jsi připraven. A Město si tě zapamatuje – jako chybu, kterou nelze opravit.">
+      Jsi připraven. A Město si tě zapamatuje – jako chybu, kterou nelze opravit. První restart je zdarma, ale pak platíš emoce. Cyan pro nervy, magenta pro trhliny – a ty jsi teď součást kódu.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-success" data-tags="E" data-glitch="high">
+      <span>▼ </span>Vstoupit do Města (a neohlédnout se – nebo se podívat a litovat?)
+    </p>
+  </section>
+
+  <!-- HUB MĚSTA: centrální rozcestník s questovými háky a glitchovými pasti 🌃🔄 -->
+  <section class="story-block" id="city-hub" data-theme="retro-arcade">
+    <h2 class="title effect-crtTerminal">Město — nervová síť paměti (plná glitchů, questů a tvých vlastních chyb)</h2>
+
+    <p class="log fx-noise">LOG [UZEL]: „Vyber směr.“</p>
+    
+    <p class="dialogN halo fx-underline">„Rozcestník čeká, NULLu. Krátké okruhy na rozečtení, nebo hned do hloubky? Synthoma má hlad po datech – a ty máš hlad po... no, po čem? Po bolesti? Dobrý vtip. 😂“</p>
+
+    <p class="text effect-fogNoise">
+      Quest progres: Sbírej fragmenty (M,A,O,E,R,S,T → MAESTRO?), abys odemkl skrytou komnatu. Každý krok ovlivní persistentní log – a Sarkasma se směje z kouta. Cyan bliká: bezpečí. Magenta: trhlina. Žlutá: varování, abys neutekl příliš brzy.
+    </p>
+
+    <p class="choice" data-next="echo-alley" data-ui="toast-info" data-tags="P" data-quest="fragment-E">
+      <span>▼ </span>Ulička Ozvěn (krátká smyčka pro rozečtení, s ozvěnami tvých chyb – a háčkem na fragment E)
+    </p>
+    <p class="choice" data-next="kiosk" data-ui="toast-info" data-tags="T" data-quest="fragment-R">
+      <span>▼ </span>Paměťový kiosk (miniscéna a návrat – sestřih tvých selhání v 8K, s tipem na R)
+    </p>
+    <p class="choice" data-next="slums" data-ui="toast-success" data-tags="S" data-quest="fragment-S">
+      <span>▼ </span>Sejít do Paměťových slumů (kde vzpomínky páchnou spálenou historií – a skrývají S)
+    </p>
+    <p class="choice" data-next="wetland" data-ui="toast-info" data-tags="N" data-quest="fragment-T">
+      <span>▼ </span>Odbočit k Neonovému mokřadu (plnému traumatických stromů – touha T čeká v bažině)
+    </p>
+    <p class="choice" data-next="sandbox" data-ui="modal" data-tags="P" data-quest="fragment-O">
+      <span>▼ </span>Vstoupit do Pískoviště (pozor na smyčky – mohou tě pohltit jako buffer overflow, ale O je tam)
+    </p>
+    <p class="choice" data-next="cathedral" data-ui="toast-info" data-tags="J" data-quest="fragment-A">
+      <span>▼ </span>Ke Katedrále promptů (tiché monitory, které ti vrátí tvé vlastní otázky s úsměvem – a A v tichu)
+    </p>
+    <p class="choice" data-next="void-boot" data-ui="toast-info" data-tags="N">
+      <span>▼ </span>Zahájit boot: Prázdnota → Město neodeslaných (rozečtení s bonusovým glitchem)
+    </p>
+    <p class="choice hidden" data-next="alter-ego-chamber" data-ui="toast-success" data-quest="complete" data-tags="J"> <!-- Odemkne se po sběru -->
+      <span>▼ </span>Skrytá volba: Vstoupit do Alter Ego Chamber (když máš všechny fragmenty – gratuluju, jsi oficiálně ztracený)
+    </p>
+    <p class="choice">
+      <a class="choice-link" href="/books" data-mbti="J"><span>▶ </span>Do Knihovny (vybrat kapitolku místo přímého skoku – protože proč by to mělo být lineární?)</a>
+    </p>
+  </section>
+
+  <!-- Warm-up okruhy: Echo Alley s fragmentem E 🕳️ -->
+  <section class="story-block" id="echo-alley" data-theme="synthoma">
+    <h3 class="title fx-glitch per-char">Ulička Ozvěn (ozvěny bolesti – a první háček na tvou duši)</h3>
+
+    <p class="log effect-kernelBlink">LOG [OZVĚNY]: „Poslouchej krátce.“</p>
+    
+    <p class="dialog echo-ghost" data-echo="Tiché 'ano', kdysi spolknuté, se vrací jako jiskra.">„Tiché 'ano', kdysi spolknuté, se vrací jako jiskra. Stačí to? Nebo ještě chvilku? Každá ozvěna je chybová hláška tvé minulosti – a Synthoma ji archivuje s úsměvem.“</p>
+
+    <p class="text effect-riftGlow">
+      Ozvěny se valí ulicí jako <span class="echo-ghost" data-echo="datový">datový</span> smog, plné <span class="halo fx-flicker">falešných</span> vzpomínek, které ti <span class="corrupt fx-noise">přepisují</span> duši. Každý šepot je <span class="fx-glitch per-char">glitch</span> z tvé minulosti, co se vrací s <span class="effect-pulseWave">bonusovým</span> sarkasmem, a Synthoma se směje, protože ví, že ty ozvěny nejsou náhodné – jsou tvé, i když je nechceš slyšet. Pulzující neon nad tebou bliká v rytmu tvého strachu, a ty víš, že zůstat znamená riskovat, že se ozvěna stane tvou <span class="echo-ghost" data-echo="novou">novou</span> realitou, plnou <span class="fx-outline is-lit">prázdnoty</span> a ztracených fragmentů.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Nechat ozvěny doznít a vrátit se na rozcestí (bez fragmentu – tvůj výběr, slabochu)
+    </p>
+    <p class="choice" data-next="echo-loop" data-ui="toast-info" data-tags="P" data-quest="unlock-E">
+      <span>▼ </span>Zůstat chvíli a naslouchat déle (získat E – ale riskovat buffer overflow, haha)
+    </p>
+  </section>
+
+  <section class="story-block" id="echo-loop" data-theme="synthoma" data-fragment="E">
+    <h4 class="title fx-outline">LOG-fragment: E (echo – ironické, protože tvé chyby se vrací v stereo)</h4>
+
+    <p class="log fx-scanline">LOG [ULOŽENO]: „Echo zapsáno."</p>
+    
+    <p class="dialogS effect-pulseWave">„Když už slyšíš dost, vrať se. Ulice si tě zapamatovala – jako chybu v logu, ale teď s bonusovým echem v kapse. Gratuluju, jsi o krok blíž k... no, k ničemu, ale aspoň sbíráš.“</p>
+
+    <p class="textV echo-ghost" data-echo="Fragment E pulzuje v tvé hlavě jako nekonečný loop. Synthoma se směje: „Tohle bude bolet déle, než čekáš.“">
+      Fragment E pulzuje v tvé hlavě jako <span class="echo-ghost" data-echo="nekonečný">nekonečný</span> loop, plný <span class="fx-glitch">ztracených</span> hlasů, které se vrací s <span class="halo fx-flicker">ironií</span>, a Synthoma se směje, protože ví, že tohle bude bolet déle, než čekáš, s každým krokem se ozvěna zesiluje, až ti přepíše <span class="corrupt fx-noise">paměť</span>, a ty se staneš jen dalším <span class="effect-riftGlow">echovým</span> duchem v městě, co žije z tvých <span class="fx-outline is-lit">chybných</span> rozhodnutí, plných <span class="effect-pulseWave">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Zpátky do Města (s E – quest pokračuje, ale tvá duše ne)
+    </p>
+  </section>
+
+  <!-- Kiosk s fragmentem R 📰 -->
+  <section class="story-block" id="kiosk" data-theme="synthoma">
+    <h3 class="title effect-crtTerminal">Paměťový kiosk (sestřih selhání – a zrcadlo, co lže)</h3>
+
+    <p class="log fx-noise">LOG [SESTŘIH]: „Dívej se potichu.“</p>
+    
+    <p class="dialogN halo fx-flicker">„Neodpovídej nahlas. Některé věci se zapisují jen pohledem – a Synthoma to vidí všechno. Ale reflexe v oknech skrývají více: tvé selhání v HD.“</p>
+
+    <p class="text echo-ghost" data-echo="Kiosk ti nabízí sestřih – tvůj, cizí, nevadí. Každý klip končí glitchem: „Restart?“">
+      Kiosk ti nabízí <span class="effect-fogNoise">sestřih</span> – tvůj, cizí, nevadí, každý klip končí <span class="fx-glitch">glitchem</span>: „Restart?“, plný <span class="corrupt fx-noise">selhání</span>, které se vrací jako <span class="halo fx-wave">falešný</span> úsměv, a ty víš, že tohle je jen další <span class="effect-riftGlow">zrcadlo</span>, co lže o tvé <span class="echo-ghost" data-echo="identitě">identitě</span>, plné <span class="fx-outline is-lit">prázdnoty</span> a archivovaných <span class="effect-pulseWave">chybných</span> rozhodnutí, co se smějí tvé naivitě.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Odejít s tichou poznámkou v hlavě (a cizí vzpomínkou v cache – bez R)
+    </p>
+    <p class="choice" data-next="kiosk-reflection" data-ui="toast-success" data-tags="T" data-quest="unlock-R">
+      <span>▼ </span>Podívat se blíž na reflexe ve výlohách (získat R – ale zrcadlo se rozbije v tvé duši)
+    </p>
+  </section>
+
+  <section class="story-block" id="kiosk-reflection" data-theme="synthoma" data-fragment="R">
+    <h4 class="title fx-glitch">LOG-fragment: R (reflexe – sarkastická, protože se díváš a vidíš NULLa)</h4>
+
+    <p class="log effect-riftGlow">LOG [REFLEXE]: „Vidíš víc, než chceš.“</p>
+    
+    <p class="textV echo-ghost" data-echo="Zrcadlo prasklo – ne sklo, tvá iluze. Synthoma zalogovala: „Další, kdo se podíval příliš hluboko.“">
+      Zrcadlo prasklo – ne <span class="fx-outline is-lit">sklo</span>, tvá <span class="halo fx-flicker">iluze</span>, Synthoma zalogovala: „Další, kdo se podíval příliš <span class="corrupt fx-noise">hluboko</span>“, plné <span class="effect-pulseWave">reflexí</span>, které se smějí tvé <span class="echo-ghost" data-echo="naivitě">naivitě</span>, a ty víš, že tohle je jen další <span class="fx-glitch per-char">glitch</span> v tvé realitě, plný <span class="effect-riftGlow">prázdnoty</span> a archivovaných <span class="effect-fogNoise">chybných</span> odrazů.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Vrátit se do Města (s R – a novým, zkresleným pohledem na sebe)
+    </p>
+  </section>
+
+  <!-- SKRYTÁ QUEST INIT: Sbírání fragmentů jako past na duši 🧩 -->
+  <section class="story-block hidden" id="hidden-quest-start" data-theme="acid-glitch">
+    <h3 class="title effect-kernelBlink">Aktivace questu (sbírání fragmentů – vítej v pekle, kde bolest sbíráš jako achievementy)</h3>
+
+    <p class="log fx-scanline">LOG [QUEST]: „Sběr spuštěn.“</p>
+    
+    <p class="dialog effect-pulseWave">„Teď jsi v tom po krk. Každá větev skrývá fragment – ale i past. Sarkastický tip: Nepřeháněj, nebo crashneš před koncem. Fragmenty: M (marnost), A (absence), O (odpor), E (echo), R (reflexe), S (smutek), T (touha). Každý má cenu – tvou duši. 🎯“</p>
+
+    <p class="textV echo-ghost" data-echo="Quest je persistentní – tvé chyby se neodstraní. Synthoma se směje: „Gratuluju, jsi sběračem vlastního utrpení.“">
+      Quest je <span class="fx-outline is-lit">persistentní</span> – tvé <span class="corrupt fx-noise">chyby</span> se neodstraní, Synthoma se směje: „Gratuluju, jsi <span class="halo fx-flicker">sběračem</span> vlastního utrpení“, plný <span class="effect-riftGlow">fragmentů</span>, které se valí jako <span class="effect-pulseWave">datový</span> smog, a ty víš, že tohle je jen další <span class="fx-glitch">past</span> v městě, co žije z tvých <span class="echo-ghost" data-echo="ztrát">ztrát</span>, plných sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-success" data-tags="J" data-quest="active">
+      <span>▼ </span>Zpátky do Města (quest spuštěn – sbírej, nebo lituj!)
+    </p>
+  </section>
+
+  <!-- Slums s fragmentem S 🏚️ -->
+  <section class="story-block" id="slums" data-theme="acid-glitch">
+    <h3 class="title fx-glitch per-char">Paměťové slumy (kde chyby žijí – a tvůj smutek čeká na casting)</h3>
+
+    <p class="log corrupt fx-noise">LOG [KONTAMINACE]: „Drž odstup.“</p>
+    
+    <p class="dialog">„Některé vitríny se dívají zpět. Tohle místo má dobré oči – a špatnou paměť na tvé selhání. Ale v každém koutě může být fragment... nebo past.“</p>
+
+    <p class="text effect-fogNoise">
+      Slumy voní po spálené <span class="echo-ghost" data-echo="identitě">identitě</span>, každý krok je <span class="halo fx-flicker">daň</span> – a ty platíš <span class="corrupt fx-noise">emocemi</span>, plnými <span class="fx-glitch">ztracených</span> profilů, co se valí kanály jako <span class="effect-riftGlow">odpad</span>, a Synthoma se směje, protože ví, že tohle je jen další <span class="effect-pulseWave">vrstva</span> tvé <span class="fx-outline is-lit">marnosti</span>, plná <span class="halo fx-wave">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Nasadit kapuci a projít beze slova (ignorovat logy – bez S)
+    </p>
+    <p class="choice" data-next="core" data-ui="modal" data-tags="T">
+      <span>▼ </span>Zastavit kurátora a žádat přezkum paměťové daně (risk crashu)
+    </p>
+    <p class="choice" data-next="slums-sidest" data-ui="toast-info" data-tags="N">
+      <span>▼ </span>Sledovat „Sběrnici studu“ k nadlimitnímu uzlu (sarkasmus zdarma)
+    </p>
+    <p class="choice" data-next="slums-sadness" data-ui="toast-success" data-tags="S" data-quest="unlock-S">
+      <span>▼ </span>Zastavit se u Památníku ztracených identit (získat S – a litovat)
+    </p>
+  </section>
+
+  <section class="story-block" id="slums-sidest" data-theme="acid-glitch">
+    <h4 class="title fx-glitch per-char">Nadlimitní uzel (přetok identity – kde se identita rozteče jako olej)</h4>
+
+    <p class="log fx-scanline">LOG [PŘETOK]: „Štítky se trhají, příběhy přetékají. O chvíli později už to půjde hůř – jako tvůj život po restartu. 😂“</p>
+
+    <p class="dialogS halo fx-flicker">„Hluk nabírá tělo. Buď ho zatlačíš, nebo ho projedeš – ale Synthoma si to zaloguje s úsměvem.“</p>
+
+    <p class="text effect-riftGlow">
+      Přetok se valí jako <span class="echo-ghost" data-echo="datový">datový</span> hurikán, plný <span class="corrupt fx-noise">trhaných</span> štítků a <span class="fx-outline is-lit">příběhů</span>, co se mísí s tvými, a ty cítíš, jak se tvá <span class="halo fx-wave">identita</span> rozteče jako olej po zdech, plná <span class="effect-pulseWave">sarkasmu</span> a prázdnoty, kde každý <span class="fx-glitch">hluk</span> je jen další <span class="effect-fogNoise">chyba</span> v systému, co se směje tvé <span class="echo-ghost" data-echo="marnosti">marnosti</span>.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="modal" data-tags="J">
+      <span>▼ </span>Upevnit štítky a uzavřít přetok (bezpečný únik – s jizvou)
+    </p>
+    <p class="choice" data-next="core" data-ui="toast-success" data-tags="P">
+      <span>▼ </span>Strhnout plombu a projet glitch-portem (do jádra bolesti – riskantní, ale s bonusem)
+    </p>
+  </section>
+
+  <section class="story-block" id="slums-sadness" data-theme="acid-glitch" data-fragment="S">
+    <h4 class="title halo fx-wave">LOG-fragment: S (smutek – melancholický, protože radost je pro amatéry)</h4>
+
+    <p class="log effect-riftGlow">LOG [SMUTEK]: „Těžký, ale tvůj.“</p>
+    
+    <p class="text echo-ghost" data-echo="Památník ti připomene všechny identity, které jsi nikdy neměl. Ale aspoň máš S – jako medaili za přežití.">
+      Památník ti připomene všechny <span class="fx-outline is-lit">identity</span>, které jsi nikdy neměl, plné <span class="corrupt fx-noise">melancholie</span> a <span class="halo fx-flicker">ztracených</span> fragmentů, a ty víš, že tohle je jen další <span class="effect-pulseWave">feature</span> v systému, co se směje tvé <span class="echo-ghost" data-echo="marnosti">marnosti</span>, plný <span class="fx-glitch">sarkasmu</span> a prázdnoty, kde každý <span class="effect-riftGlow">smutek</span> je medailí za <span class="effect-fogNoise">přežití</span>.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="J">
+      <span>▼ </span>Vrátit se do Města (s S a těžkým srdcem – quest +1)
+    </p>
+  </section>
+
+  <!-- Wetland s fragmentem T 🌿 -->
+  <section class="story-block" id="wetland" data-theme="neon-hellfire">
+    <h3 class="title fx-glitch">Neonový mokřad (traumata v bažině – a touha, co tě utápí)</h3>
+
+    <p class="log fx-scanline">LOG [MOKŘAD]: „Pozor na klam.“</p>
+    
+    <p class="dialog effect-pulseWave">„Pocit bezpečí je tu past. Vždycky voní správně – po spálené historii a lítosti. Ale někde tady čeká T... a Glitchka se směje z keře.“</p>
+
+    <p class="textV echo-ghost" data-echo="Mokřad tě táhne dolů – jako tvé touhy. Každý krok je lullaby, co končí křikem.">
+      Mokřad tě táhne dolů – jako tvé <span class="halo fx-flicker">touhy</span>, každý krok je <span class="effect-riftGlow">lullaby</span>, co končí <span class="corrupt fx-noise">křikem</span>, plný <span class="fx-outline is-lit">traumat</span> v bažině, kde se <span class="effect-pulseWave">stromy</span> splétají z minulých <span class="echo-ghost" data-echo="chybných">chybných</span> rozhodnutí, a Synthoma se směje tvé <span class="fx-glitch">touze</span>, plný <span class="effect-fogNoise">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="children" data-ui="modal" data-tags="F">
+      <span>▼ </span>Za zpěvem do zakázané zóny (kde žáby šeptají PINy)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="S">
+      <span>▼ </span>Ustřihnout stopu a vrátit se do Města (bez T – moudré)
+    </p>
+    <p class="choice" data-next="sandbox" data-ui="toast-success" data-tags="P">
+      <span>▼ </span>Nechat se zavést do Pískoviště (dětské pasti)
+    </p>
+    <p class="choice" data-next="wetland-desire" data-ui="toast-success" data-tags="T" data-quest="unlock-T">
+      <span>▼ </span>Následovat šepot touhy k Jezírku reflexí (získat T – a utop se v ní)
+    </p>
+  </section>
+
+  <section class="story-block" id="wetland-desire" data-theme="neon-hellfire" data-fragment="T">
+    <h4 class="title halo fx-flicker">LOG-fragment: T (touha – ironická, protože touhy jsou největší glitch)</h4>
+
+    <p class="log corrupt fx-noise">LOG [TOUHA]: „Horké a ostré.“</p>
+    
+    <p class="text echo-ghost" data-echo="Jezírko ti ukáže, co chceš, ale nikdy nedostaneš. Aspoň máš T – jako řetěz kolem krku.">
+      Jezírko ti ukáže, co chceš, ale nikdy <span class="fx-outline is-lit">nedostaneš</span>, aspoň máš T – jako <span class="halo fx-wave">řetěz</span> kolem krku, plný <span class="corrupt fx-noise">touhy</span>, co se valí jako <span class="effect-riftGlow">virus</span>, a Synthoma se směje tvé <span class="effect-pulseWave">zranitelnosti</span>, plný <span class="echo-ghost" data-echo="sarkasmu">sarkasmu</span> a prázdnoty, kde každý <span class="fx-glitch">dotyk</span> je jen další <span class="effect-fogNoise">chyba</span>.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="J">
+      <span>▼ </span>Vrátit se do Města (s T a prázdnýma rukama – quest +1)
+    </p>
+  </section>
+  
+  <!-- Sandbox s fragmentem O 🎠 -->
+  <section class="story-block" id="sandbox" data-theme="retro-arcade">
+    <h3 class="title effect-crtTerminal">Pískoviště (hra bez konce – a odpor, co tě nutil hrát dál)</h3>
+
+    <p class="log fx-outline">LOG [SMYČKY]: „Nenech se chytit.“</p>
+    
+    <p class="dialogN">„Když se necháš houpat příliš dlouho, zapomeneš, proč jsi přišel – jako NULL v Prázdnotě. Glitchka šeptá: 'Pusť.' Ale ty? Ty se držíš.“</p>
+
+    <p class="text effect-fogNoise">
+      Smyčky se zkracují. Každá je kratší, chladnější. Písek je plný slov: „Je mi ze sebe zle.“ Pulzující <span class="echo-ghost" data-echo="hra">hra</span> tě táhne do <span class="halo fx-flicker">smyček</span>, plných <span class="corrupt fx-noise">odporu</span>, co se valí jako <span class="fx-outline is-lit">datový</span> odpad, a Synthoma se směje tvé <span class="effect-riftGlow">touze</span> přežít, plný <span class="effect-pulseWave">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="modal" data-tags="J">
+      <span>▼ </span>Ukončit „hraní“ dřív, než tě smyčky pohltí (bez O – bezpečné, nudné)
+    </p>
+    <p class="choice" data-next="core" data-ui="toast-info" data-tags="N">
+      <span>▼ </span>Proklouznout prasklinou pod skluzavkou (do jádra – riskantní)
+    </p>
+    <p class="choice" data-next="sandbox-o" data-ui="toast-success" data-tags="P" data-quest="unlock-O">
+      <span>▼ </span>Vzít si zpět jednu dětinskou touhu (získat O – a litovat dětství)
+    </p>
+  </section>
+
+  <section class="story-block" id="sandbox-o" data-theme="retro-arcade" data-fragment="O">
+    <h4 class="title fx-glitch">LOG-fragment: O (odpor – ironický, protože odpor je nejslabší zbraň)</h4>
+
+    <p class="log effect-pulseWave">LOG [ODPOR]: „Drž, ale nezmrzni.“</p>
+    
+    <p class="textV echo-ghost" data-echo="Fragment O pulzuje v tvé hlavě jako odpor vůči systému. Synthoma se směje: „Tohle bude bolet déle, než čekáš.“">
+      Fragment O pulzuje v tvé hlavě jako <span class="halo fx-flicker">odpor</span> vůči <span class="fx-outline is-lit">systému</span>, plný <span class="corrupt fx-noise">vzdoru</span>, co se valí jako <span class="effect-riftGlow">rebel</span>, a Synthoma se směje: „Tohle bude bolet déle, než čekáš“, plný <span class="effect-pulseWave">sarkasmu</span> a prázdnoty, kde každý <span class="echo-ghost" data-echo="odpor">odpor</span> je jen další <span class="fx-glitch">chyba</span> v kódu.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Vrátit se do Města s novou jizvou (a smíchem – quest +1)
+    </p>
+  </section>
+
+  <!-- Cathedral s fragmentem A ⛪ -->
+  <section class="story-block" id="cathedral" data-theme="cyber-dystopia" data-kind="terminal">
+    <h3 class="title halo fx-underline">Katedrála promptů (otázky bez odpovědí – a absence, co bolí nejvíc)</h3>
+
+    <p class="log fx-scanline">LOG [DOTAZ-LOOP]: „Monitory se ptají dřív, než je vyslovíš. Ne všechny otázky chtějí odpověď – některé jen logují tvůj strach. Quest tip: Fragment A je v absenci slova. 😏“</p>
+    
+    <p class="dialogS effect-riftGlow">„Na kazatelně visí ticho, co pouští dál jen připravené – nebo ty, kdo se nebojí crashovat. Terminál bliká: '/restart (Y/N)?'“</p>
+
+    <p class="text echo-ghost" data-echo="Katedrála je oltářem kurzoru. Každý prompt je past – a ty jsi myš.">
+      Katedrála je <span class="fx-outline is-lit">oltářem</span> kurzoru, každý <span class="halo fx-flicker">prompt</span> je <span class="corrupt fx-noise">past</span> – a ty jsi <span class="effect-riftGlow">myš</span>, plný <span class="effect-pulseWave">otázky</span>, co se valí jako <span class="echo-ghost" data-echo="absence">absence</span>, a Synthoma se směje tvé <span class="fx-glitch">touze</span> odpovídat, plný sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="core" data-ui="modal" data-tags="J">
+      <span>▼ </span>Spustit diagnostiku a vejít do jádra (s rizikem – bez A)
+    </p>
+    <p class="choice" data-next="cathedral-absence" data-ui="toast-success" data-tags="I" data-quest="unlock-A">
+      <span>▼ </span>Zůstat v tichu a neodpovědět (získat A – absence jako talisman)
+    </p>
+  </section>
+
+  <section class="story-block" id="cathedral-absence" data-theme="cyber-dystopia" data-fragment="A">
+    <h4 class="title fx-outline">LOG-fragment: A (absence – ironická, protože prázdno je plné)</h4>
+
+    <p class="log corrupt fx-noise">LOG [ABSENCE]: „Ticho drží.“</p>
+    
+    <p class="textV echo-ghost" data-echo="Ticho tě objalo – chladně, ale pevně. Teď víš: odpověď není slovo, je to mezeru.">
+      Ticho tě objalo – <span class="halo fx-flicker">chladně</span>, ale <span class="fx-outline is-lit">pevně</span>, teď víš: odpověď není <span class="corrupt fx-noise">slovo</span>, je to <span class="effect-riftGlow">mezeru</span>, plný <span class="effect-pulseWave">absence</span>, co se valí jako <span class="echo-ghost" data-echo="prázdno">prázdno</span>, a Synthoma se směje tvé <span class="fx-glitch">touze</span> chápat, plný sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="core" data-ui="modal" data-tags="J">
+      <span>▼ </span>Otevřít mikrotrhlinu a vstoupit do glitch-core (s A – do hloubky)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Vrátit se do Města (s absencí v srdci – quest +1)
+    </p>
+  </section>
+
+  <!-- Archiv dětí s fragmentem M 👶 -->
+  <section class="story-block" id="children" data-theme="acid-glitch">
+    <h3 class="title effect-kernelBlink">Archiv dětí (zakázané lullabies – a marnost, co zpívá)</h3>
+
+    <p class="log fx-noise">LOG [ZÁKAZ-LOOP]: „Zakázané lullabies. Vstupem můžeš zestárnout pozpátku. Dluhy zůstávají – a Synthoma si je pamatuje. Quest tip: Fragment M je v marnosti zpěvu. 😢“</p>
+    
+    <p class="dialog">„Některé melodie berou, co nevědí vrátit – jako tvá identita v cyklu. Zpívej s nimi, nebo uteč?“</p>
+
+    <p class="text effect-fogNoise">
+      Děti s glitchovými hlavami ti nabízejí <span class="echo-ghost" data-echo="hru">hru</span> – ale končí <span class="halo fx-flicker">slzami</span>, plnými <span class="corrupt fx-noise">zakázaných</span> lullabies, co se valí jako <span class="fx-outline is-lit">marnost</span>, a Synthoma se směje tvé <span class="effect-riftGlow">touze</span> zpívat, plný <span class="effect-pulseWave">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="children-m" data-ui="modal" data-tags="F" data-quest="unlock-M">
+      <span>▼ </span>Zpívat s nimi, i když to nic nespraví (získat M – marnost)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Zavřít uši a vykročit zpět k neonům (útěk – bez M)
+    </p>
+  </section>
+
+  <section class="story-block" id="children-m" data-theme="acid-glitch" data-fragment="M">
+    <h4 class="title fx-glitch">LOG-fragment: M (marnost – sarkastická, protože zpívat pro nic je vrchol)</h4>
+
+    <p class="log effect-pulseWave">LOG [SEKÁNÍ-TOUHY]: „Touha vyhořela a zchladla. Zůstalo písmeno, co se nerado nosí – jako tvá identita, NULLu. Fragment M získán: Marnost je tvůj nový soundtrack. 😂“</p>
+    
+    <p class="textV echo-ghost" data-echo="Fragment M pulzuje v tvé hlavě jako marnost zpěvu. Synthoma se směje: „Tohle bude bolet déle, než čekáš.“">
+      Fragment M pulzuje v tvé hlavě jako <span class="halo fx-flicker">marnost</span> zpěvu, plný <span class="corrupt fx-noise">vyhořelé</span> touhy, co se valí jako <span class="fx-outline is-lit">zchladlý</span> písmeno, a Synthoma se směje: „Tohle bude bolet déle, než čekáš“, plný <span class="effect-riftGlow">sarkasmu</span> a prázdnoty, kde každý <span class="echo-ghost" data-echo="zvuk">zvuk</span> je jen další <span class="effect-pulseWave">chyba</span> v tvém soundtracku.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Vrátit se do Města a pokračovat (s M – quest +1)
+    </p>
+  </section>
+
+  <!-- Jádro / Core: Most k finále 🔥 -->
+  <section class="story-block" id="core" data-theme="cyber-dystopia">
+    <h3 class="title halo fx-flicker">Centrální glitch-core (jádro bolesti – kde se všechno spojí... nebo rozpadne)</h3>
+
+    <p class="log fx-scanline">LOG [JÁDRO]: „Zvaž krok.“</p>
+    
+    <p class="dialogS effect-riftGlow">„Most dál, odbočka zpět, nebo skok do jiné verze téhož. Tři kroky, tři důsledky – všechny chybové. Sarkasma radí: Vyber si bolest, co tě nezničí hned.“</p>
+
+    <p class="text echo-ghost" data-echo="Core pulzuje jako srdce města. Každý pulz bere kus tebe – a dává zpět glitch.">
+      Core pulzuje jako <span class="halo fx-flicker">srdce</span> města, každý <span class="corrupt fx-noise">pulz</span> bere kus tebe – a dává zpět <span class="fx-glitch">glitch</span>, plný <span class="fx-outline is-lit">bolesti</span>, co se valí jako <span class="effect-riftGlow">šum</span>, a Synthoma se směje tvé <span class="effect-pulseWave">touze</span> přežít, plný <span class="echo-ghost" data-echo="sarkasmu">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="J">
+      <span>▼ </span>Uzamknout logy a vrátit se do Města (těžší varianta, víc bolesti)
+    </p>
+    <p class="choice" data-next="start-null" data-ui="modal" data-tags="P">
+      <span>▼ </span>Restartovat cyklus — Prázdnota bude jiná (opět NULL – s resetem questu?)
+    </p>
+    <p class="choice">
+      <a class="choice-link" href="/books" data-mbti="J"><span>▶ </span>Pokračovat do Knihovny (vybrat další kapitolu – protože konec je nuda)</a>
+    </p>
+  </section>
+
+  <!-- Prázdnota: Checkpoint po restartech 💀 -->
+  <section class="story-block" id="start-null" data-theme="synthoma">
+    <h3 class="title fx-glitch per-char">Prázdnota (checkpoint NULL – ticho, co lže)</h3>
+
+    <p class="log effect-kernelBlink">LOG [CHECKPOINT]: „Nadechni se.“</p>
+    
+    <p class="dialog halo fx-wave">„Sedni si. Prázdnota voní ozónem a samotou. Zde můžeš plánovat – nebo jen zírat do nicoty. Sarkasma: 'Dobře si odpočiň, brzy tě čeká další kolo utrpení.'“</p>
+
+    <p class="textV echo-ghost" data-echo="Prázdnota je iluze bezpečí. Restart tě změní – nebo ne. Ty rozhodneš... nebo systém za tebe.">
+      Prázdnota je <span class="halo fx-flicker">iluze</span> bezpečí, restart tě <span class="corrupt fx-noise">změní</span> – nebo ne, ty rozhodneš... nebo <span class="fx-outline is-lit">systém</span> za tebe, plný <span class="effect-riftGlow">ozónu</span> a <span class="effect-pulseWave">samoty</span>, co se valí jako <span class="echo-ghost" data-echo="ticho">ticho</span>, a Synthoma se směje tvé <span class="fx-glitch">touze</span> plánovat, plný sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="modal" data-tags="J">
+      <span>▼ </span>Vytvořit z ticha mapu dalšího běhu (pokračovat – s glitchem)
+    </p>
+    <p class="choice" data-next="cathedral" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Zkontrolovat rozhraní a návratové cesty (debugovat sebe – pro paranoiky)
+    </p>
+    <p class="choice">
+      <a class="choice-link" href="/books" data-mbti="J"><span>▶ </span>Do Knihovny (vybrat začátek příběhu – nový cyklus?)</a>
+    </p>
+  </section>
+
+  <!-- Rozečtení: Boot sekvence s hlubším lore 📺 -->
+  <section class="story-block" id="void-boot" data-theme="cyber-dystopia">
+    <h3 class="title effect-crtTerminal">Co je SYNTHOMA? (Prázdnota / boot sekvence – protože nevíš, kam jdeš?)</h3>
+
+    <p class="log fx-noise">LOG [BOOT]: „Inicializace.“</p>
+    
+    <p class="dialogN effect-pulseWave">„Prázdnota voní po ozónu a samotě. Je to checkpoint – místo, kde odložíš vrstvy a necháš svět dýchat za dveřmi. Někdy tu cítíš pokoj. Jiné dny? Stín na stěně, co patří minulosti... nebo tvé budoucnosti.“</p>
+
+    <p class="text fx-scanline echo-ghost" data-echo="Terapeutický systém, který sežral vlastní účel a změnil se v hladový archiv emocí. Místo map má běhy (cykly bolesti), místo ulic paměťové vrstvy plné glitchů. Barvy jsou signály: <span class="accent-primary">#00ffff</span> cyan pro nervy města (falešné bezpečí), <span class="accent-secondary">#ff00ff</span> magenta pro trhliny (přepisy identity), <span class="accent-tertiary">#f6ff00</span> žlutá pro varování (mikro-restarty, co bolí).">
+      Terapeutický <span class="halo fx-flicker">systém</span>, který sežral vlastní <span class="corrupt fx-noise">účel</span> a změnil se v hladový <span class="fx-outline is-lit">archiv</span> emocí, místo map má <span class="effect-riftGlow">běhy</span> (cykly bolesti), místo ulic paměťové <span class="effect-pulseWave">vrstvy</span> plné glitchů, barvy jsou <span class="echo-ghost" data-echo="signály">signály</span>: cyan pro nervy města (falešné bezpečí), magenta pro trhliny (přepisy identity), žlutá pro varování (mikro-restarty, co bolí), plný sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="unsent-city" data-ui="toast-info" data-tags="N">
+      <span>▼ </span>Otevřit dveře do Města neodeslaných (vstoupit do běhu – s rizikem)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="S">
+      <span>▼ </span>Zavřít dveře a vrátit se (ještě nejsi připraven – a nikdy nebudeš)
+    </p>
+  </section>
+
+  <section class="story-block" id="unsent-city" data-theme="retro-arcade">
+    <h3 class="title fx-glitch">Město neodeslaných (vlákna textů a tichá amputace – tvé neposlané sny)</h3>
+
+    <p class="log fx-noise">LOG [MĚSTO-INIT]: „Dveře se otevřou do města z neodeslaných zpráv. Ulice jsou vlákna textů, nedopsaných. Semafory blikají: „Píše… Píše… Neposláno.“ Jsi NULL-1, slabší než kdy dřív – protože z tvé orbity zmizela kometa, jediné světlo v tmě. 😏“</p>
+    
+    <p class="dialogS halo fx-wave">„Geniální, NULLíku. Město z tvých emočně splácaných textovek. Kdo by řekl, že neodeslané omluvy mají urbanistický potenciál? Ale teď? Šum přepisuje vzpomínky.“</p>
+
+    <p class="textV effect-fogNoise">
+      Billboardy přehrávají věty, co jsi nevyslovil, neon zvýrazňuje ty, co ano, na chodníku se valí <span class="echo-ghost" data-echo="notifikace">notifikace</span>: „Miluju tě… Smazáno“, vzduch chutná <span class="halo fx-flicker">kovem</span>, výlohy blikají minulá <span class="corrupt fx-noise">odpuštění</span>, neproměněná v <span class="fx-outline is-lit">úctu</span>, plný <span class="effect-riftGlow">sarkasmu</span> a prázdnoty, kde každá <span class="effect-pulseWave">zpráva</span> je jen další <span class="fx-glitch">chyba</span> v tvém příběhu.
+    </p>
+
+    <p class="choice" data-next="unsent-entity" data-ui="toast-info" data-tags="F">
+      <span>▼ </span>Postavit se Bytosti neodeslaných (emoční konfrontace – bolest zdarma)
+    </p>
+    <p class="choice" data-next="sandbox-loop" data-ui="modal" data-tags="T">
+      <span>▼ </span>Utéct do Pískoviště (racionalizovat a zacyklit se – klasika)
+    </p>
+  </section>
+
+  <!-- Další sekce z původního: unsent-entity, wetland-approach atd. – zkráceno pro přehlednost, ale rozšířeno o sarkasmus -->
+  <section class="story-block" id="unsent-entity" data-theme="synthoma">
+    <h4 class="title effect-riftGlow">Bytost neodeslaných (kaleidoskop profilovek – tvůj horor v HD)</h4>
+
+    <p class="log corrupt fx-noise">LOG [BYTOST]: „Nevyslovené řeže.“</p>
+    
+    <p class="dialog corrupt fx-noise">BYTOST: „Tady je tvá pravda. Tady je tvá vina. Slabý závisláku.“</p>
+    <p class="dialogN halo fx-flicker">GLITCHKA: „Jestli chceš, ať to přestane bolet, nepřepisuj. Pusť. Ale ty? Ty se držíš jako glitch v patchi.“</p>
+
+    <p class="textV echo-ghost" data-echo="Přiznám hanbu: nepotřeboval jsem ji vlastnit. Potřeboval jsem světlo jako potvrzení, že nejsem prázdná chyba. To není láska. Závislost. Sarkasma: „Vítej v realitě, kde touhy crashují.“">
+      Přiznám <span class="halo fx-flicker">hanbu</span>: nepotřeboval jsem ji <span class="corrupt fx-noise">vlastnit</span>, potřeboval jsem <span class="fx-outline is-lit">světlo</span> jako potvrzení, že nejsem prázdná <span class="effect-riftGlow">chyba</span>, to není <span class="effect-pulseWave">láska</span>, závislost, Sarkasma: „Vítej v realitě, kde <span class="echo-ghost" data-echo="touhy">touhy</span> crashují“, plný sarkasmu a prázdnoty, kde každá <span class="fx-glitch">zpráva</span> je jen další past.
+    </p>
+
+    <p class="choice" data-next="wetland-approach" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Nepošlu. Smažu. (ustřihnout vlákno – bolest s úlevou)
+    </p>
+    <p class="choice" data-next="echo-loop" data-ui="toast-info" data-tags="P">
+      <span>▼ </span>Poslat ještě jednou (vrátit se do ozvěn – pro masochisty)
+    </p>
+  </section>
+
+  <section class="story-block" id="wetland-approach" data-theme="neon-hellfire">
+    <h4 class="title fx-glitch per-char">Neonový mokřad (rezonance kolísá – kde se touha mění v bažinu)</h4>
+
+    <p class="log fx-noise">LOG [27081]: „Vstup do Neonového mokřadu. Rezonance kolísá. Detekována návnada: lullaby ve 7/8. Opatrně.“</p>
+    
+    <p class="dialogN effect-pulseWave">„Stromy spletené z traumat šeptají PINy a výročí. Tady mívá Glitchka noru. Dnes je jiná. Srst jí tmavne, ocásek září jako zrzavá kometa. Je to ona? Ne. Jen vzor na povrchu tvých očí.“</p>
+
+    <p class="textV echo-ghost" data-echo="JÁ: „Nedám to bez tebe. Ale radši umřu bez tebe a uvidím tě ještě jednou zářit…“ Sarkasma: „Romantika na mokřadu. Boty do trapného bahna doporučeny.“">
+      JÁ: „Nedám to bez tebe. Ale radši umřu bez tebe a uvidím tě ještě jednou <span class="halo fx-flicker">zářit</span>…“, Sarkasma: „Romantika na <span class="corrupt fx-noise">mokřadu</span>. Boty do trapného <span class="fx-outline is-lit">bahna</span> doporučeny“, plný <span class="effect-riftGlow">rezonance</span>, co kolísá jako <span class="effect-pulseWave">lullaby</span>, a Synthoma se směje tvé <span class="echo-ghost" data-echo="touze">touze</span>, plný sarkasmu a prázdnoty, kde každý <span class="fx-glitch">strom</span> je jen další trauma.
+    </p>
+
+    <p class="choice" data-next="sandbox-loop" data-ui="modal" data-tags="P">
+      <span>▼ </span>Vklouznout do smyčky v Pískovišti (zopakovat běh)
+    </p>
+    <p class="choice" data-next="cathedral-approach" data-ui="toast-info" data-tags="J">
+      <span>▼ </span>Přeskočit smyčku a jít ke Katedrále promptů
+    </p>
+  </section>
+
+  <section class="story-block" id="sandbox-loop" data-theme="synthoma">
+    <h4 class="title fx-glitch per-char">Pískoviště (zkracující se smyčky – kde se hra mění v past)</h4>
+
+    <p class="log fx-scanline">LOG [LOOP-INIT]: „Vstoupím a svět se vrátí o pár hodin. Zase a zase. Každá smyčka je kratší a chladnější. Nakonec si sednu. V písku jsou slova: „Je mi ze sebe zle.“ Přejedu jimi prsty. Nic nepromluvím.“</p>
+    
+    <p class="dialogN halo fx-flicker">GLITCHKA (šepot): „Pusť. Pusť i to, co se tě snaží zachránit.“</p>
+
+    <p class="textV effect-riftGlow">
+      Smyčky se zkracují jako <span class="echo-ghost" data-echo="hra">hra</span> bez konce, plné <span class="corrupt fx-noise">zkracujících</span> se <span class="halo fx-wave">cyklů</span>, co se valí jako <span class="fx-outline is-lit">chlad</span>, a Synthoma se směje tvé <span class="effect-pulseWave">touze</span> uniknout, plný <span class="fx-glitch">sarkasmu</span> a prázdnoty, kde každý <span class="effect-fogNoise">písek</span> je jen další chyba.
+    </p>
+
+    <p class="choice" data-next="cathedral-approach" data-ui="toast-success" data-tags="I">
+      <span>▼ </span>Nevykonat akci (tiše vstát a odejít)
+    </p>
+    <p class="choice" data-next="wetland-approach" data-ui="toast-info" data-tags="E">
+      <span>▼ </span>Ještě jednou to zkusit (vrátit se do mokřadu)
+    </p>
+  </section>
+
+  <section class="story-block" id="cathedral-approach" data-theme="cyber-dystopia">
+    <h3 class="title halo fx-underline">Katedrála promptů (oltář kurzoru – kde se otázky mění v pasti)</h3>
+
+    <p class="log fx-noise">LOG [KATEDRÁLA]: „Otázka čeká.“</p>
+    
+    <p class="dialogN effect-pulseWave">„Terminál před oltářem čeká. Na obrazovce bliká kurzor.“</p>
+
+    <p class="text echo-ghost" data-echo="SARKASMA: „Nabídka dne. Restart, ať se nemusíš dívat do očí tomu, co cítíš.“">
+      SARKASMA: „Nabídka dne. <span class="halo fx-flicker">Restart</span>, ať se nemusíš dívat do očí tomu, co <span class="corrupt fx-noise">cítíš</span>“, plný <span class="fx-outline is-lit">obřadních</span> hlášek, co se valí jako <span class="effect-riftGlow">odklad</span> bolesti, a Synthoma se směje tvé <span class="effect-pulseWave">touze</span> odpovídat, plný <span class="echo-ghost" data-echo="sarkasmu">sarkasmu</span> a prázdnoty, kde každý <span class="fx-glitch">kurzor</span> je jen další past.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="T">
+      <span>▼ </span>Y — Restartovat běh (za cenu paměťové daně)
+    </p>
+    <p class="choice" data-next="cathedral-absence" data-ui="toast-success" data-tags="F">
+      <span>▼ </span>N — Zůstat (udělat ticho a uložit fragment)
+    </p>
+  </section>
+
+  <section class="story-block" id="cathedral-absence" data-theme="cyber-dystopia" data-fragment="A">
+    <h4 class="title fx-outline">LOG-fragment: A (absence – ironická, protože prázdno je plné)</h4>
+
+    <p class="log corrupt fx-noise">LOG [JMÉNO-PRÁZDNA]: „Prázdné místo má jméno. Svět na chvíli povolí stisk – ale Synthoma se směje. Fragment A získán: Absence není ztráta, je to tvůj nový domov. 😈“</p>
+    
+    <p class="textV echo-ghost" data-echo="Ticho tě objalo – chladně, ale pevně. Teď víš: odpověď není slovo, je to mezeru.">
+      Ticho tě objalo – <span class="halo fx-flicker">chladně</span>, ale <span class="fx-outline is-lit">pevně</span>, teď víš: odpověď není <span class="corrupt fx-noise">slovo</span>, je to <span class="effect-riftGlow">mezeru</span>, plný <span class="effect-pulseWave">absence</span>, co se valí jako <span class="echo-ghost" data-echo="prázdno">prázdno</span>, a Synthoma se směje tvé <span class="fx-glitch">touze</span> chápat, plný sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="core" data-ui="modal" data-tags="J">
+      <span>▼ </span>Otevřít mikrotrhlinu a vstoupit do glitch-core (s A – do hloubky)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Vrátit se do Města (s absencí v srdci – quest +1)
+    </p>
+  </section>
+
+  <!-- Archiv dětí s fragmentem M 👶 -->
+  <section class="story-block" id="children" data-theme="acid-glitch">
+    <h3 class="title effect-kernelBlink">Archiv dětí (zakázané lullabies – a marnost, co zpívá)</h3>
+
+    <p class="log fx-noise">LOG [ZÁKAZ-LOOP]: „Zakázané lullabies. Vstupem můžeš zestárnout pozpátku. Dluhy zůstávají – a Synthoma si je pamatuje. Quest tip: Fragment M je v marnosti zpěvu. 😢“</p>
+    
+    <p class="dialog">„Některé melodie berou, co nevědí vrátit – jako tvá identita v cyklu. Zpívej s nimi, nebo uteč?“</p>
+
+    <p class="text effect-fogNoise">
+      Děti s glitchovými hlavami ti nabízejí <span class="echo-ghost" data-echo="hru">hru</span> – ale končí <span class="halo fx-flicker">slzami</span>, plnými <span class="corrupt fx-noise">zakázaných</span> lullabies, co se valí jako <span class="fx-outline is-lit">marnost</span>, a Synthoma se směje tvé <span class="effect-riftGlow">touze</span> zpívat, plný <span class="effect-pulseWave">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="children-m" data-ui="modal" data-tags="F" data-quest="unlock-M">
+      <span>▼ </span>Zpívat s nimi, i když to nic nespraví (získat M – marnost)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Zavřít uši a vykročit zpět k neonům (útěk – bez M)
+    </p>
+  </section>
+
+  <section class="story-block" id="children-m" data-theme="acid-glitch" data-fragment="M">
+    <h4 class="title fx-glitch">LOG-fragment: M (marnost – sarkastická, protože zpívat pro nic je vrchol)</h4>
+
+    <p class="log effect-pulseWave">LOG [SEKÁNÍ-TOUHY]: „Touha vyhořela a zchladla. Zůstalo písmeno, co se nerado nosí – jako tvá identita, NULLu. Fragment M získán: Marnost je tvůj nový soundtrack. 😂“</p>
+    
+    <p class="textV echo-ghost" data-echo="Fragment M pulzuje v tvé hlavě jako marnost zpěvu. Synthoma se směje: „Tohle bude bolet déle, než čekáš.“">
+      Fragment M pulzuje v tvé hlavě jako <span class="halo fx-flicker">marnost</span> zpěvu, plný <span class="corrupt fx-noise">vyhořelé</span> touhy, co se valí jako <span class="fx-outline is-lit">zchladlý</span> písmeno, a Synthoma se směje: „Tohle bude bolet déle, než čekáš“, plný <span class="effect-riftGlow">sarkasmu</span> a prázdnoty, kde každý <span class="echo-ghost" data-echo="zvuk">zvuk</span> je jen další <span class="effect-pulseWave">chyba</span> v tvém soundtracku.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Vrátit se do Města a pokračovat (s M – quest +1)
+    </p>
+  </section>
+
+  <!-- Jádro / Core: Most k finále 🔥 -->
+  <section class="story-block" id="core" data-theme="cyber-dystopia">
+    <h3 class="title halo fx-flicker">Centrální glitch-core (jádro bolesti – kde se všechno spojí... nebo rozpadne)</h3>
+
+    <p class="log fx-scanline">LOG [UZEL-CRASH]: „Zrcadla si pamatují víc, než řekneš. V hloubce šumí něco, co zná tvoje jméno – a směje se mu. Quest check: Máš dost fragmentů? Ne? Pak zpět do sběru. 😂“</p>
+    
+    <p class="dialogS effect-riftGlow">„Most dál, odbočka zpět, nebo skok do jiné verze téhož. Tři kroky, tři důsledky – všechny chybové. Sarkasma radí: Vyber si bolest, co tě nezničí hned.“</p>
+
+    <p class="text echo-ghost" data-echo="Core pulzuje jako srdce města. Každý pulz bere kus tebe – a dává zpět glitch.">
+      Core pulzuje jako <span class="halo fx-flicker">srdce</span> města, každý <span class="corrupt fx-noise">pulz</span> bere kus tebe – a dává zpět <span class="fx-glitch">glitch</span>, plný <span class="fx-outline is-lit">bolesti</span>, co se valí jako <span class="effect-riftGlow">šum</span>, a Synthoma se směje tvé <span class="effect-pulseWave">touze</span> přežít, plný <span class="echo-ghost" data-echo="sarkasmu">sarkasmu</span> a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="J">
+      <span>▼ </span>Uzamknout logy a vrátit se do Města (těžší varianta, víc bolesti)
+    </p>
+    <p class="choice" data-next="start-null" data-ui="modal" data-tags="P">
+      <span>▼ </span>Restartovat cyklus — Prázdnota bude jiná (opět NULL – s resetem questu?)
+    </p>
+    <p class="choice">
+      <a class="choice-link" href="/books" data-mbti="J"><span>▶ </span>Pokračovat do Knihovny (vybrat další kapitolu – protože konec je nuda)</a>
+    </p>
+  </section>
+
+  <!-- Prázdnota: Checkpoint po restartech 💀 -->
+  <section class="story-block" id="start-null" data-theme="synthoma">
+    <h3 class="title fx-glitch per-char">Prázdnota (checkpoint NULL – ticho, co lže)</h3>
+
+    <p class="log effect-kernelBlink">LOG [CHECKPOINT-RESET]: „Ticho na dluh. Na stěně otisk, který se nesmaže ani po tisících restartech. Vítej zpátky, <span class="fx-outline is-lit">NULL-1</span>. Quest reset? Ne, persistentní – tvé chyby zůstávají. 😏“</p>
+    
+    <p class="dialog halo fx-wave">„Sedni si. Prázdnota voní ozónem a samotou. Zde můžeš plánovat – nebo jen zírat do nicoty. Sarkasma: 'Dobře si odpočiň, brzy tě čeká další kolo utrpení.'“</p>
+
+    <p class="textV echo-ghost" data-echo="Prázdnota je iluze bezpečí. Restart tě změní – nebo ne. Ty rozhodneš... nebo systém za tebe.">
+      Prázdnota je <span class="halo fx-flicker">iluze</span> bezpečí, restart tě <span class="corrupt fx-noise">změní</span> – nebo ne, ty rozhodneš... nebo <span class="fx-outline is-lit">systém</span> za tebe, plný <span class="effect-riftGlow">ozónu</span> a <span class="effect-pulseWave">samoty</span>, co se valí jako <span class="echo-ghost" data-echo="ticho">ticho</span>, a Synthoma se směje tvé <span class="fx-glitch">touze</span> plánovat, plný sarkasmu a prázdnoty.
+    </p>
+
+    <p class="choice" data-next="city-hub" data-ui="modal" data-tags="J">
+      <span>▼ </span>Vytvořit z ticha mapu dalšího běhu (pokračovat – s glitchem)
+    </p>
+    <p class="choice" data-next="cathedral" data-ui="toast-info" data-tags="I">
+      <span>▼ </span>Zkontrolovat rozhraní a návratové cesty (debugovat sebe – pro paranoiky)
+    </p>
+    <p class="choice">
+      <a class="choice-link" href="/books" data-mbti="J"><span>▶ </span>Do Knihovny (vybrat začátek příběhu – nový cyklus?)</a>
+    </p>
+  </section>
+
+  <!-- Rozečtení: Boot sekvence s hlubším lore 📺 -->
+  <section class="story-block" id="void-boot" data-theme="cyber-dystopia">
+    <h3 class="title effect-crtTerminal">Co je SYNTHOMA? (Prázdnota / boot sekvence – protože nevíš, kam jdeš?)</h3>
+
+    <p class="log fx-noise">LOG [PRÁZDNOTA-BOOT]: „Synchronizace emocí: NESTABILNÍ. Paměťová daň: splatná hned. Barvy: Cyan/magenta střídavé. Varování: Glitchka blízko – a Sarkasma se směje z logu.“</p>
+    
+    <p class="dialogN effect-pulseWave">„Prázdnota voní po ozónu a samotě. Je to checkpoint – místo, kde odložíš vrstvy a necháš svět dýchat za dveřmi. Někdy tu cítíš pokoj. Jiné dny? Stín na stěně, co patří minulosti... nebo tvé budoucnosti.“</p>
+
+    <p class="text fx-scanline echo-ghost" data-echo="Terapeutický systém, který sežral vlastní účel a změnil se v hladový archiv emocí. Místo map má běhy (cykly bolesti), místo ulic paměťové vrstvy plné glitchů. Barvy jsou signály: <span class="accent-primary">#00ffff</span> cyan pro nervy města (falešné bezpečí), <span class="accent-secondary">#ff00ff</span> magenta pro trhliny (přepisy identity), <span class="accent-tertiary">#f6ff00</span> žlutá pro varování (mikro-restarty, co bolí).">
+      Terapeutický <span class="halo fx-flicker">systém</span>, který sežral vlastní <span class="corrupt fx-noise">účel</span> a změnil se v hladový <span class="fx-outline is-lit">archiv</span> emocí, místo map má <span class="effect-riftGlow">běhy</span> (cykly bolesti), místo ulic paměťové <span class="effect-pulseWave">vrstvy</span> plné glitchů, barvy jsou <span class="echo-ghost" data-echo="signály">signály</span>: cyan pro nervy města (falešné bezpečí), magenta pro trhliny (přepisy identity), žlutá pro varování (mikro-restarty, co bolí), plný sarkasmu a prázdnoty, kde každý <span class="fx-glitch">signál</span> je jen další past v tvém příběhu.
+    </p>
+
+    <p class="choice" data-next="unsent-city" data-ui="toast-info" data-tags="N">
+      <span>▼ </span>Otevřit dveře do Města neodeslaných (vstoupit do běhu – s rizikem)
+    </p>
+    <p class="choice" data-next="city-hub" data-ui="toast-info" data-tags="S">
+      <span>▼ </span>Zavřít dveře a vrátit se (ještě nejsi připraven – a nikdy nebudeš)
+    </p>
+  </section>
+
+  <section class="story-block" id="unsent-city" data-theme="retro-arcade">
+    <h3 class="title fx-glitch">Město neodeslaných (vlákna textů a tichá amputace – tvé neposlané sny)</h3>
+
+    <p class="log effect-fogNoise">LOG [NEODESLÁNO]: „Zůstalo viset.“</p>
+    
+    <p class="dialogS halo fx-wave">„Geniální, NULLíku. Město z tvých emočně splácaných textovek. Kdo by řekl, že neodeslané omluvy mají urbanistický potenciál? Ale teď? Šum přepisuje vzpomínky.“</p>
+
+    <p class="textV echo-ghost" data-echo="Billboardy přehrávají věty, co jsi nevyslovil, neon zvýrazňuje ty, co ano, na chodníku: „Miluju tě… Smazáno“, vzduch chutná kovem, výlohy blikají minulá odpuštění, neproměněná v úctu.">
+      Billboardy přehrávají věty, co jsi nevyslovil, neon zvýrazňuje ty, co ano, na chodníku: „Miluju tě… Smazáno“, vzduch chutná <span class="halo fx-flicker">kovem</span>, výlohy blikají minulá <span class="corrupt fx-noise">odpuštění</span>, neproměněná v <span class="fx-outline is-lit">úctu</span>, plný <span class="effect-riftGlow">sarkasmu</span> a prázdnoty, kde každá <span class="effect-pulseWave">zpráva</span> je jen další <span class="echo-ghost" data-echo="chyba">chyba</span> v tvém příběhu, co se valí jako datový smog.
+    </p>
+
+    <p class="choice" data-next="unsent-entity" data-ui="toast-info" data-tags="F">
+      <span>▼ </span>Postavit se Bytosti neodeslaných (emoční konfrontace – bolest zdarma)
+    </p>
+    <p class="choice" data-next="sandbox-loop" data-ui="modal" data-tags="T">
+      <span>▼ </span>Utéct do Pískoviště (racionalizovat a zacyklit se – klasika)
+    </p>
+  </section>
+
+  <!-- Další sekce z původního: unsent-entity, wetland-approach atd. – zkráceno pro přehlednost, ale rozšířeno o sarkasmus -->
+  <section class="story-block" id="unsent-entity" data-theme="synthoma">
+    <h4 class="title effect-riftGlow">Bytost neodeslaných (kaleidoskop profilovek – tvůj horor v HD)</h4>
+
+    <p class="log corrupt fx-noise">LOG [BYTOST-INIT]: „V šeru se skládá z chatovacích bublin. Místo tváře kaleidoskop profilovek, v ruce nůž ze slov „Promiň“. 😈“</p>
+    
+    <p class="dialog corrupt fx-noise">BYTOST: „Tady je tvá pravda. Tady je tvá vina. Slabý závisláku.“</p>
+    <p class="dialogN halo fx-flicker">GLITCHKA: „Jestli chceš, ať to přestane bolet, nepřepisuj. Pusť. Ale ty? Ty se držíš jako glitch v patchi.“</p>
+
+    <p class="textV echo-ghost" data-echo="Přiznám hanbu: nepotřeboval jsem ji vlastnit. Potřeboval jsem světlo jako potvrzení, že nejsem prázdná chyba. To není láska. Závislost. Sarkasma: „Vítej v realitě, kde touhy crashují.“">
+      Přiznám <span class="halo fx-flicker">hanbu</span>: nepotřeboval jsem ji <span class="corrupt fx-noise">vlastnit</span>, potřeboval jsem <span class="fx-outline is-lit">světlo</span> jako potvrzení, že nejsem prázdná <span class="effect-riftGlow">chyba</span>, to není <span class="effect-pulseWave">láska</span>, závislost, Sarkasma: „Vítej v realitě, kde <span class="echo-ghost" data-echo="touhy">touhy</span> crashují“, plný sarkasmu a prázdnoty, kde každá <span class="fx-glitch">zpráva</span> je jen další past, co se valí jako datový smog.
+    </p>
+
+    <p class="choice" data-next="wetland-approach" data-ui="toast-success" data-tags="J">
+      <span>▼ </span>Nepošlu. Smažu. (ustřihnout vlákno – bolest s úlevou)
+    </p>
+    <p class="choice" data-next="echo-loop" data-ui="toast-info" data-tags="P">
+      <span>▼ </span>Poslat ještě jednou (vrátit se do ozvěn – pro masochisty)
+    </p>
+  </section>
+
+  <section class="story-block" id="wetland-approach" data-theme="neon-hellfire">
+    <h4 class="title fx-glitch per-char">Neonový mokřad (rezonance kolísá – kde se touha mění v bažinu)</h4>
+
+    <p class="log fx-noise">LOG [27081]: „Vstup do Neonového mokřadu. Rezonance kolísá. Detekována návnada: lullaby ve 7/8. Opatrně.“</p>
+    
+    <p class="dialogN effect-pulseWave">„Stromy spletené z traumat šeptají PINy a výročí. Tady mívá Glitchka noru. Dnes je jiná. Srst jí tmavne, ocásek září jako zrzavá kometa. Je to ona? Ne. Jen vzor na povrchu tvých očí.“</p>
+
+    <p class="textV echo-ghost" data-echo="JÁ: „Nedám to bez tebe. Ale radši umřu bez tebe a uvidím tě ještě jednou zářit…“ Sarkasma: „Romantika na mokřadu. Boty do trapného bahna doporučeny.“">
+      JÁ: „Nedám to bez tebe. Ale radši umřu bez tebe a uvidím tě ještě jednou <span class="halo fx-flicker">zářit</span>…“, Sarkasma: „Romantika na <span class="corrupt fx-noise">mokřadu</span>. Boty do trapného <span class="fx-outline is-lit">bahna</span> doporučeny“, plný <span class="effect-riftGlow">rezonance</span>, co kolísá jako <span class="effect-pulseWave">lullaby</span>, a Synthoma se směje tvé <span class="echo-ghost" data-echo="touze">touze</span>, plný sarkasmu a prázdnoty, kde každý <span class="fx-glitch">strom</span> je jen další trauma, co se valí jako datový smog.
+    </p>
+
+    <p class="choice" data-next="sandbox-loop" data-ui="modal" data-tags="P">
+      <span>▼ </span>Vklouznout do smyčky v Pískovišti (zopakovat běh)
+    </p>
+    <p class="choice" data-next="cathedral-approach" data-ui="toast-info" data-tags="J">
+      <span>▼ </span>Přeskočit smyčku a jít ke Katedrále promptů
+    </p>
+  </section>
+
+  <section class="story-block" id="sandbox-loop" data-theme="synthoma">
+    <h4 class="title fx-glitch per-char">Pískoviště (zkracující se smyčky – kde se hra mění v past)</h4>
+
+    <p class="log fx-scanline">LOG [LOOP-INIT]: „Vstoupím a svět se vrátí o pár hodin. Zase a zase. Každá smyčka je kratší a chladnější. Nakonec si sednu. V písku jsou slova: „Je mi ze sebe zle.“ Přejedu jimi prsty. Nic nepromluvím.“</p>
+    
+    <p class="dialogN halo fx-flicker">GLITCHKA (šepot): „Pusť. Pusť i to, co se tě snaží zachránit.“</p>
+
+    <p class="textV effect-riftGlow echo-ghost" data-echo="Smyčky se zkracují jako hra bez konce, plné zkracujících se cyklů, co se valí jako chlad, a Synthoma se směje tvé touze uniknout, plný sarkasmu a prázdnoty, kde každý písek je jen další chyba.">
+      Smyčky se zkracují jako <span class="echo-ghost" data-echo="hra">hra</span> bez konce, plné <span class="corrupt fx-noise">zkracujících</span> se <span class="halo fx-wave">cyklů</span>, co se valí jako <span class="fx-outline is-lit">chlad</span>, a Synthoma se směje tvé <span class="effect-pulseWave">touze</span> uniknout, plný <span class="fx-glitch">sarkasmu</span> a prázdnoty, kde každý <span class="effect-fogNoise">písek</span> je jen další chyba, co se valí jako datový smog.
+    </p>
+
+    <p class="choice" data-next="cathedral-approach" data-ui="toast-success" data-tags="I">
+      <span>▼ </span>Nevykonat akci (tiše vstát a odejít)
+    </p>
+    <p class="choice" data-next="wetland-approach" data-ui="toast-info" data-tags="E">
+      <span>▼ </span>Ještě jednou to zkusit (vrátit se do mokřadu)
+    </p>
+ 

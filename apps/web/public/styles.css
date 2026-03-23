@@ -1,0 +1,355 @@
+/* Synthoma – neon/glitch základ */
+:root {
+  --neon-cyan: #00ffcc;
+  --neon-magenta: #ff00ff;
+  --bg-deep: #0f0f0f;
+  --bg-dark: #1a1a1a;
+}
+
+html, body {
+  background: linear-gradient(45deg, var(--bg-deep), var(--bg-dark));
+  color: var(--neon-cyan);
+}
+
+.neon-reader {
+  background: linear-gradient(45deg, #0f0f0f, #1a1a1a);
+  color: #00ffcc;
+  text-shadow: 0 0 5px #00ffcc, 0 0 10px #ff00ff;
+  border: 1px solid rgba(255, 0, 255, 0.15);
+  border-radius: 12px;
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 1s linear infinite;
+}
+
+@keyframes glitch {
+  2%, 64% { transform: translate(2px, 0) skew(0.5deg); }
+  4%, 60% { transform: translate(-2px, 0) skew(-0.5deg); }
+  62% { transform: translate(0, 0) skew(0); }
+}
+
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.glitch::before { left: 2px; text-shadow: -2px 0 var(--neon-magenta); clip-path: inset(0 0 45% 0); }
+.glitch::after  { left: -2px; text-shadow: -2px 0 #00f; clip-path: inset(55% 0 0 0); }
+
+.neon-text { text-shadow: 0 0 10px #00ffcc; }
+
+.paywall {
+  border: 2px solid #ff00ff;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px #ff00ff; }
+  50% { box-shadow: 0 0 22px #ff00ff; }
+  100% { box-shadow: 0 0 10px #ff00ff; }
+}
+
+/* Subtilní neonové linky v pozadí */
+.bg-lines {
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(0,255,204,0.07) 0, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(255,0,255,0.06) 0, transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(0,120,255,0.05) 0, transparent 40%);
+}
+
+/* Tlačítka */
+.btn-neon {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(0,255,204,0.3);
+  color: var(--neon-cyan);
+  transition: all .2s ease;
+}
+.btn-neon:hover {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+  box-shadow: 0 0 12px rgba(255,0,255,0.4);
+}
+
+/* --- Book content helpers --- */
+.title { 
+  font-size: 1.125rem; 
+  font-weight: 700; 
+  letter-spacing: .02em;
+  margin: .5rem 0; 
+}
+.text { 
+  line-height: 1.7; 
+  opacity: .95; 
+}
+.dialog { 
+  padding-left: .75rem; 
+  border-left: 2px solid rgba(0,255,204,.3); 
+  margin: .25rem 0; 
+}
+.log { 
+  color: #f0f; 
+  text-shadow: 0 0 8px #f0f; 
+  font-variant: small-caps; 
+  opacity: .9; 
+}
+.fx-glitch { 
+  position: relative; 
+  display: inline-block; 
+}
+.fx-glitch::after { 
+  content: attr(data-glitch);
+  position: absolute; 
+  left: 0; top: 0; 
+  color: #0ff; 
+  transform: translate(1px, 0); 
+  mix-blend-mode: screen; 
+  opacity: .6; 
+  animation: glitch 1s linear infinite; 
+}
+.alarm-emote { 
+  color: #faff00; 
+  text-shadow: 0 0 8px #faff00; 
+}
+
+/* --- Choice paragraphs behave like buttons on standalone chapter pages --- */
+p.choice {
+  display: block;
+  margin: .5rem 0;
+  padding: .6rem .9rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,255,204,0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .18s ease, box-shadow .18s ease, border-color .18s ease, transform .12s ease;
+  outline: none;
+}
+p.choice:hover {
+  background: rgba(0,255,204,0.06);
+  border-color: rgba(0,255,204,0.4);
+  box-shadow: 0 0 10px rgba(0,255,204,0.18);
+}
+p.choice:focus-visible {
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 0 2px rgba(255,0,255,0.25), 0 0 14px rgba(255,0,255,0.25);
+}
+
+/* Selected state with checkmark */
+p.choice.selected {
+  background: rgba(0,255,204,0.08);
+  border-color: rgba(0,255,204,0.6);
+  box-shadow: 0 0 14px rgba(0,255,204,0.35);
+  position: relative;
+}
+p.choice.selected::after {
+  content: '✔';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 6px var(--neon-cyan);
+  opacity: 0;
+  animation: choiceCheckPop 260ms ease forwards;
+}
+@keyframes choiceCheckPop { to { opacity: 1; transform: translateY(-50%) scale(1); } }
+
+/* Disabled state */
+p.choice.disabled {
+  opacity: .55;
+  filter: grayscale(.1) saturate(.85);
+  pointer-events: none;
+}
+
+/* Inline-style replacement for data content links used as choices */
+.choice-link {
+  display: inline-block;
+  margin-top: .4rem;
+  color: var(--neon-cyan);
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid transparent;
+  padding: .3rem .55rem;
+  border-radius: 10px;
+  transition: color .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.choice-link:hover,
+.choice-link:focus-visible {
+  color: var(--neon-magenta);
+  border-color: rgba(255,0,255,0.35);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 12px rgba(255,0,255,0.2);
+  outline: none;
+}
+
+/* --- Story block container (subtilní panel) --- */
+.story-block {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: none;
+  border-radius: 12px;
+}
+
+/* --- Dialog varianty (neutral/sarcastic/soft) --- */
+.dialogN {
+  padding-left: .75rem;
+  border-left: 2px solid rgba(255, 0, 255, .35);
+  margin: .25rem 0;
+}
+.dialogS {
+  padding-left: .75rem;
+  border-left: 2px solid rgba(0, 255, 204, .4);
+  margin: .25rem 0;
+  opacity: .95;
+}
+
+/* --- Vivid text varianta --- */
+.textV {
+  line-height: 1.75;
+  opacity: .98;
+  font-style: italic;
+}
+
+/* --- Typografické utility --- */
+.text-sm {
+  font-size: calc(0.9rem * var(--font-size-multiplier, 1));
+}
+.title-lg {
+  font-size: 1.25rem;
+  letter-spacing: .015em;
+}
+
+/* --- Glitch/shine efekty používané v autor stránce --- */
+.glitch-word2 {
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 0 6px rgba(0,255,204,.6);
+}
+.glitch-word2::before,
+.glitch-word2::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: .6;
+}
+.glitch-word2::before { transform: translate(1px,0); color: #0ff; }
+.glitch-word2::after  { transform: translate(-1px,0); color: #f0f; }
+
+.glitching {
+  position: relative;
+  animation: glitch 1.2s linear infinite;
+}
+
+.shinning {
+  text-decoration: underline;
+  text-decoration-color: rgba(0,255,204,.45);
+  text-underline-offset: 3px;
+  text-shadow: 0 0 10px rgba(0,255,204,.35);
+}
+
+/* --- Typografická oprava: zachovat mezeru před zvýrazněným slovem po 404 --- */
+/* Pokud následuje zvýrazněný span hned po 404, vlož před jeho obsah nezalomitelnou mezeru */
+.halo.fx-flicker + .corrupt.fx-underline::before {
+  content: "\00a0"; /* &nbsp; */
+}
+
+/* --- Reader isolation: prevent global helpers from shifting/overriding unified reader styles --- */
+.SYNTHOMAREADER .title,
+.SYNTHOMAREADER .text,
+.SYNTHOMAREADER .textV,
+.SYNTHOMAREADER .dialog,
+.SYNTHOMAREADER .dialogS,
+.SYNTHOMAREADER .dialogN,
+.SYNTHOMAREADER .log {
+  /* neutralize global margins/paddings that cause indentation drift */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-left: none !important;
+  text-shadow: none; /* glow handled by components.css */
+  left: 0;
+}
+
+/* Make titles span full container width in reader and align decorative bar at the edge */
+.SYNTHOMAREADER .title {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Echo ghost (standalone chapters): add echo without changing typography or position --- */
+/* Keep inline flow; do not set font/text-shadow/size here */
+.echo-ghost { position: relative; display: inline; }
+.echo-ghost::after {
+  content: attr(data-echo);
+  /* inline by default, no repositioning */
+  opacity: .5;
+  color: currentColor; /* match current text color (e.g., dialogS color) */
+  pointer-events: none;
+}
+
+/* When echo-ghost is used on a dialogS paragraph, preserve dialogS typography explicitly */
+p.dialogS.echo-ghost {
+  font-family: 'Text03i', monospace;
+  font-weight: 700;
+  font-style: italic;
+  font-size: calc(1.15rem * var(--font-size-multiplier, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .echo-ghost::after { animation: none !important; }
+}
+
+/* --- MBTI HUD --- */
+.mbti-hud {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.mbti-chip {
+  padding: .4rem .6rem;
+  border: 1px solid rgba(255,0,255,0.35);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  color: var(--neon-magenta);
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-shadow: 0 0 8px rgba(255,0,255,.6);
+  user-select: none;
+}
+.mbti-panel {
+  width: min(260px, 50vw);
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(0,255,204,0.25);
+  border-radius: 12px;
+  padding: .55rem .7rem;
+  box-shadow: 0 0 12px rgba(0,255,204,0.12);
+}
+.mbti-axis { margin: .35rem 0; }
+.mbti-axis-head { display: flex; align-items: center; gap: 6px; font-size: .75rem; opacity: .8; }
+.mbti-axis-head .grow { flex: 1 1 auto; border-bottom: 1px dashed rgba(0,255,204,0.25); height: 0; }
+.mbti-axis-bar { position: relative; height: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(0,255,204,0.2); border-radius: 999px; overflow: hidden; }
+.mbti-axis-fill { height: 100%; background: linear-gradient(90deg, var(--neon-magenta), var(--neon-cyan)); box-shadow: 0 0 10px rgba(255,0,255,.35); }
+
+/* Aura blink when updated */
+.mbti-aura .mbti-panel { box-shadow: 0 0 18px rgba(255,0,255,0.25), 0 0 30px rgba(0,255,204,0.18); }
+.mbti-aura .mbti-chip { box-shadow: 0 0 16px rgba(255,0,255,0.35); }
+
+/* Responsive: move HUD up on very small screens */
+@media (max-width: 480px) {
+  .mbti-hud { right: 10px; bottom: 10px; gap: 8px; }
+  .mbti-panel { width: min(210px, 64vw); padding: .5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mbti-chip.glitch { animation: none; }
+}

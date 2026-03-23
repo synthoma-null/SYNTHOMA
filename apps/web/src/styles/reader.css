@@ -1,0 +1,658 @@
+/* =========================================================
+   SYNTHOMA UI CORE — rozšířeno o reader defaults, loading/error, choices a overlay, sjednoceno bez duplicit.
+   Sekce: Utilities • Typography • Effects • Typewriter • ScrambleTitle • Hero
+           Control Panel • Loaders/Overlays • Modal • Error
+           Video/Noise/GlitchBG • Text FX • Keyframes • A11y • Library • Reader Defaults
+   ========================================================= */
+
+/* ... (zde by byl předchozí kód, ale pro stručnost ho nepíšu znovu – předpokládám, že ho máš; sjednocení je v nových sekcích níže) ... */
+
+/* =========================
+   Global Reader (SYNTHOMAREADER) Defaults – sjednoceno pro Autor/Reader/Hero info.
+   ========================= */
+   .SYNTHOMAREADER {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 15px;
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3vh;
+    margin-bottom: 4vh;
+    padding: 1rem 1rem 1rem 0;
+    box-sizing: border-box;
+    color: var(--text-primary);
+    line-height: 1.2;
+    overflow: visible;
+    min-height: 200px;
+    opacity: 1;
+    background: transparent;
+    --reader-glow-radius: var(--reader-glow-radius, 10px);
+    --reader-glow-alpha: var(--reader-glow-alpha, 35%);
+    box-shadow: 0 0 var(--reader-glow-radius) color-mix(in oklab, var(--glow-secondary) var(--reader-glow-alpha), transparent);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    -webkit-user-select: none; -moz-user-select: none; user-select: none;
+    --use-components-styles: true;
+    z-index: 5;
+    --typewriter-duration: 2.8s;
+    overflow-anchor: none;
+    --para-gap: 0.6rem;
+    --para-rail-overlap: 0.3rem;
+  }
+  
+  .SYNTHOMAREADER .typed-box { contain: layout paint; }
+  .SYNTHOMAREADER p {
+    margin: 0 0 var(--para-gap) 0;
+    line-height: 1.35;
+    text-indent: 0 !important;
+  }
+  .SYNTHOMAREADER .hidden { display: none !important; }
+  
+  /* Visibility pro choices – sjednoceno. */
+  .SYNTHOMAREADER.typing .choice-link, .SYNTHOMAREADER:not(.choices-shown) .choice-link {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .SYNTHOMAREADER.choices-shown .choice-link {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  /* No scrollbars, ale scrollovat lze – pro Firefox/WebKit. */
+  html, body, .SYNTHOMAREADER, #reader-body, #reader-extra {
+    scrollbar-width: none;
+    /* Vypni scroll anchoring na hlavních scrolovacích kontejnerech – zabrání korekčním skokům při vkládání obsahu výše */
+    overflow-anchor: none;
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: auto;
+    touch-action: pan-y;
+    scroll-behavior: auto;
+  }
+  /* Zakázat anchoring jen na dynamických řádcích, které rostou během psaní */
+  .SYNTHOMAREADER .tw-line,
+  .SYNTHOMAREADER .typewriter,
+  .SYNTHOMAREADER .noising-text { overflow-anchor: none; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar, .SYNTHOMAREADER::-webkit-scrollbar, #reader-body::-webkit-scrollbar, #reader-extra::-webkit-scrollbar { display: none; }
+  
+  /* Reader controls toolbar – s glow border. */
+  .reader-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0rem 0;
+  }
+  .reader-controls::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    width: 4px;
+    height: 130%;
+    border-radius: 2px;
+    background: transparent;
+    box-shadow: -1px 0 4px 0px var(--accent-warning), 1px 0 8px 0px var(--accent-warning), 0px 0 12px 0px var(--accent-warning);
+    animation: border-glow 2.6s infinite cubic-bezier(.8,0,.23,1.1);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+  /* Appear animace – jako CTA. */
+  .reader-controls.appear { opacity: 0; transform: translateY(6px) scale(0.99); filter: brightness(.95) saturate(.98); }
+  .reader-controls.appear.visible { opacity: 1; transform: none; filter: var(--filter-primary, none); transition: opacity .6s ease .1s, transform .6s ease .1s, filter .6s ease; }
+  
+  /* Speed btn – s active glow. */
+  .speed-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-family: var(--font-family-mono);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+  }
+  .speed-btn:hover { background: var(--border-secondary); transform: translateY(-1px); }
+  .speed-btn.active { background: var(--accent-primary); color: var(--bg-primary); box-shadow: 0 0 8px var(--glow-primary); }
+  
+  /* Rich-hidden a story-cache – skryté. */
+  .rich-hidden, #story-cache { display: none !important; }
+  
+  /* Debug mode – pro vývojáře, s dashed borders. */
+  .debug-mode .rich-hidden { display: block !important; opacity: 0.3; border: 1px dashed #ff00ff; margin: 1rem 0; }
+  .debug-mode .hidden { display: block !important; opacity: 0.2; border: 1px dashed #00ffff; margin: 1rem 0; }
+  .debug-mode .tw-line { border-left: 2px solid rgba(0, 255, 255, 0.3); padding-left: 0.5rem; }
+  
+  /* CTA spacing – bez inline. */
+  .hero-cta .glitch-button.appear { margin: 2rem auto; }
+  
+  /* Konami easter egg – rainbow pulse. */
+  .konami-activated { filter: hue-rotate(180deg) saturate(1.5); animation: rainbow-pulse 2s infinite; }
+  @keyframes rainbow-pulse {
+    0%, 100% { filter: hue-rotate(0deg) saturate(1); }
+    25% { filter: hue-rotate(90deg) saturate(1.5); }
+    50% { filter: hue-rotate(180deg) saturate(2); }
+    75% { filter: hue-rotate(270deg) saturate(1.5); }
+  }
+  
+  /* No-animations kill-switch – rozšířeno. */
+  .no-animations .SYNTHOMAREADER, .no-animations .chapter-container, .no-animations .chapter-title, .no-animations .chapter-content,
+  .no-animations .typing-cursor, .no-animations .scanline, .no-animations .loading-spinner, .no-animations .tw-line, .no-animations .alarm-emote {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .no-animations .typing-cursor { display: none !important; }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .tw-line, .alarm-emote, .reader-controls button::before { animation: none !important; transition: none !important; }
+  }
+  
+  /* Allow-alarm override – pulzuj i při no-animations. */
+  .SYNTHOMAREADER.allow-alarm .alarm-emote { animation: alarmPulse 1.1s ease-in-out infinite !important; }
+  @media (prefers-reduced-motion: reduce) {
+    .SYNTHOMAREADER.allow-alarm .alarm-emote { animation: alarmPulse 1.1s ease-in-out infinite !important; }
+  }
+  body.no-animations .SYNTHOMAREADER.allow-alarm .alarm-emote { animation: alarmPulse 1.05s ease-in-out infinite !important; }
+  
+  #reader-body .alarm-emote, #reader-extra .alarm-emote { animation: alarmPulse 1.05s ease-in-out infinite !important; will-change: transform, opacity; }
+  
+  /* Alarm pulse keyframes – sjednoceno. */
+  @keyframes alarmPulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+  
+  /* Glitch-minimal/intense – intensity úpravy. */
+  .glitch-minimal .alarm-emote { animation-duration: 2s !important; opacity: 0.7 !important; }
+  .glitch-intense .alarm-emote { animation-duration: 0.5s !important; filter: drop-shadow(0 0 8px currentColor) !important; }
+  
+  /* Typewriter line appear – bez skoku. */
+  .tw-line { opacity: 1; animation: line-appear 0.25s ease forwards; }
+  @keyframes line-appear { to { opacity: 1; } }
+  
+  /* Instant mode – no anim. */
+  .typewriter-instant .tw-line { animation: none; opacity: 1; transform: none; }
+  
+  /* Mobile responsivita – menší glowy. */
+  @media (max-width: 800px) {
+    .SYNTHOMAREADER {
+      padding: 0rem;
+      border-radius: 8px;
+      font-size: calc(0.9rem * var(--font-size-multiplier, 1));
+      margin-left: 0;
+      margin-right: 0;
+      max-width: calc(100% - 4px);
+    }
+    #reader-body, #reader-extra { line-height: 1.2; margin-left: 0rem; margin-right: 0.05rem; }
+    #reader-body .log, #reader-extra .log { text-shadow: 0 0 3px var(--glow-secondary); }
+    #reader-body .title, #reader-extra .title { text-shadow: 0 0 4px var(--glow-secondary), 0 0 8px var(--glow-primary); font-size: inherit; }
+    .choice-box { margin-left: 0rem; margin-right: 0rem; padding-left: 12px; padding-right: 12px; }
+    .book-link { margin-left: 24px; }
+    .chapter-link { margin-left: 20px; }
+  }
+  
+  /* Dark mode fallback – přebírá téma. */
+  @media (prefers-color-scheme: dark) {
+    .chapter-item { background: rgba(0,255,255,0.12); }
+    .chapter-item:hover { background: rgba(0,255,255,0.25); }
+  }
+  
+  /* =========================
+     Loading & Error States – sjednoceno.
+     ========================= */
+  .loading-chapter {
+    display: flex; justify-content: center; align-items: center; min-height: 300px;
+    color: var(--text-primary);
+    font-family: var(--font-family-mono, 'VT323', monospace);
+    font-size: calc(1.1rem * var(--font-size-multiplier));
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-secondary);
+    border-radius: 5px;
+    margin-left: 1rem;
+  }
+  .loading-chapter p { margin: 0; color: var(--text-primary); text-shadow: 0 0 10px var(--glow-secondary); }
+  .loading-animation { margin-top: 0rem; width: 50px; height: 50px; border: 3px solid var(--border-secondary); border-radius: 50%; border-top-color: var(--accent-secondary); animation: spin 1s ease-in-out infinite; }
+  
+  .error { text-align: center; color: #f00; font-family: 'Text01', monospace; font-size: 1.1rem; margin: 2rem 0; text-shadow: 0 0 10px #f00; }
+  .error-message { background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.3); border-radius: 5px; padding: 1.5rem; margin: 1rem 0; text-align: center; color: #ff5555; }
+  .error-message h3 { margin: 0; color: #ff4444; }
+  .error-message p { margin: 0.5rem 0; color: #ff8888; }
+  .retry-button { background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; color: #ff8888; padding: 0.5rem 1rem; margin-top: 1rem; cursor: pointer; transition: all 0.3s ease; font-family: var(--font-family-mono, 'VT323', monospace); font-size: 1rem; border-radius: 4px; }
+  .retry-button:hover { background: rgba(255, 68, 68, 0.3); color: #fff; border-color: #ff0000; }
+  
+  /* =========================
+     Choices & Links – sjednoceno pro reader.
+     ========================= */
+  #reader-content a, #reader-body a, #reader-extra a { color: inherit; text-decoration: none; font: inherit; }
+  #reader-content a:visited, #reader-body a:visited, #reader-extra a:visited { color: inherit; }
+  
+  #reader-content a:hover, #reader-body a:hover, #reader-extra a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent-secondary);
+    text-underline-offset: 2px;
+  }
+  
+  #reader-content a.disabled, #reader-body a.disabled, #reader-extra a.disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+    text-decoration: none !important;
+  }
+  #reader-content a.selected, #reader-body a.selected, #reader-extra a.selected {
+    color: var(--accent-primary, #00ffff);
+    text-shadow: 0 0 6px var(--glow-primary, #00ffff);
+    border-bottom: 1px dashed currentColor;
+  }
+  
+  .choice-box {
+    display: flex;
+    font-family: var(--font-family-primary-bold);
+    font-weight: bold;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    margin-left: auto;   /* center the whole block in both readers */
+    margin-right: auto;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    align-items: center; /* center items horizontally */
+    justify-content: flex-start;
+    text-align: center;  /* center inline content */
+  }
+  
+  .choice-box .choice-link {
+    color: inherit;
+    text-decoration: none;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+    display: inline-block; /* shrink-to-fit so it can center */
+    width: auto;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+  .choice-box .choice-link:hover { background: var(--border-secondary, 0.5); box-shadow: 0 0 10px var(--glow-secondary); transform: translateY(-1px); text-decoration: none; }
+  .choice-box .choice-link:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-primary) 35%, transparent); text-decoration: none; }
+  .choice-box .choice-link.selected { background: rgba(0,255,255,0.08); box-shadow: 0 0 12px var(--glow-primary); }
+  .choice-box .choice-link.selected { position: relative; }
+  .choice-box .choice-link.selected::after {
+    content: '✔';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.6);
+    color: var(--accent-primary, #00ffff);
+    text-shadow: 0 0 6px var(--glow-primary);
+    opacity: 0;
+    animation: checkPop 260ms ease forwards;
+  }
+  @keyframes checkPop { to { opacity: 1; transform: translateY(-50%) scale(1); } }
+  .choice-box .choice-link.disabled { opacity: 0.55; cursor: default; box-shadow: none; }
+  
+  /* Book/chapter links – jako text se šipkou. */
+  .book-link {
+    color: inherit;
+    font-family: var(--font-family-mono);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: calc(1.6rem * var(--font-size-multiplier));
+    margin-left: 80px;
+    cursor: pointer;
+  }
+  .chapter-link {
+    color: inherit;
+    text-decoration: none;
+    margin-left: 70px;
+    cursor: pointer;
+  }
+  .book-link:hover, .chapter-link:hover { text-decoration: underline; transform: translateY(-2px); animation: glitch 1s infinite; }
+  
+  /* =========================
+     Neon Column & Text Offset – alignment.
+     ========================= */
+  .SYNTHOMAREADER .chapter-content { padding-left: 0 !important; }
+  .SYNTHOMAREADER .chapter-content .text, .SYNTHOMAREADER .chapter-content .textV, .SYNTHOMAREADER .chapter-content .textN,
+  .SYNTHOMAREADER .chapter-content .log, .SYNTHOMAREADER .chapter-content .dialog, .SYNTHOMAREADER .chapter-content .dialogS,
+  .SYNTHOMAREADER .chapter-content .dialogN, .SYNTHOMAREADER .chapter-content .dialogG, .SYNTHOMAREADER .chapter-content .title {
+    margin-left: 0 !important;
+    padding-left: 1.15rem !important;
+    line-height: 1.35;
+    box-sizing: border-box;
+  }
+  
+  .reader-page .story > section { padding-left: 0 !important; }
+  
+  /* =========================
+     Text-only FX in Reader – no row bg.
+     ========================= */
+  .SYNTHOMAREADER .chapter-content :where(span, em, strong)[class*="fx-"], .SYNTHOMAREADER .chapter-content :where(span, em, strong)[class*="effect-"],
+  .SYNTHOMAREADER .chapter-content :where(span, em, strong).neon-blood, .SYNTHOMAREADER .chapter-content :where(span, em, strong).corrupt,
+  .SYNTHOMAREADER .chapter-content :where(span, em, strong).datastream {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    mix-blend-mode: normal;
+  }
+  
+  /* =========================
+     Chapter Media – bg video/audio.
+     ========================= */
+  .chapter-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .chapter-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6) saturate(1.05) blur(0.5px);
+    opacity: 0.18;
+  }
+  .chapter-bg-audio { display: none; }
+  
+  .chapter-content { position: relative; z-index: 2; }
+  
+  /* =========================
+     Landing Intro Glass Tuning – match Autor.
+     ========================= */
+  .hero-intro #hero-info.SYNTHOMAREADER.glass { background: rgba(0, 0, 0, 0.20) !important; -webkit-backdrop-filter: blur(90px) !important; backdrop-filter: blur(90px) !important; }
+  .hero-intro #hero-info.SYNTHOMAREADER.glass .chapter-content::before { content: '' !important; background: rgba(0,0,0,0.10) !important; filter: none !important; }
+  
+  /* Hero-info follow-up – typewriter efekty. */
+  .hero-intro #hero-info .typewriter .noising-text, #hero-info .typewriter .noising-text {
+    display: block !important;
+    white-space: pre-wrap !important;
+    overflow: hidden;
+    animation: reveal var(--typewriter-duration, 6s) steps(var(--typewriter-steps, 60)) both,
+               caret var(--caret-duration, 1.2s) steps(1) infinite !important;
+    border-right: 2px solid var(--c-neon-cyan) !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-intro #hero-info .typewriter .noising-text, #hero-info .typewriter .noising-text { animation: none !important; border-right: none !important; }
+  }
+  
+  #hero-info .hero-followup-block { margin-top: 0.8rem; }
+  
+  /* Z-Index stacking pro hero – reader pod title. */
+  .hero-intro #hero-info.SYNTHOMAREADER { position: relative; z-index: 1; }
+  .hero-intro #hero-info.SYNTHOMAREADER .chapter-content { position: relative; z-index: 1; }
+  .hero-intro #hero-info.SYNTHOMAREADER .choice-link { position: relative; z-index: 2; }
+  .hero-intro .intro-log { position: relative; z-index: 0; margin-top: 1.5rem; }
+  .hero-intro #manifest-container { position: sticky; top: 0; z-index: 3; }
+  .hero-intro .cinematic-title, .hero-intro .hero-title { position: sticky; top: 0; z-index: 3; }
+  .hero-intro #resizing-text.intro-title {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    pointer-events: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    max-width: var(--container-max, 100%);
+    display: flex;
+    justify-content: center;
+  }
+  :root { --hero-title-offset: clamp(48px, 12vh, 160px); }
+  .hero-intro #hero-info.SYNTHOMAREADER { margin-top: var(--hero-title-offset); }
+  .hero-intro #resizing-text.intro-title.hidden, .hero-intro #resizing-text.intro-title[aria-hidden="true"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  .hero-intro #resizing-text.intro-title[style*="display:none"], .hero-intro #resizing-text.intro-title[style*="display: none"],
+  .hero-intro #resizing-text.intro-title[style*="visibility:hidden"], .hero-intro #resizing-text.intro-title[style*="visibility: hidden"],
+  .hero-intro #resizing-text.intro-title[style*="opacity:0"], .hero-intro #resizing-text.intro-title[style*="opacity: 0"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  .SYNTHOMAREADER .typed-box .tw-segment { margin-top: 1rem; }
+  /* Ensure hero intro reader centers choices exactly like main reader */
+  .hero-intro #hero-info.SYNTHOMAREADER .typed-box,
+  .hero-intro #hero-info.SYNTHOMAREADER .tw-segment,
+  .hero-intro #hero-info.SYNTHOMAREADER p.choice,
+  .hero-intro #hero-info.SYNTHOMAREADER .choice-box { text-align: center !important; }
+  .hero-intro #hero-info.SYNTHOMAREADER .choice-box { margin-left: auto !important; margin-right: auto !important; align-items: center !important; }
+  .hero-intro #hero-info.SYNTHOMAREADER .choice-link {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  /* Choice buttons – center + single border. */
+  .SYNTHOMAREADER p.choice { border: 0 !important; padding: 0 !important; background: transparent !important; margin: 0.45rem 0 !important; text-align: center; }
+  .SYNTHOMAREADER p.choice > .choice-link { display: inline-block; vertical-align: middle; }
+  .SYNTHOMAREADER .choice-link { text-align: center; }
+  
+  /* Paragraph spacing – sjednocený negativní posun pro dialogy */
+  .SYNTHOMAREADER .dialog, .SYNTHOMAREADER .dialogS, .SYNTHOMAREADER .dialogN, .SYNTHOMAREADER .dialogG { margin-top: -0.5rem !important; }
+  /* Ensure dialog glow in Reader – rely on theme vars and keep it visible */
+  .SYNTHOMAREADER .chapter-content .dialog,
+  #reader-body .dialog,
+  #reader-extra .dialog {
+    text-shadow: 0 0 15px var(--text-accent), 0 0 20px var(--text-secondary);
+  }
+  /* Specifické stíny pro dialogS (Sarkasma) a dialogN (NULL-1/Narrátor) */
+  .SYNTHOMAREADER .chapter-content .dialogS,
+  #reader-body .dialogS,
+  #reader-extra .dialogS {
+    text-shadow:
+    0 0 3px var(--glow-primary, rgba(255,0,255,.95)),
+      0 0 6px var(--glow-primary, rgba(255,0,255,.55)),
+      0 0 10px var(--accent-primary, rgba(255,0,255,.25));
+  }
+  .SYNTHOMAREADER .chapter-content .dialogN,
+  #reader-body .dialogN,
+  #reader-extra .dialogN {
+    text-shadow:
+    0 0 5px var(--glow-primary, rgba(255,0,255,.85)),
+      0 0 10px var(--glow-primary, rgba(255,0,255,.55)),
+      0 0 18px var(--accent-secondary, rgba(255,0,255,.25));
+  }
+  .SYNTHOMAREADER .chapter-content .dialogG,
+  #reader-body .dialogG,
+  #reader-extra .dialogG {
+    text-shadow:
+      0 0 10px var(--c-acid-yellow, #f6ff00),
+      0 0 18px var(--accent-secondary, rgba(0,255,255,.45));
+  }
+  /* Ensure LOG glow in Reader */
+  .SYNTHOMAREADER .chapter-content .log,
+  #reader-body .log,
+  #reader-extra .log {
+    text-shadow: 0 0 6px var(--glow-secondary, rgba(0,255,255,.4)), 0 0 12px var(--glow-primary, rgba(255,0,255,.25));
+  }
+  
+  /* Chapter meta box – MBTI summary. */
+  .chapter-content.meta { margin-top: 1rem; margin-bottom: 1rem; padding: 0rem; border: 1px solid var(--border-secondary); border-radius: 10px; }
+  
+  /* Small utilities – bez inline. */
+  .muted { opacity: 0.8; }
+  .mt-1 { margin-top: 4px; }
+  
+  /* Interaktivní buttony – s ripple efektem. */
+  .reader-controls button { position: relative; overflow: hidden; transition: all 0.3s ease; }
+  .reader-controls button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+  .reader-controls button:active::before { width: 200px; height: 200px; }
+  
+  /* Performance – will-change pro animace. */
+  .tw-line, .alarm-emote, .reader-controls button { will-change: transform, opacity; }
+  
+  /* Sr-only – visually hidden. */
+  .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+  
+  /* Overlay center – pro loading/warning. */
+  .chapter-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .chapter-overlay.loading { color: var(--text-primary); }
+  .chapter-overlay.warning { color: var(--accent-warning, #ffb300); }
+  
+  /* Chapter loaded fade – sjednoceno. */
+  .SYNTHOMAREADER.chapter-loaded { animation: fadeIn 0.5s ease-in-out; }
+  
+  /* Background overlay – jen na chapter-content. */
+  .SYNTHOMAREADER .chapter-content { position: relative; z-index: 1; }
+  .SYNTHOMAREADER .chapter-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background-color: rgba(0, 0, 0, var(--bg-opacity, 0));
+    background-image: var(--bg-image, none);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    filter: var(--bg-blur, none);
+    pointer-events: none;
+  }
+  
+  /* Glass mode – tmavší, s overlay. */
+  .SYNTHOMAREADER.glass { background: rgba(var(--bg-secondary-rgb), 0.18) !important; -webkit-backdrop-filter: blur(var(--glass-blur, 80px)) !important; backdrop-filter: blur(var(--glass-blur, 80px)) !important; border: 1px solid var(--border-secondary); z-index: 5; will-change: backdrop-filter; }
+  .SYNTHOMAREADER.glass .chapter-content::before { content: none !important; background: none !important; }
+  
+  @supports not (background: color-mix(in oklab, red, transparent)) {
+    .SYNTHOMAREADER.glass { background: rgba(0,0,0,0.28) !important; }
+  }
+  
+  /* Control panel – visibility. */
+  .control-panel { opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .3s ease, transform .3s ease; }
+  .control-panel.visible { opacity: 1; pointer-events: auto; transform: none; }
+  
+  .controls-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem 1rem; }
+  @media (max-width: 700px) { .controls-grid { grid-template-columns: 1fr; } }
+  .controls-grid .group { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: stretch; }
+  
+  /* Audio progress – bar. */
+  #progress-bar-container.progress { position: relative; width: 100%; height: 8px; background: rgba(var(--bg-secondary-rgb), 0.5); border: 1px solid var(--border-secondary); border-radius: 4px; overflow: hidden; }
+  #progress-bar-container .progress#progress-bar, #progress-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); box-shadow: 0 0 8px var(--glow-primary); }
+  .audio-buttons { display: flex; gap: 0.5rem; }
+  /* Zvýšit svislou velikost ovládacích tlačítek, ať nejsou "nízké" */
+  .audio-buttons .btn,
+  .audio-buttons button {
+    padding: 6px 10px;
+    min-height: 34px;
+    line-height: 1.2;
+    align-items: center;
+    display: inline-flex;
+  }
+  /* Zvětši výšku i ostatních tlačítek v panelu (theme, animace, TTS) */
+  .controls-grid .group .btn,
+  .controls-grid .group button,
+  .theme-button,
+  #toggle-animations,
+  #toggle-glass,
+  #toggle-tts {
+    min-height: 36px;
+    padding: 8px 12px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+  /* Větší hit-area pro range slidery */
+  .controls-grid .group input[type="range"] {
+    height: 26px;
+  }
+  
+  /* Playlist – links. */
+  #playlist-container.playlist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: clamp(160px, 26vh, 260px); /* force fixed scroll area height */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px; /* room for scrollbar overlay */
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    scrollbar-width: auto; /* re-enable visible scrollbar in FF */
+    -ms-overflow-style: auto; /* IE/Edge legacy */
+    position: relative;
+    flex: 0 0 auto; /* don't collapse or stretch oddly inside group */
+    pointer-events: auto; /* ensure scroll is enabled even if parent toggled */
+    max-width: 100%;
+  }
+  /* Re-enable and style WebKit scrollbar specifically for playlist */
+  #playlist-container.playlist::-webkit-scrollbar { width: 10px; height: 10px; display: block; }
+  #playlist-container.playlist::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); border-radius: 6px; }
+  #playlist-container.playlist::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.35); border-radius: 6px; box-shadow: 0 0 8px rgba(0,255,255,0.25); }
+  #playlist-container.playlist::-webkit-scrollbar-thumb:hover { background: rgba(0,255,255,0.5); }
+  #playlist-container.playlist a {
+    display: block;
+    width: 100%;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-family: var(--font-family-mono);
+    font-size: 1rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid var(--border-secondary);
+    border-radius: 3px;
+    background: rgba(var(--bg-secondary-rgb), 0.45);
+    transition: background .2s ease, transform .15s ease, color .2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #playlist-container.playlist a:hover { background: rgba(var(--bg-secondary-rgb), 0.5); transform: translateY(-1px); }
+  #playlist-container.playlist a.active { background: rgba(0,255,255,0.12); box-shadow: 0 0 8px var(--glow-primary); }
+  /* Mobile: o kousek menší scroll box */
+  @media (max-width: 700px) {
+    #playlist-container.playlist { max-height: 160px; }
+  }
+  
+  /* Footer toolbar – space-between. */
+  .reader-controls.footer { justify-content: space-between; }
+  .reader-controls.footer .log { opacity: 0.7; font-size: 0.8rem; }
+  
+  /* Media – img/video. */
+  #reader-body img, #reader-extra img, #reader-body video, #reader-extra video { max-width: 100%; height: auto; display: block; }
+  
+  /* Konec revize. Testuj to na mobilu, ať ti to nerozbije scroll jako moje trpělivost při auditu! 😜 Pokud chceš víc, piš – jsem tu na záchranu tvých stylů před kolapsem. 🚀 */

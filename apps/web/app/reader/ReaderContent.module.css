@@ -1,0 +1,321 @@
+.progressBar {
+  --progress-width: 0%;
+  width: 100%;
+  height: 0.625rem;
+  background-color: #404040; /* bg-neutral-700 */
+  border-radius: 9999px;
+  margin-top: 0.75rem;
+}
+
+/* Recommended track modal (replaces inline styles) */
+.recModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.recModalPanel {
+  max-width: 520px;
+  width: 92%;
+  padding: 1rem;
+}
+
+.recModalTitle {
+  margin-top: 0;
+}
+
+.recModalActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.progressFill {
+  height: 100%;
+  width: var(--progress-width, 0%);
+  background-color: #2563eb; /* bg-blue-600 */
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.readerContainer {
+  min-height: 100vh;
+  color: white;
+  padding: 1rem;
+  position: relative; /* layout padding only */
+}
+
+/* Let global reader.css handle .SYNTHOMAREADER overlay and backgrounds.
+   No local background painting here to avoid double overlays. */
+/* Ensure content sits above any global ::before overlay */
+.readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content),
+.readerMain:global(.SYNTHOMAREADER) > :global(.reader-host),
+.readerMain:global(.SYNTHOMAREADER) * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .readerContainer {
+    padding: 2rem;
+  }
+}
+
+.chapter-content {
+  /* žádné levé odsazení – ať sloupek u textu lícuje s okrajem čtečky */
+  padding: 1rem 1rem 1rem 0;
+}
+
+/* removed .readerBackground – background and opacity are managed by .SYNTHOMAREADER */
+
+.readerContent {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  position: relative;
+  z-index: 1; /* render above bg layer */
+}
+
+/* Generic background host for reader variants that don't use TypewriterReader */
+.bgHost {
+  position: relative;
+  min-height: 100vh;
+  /* Use the same variable names as containerStyle in ReaderContent.tsx */
+  background-image: var(--bg-image, none);
+  /* Solid base overlay driven by opacity var (color is unified as black for readability) */
+  background-color: rgba(0, 0, 0, var(--app-bg-opacity, var(--bg-opacity, 1)));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: var(--bg-blur, none);
+}
+
+.readerHeader {
+  background-color: #262626;
+  padding: 1rem;
+  border-bottom: 1px solid #404040;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.readerTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.readerHelpButton {
+  color: #9ca3af;
+  transition: color 0.15s ease-in-out;
+}
+
+.readerHelpButton:hover {
+  color: #ffffff;
+}
+
+.readerMain {
+  padding: 1.5rem 1.5rem 1.5rem 0; /* no left padding, align neon bar to border */
+}
+
+
+@media (min-width: 768px) {
+  .readerMain {
+    padding: 2rem 2rem 2rem 0; /* no left padding on larger viewports */
+  }
+}
+
+.readerFooter {
+  background-color: #262626;
+  padding: 1rem;
+  border-top: 1px solid #404040;
+  font-size: 0.875rem;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.errorMessage {
+  padding: 2rem;
+  text-align: center;
+  color: #ef4444;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.helpModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.helpModal {
+  background-color: #262626;
+  border-radius: 0.5rem;
+  max-width: 42rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.helpModalContent {
+  padding: 1.5rem;
+}
+
+.helpModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.helpModalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.helpModalCloseButton {
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.helpModalCloseButton:hover {
+  color: #ffffff;
+}
+
+.helpModalSection {
+  margin-bottom: 1rem;
+}
+
+.helpModalSectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.helpModalList {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.helpModalListItem {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.helpModalKey {
+  background-color: #404040;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+  margin-right: 0.5rem;
+}
+
+.helpModalFooter {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #404040;
+}
+
+.helpModalButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.helpModalButton:hover {
+  background-color: #1d4ed8;
+}
+
+/* Global styles for injected chapter content (scoped under local .readerMain) */
+/* Choice styling is unified globally in src/styles/reader.css under .SYNTHOMAREADER.
+   Do not restyle choices here to avoid route-specific drift. */
+
+/* Hide choices during typing to avoid "ghost" buttons appearing early */
+.readerMain :global(.SYNTHOMAREADER.typing .choice-link),
+.readerMain :global(.SYNTHOMAREADER:not(.choices-shown) .choice-link) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* When choices are shown, ensure they are visible and interactive */
+.readerMain :global(.SYNTHOMAREADER.choices-shown .choice-link),
+.readerMain :global(.SYNTHOMAREADER.choices-shown .choice) {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* Glitch header: prevent clipping last character and make effect breathe a bit */
+.readerMain :global(#glitch-reader) {
+  display: inline-block;
+  overflow: visible; /* allow glitch layers to overflow safely */
+  padding-right: 2.5ch; /* more breathing room to prevent clipping the last glyph */
+  margin-right: 0.25ch; /* extra guard for containers playing dirty */
+  letter-spacing: 0.08em; /* looser tracking like GH version */
+  white-space: nowrap; /* match GH style: keep on one line */
+}
+
+/* Extra spacer to mimic GH layout and avoid any edge clipping */
+.readerMain :global(#glitch-reader)::after {
+  content: '';
+  display: inline-block;
+  width: 0.75ch;
+}
+
+.readerMain :global(#glitch-reader .glitch-real),
+.readerMain :global(#glitch-reader .glitch-fake1),
+.readerMain :global(#glitch-reader .glitch-fake2) {
+  will-change: transform, text-shadow;
+}
+
+/* Space out individual characters a touch and ensure they don't collapse at the edge */
+.readerMain :global(#glitch-reader .glitch-real .glitch-char),
+.readerMain :global(#glitch-reader .glitch-fake1 .glitch-char),
+.readerMain :global(#glitch-reader .glitch-fake2 .glitch-char) {
+  display: inline-block;
+  padding-right: 0.05ch;
+}
+
+.readerMain :global(#glitch-reader .glitch-real .glitch-char:last-child),
+.readerMain :global(#glitch-reader .glitch-fake1 .glitch-char:last-child),
+.readerMain :global(#glitch-reader .glitch-fake2 .glitch-char:last-child) {
+  padding-right: 0.4ch; /* nudge last character further from the edge */
+}
+
+@media (max-width: 640px) {
+  .readerMain :global(#glitch-reader) {
+    letter-spacing: 0.06em;
+    padding-right: 1.5ch;
+  }
+}

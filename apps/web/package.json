@@ -1,0 +1,41 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "SYNTHOMA - Interaktivní cyberpunk čtečka 💀",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "validate:chapters": "node scripts/validate-books.js"
+  },
+  "keywords": ["synthoma", "cyberpunk", "reader", "next.js"],
+  "author": "Synthoma",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "next": "^15.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@mui/material": "^6.0.0",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "^15.5.2",
+    "typescript": "^5.9.2"
+  }
+}
