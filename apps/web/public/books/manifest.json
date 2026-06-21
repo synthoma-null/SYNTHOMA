@@ -10,147 +10,203 @@
           "path": "/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
           "free": true,
           "track": "/audio/SYNTHOMA1.mp3",
-          "backgroundVideo": "/video/SYNTHOMA32.webm"
+          "backgroundVideo": "/video/SYNTHOMA32.webm",
+          "chapterOrder": 0,
+          "summary": "Smyčka začíná znovu. Systém se restartuje, ale paměť odmítá zmizet.",
+          "status": "final"
         },
         {
           "title": "0 - 0 [NULL]",
           "path": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
           "free": true,
-          "backgroundVideo": "/video/SYNTHOMA12.webm"
+          "backgroundVideo": "/video/SYNTHOMA12.webm",
+          "chapterOrder": 1,
+          "summary": "Prázdnota jako výchozí stav. Než se cokoliv stane, musí existovat nic.",
+          "status": "final"
         },
         {
           "title": "0 - 1 [START]",
           "path": "/books/SYNTHOMA-NULL/0-1 [START].html",
           "free": true,
           "track": "/audio/SynthBachmoff.mp3",
-          "backgroundVideo": "/video/SYNTHOMA27.webm"
+          "backgroundVideo": "/video/SYNTHOMA27.webm",
+          "chapterOrder": 2,
+          "summary": "První kontakt. Systém detekuje přítomnost a začíná diagnostiku.",
+          "status": "final"
         },
         {
           "title": "0 - 2 [RUN]",
           "path": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
           "free": true,
           "track": "/audio/Nuova.mp3",
-          "backgroundVideo": "/video/SYNTHOMA25.webm"
+          "backgroundVideo": "/video/SYNTHOMA25.webm",
+          "chapterOrder": 3,
+          "summary": "Útěk jako obranný mechanismus. Kam běžíš, když jsi uvnitř systému?",
+          "status": "final"
         },
         {
           "title": "0 - 3 [DISCONTINUUM]",
           "path": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
           "free": true,
-          "backgroundVideo": "/video/SYNTHOMA33.webm"
+          "backgroundVideo": "/video/SYNTHOMA33.webm",
+          "chapterOrder": 4,
+          "summary": "Čas se láme. Vzpomínky přicházejí ve špatném pořadí.",
+          "status": "final"
         },
         {
           "title": "0 - 4 [DEFRAGMENTATION]",
           "path": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
           "free": true,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 5,
+          "summary": "Pokus o rekonstrukci. Střepy se skládají, ale obraz nesedí.",
+          "status": "final"
         },
         {
           "title": "0 - 5 [PAUSE]",
           "path": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
           "free": true,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 6,
+          "summary": "Ticho mezi údery. Systém čeká, než se rozhodneš.",
+          "status": "final"
         },
         {
           "title": "0 - 6 [SEARCHING]",
           "path": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
           "free": true,
           "track": "/audio/Searching.mp3",
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 7,
+          "summary": "Hledání odpovědí v místě, které odpovědi nemá.",
+          "status": "final"
         },
         {
           "title": "0 - 7 [RUINS]",
           "path": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
           "free": true,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 8,
+          "summary": "Město neodeslaných zpráv a zhroucených odpovědí.",
+          "status": "final"
         },
         {
           "title": "0 - 8 [REZIDUUM]",
           "path": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
           "free": true,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 9,
+          "summary": "Co zůstává, když odejdeš? Stopy, které systém nedokáže smazat.",
+          "status": "final"
         },
         {
           "title": "0 - 9 [SECTOR]",
           "path": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
           "free": true,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 10,
+          "summary": "Uzavřená zóna. Přístup jen pro ty, kdo zapomněli, že měli odejít.",
+          "status": "final"
         },
         {
           "title": "0 - 10 [REST]",
           "path": "/books/SYNTHOMA-NULL/0-10 [REST].html",
           "free": true,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 11,
+          "summary": "Odpočinek, který není odpočinkem. Systém nikdy nespí.",
+          "status": "final"
         },
         {
           "title": "0 - 11 [ORGIE]",
           "path": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 12,
+          "summary": "Přebytek vjemů. Hranice mezi bolestí a extází se rozpouští.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 12 [CONFLICT]",
           "path": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 13,
+          "summary": "Střet uvnitř systému. Kdo bojuje, když nepřítel jsi ty sám?",
+          "status": "draft"
         },
-
         {
           "title": "0 - 13 [LUST]",
           "path": "/books/SYNTHOMA-NULL/0-13 [LUST].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 14,
+          "summary": "Touha jako virus. Infikuje každý rozhodovací uzel.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 14 [ABSENCE]",
           "path": "/books/SYNTHOMA-NULL/0-14 [ABSENCE].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 15,
+          "summary": "Prázdné místo po někom, kdo tu nikdy nebyl.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 15 [REBIRTH]",
           "path": "/books/SYNTHOMA-NULL/0-15 [REBIRTH].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 16,
+          "summary": "Nový začátek postavený na troskách předchozích pokusů.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 16 [ILLUSION]",
           "path": "/books/SYNTHOMA-NULL/0-16 [ILLUSION].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 17,
+          "summary": "Co je skutečné v systému, který simuluje skutečnost?",
+          "status": "draft"
         },
-
         {
           "title": "0 - 17 [DISCONNECT]",
           "path": "/books/SYNTHOMA-NULL/0-17 [DISCONNECT].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 18,
+          "summary": "Odpojení. Signál slábne, ale vědomí zůstává.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 18 [AWAKENING]",
           "path": "/books/SYNTHOMA-NULL/0-18 [AWAKENING].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 19,
+          "summary": "Probuzení do reality, která je horší než sen.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 19 [ECHO]",
           "path": "/books/SYNTHOMA-NULL/0-19 [ECHO].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 20,
+          "summary": "Ozvěna všeho, co bylo řečeno. Opakování bez konce.",
+          "status": "draft"
         },
-
         {
           "title": "0 - 20 [GENESIS]",
           "path": "/books/SYNTHOMA-NULL/0-20 [GENESIS].html",
           "free": false,
-          "backgroundVideo": ""
+          "backgroundVideo": "",
+          "chapterOrder": 21,
+          "summary": "Začátek, který je zároveň koncem. Smyčka se uzavírá.",
+          "status": "draft"
         }
-
       ]
     }
   ]

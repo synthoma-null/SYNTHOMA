@@ -63,21 +63,23 @@ export default function ReaderPage() {
   }, [chapterPath]);
 
   return (
-    <div className={"glitch-bg reader-page"}>
+    <div className={`glitch-bg reader-page ${!bgSrc ? 'no-video-bg' : ''}`.trim()}>
       {/* Background video layer (source driven by manifest.json) */}
-      <div aria-hidden className="video-background">
-        <video
-          key={bgSrc || 'none'}
-          src={bgSrc || undefined}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="active"
-          data-pixel-source
-        />
-      </div>
+      {bgSrc ? (
+        <div aria-hidden className="video-background">
+          <video
+            key={bgSrc}
+            src={bgSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="active"
+            data-pixel-source
+          />
+        </div>
+      ) : null}
       <Suspense fallback={
         <div className="min-h-screen text-white flex items-center justify-center">
           <div className="animate-pulse text-2xl">Příprava čtečky...</div>

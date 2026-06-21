@@ -46,9 +46,34 @@ html {
   --reader-glow-alpha: 40%;
 }
 
+/* Global focus-visible rings for keyboard accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent-primary, #7c5cff);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-primary, #7c5cff);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.15);
+}
+
 /* Vypnutí animací pro uživatele s preferencí "reduced motion" */
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
+}
+
+/* Manual reduced-motion via control panel (body.no-animations) */
+body.no-animations *,
+body.no-animations *::before,
+body.no-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
 }
 
 /* Fonty – nahraj do public/fonts a názvy drž konzistentní */
@@ -157,6 +182,39 @@ html {
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+
+/* Noscript fallback for users/bots without JavaScript */
+.noscript-fallback {
+  padding: 2rem;
+  text-align: center;
+  color: #fff;
+  background: #111;
+}
+.noscript-fallback a {
+  color: #0ff;
+}
+
+/* Skip-to-content accessibility link */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-tertiary, #111);
+  color: var(--text-primary, #0ff);
+  border: 1px solid var(--border-primary, #0ff);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: top 0.2s ease;
+}
+.skip-to-content:focus {
+  top: 1rem;
+  outline: 2px solid var(--accent-primary, #f0f);
+  outline-offset: 2px;
 }
 
 /* Themed visual filter for generated images (applies theme var --filter-primary) */

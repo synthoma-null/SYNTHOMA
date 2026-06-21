@@ -1398,6 +1398,53 @@
   /* Fix panel offsets to px so they don't scale with html font-size */
   #control-panel { right: calc(16px + env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom) + 52px); box-sizing: border-box; overflow-x: hidden; }
 
+  /* Panel section titles (fieldset/legend) */
+  #control-panel fieldset.group {
+    border: none;
+    margin: 0 0 0.5rem;
+    padding: 0;
+  }
+  #control-panel .panel-section-title {
+    font-family: 'Text02', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted, rgba(255,255,255,0.5));
+    margin: 0 0 6px;
+    padding: 0;
+  }
+  /* Slider label layout */
+  #control-panel .slider-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+  }
+  #control-panel .slider-label-text {
+    min-width: 90px;
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+  #control-panel .slider-label input[type="range"] {
+    flex: 1;
+    min-width: 80px;
+    accent-color: var(--accent-primary, #7c5cff);
+    cursor: pointer;
+  }
+  #control-panel .slider-value {
+    min-width: 38px;
+    text-align: right;
+    font-size: 12px;
+    font-family: monospace;
+    color: var(--accent-secondary, #0ff);
+    opacity: 0.85;
+  }
+  /* Glass mode transition smoothing */
+  .SYNTHOMAREADER,
+  .panel {
+    transition: backdrop-filter 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  }
+
   /* Freeze any var-based font multipliers inside panel */
   #control-panel { --font-size-multiplier: 1 !important; }
   /* Normalize common UI atoms inside panel to px so rem outside won't affect it */
@@ -1916,6 +1963,24 @@
   .video-background { position: fixed; inset: 0; width: 100vw; height: 100vh; overflow: hidden; pointer-events: none; z-index: -2 !important; }
   .video-background video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: left top; transform: none !important; will-change: opacity; opacity: 0; transition: opacity .6s ease; }
   .video-background video.active { opacity: 1 !important; }
+
+  /* Fallback background when no video is available */
+  .no-video-bg::before {
+    content: '';
+    position: fixed; inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(124,92,255,0.08), transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.06), transparent 40%),
+      radial-gradient(ellipse at 50% 80%, rgba(255,0,200,0.04), transparent 50%),
+      var(--bg-primary, #000);
+    animation: noVideoDrift 20s ease-in-out infinite alternate;
+  }
+  @keyframes noVideoDrift {
+    0% { background-position: 0% 0%, 100% 0%, 50% 100%; }
+    100% { background-position: 100% 100%, 0% 100%, 50% 0%; }
+  }
   
   #glitch-bg, #noise-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 1; }
   
@@ -2183,4 +2248,58 @@
   .readerOverlay-50 { --bg-opacity: .50; }
   .readerOverlay-65 { --bg-opacity: .65; }
   
-  /* Konec revize. Testuj to, ať se ti to nerozpadne jako moje trpělivost při debugu. 😜 Pokud potřebuješ další úpravy, piš – jsem tu na to, abych zachraňoval styly před apokalypsou. 🚀 */
+  /* =========================
+     READER SKELETON LOADER – themed loading state
+     ========================= */
+  .reader-skeleton {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 3rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .reader-skeleton__header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-tertiary, rgba(255,255,255,0.08));
+  }
+  .reader-skeleton__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .reader-skeleton__line {
+    height: 1rem;
+    border-radius: 4px;
+    background: linear-gradient(90deg,
+      rgba(var(--bg-secondary-rgb, 0,0,0), 0.4) 25%,
+      rgba(var(--bg-secondary-rgb, 0,0,0), 0.2) 50%,
+      rgba(var(--bg-secondary-rgb, 0,0,0), 0.4) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s ease-in-out infinite;
+  }
+  .reader-skeleton__line--title { width: 40%; height: 1.5rem; }
+  .reader-skeleton__line--full { width: 100%; }
+  .reader-skeleton__line--long { width: 85%; }
+  .reader-skeleton__line--medium { width: 65%; }
+  .reader-skeleton__line--short { width: 45%; }
+  .reader-skeleton__scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-secondary, #0ff), transparent);
+    opacity: 0.5;
+    animation: skeletonScanline 2.5s linear infinite;
+  }
+  @keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  @keyframes skeletonScanline {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }

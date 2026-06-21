@@ -41,9 +41,10 @@ export interface TypewriterReaderProps {
   ariaLabel?: string;
   autoStart?: boolean;       // auto spustit typewriter po načtení
   id?: string;               // volitelný id atribut pro root (např. "hero-info")
+  instantMode?: boolean;     // skip typewriter, show all text immediately
 }
 
-export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id }: TypewriterReaderProps) {
+export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id, instantMode = false }: TypewriterReaderProps) {
   const router = useRouter();
   const hostRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -987,7 +988,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         };
 
         const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-        if (!autoStart || textLength === 0 || prefersReduced) {
+        if (!autoStart || textLength === 0 || prefersReduced || instantMode) {
           // Nic k psaní nebo autoStart off – rovnou zobraz HTML a interakce
           typedBox.innerHTML = sanitizeHTML(transformed);
           // Safety: ensure no choice starts as faded/disabled

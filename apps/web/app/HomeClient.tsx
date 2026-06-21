@@ -4,12 +4,17 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styles from "./menu.module.css";
 import { attachGlitchHeading } from "../src/lib/glitchHeading";
+import { readLastChapterPath, readReadingProgress } from "../src/lib/readerState";
 
 const TITLE = "SYNTHOMA";
+const SUBTITLE = "Interaktivní čtečka o paměti, identitě a systému, který se naučil bolet.";
 
 export default function HomeClient() {
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const [showBgVideo, setShowBgVideo] = useState(true);
+  const [lastChapter, setLastChapter] = useState<string | null>(null);
+  const [lastChapterTitle, setLastChapterTitle] = useState<string | null>(null);
+  const [lastChapterPercent, setLastChapterPercent] = useState<number | null>(null);
 
   // Aktivuj glitch efekt 1:1 jako na landing-intro
   useEffect(() => {
@@ -27,6 +32,36 @@ export default function HomeClient() {
       const ua = navigator.userAgent || "";
       const isiOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
       if (isiOS) setShowBgVideo(false);
+    } catch {}
+  }, []);
+
+  // Detect reading progress for "Continue reading" badge
+  useEffect(() => {
+    try {
+      const last = readLastChapterPath();
+      if (last) {
+        setLastChapter(last);
+        // Try to get title and progress from manifest
+        fetch('/books/manifest.json', { cache: 'no-store' })
+          .then(r => r.ok ? r.json() : null)
+          .then(manifest => {
+            if (!manifest) return;
+            for (const col of manifest.collections || []) {
+              const ch = (col.chapters || []).find((c: any) => c.path === last);
+              if (ch) {
+                setLastChapterTitle(ch.title);
+                // Read progress for this book
+                try {
+                  const progress = readReadingProgress(col.slug || col.title || '');
+                  if (progress && progress.percent > 0) {
+                    setLastChapterPercent(Math.round(progress.percent));
+                  }
+                } catch {}
+                break;
+              }
+            }
+          }).catch(() => {});
+      }
     } catch {}
   }, []);
 
@@ -63,19 +98,32 @@ export default function HomeClient() {
         <section className={`${styles.menu} panel ${styles.menuOffset}`} aria-label="Menu">
           <nav aria-label="Primární navigace">
             <ul className={styles.menuList}>
+              {lastChapter ? (
+                <li className={styles.fullWidth}>
+                  <article className={`${styles.card} ${styles.cardPrimary}`}>
+                    <Link className={styles.cardLink} href={`/reader?u=${encodeURIComponent(lastChapter)}`}>
+                      <h2 className={styles.cardTitle}>Pokračovat ve čtení</h2>
+                      <p className={styles.cardTeaser}>
+                        {lastChapterTitle || 'Pokračovat tam, kde jsi skončil'}
+                        {lastChapterPercent ? <span className={styles.progressBadge}>{lastChapterPercent} %</span> : null}
+                      </p>
+                    </Link>
+                  </article>
+                </li>
+              ) : null}
               <li>
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/landing-intro">
                     <h2 className={styles.cardTitle}>Intro</h2>
-                    <p className={styles.cardTeaser}>Vstupní manifest a glitch show. 🎬</p>
+                    <p className={styles.cardTeaser}>Vstupní manifest a glitch show.</p>
                   </Link>
                 </article>
               </li>
               <li>
-                <article className={styles.card}>
+                <article className={`${styles.card} ${!lastChapter ? styles.cardPrimary : ''}`}>
                   <Link className={styles.cardLink} href="/books">
                     <h2 className={styles.cardTitle}>Knihovna</h2>
-                    <p className={styles.cardTeaser}>Zkratka do knihovny. 🚪</p>
+                    <p className={styles.cardTeaser}>Otevřít seznam kapitol.</p>
                   </Link>
                 </article>
               </li>
@@ -83,7 +131,7 @@ export default function HomeClient() {
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/archive">
                     <h2 className={styles.cardTitle}>Archiv</h2>
-                    <p className={styles.cardTeaser}>Lore, pojmy, frakce. 🧠</p>
+                    <p className={styles.cardTeaser}>Lore, pojmy, frakce.</p>
                   </Link>
                 </article>
               </li>
@@ -91,7 +139,7 @@ export default function HomeClient() {
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/autor">
                     <h2 className={styles.cardTitle}>Autor</h2>
-                    <p className={styles.cardTeaser}>Kdo to celé spáchal a proč. ✍️</p>
+                    <p className={styles.cardTeaser}>Kdo to celé spáchal a proč.</p>
                   </Link>
                 </article>
               </li>

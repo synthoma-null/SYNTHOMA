@@ -362,24 +362,47 @@ export default function ControlPanelClient() {
           toggleGlassBtn.setAttribute('aria-pressed', String(isGlass));
         }
         try { writeText('glassMode', String(isGlass)); } catch {}
+        // Update label and value indicator
+        try { updateOpacityOutput(isGlass ? currentBlur / 24 : currentOpacity); } catch {}
       }
 
       const fontSizeSlider = document.getElementById("font-size-slider") as HTMLInputElement | null;
+      const fontSizeOutput = document.getElementById("font-size-value") as HTMLOutputElement | null;
+      function updateFontSizeOutput(val: string) {
+        if (fontSizeOutput) fontSizeOutput.textContent = Math.round(parseFloat(val) * 100) + "%";
+      }
       if (fontSizeSlider) {
         const savedFontSize = readText("fontSizeMultiplier", "1");
         fontSizeSlider.value = savedFontSize;
+        updateFontSizeOutput(savedFontSize);
         // Apply on both html and body to override theme-scoped vars (e.g., Mono BW)
         root.style.setProperty("--font-size-multiplier", savedFontSize);
         body.style.setProperty("--font-size-multiplier", savedFontSize);
         fontSizeSlider.addEventListener("input", function (e) {
           const target = e.target as HTMLInputElement;
           applySetting("fontSizeMultiplier", target.value, "--font-size-multiplier");
+          updateFontSizeOutput(target.value);
         });
       }
 
       const opacitySlider = document.getElementById("opacity-slider") as HTMLInputElement | null;
+      const opacityOutput = document.getElementById("opacity-slider-value") as HTMLOutputElement | null;
+      const opacityLabelEl = document.getElementById("opacity-slider-label") as HTMLElement | null;
+      function updateOpacityOutput(val: number) {
+        if (opacityOutput) {
+          if (currentGlassMode) {
+            opacityOutput.textContent = Math.round(val * 24) + "px";
+          } else {
+            opacityOutput.textContent = Math.round(val * 100) + "%";
+          }
+        }
+        if (opacityLabelEl) {
+          opacityLabelEl.textContent = currentGlassMode ? "Blur" : "Průhlednost";
+        }
+      }
       // init glass mode now
       applyGlassMode(currentGlassMode, true);
+      updateOpacityOutput(currentGlassMode ? currentBlur / 24 : currentOpacity);
 
       try {
         const ensureReaderSync = () => {
@@ -445,6 +468,7 @@ export default function ControlPanelClient() {
           const target = e.target as HTMLInputElement;
           const val = parseFloat(target.value);
           scheduleApply(val);
+          updateOpacityOutput(val);
         };
         opacitySlider.addEventListener("input", onSlider);
         opacitySlider.addEventListener("change", onSlider);

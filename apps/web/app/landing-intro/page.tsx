@@ -4,7 +4,8 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import { useRouter } from "next/navigation";
 import { runCinematicTitleIntro } from "../../src/lib/cinematicTitle";
 import { getSharedAudio } from "../../src/lib/audio";
-import { writeStorage } from "../../src/lib/browser";
+import { writeStorage, readStorage } from "../../src/lib/browser";
+import { readLastChapterPath } from "../../src/lib/readerState";
 import { runTypewriter, typeExternalInfo, typeBooksList } from "../../src/lib/typewriter";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import { extractVisibleTextLength, revealHtmlPreserve, sanitizeHTML, transformChoicesToButtons } from "../../src/lib/typewriterContent";
@@ -13,7 +14,7 @@ import styles from "./styles.module.css";
 
 const TITLE = "SYNTHOMA";
 const MANIFEST = "Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.";
-const BTN_LABEL = "Pokračovat";
+const BTN_LABEL = "Pokračovat \u266B";
 // Re-enabled: follow-up typewriter (watchdogs + click-to-complete keep it safe)
 const enableFollowupTypewriter = true;
 
@@ -35,6 +36,7 @@ export default function LandingIntroPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const btnGlitchRef = useRef<HTMLButtonElement | null>(null);
   const isStartingAudioRef = useRef(false);
+  const manifestCancelRef = useRef<(() => void) | null>(null);
   const [infoHtml, setInfoHtml] = useState<string>("");
   const [infoTypedCount, setInfoTypedCount] = useState(0);
   const [infoIsTyping, setInfoIsTyping] = useState(false);
@@ -514,7 +516,7 @@ export default function LandingIntroPage() {
 
   useEffect(() => {
     const t1 = window.setTimeout(() => setShowTitle(true), 30);
-    const t2 = window.setTimeout(() => setShowManifest(true), 4100);
+    const t2 = window.setTimeout(() => setShowManifest(true), 2500);
     return () => { window.clearTimeout(t1); window.clearTimeout(t2); };
   }, []);
 
@@ -736,8 +738,8 @@ export default function LandingIntroPage() {
     const el = document.getElementById("manifest-container");
     if (el) {
       el.style.setProperty("--typewriter-steps", typewriterSteps);
-      el.style.setProperty("--typewriter-duration", "7.2s");
-      el.style.setProperty("--caret-duration", "1.4s");
+      el.style.setProperty("--typewriter-duration", "5s");
+      el.style.setProperty("--caret-duration", "1.2s");
     }
   }, [typewriterSteps]);
 
@@ -753,13 +755,28 @@ export default function LandingIntroPage() {
         const durVar = cs.getPropertyValue('--typewriter-duration').trim();
         if (durVar.endsWith('ms')) return parseFloat(durVar);
         if (durVar.endsWith('s')) return parseFloat(durVar) * 1000;
-        return 7200;
+        return 5000;
       },
       onStart: () => setTypedDone(false),
-      onDone: () => setTypedDone(true),
+      onDone: () => { setTypedDone(true); manifestCancelRef.current = null; },
     });
-    return () => { try { cancel(); } catch {} };
+    manifestCancelRef.current = cancel;
+    return () => { try { cancel(); } catch {}; manifestCancelRef.current = null; };
   }, [showManifest]);
+
+  // Click-to-skip: klik na manifest oblast dokončí typewriter okamžitě
+  const handleManifestSkip = useCallback(() => {
+    if (typedDone) return;
+    try {
+      if (manifestCancelRef.current) { manifestCancelRef.current(); manifestCancelRef.current = null; }
+      const host = document.getElementById('manifest-container') as HTMLElement | null;
+      if (host) {
+        const target = host.querySelector('.noising-text') as HTMLElement | null;
+        if (target) { target.textContent = MANIFEST; }
+      }
+      setTypedDone(true);
+    } catch {}
+  }, [typedDone]);
 
   // Stabilizace scrollu pro manifest typewriter – žádné poskakování obrázku
   useEffect(() => {
@@ -840,7 +857,14 @@ export default function LandingIntroPage() {
           <span className="sr-only">{TITLE}</span>
         </h1>
 
-        <div className={`manifest-wrapper ${typedDone ? 'has-cta' : ''}`.trim()}>
+        <div
+          className={`manifest-wrapper ${typedDone ? 'has-cta' : 'manifest-skippable'}`.trim()}
+          onClick={handleManifestSkip}
+          role="button"
+          tabIndex={typedDone ? -1 : 0}
+          aria-label={typedDone ? undefined : "Přeskočit animaci"}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleManifestSkip(); } }}
+        >
           <p className="manifest typewriter" id="manifest-container" aria-live="polite" aria-atomic>
             <span className="noising-text" aria-hidden="true"></span>
             <span className="sr-only">{MANIFEST}</span>
@@ -876,6 +900,13 @@ export default function LandingIntroPage() {
               className="readerOverlay-35 readerOverlay-blur"
               id="hero-info"
             />
+            <nav className="intro-nav-choices" aria-label="Pokračovat">
+              <a href="/reader?u=%2Fbooks%2FSYNTHOMA-NULL%2F0-0%20%5BNULL%5D.html" className="intro-nav-link intro-nav-primary">Začít číst</a>
+              <a href="/books" className="intro-nav-link">Otevřít knihovnu</a>
+              {typeof window !== 'undefined' && readLastChapterPath() ? (
+                <a href={`/reader?u=${encodeURIComponent(readLastChapterPath())}`} className="intro-nav-link intro-nav-continue">Pokračovat tam, kde jsem skončil</a>
+              ) : null}
+            </nav>
           </section>
         ) : null}
 

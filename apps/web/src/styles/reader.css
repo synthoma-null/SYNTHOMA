@@ -50,18 +50,7 @@
   }
   .SYNTHOMAREADER .hidden { display: none !important; }
   
-  /* Visibility pro choices – sjednoceno. */
-  .SYNTHOMAREADER.typing .choice-link, .SYNTHOMAREADER:not(.choices-shown) .choice-link {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity .2s ease;
-  }
-  .SYNTHOMAREADER.choices-shown .choice-link {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
+  /* Choice visibility rules are defined in components.css (single source of truth) */
   
   /* No scrollbars, ale scrollovat lze – pro Firefox/WebKit. */
   html, body, .SYNTHOMAREADER, #reader-body, #reader-extra {

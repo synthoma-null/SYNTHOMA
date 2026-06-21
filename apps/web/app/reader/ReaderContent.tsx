@@ -6,18 +6,23 @@ import styles from './ReaderContent.module.css';
 import { readBooleanStorage, writeStorage } from '../../src/lib/browser';
 import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { saveLastChapterPath, saveReadingProgress } from '../../src/lib/readerState';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // Duplicated transform and reveal logic removed in favor of TypewriterReader
 
 export default function ReaderContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
   const effectiveUrl = searchParams?.get("u") || defaultUrl;
 
   const [showHelp, setShowHelp] = useState(false);
+  const [prevChapter, setPrevChapter] = useState<{ title: string; path: string } | null>(null);
+  const [nextChapter, setNextChapter] = useState<{ title: string; path: string } | null>(null);
+  const [instantMode, setInstantMode] = useState(() => readBooleanStorage('instantReadMode', false));
+  const [scrollPercent, setScrollPercent] = useState(0);
 
-  // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes
+  // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes, Arrow keys nav
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       try {
@@ -36,7 +41,7 @@ export default function ReaderContent() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  }, [prevChapter, nextChapter, router]);
 
   // Derive bookId from effectiveUrl: /books/<bookId>/...
   const { bookId, chapterPath } = useMemo(() => {
@@ -57,8 +62,9 @@ export default function ReaderContent() {
     } catch {}
   }, [effectiveUrl]);
 
-  // Recommended track modal
+  // Recommended track modal + persistent mini badge
   const [recModal, setRecModal] = useState<{ visible: boolean; track?: string; title?: string }>({ visible: false });
+  const [recTrack, setRecTrack] = useState<{ track: string; trackName: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -72,6 +78,9 @@ export default function ReaderContent() {
         const ch = col?.chapters?.find((x: any) => x.path === chapterPath);
         const track = ch?.track as string | undefined;
         if (!track) return;
+        // Store track info for persistent mini badge
+        const trackName = track.split('/').pop()?.replace(/\.[^.]+$/, '') || 'Track';
+        if (!cancelled) setRecTrack({ track, trackName });
         // Respect user block: if blocked or audio not playing, show prompt
         const blocked = readBooleanStorage('audioAutoplayBlocked', false);
         const audio: HTMLAudioElement | undefined = (window as any).__synthomaAudio;
@@ -98,6 +107,26 @@ export default function ReaderContent() {
     return () => { try { detach && detach(); } catch {} };
   }, []);
 
+  // Fetch chapter neighbors (prev/next) from manifest
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/books/manifest.json', { cache: 'no-store' });
+        if (!res.ok) return;
+        const manifest = await res.json();
+        const col = (manifest?.collections || []).find((c: any) => (c.slug || '').toLowerCase() === (bookId || '').toLowerCase());
+        if (!col?.chapters?.length) return;
+        const idx = col.chapters.findIndex((ch: any) => ch.path === chapterPath);
+        if (idx < 0) return;
+        if (cancelled) return;
+        setPrevChapter(idx > 0 ? { title: col.chapters[idx - 1].title, path: col.chapters[idx - 1].path } : null);
+        setNextChapter(idx < col.chapters.length - 1 ? { title: col.chapters[idx + 1].title, path: col.chapters[idx + 1].path } : null);
+      } catch {}
+    })();
+    return () => { cancelled = true; };
+  }, [bookId, chapterPath]);
+
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
     if (!bookId) return;
@@ -116,6 +145,7 @@ export default function ReaderContent() {
       const y = Math.max(0, Math.min(total, window.scrollY || window.pageYOffset || 0));
       const pct = (y / total) * 100;
       save(pct);
+      setScrollPercent(Math.round(pct));
       rafId = null;
     };
     const onScroll = () => { if (rafId == null) rafId = requestAnimationFrame(compute); };
@@ -133,6 +163,11 @@ export default function ReaderContent() {
   // Render content
   return (
     <>
+      {/* Reading progress indicator (fixed at top) */}
+      <div className={styles.readingProgress} aria-hidden="true">
+        <div className={styles.readingProgressBar} style={{ width: `${scrollPercent}%` }} />
+      </div>
+
       {recModal.visible ? (
         <div role="dialog" aria-modal="true" aria-label="Doporučená skladba" className={styles.recModalOverlay}>
           <div className={`panel glass ${styles.recModalPanel}`}>
@@ -170,14 +205,42 @@ export default function ReaderContent() {
         </section>
 
         <section>
+          <div className={styles.readerToolbar}>
+            {recTrack ? (
+              <button
+                className={`btn btn-sm ${styles.audioBadge}`}
+                onClick={() => {
+                  try { (window as any).audioPanelPlay?.(recTrack.track); } catch {}
+                }}
+                title={`Přehrát doporučenou: ${recTrack.trackName}`}
+                aria-label={`Přehrát doporučenou skladbu: ${recTrack.trackName}`}
+              >
+                🎵 {recTrack.trackName}
+              </button>
+            ) : null}
+            <button
+              className={`btn btn-sm ${styles.instantToggle} ${instantMode ? styles.instantToggleActive : ''}`}
+              onClick={() => {
+                const next = !instantMode;
+                setInstantMode(next);
+                try { writeStorage('instantReadMode', String(next)); } catch {}
+              }}
+              aria-pressed={instantMode}
+              title={instantMode ? 'Rychlé čtení: Zapnuto' : 'Rychlé čtení: Vypnuto'}
+            >
+              {instantMode ? '⚡ Instant' : '✍️ Typewriter'}
+            </button>
+          </div>
           <TypewriterReader
             id="hero-info"
             srcUrl={effectiveUrl}
             className={`readerOverlay-35 readerOverlay-blur ${styles.readerMain}`}
             ariaLabel="Čtečka"
             autoStart
+            instantMode={instantMode}
           />
         </section>
+
       </main>
 
       {/* Help Modal */}
@@ -209,7 +272,7 @@ export default function ReaderContent() {
                     <kbd className={styles.helpModalKey}>Esc</kbd>
                     <span>Zavřít okno</span>
                   </li>
-                </ul>
+                                  </ul>
               </div>
               
               <div className={styles.helpModalSection}>
@@ -217,6 +280,9 @@ export default function ReaderContent() {
                 <p>
                   Klikněte na jakoukoliv možnost pro pokračování příběhu. 
                   Všechny volby jsou zobrazeny najednou.
+                </p>
+                <p>
+                  Tlačítko <strong>⚡ Instant</strong> přepne režim rychlého čtení — text se zobrazí okamžitě bez typewriter efektu. Preference se ukládá.
                 </p>
               </div>
               

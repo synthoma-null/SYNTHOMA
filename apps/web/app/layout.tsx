@@ -1,9 +1,8 @@
-import "../src/styles/base.css";
+﻿import "../src/styles/base.css";
 import "../src/styles/components.css";
 import "../src/styles/effects.css";
 import "../src/styles/themes.css";
 import "../src/styles/reader.css";
-import ControlPanelClient from "./components/ControlPanelClient";
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
 import ScrollGuardClient from "./components/ScrollGuardClient";
@@ -12,6 +11,13 @@ import MBTIHudClient from "./components/MBTIHudClient";
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
+
+// Client Component wrapper for dynamic ControlPanelClient
+function ControlPanelWrapper() {
+  "use client";
+  const ControlPanelClient = require("./components/ControlPanelClient").default;
+  return <ControlPanelClient />;
+}
 
 // Dynamic import for debug panel (development only)
 const DebugPanel = () => {
@@ -24,15 +30,19 @@ const DebugPanel = () => {
 
 export const metadata: Metadata = {
   title: "SYNTHOMA",
-  description: "Cyberpunková interaktivní čtečka a knihovna.",
+  description: "Cyberpunková interaktivní čtečka a knihovna",
   icons: {
     icon: "/assets/favicon.ico",
     apple: "/assets/icon-152x152.png",
   },
   manifest: "/manifest.json",
-  metadataBase: new URL("https://synthoma.cz"),
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#0b0b0c" },
+  ],
+  metadataBase: new URL("https://www.synthoma.cz"),
   alternates: {
-    canonical: "https://synthoma.cz/",
+    canonical: "https://www.synthoma.cz/",
   },
   robots: {
     index: true,
@@ -47,7 +57,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: "https://synthoma.cz/",
+    url: "https://www.synthoma.cz/",
     title: "SYNTHOMA",
     description: "Cyberpunková interaktivní čtečka a knihovna.",
     siteName: "SYNTHOMA",
@@ -69,65 +79,111 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "SYNTHOMA",
+  "description": "Cyberpunková interaktivní čtečka a knihovna – glitch-noir narativní zážitek.",
+  "url": "https://www.synthoma.cz",
+  "inLanguage": "cs",
+  "genre": ["Cyberpunk", "Interactive Fiction", "Glitch Noir"],
+  "isAccessibleForFree": true,
+  "image": "https://www.synthoma.cz/assets/og-synthoma.jpg",
+};
+
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="cs" data-theme="synthoma">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
+        <a href="#main-content" className="skip-to-content">Přeskočit na obsah</a>
+        <noscript>
+          <div className="noscript-fallback">
+            <h1>SYNTHOMA</h1>
+            <p>Cyberpunková interaktivní čtečka vyžaduje JavaScript pro plný zážitek.</p>
+            <p>Zapněte JavaScript nebo navštivte <a href="/books">knihovnu</a> pro statický obsah.</p>
+          </div>
+        </noscript>
         <MBTIProviderClient>
           {/* Retro Arcade pixelation canvas overlay (controlled by CSS vars in themes.css) */}
           <RetroPixelCanvasClient />
-          {children}
+          <div id="main-content">{children}</div>
           {/* Global Control Panel trigger and container */}
           <div>
-            <button id="toggle-panel-btn" aria-expanded="false" aria-controls="control-panel">⚙️</button>
+            <button id="toggle-panel-btn" aria-expanded="false" aria-controls="control-panel">🎛️</button>
           </div>
-          <div id="control-panel" className="control-panel">
+          <div id="control-panel" className="control-panel" role="region" aria-label="Ovládací panel">
             <div className="controls-grid">
-              <div className="group">
+              {/* Sekce: Zobrazení */}
+              <fieldset className="group" aria-label="Zobrazení">
+                <legend className="panel-section-title">Zobrazení</legend>
                 <button id="toggle-animations" className="panel-button btn btn-sm" aria-pressed="true">Animace: Zapnuty</button>
                 <button id="toggle-glass" className="panel-button btn btn-sm" aria-pressed="false">Sklo: Vypnuto</button>
-              </div>
-              <div className="group">
-                <label>Velikost písma <input id="font-size-slider" type="range" min="0.8" max="1.4" step="0.05" defaultValue="1" /></label>
-                <label>Průhlednost/Blur <input id="opacity-slider" type="range" min="0" max="1" step="0.01" defaultValue="0.8" /></label>
-              </div>
-              <div className="group">
-                <button className="theme-button" data-theme="synthoma" aria-pressed="false" aria-label="Switch to Synthoma theme">Synthoma</button>
-                <button className="theme-button" data-theme="green-matrix" aria-pressed="false" aria-label="Switch to Green Matrix theme">Green Matrix</button>
-                <button className="theme-button" data-theme="neon-hellfire" aria-pressed="false" aria-label="Switch to Neon Hellfire theme">Neon Hellfire</button>
-                <button className="theme-button" data-theme="cyber-dystopia" aria-pressed="false" aria-label="Switch to Cyber Dystopia theme">Cyber Dystopia</button>
-                <button className="theme-button" data-theme="acid-glitch" aria-pressed="false" aria-label="Switch to Acid Glitch theme">Acid Glitch</button>
-                <button className="theme-button" data-theme="retro-arcade" aria-pressed="false" aria-label="Switch to Retro Arcade theme">Retro Arcade</button>
-                <button className="theme-button" data-theme="mono" aria-pressed="false" aria-label="Switch to Monochrome (B/W) theme">Mono BW</button>
-              </div>
-              <div className="group">
-                <div id="progress-bar-container" className="progress"><div id="progress-bar" /></div>
+              </fieldset>
+              {/* Sekce: Nastavení */}
+              <fieldset className="group" aria-label="Nastavení zobrazení">
+                <legend className="panel-section-title">Nastavení</legend>
+                <label className="slider-label">
+                  <span className="slider-label-text">Velikost písma</span>
+                  <input id="font-size-slider" type="range" min="0.8" max="1.4" step="0.05" defaultValue="1" />
+                  <output id="font-size-value" className="slider-value">100%</output>
+                </label>
+                <label className="slider-label">
+                  <span className="slider-label-text" id="opacity-slider-label">Průhlednost</span>
+                  <input id="opacity-slider" type="range" min="0" max="1" step="0.01" defaultValue="0.8" aria-labelledby="opacity-slider-label" />
+                  <output id="opacity-slider-value" className="slider-value">80%</output>
+                </label>
+              </fieldset>
+              {/* Sekce: Motivy */}
+              <fieldset className="group" role="radiogroup" aria-label="Barevný motiv">
+                <legend className="panel-section-title">Motivy</legend>
+                <button className="theme-button" data-theme="synthoma" aria-pressed="false">Synthoma</button>
+                <button className="theme-button" data-theme="green-matrix" aria-pressed="false">Green Matrix</button>
+                <button className="theme-button" data-theme="neon-hellfire" aria-pressed="false">Neon Hellfire</button>
+                <button className="theme-button" data-theme="cyber-dystopia" aria-pressed="false">Cyber Dystopia</button>
+                <button className="theme-button" data-theme="acid-glitch" aria-pressed="false">Acid Glitch</button>
+                <button className="theme-button" data-theme="retro-arcade" aria-pressed="false">Retro Arcade</button>
+                <button className="theme-button" data-theme="mono" aria-pressed="false">Mono BW</button>
+              </fieldset>
+              {/* Sekce: Audio */}
+              <fieldset className="group" aria-label="Audio přehrávač">
+                <legend className="panel-section-title">Audio</legend>
+                <div id="progress-bar-container" className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} aria-label="Průběh skladby"><div id="progress-bar" /></div>
                 <div className="audio-buttons">
-                  <button id="play-pause-btn" className="btn btn-sm" aria-pressed="false">▶️</button>
-                  <button id="stop-btn" className="btn btn-sm">⏹️</button>
+                  <button id="play-pause-btn" className="btn btn-sm" aria-pressed="false" aria-label="Přehrát / Pozastavit">▶️</button>
+                  <button id="stop-btn" className="btn btn-sm" aria-label="Zastavit">⏹️</button>
                   <button id="toggle-tts" className="btn btn-sm" aria-pressed="false">TTS: Vypnuto 🔇</button>
                 </div>
                 <div
                   id="playlist-container"
                   className="playlist"
-                  style={{ height: '220px', overflowY: 'auto' }}
+                  role="list"
+                  aria-label="Seznam skladeb"
                 >
                   {/* Fallback obsah – bude nahrazen ControlPanelClientem po bootu */}
-                  <a href="#">Comet</a>
-                  <a href="#">Discontinuum</a>
-                  <a href="#">Orgie</a>
-                  <a href="#">Run</a>
-                  <a href="#">Searching</a>
-                  <a href="#">Sector</a>
-                  <a href="#">SoulSynth</a>
-                  <a href="#">SynthAm</a>
-                  <a href="#">SynthJazzoko</a>
-                  <a href="#">Touha</a>
+                  <a href="#" data-src="/audio/SynthBachmoff.mp3" role="listitem">SynthBachmoff</a>
+                  <a href="#" data-src="/audio/Comet.mp3" role="listitem">Comet</a>
+                  <a href="#" data-src="/audio/Discontinuum.mp3" role="listitem">Discontinuum</a>
+                  <a href="#" data-src="/audio/Nuova.mp3" role="listitem">Nuova</a>
+                  <a href="#" data-src="/audio/Orgie.mp3" role="listitem">Orgie</a>
+                  <a href="#" data-src="/audio/Run.mp3" role="listitem">Run</a>
+                  <a href="#" data-src="/audio/Searching.mp3" role="listitem">Searching</a>
+                  <a href="#" data-src="/audio/Sector.mp3" role="listitem">Sector</a>
+                  <a href="#" data-src="/audio/SoulSynth.mp3" role="listitem">SoulSynth</a>
+                  <a href="#" data-src="/audio/SynthAm.mp3" role="listitem">SynthAm</a>
+                  <a href="#" data-src="/audio/SynthJazzoko.mp3" role="listitem">SynthJazzoko</a>
+                  <a href="#" data-src="/audio/SYNTHOMA1.mp3" role="listitem">SYNTHOMA1</a>
+                  <a href="#" data-src="/audio/Touha.mp3" role="listitem">Touha</a>
                 </div>
-              </div>
+              </fieldset>
             </div>
           </div>
-          <ControlPanelClient />
+          <ControlPanelWrapper />
           <GlobalAudioClient />
           <ScrollGuardClient />
           <ServiceWorkerRegister />

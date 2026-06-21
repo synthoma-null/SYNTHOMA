@@ -20,21 +20,22 @@
   --li-font-sans: "LI-Inter", ui-sans-serif, system-ui, Segoe UI, Roboto, Inter, sans-serif;
   --li-font-mono: "LI-JetBrainsMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --li-bg: #0b0b0c;
-  --li-fg: #f2f2f2;
-  --li-muted: #b3b3b3;
-  --li-accent: #7c5cff;
-  --li-accent-2: #00d4ff;
-  --li-glass: rgba(255, 255, 255, 0.06);
-  --li-border: rgba(255, 255, 255, 0.12);
+  /* Map landing-intro tokens to global theme tokens (with fallbacks for standalone rendering) */
+  --li-bg: var(--bg-primary, #0b0b0c);
+  --li-fg: var(--text-primary, #f2f2f2);
+  --li-muted: var(--text-muted, #b3b3b3);
+  --li-accent: var(--accent-primary, #7c5cff);
+  --li-accent-2: var(--accent-secondary, #00d4ff);
+  --li-glass: var(--bg-glass, rgba(255, 255, 255, 0.06));
+  --li-border: var(--border-tertiary, rgba(255, 255, 255, 0.12));
   --li-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-  /* Additional variables reused by shared glitch styles */
-  --text-primary: var(--li-fg);
-  --accent-primary: var(--li-accent);
-  --accent-secondary: var(--li-accent-2);
-  --glow-primary: var(--li-accent);
-  --glow-secondary: var(--li-accent-2);
-  --primary-color: var(--li-accent);
+  /* Shared glitch style vars — these are set by the global theme, but fallback to landing-intro defaults */
+  --text-primary: var(--li-fg, #f2f2f2);
+  --accent-primary: var(--li-accent, #7c5cff);
+  --accent-secondary: var(--li-accent-2, #00d4ff);
+  --glow-primary: var(--accent-primary, #7c5cff);
+  --glow-secondary: var(--accent-secondary, #00d4ff);
+  --primary-color: var(--accent-primary, #7c5cff);
   --filter-primary: none;
 }
 
@@ -171,4 +172,68 @@
   70%  { transform: translate(-1px, 2px) scale(0.98) skewX(2deg); opacity: .95; }
   85%  { transform: translate(1px, 1px) scale(1.02) skewX(-1deg); opacity: .98; }
   100% { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
+}
+
+/* Click-to-skip hint on manifest during typing */
+.manifest-skippable {
+  cursor: pointer;
+}
+
+/* CTA button entrance animation */
+@keyframes ctaFadeIn {
+  0%   { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0.5); }
+  50%      { box-shadow: 0 0 18px 4px rgba(124, 92, 255, 0.3); }
+}
+
+.hero-cta .glitch-button.appear {
+  opacity: 0;
+  animation: ctaFadeIn 0.6s ease-out forwards;
+}
+.hero-cta .glitch-button.appear.visible {
+  opacity: 1;
+  animation: ctaFadeIn 0.6s ease-out forwards, ctaPulse 2.4s ease-in-out 0.8s infinite;
+}
+
+/* Navigation choices after intro info */
+.intro-nav-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 2rem auto 1rem;
+  padding: 0 1rem;
+  max-width: 600px;
+  animation: ctaFadeIn 0.8s ease-out forwards;
+}
+.intro-nav-link {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: var(--li-fg, #f0f0f8);
+  background: rgba(18,18,22,0.6);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.intro-nav-link:hover {
+  transform: translateY(-2px);
+  background: rgba(18,18,22,0.85);
+  border-color: rgba(124,92,255,0.4);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35), 0 0 10px rgba(124,92,255,0.25);
+}
+.intro-nav-primary {
+  border-color: rgba(124,92,255,0.5);
+  background: linear-gradient(135deg, rgba(124,92,255,0.15), rgba(0,212,255,0.08));
+  font-weight: 600;
+}
+.intro-nav-continue {
+  border-color: rgba(0,212,255,0.4);
+  background: rgba(0,212,255,0.08);
 }

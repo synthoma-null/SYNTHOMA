@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import AutorClient from "./AutorClient";
 
 export const metadata: Metadata = {
   title: "Autor | SYNTHOMA",
-  description: "Informace o autorovi a záměru projektu SYNTHOMA.",
+  description: "Informace o autorovi a zĂˇmÄ›ru projektu SYNTHOMA.",
   alternates: {
-    canonical: "https://synthoma.cz/autor",
+    canonical: "https://www.synthoma.cz/autor",
   },
   robots: {
     index: true,
