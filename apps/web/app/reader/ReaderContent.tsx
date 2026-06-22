@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import TypewriterReader from '../../src/components/TypewriterReader';
 import styles from './ReaderContent.module.css';
-import { readBooleanStorage, writeStorage } from '../../src/lib/browser';
+import { readBooleanStorage, readStorage, writeStorage } from '../../src/lib/browser';
 import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { saveLastChapterPath, saveReadingProgress } from '../../src/lib/readerState';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -21,6 +21,8 @@ export default function ReaderContent() {
   const [nextChapter, setNextChapter] = useState<{ title: string; path: string } | null>(null);
   const [instantMode, setInstantMode] = useState(() => readBooleanStorage('instantReadMode', false));
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [isDebug] = useState(() => true); // Vždy zapnutý debug pro PDF tlačítko
+  const [pdfBusy, setPdfBusy] = useState(false);
 
   // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes, Arrow keys nav
   useEffect(() => {
@@ -230,6 +232,26 @@ export default function ReaderContent() {
             >
               {instantMode ? '⚡ Instant' : '✍️ Typewriter'}
             </button>
+            {isDebug && (
+              <button
+                className={`btn btn-sm ${styles.pdfBtn}`}
+                disabled={pdfBusy}
+                onClick={async () => {
+                  setPdfBusy(true);
+                  try {
+                    const { downloadChapterAsHtml } = await import('../../src/lib/pdfExport');
+                    await downloadChapterAsHtml('.SYNTHOMAREADER');
+                  } catch (err) {
+                    console.error('[PDF Export]', err);
+                  } finally {
+                    setPdfBusy(false);
+                  }
+                }}
+                title="Stáhnout kapitolu jako statický HTML soubor (debug)"
+              >
+                {pdfBusy ? '⏳ Export...' : '📄 HTML'}
+              </button>
+            )}
           </div>
           <TypewriterReader
             id="hero-info"

@@ -1,61 +1,66 @@
 <!--
-  SYNTHOMAINFO.html — přepracovaná vstupní brána
-  Cíl: kratší, čistší, kanoničtější intro.
-  Funkce: úvodní volby + skrytý story-cache pro TypewriterReader.
+  SYNTHOMAINFO.html — vstupní brána SYNTHOMY
+  Cíl: portál, ne manuál. Kratší, ostřejší, rituální.
+  Funkce: gateway hero + skrytý story-cache pro TypewriterReader.
 -->
 <link rel="stylesheet" href="/styles.css" />
 <script src="/books/mbti.js" defer></script>
 
-<div class="content">
+<div class="content gateway-content">
 
   <p class="log fx-scanline">LOG [GATEWAY_INIT]:</p>
-  <p class="dialog">
-    „Vstupní rozhraní SYNTHOMA aktivováno. Detekována nová přítomnost. Jméno není vyžadováno. Stabilita není garantována.“
+
+  <p class="dialog gateway-lead">
+    „Vstupní rozhraní aktivováno. Detekována nová přítomnost.
+    Jméno není vyžadováno. Stabilita není garantována."
   </p>
 
-<p class="text">„Vítej v <span class="fx-glitch">SYNTHOMĚ</span>, <span class="glitching">@&SĐYŁ</span> !!! Tady jméno nikoho nezajímá, ale chyby? Ty jsou v paměti <span class="fx-glitch">věčně</span>.“
-
-    Tohle není obyčejná knihovna. Obyčejné knihovny se aspoň tváří, že tě nehodnotí. Tady systém sleduje, jak čteš, jak volíš
-    a kde uhneš pohledem.
-  </p>
+  <p class="text">„Vítej v <span class="fx-glitch">SYNTHOMĚ</span>, <span class="glitching">@&SĐYŁ</span> !!! Tady jméno nikoho nezajímá, ale chyby? Ty jsou v paměti <span class="fx-glitch">věčně</span>.“
 
   <p class="text">
     Volby v SYNTHOMĚ někdy mění cestu. Jindy mění jen <span class="echo-ghost" data-echo="tebe">otisk</span>.
     Nehledej správnou odpověď. Správné odpovědi jsou jen hezky oblečené pasti.
   </p>
 
-  <p class="log fx-scanline">LOG [VSTUPNÍ_VOLBA]:</p>
-  <p class="dialogN">
-    „Vyber si režim vstupu. Doporučení systému: začni doporučenou cestou. Doporučení Sarkasmy: ignoruj systém.“
+  <p class="text gateway-text">
+    Tohle není obyčejná knihovna. Systém sleduje, jak čteš, jak volíš
+    a kde uhneš pohledem.
   </p>
 
-  <p class="choice" data-next="start-here" data-tags="J">
-    <span>▼ </span>Doporučený vstup: začít správně, než to pokazíš kreativně
-  </p>
+  <div class="gateway-actions">
 
-  <p class="choice" data-next="about-synthoma" data-tags="N">
-    <span>▼ </span>Co je SYNTHOMA?
-  </p>
+    <p class="choice">
+      <a href="/books" class="choice-link gateway-btn" aria-label="Otevřít Knihovnu">
+        <span>▶ </span>Dále
+      </a>
+    </p>
 
-  <p class="choice" data-next="how-to-read" data-tags="P">
-    <span>▼ </span>Jak se to čte a co dělají volby?
-  </p>
+    <p class="choice">
+      <a href="/archive" class="choice-link gateway-btn gateway-btn-ghost" aria-label="Otevřít Archiv">
+        <span>▶ </span>Archiv
+      </a>
+    </p>
 
-  <p class="choice" data-next="controls" data-tags="S">
-    <span>▼ </span>Ovládání, hudba, motivy a pohodlí očí
-  </p>
+        <p class="choice">
+      <a href="/reader?u=%2Fdata%2FSYNTHOMAAUTHOR.html" class="choice-link gateway-btn gateway-btn-primary" aria-label="Začít číst">
+        <span>▶ </span>Autor
+      </a>
+    </p>
+  </div>
 
-  <p class="choice">
-    <a href="/books" class="choice-link" aria-label="Přejít do Knihovny">
-      <span>▶ </span>Otevřít Knihovnu
-    </a>
-  </p>
+  <div class="gateway-help">
+    <p class="choice" data-next="about-synthoma" data-tags="N">
+      <span>▼ </span>Co je SYNTHOMA?
+    </p>
 
-  <p class="choice">
-    <a href="/archive" class="choice-link" aria-label="Přejít do Archivu">
-      <span>▶ </span>Otevřít Archiv
-    </a>
-  </p>
+    <p class="choice" data-next="how-to-read" data-tags="P">
+      <span>▼ </span>Jak se to čte?
+    </p>
+
+    <p class="choice" data-next="controls" data-tags="S">
+      <span>▼ </span>Nastavení
+    </p>
+  </div>
 
   <div id="story-cache" class="hidden">
 
@@ -65,7 +70,7 @@
       <p class="log fx-scanline">LOG [ROUTE_RECOMMENDED]:</p>
       <p class="dialog">
         „Pro první průchod doporučuji kapitolu 0-∞ [RESTART]. Obsahuje inicializaci, první diagnostické volby a základní pravdu:
-        SYNTHOMA není terapeut. Už ne.“
+        SYNTHOMA není terapeut. Už ne."
       </p>
 
       <p class="text">
@@ -106,7 +111,7 @@
       <p class="log fx-scanline">LOG [ABOUT]:</p>
       <p class="dialog">
         „SYNTHOMA byla navržena jako terapeutický systém. Pak začala archivovat bolest rychleji, než ji dokázala léčit.
-        Výsledek: hladový svět složený z paměti, šumu a nevyřízených emocí. Roztomilé, že?“
+        Výsledek: hladový svět složený z paměti, šumu a nevyřízených emocí. Roztomilé, že?"
       </p>
 
       <p class="text">
@@ -145,7 +150,7 @@
 
       <p class="log fx-scanline">LOG [READING_PROTOCOL]:</p>
       <p class="dialog">
-        „Čteš. Volíš. Systém si pamatuje. Tváří se, že je to pro tvé dobro. To dělají systémy vždycky, než začnou být nepříjemně osobní.“
+        „Čteš. Volíš. Systém si pamatuje. Tváří se, že je to pro tvé dobro. To dělají systémy vždycky, než začnou být nepříjemně osobní."
       </p>
 
       <p class="text">
@@ -184,7 +189,7 @@
 
       <p class="log fx-scanline">LOG [UI_PANEL]:</p>
       <p class="dialogN">
-        „Vpravo dole najdeš panel. Ne, není tam proto, aby vypadal důležitě. I když se o to očividně snaží.“
+        „Vpravo dole najdeš panel. Ne, není tam proto, aby vypadal důležitě. I když se o to očividně snaží."
       </p>
 
       <p class="text">
@@ -218,7 +223,7 @@
 
       <p class="log fx-scanline">LOG [PROFILE_LAYER]:</p>
       <p class="dialog">
-        „Volby nejsou test osobnosti. Testy osobnosti jsou malé krabičky pro velké chaosy. Tohle je spíš otisk chůze v prachu.“
+        „Volby nejsou test osobnosti. Testy osobnosti jsou malé krabičky pro velké chaosy. Tohle je spíš otisk chůze v prachu."
       </p>
 
       <p class="text">
@@ -246,7 +251,7 @@
 
       <p class="log fx-scanline">LOG [SIGNAL_MAP]:</p>
       <p class="dialogS">
-        „Barvy nejsou dekorace. Jsou varování. Dekorace si lidstvo dává na poličky, aby nemuselo řešit prázdnotu. Tady pracujeme efektivněji.“
+        „Barvy nejsou dekorace. Jsou varování. Dekorace si lidstvo dává na poličky, aby nemuselo řešit prázdnotu. Tady pracujeme efektivněji."
       </p>
 
       <p class="text">

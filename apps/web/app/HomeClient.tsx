@@ -95,7 +95,7 @@ export default function HomeClient() {
           </span>
           <span className="sr-only">{TITLE}</span>
         </h1>
-        <p className={styles.subtitle}>{SUBTITLE}</p>
+
         <section className={`${styles.menu} panel ${styles.menuOffset}`} aria-label="Menu">
           <nav aria-label="Primární navigace">
             <ul className={styles.menuList}>
