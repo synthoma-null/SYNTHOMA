@@ -19,7 +19,7 @@
           "title": "0 - 0 [NULL]",
           "path": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
           "free": true,
-          "backgroundVideo": "/video/SYNTHOMA12.webm",
+          "backgroundVideo": "/video/SYNTHOMA23.webm",
           "chapterOrder": 1,
           "summary": "Prázdnota jako výchozí stav. Než se cokoliv stane, musí existovat nic.",
           "status": "final"
@@ -57,7 +57,7 @@
           "title": "0 - 4 [DEFRAGMENTATION]",
           "path": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
           "free": true,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA8.webm",
           "chapterOrder": 5,
           "summary": "Pokus o rekonstrukci. Střepy se skládají, ale obraz nesedí.",
           "status": "final"
@@ -66,7 +66,7 @@
           "title": "0 - 5 [PAUSE]",
           "path": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
           "free": true,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA4.webm",
           "chapterOrder": 6,
           "summary": "Ticho mezi údery. Systém čeká, než se rozhodneš.",
           "status": "final"
@@ -76,7 +76,7 @@
           "path": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
           "free": true,
           "track": "/audio/Searching.mp3",
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA26.webm",
           "chapterOrder": 7,
           "summary": "Hledání odpovědí v místě, které odpovědi nemá.",
           "status": "final"
@@ -85,7 +85,7 @@
           "title": "0 - 7 [RUINS]",
           "path": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
           "free": true,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA18.webm",
           "chapterOrder": 8,
           "summary": "Město neodeslaných zpráv a zhroucených odpovědí.",
           "status": "final"
@@ -94,7 +94,7 @@
           "title": "0 - 8 [REZIDUUM]",
           "path": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
           "free": true,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA16.webm",
           "chapterOrder": 9,
           "summary": "Co zůstává, když odejdeš? Stopy, které systém nedokáže smazat.",
           "status": "final"
@@ -103,7 +103,7 @@
           "title": "0 - 9 [SECTOR]",
           "path": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
           "free": true,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA22.webm",
           "chapterOrder": 10,
           "summary": "Uzavřená zóna. Přístup jen pro ty, kdo zapomněli, že měli odejít.",
           "status": "final"
@@ -112,7 +112,7 @@
           "title": "0 - 10 [REST]",
           "path": "/books/SYNTHOMA-NULL/0-10 [REST].html",
           "free": true,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA19.webm",
           "chapterOrder": 11,
           "summary": "Odpočinek, který není odpočinkem. Systém nikdy nespí.",
           "status": "final"
@@ -121,7 +121,7 @@
           "title": "0 - 11 [ORGIE]",
           "path": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA29.webm",
           "chapterOrder": 12,
           "summary": "Přebytek vjemů. Hranice mezi bolestí a extází se rozpouští.",
           "status": "draft"
@@ -130,7 +130,7 @@
           "title": "0 - 12 [CONFLICT]",
           "path": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA21.webm",
           "chapterOrder": 13,
           "summary": "Střet uvnitř systému. Kdo bojuje, když nepřítel jsi ty sám?",
           "status": "draft"
@@ -139,7 +139,7 @@
           "title": "0 - 13 [LUST]",
           "path": "/books/SYNTHOMA-NULL/0-13 [LUST].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA28.webm",
           "chapterOrder": 14,
           "summary": "Touha jako virus. Infikuje každý rozhodovací uzel.",
           "status": "draft"
@@ -148,7 +148,7 @@
           "title": "0 - 14 [ABSENCE]",
           "path": "/books/SYNTHOMA-NULL/0-14 [ABSENCE].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA7.webm",
           "chapterOrder": 15,
           "summary": "Prázdné místo po někom, kdo tu nikdy nebyl.",
           "status": "draft"
@@ -157,7 +157,7 @@
           "title": "0 - 15 [REBIRTH]",
           "path": "/books/SYNTHOMA-NULL/0-15 [REBIRTH].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA20.webm",
           "chapterOrder": 16,
           "summary": "Nový začátek postavený na troskách předchozích pokusů.",
           "status": "draft"
@@ -166,7 +166,7 @@
           "title": "0 - 16 [ILLUSION]",
           "path": "/books/SYNTHOMA-NULL/0-16 [ILLUSION].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA5.webm",
           "chapterOrder": 17,
           "summary": "Co je skutečné v systému, který simuluje skutečnost?",
           "status": "draft"
@@ -175,7 +175,7 @@
           "title": "0 - 17 [DISCONNECT]",
           "path": "/books/SYNTHOMA-NULL/0-17 [DISCONNECT].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA3.webm",
           "chapterOrder": 18,
           "summary": "Odpojení. Signál slábne, ale vědomí zůstává.",
           "status": "draft"
@@ -184,7 +184,7 @@
           "title": "0 - 18 [AWAKENING]",
           "path": "/books/SYNTHOMA-NULL/0-18 [AWAKENING].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA30.webm",
           "chapterOrder": 19,
           "summary": "Probuzení do reality, která je horší než sen.",
           "status": "draft"
@@ -193,7 +193,7 @@
           "title": "0 - 19 [ECHO]",
           "path": "/books/SYNTHOMA-NULL/0-19 [ECHO].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA10.webm",
           "chapterOrder": 20,
           "summary": "Ozvěna všeho, co bylo řečeno. Opakování bez konce.",
           "status": "draft"
@@ -202,7 +202,7 @@
           "title": "0 - 20 [GENESIS]",
           "path": "/books/SYNTHOMA-NULL/0-20 [GENESIS].html",
           "free": false,
-          "backgroundVideo": "",
+          "backgroundVideo": "/video/SYNTHOMA31.webm",
           "chapterOrder": 21,
           "summary": "Začátek, který je zároveň koncem. Smyčka se uzavírá.",
           "status": "draft"
