@@ -29,17 +29,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
   const rafRef = useRef<number | null>(null);
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
 
-  useEffect(() => {
-    try {
-      const playPanel = (window as any).audioPanelPlay as undefined | ((src: string) => void);
-      if (typeof playPanel === 'function') {
-        playPanel('/audio/Synthoma_landing.mp3');
-      } else {
-        (window as any).audioPanelEnsurePlaying?.();
-      }
-    } catch {}
-  }, []);
-
+  
   // Load reading progress from localStorage for all collections
   useEffect(() => {
     try {

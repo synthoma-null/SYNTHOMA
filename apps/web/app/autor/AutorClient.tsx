@@ -18,6 +18,17 @@ export default function AutorClient() {
     return () => { try { detach && detach(); } catch {} };
   }, []);
 
+  useEffect(() => {
+    try {
+      const playPanel = (window as any).audioPanelPlay as undefined | ((src: string) => void);
+      if (typeof playPanel === 'function') {
+        playPanel('/audio/Synthoma_landing.mp3');
+      } else {
+        (window as any).audioPanelEnsurePlaying?.();
+      }
+    } catch {}
+  }, []);
+
   return (
     <div className={"glitch-bg autor-page"}>
       {/* Background video layer to match visual style with Archive */}
