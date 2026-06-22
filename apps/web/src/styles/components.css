@@ -206,12 +206,29 @@
     letter-spacing: .01em;
   }
   
-  /* Global disable text selection – ale opatrně, nebo uživatelé zuří. 😤 */
-  :where(html, body, *) {
+  /* Targeted no-select: only on interactive/UI elements, not readable content */
+  button,
+  .choice-link,
+  .control-panel,
+  #control-panel,
+  #toggle-panel-btn,
+  .no-select {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+  }
+
+  /* Allow text selection in readable content */
+  .chapter-content,
+  .SYNTHOMAREADER,
+  .reader-content,
+  p,
+  h1, h2, h3, h4, h5, h6 {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
   }
   img, svg, canvas, video {
     -webkit-user-drag: none;
@@ -2231,6 +2248,66 @@
   .archive-card .related-chip:hover {
     background: rgba(0, 255, 255, .12);
     border-color: rgba(0, 255, 255, .4);
+  }
+
+  /* Dynamic card accent */
+  .archive-card {
+    --card-accent: var(--accent-primary, #00ffff);
+  }
+
+  .archive-card .card-title {
+    color: var(--card-accent);
+  }
+
+  .archive-card .card-quote {
+    border-left-color: var(--card-accent);
+  }
+
+  /* Card title row with icon */
+  .archive-card .card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .archive-card .card-icon {
+    font-size: 1.5rem;
+    opacity: 0.8;
+  }
+
+  /* Card quote */
+  .archive-card .card-quote {
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    font-style: italic;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+
+  /* Tags styling */
+  .archive-card .card-tags {
+    margin-top: 1rem;
+  }
+
+  .archive-card .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .archive-card .tag-chip {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .archive-card .tag-chip:hover {
+    opacity: 1;
   }
   .archive-card.is-open .card-overlay { display: none; }
   

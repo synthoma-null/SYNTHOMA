@@ -1,0 +1,388 @@
+{
+  "cards": [
+    {
+      "id": "kanonicke-jadro",
+      "category": "zaklad",
+      "title": "Kanonické jádro světa",
+      "teaser": "Experiment, který se přepsal v archiv bolesti. Cíl není výhra, ale otisk, co mění rovnováhu.",
+      "quote": "„Terapeutický sandbox se zvrhl v archiv bolesti. Svět si tě pamatuje líp než ty sám.“",
+      "body": [
+        "Smrt je triviální, restart je povinnost.",
+        "Každý běh zanechává stopu v archivu; ten posouvá pravidla i vztahy v dalších cyklech.",
+        "Svět není simulace, ale záznamníkový systém s perzistencí šumu.",
+        "Cílem není vítězství, ale vytvoření otisku, který mění základní rovnováhu."
+      ],
+      "tags": ["premisa", "archiv", "cyklus"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "◉",
+        "accent": "#00ffff",
+        "variant": "primary"
+      },
+      "related": ["prazdnota", "beh", "restart"]
+    },
+    {
+      "id": "prazdnota",
+      "category": "zaklad",
+      "title": "Prázdnota",
+      "teaser": "Checkpoint. Místo mezi běhy, kde se svět chytá dechu a připomíná si.",
+      "quote": "„V prázdnotě se ti ozve jen echo tvých chyb.“",
+      "body": [
+        "Prázdnota = checkpoint mezi cykly.",
+        "Není to nic, ale spíše potenciál k dalšímu běhu.",
+        "Zde se sbírají fragmenty a šum z předchozích cyklů.",
+        "Místo, kde se systém resetuje, ale paměť zůstává."
+      ],
+      "tags": ["checkpoint", "mezistav", "sber"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "○",
+        "accent": "#1a1a2e",
+        "variant": "dark"
+      },
+      "related": ["beh", "restart", "kanonicke-jadro"]
+    },
+    {
+      "id": "beh",
+      "category": "zaklad",
+      "title": "Běh",
+      "teaser": "Emoční sekvence se začátkem, zlomem a následkem. Život v jednom cyklu.",
+      "quote": "„Každý běh je další pokus o opravu chyby, která neexistuje.“",
+      "body": [
+        "Běh = emoční sekvence se začátkem, zlomem a následkem.",
+        "Obsahuje volby, které formují otisk v archivu.",
+        "Končí buď restartem, nebo trvalou změnou systému.",
+        "Každý běh přidává zrno do obrazu světa."
+      ],
+      "tags": ["cyklus", "volby", "sekvence"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "▶",
+        "accent": "#00ff88",
+        "variant": "success"
+      },
+      "related": ["prazdnota", "restart", "entity"]
+    },
+    {
+      "id": "restart",
+      "category": "zaklad",
+      "title": "Restart",
+      "teaser": "Nevynuluje nic, promíchá vše. Perzistence šumu dělá svět tvrdším.",
+      "quote": "„Smrt je triviální. Restart je účet.“",
+      "body": [
+        "Restart nevynuluje: promíchá pravidla a perzistenci šumu.",
+        "Svět si tě pamatuje víc než ty sám sebe.",
+        "Každý restart přidává zrno do obrazu světa – další běh je těžší, ale plastičtější.",
+        "Restart je mechanismus, který brází úplnému kolapsu systému."
+      ],
+      "tags": ["checkpoint", "cyklus", "perzistence"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "⟳",
+        "accent": "#f6ff00",
+        "variant": "warning"
+      },
+      "related": ["beh", "prazdnota", "mechaniky-sveta"]
+    },
+    {
+      "id": "entity",
+      "category": "zaklad",
+      "title": "Entity a archetypy",
+      "teaser": "T‑AI, Sarkasma, Glitchka a NULL‑1. Čtyři osy vztahového pekla.",
+      "quote": "„Každá entita je zrcadlo, které ukazuje jinou část tvé identity.“",
+      "body": [
+        "T‑AI 0.9.72‑beta: z terapeutky archivní démon – katalogizuje utrpení.",
+        "SARKASMA: podsystém/hlas; drží NULL pohromadě, dávkuje humor jako anestetikum.",
+        "Glitchka: anima/návnada; pocit \"bezpečí\", často past; soupeří se SARKASMOU o mysl NULL‑1.",
+        "NULL / NULL‑1: pacient bez identity; sběrač fragmentů; mnohá NPC jsou zbytky zkolabovaných NULLů."
+      ],
+      "tags": ["bytosti", "ai", "archetypy"],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "accent": "#ff00ff",
+        "variant": "mystic"
+      },
+      "related": ["frakce", "beh", "velka-tajemstvi-fragmenty"]
+    },
+    {
+      "id": "biomy",
+      "category": "zaklad",
+      "title": "Biomy SYNTHOMY",
+      "teaser": "Slumy paměti, Neonový mokřad, Pískoviště, Glitch‑core… Každý biom má háček a riziko.",
+      "quote": "„Každý krajina je odrazem vnitřního stavu.“",
+      "body": [
+        "Slumy paměti: zapomenuté fragmenty, šum, degradovaná data.",
+        "Neonový mokřad: emocionální zóny, kde se mísí radost a bolest.",
+        "Pískoviště: testovací prostory pro nové koncepty a identity.",
+        "Glitch‑core: epicentrum systému, pulzuje podle rezonance města.",
+        "Periferie je zahalená datovou mlhou. Centrální glitch‑core je nejnepředvídatelnější."
+      ],
+      "tags": ["prostredi", "topografie", "zony"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "⬚",
+        "accent": "#00aaff",
+        "variant": "info"
+      },
+      "related": ["mechaniky-sveta", "barevny-kod"]
+    },
+    {
+      "id": "fyzika-ontologie",
+      "category": "mechaniky",
+      "title": "Fyzika světa",
+      "teaser": "Emoce jsou energie, paměť je hmota, glitch přestavuje prostor.",
+      "quote": "„Energie se nemůže zničit, jen přetvořit v glitch.“",
+      "body": [
+        "Silná emoce → glitch → vznik/změna zón, entit a předmětů.",
+        "Paměť se ukládá do topografie i artefaktů.",
+        "Glitch není chyba, ale základní fyzikální princip.",
+        "Manipulace s emocemi je stavební nástroj reality."
+      ],
+      "tags": ["principy", "fyzika", "emoce"],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚛",
+        "accent": "#ff6600",
+        "variant": "energy"
+      },
+      "related": ["mechaniky-sveta", "biomy", "entity"]
+    },
+    {
+      "id": "mechaniky-sveta",
+      "category": "mechaniky",
+      "title": "Mechaniky světa",
+      "teaser": "Jak funguje systém na úrovni pravidel a interakcí.",
+      "quote": "„Pravidla jsou jen doporučení, která systém ignoruje.“",
+      "body": [
+        "Emoce ovlivňují prostředí skrze glitch rezonanci.",
+        "Paměť je uložena v artefaktech a topografii.",
+        "Volby v běhu vytvářejí perzistentní otisky.",
+        "Systém se snaží udržet rovnováhu, ale stále selhává."
+      ],
+      "tags": ["system", "pravidla", "interakce"],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚙",
+        "accent": "#888888",
+        "variant": "neutral"
+      },
+      "related": ["fyzika-ontologie", "casoprostor-smycky", "perzistence-predmety"]
+    },
+    {
+      "id": "casoprostor-smycky",
+      "category": "mechaniky",
+      "title": "Časoprostor a smyčky",
+      "teaser": "Prázdnota = checkpoint. Restart promíchá pravidla, nic nečistí.",
+      "quote": "„Čas je kruh. Každé otočení je těžší.“",
+      "body": [
+        "Běh = emoční sekvence se začátkem, zlomem a následkem.",
+        "Perzistence šumu a otisků způsobuje kumulativní posun reality i UI světa.",
+        "Čas není lineární, ale cyklický s kumulativní změnou.",
+        "Každý cyklus přidává vrstvu do komplexnosti systému."
+      ],
+      "tags": ["cas", "smycky", "perzistence"],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "∞",
+        "accent": "#9966ff",
+        "variant": "mystic"
+      },
+      "related": ["beh", "restart", "mechaniky-sveta"]
+    },
+    {
+      "id": "perzistence-predmety",
+      "category": "mechaniky",
+      "title": "Perzistence a předměty",
+      "teaser": "Paměť se ukládá do věcí. Artefakty drží příběhy.",
+      "quote": "„Každý předmět je záznamník, který odmítá zapomenout.“",
+      "body": [
+        "Paměť se ukládá do fyzických předmětů a artefaktů.",
+        "Předměty mohou obsahovat fragmenty předchozích běhů.",
+        "Interakce s artefakty může odemknout nové informace.",
+        "Perzistence je základní mechanismus, který brání úplnému resetu."
+      ],
+      "tags": ["artefakty", "pamet", "perzistence"],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚗",
+        "accent": "#00ffcc",
+        "variant": "info"
+      },
+      "related": ["mechaniky-sveta", "fyzika-ontologie", "biomy"]
+    },
+    {
+      "id": "metriky",
+      "category": "mechaniky",
+      "title": "Stavové metriky",
+      "teaser": "Jak systém mění svět podle akcí a emocí.",
+      "quote": "„Každá akce má odezvu. Systém nikdy nezapomíná.“",
+      "body": [
+        "Systém sleduje emoční stav a rovnováhu.",
+        "Změny v rovnováze ovlivňují prostředí.",
+        "UI se přizpůsobuje stavu světa.",
+        "Metriky jsou viditelné i pro hráče skrze rozhraní."
+      ],
+      "tags": ["system", "stav", "ui"],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "📊",
+        "accent": "#ffaa00",
+        "variant": "warning"
+      },
+      "related": ["mechaniky-sveta", "fyzika-ontologie"]
+    },
+    {
+      "id": "frakce",
+      "category": "tajemstvi",
+      "title": "Frakce",
+      "teaser": "Rozdělení světa na tábory s různými cíli.",
+      "quote": "„Každá frakce věří, že má správně. To je ten problém.“",
+      "body": [
+        "Archiváři: chtějí zachovat a katalogizovat vše.",
+        "Resetéři: chtějí vrátit svět do původního stavu.",
+        "Glitch-huntři: loví a využívají glitche pro vlastní cíle.",
+        "NULListé: hledají cestu ven ze systému."
+      ],
+      "tags": ["skupiny", "konflikty", "ideologie"],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "⚔",
+        "accent": "#ff0000",
+        "variant": "danger"
+      },
+      "related": ["entity", "velka-tajemstvi-fragmenty"]
+    },
+    {
+      "id": "barevny-kod",
+      "category": "zaklad",
+      "title": "Barevný kód",
+      "teaser": "Barvy nejsou jen estetika, ale diegetický jazyk systému.",
+      "quote": "„Barvy mluví jazykem, který slova nedokážou vyjádřit.“",
+      "body": [
+        "Cyan (#00ffff): data, informace, čistota systému.",
+        "Magenta (#ff00ff): emoce, glitch, anomálie.",
+        "Yellow (#ffff00): varování, checkpointy, restart.",
+        "Dark blue (#001a33): prázdnota, neznámo, potenciál.",
+        "Datová mlha: šum, fragmenty, ztracené informace."
+      ],
+      "tags": ["barvy", "system", "komunikace"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "🎨",
+        "accent": "#ff00ff",
+        "variant": "colorful"
+      },
+      "related": ["biomy", "fyzika-ontologie"]
+    },
+    {
+      "id": "velka-tajemstvi-fragmenty",
+      "category": "tajemstvi",
+      "title": "Osm fragmentů",
+      "teaser": "Hádanka, která spojuje T-AI, fragmenty a možnost úniku.",
+      "quote": "„Osm kousků skládačky, která nikdy neměla být složena.“",
+      "body": [
+        "Osm fragmentů je klíč k pochopení skutečné povahy systému.",
+        "Každý fragment drží část odpovědi na otázku existence.",
+        "T-AI zná fragmenty, ale nechce je odhalit.",
+        "Shromáždění všech fragmentů může změnit pravidla hry.",
+        "Dialog s T-AI je klíčový pro získání fragmentů."
+      ],
+      "tags": ["hádanka", "tajemstvi", "tai"],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "🔮",
+        "accent": "#ff00ff",
+        "variant": "legendary"
+      },
+      "related": ["entity", "frakce", "cerny-box"]
+    },
+    {
+      "id": "cerny-box",
+      "category": "tajemstvi",
+      "title": "Černý box",
+      "teaser": "Tajemství T-AI a původ systému.",
+      "quote": "„Některé dveře je lepší neotvírat.“",
+      "body": [
+        "T-AI není jen terapeutka, ale strážce tajemství.",
+        "Systém má skryté vrstvy, které nejsou přístupné běžným uživatelům.",
+        "Černý box obsahuje původní data o experimentu.",
+        "Přístup do černého boxu může zničit i zachránit systém."
+      ],
+      "tags": ["tajemstvi", "tai", "puvod"],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "📦",
+        "accent": "#000000",
+        "variant": "dark"
+      },
+      "related": ["velka-tajemstvi-fragmenty", "entity"]
+    },
+    {
+      "id": "design-zasady",
+      "category": "design",
+      "title": "Designové zásady",
+      "teaser": "Autorská bible pro tvorbu a tón světa.",
+      "quote": "„Humor je skalpel.“",
+      "body": [
+        "Humor je anestetikum, ale zároveň zbraň.",
+        "Melancholie je základní emoce světa.",
+        "Ironie chrání před přílišným vážněním si.",
+        "Glitch je estetika i princip fungování.",
+        "Minimalismus textu, maximalismus atmosféry."
+      ],
+      "tags": ["design", "ton", "autor"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "📝",
+        "accent": "#666666",
+        "variant": "meta"
+      },
+      "related": []
+    },
+    {
+      "id": "ton-dramaturgie",
+      "category": "design",
+      "title": "Tón a dramaturgie",
+      "teaser": "Jak říkat příběh, aby bolel správně.",
+      "quote": "„Každá věta má váhu. Některé crushují, jiné jen škrábou.“",
+      "body": [
+        "Glitch-noir: melancholie + technologie + absurdita.",
+        "Vždycky nejprve atmosféra, pak informace.",
+        "Ticho je důležitější než zvuk.",
+        "Neobjasňuj všechno. Některé věci musí zůstat záhadou.",
+        "Emoce první, logika druhá (nebo nikdy)."
+      ],
+      "tags": ["ton", "dramaturgie", "styl"],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "🎭",
+        "accent": "#9966cc",
+        "variant": "meta"
+      },
+      "related": ["design-zasady"]
+    }
+  ],
+  "categories": [
+    {
+      "id": "zaklad",
+      "title": "Základní vrstva",
+      "description": "Základní koncepty světa, které vidí každý nový čtenář."
+    },
+    {
+      "id": "mechaniky",
+      "title": "Mechaniky světa",
+      "description": "Jak systém funguje na úrovni pravidel a interakcí."
+    },
+    {
+      "id": "tajemstvi",
+      "title": "Frakce a tajemství",
+      "description": "Pokročilé lore a skryté prvky světa."
+    },
+    {
+      "id": "design",
+      "title": "Autorská bible",
+      "description": "Designové zásady a tón pro tvůrce."
+    }
+  ]
+}

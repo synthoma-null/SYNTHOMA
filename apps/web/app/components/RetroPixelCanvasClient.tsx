@@ -125,5 +125,5 @@ export default function RetroPixelCanvasClient() {
     };
   }, []);
 
-  return <canvas id="retro-video-canvas" ref={canvasRef} aria-hidden />;
+  return <canvas id="retro-video-canvas" ref={canvasRef} aria-hidden="true" />;
 }

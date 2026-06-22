@@ -1,0 +1,73 @@
+/* Noscript fallback styling */
+.autor-fallback {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #f7f7ff;
+}
+
+.autor-fallback h1,
+.autor-fallback h2,
+.autor-fallback h3 {
+  color: #fff;
+  margin: 2rem 0 1rem;
+}
+
+.autor-fallback h1 {
+  font-size: clamp(2.6rem,6vw,4rem);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.autor-fallback h3 {
+  font-size: 1.5rem;
+}
+
+.autor-fallback p {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.autor-fallback .log {
+  color: #00ffff;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.autor-fallback .dialog {
+  color: #f7f7ff;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+.autor-fallback .text {
+  color: #cfcfe3;
+}
+
+/* Glitch effects for fallback */
+.autor-fallback .fx-gradient {
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.autor-fallback .corrupt {
+  color: #ff0066;
+  text-decoration: line-through;
+}
+
+.autor-fallback .halo {
+  color: #00ffff;
+  text-shadow: 0 0 6px #00ffff;
+}
+
+.autor-fallback .fx-neon {
+  color: #ff00ff;
+  text-shadow: 0 0 6px #ff00ff;
+}
+
+.autor-fallback .fx-underline {
+  text-decoration: underline;
+  text-decoration-color: #ff00ff;
+}

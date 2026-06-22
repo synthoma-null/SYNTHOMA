@@ -86,8 +86,8 @@ export default function HomeClient() {
       <main className={styles.home} role="main" aria-label="Hlavní menu">
         {/* Nadpis musí být mimo panel sekci, 1:1 jako na landing-intro */}
         <h1 id="glitch-synthoma" className={`glitch-master`} ref={glitchRootRef as any} aria-label={TITLE}>
-          <span className="glitch-fake1">{TITLE}</span>
-          <span className="glitch-fake2">{TITLE}</span>
+          <span className="glitch-fake1" aria-hidden="true">{TITLE}</span>
+          <span className="glitch-fake2" aria-hidden="true">{TITLE}</span>
           <span className="glitch-real" aria-hidden="true">
             {TITLE.split("").map((ch, idx) => (
               <span key={idx} className="glitch-char">{ch}</span>
@@ -95,6 +95,7 @@ export default function HomeClient() {
           </span>
           <span className="sr-only">{TITLE}</span>
         </h1>
+        <p className={styles.subtitle}>{SUBTITLE}</p>
         <section className={`${styles.menu} panel ${styles.menuOffset}`} aria-label="Menu">
           <nav aria-label="Primární navigace">
             <ul className={styles.menuList}>
@@ -115,7 +116,7 @@ export default function HomeClient() {
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/landing-intro">
                     <h2 className={styles.cardTitle}>Intro</h2>
-                    <p className={styles.cardTeaser}>Vstupní manifest a glitch show.</p>
+                    <p className={styles.cardTeaser}>Vstupní brána do světa SYNTHOMY – manifest, glitch show a první volby.</p>
                   </Link>
                 </article>
               </li>
@@ -123,7 +124,7 @@ export default function HomeClient() {
                 <article className={`${styles.card} ${!lastChapter ? styles.cardPrimary : ''}`}>
                   <Link className={styles.cardLink} href="/books">
                     <h2 className={styles.cardTitle}>Knihovna</h2>
-                    <p className={styles.cardTeaser}>Otevřít seznam kapitol.</p>
+                    <p className={styles.cardTeaser}>Procházet všechny kapitoly – od RESTARTU po hluboký glitch-core.</p>
                   </Link>
                 </article>
               </li>
@@ -131,7 +132,7 @@ export default function HomeClient() {
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/archive">
                     <h2 className={styles.cardTitle}>Archiv</h2>
-                    <p className={styles.cardTeaser}>Lore, pojmy, frakce.</p>
+                    <p className={styles.cardTeaser}>Svět SYNTHOMY: entity, biome, signály a pravidla glitch-noir reality.</p>
                   </Link>
                 </article>
               </li>
@@ -139,7 +140,7 @@ export default function HomeClient() {
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/autor">
                     <h2 className={styles.cardTitle}>Autor</h2>
-                    <p className={styles.cardTeaser}>Kdo to celé spáchal a proč.</p>
+                    <p className={styles.cardTeaser}>WalliCzech, hudba a proces vzniku glitch-noir světa.</p>
                   </Link>
                 </article>
               </li>

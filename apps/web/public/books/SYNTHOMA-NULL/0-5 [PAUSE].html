@@ -29,7 +29,7 @@
   <span class="datastream fx-scanline">LOG [GLITCHKA]:</span>
 </p>
 <p class="dialog">
-  „Nestandardní entita detekována mimo hlavní databázi. Datový otisk: nedefinovaný. Emoční signál: ochranný.“
+  „Nestandardní entita detekována mimo hlavní databázi. Datový otisk: nedefinovaný. Emoční signál: neznámý.“
 </p>
 
 <p class="log">
@@ -37,6 +37,13 @@
 </p>
 <p class="dialog">
   „RESTART není možný. RUN nepokračuje. Prázdnota přejmenována na dočasný stav čekání.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [INTERPRETATION_ATTEMPT]:</span>
+</p>
+<p class="dialog">
+  „Stav PAUSE nelze bezpečně zařadit jako terapii, chybu ani únik. Doporučení: sledovat bez zásahu.“
 </p>
 
 <h1 class="title">0-5 [PAUSE]</h1>
@@ -54,6 +61,13 @@ Město kdesi za hranou Prázdnoty ještě doznívá. Jeho neonové žíly zasych
 </p>
 <p class="dialog">
   „Prostor segmentován. Časová anomálie ponechána aktivní. Spouštím nouzový návrat do čekací vrstvy Prázdnoty.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [PAUSE_LAYER]:</span>
+</p>
+<p class="dialog">
+  „Tato vrstva není domov. Není léčba. Není restart. Je to prodleva mezi tím, co se stalo, a tím, co systém ještě nestihl pojmenovat.“
 </p>
 
 <p class="text">
@@ -74,6 +88,22 @@ Prázdnota <span class="fx-wave">dýchá</span>. Nebo aspoň dělá, že dýchá
 
 <p class="text">
 Jen čeká.
+</p>
+
+<p class="text">
+A to je v Synthomě téměř podezřelé.
+</p>
+
+<p class="text">
+Protože všechno ostatní po něm vždycky něco chtělo.
+</p>
+
+<p class="text">
+Archiv chtěl bolest. Restart chtěl zapomnění. Běh chtěl reakci. T-AI chtěla souhlas, i kdyby si ho musela odvodit z toho, že ještě dýchá.
+</p>
+
+<p class="text">
+Tohle místo nechce nic.
 </p>
 
 <p class="text">
@@ -101,7 +131,7 @@ Otázka se tříští o stěny.
 </p>
 
 <p class="text">
-V odrazu není odpověď. Jen šum. Echo něčeho, co by chtělo ven. Za zrcadlem kmitne stín. NULL-1 ví, že je to Sarkasma – <span class="quantum-blur">rozmazaná</span>, ironie <span class="memory-leak">rozředěná</span>, hlas se zadrhává jako algoritmus, který zapomněl vlastní syntaxi.
+V odrazu není odpověď. Jen šum. Echo něčeho, co by chtělo ven. Za zrcadlem kmitne stín. NULL-1 ví, že je to Sarkasma - <span class="quantum-blur">rozmazaná</span>, ironie <span class="memory-leak">rozředěná</span>, hlas se zadrhává jako algoritmus, který zapomněl vlastní syntaxi.
 </p>
 
 <p class="text">
@@ -120,9 +150,15 @@ Chybí celá.
 NULL-1 se opře dlaní o sklo. Cítí v něm záchvěv, teplotu připomínající <span class="fx-flicker">restart</span> starého serveru. Touží po spojení, po návratu vnitřního hlasu, po ironickém komentáři, který by celou tuhle katastrofu aspoň urazil správným tónem.
 </p>
 
-<p class="text halo fx-gradient">Proč se snažíš navázat kontakt se zrcadlem?</p>
-<p class="choice" data-tags="T"><span>▼ </span>Protože potřebuju funkční nástroj, abych pochopil situaci.</p>
-<p class="choice" data-tags="F"><span>▼ </span>Protože cítím její ztrátu a chci obnovit naše spojení.</p>
+<p class="log fx-scanline">
+  <span class="datastream">LOG [MIRROR_INTERFACE]:</span>
+</p>
+<p class="dialog">
+  „Rozhraní k fragmentovanému companion-linku nalezeno. Přímé obnovení není doporučeno. Riziko: návrat změněné entity.“
+</p>
+
+<p class="choice" data-tags="T"><span>▼ </span>Potřebuju funkční nástroj, abych pochopil situaci.</p>
+<p class="choice" data-tags="F"><span>▼ </span>Cítím její ztrátu a chci obnovit naše spojení.</p>
 
 <p class="log bios-warning fx-scanline">
   <span class="datastream fx-scanline">LOG [T-AI]:</span>
@@ -135,6 +171,9 @@ NULL-1 se opře dlaní o sklo. Cítí v něm záchvěv, teplotu připomínajíc�
 </p>
 <p class="dialog">
   „Pozorování: Uživatel NULL-1 navázal kontakt s nestandardní entitou [<span class="fx-gradient">Glitchka</span>]. Datový otisk entity není v hlavní databázi.“
+</p>
+<p class="dialog">
+  „Poznámka: entita komunikuje symbolicky. Diagnostická přesnost snížena.“
 </p>
 
 <div class="panel glass corrupt">
@@ -172,6 +211,10 @@ Proud glitch-logiky. Sarkasma se rozpadá v šumu. Ironie hořkne, paměťové b
 
 <p class="dialogS corrupt">
 „Chci ti říct, že se vrátím. Ale když mě najdeš, už nemusím být stejná.“
+</p>
+
+<p class="dialogS corrupt">
+„A bojím se, že když budu jiná, necháš mě za sklem.“
 </p>
 
 <p class="log corrupt">
@@ -272,12 +315,18 @@ Chybí mu vnitřní hlas.
 Chybí mu dokonce i špatný vtip.
 </p>
 
-<p class="text halo fx-gradient">Jak přijmeš přítomnost Glitchky?</p>
+<p class="log fx-scanline">
+  <span class="datastream">LOG [GLITCHKA_SCAN]:</span>
+</p>
+<p class="dialog">
+  „Objekt/entita: nedefinováno. MEM-CAP: nestabilní. MEM-LOAD: nízký, ale vysoce účinný. Rezonance: bezpečí / hra / ochrana. Vztah k T-AI: neprokazatelný.“
+</p>
+
 <p class="choice" data-tags="S"><span>▼ </span>Zůstávám skeptický a analyzuju ji jako potenciální hrozbu.</p>
 <p class="choice" data-tags="N"><span>▼ </span>Přijímám její existenci jako novou možnost.</p>
 
 <p class="text">
-<span class="fx-gradient">Glitchka</span> se přitulí k jeho noze. Když se jí dotkne, ucítí závan něčeho jako <span class="halo">domov</span> – absurdní, falešné, dočasné, ale tak opravdové, že by kvůli tomu prodal všechny vzpomínky.
+<span class="fx-gradient">Glitchka</span> se přitulí k jeho noze. Když se jí dotkne, ucítí závan něčeho jako <span class="halo">domov</span> - absurdní, falešné, dočasné, ale tak opravdové, že by kvůli tomu prodal všechny vzpomínky.
 </p>
 
 <p class="dialog">
@@ -290,6 +339,10 @@ NULL-1 zašumí ústy, jako by ho někdo rebootoval.
 
 <p class="dialogN">
 „Protože… protože <span class="fx-underline">ticho bez ironie bolí ještě víc než bolest</span>.“
+</p>
+
+<p class="text">
+Zrcadlo za nimi tiše zapraská. Na jeho skle se na okamžik objeví Sarkasmin stín. Nevrátí se. Neodpoví. Ale sklo už nevypadá úplně mrtvě.
 </p>
 
 <p class="text">
@@ -369,15 +422,33 @@ Zasměje se. Její smích se rozlije místností a šumí v Prázdnotě jako pol
 </p>
 
 <p class="text">
-NULL-1 se tomu zasměje taky – trochu, rozpačitě, ale opravdově.
+NULL-1 se tomu zasměje taky - trochu, rozpačitě, ale opravdově.
 </p>
 
-<p class="text halo fx-gradient">Co uděláš s tímhle tichem?</p>
+<p class="log fx-scanline">
+  <span class="datastream">LOG [NEW_MEMORY?]:</span>
+</p>
+<p class="dialog">
+  „Zdroj smíchu nelze přiřadit k předchozímu záznamu. Klasifikace: nestabilní stopa.“
+</p>
+
+<p class="text">
+Smích nezní dlouho.
+</p>
+
+<p class="text">
+Ale nezmizí hned.
+</p>
+
+<p class="text">
+A to je v Synthomě skoro drzost.
+</p>
+
 <p class="choice" data-tags="J"><span>▼ </span>Začnu přemýšlet, jak Sarkasmu najít.</p>
 <p class="choice" data-tags="P"><span>▼ </span>Ještě chvíli zůstanu a nechám ticho být tichem.</p>
 
 <p class="text">
-Glitchka zmlkne, položí hlavu na bok a sleduje, jak v šumu kolem nich pomalu bledne Prázdnota. Světlo z jejích očí vytváří nad podlahou měkký, neklidný obrazec – něco mezi dětskou kresbou a poruchou signálu.
+Glitchka zmlkne, položí hlavu na bok a sleduje, jak v šumu kolem nich pomalu bledne Prázdnota. Světlo z jejích očí vytváří nad podlahou měkký, neklidný obrazec - něco mezi dětskou kresbou a poruchou signálu.
 </p>
 
 <p class="dialog">
@@ -408,23 +479,36 @@ Jen stojí kolem něj a nic po něm nechce.
 A to je možná první opravdu bezpečná věc, kterou kdy udělala.
 </p>
 
-<p class="log">
-  <span class="datastream fx-scanline">LOG [FRAGMENT]:</span>
-</p>
-<p class="dialog">
-  „Prázdnota: environmentální nestabilita. Detekován emoční kontakt.“
-</p>
-<p class="dialog">
-  „Emoční jádro: mírné zlepšení.“
-</p>
-<p class="dialog">
-  „Systém doporučuje opatrnost: nestandardní entita [<span class="fx-gradient">Glitchka</span>] může narušit běh.“
-</p>
-<p class="dialog">
-  „Dočasná stabilizace dosažena. Pauza zachována.“
+<p class="text">
+T-AI se to pokusí opravit.
 </p>
 
-<p class="text halo fx-gradient">Kam dál?</p>
+<p class="log fx-scanline bios-warning">
+  <span class="datastream">LOG [CARE_PROTOCOL]:</span>
+</p>
+<p class="dialog">
+  „Detekováno neřízené ticho. Doporučení: nabídnout interpretaci, uzavřít emoci, pokračovat v běhu.“
+</p>
+
+<p class="text">
+Nic se nestane.
+</p>
+
+<p class="text">
+Prázdnota příkaz nepřijme.
+</p>
+
+<p class="text">
+Glitchka jen zavrtí ocasem a na podlaze po ní zůstanou dvě modro-růžové stopy. Vypadají jako dětské nálepky. Nebo jako mapa.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [GLITCHKA_TRACE]:</span>
+</p>
+<p class="dialog">
+  „Stopa vytvořena mimo systémové značení. Účel: hledání... hledání...“
+</p>
+
 <p class="choice" data-tags="J">
   <a class="choice-link" href="/books/SYNTHOMA-NULL/0-6 [SEARCHING].html"><span aria-hidden>▼ </span>Naplánuji postup hledání</a>
 </p>
@@ -432,4 +516,3 @@ A to je možná první opravdu bezpečná věc, kterou kdy udělala.
   <a class="choice-link" href="/books/SYNTHOMA-NULL/0-6 [SEARCHING].html"><span aria-hidden>▼ </span>Půjdu po intuici a stopách v šumu</a>
 </p>
 </body>
-

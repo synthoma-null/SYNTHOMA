@@ -15,35 +15,18 @@ export function getSharedAudio(): HTMLAudioElement {
     return anyObj as HTMLAudioElement;
   }
   if (sharedAudio && document.body.contains(sharedAudio)) {
-    try {
-      // Ujisti se, že zdroj je správný
-      const srcEl = sharedAudio.querySelector('source') as HTMLSourceElement | null;
-      const desired = '/audio/SynthBachmoff.mp3';
-      if (srcEl && srcEl.src && !srcEl.src.endsWith('SynthBachmoff.mp3')) {
-        srcEl.src = desired;
-        sharedAudio.load();
-      }
-    } catch {}
     return sharedAudio;
   }
   // Preferuj existující element, pokud byl vytvořen jinde
   const existing = document.getElementById('synthoma-shared-audio') as HTMLAudioElement | null;
   if (existing) {
     sharedAudio = existing;
-    try {
-      const srcEl = sharedAudio.querySelector('source') as HTMLSourceElement | null;
-      const desired = '/audio/SynthBachmoff.mp3';
-      if (srcEl && srcEl.src && !srcEl.src.endsWith('SynthBachmoff.mp3')) {
-        srcEl.src = desired;
-        sharedAudio.load();
-      }
-    } catch {}
     return sharedAudio;
   }
   // Vytvoř nový element s default zdrojem z public/audio
   const a = document.createElement('audio');
   a.id = 'synthoma-shared-audio';
-  a.preload = 'auto';
+  a.preload = 'metadata';
   // Ne-loopujeme – ať může ControlPanel navázat na 'ended' a přehrát další track
   a.loop = false;
   const source = document.createElement('source');
@@ -57,4 +40,22 @@ export function getSharedAudio(): HTMLAudioElement {
   document.body.appendChild(a);
   sharedAudio = a;
   return sharedAudio;
+}
+
+/** Set the shared audio source and load it (does not auto-play) */
+export function setSharedAudioSrc(src: string): HTMLAudioElement {
+  const a = getSharedAudio();
+  try {
+    const srcEl = a.querySelector('source') as HTMLSourceElement | null;
+    if (srcEl) {
+      if (!srcEl.src.endsWith(src.split('/').pop() || '')) {
+        srcEl.src = src;
+        a.load();
+      }
+    } else {
+      a.src = src;
+      a.load();
+    }
+  } catch {}
+  return a;
 }

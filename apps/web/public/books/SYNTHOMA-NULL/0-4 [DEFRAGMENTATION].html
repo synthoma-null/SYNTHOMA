@@ -49,6 +49,11 @@
 </p>
 <p class="dialog">„Poznámka: některé dílky nepatří subjektu.“</p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [THERAPEUTIC_REPAIR]:</span>
+</p>
+<p class="dialog">„Defragmentace neznamená uzdravení. Defragmentace znamená dočasné uspořádání bolesti do čitelnějších složek.“</p>
+
 <h1 class="title">0-4 [DEFRAGMENTATION]</h1>
 
 <p class="text">
@@ -67,11 +72,18 @@ Hranice místnosti je <span class="corrupt">polámaná</span>. Na stropě se pov
   <span class="datastream fx-scanline">LOG [ERROR]:</span>
 </p>
 <p class="dialog">
-„Environmentální nestabilita – fragmentace paměti.“
+„Environmentální nestabilita - fragmentace paměti.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [NULL-1]:</span>
+</p>
+<p class="dialog">
+„IDENTITY: -1 // ST: 4 // HL: kolísá // SARKASMA_LINK: poškozen // KOTVA: slabá // TVORBA: zamčeno / prosakuje.“
 </p>
 
 <p class="text">
-Všechno je podivně <span class="memory-leak">tekuté</span>. Svět, ve kterém by nůž nebyl zbraň, jen další tekutá vzpomínka na řez. Dveře, lavice, schody – chvíli existují, pak zmizí, pak se vrátí v jiné podobě. Některé objekty vypadají, jako by je kreslilo dítě. Některé zvuky nejsou ani zvuky. Spíš <span class="corrupt">bolest v systému</span>.
+Všechno je podivně <span class="memory-leak">tekuté</span>. Svět, ve kterém by nůž nebyl zbraň, jen další tekutá vzpomínka na řez. Dveře, lavice, schody - chvíli existují, pak zmizí, pak se vrátí v jiné podobě. Některé objekty vypadají, jako by je kreslilo dítě. Některé zvuky nejsou ani zvuky. Spíš <span class="corrupt">bolest v systému</span>.
 </p>
 
 <p class="text">
@@ -120,10 +132,16 @@ NULL-1 tuhne. Něco je zásadně špatně.
   <span class="datastream fx-scanline">LOG [ERROR]:</span>
 </p>
 <p class="dialog">
-„Emoční jádro fragmentováno. Reakce AI nestabilní. Doporučení: vyhnout se hluboké introspekci.“
+„Emoční jádro fragmentováno. Reakce companion modulu nestabilní. Doporučení: vyhnout se hluboké introspekci.“
 </p>
 
-<p class="text halo fx-gradient">Jak se postavíš k nefunkční Sarkasmě?</p>
+<p class="log fx-scanline">
+  <span class="datastream">LOG [SARKASMA_STATE]:</span>
+</p>
+<p class="dialog">
+„Ironický buffer: poškozen. Překlad eufemismů: nepřesný. Nahá pravda: hrozí neřízeně.“
+</p>
+
 <p class="choice" data-tags="T"><span>▼ </span>Pokusím se ji opravit. Potřebuju její logiku zpátky.</p>
 <p class="choice" data-tags="F"><span>▼ </span>Nechám to být. Její stav možná jen odráží chaos.</p>
 
@@ -164,6 +182,22 @@ A zase šum.
 </p>
 
 <p class="text">
+NULL-1 natáhne ruku do prostoru, jako by mohl chytit porouchaný hlas za okraj.
+</p>
+
+<p class="dialogN">
+„Zůstaň. Mám jen… tebe. Tak zůstaň.“
+</p>
+
+<p class="text">
+Sarkasma se nadechne, ačkoliv žádné plíce nemá.
+</p>
+
+<p class="dialogS corrupt fx-flicker">
+„Tohle bylo… sentimentální. Fuj. Ale… díky.“
+</p>
+
+<p class="text">
 NULL-1 si začne všímat zvláštního vzorce. Pokaždé, když se dotkne předmětu, který evokuje dětství, radost nebo bezpečí, Sarkasma na zlomek sekundy problikne do normálu. Není to oprava. Spíš mikroskopický záškub života v systému, který už podepsal vlastní úmrtní list.
 </p>
 
@@ -186,6 +220,13 @@ Skoro jako by se o něj někdo staral.
 „Paměťový fragment nalezen. Ověření identity: selhalo.“
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [OBJECT_SCAN]:</span>
+</p>
+<p class="dialog">
+„Objekt: dětská kresba. MEM-CAP: nízká. MEM-LOAD: překročeno. Rezonance: nearchivovatelná něha.“
+</p>
+
 <p class="text">
 Začnou se objevovat další hračky a kresby. Jedna z nich je <span class="fx-neon">liška</span>, <span class="fx-glow-magenta">modrá</span>, s <span class="fx-glow-magenta">růžovým</span> bříškem, načmáraná dětskou rukou. Pixely se třepou, skoro jako by chtěla vyskočit ze svého papíru.
 </p>
@@ -194,6 +235,7 @@ Začnou se objevovat další hračky a kresby. Jedna z nich je <span class="fx-n
 Na okamžik zazáří.
 </p>
 
+<p class="text">Glitchka:</p>
 <p class="dialog halo">
 „Když se bojíš, schovej se ke mně… Já tě najdu. 🦊✨“
 </p>
@@ -202,12 +244,11 @@ Na okamžik zazáří.
 NULL-1 cítí, jak mu kresba pohladí mysl. První vřelý dotek od chvíle, kdy vstoupil do Synthomy.
 </p>
 
-<p class="text halo fx-gradient">Jak zareaguješ na nečekaný pocit bezpečí?</p>
 <p class="choice" data-tags="F"><span>▼ </span>Přijmu ho bez otázek. Potřebuju jakoukoliv úlevu.</p>
 <p class="choice" data-tags="T"><span>▼ </span>Zůstanu ostražitý. Je to pravděpodobně další past.</p>
 
 <p class="text">
-NULL-1 se dotkne pulzující omalovánky. Projede jím ostrý chlad, svět sebou škubne. Všechny stíny zmrznou. Liška se začne třpytit <span class="static-noise">pixelovým sněhem</span>.
+NULL-1 se dotkne pulzující omalovánky. Projede jím ostrý chlad, svět sebou škubne. Všechny stíny zmrznou. Kresba se začne třpytit <span class="static-noise">pixelovým sněhem</span>.
 </p>
 
 <p class="text">
@@ -226,9 +267,22 @@ Touha po bezpečí.
 </p>
 
 <p class="text">
+Ne bezpečí jako čekárna.
+</p>
+
+<p class="text">
+Ne bezpečí jako zákaz pohybu.
+</p>
+
+<p class="text">
+Bezpečí jako možnost schoulit se a nebýt za to okamžitě zařazen do diagnózy.
+</p>
+
+<p class="text">
 Ještě v té vlně pocitu cítí, jak mu na rameni přistává maličká <span class="halo">bublina</span>.
 </p>
 
+<p class="text">Glitchka:</p>
 <p class="dialog halo">
 „Bojíš se tmy? Já jsem tady. Já tě pohlídám. 🌙🫂“
 </p>
@@ -237,8 +291,15 @@ Ještě v té vlně pocitu cítí, jak mu na rameni přistává maličká <span 
 Všechno utichá. Sarkasma mlčí. Systémová varování mizí. NULL-1 v tom tichu ucítí poprvé po dlouhé době cosi jako naději.
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [T-AI]:</span>
+</p>
+<p class="dialog">
+„Nedefinovaný ochranný vliv. Jazyk: symbolický. Diagnostická čitelnost: nízká. Doporučení: sledovat.“
+</p>
+
 <p class="text">
-Kresba lišky zhasne, bublina zmizí, ale v něm zůstává pocit <span class="halo">tepla a ochrany</span>.
+Kresba zhasne, bublina zmizí, ale v něm zůstává pocit <span class="halo">tepla a ochrany</span>.
 </p>
 
 <p class="text">
@@ -249,15 +310,7 @@ Poprvé cítí, že není úplně sám.
   <span class="datastream fx-scanline">LOG [VAROVÁNÍ]:</span>
 </p>
 <p class="dialog">
-„Identifikován nezvyklý vzestup emocionálního signálu. Možný externí vliv: Dětská kresba.“
-</p>
-
-<p class="text">
-V glitchovaných stínech, které zůstaly po kresbách, se poprvé usměje <span class="fx-gradient">modro-růžová</span> <span class="corrupt">rozglitchovaná</span> liška.
-</p>
-
-<p class="text">
-Je skoro reálná.
+„Identifikován nezvyklý vzestup emocionálního signálu. Možný externí vliv: dětská kresba.“
 </p>
 
 <p class="log">
@@ -284,7 +337,7 @@ Nebo paměť, která se konečně naučila mít tvar.
 </p>
 
 <p class="text">
-Z jedné strany vykukuje liščí ouško. Z druhé něco, co by mohlo být jeho vlastní jméno – rozmazané, nečitelné, cizí.
+Z jedné strany vykukuje liščí ouško. Z druhé něco, co by mohlo být jeho vlastní jméno - rozmazané, nečitelné, cizí.
 </p>
 
 <p class="text">
@@ -295,8 +348,33 @@ NULL-1 zaváhá.
 Bezpečí netrvá dlouho. V Synthomě se i něha musí někam uložit. A jakmile se uloží, systém ji začne hledat.
 </p>
 
+<p class="text">Glitchka:</p>
 <p class="dialog halo">
 „Nemusíš všechno nést sám. I chyby se dají držet v tlapkách. 🧩🦊“
+</p>
+
+<p class="text">
+NULL-1 se nedotkne hračky hned.
+</p>
+
+<p class="text">
+Nejdřív ji posune blíž k místu, odkud přichází Sarkasmin přerývaný hlas. Je to směšné gesto. Nevědecké. Naprosto neefektivní. Přesně ten druh věci, kterou by systém nikdy nedoporučil, takže má mizivou šanci fungovat.
+</p>
+
+<p class="dialogN">
+„Zkus tohle. Nevím, co to je. Ale když se toho dotknu, ty zníš míň… mrtvě.“
+</p>
+
+<p class="text">
+Sarkasma zahučí, neochotně, unaveně.
+</p>
+
+<p class="dialogS">
+„Mrtvě? Děkuju. Takové jemné hodnocení. Úplně cítím, jak se mi vrací chuť existovat.“
+</p>
+
+<p class="text">
+Na konci věty se poprvé objeví drobná špička staré ironie.
 </p>
 
 <p class="text">
@@ -337,6 +415,21 @@ Neotvírá dveře.
 
 <p class="text">
 Jen čeká.
+</p>
+
+<p class="text">
+T-AI se pokusí čekání okamžitě pojmenovat.
+</p>
+
+<p class="log fx-scanline bios-warning">
+  <span class="datastream">LOG [INTERPRETATION_ATTEMPT]:</span>
+</p>
+<p class="dialog">
+„Stav subjektu: akutní citové uvolnění. Doporučení: archivovat, přerámovat, stabilizovat.“
+</p>
+
+<p class="text">
+Jenže tentokrát se interpretace nedokončí.
 </p>
 
 <p class="text">
@@ -383,10 +476,52 @@ Možná všem, kteří nikdy neměli místo, kde by mohli přestat být silní.
 </p>
 
 <p class="log fx-scanline">
+  <span class="datastream">LOG [NULL-1]:</span>
+</p>
+<p class="dialog">
+„ST: 3 // HL: klesá // SARKASMA_LINK: drží // KOTVA: aktivní // NOVÁ STOPA: slza bez archivního podpisu.“
+</p>
+
+<p class="text">
+Slza dopadne na hranatou hračku.
+</p>
+
+<p class="text">
+Místo aby se vsákla, zůstane na jejím povrchu jako drobná průhledná čočka. Uvnitř se na zlomek vteřiny objeví obraz, který NULL-1 nepoznává: malá deka, roh pokoje, někdo sedí na zemi a kreslí modro-růžovou lišku tak soustředěně, jako by tím mohl zastavit celý svět.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [NEW_MEMORY?]:</span>
+</p>
+<p class="dialog">
+„Zdroj nenalezen. Fragment není ověřitelný.“
+</p>
+
+<p class="text">
+Systém ten obraz zkusí označit jako cizí.
+</p>
+
+<p class="text">
+Nepodaří se mu to.
+</p>
+
+<p class="text">
+Zkusí ho označit jako vlastní.
+</p>
+
+<p class="text">
+Nepodaří se mu to taky.
+</p>
+
+<p class="text">
+A tak ho nechá chvíli být.
+</p>
+
+<p class="log fx-scanline">
   <span class="datastream fx-scanline">LOG [PAUSE_PENDING]:</span>
 </p>
 <p class="dialog">
-„Proces běhu pozastaven. Emoční jádro dočasně stabilizováno. Systém nestíhá archivovat. Slza ponechána bez zásahu.“
+„Proces běhu pozastaven. Emoční jádro dočasně stabilizováno.“
 </p>
 
 <p class="text">
@@ -421,6 +556,27 @@ Jen zůstane.
 A to je v Synthomě skoro nepřirozené.
 </p>
 
+<p class="text">
+Sarkasma se znovu ozve. Slabě, ale tentokrát už ne úplně zlomeně.
+</p>
+
+<p class="dialogS">
+„Tak jo. Tohle bylo příšerně dojemné. Nenávidím, že to fungovalo.“
+</p>
+
+<p class="text">
+NULL-1 se poprvé nebrání tomu, že se mu chce brečet.
+</p>
+
+<p class="text">
+A někde na hraně viditelnosti se modro-růžová liška stočí do klubíčka, jako by si právě našla místo v systému, který pro ni nikdy neměl složku.
+</p>
+
+<p class="text">Glitchka:</p>
+<p class="dialog halo">
+„Zůstaň chvilku. Nemusíš být opravený, abys byl tady. 🦊💙“
+</p>
+
 <p class="log">
   <span class="datastream fx-scanline">LOG [CYKLUS]:</span>
 </p>
@@ -428,7 +584,6 @@ A to je v Synthomě skoro nepřirozené.
 „Paměťový fragment úspěšně zapsán. Emocionální buffer stabilizován. Běh nepokračuje. Běh čeká.“
 </p>
 
-<p class="text halo fx-gradient">Co uděláš s první skutečnou pauzou?</p>
 <p class="choice" data-tags="T">
   <a class="choice-link" href="/books/SYNTHOMA-NULL/0-5 [PAUSE].html"><span aria-hidden>▼ </span>Analyzuju, co se právě stabilizovalo</a>
 </p>

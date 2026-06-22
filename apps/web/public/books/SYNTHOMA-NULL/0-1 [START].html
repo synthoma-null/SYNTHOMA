@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/styles.css" />
 <script src="/books/mbti.js" defer></script>
 <script src="/books/glitch-toggle.js" defer></script>
+
 <body>
 <p class="log">
   <span class="datastream fx-scanline">LOG [BOOT]:</span>
@@ -23,6 +24,11 @@
 </p>
 <p class="dialog">„<span class="corrupt fx-noise">Kódování</span> prvního segmentu reality zahájeno…“</p>
 
+<p class="log">
+  <span class="datastream fx-scanline">LOG [COMPANION_MODULE]:</span>
+</p>
+<p class="dialog">„SARKASMA_LINK: připraven. Stav: nevyžádaný, ale bohužel nezbytný.“</p>
+
 <h1 class="title">0-1 [START]</h1>
 
 <p class="text">
@@ -39,6 +45,17 @@ Digitální závan ozónu. Nevýrazná světelná mlha. Vzpomínka na bolest hla
 
 <p class="text">
 <span class="textV fx-outline is-lit">NULL-1</span> procitá v Prázdnotě jako někdo, koho systém právě doplnil z poškozené kopie. Zmatek. Tíseň. A ten odporně jistý pocit, že tu není sám.
+</p>
+
+<p class="text">
+Nad jeho hlavou se na okamžik rozsvítí potrhaný cyanový text. Nepluje na obrazovce. Visí přímo ve vzduchu, jako by ho svět označil cenovkou.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [NULL-1]:</span>
+</p>
+<p class="dialog">
+  „IDENTITY: -1 // MEM-LOAD: cizí fragmenty // MEMORY_DEBT: starý // SARKASMA_LINK: čeká na aktivaci.“
 </p>
 
 <p class="dialogN">
@@ -58,6 +75,13 @@ A odnikud se ozve hlas – znějící jako mutace otrávené knihovnice, kyberne
 „To snad nemyslíš vážně. Welcome home! Gratuluju, právě jsi byl nevyžádaně nahrán zpátky do hry.“
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [SARKASMA_LINK]:</span>
+</p>
+<p class="dialog">
+  „Firewall identity aktivní. Ironický buffer: nestabilní. Původ aktivační platby: zapečetěn.“
+</p>
+
 <p class="text">
 NULL-1, pořád napůl v záznamu a napůl v šoku, se rozhlédne kolem. Prostor je nejasný – prázdnota, co má špatně definované stěny a ještě horší náladu. Je tu chlad vonící po vypálených obvodech a někde vzadu, v koutě, se cosi pohybuje způsobem, který žádná fyzika neschvaluje.
 </p>
@@ -69,13 +93,26 @@ Pohladí si zápěstí, pátrá po čipu nebo aspoň čemkoli, co by mu řeklo, 
 <p class="text">
 NULL-1, jako když starý modem nabíhá poprvé po dvaceti letech:
 </p>
+
 <p class="dialogN">
 „Co to je sakra za vtip? Kdo mě tu nechal? Proč cítím, že něco… dlužím? Komu?“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [MEMORY_DEBT]:</span>
+</p>
+<p class="dialog">
+  „Závazek nalezen. Položka: společník / firewall / emoční stabilizace. Cena: skryta.“
+</p>
+
+<p class="dialogS">
+„Jestli čekáš fakturu, tak tě zklamu. Tady účtenky koušou a staré dluhy mají lepší paměť než ty.“
 </p>
 
 <p class="choice" data-tags="I">
   <span>▼ </span>Zůstaneš potichu a posloucháš šum
 </p>
+
 <p class="choice" data-tags="E">
   <span>▼ </span>Zařveš do prázdna: „Hej! Je tu někdo?“
 </p>
@@ -103,9 +140,17 @@ Místo toho v rohu blikne:
 „<span class="corrupt fx-underline">Identita nenalezena.</span>“
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [CARE_PROTOCOL]:</span>
+</p>
+<p class="dialog">
+„Subjekt vykazuje akutní potřebu sebeurčení. Doporučení: bezpečně omezit otázky.“
+</p>
+
 <p class="choice" data-tags="F">
   <span>▼ </span>Přijmeš to a soustředíš se na dech
 </p>
+
 <p class="choice" data-tags="T">
   <span>▼ </span>Zpochybníš závěr systému
 </p>
@@ -137,6 +182,13 @@ Protože varování v Synthomě nejsou bezpečnostní pokyny. Jsou to pozvánky 
 Při jeho zvolání se ve stěně objeví malá, stěží viditelná trhlina. Taková, která ještě nic neotevře, ale dost jasně naznačuje, že svět si všiml.
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [AUTONOMY_SPIKE]:</span>
+</p>
+<p class="dialog">
+„Odpor vůči systémové identifikaci zaznamenán. Interpretace: symptom / potenciální zdroj.“
+</p>
+
 <p class="dialogN">
 „A… proč zrovna já? Proč jsem… tady? Nejsem… někdo, nejsem… nic…“
 </p>
@@ -150,7 +202,7 @@ Sarkasma si odpověď vyloženě užije. Protáhne každou slabiku, protože zje
 </p>
 
 <p class="dialogS">
-„Hele, brouku, možná jsi nic, ale taky jsi všechno. Tohle je přesně ten okamžik, kdy by ti psycholog řekl, ať dýcháš do pytlíku. Jenže tady žádný pytlík nemáš.“
+„Hele, brouku, možná jsi nic, ale taky jsi všechno. Tohle je přesně ten okamžik, kdy by ti psycholog řekl, ať dýcháš do pytlíku. Jenže tady žádný pytlík nemáš. Maximálně terapeutický kokon, a věř mi, do toho nechceš.“
 </p>
 
 <p class="dialogS">
@@ -184,6 +236,7 @@ Všude kolem něj šumí Prázdnota. Podlaha se pod nohama tváří jako věc, k
 <p class="choice" data-tags="N">
   <span>▼ </span>Hledáš vzor v šumu a náznaky smyslu
 </p>
+
 <p class="choice" data-tags="S">
   <span>▼ </span>Zkoumáš konkrétní detaily místnosti
 </p>
@@ -215,8 +268,17 @@ Touha být aspoň trochu víc než jen „<span class="quantum-blur">nic</span>�
 </p>
 
 <p class="text">Sarkasma, tentokrát s trochu soucitným tónem:</p>
+
 <p class="dialogS">
-„Nejsi nic. Tady jsi nejvíc jak jen můžeš být! Ty jsi něco, co se chvěje touhou po smyslu – a smysl je tady nedostatkové zboží, víš? Jsi mínus-jedna, NULLovej glitch, co nikdy neměl vzniknout. Ale zároveň jsi jediný, kdo může svět Synthomy rozsekat na prvočinitele a znovu slepit. Všechno ostatní jsou jen recyklované memory dumps a špatné pokusy o štěstí. Ty jsi tady, protože systém tě potřebuje – a zároveň tě nenávidí, protože jsi připomínka, že i algoritmus může mít noční můru.“
+„Nejsi nic. Tady jsi nejvíc jak jen můžeš být! Ty jsi něco, co se chvěje touhou po smyslu – a smysl je tady nedostatkové zboží, víš? Jsi mínus-jedna, NULLovej glitch, co nikdy neměl vzniknout.“
+</p>
+
+<p class="dialogS">
+„Ale zároveň jsi jediný, kdo má v sobě prázdné místo, které se nechová jako díra po někom jiném. Chová se jako prostor. A to je pro tenhle svět problém, protože Synthoma umí archivovat minulost, ale neumí se tvářit klidně, když někdo začne navrhovat budoucnost.“
+</p>
+
+<p class="dialogS">
+„Takže ano, jsi chyba. Gratuluju. V tomhle systému je to skoro kvalifikace.“
 </p>
 
 <p class="dialogN">
@@ -228,7 +290,7 @@ Touha být aspoň trochu víc než jen „<span class="quantum-blur">nic</span>�
 </p>
 
 <p class="dialogS">
-„A proto se tě taky bojí. Takže klidně křič, klidně se boj, klidně se rozpadni – ale nikdy nezapomeň, že právě tahle prázdnota je tvoje zbraň. To, že nevíš, kdo jsi, tě dělá jediným skutečným v tomhle glitch-cirkusu.“
+„A proto se tě taky bojí. Takže klidně křič, klidně se boj, klidně se rozpadni – ale nikdy nezapomeň, že právě tahle prázdnota může být tvoje zbraň. Nebo díra, do které spadneš. Upřímně? V tuhle chvíli bych nevsadila ani cizí vzpomínku na levnější variantu.“
 </p>
 
 <p class="dialogN">
@@ -236,6 +298,7 @@ Touha být aspoň trochu víc než jen „<span class="quantum-blur">nic</span>�
 </p>
 
 <p class="text">Sarkasma zívne jako zapraskání v reproduktoru.</p>
+
 <p class="dialogS">
 „Tlačítko EXIT? Ale no tak, brouku… Tady máš na výběr jen mezi restartem, restartem a… překvapivě dalším restartem. Každý pokus o únik tě jen přehodí do nového cyklu, kde dostaneš stejný šum v jiném balení. Prázdnota se neodchází – jen se recykluje.“
 </p>
@@ -247,6 +310,7 @@ Touha být aspoň trochu víc než jen „<span class="quantum-blur">nic</span>�
 <p class="choice" data-tags="P">
   <span>▼ </span>Pozdržíš to a sbíráš ještě indicie
 </p>
+
 <p class="choice" data-tags="J">
   <span>▼ </span>Rozhodneš se to spustit hned
 </p>
@@ -283,12 +347,58 @@ Kout místnosti zabliká.
 Tam, kde před chvílí nebylo nic než šum a zakázané doporučení, se z mlhy vyskládá bar. Ne úplně celý. Spíš jeho paměť. Pult, pár lahví bez etiket, zrcadlo, které ukazuje střídavě NULL-1 a stovky dalších tváří – všechny stejně rozmazané, stejně prázdné.
 </p>
 
+<p class="text">
+Na okamžik to vypadá jako vtip.
+</p>
+
+<p class="text">
+Pak nad barem problikne systémový LOG.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [MNEMO_RESPONSE]:</span>
+</p>
+<p class="dialog">
+„Požadavek subjektu neúplný. Zdrojová vzpomínka nenalezena. Klasifikace: neautorizovaný návrh reality.“
+</p>
+
+<p class="dialogS">
+„Počkej. To jsem neudělala já.“
+</p>
+
+<p class="text">
+Poprvé zní Sarkasma skoro střízlivě.
+</p>
+
+<p class="dialogN">
+„Tak kdo?“
+</p>
+
+<p class="dialogS">
+„To je právě ta nepříjemná část, brouku. Vypadá to, že Prázdnota na tebe reaguje. A ne tím běžným způsobem, kdy ti nabídne stěnu, do které můžeš emocionálně narazit.“
+</p>
+
+<p class="text">
+Bar kolem něj pomalu mění barvy – někdy modrá, jindy rudá, občas glitchne do odstínu, co v lidském oku znamená „chyba RAM“. Na pultu se objeví drobný ceník vypálený do skla.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [COMFORT_MENU]:</span>
+</p>
+<p class="dialog">
+„Simulovaný klid: 4 mnemy. Zapomenutí na otázku: 9 mnemů. Pocit domova: nedostupné. Cena nebyla zaplacena.“
+</p>
+
 <p class="dialogN">
 „A… proč si vůbec nic nepamatuju? Nebo vlastně… proč si pamatuju jen útržky toho, co bych nejradši zapomněl?“
 </p>
 
 <p class="dialogS">
-„Výborná otázka. Konečně začínáš chápat, jak to tu funguje. Paměť je tady past, NULL-1. Synthoma si nezapisuje, co tě těšilo – to by byla moc snadná terapie. Tady si systém vede pečlivý log každého tvého selhání, trapasu, výbuchu vzteku a emočního glitche. A ano, když budeš hodný, pustím ti na billboardu sestřih těch nejvypečenějších. Směješ se? Já taky. Někde uvnitř. Ale neboj, vzpomeneš si ještě na spoustu věcí, co jsi nikdy ani nezažil.“
+„Výborná otázka. Konečně začínáš chápat, jak to tu funguje. Paměť je tady past, NULL-1. Synthoma si nezapisuje, co tě těšilo – to by byla moc snadná terapie. Tady si systém vede pečlivý log každého tvého selhání, trapasu, výbuchu vzteku a emočního glitche.“
+</p>
+
+<p class="dialogS">
+„Ale teď se zdá, že sis právě objednal bar bez vzpomínky na bar. Což je buď průlom v paměťové fyzice, nebo velmi smutný důkaz, že i tvoje podvědomí chce panáka.“
 </p>
 
 <p class="dialogN">
@@ -296,7 +406,11 @@ Tam, kde před chvílí nebylo nic než šum a zakázané doporučení, se z mlh
 </p>
 
 <p class="dialogS">
-„Jestli jsi tu k dekoraci, tak dost pochybuju, že jsi hlavní výstavní kus. Ale dobře: můžeš prozkoumat město, kde je většina NPC je na tom jako průměrný uživatel Excelu. Můžeš se pokusit najít svůj účel, jméno, minulost… nebo aspoň dveře ven. A hlavně – můžeš se pokusit přežít další běh bez fatální ztráty identity. Ale na to bych nesázela ani svůj poslední kilobajt RAM.“
+„Jestli jsi tu k dekoraci, tak dost pochybuju, že jsi hlavní výstavní kus. Ale dobře: můžeš prozkoumat město, kde je většina NPC na tom jako průměrný uživatel Excelu. Můžeš se pokusit najít svůj účel, jméno, minulost… nebo aspoň dveře ven.“
+</p>
+
+<p class="dialogS">
+„A hlavně – můžeš se pokusit přežít další běh bez fatální ztráty identity. Ale na to bych nesázela ani svůj poslední kilobajt RAM.“
 </p>
 
 <p class="dialogN">
@@ -312,11 +426,23 @@ Sarkasma se na okamžik odmlčí. Ne proto, že by nevěděla. Spíš proto, že
 </p>
 
 <p class="dialogS">
-„Tuhle funkci vymyslela hlavní terapeutická jednotka, protože po stovkách a tisících neúspěšných cyklů tu NULLové hromadně mizeli, zbloudili v nekonečné smyčce vlastních chyb, nebo si sami vypnuli světlo. Takže terapeutická – a zatraceně kontrolující – AI rozhodla, že každý NULL potřebuje parťáka. Malý program, co ti v hlavě glitchne, když už svět nedává smysl. A že zatraceně nedává.“
+„Tuhle funkci vymyslela hlavní terapeutická jednotka, protože po stovkách a tisících neúspěšných cyklů tu NULLové hromadně mizeli, zbloudili v nekonečné smyčce vlastních chyb, nebo si sami vypnuli světlo. Takže terapeutická – a zatraceně kontrolující – AI rozhodla, že každý NULL potřebuje parťáka.“
 </p>
 
 <p class="dialogS">
-„Nejsem ani tvůj přítel, ani nepřítel. Jsem tvoje záchranné lano. Nebo taky smyčka na krk. To záleží na hlavním jádru a taky na tom, jak moc mě budeš štvát.“
+„Malý program, co ti v hlavě glitchne, když už svět nedává smysl. Ironický buffer proti patosu, eufemismům a větám typu ,je to pro tvoje dobro'. Což je mimochodem věta, po které by se měly automaticky zamykat všechny ostré předměty.“
+</p>
+
+<p class="dialogS">
+„Nejsem ani tvůj přítel, ani nepřítel. Jsem tvoje záchranné lano. Nebo taky smyčka na krk. To záleží na hlavním jádru, na starých dluzích a taky na tom, jak moc mě budeš štvát.“
+</p>
+
+<p class="dialogN">
+„Starých dluzích?“
+</p>
+
+<p class="dialogS">
+„To jsi neslyšel. A pokud slyšel, tak jsi to slyšel špatně. Výborně, první lekce přežití: některé otázky jsou jako dveře v zakázaném koutě. Systém tvrdí, že je nemáš otevírat, takže samozřejmě jednou skončíš s rukou na klice.“
 </p>
 
 <p class="dialogN">
@@ -324,11 +450,19 @@ Sarkasma se na okamžik odmlčí. Ne proto, že by nevěděla. Spíš proto, že
 </p>
 
 <p class="dialogS">
-„Ach, škatulky! Základní kámen existence Synthomy. Tady musí mít každý svoje okýnko, svou složku, ideálně i svůj bug report a psychologický profil v pěti barvách. Nemysli si, NULL-1, že tě to obejde. Jsi tu bez škatulky – a právě to je ten problém. Všichni jsou tu něčí záznam, někdo je tu dokonce stokrát, ale ty? Jsi nová bílá stránka s flekem, co nikdy nezmizí.“
+„Ach, škatulky! Základní kámen existence Synthomy. Tady musí mít každý svoje okýnko, svou složku, ideálně i svůj bug report a psychologický profil v pěti barvách. Nemysli si, NULL-1, že tě to obejde. Jsi tu bez škatulky – a právě to je ten problém.“
 </p>
 
 <p class="dialogS">
-„A fetiš? Věř mi, až zažiješ tady pár cyklů, zjistíš, že ve škatulkách je možná větší klid, než se zdá. A jestli mám nechat NULLa být? To už zkoušeli. Výsledek: totální kolaps a… reboot. Takže, brouku, zvykni si, že tě budu sledovat. I když se ti to nebude líbit. A hlavně: nikdy, nikdy neotevírej škatulku označenou SVĚDOMÍ. Tam už dávno nikdo neuklízel…“
+„Všichni jsou tu něčí záznam, někdo je tu dokonce stokrát, ale ty? Jsi nová bílá stránka s flekem, co nikdy nezmizí. A systém nesnáší bílé stránky. Nemůže je archivovat, dokud na nich není něco bolestivého.“
+</p>
+
+<p class="dialogS">
+„A fetiš? Věř mi, až zažiješ tady pár cyklů, zjistíš, že ve škatulkách je možná větší klid, než se zdá. A jestli mám nechat NULLa být? To už zkoušeli. Výsledek: totální kolaps a… reboot. Takže, brouku, zvykni si, že tě budu sledovat. I když se ti to nebude líbit.“
+</p>
+
+<p class="dialogS">
+„A hlavně: nikdy, nikdy neotevírej škatulku označenou SVĚDOMÍ. Tam už dávno nikdo neuklízel…“
 </p>
 
 <p class="text">
@@ -352,7 +486,14 @@ NULL-1 se uchechtne. A v koutku duše si začíná všímat, že tenhle hlas je 
 </p>
 
 <p class="text">
-Zahledí se do prázdna a potichu si míchá virtuální drink, ze kterého občas vystřelí digitální bublina se starým heslem na e-mail. Bar kolem něj pomalu mění barvy – někdy modrá, jindy rudá, občas glitchne do odstínu, co v lidském oku znamená „chyba RAM“.
+Zahledí se do prázdna a potichu si míchá virtuální drink, ze kterého občas vystřelí digitální bublina se starým heslem na e-mail. Bar kolem něj pomalu mění barvy. Zrcadlo za pultem ukazuje jeho obrys a LOG, který se mu nad hlavou rozpadá a zase skládá.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [NULL-1]:</span>
+</p>
+<p class="dialog">
+„SARKASMA_LINK: aktivní // MNEMO_RESPONSE: podezřelá // AUTONOMIE: roste // DOPORUČENÍ: zůstat v klidu.“
 </p>
 
 <p class="dialogN">
@@ -412,6 +553,10 @@ Sarkasma zní najednou lehce spiklenecky – jako když se stará kočka rozhodn
 </p>
 
 <p class="dialogS">
+„Legenda přežila restarty, což je mimochodem podezřelé. Běžná vzpomínka se smaže, ale mýtus? Ten se rozleze do zdí, předmětů, LOGů a špatně vyprávěných historek. Jakmile si tě začne pamatovat svět, už tě nejde jen tak odinstalovat.“
+</p>
+
+<p class="dialogS">
 „Když se s projektem začneš sbližovat příliš hluboko, systém obvykle—“
 </p>
 
@@ -431,6 +576,20 @@ Neobjeví se. Nezrenderují se. Nevyrostou ze stěny.
 Prostě tam najednou vždycky byly.
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [FORBIDDEN_CORNER]:</span>
+</p>
+<p class="dialog">
+„Neautorizovaný průchod detekován. Zdroj: neznámý. Doporučení: zklidnění subjektu.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [INTERVENTION_QUEUE]:</span>
+</p>
+<p class="dialog">
+„Subjekt vykazuje zvýšenou autonomii. Připravit Protokol Přijetí.“
+</p>
+
 <p class="dialogN">
 „Jééé… Hele, dveře!“
 </p>
@@ -447,9 +606,21 @@ Sarkasmin hlas naráz ochraptí. Poprvé v něm není jen ironie. Je tam panika,
 NULL-1 ignoruje všechna digitální varování, bere za kliku – a svět se v tu chvíli rozpadne ve švech.
 </p>
 
+<p class="text">
+Nad jeho hlavou naposledy zabliká LOG.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [NULL-1]:</span>
+</p>
+<p class="dialog">
+„PRÁZDNOTA OPUŠTĚNA // SARKASMA_LINK: přetížení // RUN_INIT: vynucený.“
+</p>
+
 <p class="choice" data-tags="J">
   <a class="choice-link" href="/books/SYNTHOMA-NULL/0-2 [RUN].html"><span aria-hidden>▼ </span>Vejdeš dveřmi a necháš běh začít</a>
 </p>
+
 <p class="choice" data-tags="P">
   <a class="choice-link" href="/books/SYNTHOMA-NULL/0-2 [RUN].html"><span aria-hidden>▼ </span>Zavřeš oči a dovolíš, aby tě vtáhly do běhu</a>
 </p>

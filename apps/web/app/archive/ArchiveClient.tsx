@@ -6,11 +6,26 @@ import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 
 export type ArchiveCardData = {
   id: string;
+  category: string;
   title: string;
   teaser: string;
+  quote?: string;
   body: string[];
-  images?: { src: string; alt: string }[];
+  tags?: string[];
+  spoilerLevel?: number;
+  display?: {
+    icon?: string;
+    accent?: string;
+    variant?: string;
+  };
   related?: string[];
+  images?: { src: string; alt: string }[];
+};
+
+export type ArchiveCategory = {
+  id: string;
+  title: string;
+  description: string;
 };
 
 export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveCardData[] }) {
@@ -125,6 +140,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                   className={`archive-card ${openId === c.id ? 'is-open' : ''}`.trim()}
                   role="listitem"
                   tabIndex={openId === c.id ? -1 : undefined}
+                  style={c.display?.accent ? { '--card-accent': c.display.accent } as React.CSSProperties : undefined}
                   onClick={(e) => {
                     if (openId === c.id) {
                       const target = e.target as HTMLElement;
@@ -142,8 +158,12 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                     onClick={() => toggle(c.id)}
                   />
                   <header className="card-header">
-                    <h3 id={`title-${c.id}`} className="card-title">{c.title}</h3>
+                    <div className="card-title-row">
+                      {c.display?.icon && <span className="card-icon">{c.display.icon}</span>}
+                      <h3 id={`title-${c.id}`} className="card-title">{c.title}</h3>
+                    </div>
                     <p className="card-teaser">{c.teaser}</p>
+                    {c.quote && <blockquote className="card-quote">{c.quote}</blockquote>}
                   </header>
                   {c.images && c.images.length > 0 ? (
                     <div className="card-media" hidden={openId !== c.id}>
@@ -174,6 +194,18 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                               >
                                 {titleById[rid] || `#${rid}`}
                               </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null}
+                      {Array.isArray(c.tags) && c.tags.length > 0 ? (
+                        <div className="card-tags">
+                          <p className="label">Tagy:</p>
+                          <div className="tags-list">
+                            {c.tags.map((tag, idx) => (
+                              <span key={idx} className="tag-chip">
+                                {tag}
+                              </span>
                             ))}
                           </div>
                         </div>

@@ -244,6 +244,7 @@ export default function ControlPanelClient() {
         const wasVisible = controlPanel.classList.contains("visible");
         const next = typeof force === 'boolean' ? force : !wasVisible;
         controlPanel.classList.toggle("visible", next);
+        controlPanel.setAttribute("aria-hidden", String(!next));
         togglePanelBtn.setAttribute("aria-expanded", String(next));
         try { togglePanelBtn.setAttribute('aria-controls', 'control-panel'); } catch {}
         if (!wasVisible && next) {
@@ -758,7 +759,7 @@ export default function ControlPanelClient() {
         });
       }
       audio.addEventListener("loadedmetadata", function(){ updateTrackInfoLabel(); });
-      audio.addEventListener("ended", function(){ if (!audio.loop) playNextTrack(); });
+      audio.addEventListener("ended", function(){ if (audio.dataset.sequence) return; if (!audio.loop) playNextTrack(); });
 
       // =====================
       // TTS (Web Speech API)

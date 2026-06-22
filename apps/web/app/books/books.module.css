@@ -1,3 +1,53 @@
+/* Noscript fallback styling */
+.books-fallback {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #f7f7ff;
+}
+
+.books-fallback h1 {
+  font-size: clamp(2.6rem,6vw,4rem);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: 0 0 2rem;
+  color: #fff;
+}
+
+.books-fallback h2 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  color: #00ffff;
+}
+
+.books-fallback ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.books-fallback li {
+  margin-bottom: 0.5rem;
+}
+
+.books-fallback a {
+  display: block;
+  padding: 0.75rem 1rem;
+  background: rgba(18,18,22,.65);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  color: #f7f7ff;
+  text-decoration: none;
+  transition: transform .15s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.books-fallback a:hover {
+  transform: translateY(-2px);
+  background: rgba(18,18,22,.85);
+  border-color: rgba(255,255,255,.16);
+  box-shadow: 0 8px 26px rgba(0,0,0,.35);
+}
+
 .cardButton {
   display: block;
   text-align: left;

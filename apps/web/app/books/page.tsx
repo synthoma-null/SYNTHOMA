@@ -53,6 +53,26 @@ export default async function BooksPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* Server-side fallback for crawlers and no-JS */}
+      <noscript>
+        <div className="books-fallback">
+          <h1>Knihovna SYNTHOMA</h1>
+          {manifest.collections.map((col) => (
+            <section key={col.slug}>
+              <h2>{col.title}</h2>
+              <ul>
+                {col.chapters.map((ch) => (
+                  <li key={ch.path}>
+                    <a href={`/reader?u=${encodeURIComponent(ch.path)}`}>
+                      {ch.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </noscript>
       <BooksClient manifest={manifest} />
     </>
   );

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ArchivePage() {
-  const dataPath = path.join(process.cwd(), 'public', 'data', 'archive.json');
+  const dataPath = path.join(process.cwd(), 'public', 'data', 'archiveCards.json');
   let cards: ArchiveCardData[] = [];
   try {
     const raw = await fs.readFile(dataPath, 'utf8');

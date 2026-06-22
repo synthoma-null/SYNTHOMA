@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { runCinematicTitleIntro } from "../../src/lib/cinematicTitle";
-import { getSharedAudio } from "../../src/lib/audio";
+import { getSharedAudio, setSharedAudioSrc } from "../../src/lib/audio";
 import { writeStorage, readStorage } from "../../src/lib/browser";
 import { readLastChapterPath } from "../../src/lib/readerState";
 import { runTypewriter, typeExternalInfo, typeBooksList } from "../../src/lib/typewriter";
@@ -688,29 +688,42 @@ export default function LandingIntroPage() {
 
   const handleContinue = async () => {
     try {
-      const desired = '/audio/SynthBachmoff.mp3';
+      const landingTrack = '/audio/Synthoma_landing.mp3';
+      const followUpTrack = '/audio/SynthBachmoff.mp3';
       const markAudioIntent = () => { writeStorage('synthoma_play_audio', '1', 'session'); };
       const playPanel = (window as any).audioPanelPlay as undefined | ((src: string) => void);
-      const ensure = (window as any).audioPanelEnsurePlaying as undefined | (() => void);
+
+      const a = audioRef.current || getSharedAudio();
+
       if (typeof playPanel === 'function') {
         if (!isStartingAudioRef.current) {
           isStartingAudioRef.current = true;
-          try { playPanel(desired); } catch {}
+          a.dataset.sequence = 'landing-intro';
+          try { playPanel(landingTrack); } catch {}
           markAudioIntent();
+          const onEnded = () => {
+            a.removeEventListener('ended', onEnded);
+            delete a.dataset.sequence;
+            try { playPanel(followUpTrack); } catch {}
+          };
+          a.addEventListener('ended', onEnded);
           setTimeout(() => { isStartingAudioRef.current = false; }, 150);
         }
-      } else if (typeof ensure === 'function') {
-        if (!isStartingAudioRef.current) { isStartingAudioRef.current = true; try { ensure(); } catch {}; markAudioIntent(); setTimeout(() => { isStartingAudioRef.current = false; }, 150); }
       } else {
-        const a = audioRef.current || getSharedAudio();
-        if (a) {
-          try {
-            const srcEl = a.querySelector('source') as HTMLSourceElement | null;
-            if (srcEl && !srcEl.src.endsWith('SynthBachmoff.mp3')) { srcEl.src = desired; a.load(); }
-          } catch {}
-          if (a.paused || a.ended || a.currentTime === 0) {
-            if (!isStartingAudioRef.current) { isStartingAudioRef.current = true; await a.play().catch(() => {}); markAudioIntent(); setTimeout(() => { isStartingAudioRef.current = false; }, 150); }
-          }
+        if (a && !isStartingAudioRef.current) {
+          isStartingAudioRef.current = true;
+          a.dataset.sequence = 'landing-intro';
+          setSharedAudioSrc(landingTrack);
+          await a.play().catch(() => {});
+          markAudioIntent();
+          const onEnded = () => {
+            a.removeEventListener('ended', onEnded);
+            delete a.dataset.sequence;
+            setSharedAudioSrc(followUpTrack);
+            a.play().catch(() => {});
+          };
+          a.addEventListener('ended', onEnded);
+          setTimeout(() => { isStartingAudioRef.current = false; }, 150);
         }
       }
     } catch {}
@@ -847,8 +860,8 @@ export default function LandingIntroPage() {
       <main className="home" role="main">
       <section className="hero-intro" aria-label="SYNTHOMA Intro">
         <h1 id="glitch-synthoma" className={`glitch-master`} ref={glitchRootRef as any} aria-label={TITLE}>
-          <span className="glitch-fake1">{TITLE}</span>
-          <span className="glitch-fake2">{TITLE}</span>
+          <span className="glitch-fake1" aria-hidden="true">{TITLE}</span>
+          <span className="glitch-fake2" aria-hidden="true">{TITLE}</span>
           <span className="glitch-real" aria-hidden="true">
             {TITLE.split("").map((ch, idx) => (
               <span key={idx} className="glitch-char">{ch}</span>

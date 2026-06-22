@@ -3,6 +3,7 @@ import "../src/styles/components.css";
 import "../src/styles/effects.css";
 import "../src/styles/themes.css";
 import "../src/styles/reader.css";
+import { tracks } from "../src/data/playlist";
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
 import ScrollGuardClient from "./components/ScrollGuardClient";
@@ -117,7 +118,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <div>
             <button id="toggle-panel-btn" aria-expanded="false" aria-controls="control-panel">🎛️</button>
           </div>
-          <div id="control-panel" className="control-panel" role="region" aria-label="Ovládací panel">
+          <div id="control-panel" className="control-panel" role="region" aria-label="Ovládací panel" aria-hidden="true">
             <div className="controls-grid">
               {/* Sekce: Zobrazení */}
               <fieldset className="group" aria-label="Zobrazení">
@@ -166,19 +167,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
                   aria-label="Seznam skladeb"
                 >
                   {/* Fallback obsah – bude nahrazen ControlPanelClientem po bootu */}
-                  <a href="#" data-src="/audio/SynthBachmoff.mp3" role="listitem">SynthBachmoff</a>
-                  <a href="#" data-src="/audio/Comet.mp3" role="listitem">Comet</a>
-                  <a href="#" data-src="/audio/Discontinuum.mp3" role="listitem">Discontinuum</a>
-                  <a href="#" data-src="/audio/Nuova.mp3" role="listitem">Nuova</a>
-                  <a href="#" data-src="/audio/Orgie.mp3" role="listitem">Orgie</a>
-                  <a href="#" data-src="/audio/Run.mp3" role="listitem">Run</a>
-                  <a href="#" data-src="/audio/Searching.mp3" role="listitem">Searching</a>
-                  <a href="#" data-src="/audio/Sector.mp3" role="listitem">Sector</a>
-                  <a href="#" data-src="/audio/SoulSynth.mp3" role="listitem">SoulSynth</a>
-                  <a href="#" data-src="/audio/SynthAm.mp3" role="listitem">SynthAm</a>
-                  <a href="#" data-src="/audio/SynthJazzoko.mp3" role="listitem">SynthJazzoko</a>
-                  <a href="#" data-src="/audio/SYNTHOMA1.mp3" role="listitem">SYNTHOMA1</a>
-                  <a href="#" data-src="/audio/Touha.mp3" role="listitem">Touha</a>
+                  {tracks.map((track, index) => (
+                    <a key={index} href="#" data-src={track.src} role="listitem">
+                      {track.title}
+                    </a>
+                  ))}
                 </div>
               </fieldset>
             </div>
