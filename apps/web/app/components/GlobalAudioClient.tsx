@@ -5,25 +5,32 @@ import { usePathname } from "next/navigation";
 
 /**
  * GlobalAudioClient
- * - Udržuje přehrávání globální hudby konzistentní při navigaci a změně viditelnosti záložky.
- * - Nesahá do playlistu, jen volá existující API z ControlPanelClient: window.audioPanelEnsurePlaying?.()
+ * - Udržuje přehrávání globální hudby konzistentní při změně viditelnosti záložky.
+ * - Automaticky nespouští hudbu na každé stránce - hudba se přehraje jen jednou a dohraje.
  */
 export default function GlobalAudioClient() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Při mountu a každé změně cesty jemně kopneme do audia, aby nezdechlo mezi routami
-    try { (window as any).audioPanelEnsurePlaying?.(); } catch {}
-  }, [pathname]);
-
-  useEffect(() => {
+    // Při změně viditelnosti záložky jen zajistíme, aby hudba nezastavila, pokud už hraje
     const onVisibility = () => {
       if (document.visibilityState === "visible") {
-        try { (window as any).audioPanelEnsurePlaying?.(); } catch {}
+        try { 
+          const audio = (window as any).__synthomaAudio;
+          if (audio && !audio.paused) {
+            // Pokud už hudba hraje, jen ji jemně povzbuzíme, ale nespouštíme znovu
+            audio.play().catch(() => {});
+          }
+        } catch {}
       }
     };
     const onPageShow = () => {
-      try { (window as any).audioPanelEnsurePlaying?.(); } catch {}
+      try { 
+        const audio = (window as any).__synthomaAudio;
+        if (audio && !audio.paused) {
+          audio.play().catch(() => {});
+        }
+      } catch {}
     };
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("pageshow", onPageShow);

@@ -36,7 +36,7 @@ html {
 
   /* ===== Unifikované proměnné pro pozadí napříč aplikací ===== */
   /* Globální průhlednost tmavého overlaye (0..1). Ovládá slider v ControlPanelu */
-  --app-bg-opacity: 0.8;
+  --app-bg-opacity: 0.85;
   /* Globální blur pro "glass" režim. Ovládá slider v ControlPanelu */
   --app-bg-blur: 12px;
   /* Průhlednost pro UI panely (tl. tlačítek/panelů), sjednocená s posuvníkem */

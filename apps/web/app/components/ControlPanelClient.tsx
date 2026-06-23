@@ -638,7 +638,7 @@ export default function ControlPanelClient() {
 
       let currentGlassMode = readFlag('glassMode', false);
 
-      let currentOpacity = readNum("readerBgOpacity", 0.8);
+      let currentOpacity = readNum("readerBgOpacity", 0.85);
 
       let currentBlur = Math.round(readNum("glassBlur", 12));
 

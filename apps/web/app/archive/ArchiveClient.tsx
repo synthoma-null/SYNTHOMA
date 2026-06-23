@@ -32,10 +32,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
   const TITLE = "A R C H I V";
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
 
-  useEffect(() => {
-    try { (window as any).audioPanelEnsurePlaying?.(); } catch {}
-  }, []);
-
+  
   useEffect(() => {
     const prefersReduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
