@@ -140,7 +140,7 @@ export default function HomeClient() {
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/autor">
                     <h2 className={styles.cardTitle}>Autor</h2>
-                    <p className={styles.cardTeaser}>WalliCzech, hudba a proces vzniku glitch-noir světa.</p>
+                    <p className={styles.cardTeaser}>WalliCzech, bug report, hudba a proces vzniku glitch-noir světa.</p>
                   </Link>
                 </article>
               </li>

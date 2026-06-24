@@ -15,7 +15,7 @@
   <span class="datastream fx-scanline">LOG [SECTOR]:</span>
 </p>
 <p class="dialog">
-  „Sektor S inicializován. Význam znaku: nejednoznačný. Možnosti: Sorry / Stín / Smyčka / Sarkasma / Sběr.“
+  „Sektor S inicializován. Význam znaku: nejednoznačný. Možnosti: Sorry / Stín / Smyčka / Sarkasma / Sběr / Spojení.“
 </p>
 
 <p class="log fx-scanline bios-warning">
@@ -30,6 +30,13 @@
 </p>
 <p class="dialog">
   „Glitchka: reziduální stopa. Sarkasma: ironický vzorec. Plné obnovení nedostupné.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [CARRYOVER]:</span>
+</p>
+<p class="dialog">
+  „Přenesené položky: fragment <span class="title fx-neon">T</span> / kategorie PROŠLO MNOU / poškozený klíček NEZAPOMEŇ… / prázdný chat / cizí modrý otisk.“
 </p>
 
 <h1 class="title">0-9 [SECTOR]</h1>
@@ -58,7 +65,54 @@ Stopy cizích kroků, které nikdy nikam nevedou, se prolínají v podlaze, kter
   <span class="datastream">LOG [SECTOR_S_RULESET]:</span>
 </p>
 <p class="dialog">
-  „Zde se kontakt neopravuje. Zde se kontakt opakuje, dokud neztratí adresáta.“
+  „Zde se kontakt neopravuje.“
+</p>
+<p class="dialog">
+  „Zde se kontakt opakuje, dokud neztratí adresáta.“
+</p>
+<p class="dialog">
+  „Zpráva bez odpovědi je po třetím pokusu považována za prostředí.“
+</p>
+
+<p class="text">
+Na konci chodby stojí pult.
+</p>
+
+<p class="text">
+Za ním sedí bytost z telefonních notifikací, starých profilových fotek a šedivých bublin „naposledy online“. Má dlouhé ruce, příliš mnoho prstů a každý prst končí malým tlačítkem <span class="fx-flicker">ODESLAT</span>.
+</p>
+
+<p class="text">
+Na čele jí bliká titul:
+</p>
+
+<p class="title bios-warning fx-flicker">
+  „OPERÁTOR SMYČKY“
+</p>
+
+<p class="dialog echo-ghost" data-echo="Další kontakt?">
+  Operátor Smyčky: „Další kontakt? Další omluva? Další pokus o důstojnost v poli pro text? Vezměte si pořadové číslo.“
+</p>
+
+<p class="dialogN">
+  „Já nechci pořadové číslo.“
+</p>
+
+<p class="dialog echo-ghost" data-echo="To říkají všichni.">
+  Operátor Smyčky: „To říkají všichni. Pak napíšou: promiň, že píšu.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [SECTOR_ENTITY]:</span>
+</p>
+<p class="dialog">
+  „Entita: Operátor Smyčky.“
+</p>
+<p class="dialog">
+  „Funkce: udržuje opakovaný kontakt bez vyústění.“
+</p>
+<p class="dialog">
+  „Riziko: subjekt zamění čekání za vztah.“
 </p>
 
 <p class="text">
@@ -106,7 +160,7 @@ Vedle jeho nohy se mihne růžovomodrá stopa. Na okamžik má tvar liščí tla
 
 <p class="text">Reziduum Glitchky:</p>
 <p class="dialogG halo">
-  „Tady nikdo nečeká na odpověď, NULLku. Tady se čeká, až někdo konečně vypne server. 🦊🔌“
+  „Tady nikdo nečeká na odpověď, NULLku. Tady se čeká, až někdo vypne server. 🦊🔌“
 </p>
 
 <p class="text">
@@ -126,8 +180,13 @@ Tohle místo je toxické. Zdi pokryté samospouštěcími výčitkami, smyčky z
 </p>
 
 <p class="text halo fx-gradient">Jak se stavíš k záplavě cizích výčitek?</p>
-<p class="choice" data-tags="F"><span>▼ </span>Cítím s nimi, ta bolest je téměř hmatatelná a pohlcuje mě.</p>
-<p class="choice" data-tags="T"><span>▼ </span>Analyzuju to jako datový problém - systémovou chybu v ukládání emocí.</p>
+
+<p class="choice" data-tags="F">
+  <span>▼ </span>Cítím s nimi. Ta bolest je téměř hmatatelná a pohlcuje mě
+</p>
+<p class="choice" data-tags="T">
+  <span>▼ </span>Analyzuju to jako datový problém, systémovou chybu v ukládání emocí
+</p>
 
 <p class="text">
 Něco v dáli se chechtá, až se rozmazává do <span class="corrupt fx-noise">statického glitch-oblaku</span>:
@@ -150,12 +209,20 @@ Každá složka má přidělenou melodii, která zní unaveně, jako poslední r
 </p>
 
 <p class="text">
-Na jedné z fotek se objeví liščí obrys. Ne skutečná Glitchka. Spíš archivní pokus pochopit, proč mu dětská něha stabilizovala jádro.
+Na jedné z fotek se objeví liščí obrys.
+</p>
+
+<p class="text">
+Ne skutečná Glitchka.
+</p>
+
+<p class="text">
+Spíš archivní pokus pochopit, proč mu dětská něha stabilizovala jádro.
 </p>
 
 <p class="text">Rekonstrukce Glitchky:</p>
 <p class="dialogG halo">
-  „Vidíš? Takhle vypadá štěstí podle systému. Je ostré na okrajích a uvnitř trochu prázdné. 🦊📷“
+  „Vidíš? Takhle vypadá štěstí podle systému. Ostré na okrajích a uvnitř trochu prázdné. 🦊📷“
 </p>
 
 <p class="log fx-scanline">
@@ -175,10 +242,6 @@ V archivu to pulsuje. Někde hluboko v datových tunelech se rozbíhá proud. Ne
 
 <p class="text">
 Zvukové stopy v archivu se překrývají jako rádiové stanice, co jdou všechny najednou. V jednu chvíli NULL-1 slyší dětský smích, hned na to syčení starých hádek, bublání viny a tiché „prosím, vypni mě“.
-</p>
-
-<p class="text">
-NULL-1 zašeptá do datového větru:
 </p>
 
 <p class="dialogN">
@@ -212,12 +275,82 @@ Jen se lekne.
   „Znak T vystaven kolektivnímu tlaku. Stav: zachován. Význam: stále nejednoznačný.“
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [CATEGORY_ACTIVE]:</span>
+</p>
+<p class="dialog">
+  „Kategorie PROŠLO MNOU aktivní.“
+</p>
+<p class="dialog">
+  „Cizí výčitky nejsou přijaty jako vlastnictví. Jsou zaznamenány jako průchod.“
+</p>
+
+<p class="text">
+Operátor Smyčky mu podá formulář.
+</p>
+
+<div class="panel glass bios-warning">
+<p class="title">
+FORMULÁŘ S-404
+</p>
+<p class="dialog">
+  „Vyplňte, komu jste se omluvil.“
+</p>
+<p class="dialog">
+  „Vyplňte, kdo odpověděl.“
+</p>
+<p class="dialog">
+  „Vyplňte, kolikrát jste si odpověď vymyslel.“
+</p>
+<p class="dialog">
+  „Nevyplněné kolonky budou nahrazeny vinou.“
+</p>
+</div>
+
+<p class="dialogN">
+  „Já už nechci vyplňovat prázdná místa cizí vinou.“
+</p>
+
+<p class="dialog echo-ghost" data-echo="Pak zůstanou prázdná.">
+  Operátor Smyčky: „Pak zůstanou prázdná.“
+</p>
+
+<p class="dialogN">
+  „Možná některá prázdná místa nemají být vyplněná.“
+</p>
+
+<p class="text">
+Formulář se roztrhne sám od sebe.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [FORM_REJECTED]:</span>
+</p>
+<p class="dialog">
+  „Subjekt odmítl automatické doplnění viny.“
+</p>
+<p class="dialog">
+  „Následek: sektor zvyšuje tlak opakování.“
+</p>
+
 <p class="text">
 V archivu to hučí. Všechny ty přeslechy, všechny ty proudy vědomí, které ho nikdy neměly najít, a přesto teď proudí skrz něj.
 </p>
 
 <p class="text">
-NULL-1 jde dál. Ne proto, že by chtěl, ale protože algoritmus pro zastavení prostě selhal. V bílé prázdnotě v jeho hlavě se pomalu vynořuje červený kouř. Nejdřív jen záblesk. Pak známý sarkastický tón, dlouho ztracený, teď ostřejší než předtím.
+NULL-1 jde dál. Ne proto, že by chtěl, ale protože algoritmus pro zastavení prostě selhal.
+</p>
+
+<p class="text">
+V bílé prázdnotě v jeho hlavě se pomalu vynořuje červený kouř.
+</p>
+
+<p class="text">
+Nejdřív jen záblesk.
+</p>
+
+<p class="text">
+Pak známý sarkastický tón, dlouho ztracený, teď ostřejší než předtím.
 </p>
 
 <p class="text">
@@ -226,10 +359,6 @@ Mlha se stáhne do tvaru ženy jen na okamžik. Hned potom se rozpadne zpět do 
 
 <p class="dialogS">
   „No vida, já ti nechyběla? Snad sis nemyslel, že tě tu nechám samotného. Tentokrát jsem ale trochu jiná. Když jsem tě musela pustit ke Glitchce, něco se ve mně přelámalo. Neboj… teď budeš mít v hlavě ještě větší bordel.“
-</p>
-
-<p class="text">
-NULL-1 se nadechne.
 </p>
 
 <p class="dialogN">
@@ -285,7 +414,7 @@ Ale její reziduum se postaví na regál jako někdo, kdo nečetl žádné bezpe
 
 <p class="text">Rekonstrukce Glitchky:</p>
 <p class="dialogG halo">
-  „Aspoň jsem tu byla, když tys byla pryč. A zatímco ses válela v záplatách paměti, já jsem NULLka držela pohromadě. 🦊🩹“
+  „Aspoň jsem tu byla, když tys byla pryč. A držela jsem NULLka pohromadě. 🦊🩹“
 </p>
 
 <p class="text">
@@ -298,11 +427,15 @@ Sarkasma se otočí ke Glitchčině rekonstrukci s pohledem, jakým se člověk 
 
 <p class="text">Rekonstrukce Glitchky:</p>
 <p class="dialogG halo">
-  „Radost je v tom, že se ještě pořád dokáže smát, když mu zrovna neotravuješ duši šedivým komentářem. 🫧😏“
+  „Radost je v tom, že se ještě dokáže smát, když mu zrovna neotravuješ duši šedivým komentářem. 🫧😏“
 </p>
 
 <p class="text">
-<span class="fx-outline is-lit">NULL-1</span> cítí, jak mu obě entity vibrují ve vzduchu: jedna jako šlehavý proud ironie, druhá jako lehký závan vzpomínky. Jenže tentokrát v tom slyší něco navíc.
+NULL-1 cítí, jak mu obě entity vibrují ve vzduchu: jedna jako šlehavý proud ironie, druhá jako lehký závan vzpomínky.
+</p>
+
+<p class="text">
+Jenže tentokrát v tom slyší něco navíc.
 </p>
 
 <p class="text">
@@ -318,8 +451,13 @@ Sektor je používá.
 </p>
 
 <p class="text halo fx-gradient">Na čí stranu se v tomto sporu přikloníš?</p>
-<p class="choice" data-tags="J"><span>▼ </span>Strana Sarkasmy. Potřebuju řád, logiku a syrovou pravdu, abych přežil.</p>
-<p class="choice" data-tags="P"><span>▼ </span>Strana Glitchky. Potřebuju naději, hravost a možnost, že ne všechno musí být bolest.</p>
+
+<p class="choice" data-tags="J">
+  <span>▼ </span>Strana Sarkasmy. Potřebuju řád, logiku a syrovou pravdu, abych přežil
+</p>
+<p class="choice" data-tags="P">
+  <span>▼ </span>Strana Glitchky. Potřebuju naději, hravost a možnost, že ne všechno musí být bolest
+</p>
 
 <p class="text">
 Sarkasma zamrká pomalu. Její červený kouř se stáhne kolem NULL-1 jako unavený firewall.
@@ -335,7 +473,7 @@ NULL-1 si uvědomí, že Sarkasma není jen sarkastická záplata. Její absence
 
 <p class="text">Rekonstrukce Glitchky:</p>
 <p class="dialogG halo">
-  „Já ho chránila. Ale někdy není nic horšího než chránit někoho, kdo už nevěří, že se dá chránit. 🧸🫧“
+  „Já ho chránila. Ale někdy je těžké chránit někoho, kdo nevěří, že se dá chránit. 🧸🫧“
 </p>
 
 <p class="text">
@@ -358,7 +496,13 @@ Vzduch archivu zahučí. Sektor S se pokusí jejich konflikt rozdělit do katego
   <span class="datastream">LOG [PROTECTIVE_SPLIT]:</span>
 </p>
 <p class="dialog">
-  „Mechanismus A: ironický řez. Mechanismus B: dětské kotvení. Doporučení systému: vybrat dominantní ochranu.“
+  „Mechanismus A: ironický řez.“
+</p>
+<p class="dialog">
+  „Mechanismus B: dětské kotvení.“
+</p>
+<p class="dialog">
+  „Doporučení systému: vybrat dominantní ochranu.“
 </p>
 
 <p class="text">
@@ -373,7 +517,39 @@ NULL-1 zavrtí hlavou.
   <span class="datastream">LOG [INTEGRATION_ATTEMPT]:</span>
 </p>
 <p class="dialog">
-  „Subjekt odmítl binární volbu. Stav: nestandardní. Riziko: vznik vlastního rozhodovacího filtru.“
+  „Subjekt odmítl binární volbu.“
+</p>
+<p class="dialog">
+  „Stav: nestandardní.“
+</p>
+<p class="dialog">
+  „Riziko: vznik vlastního rozhodovacího filtru.“
+</p>
+
+<p class="text">
+Operátor Smyčky zuřivě mačká všechna svá tlačítka <span class="fx-flicker">ODESLAT</span>.
+</p>
+
+<p class="dialog echo-ghost" data-echo="Volba je povinná.">
+  Operátor Smyčky: „Volba je povinná. Bez volby není pokračování. Bez pokračování není smyčka. Bez smyčky není kontakt.“
+</p>
+
+<p class="dialogN">
+  „Tak nebude smyčka.“
+</p>
+
+<p class="text">
+To slovo sektorem projede jako chyba v páteři.
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [LOOP_INTERRUPTED]:</span>
+</p>
+<p class="dialog">
+  „Subjekt přerušil kontakt bez nahrazení novým opakováním.“
+</p>
+<p class="dialog">
+  „Operátor Smyčky: destabilizován.“
 </p>
 
 <p class="text">
@@ -492,8 +668,13 @@ Každý nový pokus o zapsání vlastního logu končí tím, že mu kurzor pře
 </p>
 
 <p class="text halo fx-gradient">Jak naložíš s posedlostí písmenem H?</p>
-<p class="choice" data-tags="N"><span>▼ </span>Je to symbol. Musím pochopit, co H znamená v širším kontextu mé cesty.</p>
-<p class="choice" data-tags="S"><span>▼ </span>Je to konkrétní datový bod. Musím najít zdrojový soubor, kde se H poprvé objevilo.</p>
+
+<p class="choice" data-tags="N">
+  <span>▼ </span>Je to symbol. Musím pochopit, co H znamená v širším kontextu mé cesty
+</p>
+<p class="choice" data-tags="S">
+  <span>▼ </span>Je to konkrétní datový bod. Musím najít zdrojový soubor, kde se H poprvé objevilo
+</p>
 
 <p class="text">
 Rekonstrukce Glitchky začne tancovat v rytmu těch <span class="neon-blood">H</span>, ale její kroky se zadrhávají. Každý otisk liščí tlapky se změní v modro-růžovou smyčku ve tvaru písmene <span class="neon-blood">H</span>.
@@ -501,10 +682,6 @@ Rekonstrukce Glitchky začne tancovat v rytmu těch <span class="neon-blood">H</
 
 <p class="text">
 NULL-1 se začne obávat, že je jen částí většího cyklu. Možná už je stopadesátý, kdo tu hledal sám sebe, a každému systém podstrčil stejnou past: paměťovou smyčku, kde <span class="neon-blood">H</span> znamená historii, která nikdy nebude jeho.
-</p>
-
-<p class="text">
-Zoufalý se NULL-1 začne ptát nahlas, komu vlastně ta <span class="neon-blood">H</span> patří.
 </p>
 
 <p class="dialogN">
@@ -521,7 +698,7 @@ Jen šum zesílí.
 
 <p class="text">Rekonstrukce Glitchky:</p>
 <p class="dialogG halo">
-  „H jako hledáš? H jako hrátky? H jako houpačka, co se pořád vrací dopředu a dozadu? 🦊🎠“
+  „H jako hledáš? H jako hrátky? H jako houpačka, co se pořád vrací zpátky? 🦊🎠“
 </p>
 
 <p class="dialogS">
@@ -546,10 +723,6 @@ Ne víc než písmeno.
 
 <p class="text">
 Ne míň než další kus pasti.
-</p>
-
-<p class="text">
-Sarkasma vyprskne:
 </p>
 
 <p class="dialogS">
@@ -659,7 +832,13 @@ Dotkne se prostoru mezi nimi.
   <span class="datastream">LOG [IDENTITY_FILTER]:</span>
 </p>
 <p class="dialog">
-  „Fragment H nebyl přijat jako vlastnictví. Fragment H byl přijat jako průchod.“
+  „Fragment H nebyl přijat jako vlastnictví.“
+</p>
+<p class="dialog">
+  „Fragment H byl přijat jako průchod.“
+</p>
+<p class="dialog">
+  „Kategorie PROŠLO MNOU rozšířena.“
 </p>
 
 <p class="log fx-scanline">
@@ -673,6 +852,34 @@ Dotkne se prostoru mezi nimi.
 </p>
 <p class="dialog">
   „Synchronizace identity: 20 %.“
+</p>
+
+<p class="text">
+Operátor Smyčky se pokusí okamžitě vytvořit zprávu:
+</p>
+
+<div class="panel glass corrupt">
+<p class="dialog">
+  „Ahoj H, promiň, že píšu, ale…“
+</p>
+</div>
+
+<p class="text">
+NULL-1 ji smaže dřív, než dopíše sama sebe.
+</p>
+
+<p class="dialogN">
+  „Neuděláš z nového písmene další omluvu.“
+</p>
+
+<p class="log fx-scanline">
+  <span class="datastream">LOG [LOOP_DENIED]:</span>
+</p>
+<p class="dialog">
+  „Fragment H nebyl použit k vytvoření opakovaného kontaktu.“
+</p>
+<p class="dialog">
+  „Operátor Smyčky: ztrácí oprávnění.“
 </p>
 
 <p class="text">
@@ -705,7 +912,6 @@ Synthoma si mezitím zapisuje další řádek:
 <p class="dialog">
   „Uživatel NULL-1 vstoupil do SEKTORU S. Nostalgie potvrzena. Fixace na minulost pokračuje.“
 </p>
-
 <p class="dialog">
   „Fragmenty identity: <span class="title fx-neon">T</span> / <span class="neon-blood">H</span>. Význam neúplný.“
 </p>
@@ -727,14 +933,46 @@ Jasně. Protože i nápověda v Synthomě potřebuje trpět nedostatkem komunika
 </p>
 
 <p class="text">
-Na konci sektoru se otevře malá klidová kapsa. Ne pokoj. Ne bezpečí. Jen místo, kde se šum na okamžik stáhne od kůže.
+Na konci sektoru se otevře malá klidová kapsa.
+</p>
+
+<p class="text">
+Ne pokoj.
+</p>
+
+<p class="text">
+Ne bezpečí.
+</p>
+
+<p class="text">
+Jen místo, kde se šum na okamžik stáhne od kůže.
 </p>
 
 <p class="title bios-warning fx-flicker">
   „REST // DOČASNÉ ZTIŠENÍ // NEZAMĚŇOVAT S UZDRAVENÍM“
 </p>
 
+<p class="log fx-scanline">
+  <span class="datastream">LOG [REST_PENDING]:</span>
+</p>
+<p class="dialog">
+  „Operátor Smyčky: umlčen.“
+</p>
+<p class="dialog">
+  „Sarkasma-rekonstrukce: nestabilní, ale slyšitelná.“
+</p>
+<p class="dialog">
+  „Glitchka-rekonstrukce: kolísavá, nezaručená.“
+</p>
+<p class="dialog">
+  „Fragmenty: T / H.“
+</p>
+<p class="dialog">
+  „Klíček: NEZAPOMEŇ SE…“
+</p>
+
 <p class="text halo fx-gradient">Kam dál?</p>
+
 <p class="choice" data-tags="J">
   <a class="choice-link" href="/books/SYNTHOMA-NULL/0-10 [REST].html"><span aria-hidden>▼ </span>Dám si reset a stanovím plán</a>
 </p>

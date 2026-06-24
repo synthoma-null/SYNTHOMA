@@ -1794,20 +1794,6 @@ export default function LandingIntroPage() {
 
             />
 
-            <nav className="intro-nav-choices" aria-label="Pokračovat">
-
-              <a href="/reader?u=%2Fbooks%2FSYNTHOMA-NULL%2F0-0%20%5BNULL%5D.html" className="intro-nav-link intro-nav-primary">Začít číst</a>
-
-              <a href="/books" className="intro-nav-link">Otevřít knihovnu</a>
-
-              {typeof window !== 'undefined' && readLastChapterPath() ? (
-
-                <a href={`/reader?u=${encodeURIComponent(readLastChapterPath())}`} className="intro-nav-link intro-nav-continue">Pokračovat tam, kde jsem skončil</a>
-
-              ) : null}
-
-            </nav>
-
           </section>
 
         ) : null}
