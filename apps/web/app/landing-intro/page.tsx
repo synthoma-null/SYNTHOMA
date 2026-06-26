@@ -1674,7 +1674,7 @@ export default function LandingIntroPage() {
 
             controls={false}
 
-            preload="auto"
+            preload="metadata"
 
           />
 

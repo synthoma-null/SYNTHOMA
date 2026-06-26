@@ -1,0 +1,339 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailLower    String    @unique
+  nickname      String    @unique
+  nicknameLower String    @unique
+  passwordHash  String
+  role          String    @default("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+
+  profile      UserProfile?
+  settings     UserSettings?
+  psyche       PsycheStats?
+  reading      ReadingProgress[]
+  choices      ChoiceEvent[]
+  entitlements Entitlement[]
+  mnemLedger   MnemLedger[]
+  accessCodes  AccessCode[]
+}
+
+model UserProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  displayName   String?
+  bio           String?
+  avatarUrl     String?
+  title         String  @default("Nezmapovaný subjekt")
+
+  publicProfile Boolean @default(false)
+  showPsycheMap Boolean @default(false)
+  showProgress  Boolean @default(true)
+  showChoices   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  theme           String  @default("synthoma")
+  animations      Boolean @default(true)
+  glass           Boolean @default(true)
+  typewriterSpeed String  @default("normal")
+  fontScale       Float   @default(1.0)
+  audioEnabled    Boolean @default(true)
+  ttsEnabled      Boolean @default(false)
+}
+
+model ReadingProgress {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  collection      String
+  chapterId       String
+  chapterTitle    String?
+  lastBlockId     String?
+  progressPercent Int      @default(0)
+  readMs          Int      @default(0)
+  completed       Boolean  @default(false)
+  completedAt     DateTime?
+  updatedAt       DateTime @updatedAt
+
+  @@unique([userId, collection, chapterId])
+}
+
+model ChoiceEvent {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  collection  String
+  chapterId   String
+  blockId     String?
+  choiceId    String?
+  choiceText  String
+  nextBlockId String?
+
+  tags          Json?
+  functionDelta Json?
+  emotionDelta  Json?
+  tone          String?
+
+  createdAt DateTime @default(now())
+}
+
+model PsycheStats {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  ni Int @default(50)
+  fe Int @default(50)
+  ti Int @default(50)
+  se Int @default(50)
+
+  joy          Int @default(0)
+  trust        Int @default(0)
+  fear         Int @default(0)
+  surprise     Int @default(0)
+  sadness      Int @default(0)
+  disgust      Int @default(0)
+  anger        Int @default(0)
+  anticipation Int @default(0)
+
+  shadow    Int    @default(0)
+  tone      String @default("neutrální_sarkastický")
+  initiative String @default("standardní")
+  risk      String @default("standardní")
+  tempo     String @default("normální")
+  strategy  String @default("nezjištěno")
+
+  updatedAt DateTime @updatedAt
+}
+
+model Entitlement {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  packageId String?
+  chapterId String?
+  source    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, chapterId])
+}
+
+model MnemLedger {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  amount          Int
+  reason          String
+  stripeSessionId String?
+  createdAt       DateTime @default(now())
+}
+
+model AccessCode {
+  id     String  @id @default(cuid())
+  codeHash String @unique
+  packageId String
+  userId  String?
+  user    User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  used            Boolean   @default(false)
+  usedAt          DateTime?
+  expiresAt       DateTime?
+  stripeSessionId String?
+  createdAt       DateTime  @default(now())
+}
+
+model UserCosmeticUnlock {
+  id          String   @id @default(cuid())
+  userId      String
+  cosmeticId  String
+  unlockedAt  DateTime @default(now())
+  source      String
+
+  @@unique([userId, cosmeticId])
+  @@index([userId])
+}
+
+model SubjectBadge {
+  id          String   @id @default(cuid())
+  userId      String
+  badgeId     String
+  earnedAt    DateTime @default(now())
+  source      String   @default("behavior")
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+}
+
+model FragmentUnlock {
+  id         String   @id @default(cuid())
+  userId     String
+  fragmentId String
+  cost       Int      @default(0)
+  source     String
+  unlockedAt DateTime @default(now())
+
+  @@unique([userId, fragmentId])
+  @@index([userId])
+}
+
+model WeeklyMemory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String   @db.Text
+  accessLevel String   @default("archiv_plus")
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+}
+
+model SubjectVote {
+  id         String   @id @default(cuid())
+  userId     String
+  pollId     String
+  optionId   String
+  votedAt    DateTime @default(now())
+
+  @@unique([userId, pollId])
+  @@index([pollId])
+}
+
+model UserRun {
+  id             String    @id @default(cuid())
+  userId         String    @unique
+  cycleNumber    Int       @default(1)
+  stability      Int       @default(50)
+  memoryPressure Int       @default(0)
+  shadow         Int       @default(0)
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model EntityRelation {
+  id         String @id @default(cuid())
+  userId     String
+  entity     String
+  trust      Int    @default(0)
+  suspicion  Int    @default(0)
+  sync       Int    @default(0)
+  protection Int    @default(0)
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, entity])
+  @@index([userId])
+}
+
+model UserArtifact {
+  id          String   @id @default(cuid())
+  userId      String
+  artifactId  String
+  source      String
+  unlockedAt  DateTime @default(now())
+
+  @@unique([userId, artifactId])
+  @@index([userId])
+}
+
+model UserNameFragment {
+  id         String   @id @default(cuid())
+  userId     String
+  fragment   String
+  source     String
+  unlockedAt DateTime @default(now())
+
+  @@unique([userId, fragment])
+  @@index([userId])
+}
+
+model UserMission {
+  id          String    @id @default(cuid())
+  userId      String
+  missionId   String
+  status      String    @default("locked")
+  progress    Int       @default(0)
+  unlockedAt  DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, missionId])
+  @@index([userId])
+}
+
+model Whisper {
+  id          String   @id @default(cuid())
+  userId      String
+  publicMode  String   @default("anonymous")
+  type        String
+  text        String
+  status      String   @default("pending")
+  placement   String   @default("random")
+  chapterId   String?
+  emotionTags String   @default("[]")
+  functionTags String  @default("[]")
+  resonanceCount Int   @default(0)
+  displayCount   Int   @default(0)
+  boostedUntil   DateTime?
+  createdAt      DateTime @default(now())
+  approvedAt     DateTime?
+
+  resonances  WhisperResonance[]
+  purchases   WhisperPurchase[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([chapterId])
+  @@index([placement])
+}
+
+model WhisperResonance {
+  id        String   @id @default(cuid())
+  whisperId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  whisper   Whisper  @relation(fields: [whisperId], references: [id], onDelete: Cascade)
+
+  @@unique([whisperId, userId])
+  @@index([whisperId])
+}
+
+model WhisperPurchase {
+  id        String   @id @default(cuid())
+  userId    String
+  whisperId String
+  type      String
+  mnemCost  Int
+  createdAt DateTime @default(now())
+
+  whisper   Whisper  @relation(fields: [whisperId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([whisperId])
+}

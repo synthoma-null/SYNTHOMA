@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 import styles from "./menu.module.css";
 import { attachGlitchHeading } from "../src/lib/glitchHeading";
 import { readLastChapterPath, readReadingProgress } from "../src/lib/readerState";
@@ -15,6 +16,7 @@ export default function HomeClient() {
   const [lastChapter, setLastChapter] = useState<string | null>(null);
   const [lastChapterTitle, setLastChapterTitle] = useState<string | null>(null);
   const [lastChapterPercent, setLastChapterPercent] = useState<number | null>(null);
+  const { data: session } = useSession();
 
   // Aktivuj glitch efekt 1:1 jako na landing-intro
   useEffect(() => {
@@ -79,7 +81,6 @@ export default function HomeClient() {
             controls={false}
             preload="metadata"
             className="active"
-            style={{ pointerEvents: 'none' }}
           />
         </div>
       ) : null}

@@ -105,15 +105,14 @@ export function transformChoicesToButtons(html: string): string {
     nodes.forEach((p) => {
       const existingAnchor = p.querySelector("a.choice-link[href]");
       if (existingAnchor) return;
-      const next = p.getAttribute("data-next") || "";
-      const ui = p.getAttribute("data-ui") || "";
-      const tags = p.getAttribute("data-tags") || "";
       const btn = document.createElement("button");
       btn.className = "choice-link";
-      if (next) btn.setAttribute("data-next", next);
-      if (ui) btn.setAttribute("data-ui", ui);
-      if (tags) btn.setAttribute("data-tags", tags);
       btn.type = "button";
+      for (const attr of Array.from(p.attributes)) {
+        if (attr.name.startsWith("data-")) {
+          btn.setAttribute(attr.name, attr.value);
+        }
+      }
       btn.innerHTML = p.innerHTML;
       p.innerHTML = "";
       p.appendChild(btn);

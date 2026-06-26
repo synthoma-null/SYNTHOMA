@@ -846,7 +846,11 @@ export default function ControlPanelClient() {
 
         ensureReaderSync();
 
-        const mo = new MutationObserver(() => { requestAnimationFrame(ensureReaderSync); });
+        let syncRafId: number | null = null;
+        const mo = new MutationObserver(() => {
+          if (syncRafId != null) return;
+          syncRafId = requestAnimationFrame(() => { ensureReaderSync(); syncRafId = null; });
+        });
 
         mo.observe(document.body, { childList: true, subtree: true });
 

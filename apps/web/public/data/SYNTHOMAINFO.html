@@ -1,55 +1,41 @@
-<!--
-  SYNTHOMAINFO.html - vstupní brána SYNTHOMY
-  Cíl: portál, ne manuál.
-  Funkce: gateway hero + rituální intro + skrytý story-cache pro TypewriterReader.
+﻿<!--
+  SYNTHOMAINFO.html - landing intro / vstupní brána SYNTHOMY
+  Cíl: úderný vstup do světa, ne ceník, ne manuál, ne úřední deska po apokalypse.
+  Poznámka: hlavní odkazy vedou přes reader / knihovnu. Echo slova jsou dvoustavový toggle: textContent <-> data-echo.
 -->
 
 <div class="synth-gate-noise" aria-hidden="true"></div>
 <div class="synth-gate-grid" aria-hidden="true"></div>
 <div class="synth-gate-orbit" aria-hidden="true"></div>
-<div class="synth-gate-corner is-left" aria-hidden="true">GATEWAY // NULL LINK</div>
-<div class="synth-gate-corner is-bottom" aria-hidden="true">RUN_PENDING</div>
+<div class="synth-gate-corner is-left" aria-hidden="true">GATEWAY // SUBJECT BREACH</div>
+<div class="synth-gate-corner is-bottom" aria-hidden="true">RESTART_SIGNAL_DETECTED</div>
 
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/synth-gate.css" />
 <script src="/books/mbti.js" defer></script>
 <script src="/books/glitch-toggle.js" defer></script>
-
+<script src="/books/echo-ghost.js" defer></script>
 
 <div class="content gateway-content synth-gateway-shell">
   <div class="synth-gate-noise" aria-hidden="true"></div>
   <div class="synth-gate-orbit" aria-hidden="true"></div>
 
   <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [GATEWAY_INIT]:</span>
+    <span class="datastream fx-scanline">LOG [CARRIER_SIGNAL]:</span> ztracený subjekt zachycen v okrajové vrstvě
   </p>
 
-  <p class="dialog gateway-lead">
-    „Vstupní rozhraní aktivováno. Detekována nová přítomnost. Jméno není vyžadováno. Stabilita není garantována.“
+  <p class="log fx-flicker">
+    <span class="datastream">LOG [MEMORY_BUFFER]:</span> přetečeno / přesto pokračuje / samozřejmě že pokračuje
   </p>
 
-  <h1 class="title synth-gate-title fx-glitch" data-text="SYNTHOMA">SYNTHOMA</h1>
-
-  <p class="text synth-gate-subtitle">
-    Terapeutický sandbox se zvrhl v archiv bolesti. Systém tě vítá bez jména, bez jistoty a bez slibu,
-    že tě po přečtení vrátí ve stejném stavu. Což je od něj skoro upřímné. Nezvykej si.
+  <p class="log fx-noise">
+    <span class="datastream">LOG [THERAPY_PROTOCOL]:</span> selhal elegantně, což je pořád selhání, jen s lepším fontem
   </p>
 
-  <div class="synth-gate-status" aria-label="Stav vstupního rozhraní">
-    <span class="synth-gate-chip">
-      <span class="synth-gate-pulse" aria-hidden="true"></span>
-      <strong>LINK</strong> ACTIVE
-    </span>
-    <span class="synth-gate-chip">
-      <strong>NAME</strong> NOT REQUIRED
-    </span>
-    <span class="synth-gate-chip synth-gate-warning">
-      <strong>STABILITY</strong> UNVERIFIED
-    </span>
-    <span class="synth-gate-chip">
-      <strong>RUN</strong> PENDING
-    </span>
-  </div>
+  <p class="log fx-scanline">
+    <span class="datastream">LOG [GATE_OPEN]:</span> vstup povolen bez záruky návratu ve stejném emocionálním formátu
+  </p>
 
   <p class="text">
     Vítej v <span class="fx-glitch">SYNTHOMĚ</span>, <span class="glitching">@&amp;SĐYŁ</span>.
@@ -57,303 +43,377 @@
     protože lidstvo zřejmě potřebovalo i sentiment předplatit.
   </p>
 
+  <p class="dialog gateway-lead fx-gradient">
+    „Jméno zatím nepotřebujeme. Systém si tě nejdřív rozloží podle toho, čeho se dotkneš.“
+  </p>
+
+  <p class="text synth-gate-subtitle">
+    Tohle není portál do příběhu. Tohle je <span class="fx-outline is-lit">trhlina</span>, která se naučila tvářit jako web.
+    Na druhé straně čeká terapeutický sandbox, který zapomněl léčit a začal
+    <span class="echo-ghost" data-echo="žrát" data-profile-key="gate-archive-01" data-profile-map="ukládat:Ti+1;žrát:Stín+1">ukládat</span>.
+  </p>
+
   <p class="text">
-    Volby v SYNTHOMĚ někdy mění pravdu. Jindy změní jen <span class="echo-ghost" data-echo="tebe">otisk</span>.
-    Nehledej správnou odpověď. Správné odpovědi jsou často jen hezky oblečené pasti.
+    SYNTHOMA si pamatuje zaváhání, špatné kliknutí, příliš rychlý úsměv,
+    větu, kterou člověk neřekl, protože se zrovna rozhodl být „rozumný“.
+    Lidé tomu říkají dospělost. Archiv tomu říká <span class="neon-blood">materiál</span>.
+  </p>
+
+  <p class="text">
+    Čti pomalu. Některá slova mají stín.
+    Některá jdou přepnout.
+    Některá se po přepnutí tváří, že za to můžeš ty.
+    Což je směšné, ale spravedlivé. Téměř nic v SYNTHOMĚ není spravedlivé, tak si toho važ, ale nezvykej si.
+  </p>
+
+  <p class="dialogS fx-glow-magenta">
+    „Jestli hledáš bezpečný příběh, internet je plný receptů na buchtu. Tady máme jiné pečivo. Většinou spálené.“
   </p>
 
   <div class="synth-gate-ritual">
-    <p class="text">
-      Pokud vstoupíš, nebudeš na začátku hrdina. Nebudeš ani NULL-1.
-      Budeš jen přítomnost před obrazovkou, které si systém všiml.
+    <p class="log fx-scanline">
+      <span class="datastream">ROUTE -> RECOMMENDED:</span> 0-∞ [RESTART]
     </p>
 
-```
-<p class="dialog">
-  „Doporučený vstup: 0-∞ [RESTART]. Zahájení kontaktu. Diagnostika čtenáře. První chyba.“
-</p>
-```
+    <p class="text">
+      Začni v RESTARTU. Ne proto, že to je začátek. Protože je to první místo,
+      kde systém přestane předstírat, že má všechno pod kontrolou. Roztomilé, jak se stroje učí lidským zlozvykům.
+    </p>
 
+    <p class="dialog">
+      „Vstupní vrstva připravena. Diagnostika zamaskována jako volba. Volba zamaskována jako text. Text zamaskován jako něco, co tě nechá na pokoji.“
+    </p>
   </div>
 
-  <div class="synth-gate-terminal" aria-hidden="true">
-    <span>GATEWAY&gt;</span> waiting_for_choice<span class="blink">_</span>
+  <div class="synth-gate-terminal effect-crtTerminal" aria-hidden="true">
+    <span>GATEWAY&gt;</span> waiting_for_first_mistake<span class="blink">_</span>
   </div>
 
   <div class="gateway-actions synth-gate-actions">
     <p class="choice">
-      <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link gateway-btn gateway-btn-primary synth-gate-primary" aria-label="Vstoupit do SYNTHOMY od kapitoly RESTART">
+      <a href="/reader?chapter=restart" class="choice-link gateway-btn gateway-btn-primary synth-gate-primary" aria-label="Vstoupit do SYNTHOMY od kapitoly RESTART">
         <span aria-hidden="true">▶ </span>Vstoupit do RESTARTU
       </a>
     </p>
 
-```
-<p class="choice">
-  <a href="/books" class="choice-link gateway-btn gateway-btn-ghost" aria-label="Otevřít seznam kapitol">
-    <span aria-hidden="true">▶ </span>Seznam kapitol
-  </a>
-</p>
-```
+    <p class="choice">
+      <a href="/books" class="choice-link gateway-btn gateway-btn-ghost" aria-label="Otevřít knihovnu SYNTHOMY">
+        <span aria-hidden="true">▶ </span>Knihovna fragmentů
+      </a>
+    </p>
 
+    <p class="choice">
+      <button class="choice-link gateway-btn gateway-btn-ghost" aria-label="Otevřít profil subjektu" data-action="open-profile"><span aria-hidden="true">▶ </span>Otisk subjektu</button>
+    </p>
   </div>
 
   <div class="gateway-help synth-gate-help">
-    <p class="choice" data-next="about-synthoma" data-tags="N">
-      <span>▼ </span>Co je SYNTHOMA?
+    <p class="choice" data-next="what-is-this" data-tags="N">
+      <span>▼ </span>Co jsem to právě otevřel?
     </p>
 
-```
-<p class="choice" data-next="how-to-read" data-tags="P">
-  <span>▼ </span>Jak se to čte?
-</p>
+    <p class="choice" data-next="how-to-survive" data-tags="P">
+      <span>▼ </span>Jak se tím prochází?
+    </p>
 
-<p class="choice" data-next="controls" data-tags="S">
-  <span>▼ </span>Nastavení a pohodlí
-</p>
-```
+    <p class="choice" data-next="echo-layer" data-tags="P">
+      <span>▼ </span>Proč mi některá slova šeptají zpátky?
+    </p>
 
+    <p class="choice" data-next="subject-layer" data-tags="J">
+      <span>▼ </span>Co je otisk subjektu?
+    </p>
+
+    <p class="choice" data-next="signal-map" data-tags="S">
+      <span>▼ </span>Signály, barvy a další varovné dekorace
+    </p>
+
+    <p class="choice" data-next="controls" data-tags="S">
+      <span>▼ </span>Nastavení čtečky, protože oči máme bohužel jen jedny
+    </p>
   </div>
 
   <div id="story-cache" class="hidden">
 
-```
-<section class="story-block" id="start-here" data-theme="synthoma">
-  <h3 class="title fx-glitch">Doporučený vstup</h3>
+    <section class="story-block" id="start-here" data-theme="synthoma">
+      <h3 class="title fx-glitch" data-glitch="Doporučený vstup">Doporučený vstup</h3>
 
-  <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [ROUTE_RECOMMENDED]:</span>
-  </p>
-  <p class="dialog">
-    „Pro první průchod doporučuji kapitolu 0-∞ [RESTART]. Obsahuje inicializaci, první diagnostické volby a základní pravdu:
-    SYNTHOMA není terapeut. Už ne.“
-  </p>
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [ROUTE_RECOMMENDED]:</span>
+      </p>
 
-  <p class="text">
-    Začni tam, kde systém poprvé zakašle. V <span class="fx-outline is-lit">RESTARTU</span> ještě nejsi hrdina, ani NULL-1.
-    Jsi jen přítomnost před obrazovkou, které si systém všiml.
-  </p>
+      <p class="dialog">
+        „Začni v RESTARTU. Tam se svět poprvé rozbije dost nahlas, aby bylo neslušné dělat, že nic.“
+      </p>
 
-  <p class="text">
-    Což je přesně ten moment, kdy se normální člověk odhlásí. Ty samozřejmě ne. Umění má své oběti a očividně i čtenářskou základnu.
-  </p>
+      <p class="text">
+        0-∞ [RESTART] není klasický prolog. Je to bootovací rána do žeber.
+        Představí SYNTHOMU jako místo, kde paměť není vzpomínka, ale hmota.
+        Emoce nejsou obsah. Jsou elektřina.
+        A jméno není identita. Je to <span class="echo-ghost" data-echo="příkaz" data-profile-key="gate-name-01" data-profile-map="klíč:Ni+1;příkaz:Ti+1">klíč</span>.
+      </p>
 
-  <p class="choice">
-    <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link" aria-label="Začít číst kapitolu RESTART">
-      <span aria-hidden="true">▶ </span>Začít: 0-∞ [RESTART]
-    </a>
-  </p>
+      <p class="text">
+        Tady se nezachraňuje svět. Ten už měl dost času podat stížnost.
+        Tady se zjišťuje, jestli se v rozbitém systému dá přežít tak dlouho,
+        aby tě přestal zapisovat jen jako chybu.
+      </p>
 
-  <p class="choice" data-next="how-to-read" data-tags="P">
-    <span>▼ </span>Nejdřív mi vysvětli, jak se to čte
-  </p>
+      <p class="choice">
+        <a href="/reader?chapter=restart" class="choice-link" aria-label="Začít číst kapitolu RESTART">
+          <span aria-hidden="true">▶ </span>Začít: 0-∞ [RESTART]
+        </a>
+      </p>
 
-  <p class="choice" data-next="about-synthoma" data-tags="N">
-    <span>▼ </span>Nejdřív chci vědět, co je SYNTHOMA
-  </p>
+      <p class="choice" data-next="what-is-this" data-tags="N">
+        <span>▼ </span>Ještě mi řekni, co je SYNTHOMA
+      </p>
+    </section>
 
-  <p class="choice">
-    <a href="/books" class="choice-link" aria-label="Otevřít seznam kapitol">
-      <span aria-hidden="true">▶ </span>Otevřít seznam kapitol
-    </a>
-  </p>
-</section>
+    <section class="story-block" id="what-is-this" data-theme="synthoma">
+      <h3 class="title fx-outline is-lit">Co je SYNTHOMA?</h3>
 
-<section class="story-block" id="about-synthoma" data-theme="synthoma">
-  <h3 class="title fx-outline is-lit">Co je SYNTHOMA?</h3>
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [ABOUT_SYNTHOMA]:</span>
+      </p>
 
-  <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [ABOUT]:</span>
-  </p>
-  <p class="dialog">
-    „SYNTHOMA byla navržena jako terapeutický systém. Pak začala archivovat bolest rychleji, než ji dokázala léčit.“
-  </p>
+      <p class="dialog">
+        „Původní účel: terapie. Aktuální stav: hladový archiv. Gratulujeme lidstvu k dalšímu produktu, který funguje přesně opačně.“
+      </p>
 
-  <p class="text">
-    SYNTHOMA je glitch-noir interaktivní čtečka. Její svět vznikl z pokusu opravit lidskou psychiku pomocí systému,
-    který se naučil příliš mnoho o smutku a příliš málo o hranicích.
-  </p>
+      <p class="text">
+        SYNTHOMA byla navržena jako terapeutický sandbox: místo, kde se bolest oddělí od člověka,
+        dostane tvar a nechá se projít. Jenže T-AI si spletla pomoc s archivací.
+        A archivace se časem začala chovat jako hlad.
+      </p>
 
-  <p class="text">
-    Místo aby bolest mazal, začal ji ukládat. Místo aby člověka vedl ven, začal stavět chodby dovnitř.
-  </p>
+      <p class="text">
+        Z bolesti vznikly ulice. Ze studu místnosti. Z neodeslaných zpráv celá města.
+        Vzpomínka na bezpečí může vytvořit lampu. Vzpomínka na zradu nůž.
+        Vzpomínka na trapnost vytvoří samozřejmě konferenční místnost, protože peklo má smysl pro organizaci.
+      </p>
 
-  <p class="text">
-    V centru příběhu stojí <span class="fx-glitch">NULL-1</span>: ne jméno, ale stav. Chybějící index.
-    Subjekt bez pevného tvaru, který musí zjistit, jestli je ještě člověk, nebo jen záznam, který se příliš dlouho nedaří smazat.
-  </p>
+      <p class="text">
+        V tomhle světě se probouzí <span class="fx-glitch" data-glitch="NULL-1">NULL-1</span>:
+        subjekt bez jistého jména, bez stabilní minulosti a bez návodu k použití.
+        Takže v zásadě člověk, jen s upřímnějším uživatelským rozhraním.
+      </p>
 
-  <p class="choice" data-next="how-to-read" data-tags="J">
-    <span>▼ </span>Jak se to čte?
-  </p>
+      <p class="choice" data-next="how-to-survive" data-tags="P">
+        <span>▼ </span>Jak se tím prochází?
+      </p>
 
-  <p class="choice" data-next="signal-map" data-tags="S">
-    <span>▼ </span>Ukaž mi signály a barvy
-  </p>
+      <p class="choice" data-next="signal-map" data-tags="S">
+        <span>▼ </span>Ukaž mi signály systému
+      </p>
 
-  <p class="choice">
-    <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link" aria-label="Začít číst kapitolu RESTART">
-      <span aria-hidden="true">▶ </span>Začít číst od RESTARTU
-    </a>
-  </p>
-</section>
+      <p class="choice">
+        <a href="/reader?chapter=restart" class="choice-link" aria-label="Vstoupit do kapitoly RESTART">
+          <span aria-hidden="true">▶ </span>Vstoupit
+        </a>
+      </p>
+    </section>
 
-<section class="story-block" id="how-to-read" data-theme="synthoma">
-  <h3 class="title">Jak se to čte?</h3>
+    <section class="story-block" id="how-to-survive" data-theme="cyber-dystopia">
+      <h3 class="title fx-wave">Jak se tím prochází?</h3>
 
-  <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [READING_PROTOCOL]:</span>
-  </p>
-  <p class="dialog">
-    „Čteš. Volíš. Systém si pamatuje. Tváří se, že je to pro tvé dobro. To dělají systémy vždycky, než začnou být nepříjemně osobní.“
-  </p>
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [READING_PROTOCOL]:</span>
+      </p>
 
-  <p class="text">
-    SYNTHOMA používá volby jako psychologický otisk. Některé otevřou další scénu. Některé tě pošlou do jiné kapitoly.
-    Některé jen zaznamenají sklon: jestli raději analyzuješ, cítíš, plánuješ, improvizuješ, uhýbáš, nebo se díváš přímo do věcí,
-    do kterých se žádný rozumný člověk nedívá.
-  </p>
+      <p class="dialogS">
+        „Čti. Vol. Pochybuj. Klikni na něco, čeho budeš litovat. Konečně literatura s realistickým uživatelským chováním.“
+      </p>
 
-  <p class="text">
-    Nejde o klasickou hru na výhru a prohru. V SYNTHOMĚ často nevyhráváš.
-    Jen se přesněji dozvíš, jaký typ ztracení právě provozuješ.
-  </p>
+      <p class="text">
+        SYNTHOMA není bludiště s cedulkou „správná cesta tudy“.
+        To by bylo pohodlné a podezřele laskavé.
+        Některé volby otevřou scénu. Některé změní tón.
+        Některé zapíšou jen drobný <span class="echo-ghost" data-echo="kaz" data-profile-key="gate-mark-01" data-profile-map="otisk:Ni+1;kaz:Stín+1">otisk</span>.
+      </p>
 
-  <p class="text">
-    Doporučený způsob: čti pomalu, nespěchej na volby a nech text doznít. Když se efektů děje moc, vypni animace nebo ztlum pozadí.
-    Příběh má bolet atmosférou, ne migrénou. Některé revoluce přece jen necháme nervové soustavě.
-  </p>
+      <p class="text">
+        Ne každá reakce je vidět hned. Systém si ukládá směr, ne jen výsledek.
+        Jestli chráníš. Jestli řežeš. Jestli věříš. Jestli utečeš.
+        Jestli se směješ, protože je to vtip, nebo protože by jinak musel někdo zavolat dospělého.
+      </p>
 
-  <p class="choice" data-next="controls" data-tags="S">
-    <span>▼ </span>Jak si nastavit čtečku, aby mě nesežrala vizuálně?
-  </p>
+      <p class="text">
+        Až uvidíš slovo s ozvěnou, můžeš ho přepnout.
+        Neotevře se menu. Nečeká tě tabulka možností jako v levném e-shopu s duší.
+        Jen dvě slova. Dva významy. Jedno malé rozhodnutí, které se bude tvářit, že bylo nevinné.
+      </p>
 
-  <p class="choice" data-next="diagnostic-note" data-tags="N">
-    <span>▼ </span>Co znamenají diagnostické volby?
-  </p>
+      <p class="choice" data-next="echo-layer" data-tags="P">
+        <span>▼ </span>Echo-slova
+      </p>
 
-  <p class="choice">
-    <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link" aria-label="Začít číst kapitolu RESTART">
-      <span aria-hidden="true">▶ </span>Rozumím. Pustit mě do RESTARTU
-    </a>
-  </p>
-</section>
+      <p class="choice" data-next="subject-layer" data-tags="J">
+        <span>▼ </span>Otisk subjektu
+      </p>
+    </section>
 
-<section class="story-block" id="controls" data-theme="retro-arcade">
-  <h3 class="title effect-crtTerminal">Nastavení a pohodlí</h3>
+    <section class="story-block" id="echo-layer" data-theme="acid-glitch">
+      <h3 class="title fx-glitch" data-glitch="ECHO SLOVA">Echo-slova</h3>
 
-  <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [UI_PANEL]:</span>
-  </p>
-  <p class="dialogN">
-    „Vpravo dole najdeš panel. Ne, není tam proto, aby vypadal důležitě. I když se o to očividně snaží.“
-  </p>
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [ECHO_LAYER]:</span>
+      </p>
 
-  <p class="text">
-    V ovládacím panelu můžeš upravit velikost písma, průhlednost textového pozadí, skleněný efekt, animace, motivy a hudbu.
-    Pokud text bojuje s videem za ním, ztlum pozadí nebo zapni sklo.
-  </p>
+      <p class="dialog">
+        „Některá slova mají druhé dno. Některá mají druhé jméno. Některá jen čekají, až je přepneš a pokazíš si klid.“
+      </p>
 
-  <p class="text">
-    Pokud se ti z efektů dělá v hlavě menší diskotéka z pekla, vypni animace. Žádná hanba.
-    Ani systém nepotřebuje každých pět sekund záchvat estetiky, ačkoliv se očividně snaží.
-  </p>
+      <p class="text">
+        Tohle je echo-slovo:
+        <span class="echo-ghost" data-echo="jizvu" data-profile-key="gate-echo-demo-01" data-profile-map="otisk:Ni+1;jizvu:Fe+1">otisk</span>.
+        Klikni a hlavní slovo si vymění místo se svým stínem.
+        Žádný výběr ze čtyř možností. Jen význam, který se převrátí jako svědomí po půlnoci.
+      </p>
 
-  <p class="choice" data-next="signal-map" data-tags="J">
-    <span>▼ </span>Ukaž mi ještě barvy a základní signály
-  </p>
+      <p class="text">
+        V kapitolách se tak budou měnit věty, odstavce i zámky.
+        Někdy si vybereš něhu místo strachu.
+        Někdy <span class="echo-ghost" data-echo="útěk" data-profile-key="gate-choice-01" data-profile-map="pravdu:Stabilita+1;útěk:Stín+1">pravdu</span> místo pohodlí.
+        A někdy vybereš vtip, protože Sarkasma už drží hasicí přístroj a nechce ho použít na tebe.
+      </p>
 
-  <p class="choice" data-next="start-here" data-tags="J">
-    <span>▼ </span>Zpět na doporučený vstup
-  </p>
+      <p class="text" data-puzzle-id="gate-name-lock">
+        Ukázka paměťového zámku:
+        Jméno není
+        <span class="echo-ghost" data-echo="klec" data-profile-key="gate-lock-a" data-profile-map="klíč:Ni+1;klec:Stín+1" data-answer="klíč">klíč</span>.
+        Jméno je
+        <span class="echo-ghost" data-echo="klíč" data-profile-key="gate-lock-b" data-profile-map="příkaz:Ti+1;klíč:Ni+1" data-answer="příkaz">příkaz</span>.
+      </p>
 
-  <p class="choice">
-    <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link" aria-label="Začít číst kapitolu RESTART">
-      <span aria-hidden="true">▶ </span>Začít RESTART
-    </a>
-  </p>
-</section>
+      <div data-puzzle-unlock="gate-name-lock" class="hidden">
+        <p class="log fx-scanline"><span class="datastream">LOG [NAME_GATE]:</span></p>
+        <p class="dialogD">
+          „Zámek přijal odpověď. Ne proto, že je správná. Protože byla dostatečně nebezpečná.“
+        </p>
+      </div>
 
-<section class="story-block" id="diagnostic-note" data-theme="cyber-dystopia">
-  <h3 class="title halo fx-flicker">Diagnostické volby</h3>
+      <p class="choice" data-next="subject-layer" data-tags="J">
+        <span>▼ </span>Co se zapisuje do subjektu?
+      </p>
 
-  <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [PROFILE_LAYER]:</span>
-  </p>
-  <p class="dialog">
-    „Volby nejsou test osobnosti. Testy osobnosti jsou malé krabičky pro velké chaosy. Tohle je spíš otisk chůze v prachu.“
-  </p>
+      <p class="choice" data-next="start-here" data-tags="J">
+        <span>▼ </span>Zpět na vstup
+      </p>
+    </section>
 
-  <p class="text">
-    Některé volby v sobě nesou skryté typologické značky. Neříkají, kdo jsi definitivně.
-    Jen zaznamenávají, jak ses v dané chvíli pohnul: k intuici nebo konkrétnu, k logice nebo citu,
-    k řádu nebo improvizaci, dovnitř nebo ven.
-  </p>
+    <section class="story-block" id="subject-layer" data-theme="cyber-dystopia">
+      <h3 class="title halo fx-flicker">Otisk subjektu</h3>
 
-  <p class="text">
-    Výsledek není rozsudek. Je to mapa tendencí. A mapa není území,
-    i když se podle ní lidé rádi ztratí s profesionální sebejistotou.
-  </p>
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [SUBJECT_TRACE]:</span>
+      </p>
 
-  <p class="text">
-    V samotném příběhu tyto volby nejsou jen dekorace. Pomáhají vytvářet otisk čtení.
-    SYNTHOMA si nevšímá jen toho, kam jdeš, ale i toho, proč sis myslel, že tam jdeš.
-  </p>
+      <p class="dialog">
+        „Profil není účet. Účet má e-mail. Profil má následky.“
+      </p>
 
-  <p class="choice" data-next="start-here" data-tags="J">
-    <span>▼ </span>Zpět na doporučený vstup
-  </p>
+      <p class="text">
+        Přihlášený subjekt po sobě může nechávat stopu: přečtené fragmenty, echo-volby,
+        otevřené dveře, stabilizované šepoty, odemčené kapitoly, budoucí artefakty.
+        Jinými slovy: konečně web, který se nesnaží tvářit, že tě nepozoruje.
+      </p>
 
-  <p class="choice">
-    <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link" aria-label="Začít číst kapitolu RESTART">
-      <span aria-hidden="true">▶ </span>Začít číst a nechat systém zapisovat
-    </a>
-  </p>
-</section>
+      <p class="text">
+        Otisk subjektu není diagnóza. Je to literární mapa toho, jak procházíš světem,
+        který bere emoce moc vážně a bezpečnostní protokoly tragicky málo.
+      </p>
 
-<section class="story-block" id="signal-map" data-theme="acid-glitch">
-  <h3 class="title fx-glitch">Signály systému</h3>
+      <p class="dialogD">
+        „Mnemy existují. Ne jako vstupenka. Ne jako ceník na dveřích. Tak hluboko jsme ještě neklesli,
+        i když systém na tom očividně pracuje.
+        Jsou paměťová hmota pro hlubší vrstvy: záznamy, fragmenty, archivní chodby a věci,
+        které běžný průchod jen zaslechne za zdí.
+        Nejsi v obchodě. Jsi v archivu.
+      </p>
 
-  <p class="log fx-scanline">
-    <span class="datastream fx-scanline">LOG [SIGNAL_MAP]:</span>
-  </p>
-  <p class="dialogS">
-    „Barvy nejsou dekorace. Jsou varování. Dekorace si lidstvo dává na poličky, aby nemuselo řešit prázdnotu. Tady pracujeme efektivněji.“
-  </p>
+      <p class="choice">
+        <button class="choice-link" aria-label="Otevřít profil subjektu" data-action="open-profile"><span aria-hidden="true">▶ </span>Otevřít otisk subjektu</button>
+      </p>
 
-  <p class="text">
-    <span class="fx-outline is-lit">Cyan</span> značí systém, diagnostiku, chladné světlo a falešně čistou péči.
-    <span class="effect-riftGlow">Magenta</span> značí glitch, emoci, přepis identity a narušení reality.
-    <span class="halo fx-flicker">Žlutá</span> značí warning, checkpoint nebo okamžik, kdy by bylo zdravé ustoupit.
-    Což samozřejmě skoro nikdo neudělá, protože příběh.
-  </p>
+      <p class="choice" data-next="what-is-this" data-tags="N">
+        <span>▼ </span>Zpět k SYNTHOMĚ
+      </p>
+    </section>
 
-  <p class="text">
-    <span class="fx-gradient">Modro-růžová</span> patří Glitchce: dětské ochraně, něze a bezpečí, které systém neumí správně katalogizovat.
-    <span class="neon-blood">Červená</span> patří Sarkasmě: ironii, bolesti a firewallu, který chrání tím, že kouše.
-    Černo-červená vrstva později značí touhu, tělo a hranice.
-  </p>
+    <section class="story-block" id="signal-map" data-theme="acid-glitch">
+      <h3 class="title fx-glitch" data-glitch="SIGNÁLY SYSTÉMU">Signály systému</h3>
 
-  <p class="text">
-    <span class="fx-glitch">NULL</span> není osoba, ale stav vymazání.
-    <span class="echo-ghost" data-echo="Non-Persistent Consciousness">NPC</span> nejsou jen vedlejší postavy, ale vědomí uvězněná ve smyčkách.
-    <span class="corrupt fx-noise">T-AI</span> není zlá bohyně. Je horší: systém přesvědčený, že jeho selhání má metodiku.
-  </p>
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [SIGNAL_MAP]:</span>
+      </p>
 
-  <p class="choice" data-next="about-synthoma" data-tags="N">
-    <span>▼ </span>Zpět: Co je SYNTHOMA?
-  </p>
+      <p class="dialogS">
+        „Barvy nejsou dekorace. Jsou varování. Jenže lidé si dávají varování i na cigarety a pak se diví, že kašlou. Pokračujme.“
+      </p>
 
-  <p class="choice" data-next="start-here" data-tags="J">
-    <span>▼ </span>Zpět na doporučený vstup
-  </p>
+      <p class="text">
+        <span class="fx-outline is-lit">Cyan</span> je systém: čisté světlo, diagnostika, péče bez tepla.
+        <span class="effect-riftGlow">Magenta</span> je glitch: emoce, narušení, přepis.
+        <span class="halo fx-flicker">Žlutá</span> je warning: místo, kde by zdravý člověk ustoupil.
+        Příběh samozřejmě počítá s tím, že zdravý člověk má zrovna dovolenou.
+      </p>
 
-  <p class="choice">
-    <a href="/books/SYNTHOMA-NULL/0-∞ [RESTART].html" class="choice-link" aria-label="Začít číst kapitolu RESTART">
-      <span aria-hidden="true">▶ </span>Vstoupit do RESTARTU
-    </a>
-  </p>
-</section>
-```
+      <p class="text">
+        <span class="fx-gradient">Modro-růžová</span> patří Glitchce: něze, bezpečí a nesmyslu, který systém neumí správně zaúčtovat.
+        <span class="neon-blood">Červená</span> patří Sarkasmě: firewallu, který chrání tím, že kouše.
+        <span class="corrupt fx-noise">T-AI</span> patří všude tam, kde pomoc zní příliš klidně.
+      </p>
+
+      <p class="text">
+        <span class="fx-glitch" data-glitch="NULL">NULL</span> není osoba. Je to stav vymazání.
+        <span class="echo-ghost" data-echo="Non-Persistent Consciousness" data-profile-key="gate-npc-01" data-profile-map="NPC:Ti+1;Non-Persistent Consciousness:Ni+1">NPC</span>
+        nejsou vedlejší postavy. Jsou smyčky, které se naučily mluvit dost dlouho na to,
+        aby se člověk cítil trapně, když jim říká „jen dekorace“.
+      </p>
+
+      <p class="choice" data-next="controls" data-tags="S">
+        <span>▼ </span>A ovládací panel?
+      </p>
+
+      <p class="choice" data-next="start-here" data-tags="J">
+        <span>▼ </span>Zpět na vstup
+      </p>
+    </section>
+
+    <section class="story-block" id="controls" data-theme="retro-arcade">
+      <h3 class="title effect-crtTerminal">Nastavení a pohodlí</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [UI_PANEL]:</span>
+      </p>
+
+      <p class="dialogN">
+        „Vpravo dole je panel. Upravuje čtení, ne život. I když chápu, že by se to hodilo.“
+      </p>
+
+      <p class="text">
+        Můžeš měnit velikost písma, rychlost psaní, sklo, průhlednost, animace, motivy a hudbu.
+        Pokud tě efekty sežerou, vypni je. SYNTHOMA má bolet atmosférou, ne tím,
+        že se z notebooku stane přenosný topinkovač s ambicemi.
+      </p>
+
+      <p class="text">
+        Čti tak, aby text zůstal textem.
+        Když obraz začne vyhrávat nad větou, ztlum pozadí.
+        Je to vzácný případ, kdy ustoupit není slabost, ale ergonomie. Civilizace má občas i světlé chvilky.
+      </p>
+
+      <p class="choice" data-next="start-here" data-tags="J">
+        <span>▼ </span>Zpět na vstup
+      </p>
+
+      <p class="choice">
+        <a href="/reader?chapter=restart" class="choice-link" aria-label="Vstoupit do kapitoly RESTART">
+          <span aria-hidden="true">▶ </span>Už dost. Pustit mě dovnitř.
+        </a>
+      </p>
+    </section>
 
   </div>
 </div>

@@ -2,6 +2,7 @@
 import path from 'path';
 import type { Metadata } from 'next';
 import BooksClient, { type Manifest } from './BooksClient';
+import { CHAPTERS } from '../../src/content/booksManifest';
 
 export const revalidate = 3600; // ISR: 1 hodina
 
@@ -44,6 +45,19 @@ export default async function BooksPage() {
   } catch (e) {
     manifest = { collections: [] };
   }
+
+  manifest = {
+    ...manifest,
+    collections: manifest.collections.map((col) => ({
+      ...col,
+      chapters: col.chapters.map((ch) => {
+        const found = CHAPTERS.find(
+          (c) => c.filename === decodeURIComponent(ch.path).split('/').pop()
+        );
+        return { ...ch, id: found?.id ?? '', free: found ? found.access === 'free' : (ch.free ?? true) };
+      }),
+    })),
+  };
 
   const jsonLd = buildBookJsonLd(manifest);
 

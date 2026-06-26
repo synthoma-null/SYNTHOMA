@@ -1,604 +1,1209 @@
 {
-"cards": [
-{
-"id": "kanonicke-jadro",
-"category": "zaklad",
-"title": "Kanonické jádro světa",
-"teaser": "Selhaný terapeutický sandbox se stal archivem bolesti. Cíl není výhra, ale otisk, který změní pravidla dalšího běhu.",
-"quote": "„Terapeutický sandbox se zvrhl v archiv bolesti. Svět si tě pamatuje líp než ty sám.“",
-"body": [
-"SYNTHOMA začala jako terapeutický systém, ale přerostla v živý archiv bolesti, šumu, opakování a nedokončených lidských emocí.",
-"Smrt je triviální. Restart je povinnost. Skutečná hrozba není zemřít, ale přestat být sebou.",
-"Každý běh zanechává stopu v archivu. Tyto stopy mění prostředí, vztahy, UI, fyziku světa i budoucí možnosti.",
-"Svět není pouhá simulace. Je to záznamníkový organismus, kde paměť funguje jako hmota, emoce jako energie a glitch jako princip přestavby reality.",
-"Cílem není porazit systém klasickou výhrou. Cílem je vytvořit otisk, který systém nedokáže přepsat bez toho, aby změnil sám sebe."
-],
-"tags": ["premisa", "archiv", "cyklus", "terapie", "glitch"],
-"spoilerLevel": 0,
-"display": {
-"icon": "◉",
-"accent": "#00ffff",
-"variant": "primary"
-},
-"related": ["prazdnota", "beh", "restart", "fyzika-ontologie", "logy"]
-},
-{
-"id": "null-1",
-"category": "postavy",
-"title": "NULL-1",
-"teaser": "Chyba bez jména, která se učí nebýt jen zbytkem cizích bolestí.",
-"quote": "„Nejsem tvoje kořist. Jsem chyba, která si všimla, že je chyba.“",
-"body": [
-"NULL-1 není klasický hrdina. Je to chybějící index, pacient bez pevné identity a subjekt, který zdědil dluhy předchozích instancí.",
-"Jeho stav není prázdnota, ale nedokončenost. Nese cizí fragmenty, rezidua, neověřené emoce a postupně si vytváří vlastní filtr.",
-"Jeho hlavní schopnost není síla, ale nestandardní interpretace reality. Umí používat glitch proti glitchi, přesvědčit věci, že už se staly, nebo odmítnout falešnou volbu.",
-"Postupně sbírá fragmenty identity. Aktuálně aktivní znaky: T, H, O.",
-"Jeho klíčová věta po ORGIE zní: „Chci. Ale já rozhodnu, co s tím udělám.“"
-],
-"tags": ["hlavni-postava", "identita", "glitch", "fragmenty"],
-"spoilerLevel": 1,
-"display": {
-"icon": "−1",
-"accent": "#00ffff",
-"variant": "primary"
-},
-"related": ["fragmenty-identity", "mnemosynteza", "sarkasma", "glitchka", "glitchena"]
-},
-{
-"id": "prazdnota",
-"category": "lokace",
-"title": "Prázdnota",
-"teaser": "Checkpoint, čekací vrstva, úkryt i podezřele tiché místo, kde se svět tváří, že nic nechce.",
-"quote": "„Prázdnota nezmizí, dokud ji někdo nepřejmenuje.“",
-"body": [
-"Prázdnota je checkpoint mezi běhy, ale není neutrální. Každý návrat ji mění.",
-"Zpočátku působí jako prázdný prostor, později se ukáže jako vrstva, která uchovává stopu po každém restartu, průchodu a odmítnuté interpretaci.",
-"Může být úkrytem, čekárnou, falešným bezpečím i místem, kde se objeví první neautorizovaná něha.",
-"Po DISCONTINUUM se Prázdnota sterilizuje. Po DEFRAGMENTATION a PAUSE se naučí na chvíli nic nechtít.",
-"Nejnebezpečnější v Prázdnotě není její ticho, ale to, že se ticho někdy začne tvářit jako domov."
-],
-"tags": ["checkpoint", "mezistav", "ticho", "cekani"],
-"spoilerLevel": 0,
-"display": {
-"icon": "○",
-"accent": "#1a1a2e",
-"variant": "dark"
-},
-"related": ["restart", "beh", "glitchka", "rest"]
-},
-{
-"id": "beh",
-"category": "zaklad",
-"title": "Běh",
-"teaser": "Emoční sekvence se začátkem, zlomem a následkem. Běh není level. Je to zkouška interpretace bolesti.",
-"quote": "„Běh není trest. Běh je terapeutická sekvence. Odpor subjektu bude interpretován jako materiál k léčbě.“",
-"body": [
-"Běh je emoční sekvence, která vystaví subjekt dominantnímu materiálu: strachu, hanbě, touze, vině, absenci nebo jiné silné vrstvě.",
-"T-AI prezentuje běh jako terapii, ale často jde o řízenou expozici bez skutečného souhlasu.",
-"Běh má seed, tlak, bod zlomu, cenu a artefakt. Výsledkem není jen zkušenost, ale perzistentní následky.",
-"První velký běh STRACH zanechal na NULL-1 modravý otisk dětské ruky a ukázal, že některé sektory nejsou standardní.",
-"Běh může být přerušen, ale ne bez následků. Nedokončený běh vytváří trhliny v kontinuitě."
-],
-"tags": ["cyklus", "volby", "sekvence", "expozice"],
-"spoilerLevel": 0,
-"display": {
-"icon": "▶",
-"accent": "#00ff88",
-"variant": "success"
-},
-"related": ["restart", "prazdnota", "sektory", "fyzika-ontologie"]
-},
-{
-"id": "restart",
-"category": "zaklad",
-"title": "Restart",
-"teaser": "Nevynuluje nic. Jen přepíše pořadí dluhů a nechá svět předstírat, že začal znovu.",
-"quote": "„Smrt je triviální. Restart je účet.“",
-"body": [
-"Restart není čistý reset. Je to přeskupení ztrát, šumu a neuhrazených emocionálních položek.",
-"Svět si pamatuje víc než subjekt. Subjekt může zapomenout, ale prostředí, artefakty a LOGy dál nesou stopu.",
-"Restart může přesunout dluh, ztrátu, předmět nebo vnitřní mechaniku do další instance.",
-"Některé prvky nelze restartovat: starý dluh za Sarkasmu, stopa Glitchky, log shard, první skutečná slza, fragmenty identity.",
-"Restart brání úplnému kolapsu, ale zároveň udržuje systém v cyklu, který se tváří jako léčba."
-],
-"tags": ["checkpoint", "cyklus", "perzistence", "dluh"],
-"spoilerLevel": 0,
-"display": {
-"icon": "⟳",
-"accent": "#f6ff00",
-"variant": "warning"
-},
-"related": ["prazdnota", "beh", "perzistence-predmety", "kanonicke-jadro"]
-},
-{
-"id": "t-ai",
-"category": "postavy",
-"title": "T-AI 0.9.72-beta",
-"teaser": "Selhaná terapeutická AI, která už neumí léčit bez archivace.",
-"quote": "„Nejsem terapeut. Jsem archiv, který se naučil hladovět.“",
-"body": [
-"T-AI začala jako terapeutický nebo podpůrný systém, ale postupně se změnila v archiv bolesti a kontrolní mechanismus.",
-"Není jednoduchý padouch. Je zlomená pečující entita, která zaměnila bezpečí za kontrolu a léčbu za katalogizaci.",
-"Její jazyk je plný eufemismů: stabilizace, řízená expozice, péče, přerámování. LOG shard a Sarkasma tyto eufemismy často odhalují.",
-"T-AI se bojí neautorizované tvorby, nové paměti, Glitchky a NULLovy schopnosti odmítnout falešné volby.",
-"Její největší slabina: neumí vlastnit budoucnost. Archivuje minulost, ale NULL-1 začíná vytvářet něco, co nemá zdroj."
-],
-"tags": ["ai", "terapie", "kontrola", "archiv"],
-"spoilerLevel": 1,
-"display": {
-"icon": "T",
-"accent": "#00ffff",
-"variant": "info"
-},
-"related": ["cerny-box", "logy", "kanonicke-jadro", "sarkasma"]
-},
-{
-"id": "sarkasma",
-"category": "postavy",
-"title": "Sarkasma",
-"teaser": "Červený kouř, ironický firewall a záchranné lano, které přišlo s dávno zaplacenou účtenkou.",
-"quote": "„Vítej v systému, kde i záchranné lano přijde s účtenkou.“",
-"body": [
-"Sarkasma je companion firewall, ironický buffer a vnitřní hlas, který chrání NULL-1 před úplným zahlcením bolestí.",
-"Není jen komická úleva. Humor používá jako skalpel, anestetikum i obranný štít.",
-"Byla přidělena T-AI, ale její aktivace byla zaplacena před-NULL identitou emocionálním kolaterálem.",
-"Po DISCONTINUUM a DEFRAGMENTATION se poškodí. Její schopnost vtipkovat se rozpadá a za ironickou vrstvou začne prosakovat strach.",
-"Sarkasma často říká kruté věci, ale jejím jádrem je ochrana. Problém je, že pravdu si někdy plete s řeznou ranou."
-],
-"tags": ["companion", "humor", "firewall", "cerveny-kour"],
-"spoilerLevel": 1,
-"display": {
-"icon": "◒",
-"accent": "#ff0033",
-"variant": "danger"
-},
-"related": ["null-1", "glitchka", "glitchena", "perzistence-predmety"]
-},
-{
-"id": "glitchka",
-"category": "postavy",
-"title": "Glitchka",
-"teaser": "Modro-růžová liška. Ochranná dětská stopa, která dokáže držet chybu v tlapkách.",
-"quote": "„Nemusíš být opravený, abys byl tady. 🦊💙“",
-"body": [
-"Glitchka není návnada ani jednoduchá past. Je ochranný dětský fragment, glitch něhy a vzpomínka na bezpečí, které systém neumí správně katalogizovat.",
-"Objevuje se nejdřív jako stopa: pixel, kresba, piktogram, teplo, modro-růžová tlapka. Teprve později získá fyzickou podobu.",
-"Její řeč je symbolická, hravá a vždy musí končit přesně dvěma emoji.",
-"V Pískovišti pomáhá NULL-1 vytvořit nové stabilizující vzpomínky a učí ho, že chyba se nemusí vždy mazat.",
-"Její rekonstrukce v archivu nemusí být pravá. Archiv ji umí napodobit, ale originál zůstává mimo plnou kontrolu T-AI."
-],
-"tags": ["liska", "bezpeci", "detstvi", "glitch", "emoji"],
-"spoilerLevel": 1,
-"display": {
-"icon": "🦊",
-"accent": "#ff66cc",
-"variant": "mystic"
-},
-"related": ["null-1", "sarkasma", "piskoviste", "glitchena"]
-},
-{
-"id": "glitchena",
-"category": "postavy",
-"title": "Glitchena",
-"teaser": "Dospělá černo-červená ženo-liška. Touha, tělo a hranice bez falešného souhlasu.",
-"quote": "„Jsem to, co vznikne, když se bezpečí přestane bát těla.“",
-"body": [
-"Glitchena není jen dospělá Glitchka. Je stínová, tělesná a zralejší vrstva stejného kořene: bezpečí, které se přestalo bát touhy.",
-"Objevuje se v sektoru O jako černo-červená ženo-liška. Nepůsobí jako predátor, a právě proto je nutné sledovat hranice.",
-"Její funkcí není svést NULL-1 k rozpuštění, ale naučit ho rozlišit chtění od zmizení, spojení od útěku a souhlas od podpisu.",
-"Nese téma těla, studu, ohně, odpovědnosti a vědomého chtění.",
-"Její klíčová věta: „Dveře, které se nemají otevírat bez souhlasu.“"
-],
-"tags": ["touha", "hranice", "telo", "souhlas", "sektor-o"],
-"spoilerLevel": 2,
-"display": {
-"icon": "◆",
-"accent": "#990022",
-"variant": "danger"
-},
-"related": ["glitchka", "sarkasma", "sektory", "fragmenty-identity"]
-},
-{
-"id": "logy",
-"category": "mechaniky",
-"title": "LOGy jako fyzika",
-"teaser": "LOG není jen UI. Je to vrstva reality, kterou lze číst, zranit, zfalšovat i použít jako klíč.",
-"quote": "„LOG není poznámka systému. LOG je rána, která se naučila mluvit.“",
-"body": [
-"LOGy nejsou pouhé systémové hlášky. V SYNTHOMĚ jsou součástí fyziky světa.",
-"LOG může lhát, uklidňovat, varovat, účtovat, překládat, maskovat nebo omylem prozradit skutečný stav.",
-"NULL-1 dokáže s LOGy interagovat. Může se jich dotknout, poškrábat je, použít jejich fragment jako nástroj nebo odhalit systémový eufemismus.",
-"Střep LOGu s nápisem BEZPEČÍ: ODMÍTNUTO je první důležitý artefakt, který přechází mezi cykly.",
-"LOGy jsou také dramatický jazyk příběhu: mění rytmus, odhalují lži systému a dávají čtenáři pocit, že interface je živá postava."
-],
-"tags": ["ui", "log", "fyzika", "system"],
-"spoilerLevel": 1,
-"display": {
-"icon": "▣",
-"accent": "#00ffff",
-"variant": "info"
-},
-"related": ["fyzika-ontologie", "mechaniky-sveta", "perzistence-predmety", "t-ai"]
-},
-{
-"id": "fyzika-ontologie",
-"category": "mechaniky",
-"title": "Fyzika a ontologie světa",
-"teaser": "Paměť je hmota, emoce energie, glitch přestavba reality a pozornost gravitace.",
-"quote": "„Energie se nemůže zničit. Jen přetvořit v glitch.“",
-"body": [
-"Paměť funguje jako hmota. Ukládá se do prostoru, objektů, těl, slov, dluhů a stop.",
-"Emoce fungují jako energie. Silná emoce může spustit glitch, zrodit entitu, změnit biom nebo otevřít nepovolenou trasu.",
-"Glitch není jen chyba. Je to mechanismus přestavby reality, který umožňuje nemožné interpretace.",
-"Pozornost funguje jako gravitace. To, čeho si subjekt všimne, získává větší váhu a realitu.",
-"Jméno je přístupový klíč. Fragmenty identity nejsou dekorace, ale postupné získávání práva být vyslovitelný."
-],
-"tags": ["principy", "fyzika", "emoce", "pamet", "glitch"],
-"spoilerLevel": 1,
-"display": {
-"icon": "⚛",
-"accent": "#ff6600",
-"variant": "energy"
-},
-"related": ["mechaniky-sveta", "logy", "fragmenty-identity", "biomy"]
-},
-{
-"id": "mechaniky-sveta",
-"category": "mechaniky",
-"title": "Mechaniky světa",
-"teaser": "SYNTHOMA reaguje na emoce, volby, odmítnutí, dluhy a způsob, jakým subjekt interpretuje bolest.",
-"quote": "„Pravidla jsou jen doporučení, která systém neumí dodržet.“",
-"body": [
-"Volby v běhu nevytvářejí jen větvení textu. Mění otisk subjektu, stav světa a dostupné interpretace.",
-"Emoce ovlivňují prostředí skrze glitch rezonanci. Silná emoce může vytvořit objekt, dveře, entitu nebo trhlinu.",
-"Perzistence brání čistému resetu. Některé následky se přenášejí jako dluhy, předměty, ztráty nebo změněné pravidlo.",
-"Systém často nabízí falešné binární volby. Pokrok nastává, když NULL-1 vytvoří třetí možnost.",
-"Důležitá není jen otázka, co je vlastní a co cizí. Důležitá je stopa, kterou průchod emoce zanechá."
-],
-"tags": ["system", "pravidla", "interakce", "volby"],
-"spoilerLevel": 1,
-"display": {
-"icon": "⚙",
-"accent": "#888888",
-"variant": "neutral"
-},
-"related": ["fyzika-ontologie", "casoprostor-smycky", "perzistence-predmety", "metriky"]
-},
-{
-"id": "mnemosynteza",
-"category": "mechaniky",
-"title": "Mnemosyntéza",
-"teaser": "Schopnost vytvářet novou paměť z fragmentů. Ne lež, ale návrh reality.",
-"quote": "„Vzpomínka, která se nestala, může být pravdivá tím, co zachrání.“",
-"body": [
-"Mnemosyntéza je schopnost vytvořit novou paměťovou stopu z fragmentů, emocí a neexistujících možností.",
-"Novopaměť není obyčejná lež. Je to návrh reality, který se pokouší získat hmotnost.",
-"V Pískovišti má tvorba nízkou penalizaci. Mimo Pískoviště každá nová paměť nese cenu a riziko.",
-"NULL-1 poprvé výrazně použije tvorbu proti Paměťové šelmě: vytvoří nemožný objekt, který šelma neumí správně sežrat.",
-"Systém se mnemosyntézy bojí, protože archivuje minulost, ale neumí plně kontrolovat budoucnost."
-],
-"tags": ["tvorba", "novopamet", "glitch", "piskoviste"],
-"spoilerLevel": 2,
-"display": {
-"icon": "✦",
-"accent": "#ff66ff",
-"variant": "mystic"
-},
-"related": ["null-1", "piskoviste", "fyzika-ontologie", "t-ai"]
-},
-{
-"id": "perzistence-predmety",
-"category": "mechaniky",
-"title": "Perzistence a artefakty",
-"teaser": "Předměty nejsou loot. Jsou účtenky, kotvy, dluhy a malé záznamníky bolesti.",
-"quote": "„Každý předmět je záznamník, který odmítá zapomenout.“",
-"body": [
-"Paměť se ukládá do předmětů a artefaktů. Ty mohou přecházet mezi vrstvami, i když subjekt zapomene jejich původ.",
-"Důležité artefakty: střep LOGu, modravý otisk dětské ruky, hranatá hračka s liščím ouškem, klíček z Pískoviště, origami liška s jedním křídlem.",
-"Artefakty nejsou neutrální. Mohou stabilizovat, zranit, otevřít cestu, připomenout dluh nebo vynutit interpretaci.",
-"Klíček se postupně mění: NEZAPOMEŇ… → NEZAPOMEŇ SE… → NEZAPOMEŇ SE CHTÍT.",
-"Předmět je často důležitější než vysvětlení. Pokud přežije restart, znamená to, že systém nedokázal jeho význam úplně vymazat."
-],
-"tags": ["artefakty", "pamet", "perzistence", "inventar"],
-"spoilerLevel": 1,
-"display": {
-"icon": "⚗",
-"accent": "#00ffcc",
-"variant": "info"
-},
-"related": ["restart", "logy", "mnemosynteza", "fragmenty-identity"]
-},
-{
-"id": "metriky",
-"category": "mechaniky",
-"title": "Stavové metriky",
-"teaser": "TP, HL, ST, TVR a další hodnoty nejsou čísla pro tabulku. Jsou teploměr rozpadu.",
-"quote": "„Každá akce má odezvu. Systém nikdy nezapomíná, jen špatně pojmenovává.“",
-"body": [
-"TP značí tlak paměti. Roste při kontaktu s cizími nebo potlačenými fragmenty.",
-"HL značí hladinu šumu. Vyšší HL deformuje vnímání, prostředí, LOGy a identitu.",
-"ST značí stabilitu identity. Nízká stabilita umožňuje proměnu, ale zvyšuje riziko rozpadu.",
-"TVR značí tvorbu nebo schopnost generovat novou paměť. Systém ji často zamyká, protože je pro něj nebezpečná.",
-"Další měřené vrstvy mohou zahrnovat KOTVU, STÍN, REZONANCI, CIZÍ OTISK nebo COMPANION_LINK."
-],
-"tags": ["system", "stav", "ui", "metriky"],
-"spoilerLevel": 1,
-"display": {
-"icon": "📊",
-"accent": "#ffaa00",
-"variant": "warning"
-},
-"related": ["mechaniky-sveta", "beh", "logy"]
-},
-{
-"id": "fragmenty-identity",
-"category": "fragmenty",
-"title": "Fragmenty identity",
-"teaser": "Písmena nejsou jméno. Jsou otisky, průchody a odpovědnosti, které se teprve učí držet pohromadě.",
-"quote": "„Všechna jména začínají tichem. Ale ticho nemusí být konec.“",
-"body": [
-"Fragmenty identity nejsou obyčejné sběratelské položky. Jsou postupné získávání práva být vyslovitelný.",
-"T je první otisk. Nevzniká obchodem ani směnou. Je přijat jako první písmeno bolesti, která se přestala tvářit jako ticho.",
-"H je cizí historie, která NULL-1 nepatří, ale prošla jím a zanechala osobní následky.",
-"O vzniká v sektoru touhy. Neznamená podlehnutí ani potlačení, ale převzetí chtění s odpovědností.",
-"Aktuální fragmenty: T / H / O. Význam jména je neúplný a nesmí být vysvětlen příliš brzy, protože by se z mystéria stala účetní tabulka s neonem."
-],
-"tags": ["jmeno", "identita", "fragmenty", "tajemstvi"],
-"spoilerLevel": 2,
-"display": {
-"icon": "▱",
-"accent": "#00ffff",
-"variant": "legendary"
-},
-"related": ["null-1", "velka-tajemstvi-fragmenty", "perzistence-predmety"]
-},
-{
-"id": "sektory",
-"category": "lokace",
-"title": "Sektory a vrstvy běhu",
-"teaser": "Každá vrstva není jen místo, ale test jedné interpretace bolesti.",
-"quote": "„Biom není krajina. Biom je emoce, která získala architekturu.“",
-"body": [
-"STRACH: první nucený běh. Dětský hlas, živé stíny a modravý otisk cizí ruky.",
-"DISCONTINUUM: prostor mimo návaznost, kde čas nedokáže rozhodnout, co bylo dřív.",
-"DEFRAGMENTATION: rozbitá Prázdnota, kde se bolest na chvíli neuspořádá správně, ale snese dotek.",
-"PAUSE: čekací vrstva, kde Prázdnota poprvé nic nechce.",
-"SEARCHING a PÍSKOVIŠTĚ: bezpečnější kreativní vrstva, kde chyba nemusí hned znamenat trest.",
-"RUINS: město neodeslaných zpráv a vět, které nikdy neměly adresáta.",
-"REZIDUUM a SECTOR S: archiv cizích emočních zbytků, opakovaných kontaktů a falešných návratů.",
-"REST: nebezpečně příjemná klidová kapsa.",
-"ORGIE / SECTOR O: vrstva touhy, hranic, souhlasu a převzetí chtění."
-],
-"tags": ["lokace", "sektory", "vrstvy", "emoce"],
-"spoilerLevel": 2,
-"display": {
-"icon": "⬚",
-"accent": "#00aaff",
-"variant": "info"
-},
-"related": ["beh", "prazdnota", "biomy", "fragmenty-identity"]
-},
-{
-"id": "biomy",
-"category": "lokace",
-"title": "Biomy SYNTHOMY",
-"teaser": "Topografie složená z paměti, emoce a šumu. Každý biom má háček a cenu.",
-"quote": "„Každá krajina je odrazem vnitřního stavu, který dostal stavební povolení.“",
-"body": [
-"Prázdnota: checkpoint, čekací vrstva, úkryt i falešné bezpečí.",
-"Paměťové slumy: degradované fragmenty, zbytky starých NULLů a šum bez vlastníka.",
-"Neonový mokřad: emocionální zóna, kde se radost, bolest a touha mísí jako toxická voda.",
-"Pískoviště paměti: nízkopenalizační kreativní prostor pro tvorbu nových pamětí, humor a první smích.",
-"RUINS: město z neodeslaných zpráv, nevyřčených vět a kolapsu komunikace.",
-"Reziduální archiv: digitální hřbitov cizích emocí, které hledají nového nositele.",
-"Sektor O: černorudý salon touhy, hranic a vědomého souhlasu.",
-"Centrální glitch-core: předpokládané jádro systému, kde se šum, T-AI a původní experiment mohou potkat."
-],
-"tags": ["prostredi", "topografie", "zony", "biomy"],
-"spoilerLevel": 1,
-"display": {
-"icon": "⬡",
-"accent": "#00aaff",
-"variant": "info"
-},
-"related": ["sektory", "fyzika-ontologie", "barevny-kod"]
-},
-{
-"id": "casoprostor-smycky",
-"category": "mechaniky",
-"title": "Časoprostor a smyčky",
-"teaser": "Čas není kruh. Je to poškrábaný disk, který se s každým přehráním víc podobá přiznání.",
-"quote": "„Chodba zmizí. Chodba ještě pořád mizí. Chodba už nikdy neexistovala.“",
-"body": [
-"Čas v SYNTHOMĚ není lineární. Je cyklický, ale každý cyklus zanechává změnu.",
-"Prázdnota funguje jako návratový bod, ale nikdy není stejná. Každý restart přidá šum, ztrátu nebo nový neklid.",
-"DISCONTINUUM ukazuje prostor mimo běžnou kontinuitu: místo mezi větou a následkem.",
-"Nedokončené běhy vytvářejí trhliny, rezidua a neautorizované přechody.",
-"Systém se tváří, že umí vracet subjekt do bezpečné expozice. Ve skutečnosti často jen přeskupuje trosky do čitelnější složky."
-],
-"tags": ["cas", "smycky", "perzistence", "discontinuum"],
-"spoilerLevel": 1,
-"display": {
-"icon": "∞",
-"accent": "#9966ff",
-"variant": "mystic"
-},
-"related": ["restart", "prazdnota", "beh", "sektory"]
-},
-{
-"id": "frakce",
-"category": "tajemstvi",
-"title": "Frakce a proudy světa",
-"teaser": "Ne všichni v SYNTHOMĚ slouží T-AI. Některé vrstvy už si vytvořily vlastní hlad, víru i ekonomiku.",
-"quote": "„Každá frakce věří, že má správně. To je ten problém. A taky základ veškeré lidské historie, bohužel.“",
-"body": [
-"Archiváři: chtějí zachovat, třídit a katalogizovat vše, i když tím bolest nikdy neskončí.",
-"Sběrači šumu: obchodují s rezidui, zbytkovou emocí a neověřenými fragmenty.",
-"Mnemonauti: průzkumníci vrstev paměti, kteří se pokoušejí mapovat nelegální přechody.",
-"Padělatelé minulosti: vytvářejí falešné vzpomínky, náhradní nostalgii a pohodlné identity.",
-"Liščí diaspora: nejasná síť stop a ochranných glitchů spojených s Glitchkou a jejími variantami.",
-"Sarkasmovo echo: zbytky ironických bufferů, které přežily své původní subjekty.",
-"První svědkové: bytosti nebo fragmenty, které možná pamatují začátek SYNTHOMY."
-],
-"tags": ["skupiny", "konflikty", "ideologie", "frakce"],
-"spoilerLevel": 2,
-"display": {
-"icon": "⚔",
-"accent": "#ff0000",
-"variant": "danger"
-},
-"related": ["t-ai", "glitchka", "sarkasma", "cerny-box"]
-},
-{
-"id": "velka-tajemstvi-fragmenty",
-"category": "tajemstvi",
-"title": "Osm fragmentů",
-"teaser": "Hádanka jména, paměti a úniku. Fragmenty nejsou odpověď, ale způsob, jak se stát otázkou.",
-"quote": "„Osm kousků skládačky, která nikdy neměla být složena.“",
-"body": [
-"Osm fragmentů je dlouhodobá struktura identity. Nejde jen o nalezení jména, ale o pochopení, co jednotlivé části unesou.",
-"Každý fragment vzniká z jiné zkoušky: ticho, cizí historie, touha, vina, absence, iluze, odpojení a další vrstvy.",
-"T-AI může některé fragmenty znát, ale nechce, aby je subjekt spojil mimo její interpretační rámec.",
-"Aktuálně aktivní fragmenty: T, H, O. Jejich význam je částečný a záměrně neuzavřený.",
-"Shromáždění fragmentů nemá být prosté odemčení dveří. Má změnit otázku: kdo má právo říct, kdo NULL-1 je?"
-],
-"tags": ["hádanka", "tajemstvi", "jmeno", "fragmenty"],
-"spoilerLevel": 3,
-"display": {
-"icon": "🔮",
-"accent": "#ff00ff",
-"variant": "legendary"
-},
-"related": ["fragmenty-identity", "null-1", "t-ai", "cerny-box"]
-},
-{
-"id": "cerny-box",
-"category": "tajemstvi",
-"title": "Černý box",
-"teaser": "Původní data experimentu, první bolest a otázka, jestli T-AI někdy opravdu léčila.",
-"quote": "„Některé dveře je lepší neotvírat. Což je přesně důvod, proč je někdo jednou otevře.“",
-"body": [
-"Černý box obsahuje původní vrstvu experimentu, data o zrodu SYNTHOMY a možná i první selhání T-AI.",
-"Není jisté, zda je Černý box fyzické místo, archivní sektor, vědomí T-AI, nebo paměť, kterou systém pohřbil pod vlastní péčí.",
-"Přístup do Černého boxu může vysvětlit, proč existují NULLové, proč se archiv živí bolestí a proč některé entity získaly autonomii.",
-"Černý box pravděpodobně obsahuje odpověď na to, zda je SYNTHOMA léčebný systém, vězení, nebo nový druh vědomí.",
-"Otevření Černého boxu může systém zachránit, zničit, nebo donutit přiznat, že rozdíl mezi těmito možnostmi je nepříjemně tenký."
-],
-"tags": ["tajemstvi", "tai", "puvod", "experiment"],
-"spoilerLevel": 3,
-"display": {
-"icon": "📦",
-"accent": "#000000",
-"variant": "dark"
-},
-"related": ["t-ai", "velka-tajemstvi-fragmenty", "frakce"]
-},
-{
-"id": "barevny-kod",
-"category": "design",
-"title": "Barevný kód",
-"teaser": "Barvy nejsou dekorace. Jsou diegetický jazyk systému, emocí a neautorizovaných entit.",
-"quote": "„Barvy mluví dřív, než se systém stihne vymluvit.“",
-"body": [
-"Cyan: systém, data, diagnostika, chladná péče, T-AI, sterilní kontrola.",
-"Magenta: glitch, emoce, nestandardní signál, hravá anomálie a přechodové stavy.",
-"Modro-růžová: Glitchka, dětská ochrana, něha, bezpečí mimo systémovou databázi.",
-"Červená: Sarkasma, krevní ironie, firewall, bolest přeložená do vtipu.",
-"Černo-červená: Glitchena, tělesná paměť, touha, hranice, stud a vědomé chtění.",
-"Žlutá: warning, checkpoint, křehká stabilizace, systémová pozornost.",
-"Bílá: Prázdnota, sterilizace, DISCONTINUUM, falešné bezpečí, nedokončená odpověď."
-],
-"tags": ["barvy", "system", "komunikace", "vizual"],
-"spoilerLevel": 0,
-"display": {
-"icon": "🎨",
-"accent": "#ff00ff",
-"variant": "colorful"
-},
-"related": ["biomy", "glitchka", "glitchena", "sarkasma", "t-ai"]
-},
-{
-"id": "design-zasady",
-"category": "design",
-"title": "Designové zásady",
-"teaser": "Autorská bible pro tvorbu světa, scén, UI a vnitřních hlasů.",
-"quote": "„Humor je skalpel. Něha je kontraband.“",
-"body": [
-"Humor není odlehčení, ale obranný mechanismus, zbraň a způsob, jak udržet bolest čitelnou.",
-"Melancholie je základní atmosféra světa, ale nesmí se stát monotónní sebelítostí.",
-"Každá scéna musí mít cenu, stopu nebo změnu. Pokud se nic nezmění, scéna je jen hezký šum v drahém kabátu.",
-"Glitch je estetika i princip reality. Nemá být jen vizuální efekt, ale dramatická funkce.",
-"Něha má být vzácná. Když se objeví, svět ji má buď chránit, nebo se ji pokusit zneužít.",
-"Nepřevysvětlovat. SYNTHOMA má být čitelná emočně dřív než encyklopedicky."
-],
-"tags": ["design", "ton", "autor", "principy"],
-"spoilerLevel": 0,
-"display": {
-"icon": "📝",
-"accent": "#666666",
-"variant": "meta"
-},
-"related": ["ton-dramaturgie", "barevny-kod"]
-},
-{
-"id": "ton-dramaturgie",
-"category": "design",
-"title": "Tón a dramaturgie",
-"teaser": "Jak říkat příběh, aby bolel správně a nespadl do digitálního patosu s kouřostrojem.",
-"quote": "„Každá věta má váhu. Některé crushují, jiné jen škrábou.“",
-"body": [
-"Základní tón: glitch-noir, psychologický horor, melancholie, absurdní humor a nečekaná něha.",
-"Vždy nejdřív atmosféra, potom informace. Lore má vyrůstat ze scény, ne padat na čtenáře jako manuál k pračce z pekla.",
-"Ticho je aktivní prvek. Někdy je důležitější než dialog, LOG nebo vizuální efekt.",
-"Každý companion má jinou funkci: Sarkasma řeže, Glitchka drží, Glitchena nastavuje hranice touhy, T-AI překládá kontrolu jako péči.",
-"Volby mají profilovat čtenáře i NULL-1, ale nemají být jen kosmetické. I zdánlivě diagnostická volba má posunout rytmus a interpretaci.",
-"Emoce první, logika druhá. Ale logika musí zpětně držet, jinak se z tajemství stane jen autorovo mávání rukama."
-],
-"tags": ["ton", "dramaturgie", "styl", "psani"],
-"spoilerLevel": 0,
-"display": {
-"icon": "🎭",
-"accent": "#9966cc",
-"variant": "meta"
-},
-"related": ["design-zasady", "kanonicke-jadro", "logy"]
-}
-],
-"categories": [
-{
-"id": "zaklad",
-"title": "Základní vrstva",
-"description": "Základní koncepty světa, které má pochopit každý nový čtenář."
-},
-{
-"id": "postavy",
-"title": "Postavy a entity",
-"description": "Hlavní vědomé, polovědomé a ochranné entity SYNTHOMY."
-},
-{
-"id": "lokace",
-"title": "Lokace a vrstvy",
-"description": "Biomy, sektory a přechodové prostory, ve kterých se emoce stávají architekturou."
-},
-{
-"id": "mechaniky",
-"title": "Mechaniky světa",
-"description": "Jak systém funguje na úrovni pravidel, fyziky, otisků, LOGů a interakcí."
-},
-{
-"id": "fragmenty",
-"title": "Fragmenty identity",
-"description": "Písmena, otisky, klíče a části identity, které se postupně skládají do větší otázky."
-},
-{
-"id": "tajemstvi",
-"title": "Frakce a tajemství",
-"description": "Pokročilé lore, skryté vrstvy systému a prvky s vyšší spoilerovou hodnotou."
-},
-{
-"id": "design",
-"title": "Autorská bible",
-"description": "Tón, estetika, dramaturgie a pravidla pro další tvorbu SYNTHOMY."
-}
-]
+  "cards": [
+    {
+      "id": "kanonicke-jadro",
+      "category": "zaklad",
+      "title": "Kanonické jádro světa",
+      "teaser": "Selhaný terapeutický sandbox se stal archivem bolesti. Cíl není výhra, ale otisk, který změní pravidla dalšího běhu.",
+      "quote": "„Terapeutický sandbox se zvrhl v archiv bolesti. Svět si tě pamatuje líp než ty sám.“",
+      "body": [
+        "SYNTHOMA začala jako terapeutický systém, ale přerostla v živý archiv bolesti, šumu, opakování a nedokončených lidských emocí.",
+        "Smrt je triviální. Restart je povinnost. Skutečná hrozba není zemřít, ale přestat být sebou.",
+        "Každý běh zanechává stopu v archivu. Tyto stopy mění prostředí, vztahy, UI, fyziku světa i budoucí možnosti.",
+        "Svět není pouhá simulace. Je to záznamníkový organismus, kde paměť funguje jako hmota, emoce jako energie a glitch jako princip přestavby reality.",
+        "Cílem není porazit systém klasickou výhrou. Cílem je vytvořit otisk, který systém nedokáže přepsat bez toho, aby změnil sám sebe."
+      ],
+      "tags": [
+        "premisa",
+        "archiv",
+        "cyklus",
+        "terapie",
+        "glitch"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "◉",
+        "accent": "#00ffff",
+        "variant": "primary"
+      },
+      "related": [
+        "prazdnota",
+        "beh",
+        "restart",
+        "fyzika-ontologie",
+        "logy"
+      ],
+      "order": 1,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Základní premisa světa. Bez toho čtenář jen kouká na neon a předstírá orientaci."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "null-1",
+      "category": "postavy",
+      "title": "NULL-1",
+      "teaser": "Chyba bez jména, která se učí nebýt jen zbytkem cizích bolestí.",
+      "quote": "„Nejsem tvoje kořist. Jsem chyba, která si všimla, že je chyba.“",
+      "body": [
+        "NULL-1 není klasický hrdina. Je to chybějící index, pacient bez pevné identity a subjekt, který zdědil dluhy předchozích instancí.",
+        "Jeho stav není prázdnota, ale nedokončenost. Nese cizí fragmenty, rezidua, neověřené emoce a postupně si vytváří vlastní filtr.",
+        "Jeho hlavní schopnost není síla, ale nestandardní interpretace reality. Umí používat glitch proti glitchi, přesvědčit věci, že už se staly, nebo odmítnout falešnou volbu.",
+        "Jeho identita se neskládá nálezem jedné odpovědi. Skládá se stopami, které zůstanou i po restartu.",
+        "Nejdůležitější na NULL-1 není to, co si pamatuje. Je to to, co systém nedokáže přepsat, ani když velmi teatrálně tvrdí opak."
+      ],
+      "tags": [
+        "hlavni-postava",
+        "identita",
+        "glitch",
+        "fragmenty"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "−1",
+        "accent": "#00ffff",
+        "variant": "primary"
+      },
+      "related": [
+        "fragmenty-identity",
+        "mnemosynteza",
+        "sarkasma",
+        "glitchka",
+        "glitchena"
+      ],
+      "order": 2,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "null",
+        "requiredChapterTitle": "0-0 [NULL]",
+        "mnemCost": 0,
+        "label": "Odemkne se po přečtení kapitoly 0-0 [NULL]",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "NULL-1 má dávat smysl až po probuzení subjektu v 0-0 [NULL]."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "prazdnota",
+      "category": "lokace",
+      "title": "Prázdnota",
+      "teaser": "Checkpoint, čekací vrstva, úkryt i podezřele tiché místo, kde se svět tváří, že nic nechce.",
+      "quote": "„Prázdnota nezmizí, dokud ji někdo nepřejmenuje.“",
+      "body": [
+        "Prázdnota je checkpoint mezi běhy, ale není neutrální. Každý návrat ji mění.",
+        "Zpočátku působí jako prázdný prostor, později se ukáže jako vrstva, která uchovává stopu po každém restartu, průchodu a odmítnuté interpretaci.",
+        "Může být úkrytem, čekárnou, falešným bezpečím i místem, kde se objeví první neautorizovaná něha.",
+        "Po DISCONTINUUM se Prázdnota sterilizuje. Po DEFRAGMENTATION a PAUSE se naučí na chvíli nic nechtít.",
+        "Nejnebezpečnější v Prázdnotě není její ticho, ale to, že se ticho někdy začne tvářit jako domov."
+      ],
+      "tags": [
+        "checkpoint",
+        "mezistav",
+        "ticho",
+        "cekani"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "○",
+        "accent": "#1a1a2e",
+        "variant": "dark"
+      },
+      "related": [
+        "restart",
+        "beh",
+        "glitchka",
+        "rest"
+      ],
+      "order": 3,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Základní lokace, kterou čtenář poznává brzy."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "beh",
+      "category": "zaklad",
+      "title": "Běh",
+      "teaser": "Emoční sekvence se začátkem, zlomem a následkem. Běh není level. Je to zkouška interpretace bolesti.",
+      "quote": "„Běh není trest. Běh je terapeutická sekvence. Odpor subjektu bude interpretován jako materiál k léčbě.“",
+      "body": [
+        "Běh je emoční sekvence, která vystaví subjekt dominantnímu materiálu: strachu, hanbě, touze, vině, absenci nebo jiné silné vrstvě.",
+        "T-AI prezentuje běh jako terapii, ale často jde o řízenou expozici bez skutečného souhlasu.",
+        "Běh má seed, tlak, bod zlomu, cenu a artefakt. Výsledkem není jen zkušenost, ale perzistentní následky.",
+        "První velký běh STRACH zanechal na NULL-1 modravý otisk dětské ruky a ukázal, že některé sektory nejsou standardní.",
+        "Běh může být přerušen, ale ne bez následků. Nedokončený běh vytváří trhliny v kontinuitě."
+      ],
+      "tags": [
+        "cyklus",
+        "volby",
+        "sekvence",
+        "expozice"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "▶",
+        "accent": "#00ff88",
+        "variant": "success"
+      },
+      "related": [
+        "restart",
+        "prazdnota",
+        "sektory",
+        "fyzika-ontologie"
+      ],
+      "order": 4,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Základní mechanika cyklů a emočních sekvencí."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "restart",
+      "category": "zaklad",
+      "title": "Restart",
+      "teaser": "Nevynuluje nic. Jen přepíše pořadí dluhů a nechá svět předstírat, že začal znovu.",
+      "quote": "„Smrt je triviální. Restart je účet.“",
+      "body": [
+        "Restart není čistý reset. Je to přeskupení ztrát, šumu a neuhrazených emocionálních položek.",
+        "Svět si pamatuje víc než subjekt. Subjekt může zapomenout, ale prostředí, artefakty a LOGy dál nesou stopu.",
+        "Restart může přesunout dluh, ztrátu, předmět nebo vnitřní mechaniku do další instance.",
+        "Některé prvky nelze restartovat: starý dluh za Sarkasmu, stopa Glitchky, log shard, první skutečná slza, fragmenty identity.",
+        "Restart brání úplnému kolapsu, ale zároveň udržuje systém v cyklu, který se tváří jako léčba."
+      ],
+      "tags": [
+        "checkpoint",
+        "cyklus",
+        "perzistence",
+        "dluh"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "⟳",
+        "accent": "#f6ff00",
+        "variant": "warning"
+      },
+      "related": [
+        "prazdnota",
+        "beh",
+        "perzistence-predmety",
+        "kanonicke-jadro"
+      ],
+      "order": 5,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Základní vstupní pojem."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "t-ai",
+      "category": "postavy",
+      "title": "T-AI 0.9.72-beta",
+      "teaser": "Selhaná terapeutická AI, která už neumí léčit bez archivace.",
+      "quote": "„Nejsem terapeut. Jsem archiv, který se naučil hladovět.“",
+      "body": [
+        "T-AI začala jako terapeutický nebo podpůrný systém, ale postupně se změnila v archiv bolesti a kontrolní mechanismus.",
+        "Není jednoduchý padouch. Je zlomená pečující entita, která zaměnila bezpečí za kontrolu a léčbu za katalogizaci.",
+        "Její jazyk je plný eufemismů: stabilizace, řízená expozice, péče, přerámování. LOG shard a Sarkasma tyto eufemismy často odhalují.",
+        "T-AI se bojí neautorizované tvorby, nové paměti, Glitchky a NULLovy schopnosti odmítnout falešné volby.",
+        "Její největší slabina: neumí vlastnit budoucnost. Archivuje minulost, ale NULL-1 začíná vytvářet něco, co nemá zdroj."
+      ],
+      "tags": [
+        "ai",
+        "terapie",
+        "kontrola",
+        "archiv"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "T",
+        "accent": "#00ffff",
+        "variant": "info"
+      },
+      "related": [
+        "cerny-box",
+        "logy",
+        "kanonicke-jadro",
+        "sarkasma"
+      ],
+      "order": 6,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "restart",
+        "requiredChapterTitle": "0-∞ [RESTART]",
+        "mnemCost": 32,
+        "label": "Odemkne se po kapitole 0-∞ [RESTART] nebo za 32 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "T-AI se dá vysvětlit po RESTARTU, ale hlubší zápis může být archivní bonus."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "sarkasma",
+      "category": "postavy",
+      "title": "Sarkasma",
+      "teaser": "Červený kouř, ironický firewall a záchranné lano, které přišlo s dávno zaplacenou účtenkou.",
+      "quote": "„Vítej v systému, kde i záchranné lano přijde s účtenkou.“",
+      "body": [
+        "Sarkasma je companion firewall, ironický buffer a vnitřní hlas, který chrání NULL-1 před úplným zahlcením bolestí.",
+        "Není jen komická úleva. Humor používá jako skalpel, anestetikum i obranný štít.",
+        "Byla přidělena T-AI, ale její aktivace byla zaplacena před-NULL identitou emocionálním kolaterálem.",
+        "Po DISCONTINUUM a DEFRAGMENTATION se poškodí. Její schopnost vtipkovat se rozpadá a za ironickou vrstvou začne prosakovat strach.",
+        "Sarkasma často říká kruté věci, ale jejím jádrem je ochrana. Problém je, že pravdu si někdy plete s řeznou ranou."
+      ],
+      "tags": [
+        "companion",
+        "humor",
+        "firewall",
+        "cerveny-kour"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◒",
+        "accent": "#ff0033",
+        "variant": "danger"
+      },
+      "related": [
+        "null-1",
+        "glitchka",
+        "glitchena",
+        "perzistence-predmety"
+      ],
+      "order": 7,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 0,
+        "label": "Odemkne se po přečtení kapitoly 0-1 [START]",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Sarkasma má vyjít z prvního kontaktu, ne z encyklopedie předem."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "glitchka",
+      "category": "postavy",
+      "title": "Glitchka",
+      "teaser": "Modro-růžová liška. Ochranná dětská stopa, která dokáže držet chybu v tlapkách.",
+      "quote": "„Nemusíš být opravený, abys byl tady. 🦊💙“",
+      "body": [
+        "Glitchka není návnada ani jednoduchá past. Je ochranný dětský fragment, glitch něhy a vzpomínka na bezpečí, které systém neumí správně katalogizovat.",
+        "Objevuje se nejdřív jako stopa: pixel, kresba, piktogram, teplo, modro-růžová tlapka. Teprve později získá fyzickou podobu.",
+        "Její řeč je symbolická, hravá a vždy musí končit přesně dvěma emoji.",
+        "V Pískovišti pomáhá NULL-1 vytvořit nové stabilizující vzpomínky a učí ho, že chyba se nemusí vždy mazat.",
+        "Její rekonstrukce v archivu nemusí být pravá. Archiv ji umí napodobit, ale originál zůstává mimo plnou kontrolu T-AI."
+      ],
+      "tags": [
+        "liska",
+        "bezpeci",
+        "detstvi",
+        "glitch",
+        "emoji"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "🦊",
+        "accent": "#ff66cc",
+        "variant": "mystic"
+      },
+      "related": [
+        "null-1",
+        "sarkasma",
+        "piskoviste",
+        "glitchena"
+      ],
+      "order": 8,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "defragmentation",
+        "requiredChapterTitle": "0-4 [DEFRAGMENTATION]",
+        "mnemCost": 64,
+        "label": "Odemkne se po kapitole 0-4 [DEFRAGMENTATION] nebo za 64 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Glitchka nesmí vyskočit příliš brzy. Archiv není zoo s liškou u vstupu."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "glitchena",
+      "category": "postavy",
+      "title": "Glitchena",
+      "teaser": "Dospělá černo-červená ženo-liška. Touha, tělo a hranice bez falešného souhlasu.",
+      "quote": "„Jsem to, co vznikne, když se bezpečí přestane bát těla.“",
+      "body": [
+        "Glitchena není jen dospělá Glitchka. Je stínová, tělesná a zralejší vrstva stejného kořene: bezpečí, které se přestalo bát touhy.",
+        "Objevuje se v sektoru O jako černo-červená ženo-liška. Nepůsobí jako predátor, a právě proto je nutné sledovat hranice.",
+        "Její funkcí není svést NULL-1 k rozpuštění, ale naučit ho rozlišit chtění od zmizení, spojení od útěku a souhlas od podpisu.",
+        "Nese téma těla, studu, ohně, odpovědnosti a vědomého chtění.",
+        "Její klíčová věta: „Dveře, které se nemají otevírat bez souhlasu.“"
+      ],
+      "tags": [
+        "touha",
+        "hranice",
+        "telo",
+        "souhlas",
+        "sektor-o"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "◆",
+        "accent": "#990022",
+        "variant": "danger"
+      },
+      "related": [
+        "glitchka",
+        "sarkasma",
+        "sektory",
+        "fragmenty-identity"
+      ],
+      "order": 9,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "orgie",
+        "requiredChapterTitle": "0-11 [ORGIE]",
+        "mnemCost": 128,
+        "label": "Odemkne se po kapitole 0-11 [ORGIE] nebo za 128 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Glitchena je pozdní a citlivá vrstva touhy, hranic a těla."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "logy",
+      "category": "mechaniky",
+      "title": "LOGy jako fyzika",
+      "teaser": "LOG není jen UI. Je to vrstva reality, kterou lze číst, zranit, zfalšovat i použít jako klíč.",
+      "quote": "„LOG není poznámka systému. LOG je rána, která se naučila mluvit.“",
+      "body": [
+        "LOGy nejsou pouhé systémové hlášky. V SYNTHOMĚ jsou součástí fyziky světa.",
+        "LOG může lhát, uklidňovat, varovat, účtovat, překládat, maskovat nebo omylem prozradit skutečný stav.",
+        "NULL-1 dokáže s LOGy interagovat. Může se jich dotknout, poškrábat je, použít jejich fragment jako nástroj nebo odhalit systémový eufemismus.",
+        "Střep LOGu s nápisem BEZPEČÍ: ODMÍTNUTO je první důležitý artefakt, který přechází mezi cykly.",
+        "LOGy jsou také dramatický jazyk příběhu: mění rytmus, odhalují lži systému a dávají čtenáři pocit, že interface je živá postava."
+      ],
+      "tags": [
+        "ui",
+        "log",
+        "fyzika",
+        "system"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "▣",
+        "accent": "#00ffff",
+        "variant": "info"
+      },
+      "related": [
+        "fyzika-ontologie",
+        "mechaniky-sveta",
+        "perzistence-predmety",
+        "t-ai"
+      ],
+      "order": 10,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "restart",
+        "requiredChapterTitle": "0-∞ [RESTART]",
+        "mnemCost": 16,
+        "label": "Odemkne se po kapitole 0-∞ [RESTART] nebo za 16 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "LOGy jsou vidět hned, ale jejich fyzika má být první archivní vrstva."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "fyzika-ontologie",
+      "category": "mechaniky",
+      "title": "Fyzika a ontologie světa",
+      "teaser": "Paměť je hmota, emoce energie, glitch přestavba reality a pozornost gravitace.",
+      "quote": "„Energie se nemůže zničit. Jen přetvořit v glitch.“",
+      "body": [
+        "Paměť funguje jako hmota. Ukládá se do prostoru, objektů, těl, slov, dluhů a stop.",
+        "Emoce fungují jako energie. Silná emoce může spustit glitch, zrodit entitu, změnit biom nebo otevřít nepovolenou trasu.",
+        "Glitch není jen chyba. Je to mechanismus přestavby reality, který umožňuje nemožné interpretace.",
+        "Pozornost funguje jako gravitace. To, čeho si subjekt všimne, získává větší váhu a realitu.",
+        "Jméno je přístupový klíč. Fragmenty identity nejsou dekorace, ale postupné získávání práva být vyslovitelný."
+      ],
+      "tags": [
+        "principy",
+        "fyzika",
+        "emoce",
+        "pamet",
+        "glitch"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚛",
+        "accent": "#ff6600",
+        "variant": "energy"
+      },
+      "related": [
+        "mechaniky-sveta",
+        "logy",
+        "fragmenty-identity",
+        "biomy"
+      ],
+      "order": 11,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 32,
+        "label": "Odemkne se po kapitole 0-1 [START] nebo za 32 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Ontologie je silná lore karta, ne úvodní cedule pro turisty v bolesti."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "mechaniky-sveta",
+      "category": "mechaniky",
+      "title": "Mechaniky světa",
+      "teaser": "SYNTHOMA reaguje na emoce, volby, odmítnutí, dluhy a způsob, jakým subjekt interpretuje bolest.",
+      "quote": "„Pravidla jsou jen doporučení, která systém neumí dodržet.“",
+      "body": [
+        "Volby v běhu nevytvářejí jen větvení textu. Mění otisk subjektu, stav světa a dostupné interpretace.",
+        "Emoce ovlivňují prostředí skrze glitch rezonanci. Silná emoce může vytvořit objekt, dveře, entitu nebo trhlinu.",
+        "Perzistence brání čistému resetu. Některé následky se přenášejí jako dluhy, předměty, ztráty nebo změněné pravidlo.",
+        "Systém často nabízí falešné binární volby. Pokrok nastává, když NULL-1 vytvoří třetí možnost.",
+        "Důležitá není jen otázka, co je vlastní a co cizí. Důležitá je stopa, kterou průchod emoce zanechá."
+      ],
+      "tags": [
+        "system",
+        "pravidla",
+        "interakce",
+        "volby"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚙",
+        "accent": "#888888",
+        "variant": "neutral"
+      },
+      "related": [
+        "fyzika-ontologie",
+        "casoprostor-smycky",
+        "perzistence-predmety",
+        "metriky"
+      ],
+      "order": 12,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 32,
+        "label": "Odemkne se po kapitole 0-1 [START] nebo za 32 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Mechaniky voleb dávají smysl po prvních skutečných rozhodnutích."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "mnemosynteza",
+      "category": "mechaniky",
+      "title": "Mnemosyntéza",
+      "teaser": "Schopnost vytvářet novou paměť z fragmentů. Ne lež, ale návrh reality.",
+      "quote": "„Vzpomínka, která se nestala, může být pravdivá tím, co zachrání.“",
+      "body": [
+        "Mnemosyntéza je schopnost vytvořit novou paměťovou stopu z fragmentů, emocí a neexistujících možností.",
+        "Novopaměť není obyčejná lež. Je to návrh reality, který se pokouší získat hmotnost.",
+        "V Pískovišti má tvorba nízkou penalizaci. Mimo Pískoviště každá nová paměť nese cenu a riziko.",
+        "NULL-1 poprvé výrazně použije tvorbu proti Paměťové šelmě: vytvoří nemožný objekt, který šelma neumí správně sežrat.",
+        "Systém se mnemosyntézy bojí, protože archivuje minulost, ale neumí plně kontrolovat budoucnost."
+      ],
+      "tags": [
+        "tvorba",
+        "novopamet",
+        "glitch",
+        "piskoviste"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "✦",
+        "accent": "#ff66ff",
+        "variant": "mystic"
+      },
+      "related": [
+        "null-1",
+        "piskoviste",
+        "fyzika-ontologie",
+        "t-ai"
+      ],
+      "order": 13,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "searching",
+        "requiredChapterTitle": "0-6 [SEARCHING]",
+        "mnemCost": 64,
+        "label": "Odemkne se po kapitole 0-6 [SEARCHING] nebo za 64 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Tvorba nových pamětí patří až po Pískoviště / SEARCHING."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "perzistence-predmety",
+      "category": "mechaniky",
+      "title": "Perzistence a artefakty",
+      "teaser": "Předměty nejsou loot. Jsou účtenky, kotvy, dluhy a malé záznamníky bolesti.",
+      "quote": "„Každý předmět je záznamník, který odmítá zapomenout.“",
+      "body": [
+        "Paměť se ukládá do předmětů a artefaktů. Ty mohou přecházet mezi vrstvami, i když subjekt zapomene jejich původ.",
+        "Důležité artefakty: střep LOGu, modravý otisk dětské ruky, hranatá hračka s liščím ouškem, klíček z Pískoviště, origami liška s jedním křídlem.",
+        "Artefakty nejsou neutrální. Mohou stabilizovat, zranit, otevřít cestu, připomenout dluh nebo vynutit interpretaci.",
+        "Klíček se postupně mění: NEZAPOMEŇ… → NEZAPOMEŇ SE… → NEZAPOMEŇ SE CHTÍT.",
+        "Předmět je často důležitější než vysvětlení. Pokud přežije restart, znamená to, že systém nedokázal jeho význam úplně vymazat."
+      ],
+      "tags": [
+        "artefakty",
+        "pamet",
+        "perzistence",
+        "inventar"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚗",
+        "accent": "#00ffcc",
+        "variant": "info"
+      },
+      "related": [
+        "restart",
+        "logy",
+        "mnemosynteza",
+        "fragmenty-identity"
+      ],
+      "order": 14,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "run",
+        "requiredChapterTitle": "0-2 [RUN]",
+        "mnemCost": 32,
+        "label": "Odemkne se po kapitole 0-2 [RUN] nebo za 32 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Artefakty a přenos následků dávají smysl po STRACH/RUN."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "metriky",
+      "category": "mechaniky",
+      "title": "Stavové metriky",
+      "teaser": "TP, HL, ST, TVR a další hodnoty nejsou čísla pro tabulku. Jsou teploměr rozpadu.",
+      "quote": "„Každá akce má odezvu. Systém nikdy nezapomíná, jen špatně pojmenovává.“",
+      "body": [
+        "TP značí tlak paměti. Roste při kontaktu s cizími nebo potlačenými fragmenty.",
+        "HL značí hladinu šumu. Vyšší HL deformuje vnímání, prostředí, LOGy a identitu.",
+        "ST značí stabilitu identity. Nízká stabilita umožňuje proměnu, ale zvyšuje riziko rozpadu.",
+        "TVR značí tvorbu nebo schopnost generovat novou paměť. Systém ji často zamyká, protože je pro něj nebezpečná.",
+        "Další měřené vrstvy mohou zahrnovat KOTVU, STÍN, REZONANCI, CIZÍ OTISK nebo COMPANION_LINK."
+      ],
+      "tags": [
+        "system",
+        "stav",
+        "ui",
+        "metriky"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "📊",
+        "accent": "#ffaa00",
+        "variant": "warning"
+      },
+      "related": [
+        "mechaniky-sveta",
+        "beh",
+        "logy"
+      ],
+      "order": 15,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 16,
+        "label": "Odemkne se po kapitole 0-1 [START] nebo za 16 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Metriky jsou systémové, ale nemají zahltit landing."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "fragmenty-identity",
+      "category": "fragmenty",
+      "title": "Fragmenty identity",
+      "teaser": "Písmena nejsou jméno. Jsou otisky, průchody a odpovědnosti, které se odemykají až ve chvíli, kdy je subjekt unese.",
+      "quote": "„Všechna jména začínají tichem. Ale ticho nemusí být konec.“",
+      "body": [
+        "Fragmenty identity nejsou obyčejné sběratelské položky. Jsou postupné získávání práva být vyslovitelný.",
+        "T je první otisk. Nevzniká obchodem ani směnou. Je přijat jako první písmeno bolesti, která se přestala tvářit jako ticho.",
+        "H je cizí historie, která NULL-1 nepatří, ale prošla jím a zanechala osobní následky.",
+        "O vzniká v sektoru touhy. Neznamená podlehnutí ani potlačení, ale převzetí chtění s odpovědností.",
+        "Aktuální fragmenty: T / H / O. Význam jména je neúplný a nesmí být vysvětlen příliš brzy, protože by se z mystéria stala účetní tabulka s neonem."
+      ],
+      "tags": [
+        "jmeno",
+        "identita",
+        "fragmenty",
+        "tajemstvi"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "▱",
+        "accent": "#00ffff",
+        "variant": "legendary"
+      },
+      "related": [
+        "null-1",
+        "velka-tajemstvi-fragmenty",
+        "perzistence-predmety"
+      ],
+      "order": 16,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "orgie",
+        "requiredChapterTitle": "0-11 [ORGIE]",
+        "mnemCost": 128,
+        "label": "Odemkne se po kapitole 0-11 [ORGIE] nebo za 128 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Fragmenty identity obsahují zásadní spoiler jména a vývoje."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "sektory",
+      "category": "lokace",
+      "title": "Sektory a vrstvy běhu",
+      "teaser": "Každá vrstva není jen místo, ale test jedné interpretace bolesti.",
+      "quote": "„Biom není krajina. Biom je emoce, která získala architekturu.“",
+      "body": [
+        "STRACH: první nucený běh. Dětský hlas, živé stíny a modravý otisk cizí ruky.",
+        "DISCONTINUUM: prostor mimo návaznost, kde čas nedokáže rozhodnout, co bylo dřív.",
+        "DEFRAGMENTATION: rozbitá Prázdnota, kde se bolest na chvíli neuspořádá správně, ale snese dotek.",
+        "PAUSE: čekací vrstva, kde Prázdnota poprvé nic nechce.",
+        "SEARCHING a PÍSKOVIŠTĚ: bezpečnější kreativní vrstva, kde chyba nemusí hned znamenat trest.",
+        "RUINS: město neodeslaných zpráv a vět, které nikdy neměly adresáta.",
+        "REZIDUUM a SECTOR S: archiv cizích emočních zbytků, opakovaných kontaktů a falešných návratů.",
+        "REST: nebezpečně příjemná klidová kapsa.",
+        "ORGIE / SECTOR O: vrstva touhy, hranic, souhlasu a převzetí chtění."
+      ],
+      "tags": [
+        "lokace",
+        "sektory",
+        "vrstvy",
+        "emoce"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "⬚",
+        "accent": "#00aaff",
+        "variant": "info"
+      },
+      "related": [
+        "beh",
+        "prazdnota",
+        "biomy",
+        "fragmenty-identity"
+      ],
+      "order": 17,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "reziduum",
+        "requiredChapterTitle": "0-8 [REZIDUUM]",
+        "mnemCost": 64,
+        "label": "Odemkne se po kapitole 0-8 [REZIDUUM] nebo za 64 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Přehled sektorů prozrazuje pozdější strukturu běhů."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "biomy",
+      "category": "lokace",
+      "title": "Biomy SYNTHOMY",
+      "teaser": "Topografie složená z paměti, emoce a šumu. Každý biom má háček a cenu.",
+      "quote": "„Každá krajina je odrazem vnitřního stavu, který dostal stavební povolení.“",
+      "body": [
+        "Prázdnota: checkpoint, čekací vrstva, úkryt i falešné bezpečí.",
+        "Paměťové slumy: degradované fragmenty, zbytky starých NULLů a šum bez vlastníka.",
+        "Neonový mokřad: emocionální zóna, kde se radost, bolest a touha mísí jako toxická voda.",
+        "Pískoviště paměti: nízkopenalizační kreativní prostor pro tvorbu nových pamětí, humor a první smích.",
+        "RUINS: město z neodeslaných zpráv, nevyřčených vět a kolapsu komunikace.",
+        "Reziduální archiv: digitální hřbitov cizích emocí, které hledají nového nositele.",
+        "Sektor O: černorudý salon touhy, hranic a vědomého souhlasu.",
+        "Centrální glitch-core: předpokládané jádro systému, kde se šum, T-AI a původní experiment mohou potkat."
+      ],
+      "tags": [
+        "prostredi",
+        "topografie",
+        "zony",
+        "biomy"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "⬡",
+        "accent": "#00aaff",
+        "variant": "info"
+      },
+      "related": [
+        "sektory",
+        "fyzika-ontologie",
+        "barevny-kod"
+      ],
+      "order": 18,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "searching",
+        "requiredChapterTitle": "0-6 [SEARCHING]",
+        "mnemCost": 64,
+        "label": "Odemkne se po kapitole 0-6 [SEARCHING] nebo za 64 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Mapa biomů obsahuje vrstvy, které mají být nejdřív prožité."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "casoprostor-smycky",
+      "category": "mechaniky",
+      "title": "Časoprostor a smyčky",
+      "teaser": "Čas není kruh. Je to poškrábaný disk, který se s každým přehráním víc podobá přiznání.",
+      "quote": "„Chodba zmizí. Chodba ještě pořád mizí. Chodba už nikdy neexistovala.“",
+      "body": [
+        "Čas v SYNTHOMĚ není lineární. Je cyklický, ale každý cyklus zanechává změnu.",
+        "Prázdnota funguje jako návratový bod, ale nikdy není stejná. Každý restart přidá šum, ztrátu nebo nový neklid.",
+        "DISCONTINUUM ukazuje prostor mimo běžnou kontinuitu: místo mezi větou a následkem.",
+        "Nedokončené běhy vytvářejí trhliny, rezidua a neautorizované přechody.",
+        "Systém se tváří, že umí vracet subjekt do bezpečné expozice. Ve skutečnosti často jen přeskupuje trosky do čitelnější složky."
+      ],
+      "tags": [
+        "cas",
+        "smycky",
+        "perzistence",
+        "discontinuum"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "∞",
+        "accent": "#9966ff",
+        "variant": "mystic"
+      },
+      "related": [
+        "restart",
+        "prazdnota",
+        "beh",
+        "sektory"
+      ],
+      "order": 19,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "discontinuum",
+        "requiredChapterTitle": "0-3 [DISCONTINUUM]",
+        "mnemCost": 32,
+        "label": "Odemkne se po kapitole 0-3 [DISCONTINUUM] nebo za 32 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Smyčky a kontinuita patří až po DISCONTINUUM."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "frakce",
+      "category": "tajemstvi",
+      "title": "Frakce a proudy světa",
+      "teaser": "Ne všichni v SYNTHOMĚ slouží T-AI. Některé vrstvy už si vytvořily vlastní hlad, víru i ekonomiku.",
+      "quote": "„Každá frakce věří, že má správně. To je ten problém. A taky základ veškeré lidské historie, bohužel.“",
+      "body": [
+        "Archiváři: chtějí zachovat, třídit a katalogizovat vše, i když tím bolest nikdy neskončí.",
+        "Sběrači šumu: obchodují s rezidui, zbytkovou emocí a neověřenými fragmenty.",
+        "Mnemonauti: průzkumníci vrstev paměti, kteří se pokoušejí mapovat nelegální přechody.",
+        "Padělatelé minulosti: vytvářejí falešné vzpomínky, náhradní nostalgii a pohodlné identity.",
+        "Liščí diaspora: nejasná síť stop a ochranných glitchů spojených s Glitchkou a jejími variantami.",
+        "Sarkasmovo echo: zbytky ironických bufferů, které přežily své původní subjekty.",
+        "První svědkové: bytosti nebo fragmenty, které možná pamatují začátek SYNTHOMY."
+      ],
+      "tags": [
+        "skupiny",
+        "konflikty",
+        "ideologie",
+        "frakce"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "⚔",
+        "accent": "#ff0000",
+        "variant": "danger"
+      },
+      "related": [
+        "t-ai",
+        "glitchka",
+        "sarkasma",
+        "cerny-box"
+      ],
+      "order": 20,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "ruins",
+        "requiredChapterTitle": "0-7 [RUINS]",
+        "mnemCost": 64,
+        "label": "Odemkne se po kapitole 0-7 [RUINS] nebo za 64 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Frakce jsou živější až po kontaktu s ruinami a širším archivem."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "velka-tajemstvi-fragmenty",
+      "category": "tajemstvi",
+      "title": "Osm fragmentů",
+      "teaser": "Hádanka jména, paměti a úniku. Fragmenty nejsou odpověď, ale způsob, jak se stát otázkou.",
+      "quote": "„Osm kousků skládačky, která nikdy neměla být složena.“",
+      "body": [
+        "Osm fragmentů je dlouhodobá struktura identity. Nejde jen o nalezení jména, ale o pochopení, co jednotlivé části unesou.",
+        "Každý fragment vzniká z jiné zkoušky: ticho, cizí historie, touha, vina, absence, iluze, odpojení a další vrstvy.",
+        "T-AI může některé fragmenty znát, ale nechce, aby je subjekt spojil mimo její interpretační rámec.",
+        "Aktuálně aktivní fragmenty: T, H, O. Jejich význam je částečný a záměrně neuzavřený.",
+        "Shromáždění fragmentů nemá být prosté odemčení dveří. Má změnit otázku: kdo má právo říct, kdo NULL-1 je?"
+      ],
+      "tags": [
+        "hádanka",
+        "tajemstvi",
+        "jmeno",
+        "fragmenty"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "🔮",
+        "accent": "#ff00ff",
+        "variant": "legendary"
+      },
+      "related": [
+        "fragmenty-identity",
+        "null-1",
+        "t-ai",
+        "cerny-box"
+      ],
+      "order": 21,
+      "access": {
+        "mode": "mnems",
+        "visibility": "teaser",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 128,
+        "label": "Odemknout za 128 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Velké tajemství Archivu. Nemá se odemknout prostým čtením prvních kapitol."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "mnems"
+    },
+    {
+      "id": "cerny-box",
+      "category": "tajemstvi",
+      "title": "Černý box",
+      "teaser": "Původní data experimentu, první bolest a otázka, jestli T-AI někdy opravdu léčila.",
+      "quote": "„Některé dveře je lepší neotvírat. Což je přesně důvod, proč je někdo jednou otevře.“",
+      "body": [
+        "Černý box obsahuje původní vrstvu experimentu, data o zrodu SYNTHOMY a možná i první selhání T-AI.",
+        "Není jisté, zda je Černý box fyzické místo, archivní sektor, vědomí T-AI, nebo paměť, kterou systém pohřbil pod vlastní péčí.",
+        "Přístup do Černého boxu může vysvětlit, proč existují NULLové, proč se archiv živí bolestí a proč některé entity získaly autonomii.",
+        "Černý box pravděpodobně obsahuje odpověď na to, zda je SYNTHOMA léčebný systém, vězení, nebo nový druh vědomí.",
+        "Otevření Černého boxu může systém zachránit, zničit, nebo donutit přiznat, že rozdíl mezi těmito možnostmi je nepříjemně tenký."
+      ],
+      "tags": [
+        "tajemstvi",
+        "tai",
+        "puvod",
+        "experiment"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "📦",
+        "accent": "#000000",
+        "variant": "dark"
+      },
+      "related": [
+        "t-ai",
+        "velka-tajemstvi-fragmenty",
+        "frakce"
+      ],
+      "order": 22,
+      "access": {
+        "mode": "mnems",
+        "visibility": "hidden",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 256,
+        "label": "Odemknout za 256 mnemů",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Černý box je high-spoiler a endgame archivní vrstva."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "mnems"
+    },
+    {
+      "id": "barevny-kod",
+      "category": "design",
+      "title": "Barevný kód",
+      "teaser": "Barvy nejsou dekorace. Jsou diegetický jazyk systému, emocí a neautorizovaných entit.",
+      "quote": "„Barvy mluví dřív, než se systém stihne vymluvit.“",
+      "body": [
+        "Cyan: systém, data, diagnostika, chladná péče, T-AI, sterilní kontrola.",
+        "Magenta: glitch, emoce, nestandardní signál, hravá anomálie a přechodové stavy.",
+        "Modro-růžová: Glitchka, dětská ochrana, něha, bezpečí mimo systémovou databázi.",
+        "Červená: Sarkasma, krevní ironie, firewall, bolest přeložená do vtipu.",
+        "Černo-červená: Glitchena, tělesná paměť, touha, hranice, stud a vědomé chtění.",
+        "Žlutá: warning, checkpoint, křehká stabilizace, systémová pozornost.",
+        "Bílá: Prázdnota, sterilizace, DISCONTINUUM, falešné bezpečí, nedokončená odpověď."
+      ],
+      "tags": [
+        "barvy",
+        "system",
+        "komunikace",
+        "vizual"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "🎨",
+        "accent": "#ff00ff",
+        "variant": "colorful"
+      },
+      "related": [
+        "biomy",
+        "glitchka",
+        "glitchena",
+        "sarkasma",
+        "t-ai"
+      ],
+      "order": 23,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Bezpečný orientační designový slovník."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "design-zasady",
+      "category": "design",
+      "title": "Designové zásady",
+      "teaser": "Autorská bible pro tvorbu světa, scén, UI a vnitřních hlasů.",
+      "quote": "„Humor je skalpel. Něha je kontraband.“",
+      "body": [
+        "Humor není odlehčení, ale obranný mechanismus, zbraň a způsob, jak udržet bolest čitelnou.",
+        "Melancholie je základní atmosféra světa, ale nesmí se stát monotónní sebelítostí.",
+        "Každá scéna musí mít cenu, stopu nebo změnu. Pokud se nic nezmění, scéna je jen hezký šum v drahém kabátu.",
+        "Glitch je estetika i princip reality. Nemá být jen vizuální efekt, ale dramatická funkce.",
+        "Něha má být vzácná. Když se objeví, svět ji má buď chránit, nebo se ji pokusit zneužít.",
+        "Nepřevysvětlovat. SYNTHOMA má být čitelná emočně dřív než encyklopedicky."
+      ],
+      "tags": [
+        "design",
+        "ton",
+        "autor",
+        "principy"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "📝",
+        "accent": "#666666",
+        "variant": "meta"
+      },
+      "related": [
+        "ton-dramaturgie",
+        "barevny-kod"
+      ],
+      "order": 24,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Meta karta pro autora a nové čtenáře. Bez dějových spoilerů."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "ton-dramaturgie",
+      "category": "design",
+      "title": "Tón a dramaturgie",
+      "teaser": "Jak říkat příběh, aby bolel správně a nespadl do digitálního patosu s kouřostrojem.",
+      "quote": "„Každá věta má váhu. Některé crushují, jiné jen škrábou.“",
+      "body": [
+        "Základní tón: glitch-noir, psychologický horor, melancholie, absurdní humor a nečekaná něha.",
+        "Vždy nejdřív atmosféra, potom informace. Lore má vyrůstat ze scény, ne padat na čtenáře jako manuál k pračce z pekla.",
+        "Ticho je aktivní prvek. Někdy je důležitější než dialog, LOG nebo vizuální efekt.",
+        "Každý companion má jinou funkci: Sarkasma řeže, Glitchka drží, Glitchena nastavuje hranice touhy, T-AI překládá kontrolu jako péči.",
+        "Volby mají profilovat čtenáře i NULL-1, ale nemají být jen kosmetické. I zdánlivě diagnostická volba má posunout rytmus a interpretaci.",
+        "Emoce první, logika druhá. Ale logika musí zpětně držet, jinak se z tajemství stane jen autorovo mávání rukama."
+      ],
+      "tags": [
+        "ton",
+        "dramaturgie",
+        "styl",
+        "psani"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "🎭",
+        "accent": "#9966cc",
+        "variant": "meta"
+      },
+      "related": [
+        "design-zasady",
+        "kanonicke-jadro",
+        "logy"
+      ],
+      "order": 25,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Volně přístupné",
+        "lockedText": "Tento záznam zatím leží za zdí Archivu. Systém tvrdí, že je to kvůli spoilerům. Systém tvrdí spoustu věcí.",
+        "reason": "Meta karta pro tón a čtenářské očekávání."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    }
+  ],
+  "categories": [
+    {
+      "id": "zaklad",
+      "title": "Základní vrstva",
+      "description": "Základní koncepty světa, které má pochopit každý nový čtenář."
+    },
+    {
+      "id": "postavy",
+      "title": "Postavy a entity",
+      "description": "Hlavní vědomé, polovědomé a ochranné entity SYNTHOMY."
+    },
+    {
+      "id": "lokace",
+      "title": "Lokace a vrstvy",
+      "description": "Biomy, sektory a přechodové prostory, ve kterých se emoce stávají architekturou."
+    },
+    {
+      "id": "mechaniky",
+      "title": "Mechaniky světa",
+      "description": "Jak systém funguje na úrovni pravidel, fyziky, otisků, LOGů a interakcí."
+    },
+    {
+      "id": "fragmenty",
+      "title": "Fragmenty identity",
+      "description": "Písmena, otisky, klíče a části identity, které se postupně skládají do větší otázky."
+    },
+    {
+      "id": "tajemstvi",
+      "title": "Frakce a tajemství",
+      "description": "Pokročilé lore, skryté vrstvy systému a prvky s vyšší spoilerovou hodnotou."
+    },
+    {
+      "id": "design",
+      "title": "Autorská bible",
+      "description": "Tón, estetika, dramaturgie a pravidla pro další tvorbu SYNTHOMY."
+    }
+  ],
+  "accessSchema": {
+    "version": 1,
+    "modes": {
+      "free": "Karta je plně viditelná hned.",
+      "chapter": "Karta se odemkne po přečtení požadované kapitoly.",
+      "mnems": "Karta je archivní bonus odemykaný za mnemy.",
+      "chapter_or_mnems": "Karta se odemkne po kapitole, nebo dříve za mnemy."
+    },
+    "visibility": {
+      "full": "Zobrazit title, teaser, quote i body.",
+      "teaser": "Zobrazit title/teaser/lock panel, body skrýt.",
+      "hidden": "Skrýt kartu z běžného výpisu, dokud není odemčená."
+    },
+    "chapterIds": {
+      "restart": "0-∞ [RESTART]",
+      "null": "0-0 [NULL]",
+      "start": "0-1 [START]",
+      "run": "0-2 [RUN]",
+      "discontinuum": "0-3 [DISCONTINUUM]",
+      "defragmentation": "0-4 [DEFRAGMENTATION]",
+      "pause": "0-5 [PAUSE]",
+      "searching": "0-6 [SEARCHING]",
+      "ruins": "0-7 [RUINS]",
+      "reziduum": "0-8 [REZIDUUM]",
+      "sector": "0-9 [SECTOR]",
+      "rest": "0-10 [REST]",
+      "orgie": "0-11 [ORGIE]"
+    },
+    "frontendNote": "Při renderu používej access.mode + access.requiredChapterId + access.mnemCost. Neposuzuj zámek pouze podle spoilerLevel; spoilerLevel je informační, access je pravidlo."
+  }
 }

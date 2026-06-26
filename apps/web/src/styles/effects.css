@@ -407,7 +407,6 @@ body:not(.force-shine) .no-animations .noising-char.noising-static {
     0deg, transparent, transparent 2px,
     rgba(0, 255, 0, .03) 0, rgba(0, 255, 0, .03) 4px
   );
-  mix-blend-mode: overlay;
 }
 
 .themed-video {
@@ -445,11 +444,10 @@ body:not(.force-shine) .no-animations .noising-char.noising-static {
   padding: 16px;
   background: color-mix(in oklab, var(--bg-glass, rgba(255,255,255,0.06)) 100%, transparent);
   box-shadow: 0 0 18px color-mix(in oklab, var(--shadow-primary, #0ff) 16%, transparent) inset;
-  -webkit-backdrop-filter: blur(6px) saturate(1.02);
-  backdrop-filter: blur(6px) saturate(1.02);
 }
 .lib-section-title { font-size: 20px; font-weight: 700; margin: 0; }
 .lib-list { margin-top: 10px; display: grid; gap: 10px; list-style: none; padding: 0; }
+.lib-list li { overflow: hidden; }
 
 .lib-link {
   display: inline-block;
@@ -457,13 +455,21 @@ body:not(.force-shine) .no-animations .noising-char.noising-static {
   border-radius: 10px;
   border: 1px solid var(--border-secondary, rgba(255,255,255,0.15));
   background: color-mix(in oklab, var(--bg-glass, rgba(255,255,255,0.06)) 100%, transparent);
-  color: inherit; text-decoration: none;
-  font-weight: 700;
-  text-shadow: 0 0 4px var(--glow-secondary, rgba(0,255,255,.3));
+  color: var(--text-primary) ; text-decoration: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  text-shadow: 0 0 4px var(--text-secondary, rgba(0,255,255,.3));
   transition: border-color .18s ease, box-shadow .18s ease, transform .12s ease, filter .18s ease, background .18s ease;
   box-shadow: 0 0 0 0 transparent;
   position: relative;
   overflow: visible;
+}
+button.lib-link {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 .lib-link:hover {
   border-color: var(--border-primary, currentColor);
@@ -499,6 +505,20 @@ body:not(.force-shine) .no-animations .noising-char.noising-static {
 }
 .lib-link:hover::before { animation-direction: normal; }
 .lib-link:hover::after  { animation-direction: reverse; }
+
+.lib-link--locked::before, .lib-link--locked::after { content: none !important; display: none !important; }
+.lib-link--locked:hover { transform: none !important; filter: none !important; box-shadow: none !important; }
+
+/* Library heading – disable infinite fake-layer animations (GPU cost) */
+.library-page #glitch-library .glitch-fake1,
+.library-page #glitch-library .glitch-fake2 { animation: none !important; }
+
+/* Library panels – no backdrop-filter (expensive with many children) */
+.library-page .panel.glass {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(var(--bg-secondary-rgb, 10,10,12), 0.72) !important;
+}
 
 /* Layout + bg pro library – fixed bg. */
 .library-page { position: relative; min-height: 100vh; overflow: hidden; }

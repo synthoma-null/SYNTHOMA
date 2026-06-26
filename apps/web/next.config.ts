@@ -17,14 +17,15 @@ function getSecurityHeaders() {
     // In dev allow unsafe-eval for React Refresh/HMR runtime
     // and allow jsDelivr for UMD/CDN scripts used by public/index.html
     isDev
-      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdn.tailwindcss.com"
-      : "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com",
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://js.stripe.com"
+      : "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://js.stripe.com",
     // Some browsers treat element-specific differently; be explicit
     isDev
-      ? "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdn.tailwindcss.com"
-      : "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com",
+      ? "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://js.stripe.com"
+      : "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://js.stripe.com",
     // HMR/websockets in dev
-    isDev ? "connect-src 'self' ws: https:" : "connect-src 'self'",
+    isDev ? "connect-src 'self' ws: https:" : "connect-src 'self' https://api.stripe.com",
+    "frame-src https://js.stripe.com https://hooks.stripe.com",
     "frame-ancestors 'self'",
   ];
   base.push({ key: 'Content-Security-Policy', value: cspDirectives.join('; ') });
@@ -33,6 +34,13 @@ function getSecurityHeaders() {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg', 'bcryptjs'],
   async headers() {
     return [
       {

@@ -1,12 +1,11 @@
 ﻿import "../src/styles/base.css";
-
 import "../src/styles/components.css";
-
 import "../src/styles/effects.css";
-
 import "../src/styles/themes.css";
-
 import "../src/styles/reader.css";
+import "../src/styles/auth.css";
+import "../src/styles/profile.css";
+import "../src/styles/paywall.css";
 
 import { tracks } from "../src/data/playlist";
 
@@ -18,11 +17,20 @@ import ScrollGuardClient from "./components/ScrollGuardClient";
 
 import MBTIProviderClient from "./components/MBTIProviderClient";
 
+import SessionProviderClient from "./components/SessionProviderClient";
+
+import IdentityPanelClient from "./components/IdentityPanelClient";
+
+import ProfilePanelClient from "./components/ProfilePanelClient";
+import WhisperFloat from "../src/components/whispers/WhisperFloat";
+
+import CookieConsent from "../src/components/consent/CookieConsent";
+
 import MBTIHudClient from "./components/MBTIHudClient";
 
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import type { PropsWithChildren } from "react";
 
@@ -75,14 +83,6 @@ export const metadata: Metadata = {
   },
 
   manifest: "/manifest.json",
-
-  themeColor: [
-
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-
-    { media: "(prefers-color-scheme: light)", color: "#0b0b0c" },
-
-  ],
 
   metadataBase: new URL("https://www.synthoma.cz"),
 
@@ -160,7 +160,12 @@ export const metadata: Metadata = {
 
 };
 
-
+export const generateViewport = (): Viewport => ({
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#0b0b0c" },
+  ],
+});
 
 const jsonLd = {
 
@@ -221,6 +226,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           </div>
 
         </noscript>
+
+        <SessionProviderClient>
 
         <MBTIProviderClient>
 
@@ -368,7 +375,17 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           <MBTIHudClient />
 
+          <IdentityPanelClient />
+
+          <ProfilePanelClient />
+
+          <WhisperFloat />
+
+          <CookieConsent />
+
         </MBTIProviderClient>
+
+        </SessionProviderClient>
 
       </body>
 

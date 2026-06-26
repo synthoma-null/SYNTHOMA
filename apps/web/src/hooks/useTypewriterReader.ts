@@ -115,7 +115,7 @@ export function useTypewriterReader(srcUrl: string, autoStart: boolean = true) {
   const bindChoiceHandlers = useCallback(() => {
     // Implementation would be moved here from the main component
     // This is a placeholder - full implementation would be quite large
-    console.log('Binding choice handlers...')
+    // placeholder – full implementation lives in TypewriterReader.tsx
   }, [])
 
   const scoreFromNode = useCallback((node: Element | null) => {

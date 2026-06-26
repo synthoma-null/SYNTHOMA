@@ -1,28 +1,48 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import TypewriterReader from '../../src/components/TypewriterReader';
 import styles from './ReaderContent.module.css';
 import { readBooleanStorage, readStorage, writeStorage } from '../../src/lib/browser';
 import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { saveLastChapterPath, saveReadingProgress } from '../../src/lib/readerState';
 import { useRouter, useSearchParams } from 'next/navigation';
+import PaywallModal from '../../src/components/PaywallModal';
+import { getChapterById } from '../../src/content/booksManifest';
+import ChapterSyncLog, { type SyncDelta } from '../../src/components/run/ChapterSyncLog';
 
 // Duplicated transform and reveal logic removed in favor of TypewriterReader
 
 export default function ReaderContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
-  const effectiveUrl = searchParams?.get("u") || defaultUrl;
+  const defaultUrl = "/books/SYNTHOMA-NULL/0-\u221e [RESTART].html";
+
+  // Support both ?chapter=<id> (new API path) and legacy ?u=<path>
+  const chapterId = searchParams?.get('chapter') ?? null;
+  const legacyUrl = searchParams?.get('u') ?? null;
+  const effectiveUrl = chapterId
+    ? `/api/chapter/${encodeURIComponent(chapterId)}`
+    : (legacyUrl ?? defaultUrl);
+
+  const chapterMeta = chapterId ? getChapterById(chapterId) : null;
+
+  const [paywalled, setPaywalled] = useState(false);
 
   const [showHelp, setShowHelp] = useState(false);
+
+  // Intercept 402 from chapter API — show paywall instead of broken HTML
+  const handleFetchError = useCallback((status: number) => {
+    if (status === 402) setPaywalled(true);
+  }, []);
   const [prevChapter, setPrevChapter] = useState<{ title: string; path: string } | null>(null);
   const [nextChapter, setNextChapter] = useState<{ title: string; path: string } | null>(null);
   const [instantMode, setInstantMode] = useState(() => readBooleanStorage('instantReadMode', false));
   const [scrollPercent, setScrollPercent] = useState(0);
   const [isDebug] = useState(() => true); // Vždy zapnutý debug pro PDF tlačítko
   const [pdfBusy, setPdfBusy] = useState(false);
+  const [syncDelta, setSyncDelta] = useState<SyncDelta | null>(null);
+  const completionFiredRef = useRef(false);
 
   // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes, Arrow keys nav
   useEffect(() => {
@@ -129,6 +149,41 @@ export default function ReaderContent() {
     return () => { cancelled = true; };
   }, [bookId, chapterPath]);
 
+  // Detect chapter completion at scroll >= 95% and show ChapterSyncLog
+  useEffect(() => {
+    if (!chapterId || scrollPercent < 95 || completionFiredRef.current) return;
+    completionFiredRef.current = true;
+
+    (async () => {
+      try {
+        // Fetch run state before marking complete
+        const runBefore = await fetch('/api/me/run').then(r => r.ok ? r.json() : null).catch(() => null);
+        const before = runBefore?.run ?? null;
+
+        // Save completed progress to DB
+        const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';
+        await fetch('/api/me/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chapterId, collection, chapterTitle: chapterMeta?.title, completed: true, progressPercent: 100 }),
+        }).catch(() => {});
+
+        // Fetch run state after
+        const runAfter = await fetch('/api/me/run').then(r => r.ok ? r.json() : null).catch(() => null);
+        const after = runAfter?.run ?? null;
+
+        setSyncDelta({
+          stabilityBefore: before?.stability ?? 50,
+          stabilityAfter: after?.stability ?? 50,
+          pressureBefore: before?.memoryPressure ?? 0,
+          pressureAfter: after?.memoryPressure ?? 0,
+          shadowBefore: before?.shadow ?? 0,
+          shadowAfter: after?.shadow ?? 0,
+        });
+      } catch {}
+    })();
+  }, [scrollPercent, chapterId]);
+
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
     if (!bookId) return;
@@ -169,6 +224,15 @@ export default function ReaderContent() {
       <div className={styles.readingProgress} aria-hidden="true">
         <div className={styles.readingProgressBar} style={{ width: `${scrollPercent}%` }} />
       </div>
+
+      {syncDelta && chapterId && (
+        <ChapterSyncLog
+          chapterId={chapterId}
+          chapterTitle={chapterMeta?.title ?? chapterId}
+          delta={syncDelta}
+          onClose={() => setSyncDelta(null)}
+        />
+      )}
 
       {recModal.visible ? (
         <div role="dialog" aria-modal="true" aria-label="Doporučená skladba" className={styles.recModalOverlay}>
@@ -253,14 +317,33 @@ export default function ReaderContent() {
               </button>
             )}
           </div>
-          <TypewriterReader
-            id="hero-info"
-            srcUrl={effectiveUrl}
-            className={`readerOverlay-35 readerOverlay-blur ${styles.readerMain}`}
-            ariaLabel="Čtečka"
-            autoStart
-            instantMode={instantMode}
-          />
+          {paywalled && chapterId ? (
+            <PaywallModal
+              chapterId={chapterId}
+              chapterTitle={chapterMeta?.title ?? chapterId}
+              mnemCost={chapterMeta?.mnemCost ?? 64}
+              onClose={() => { window.location.href = '/books'; }}
+            />
+          ) : paywalled ? (
+            <div className="paywall-inline">
+              <p className="paywall-inline-title">PŘÍSTUP ODEPŘEN</p>
+              <p className="paywall-inline-msg">Tento fragment vyžaduje aktivní mněmy. Přihlaste se nebo zakupte přístup.</p>
+              <div className="hero-cta">
+                <a className="btn" href="/login">IDENTITA</a>
+                <a className="btn" href="/books">KNIHOVNA</a>
+              </div>
+            </div>
+          ) : (
+            <TypewriterReader
+              id="hero-info"
+              srcUrl={effectiveUrl}
+              className={`readerOverlay-35 readerOverlay-blur ${styles.readerMain}`}
+              ariaLabel="Čtečka"
+              autoStart
+              instantMode={instantMode}
+              onFetchError={handleFetchError}
+            />
+          )}
         </section>
 
       </main>

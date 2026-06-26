@@ -42,9 +42,10 @@ export interface TypewriterReaderProps {
   autoStart?: boolean;       // auto spustit typewriter po načtení
   id?: string;               // volitelný id atribut pro root (např. "hero-info")
   instantMode?: boolean;     // skip typewriter, show all text immediately
+  onFetchError?: (status: number) => void; // called with HTTP status on non-ok response
 }
 
-export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id, instantMode = false }: TypewriterReaderProps) {
+export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id, instantMode = false, onFetchError }: TypewriterReaderProps) {
   const router = useRouter();
   const hostRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -149,6 +150,91 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       writeStorageJSON(key, data);
       writeStorageJSON(key, data, 'session');
       try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
+
+      // Fire-and-forget server tracking (no-op if unauthenticated)
+      try {
+        const choiceText = ((node as HTMLElement).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 200);
+        const chapterId = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.chapterId || '';
+        const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection || 'SYNTHOMA-NULL';
+        const blockId = (node as HTMLElement).dataset.blockId || (node as HTMLElement).closest('[id]')?.id || undefined;
+        const choiceId = (node as HTMLElement).dataset.choiceId || undefined;
+        const nextBlockId = (node as HTMLElement).dataset.next || (node as HTMLElement).dataset.nextBlockId || undefined;
+        const tone = (node as HTMLElement).dataset.tone || undefined;
+
+        // Parse data-functions="Ni:+2,Fe:+1" into { Ni: 2, Fe: 1 }
+        const functionsRaw = (node as HTMLElement).dataset.functions || '';
+        const functionDelta: Record<string, number> = {};
+        if (functionsRaw) {
+          for (const part of functionsRaw.split(',')) {
+            const [k, v] = part.split(':');
+            if (k && v) functionDelta[k.trim()] = parseInt(v.trim(), 10) || 0;
+          }
+        }
+
+        // Parse data-emotions="anticipation:+4,trust:+1" into { anticipation: 4, trust: 1 }
+        const emotionsRaw = (node as HTMLElement).dataset.emotions || '';
+        const emotionDelta: Record<string, number> = {};
+        if (emotionsRaw) {
+          for (const part of emotionsRaw.split(',')) {
+            const [k, v] = part.split(':');
+            if (k && v) emotionDelta[k.trim()] = parseInt(v.trim(), 10) || 0;
+          }
+        }
+
+        // Parse data-stability="+2", data-pressure="+1", data-shadow="-1"
+        const stabilityRaw = (node as HTMLElement).dataset.stability;
+        const pressureRaw = (node as HTMLElement).dataset.pressure;
+        const shadowRaw = (node as HTMLElement).dataset.shadow;
+        const stabilityDelta = stabilityRaw !== undefined ? (parseInt(stabilityRaw, 10) || 0) : undefined;
+        const pressureDelta = pressureRaw !== undefined ? (parseInt(pressureRaw, 10) || 0) : undefined;
+        const shadowDelta = shadowRaw !== undefined ? (parseInt(shadowRaw, 10) || 0) : undefined;
+
+        // Parse data-entity-glitchka="trust:+4,protection:+1" into { glitchka: { trust: 4, protection: 1 } }
+        const entityDelta: Record<string, Record<string, number>> = {};
+        for (const attr of (node as HTMLElement).getAttributeNames()) {
+          if (!attr.startsWith('data-entity-')) continue;
+          const entity = attr.replace('data-entity-', '');
+          const raw = (node as HTMLElement).getAttribute(attr) || '';
+          const metrics: Record<string, number> = {};
+          for (const part of raw.split(',')) {
+            const [k, v] = part.split(':');
+            if (k && v) metrics[k.trim()] = parseInt(v.trim(), 10) || 0;
+          }
+          if (Object.keys(metrics).length) entityDelta[entity] = metrics;
+        }
+
+        const payload = {
+          collection,
+          chapterId,
+          blockId,
+          choiceId,
+          choiceText,
+          nextBlockId,
+          tags: tagsAttr ? tagsAttr.split(',').map(s => s.trim()).filter(Boolean) : undefined,
+          functionDelta: Object.keys(functionDelta).length ? functionDelta : undefined,
+          emotionDelta: Object.keys(emotionDelta).length ? emotionDelta : undefined,
+          tone,
+          stabilityDelta,
+          pressureDelta,
+          shadowDelta,
+          entityDelta: Object.keys(entityDelta).length ? entityDelta : undefined,
+        };
+
+        if (chapterId) {
+          fetch('/api/me/choices', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }).catch(() => {
+            // Store locally if unauthenticated
+            try {
+              const stored = JSON.parse(localStorage.getItem('synthoma_local_trace') || '[]') as unknown[];
+              stored.push({ ...payload, createdAt: new Date().toISOString() });
+              localStorage.setItem('synthoma_local_trace', JSON.stringify(stored.slice(-200)));
+            } catch {}
+          });
+        }
+      } catch {}
     } catch {}
   }, []);
 
@@ -182,7 +268,20 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   const bindChoiceHandlers = useCallback(() => {
     const root = hostRef.current;
     if (!root) return;
+    // Obnov echo-ghost volby po každém render segmentu (jediný source of truth = echo-ghost.js)
+    try { (window as any).EchoGhost?.refresh(root); } catch {}
     // navigační
+    root.querySelectorAll<HTMLElement>('[data-action]').forEach((el: HTMLElement) => {
+      if (el.dataset.boundAction === '1') return;
+      el.dataset.boundAction = '1';
+      el.addEventListener('click', (e: Event) => {
+        const action = el.dataset.action;
+        if (action === 'open-profile') {
+          e.preventDefault();
+          try { document.dispatchEvent(new CustomEvent('synthoma:open-profile')); } catch {}
+        }
+      });
+    });
     root.querySelectorAll<HTMLElement>('.choice-link').forEach((el: HTMLElement) => {
       const node = el as HTMLElement;
       if (node.dataset.boundGeneral === '1') return;
@@ -230,7 +329,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       });
 
       node.addEventListener('click', (e: Event) => {
-        const href = node.getAttribute('href') || node.getAttribute('data-next') || '';
+        const href = node.getAttribute('href') || node.getAttribute('data-href') || node.getAttribute('data-next') || '';
         // PRIORITY: If this choice points to an in-cache section via data-next, do that first
         try {
           const dataNext = node.getAttribute('data-next') || '';
@@ -766,25 +865,34 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     return () => { try { obs.disconnect(); document.removeEventListener('visibilitychange', onVis); } catch {} };
   }, [enhanceGlitching]);
 
-  // Swap behavior for echo-ghost: clicking swaps visible text with data-echo
+  // Echo-ghost: jediný source of truth je /books/echo-ghost.js
+  // TypewriterReader pouze zajistí načtení scriptu a po render zavolá EchoGhost.refresh(host)
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    const onClick = (e: Event) => {
-      try {
-        const t = e.target as HTMLElement | null;
-        if (!t) return;
-        const el = t.closest('.echo-ghost') as HTMLElement | null;
-        if (!el) return;
-        e.preventDefault(); e.stopPropagation();
-        const echo = el.getAttribute('data-echo') ?? '';
-        const visible = (el.textContent || '').trim();
-        el.setAttribute('data-echo', visible);
-        el.textContent = echo;
-      } catch {}
+
+    const ensureScript = () => {
+      if ((window as any).EchoGhost) return Promise.resolve();
+      return new Promise<void>((resolve) => {
+        const scriptId = 'echo-ghost-script';
+        const existing = document.getElementById(scriptId);
+        if (existing) {
+          // Script tag existuje ale EchoGhost ještě není — čekej na load
+          existing.addEventListener('load', () => resolve(), { once: true });
+          return;
+        }
+        const s = document.createElement('script');
+        s.id = scriptId;
+        s.src = '/books/echo-ghost.js';
+        s.addEventListener('load', () => resolve(), { once: true });
+        s.addEventListener('error', () => resolve(), { once: true }); // tichý fail
+        document.head.appendChild(s);
+      });
     };
-    host.addEventListener('click', onClick, { capture: true });
-    return () => { try { host.removeEventListener('click', onClick as any, { capture: true } as any); } catch {} };
+
+    ensureScript().then(() => {
+      try { (window as any).EchoGhost?.refresh(host); } catch {}
+    });
   }, []);
 
   useEffect(() => {
@@ -799,7 +907,10 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         const pendingResume = readReaderResume();
         const finalUrl = encodePathPreserve(srcUrl);
         const res = await fetch(finalUrl, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          onFetchError?.(res.status);
+          throw new Error(`HTTP ${res.status}`);
+        }
         const raw = await res.text();
 
         // Parse, normalize and convert choices
@@ -1130,7 +1241,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       cancelled = true;
       try { cancelRef.current?.(); } catch {}
     };
-  }, [srcUrl, autoStart, bindChoiceHandlers, announce, cleanupChoices, restoreScrollSoon, revealChoicesStagger]);
+  }, [srcUrl, autoStart, instantMode, onFetchError, bindChoiceHandlers, announce, cleanupChoices, restoreScrollSoon, revealChoicesStagger]);
 
   return (
     <div
