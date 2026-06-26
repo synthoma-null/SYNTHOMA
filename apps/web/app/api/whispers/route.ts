@@ -16,6 +16,19 @@ const VALID_TYPES = ['unsent', 'memory', 'fear', 'regret', 'wish', 'warning', 'l
 const VALID_PLACEMENTS = ['random', 'chapter', 'archive', 'similar_subjects'] as const;
 const VALID_MODES = ['anonymous', 'subject_type', 'title'] as const;
 
+type PublicWhisper = {
+  id: string;
+  publicMode: string;
+  type: string;
+  text: string;
+  placement: string;
+  chapterId: string | null;
+  resonanceCount: number;
+  displayCount: number;
+  boostedUntil: Date | null;
+  approvedAt: Date | null;
+};
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const placement = searchParams.get('placement') ?? 'random';
@@ -36,7 +49,7 @@ export async function GET(req: NextRequest) {
       ? { approvedAt: 'desc' }
       : { createdAt: 'asc' };
 
-  let whispers = await prisma.whisper.findMany({
+  let whispers: PublicWhisper[] = await prisma.whisper.findMany({
     where,
     orderBy,
     take: sort === 'random' ? 200 : limit,
@@ -59,7 +72,7 @@ export async function GET(req: NextRequest) {
   }
 
   await prisma.whisper.updateMany({
-    where: { id: { in: whispers.map((w) => w.id) } },
+    where: { id: { in: whispers.map((w: PublicWhisper) => w.id) } },
     data: { displayCount: { increment: 1 } },
   });
 
@@ -69,14 +82,14 @@ export async function GET(req: NextRequest) {
 
   if (userId) {
     const resonances = await prisma.whisperResonance.findMany({
-      where: { userId, whisperId: { in: whispers.map((w) => w.id) } },
+      where: { userId, whisperId: { in: whispers.map((w: PublicWhisper) => w.id) } },
       select: { whisperId: true },
     });
     resonatedIds = new Set(resonances.map((r: { whisperId: string }) => r.whisperId));
   }
 
   return NextResponse.json(
-    whispers.map((w) => ({ ...w, resonated: resonatedIds.has(w.id) })),
+    whispers.map((w: PublicWhisper) => ({ ...w, resonated: resonatedIds.has(w.id) })),
   );
 }
 
