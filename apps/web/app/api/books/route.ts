@@ -19,7 +19,7 @@ export async function GET() {
 
   if (userId) {
     const raw = await getUserEntitlements(userId);
-    entitlements = raw.map((e) => ({ chapterId: e.chapterId, packageId: e.packageId }));
+    entitlements = raw.map((e: { chapterId: string | null; packageId: string | null }) => ({ chapterId: e.chapterId, packageId: e.packageId }));
 
     const progress = await prisma.readingProgress.findMany({
       where: { userId },

@@ -182,7 +182,7 @@ export default function ReaderContent() {
         });
       } catch {}
     })();
-  }, [scrollPercent, chapterId]);
+  }, [scrollPercent, chapterId, chapterMeta?.title]);
 
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
