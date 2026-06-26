@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server';
-import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { auth } from '../../../../auth';
 import prisma from '../../../../src/lib/prisma';
@@ -48,10 +47,10 @@ export async function POST(req: NextRequest) {
         choiceId: d.choiceId ?? null,
         choiceText: d.choiceText,
         nextBlockId: d.nextBlockId ?? null,
-        tags: d.tags !== undefined ? d.tags : Prisma.JsonNull,
-        functionDelta: d.functionDelta !== undefined ? d.functionDelta : Prisma.JsonNull,
-        emotionDelta: d.emotionDelta !== undefined ? d.emotionDelta : Prisma.JsonNull,
         tone: d.tone ?? null,
+        ...(d.tags !== undefined ? { tags: d.tags } : {}),
+        ...(d.functionDelta !== undefined ? { functionDelta: d.functionDelta } : {}),
+        ...(d.emotionDelta !== undefined ? { emotionDelta: d.emotionDelta } : {}),
       },
     });
 
