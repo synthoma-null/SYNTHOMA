@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -14,15 +14,17 @@ export default function RegisterForm() {
     passwordConfirm: '',
   });
   const [error, setError] = useState('');
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isPending) return;
     setError('');
-    startTransition(async () => {
+    setIsPending(true);
+    try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -40,7 +42,11 @@ export default function RegisterForm() {
       });
       router.replace('/profile');
       router.refresh();
-    });
+    } catch {
+      setError('Připojení selhalo. Zkus to znovu.');
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (

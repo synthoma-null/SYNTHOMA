@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,12 +10,14 @@ export default function LoginForm() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isPending) return;
     setError('');
-    startTransition(async () => {
+    setIsPending(true);
+    try {
       const res = await signIn('credentials', {
         identifier,
         password,
@@ -27,7 +29,11 @@ export default function LoginForm() {
         router.replace('/profile');
         router.refresh();
       }
-    });
+    } catch {
+      setError('Připojení selhalo. Zkus to znovu.');
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
