@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { auth } from '../../auth';
-import ProfileDashboard from '../../src/components/profile/ProfileDashboard';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,6 +12,6 @@ export default async function ProfilePage() {
   if (!session?.user?.id) {
     redirect('/login');
   }
-
-  return <ProfileDashboard userId={session.user.id} nickname={session.user.name ?? ''} />;
+  // Profile is shown as a popup overlay via ProfilePanelClient in the global layout
+  redirect('/?login=1');
 }

@@ -40,7 +40,7 @@ export default function RegisterForm() {
         password: form.password,
         redirect: false,
       });
-      router.replace('/profile');
+      router.replace('/?login=1');
       router.refresh();
     } catch {
       setError('Připojení selhalo. Zkus to znovu.');
