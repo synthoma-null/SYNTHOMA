@@ -14,12 +14,31 @@ export async function GET() {
   const guard = adminGuard((session?.user as { role?: string } | undefined)?.role);
   if (guard) return guard;
 
-  const [userCount, ledgerCount, unusedCodes, usedCodes] = await Promise.all([
+  const [
+    userCount,
+    ledgerCount,
+    unusedCodes,
+    usedCodes,
+    pendingWhispers,
+    approvedWhispers,
+    totalMnemAgg,
+  ] = await Promise.all([
     prisma.user.count(),
     prisma.mnemLedger.count(),
     prisma.accessCode.count({ where: { used: false } }),
     prisma.accessCode.count({ where: { used: true } }),
+    prisma.whisper.count({ where: { status: 'pending' } }),
+    prisma.whisper.count({ where: { status: 'approved' } }),
+    prisma.mnemLedger.aggregate({ _sum: { amount: true } }),
   ]);
 
-  return NextResponse.json({ userCount, ledgerCount, unusedCodes, usedCodes });
+  return NextResponse.json({
+    userCount,
+    ledgerCount,
+    unusedCodes,
+    usedCodes,
+    pendingWhispers,
+    approvedWhispers,
+    totalMnemBalance: totalMnemAgg._sum.amount ?? 0,
+  });
 }
