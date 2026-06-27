@@ -1207,3 +1207,4 @@
     "frontendNote": "Při renderu používej access.mode + access.requiredChapterId + access.mnemCost. Neposuzuj zámek pouze podle spoilerLevel; spoilerLevel je informační, access je pravidlo."
   }
 }
+
