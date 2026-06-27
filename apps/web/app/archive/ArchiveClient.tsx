@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from 'next/dynamic';
 
 const WhisperCard = dynamic(() => import('../../src/components/whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../../src/components/whispers/WhisperForm'), { ssr: false });
+const WhisperSubmitPanel = dynamic(() => import('../../src/components/whispers/WhisperSubmitPanel'), { ssr: false });
 import Link from "next/link";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import { useLang } from "../../src/lib/LangContext";
+import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
 
 export type ArchiveCardAccess = {
   mode: 'free' | 'chapter' | 'mnems' | 'chapter_or_mnems';
@@ -89,11 +91,21 @@ function resolveCardLock(
 
 export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveCardData[] }) {
   const TITLE = "A R C H I V";
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
+  const videoRef = useVideoVisibility();
   const [completedChapterIds, setCompletedChapterIds] = useState<Set<string>>(new Set());
   const [mnemBalance, setMnemBalance] = useState<number>(0);
   const [accessLoaded, setAccessLoaded] = useState(false);
+  const [enCards, setEnCards] = useState<ArchiveCardData[] | null>(null);
+
+  useEffect(() => {
+    if (lang !== 'en') { setEnCards(null); return; }
+    fetch('/data/archiveCards_en.json', { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : null)
+      .then(json => { if (Array.isArray(json?.cards)) setEnCards(json.cards as ArchiveCardData[]); })
+      .catch(() => {});
+  }, [lang]);
 
   useEffect(() => {
     Promise.all([
@@ -134,23 +146,32 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
     return () => { if (typeof window !== 'undefined') window.removeEventListener('keydown', onKey); };
   }, []);
 
-  const [cards] = useState<ArchiveCardData[]>(
-    [...(initialCards || [])].sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+  const cards = useMemo<ArchiveCardData[]>(
+    () => [...(enCards ?? initialCards ?? [])].sort((a, b) => (a.order ?? 999) - (b.order ?? 999)),
+    [enCards, initialCards]
   );
   const [openId, setOpenId] = useState<string | null>(null);
   const [whispers, setWhispers] = useState<import('../../src/components/whispers/WhisperCard').WhisperData[]>([]);
   const [whisperFilter, setWhisperFilter] = useState<string>('all');
   const [whisperSort, setWhisperSort] = useState<string>('random');
   const [showWhisperForm, setShowWhisperForm] = useState(false);
+  const whisperFetchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const fetchWhispers = useCallback((filter: string, sort: string) => {
+    if (whisperFetchRef.current) clearTimeout(whisperFetchRef.current);
+    whisperFetchRef.current = setTimeout(() => {
+      const params = new URLSearchParams({ placement: 'archive', sort, limit: '30' });
+      if (filter !== 'all') params.set('type', filter);
+      fetch(`/api/whispers?${params}`)
+        .then((r) => r.json())
+        .then((data) => { if (Array.isArray(data)) setWhispers(data); })
+        .catch(() => {});
+    }, 250);
+  }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams({ placement: 'archive', sort: whisperSort, limit: '30' });
-    if (whisperFilter !== 'all') params.set('type', whisperFilter);
-    fetch(`/api/whispers?${params}`)
-      .then((r) => r.json())
-      .then((data) => { if (Array.isArray(data)) setWhispers(data); })
-      .catch(() => {});
-  }, [whisperFilter, whisperSort]);
+    fetchWhispers(whisperFilter, whisperSort);
+  }, [whisperFilter, whisperSort, fetchWhispers]);
   const toggle = (id: string) => setOpenId((curr) => (curr === id ? null : id));
 
   const titleById = useMemo(() => {
@@ -194,11 +215,13 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
       {/* Background video layer for Archive */}
       <div aria-hidden className="video-background">
         <video
+          ref={videoRef}
           src="/video/SYNTHOMA10.webm"
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
           className="active"
         />
       </div>
@@ -382,6 +405,12 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
               <WhisperForm onSuccess={() => setShowWhisperForm(false)} />
             )}
           </div>
+        </section>
+
+        <section className="whisper-submit-section" aria-label={t('archive.whisper.section.title')}>
+          <p className="whisper-submit-section-title">{t('archive.whisper.section.title')}</p>
+          <p className="whisper-submit-section-sub">{t('archive.whisper.section.sub')}</p>
+          <WhisperSubmitPanel placement="archive" compact />
         </section>
 
         <section className="story-block" aria-label={t('books.nav.back.aria')}>

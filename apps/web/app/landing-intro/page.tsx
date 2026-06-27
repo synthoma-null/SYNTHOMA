@@ -18,6 +18,10 @@ import { runTypewriter, typeExternalInfo, typeBooksList } from "../../src/lib/ty
 
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 
+import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
+
+import { useLang } from "../../src/lib/LangContext";
+
 import { extractVisibleTextLength, revealHtmlPreserve, sanitizeHTML, transformChoicesToButtons } from "../../src/lib/typewriterContent";
 
 import TypewriterReader from "../../src/components/TypewriterReader";
@@ -41,6 +45,10 @@ const enableFollowupTypewriter = true;
 export default function LandingIntroPage() {
 
   const router = useRouter();
+
+  const { lang } = useLang();
+
+  const infoSrcUrl = lang === 'en' ? '/data/SYNTHOMAINFO_en.html' : '/data/SYNTHOMAINFO.html';
 
   const [showTitle, setShowTitle] = useState(false);
 
@@ -91,6 +99,8 @@ export default function LandingIntroPage() {
   // Background video toggle (disable on iOS Safari to avoid native play overlay)
 
   const [showBgVideo, setShowBgVideo] = useState(true);
+
+  const videoRef = useVideoVisibility();
 
   // Force using the same reader component as Autor for 1:1 visuals/behavior
 
@@ -178,7 +188,7 @@ export default function LandingIntroPage() {
 
       try {
 
-        const res = await fetch('/data/SYNTHOMAINFO.html', { cache: 'no-store' });
+        const res = await fetch(lang === 'en' ? '/data/SYNTHOMAINFO_en.html' : '/data/SYNTHOMAINFO.html', { cache: 'no-store' });
 
         if (!res.ok) { console.warn('SYNTHOMAINFO fetch failed', res.status); return; }
 
@@ -200,7 +210,7 @@ export default function LandingIntroPage() {
 
     return () => { cancelled = true; };
 
-  }, [showHeroInfo, setInfoFromHtml, useReaderComponent]);
+  }, [showHeroInfo, setInfoFromHtml, useReaderComponent, lang]);
 
 
 
@@ -1660,6 +1670,8 @@ export default function LandingIntroPage() {
 
           <video
 
+            ref={videoRef}
+
             src="/video/SYNTHOMA1.webm"
 
             autoPlay
@@ -1782,7 +1794,7 @@ export default function LandingIntroPage() {
 
             <TypewriterReader
 
-              srcUrl="/data/SYNTHOMAINFO.html"
+              srcUrl={infoSrcUrl}
 
               ariaLabel="Intro info"
 

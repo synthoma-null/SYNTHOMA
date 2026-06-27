@@ -11,16 +11,15 @@ interface Props {
   onClose: () => void;
 }
 
-const CANON_LABELS: Record<string, string> = {
-  canon: 'KANONICKÉ',
-  semi_canon: 'POLOKANONICKÉ',
-  shadow_variant: 'MOŽNÁ LEŽ',
-  system_corrupted: 'SYSTÉMOVĚ ZKRESLENO',
-};
-
 export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: Props) {
   const { data: session, status: sessionStatus } = useSession();
   const { t } = useLang();
+  const CANON_LABELS: Record<string, string> = {
+    canon:            t('canon.canon'),
+    semi_canon:       t('canon.semi_canon'),
+    shadow_variant:   t('canon.shadow_variant'),
+    system_corrupted: t('canon.system_corrupted'),
+  };
   const isLoggedIn = !!session?.user;
   const [purchasing, setPurchasing] = useState<string | null>(null);
   const [error, setError] = useState('');

@@ -8,6 +8,7 @@ import { readReadingProgress } from "../../src/lib/readerState";
 import ChapterLockModal from "../components/ChapterLockModal";
 import { CHAPTERS } from "../../src/content/booksManifest";
 import { useLang } from "../../src/lib/LangContext";
+import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
 
 const DESCRIPTIONS: Record<string, string> = {
   'synthoma-null': `Vítejte v Synthomě. Virtuální terapii, která se zbláznila. Ve světě, kde je těžší zapomenout než přežít.<br/><br/>
@@ -38,7 +39,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
   const [showMore, setShowMore] = useState<boolean>(false);
   const [progress, setProgress] = useState<Record<string, { path: string; percent: number; updatedAt: number }>>({})
   const [lockedChapter, setLockedChapter] = useState<{ id: string; title: string } | null>(null);
-  const bgVideoRef = useRef<HTMLVideoElement | null>(null);
+  const bgVideoRef = useVideoVisibility();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
 
   

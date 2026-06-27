@@ -36,7 +36,7 @@
 }
 .subject-header-inner { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; }
 .subject-title-block { flex: 1; min-width: 220px; }
-.subject-log-label { font-size: .65rem; letter-spacing: .15em; color: var(--accent-secondary); margin-bottom: .4rem; }
+.subject-log-label { font-size: .65rem; letter-spacing: .15em; color: var(--accent-secondary); margin-bottom: .4rem; font-weight: 700; }
 .subject-nickname {
   font-family: var(--font-display, monospace);
   font-size: 2rem;
@@ -44,9 +44,9 @@
   letter-spacing: .12em;
   margin-bottom: .3rem;
 }
-.subject-role-title { font-size: .8rem; color: var(--text-secondary); letter-spacing: .1em; }
+.subject-role-title { font-size: .8rem; color: var(--text-secondary); letter-spacing: .1em; font-weight: 600; }
 .subject-stats { display: flex; flex-wrap: wrap; gap: 1.2rem; margin: 0; }
-.subject-stat dt { font-size: .6rem; letter-spacing: .12em; color: var(--text-muted, var(--text-secondary)); }
+.subject-stat dt { font-size: .6rem; letter-spacing: .12em; color: var(--text-muted, var(--text-secondary)); font-weight: 600; }
 .subject-stat dd { font-size: 1.1rem; color: var(--text-primary); margin: 0; font-family: var(--font-mono, monospace); }
 
 /* Profile Tabs */
@@ -78,11 +78,11 @@
 .psyche-map { display: flex; flex-direction: column; gap: 1.8rem; }
 .psyche-log { border-left: 2px solid var(--accent-secondary); padding: .5rem .8rem; font-size: .72rem; }
 .psyche-log-prefix { color: var(--accent-secondary); font-weight: 700; margin-right: .4em; }
-.psyche-log-msg { color: var(--text-secondary); font-style: italic; }
+.psyche-log-msg { color: var(--text-secondary); font-style: italic; font-weight: 600; }
 .psyche-section { display: flex; flex-direction: column; gap: .6rem; }
-.psyche-section-title { font-size: .65rem; letter-spacing: .18em; color: var(--accent-secondary); margin-bottom: .3rem; }
+.psyche-section-title { font-size: .65rem; letter-spacing: .18em; color: var(--accent-secondary); margin-bottom: .3rem; font-weight: 700; }
 .psyche-bar-row { display: flex; align-items: center; gap: .8rem; }
-.psyche-bar-label { width: 120px; font-size: .72rem; color: var(--text-secondary); letter-spacing: .06em; flex-shrink: 0; }
+.psyche-bar-label { width: 120px; font-size: .72rem; color: var(--text-secondary); letter-spacing: .06em; flex-shrink: 0; font-weight: 700; }
 .psyche-bar-track {
   flex: 1;
   height: 6px;
@@ -97,11 +97,11 @@
   transition: width .4s ease;
   box-shadow: 0 0 8px var(--accent-primary);
 }
-.psyche-bar-value { width: 28px; font-size: .7rem; text-align: right; color: var(--text-secondary); }
+.psyche-bar-value { width: 28px; font-size: .7rem; text-align: right; color: var(--text-secondary); font-weight: 700; }
 .psyche-meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 2rem; margin: 0; }
 .psyche-meta-row { display: flex; justify-content: space-between; font-size: .78rem; }
-.psyche-meta-row dt { color: var(--text-secondary); }
-.psyche-meta-row dd { color: var(--text-primary); margin: 0; font-family: var(--font-mono, monospace); }
+.psyche-meta-row dt { color: var(--text-secondary); font-weight: 600; }
+.psyche-meta-row dd { color: var(--text-primary); margin: 0; font-family: var(--font-mono, monospace); font-weight: 700; }
 
 /* Reading Progress Panel */
 .progress-panel { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -112,27 +112,27 @@
 .progress-item { border: 1px solid var(--border-secondary); padding: .8rem 1rem; }
 .progress-item.completed { border-color: var(--accent-secondary); }
 .progress-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; }
-.progress-item-title { font-size: .82rem; color: var(--text-primary); letter-spacing: .06em; }
-.progress-item-badge { font-size: .62rem; color: var(--accent-secondary); letter-spacing: .1em; }
+.progress-item-title { font-size: .82rem; color: var(--text-primary); letter-spacing: .06em; font-weight: 700; }
+.progress-item-badge { font-size: .62rem; color: var(--accent-secondary); letter-spacing: .1em; font-weight: 700; }
 .progress-track { height: 4px; background: rgba(255,255,255,.07); border: 1px solid var(--border-secondary); overflow: hidden; }
 .progress-fill { height: 100%; background: var(--accent-primary); transition: width .3s; }
-.progress-pct { font-size: .68rem; color: var(--text-secondary); }
-.progress-empty { color: var(--text-secondary); font-size: .8rem; padding: 1rem 0; }
+.progress-pct { font-size: .68rem; color: var(--text-secondary); font-weight: 600; }
+.progress-empty { color: var(--text-secondary); font-size: .8rem; padding: 1rem 0; font-weight: 600; }
 .progress-loading { color: var(--accent-secondary); font-size: .75rem; letter-spacing: .1em; }
 
 /* Mnem Access Panel */
 .mnem-panel { display: flex; flex-direction: column; gap: 2rem; }
 .mnem-balance { display: flex; justify-content: space-between; align-items: baseline; border: 1px solid var(--accent-primary); padding: 1rem 1.2rem; }
-.mnem-balance-label { font-size: .65rem; letter-spacing: .15em; color: var(--text-secondary); }
+.mnem-balance-label { font-size: .65rem; letter-spacing: .15em; color: var(--text-secondary); font-weight: 700; }
 .mnem-balance-value { font-size: 1.4rem; color: var(--accent-primary); font-family: var(--font-mono, monospace); }
-.mnem-section-title { font-size: .65rem; letter-spacing: .18em; color: var(--accent-secondary); margin-bottom: .8rem; }
+.mnem-section-title { font-size: .65rem; letter-spacing: .18em; color: var(--accent-secondary); margin-bottom: .8rem; font-weight: 700; }
 .mnem-packages { display: flex; flex-direction: column; gap: 1rem; }
 .mnem-package { border: 1px solid var(--border-secondary); padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
 .mnem-package-header { display: flex; justify-content: space-between; align-items: baseline; }
-.mnem-package-name { font-size: .85rem; color: var(--text-primary); letter-spacing: .08em; }
+.mnem-package-name { font-size: .85rem; color: var(--text-primary); letter-spacing: .08em; font-weight: 700; }
 .mnem-package-mnems { font-size: .78rem; color: var(--accent-secondary); font-family: var(--font-mono, monospace); }
-.mnem-package-desc { font-size: .75rem; color: var(--text-secondary); margin: 0; }
-.mnem-package-price { font-size: .72rem; color: var(--text-muted, var(--text-secondary)); }
+.mnem-package-desc { font-size: .75rem; color: var(--text-secondary); margin: 0; font-weight: 600; }
+.mnem-package-price { font-size: .72rem; color: var(--text-muted, var(--text-secondary)); font-weight: 600; }
 .mnem-package-btn { margin-top: .4rem; }
 .mnem-redeem { display: flex; flex-direction: column; gap: .8rem; }
 .mnem-redeem-form { display: flex; gap: .6rem; flex-wrap: wrap; }
@@ -144,7 +144,7 @@
 .settings-panel { display: flex; flex-direction: column; gap: 1.5rem; }
 .settings-grid { display: flex; flex-direction: column; gap: .8rem; }
 .settings-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.settings-label { font-size: .75rem; color: var(--text-secondary); letter-spacing: .06em; min-width: 180px; }
+.settings-label { font-size: .75rem; color: var(--text-secondary); letter-spacing: .06em; min-width: 180px; font-weight: 600; }
 .settings-select {
   background: rgba(0,0,0,.5);
   border: 1px solid var(--border-secondary);
@@ -179,8 +179,8 @@
 .privacy-toggles { display: flex; flex-direction: column; gap: .6rem; }
 .privacy-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid var(--border-tertiary); }
 .privacy-row-text { display: flex; flex-direction: column; gap: .2rem; }
-.privacy-row-label { font-size: .82rem; color: var(--text-primary); }
-.privacy-row-desc { font-size: .7rem; color: var(--text-secondary); }
+.privacy-row-label { font-size: .82rem; color: var(--text-primary); font-weight: 700; }
+.privacy-row-desc { font-size: .7rem; color: var(--text-secondary); font-weight: 600; }
 .privacy-data { display: flex; flex-direction: column; gap: .8rem; margin-top: 1rem; border-top: 1px solid var(--border-secondary); padding-top: 1.5rem; }
 .privacy-delete-btn { border-color: rgba(255,50,50,.4); color: rgba(255,100,100,.8); }
 .privacy-delete-btn.danger { background: rgba(255,0,0,.15); border-color: #ff3232; color: #ff6666; }

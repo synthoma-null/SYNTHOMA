@@ -2,29 +2,30 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { useLang } from '../../lib/LangContext';
 
 const WHISPER_TYPES = [
-  { value: 'unsent',  label: 'Neodeslaná zpráva' },
-  { value: 'memory',  label: 'Vzpomínka' },
-  { value: 'fear',    label: 'Strach' },
-  { value: 'regret',  label: 'Lítost' },
-  { value: 'wish',    label: 'Přání' },
-  { value: 'warning', label: 'Varování' },
-  { value: 'log',     label: 'LOG' },
-];
+  { value: 'unsent' },
+  { value: 'memory' },
+  { value: 'fear' },
+  { value: 'regret' },
+  { value: 'wish' },
+  { value: 'warning' },
+  { value: 'log' },
+] as const;
 
 const PLACEMENTS = [
-  { value: 'random',           label: 'Náhodně po webu' },
-  { value: 'chapter',          label: 'U konkrétní kapitoly' },
-  { value: 'archive',          label: 'Jen v Archivu' },
-  { value: 'similar_subjects', label: 'Jen podobným subjektům' },
-];
+  { value: 'random' },
+  { value: 'chapter' },
+  { value: 'archive' },
+  { value: 'similar_subjects' },
+] as const;
 
 const PUBLIC_MODES = [
-  { value: 'anonymous',    label: 'Anonymní' },
-  { value: 'subject_type', label: 'Anonymní + typ subjektu' },
-  { value: 'title',        label: 'Anonymní + můj titul' },
-];
+  { value: 'anonymous' },
+  { value: 'subject_type' },
+  { value: 'title' },
+] as const;
 
 interface Props {
   chapterId?: string;
@@ -34,6 +35,7 @@ interface Props {
 
 export default function WhisperForm({ chapterId, onSuccess, compact = false }: Props) {
   const { data: session } = useSession();
+  const { t } = useLang();
   const [text, setText] = useState('');
   const [type, setType] = useState('unsent');
   const [placement, setPlacement] = useState(chapterId ? 'chapter' : 'random');
@@ -65,16 +67,16 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
       const data = await res.json();
       if (res.ok) {
         setStatus('ok');
-        setMsg('Stopa byla přijata. Archiv ji před zobrazením zkontroluje, protože lidé jsou bohužel lidé.');
+        setMsg(t('whisperform.ok'));
         setText('');
         onSuccess?.();
       } else {
         setStatus('error');
-        setMsg(data.error ?? 'Chyba při odesílání.');
+        setMsg(data.error ?? t('whisperform.error.generic'));
       }
     } catch {
       setStatus('error');
-      setMsg('Chyba sítě.');
+      setMsg(t('whisperform.network'));
     }
   };
 
@@ -83,9 +85,9 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
       <div className="whisper-form-auth">
         <p className="whisper-form-auth-text">
           <span className="whisper-log-prefix">LOG [AUTH_REQUIRED]:</span>
-          {' '}Pro zanechání stopy je nutná ověřená identita.
+          {' '}{t('whisperform.auth.text')}
         </p>
-        <a href="/login" className="btn btn-outline whisper-form-auth-btn">PŘIHLÁSIT SE</a>
+        <a href="/login" className="btn btn-outline whisper-form-auth-btn">{t('whisperform.auth.login')}</a>
       </div>
     );
   }
@@ -103,7 +105,7 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
     <form onSubmit={handleSubmit} className={`whisper-form${compact ? ' whisper-form--compact' : ''}`}>
       <div className="whisper-form-header">
         <span className="whisper-log-prefix">LOG [WHISPER_INPUT]:</span>
-        <span className="whisper-form-subtitle">Zanech větu, kterou systém neumí doručit.</span>
+        <span className="whisper-form-subtitle">{t('whisperform.header')}</span>
       </div>
 
       <div className="whisper-form-field">
@@ -111,10 +113,10 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
           className="whisper-form-textarea"
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, MAX))}
-          placeholder="Piš..."
+          placeholder={t('whisperform.placeholder')}
           rows={compact ? 3 : 4}
           disabled={status === 'sending'}
-          aria-label="Text šepotu"
+          aria-label={t('whisperform.textarea.aria')}
         />
         <span className={`whisper-form-counter${remaining < 40 ? ' whisper-form-counter--warn' : ''}`}>
           {remaining}
@@ -124,23 +126,23 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
       {!compact && (
         <>
           <div className="whisper-form-row">
-            <label className="whisper-form-label">TYP STOPY</label>
+            <label className="whisper-form-label">{t('whisperform.type.label')}</label>
             <div className="whisper-form-chips">
-              {WHISPER_TYPES.map((t) => (
+              {WHISPER_TYPES.map((wt) => (
                 <button
-                  key={t.value}
+                  key={wt.value}
                   type="button"
-                  className={`whisper-chip${type === t.value ? ' whisper-chip--active' : ''}`}
-                  onClick={() => setType(t.value)}
+                  className={`whisper-chip${type === wt.value ? ' whisper-chip--active' : ''}`}
+                  onClick={() => setType(wt.value)}
                 >
-                  {t.label}
+                  {t(`whisperform.type.${wt.value}` as any)}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="whisper-form-row">
-            <label className="whisper-form-label">ZOBRAZIT V</label>
+            <label className="whisper-form-label">{t('whisperform.placement.label')}</label>
             <div className="whisper-form-chips">
               {PLACEMENTS.map((p) => (
                 <button
@@ -149,14 +151,14 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
                   className={`whisper-chip${placement === p.value ? ' whisper-chip--active' : ''}`}
                   onClick={() => setPlacement(p.value)}
                 >
-                  {p.label}
+                  {t(`whisperform.placement.${p.value}` as any)}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="whisper-form-row">
-            <label className="whisper-form-label">PODPIS</label>
+            <label className="whisper-form-label">{t('whisperform.signature.label')}</label>
             <div className="whisper-form-chips">
               {PUBLIC_MODES.map((m) => (
                 <button
@@ -165,7 +167,7 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
                   className={`whisper-chip${publicMode === m.value ? ' whisper-chip--active' : ''}`}
                   onClick={() => setPublicMode(m.value)}
                 >
-                  {m.label}
+                  {t(`whisperform.mode.${m.value}` as any)}
                 </button>
               ))}
             </div>
@@ -174,7 +176,7 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
       )}
 
       <div className="whisper-form-disclaimer">
-        Šepoty se zobrazují anonymně. Systém si ale pamatuje, kdo je zanechal, kvůli ochraně Archivu před lidskou tvořivostí v nejhorším slova smyslu.
+        {t('whisperform.disclaimer')}
       </div>
 
       {status === 'error' && <p className="whisper-form-error">{msg}</p>}
@@ -185,7 +187,7 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
           type="submit"
           disabled={!text.trim() || status === 'sending'}
         >
-          {status === 'sending' ? 'ODESÍLÁM...' : 'ODESLAT DO ARCHIVU'}
+          {status === 'sending' ? t('whisperform.sending') : t('whisperform.submit')}
         </button>
       </div>
     </form>

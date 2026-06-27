@@ -10,11 +10,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import PaywallModal from '../../src/components/PaywallModal';
 import { getChapterById } from '../../src/content/booksManifest';
 import ChapterSyncLog, { type SyncDelta } from '../../src/components/run/ChapterSyncLog';
+import { useLang } from '../../src/lib/LangContext';
 
 // Duplicated transform and reveal logic removed in favor of TypewriterReader
 
 export default function ReaderContent() {
   const router = useRouter();
+  const { t } = useLang();
   const searchParams = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-\u221e [RESTART].html";
 
@@ -235,28 +237,28 @@ export default function ReaderContent() {
       )}
 
       {recModal.visible ? (
-        <div role="dialog" aria-modal="true" aria-label="Doporučená skladba" className={styles.recModalOverlay}>
+        <div role="dialog" aria-modal="true" aria-label={t('reader.rec.modal.aria')} className={styles.recModalOverlay}>
           <div className={`panel glass ${styles.recModalPanel}`}>
-            <h3 className={styles.recModalTitle}>Doporučená skladba</h3>
+            <h3 className={styles.recModalTitle}>{t('reader.rec.modal.title')}</h3>
             <p>
-              Pro kapitolu {recModal.title ? <strong>{recModal.title}</strong> : 'této knihy'} je doporučena hudba. Chceš ji přehrát?
+              Pro kapitolu {recModal.title ? <strong>{recModal.title}</strong> : t('reader.rec.modal.book_fallback')} {t('reader.rec.modal.question')}
             </p>
             <div className={styles.recModalActions}>
               <button className="btn btn-lg" onClick={() => {
                 writeStorage('audioAutoplayBlocked', 'false');
                 try { (window as any).audioPanelPlay?.(recModal.track); } catch {}
                 setRecModal({ visible: false });
-              }}>▶ Přehrát doporučenou</button>
+              }}>{t('reader.rec.modal.play')}</button>
               <button className="btn btn-lg" onClick={() => {
                 writeStorage('audioAutoplayBlocked', 'true');
                 setRecModal({ visible: false });
-              }}>Pokračovat potichu</button>
+              }}>{t('reader.rec.modal.skip')}</button>
             </div>
           </div>
         </div>
       ) : null}
 
-      <main className="story" aria-label="Čtečka">
+      <main className="story" aria-label={t('reader.main.aria')}>
         <section className="story-block">
           <h1 id="glitch-reader" className="glitch-master title" ref={glitchRootRef as any} aria-label={TITLE}>
             <span className="glitch-fake1">{TITLE}</span>
@@ -278,8 +280,8 @@ export default function ReaderContent() {
                 onClick={() => {
                   try { (window as any).audioPanelPlay?.(recTrack.track); } catch {}
                 }}
-                title={`Přehrát doporučenou: ${recTrack.trackName}`}
-                aria-label={`Přehrát doporučenou skladbu: ${recTrack.trackName}`}
+                title={`${t('reader.toolbar.play.title')} ${recTrack.trackName}`}
+                aria-label={`${t('reader.toolbar.play.aria')} ${recTrack.trackName}`}
               >
                 🎵 {recTrack.trackName}
               </button>
@@ -292,7 +294,7 @@ export default function ReaderContent() {
                 try { writeStorage('instantReadMode', String(next)); } catch {}
               }}
               aria-pressed={instantMode}
-              title={instantMode ? 'Rychlé čtení: Zapnuto' : 'Rychlé čtení: Vypnuto'}
+              title={instantMode ? t('reader.toolbar.instant.on') : t('reader.toolbar.instant.off')}
             >
               {instantMode ? '⚡ Instant' : '✍️ Typewriter'}
             </button>
@@ -326,8 +328,8 @@ export default function ReaderContent() {
             />
           ) : paywalled ? (
             <div className="paywall-inline">
-              <p className="paywall-inline-title">PŘÍSTUP ODEPŘEN</p>
-              <p className="paywall-inline-msg">Tento fragment vyžaduje aktivní mněmy. Přihlaste se nebo zakupte přístup.</p>
+              <p className="paywall-inline-title">{t('reader.paywall.title')}</p>
+              <p className="paywall-inline-msg">{t('reader.paywall.msg')}</p>
               <div className="hero-cta">
                 <a className="btn" href="/login">IDENTITA</a>
                 <a className="btn" href="/books">KNIHOVNA</a>
@@ -338,7 +340,7 @@ export default function ReaderContent() {
               id="hero-info"
               srcUrl={effectiveUrl}
               className={`readerOverlay-35 readerOverlay-blur ${styles.readerMain}`}
-              ariaLabel="Čtečka"
+              ariaLabel={t('reader.main.aria')}
               autoStart
               instantMode={instantMode}
               onFetchError={handleFetchError}
@@ -356,11 +358,11 @@ export default function ReaderContent() {
           <div className={styles.helpModal}>
             <div className={styles.helpModalContent}>
               <div className={styles.helpModalHeader}>
-                <h2 className={styles.helpModalTitle}>Nápověda</h2>
+                <h2 className={styles.helpModalTitle}>{t('reader.help.title')}</h2>
                 <button 
                   onClick={() => setShowHelp(false)}
                   className={styles.helpModalCloseButton}
-                  aria-label="Zavřít"
+                  aria-label={t('reader.help.close.aria')}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -369,28 +371,23 @@ export default function ReaderContent() {
               </div>
               
               <div className={styles.helpModalSection}>
-                <h3 className={styles.helpModalSectionTitle}>Klávesové zkratky</h3>
+                <h3 className={styles.helpModalSectionTitle}>{t('reader.help.shortcuts.title')}</h3>
                 <ul className={styles.helpModalList}>
                   <li className={styles.helpModalListItem}>
                     <kbd className={styles.helpModalKey}>?</kbd>
-                    <span>Zobrazit/skrýt nápovědu</span>
+                    <span>{t('reader.help.shortcuts.show')}</span>
                   </li>
                   <li className={styles.helpModalListItem}>
                     <kbd className={styles.helpModalKey}>Esc</kbd>
-                    <span>Zavřít okno</span>
+                    <span>{t('reader.help.shortcuts.close')}</span>
                   </li>
                                   </ul>
               </div>
               
               <div className={styles.helpModalSection}>
-                <h3 className={styles.helpModalSectionTitle}>Ovládání</h3>
-                <p>
-                  Klikněte na jakoukoliv možnost pro pokračování příběhu. 
-                  Všechny volby jsou zobrazeny najednou.
-                </p>
-                <p>
-                  Tlačítko <strong>⚡ Instant</strong> přepne režim rychlého čtení — text se zobrazí okamžitě bez typewriter efektu. Preference se ukládá.
-                </p>
+                <h3 className={styles.helpModalSectionTitle}>{t('reader.help.controls.title')}</h3>
+                <p>{t('reader.help.controls.desc1')}</p>
+                <p>{t('reader.help.controls.desc2')}</p>
               </div>
               
               <div className={styles.helpModalFooter}>
@@ -398,7 +395,7 @@ export default function ReaderContent() {
                   onClick={() => setShowHelp(false)}
                   className={styles.helpModalButton}
                 >
-                  Zavřít nápovědu
+                  {t('reader.help.close.btn')}
                 </button>
               </div>
             </div>

@@ -1,26 +1,25 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'SYNTHOMA – PLATBA PŘIJATA',
-};
+import Link from 'next/link';
+import { useLang } from '../../../src/lib/LangContext';
 
 export default function PurchaseSuccessPage() {
+  const { t } = useLang();
   return (
     <main className="auth-page">
       <div className="auth-container glitch-bg">
-        <h1 className="auth-title glitch" data-text="TRANSAKCE DOKONČENA">TRANSAKCE DOKONČENA</h1>
+        <h1 className="auth-title glitch" data-text={t('purchase.success.title')}>{t('purchase.success.title')}</h1>
         <div className="auth-log">
           <span className="auth-log-prefix">LOG [PAYMENT_RECEIVED]:</span>
-          <span className="auth-log-msg">&#8222;Platba přijata. Paměťový fragment bude přiřazen k identitě.&#8220;</span>
+          <span className="auth-log-msg">&#8222;{t('purchase.success.log.msg')}&#8220;</span>
         </div>
         <p className="auth-log-msg auth-switch">
-          Přihlaste se nebo redeemujte přístupový kód v profilu.
+          {t('purchase.success.note')}
         </p>
         <div className="purchase-success-links">
-          <Link href="/login" className="btn">PŘIHLÁSIT SE</Link>
-          <Link href="/profile" className="btn">SUBJEKT / PROFIL</Link>
-          <Link href="/reader" className="btn">ČTEČKA</Link>
+          <Link href="/login" className="btn">{t('purchase.success.login')}</Link>
+          <Link href="/profile" className="btn">{t('purchase.success.profile')}</Link>
+          <Link href="/reader" className="btn">{t('purchase.success.reader')}</Link>
         </div>
       </div>
     </main>

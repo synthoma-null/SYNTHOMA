@@ -34,7 +34,7 @@
   line-height: 1.5;
 }
 .auth-log-prefix { color: var(--accent-primary); font-weight: 700; margin-right: .4em; }
-.auth-log-msg { color: var(--text-primary); font-style: italic; }
+.auth-log-msg { color: var(--text-primary); font-style: italic; font-weight: 600; }
 .auth-form { display: flex; flex-direction: column; gap: 1rem; }
 .auth-field { display: flex; flex-direction: column; gap: .35rem; }
 .auth-label { font-size: .68rem; letter-spacing: .12em; color: var(--text-primary, var(--text-secondary)); font-weight: 600; }

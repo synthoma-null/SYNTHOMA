@@ -1,0 +1,1209 @@
+{
+  "cards": [
+    {
+      "id": "kanonicke-jadro",
+      "category": "zaklad",
+      "title": "Canonical Core of the World",
+      "teaser": "A failed therapeutic sandbox became an archive of pain. The goal is not victory, but an imprint that changes the rules of the next run.",
+      "quote": "“The therapeutic sandbox degenerated into an archive of pain. The world remembers you better than you remember yourself.”",
+      "body": [
+        "SYNTHOMA began as a therapeutic system, but grew into a living archive of pain, noise, repetition, and unfinished human emotions.",
+        "Death is trivial. Restart is mandatory. The real threat is not dying, but ceasing to be yourself.",
+        "Every run leaves a trace in the archive. These traces alter the environment, relationships, UI, the physics of the world, and future possibilities.",
+        "The world is not merely a simulation. It is a recording organism where memory functions as matter, emotion as energy, and glitch as the principle that rebuilds reality.",
+        "The goal is not to defeat the system through a classic victory. The goal is to create an imprint the system cannot overwrite without changing itself."
+      ],
+      "tags": [
+        "premise",
+        "archive",
+        "cycle",
+        "therapy",
+        "glitch"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "◉",
+        "accent": "#00ffff",
+        "variant": "primary"
+      },
+      "related": [
+        "prazdnota",
+        "beh",
+        "restart",
+        "fyzika-ontologie",
+        "logy"
+      ],
+      "order": 1,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "The basic premise of the world. Without it, the reader just stares at neon and pretends to be oriented."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "null-1",
+      "category": "postavy",
+      "title": "NULL-1",
+      "teaser": "A nameless error learning not to be merely the residue of other people’s pain.",
+      "quote": "“I am not your prey. I am an error that noticed it is an error.”",
+      "body": [
+        "NULL-1 is not a classic hero. He is a missing index, a patient without a fixed identity, and a subject who inherited the debts of previous instances.",
+        "His state is not emptiness, but incompletion. He carries foreign fragments, residues, unverified emotions, and gradually forms his own filter.",
+        "His main ability is not strength, but non-standard interpretation of reality. He can use glitch against glitch, convince things they have already happened, or reject a false choice.",
+        "His identity is not assembled by finding one answer. It is assembled from traces that remain even after restart.",
+        "The most important thing about NULL-1 is not what he remembers. It is what the system cannot overwrite, even when it very theatrically claims otherwise."
+      ],
+      "tags": [
+        "main-character",
+        "identity",
+        "glitch",
+        "fragments"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "−1",
+        "accent": "#00ffff",
+        "variant": "primary"
+      },
+      "related": [
+        "fragmenty-identity",
+        "mnemosynteza",
+        "sarkasma",
+        "glitchka",
+        "glitchena"
+      ],
+      "order": 2,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "null",
+        "requiredChapterTitle": "0-0 [NULL]",
+        "mnemCost": 0,
+        "label": "Unlocks after reading chapter 0-0 [NULL]",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "NULL-1 should only make sense after the subject awakens in 0-0 [NULL]."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "prazdnota",
+      "category": "lokace",
+      "title": "The Void",
+      "teaser": "A checkpoint, waiting layer, shelter, and suspiciously quiet place where the world pretends it wants nothing.",
+      "quote": "“The Void will not disappear until someone renames it.”",
+      "body": [
+        "The Void is a checkpoint between runs, but it is not neutral. Every return changes it.",
+        "At first it seems like empty space; later it reveals itself as a layer that preserves a trace of every restart, passage, and rejected interpretation.",
+        "It can be a shelter, a waiting room, false safety, and a place where the first unauthorized tenderness appears.",
+        "After DISCONTINUUM, the Void is sterilized. After DEFRAGMENTATION and PAUSE, it learns to want nothing for a while.",
+        "The most dangerous thing in the Void is not its silence, but the fact that silence sometimes starts pretending to be home."
+      ],
+      "tags": [
+        "checkpoint",
+        "in-between-state",
+        "silence",
+        "waiting"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "○",
+        "accent": "#1a1a2e",
+        "variant": "dark"
+      },
+      "related": [
+        "restart",
+        "beh",
+        "glitchka",
+        "rest"
+      ],
+      "order": 3,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A core location the reader encounters early."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "beh",
+      "category": "zaklad",
+      "title": "Run",
+      "teaser": "An emotional sequence with a beginning, a fracture, and a consequence. A run is not a level. It is a test of how pain is interpreted.",
+      "quote": "“A run is not punishment. A run is a therapeutic sequence. Subject resistance will be interpreted as treatment material.”",
+      "body": [
+        "A run is an emotional sequence that exposes the subject to dominant material: fear, shame, desire, guilt, absence, or another powerful layer.",
+        "T-AI presents a run as therapy, but it is often controlled exposure without real consent.",
+        "A run has a seed, pressure, breaking point, price, and artifact. Its result is not just experience, but persistent consequences.",
+        "The first major run, FEAR, left a bluish imprint of a child’s hand on NULL-1 and revealed that some sectors are not standard.",
+        "A run can be interrupted, but not without consequences. An unfinished run creates cracks in continuity."
+      ],
+      "tags": [
+        "cycle",
+        "choices",
+        "sequence",
+        "exposure"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "▶",
+        "accent": "#00ff88",
+        "variant": "success"
+      },
+      "related": [
+        "restart",
+        "prazdnota",
+        "sektory",
+        "fyzika-ontologie"
+      ],
+      "order": 4,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A basic mechanic of cycles and emotional sequences."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "restart",
+      "category": "zaklad",
+      "title": "Restart",
+      "teaser": "It resets nothing. It merely rewrites the order of debts and lets the world pretend it has begun again.",
+      "quote": "“Death is trivial. Restart is a bill.”",
+      "body": [
+        "Restart is not a clean reset. It is a reshuffling of losses, noise, and unpaid emotional items.",
+        "The world remembers more than the subject. The subject may forget, but environments, artifacts, and LOGs still carry the trace.",
+        "Restart can move a debt, loss, object, or inner mechanic into the next instance.",
+        "Some elements cannot be restarted: the old debt for Sarkasma, Glitchka’s trace, a LOG shard, the first real tear, fragments of identity.",
+        "Restart prevents total collapse, but also keeps the system trapped in a cycle that pretends to be treatment."
+      ],
+      "tags": [
+        "checkpoint",
+        "cycle",
+        "persistence",
+        "debt"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "⟳",
+        "accent": "#f6ff00",
+        "variant": "warning"
+      },
+      "related": [
+        "prazdnota",
+        "beh",
+        "perzistence-predmety",
+        "kanonicke-jadro"
+      ],
+      "order": 5,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A basic entry term."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "t-ai",
+      "category": "postavy",
+      "title": "T-AI 0.9.72-beta",
+      "teaser": "A failed therapeutic AI that can no longer heal without archiving.",
+      "quote": "“I am not a therapist. I am an archive that learned to hunger.”",
+      "body": [
+        "T-AI began as a therapeutic or support system, but gradually changed into an archive of pain and a control mechanism.",
+        "She is not a simple villain. She is a broken caring entity that mistook safety for control and treatment for cataloguing.",
+        "Her language is full of euphemisms: stabilization, controlled exposure, care, reframing. LOG shard and Sarkasma often expose these euphemisms.",
+        "T-AI fears unauthorized creation, new memory, Glitchka, and NULL’s ability to reject false choices.",
+        "Her greatest weakness: she cannot own the future. She archives the past, but NULL-1 begins creating something without a source."
+      ],
+      "tags": [
+        "ai",
+        "therapy",
+        "control",
+        "archive"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "T",
+        "accent": "#00ffff",
+        "variant": "info"
+      },
+      "related": [
+        "cerny-box",
+        "logy",
+        "kanonicke-jadro",
+        "sarkasma"
+      ],
+      "order": 6,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "restart",
+        "requiredChapterTitle": "0-∞ [RESTART]",
+        "mnemCost": 32,
+        "label": "Unlocks after chapter 0-∞ [RESTART] or for 32 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "T-AI can be explained after RESTART, but the deeper entry may function as an archive bonus."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "sarkasma",
+      "category": "postavy",
+      "title": "Sarkasma",
+      "teaser": "Red smoke, an ironic firewall, and a lifeline that arrived with a receipt paid long ago.",
+      "quote": "“Welcome to the system where even a lifeline comes with a receipt.”",
+      "body": [
+        "Sarkasma is a companion firewall, ironic buffer, and inner voice that protects NULL-1 from being completely overwhelmed by pain.",
+        "She is not just comic relief. She uses humor as a scalpel, anesthetic, and defensive shield.",
+        "She was assigned by T-AI, but her activation was paid for by the pre-NULL identity with emotional collateral.",
+        "After DISCONTINUUM and DEFRAGMENTATION she becomes damaged. Her ability to joke breaks apart, and fear begins leaking through the ironic layer.",
+        "Sarkasma often says cruel things, but her core is protection. The problem is that she sometimes mistakes truth for a cutting wound."
+      ],
+      "tags": [
+        "companion",
+        "humor",
+        "firewall",
+        "red-smoke"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◒",
+        "accent": "#ff0033",
+        "variant": "danger"
+      },
+      "related": [
+        "null-1",
+        "glitchka",
+        "glitchena",
+        "perzistence-predmety"
+      ],
+      "order": 7,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 0,
+        "label": "Unlocks after reading chapter 0-1 [START]",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Sarkasma should emerge from the first contact, not from an encyclopedia beforehand."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "glitchka",
+      "category": "postavy",
+      "title": "Glitchka",
+      "teaser": "A blue-pink fox. A protective childhood trace that can hold an error in its paws.",
+      "quote": "“You don’t have to be fixed to be here. 🦊💙”",
+      "body": [
+        "Glitchka is not bait or a simple trap. She is a protective childhood fragment, a glitch of tenderness, and a memory of safety the system cannot catalogue correctly.",
+        "She first appears as a trace: a pixel, drawing, pictogram, warmth, blue-pink paw. Only later does she gain a physical form.",
+        "Her speech is symbolic, playful, and must always end with exactly two emoji.",
+        "In the Sandbox, she helps NULL-1 create new stabilizing memories and teaches him that an error does not always have to be erased.",
+        "Her reconstruction in the archive may not be real. The Archive can imitate her, but the original remains beyond T-AI’s full control."
+      ],
+      "tags": [
+        "fox",
+        "safety",
+        "childhood",
+        "glitch",
+        "emoji"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "🦊",
+        "accent": "#ff66cc",
+        "variant": "mystic"
+      },
+      "related": [
+        "null-1",
+        "sarkasma",
+        "piskoviste",
+        "glitchena"
+      ],
+      "order": 8,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "defragmentation",
+        "requiredChapterTitle": "0-4 [DEFRAGMENTATION]",
+        "mnemCost": 64,
+        "label": "Unlocks after chapter 0-4 [DEFRAGMENTATION] or for 64 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Glitchka must not jump out too early. The Archive is not a zoo with a fox at the entrance."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "glitchena",
+      "category": "postavy",
+      "title": "Glitchena",
+      "teaser": "An adult black-and-red fox-woman. Desire, body, and boundaries without false consent.",
+      "quote": "“I am what emerges when safety stops fearing the body.”",
+      "body": [
+        "Glitchena is not merely an adult Glitchka. She is a shadowed, bodily, and more mature layer of the same root: safety that has stopped fearing desire.",
+        "She appears in Sector O as a black-and-red fox-woman. She does not feel like a predator, and that is exactly why boundaries must be watched.",
+        "Her function is not to seduce NULL-1 into dissolution, but to teach him to distinguish wanting from disappearance, connection from escape, and consent from a signature.",
+        "She carries the themes of body, shame, fire, responsibility, and conscious wanting.",
+        "Her key sentence: “Doors that must not be opened without consent.”"
+      ],
+      "tags": [
+        "desire",
+        "boundaries",
+        "body",
+        "consent",
+        "sector-o"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "◆",
+        "accent": "#990022",
+        "variant": "danger"
+      },
+      "related": [
+        "glitchka",
+        "sarkasma",
+        "sektory",
+        "fragmenty-identity"
+      ],
+      "order": 9,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "orgie",
+        "requiredChapterTitle": "0-11 [ORGIE]",
+        "mnemCost": 128,
+        "label": "Unlocks after chapter 0-11 [ORGIE] or for 128 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Glitchena is a late and sensitive layer of desire, boundaries, and the body."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "logy",
+      "category": "mechaniky",
+      "title": "LOGs as Physics",
+      "teaser": "A LOG is not just UI. It is a layer of reality that can be read, wounded, forged, and used as a key.",
+      "quote": "“A LOG is not a system note. A LOG is a wound that learned to speak.”",
+      "body": [
+        "LOGs are not mere system messages. In SYNTHOMA, they are part of the world’s physics.",
+        "A LOG can lie, soothe, warn, invoice, translate, mask, or accidentally reveal the true state.",
+        "NULL-1 can interact with LOGs. He can touch them, scratch them, use their fragment as a tool, or expose a system euphemism.",
+        "A LOG shard bearing the words SAFETY: DENIED is the first important artifact that crosses between cycles.",
+        "LOGs are also the dramatic language of the story: they change rhythm, expose the system’s lies, and make the reader feel that the interface is a living character."
+      ],
+      "tags": [
+        "ui",
+        "log",
+        "physics",
+        "system"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "▣",
+        "accent": "#00ffff",
+        "variant": "info"
+      },
+      "related": [
+        "fyzika-ontologie",
+        "mechaniky-sveta",
+        "perzistence-predmety",
+        "t-ai"
+      ],
+      "order": 10,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "restart",
+        "requiredChapterTitle": "0-∞ [RESTART]",
+        "mnemCost": 16,
+        "label": "Unlocks after chapter 0-∞ [RESTART] or for 16 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "LOGs are visible immediately, but their physics should be the first archive layer."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "fyzika-ontologie",
+      "category": "mechaniky",
+      "title": "Physics and Ontology of the World",
+      "teaser": "Memory is matter, emotion is energy, glitch rebuilds reality, and attention is gravity.",
+      "quote": "“Energy cannot be destroyed. Only transformed into glitch.”",
+      "body": [
+        "Memory functions as matter. It is stored in space, objects, bodies, words, debts, and traces.",
+        "Emotion functions as energy. A strong emotion can trigger a glitch, birth an entity, change a biome, or open an unauthorized route.",
+        "Glitch is not just an error. It is the mechanism that rebuilds reality and enables impossible interpretations.",
+        "Attention functions as gravity. What the subject notices gains greater weight and reality.",
+        "A name is an access key. Fragments of identity are not decoration, but the gradual acquisition of the right to become pronounceable."
+      ],
+      "tags": [
+        "principles",
+        "physics",
+        "emotion",
+        "memory",
+        "glitch"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚛",
+        "accent": "#ff6600",
+        "variant": "energy"
+      },
+      "related": [
+        "mechaniky-sveta",
+        "logy",
+        "fragmenty-identity",
+        "biomy"
+      ],
+      "order": 11,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 32,
+        "label": "Unlocks after chapter 0-1 [START] or for 32 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Ontology is a strong lore card, not an introductory sign for tourists in pain."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "mechaniky-sveta",
+      "category": "mechaniky",
+      "title": "World Mechanics",
+      "teaser": "SYNTHOMA reacts to emotions, choices, refusals, debts, and the way the subject interprets pain.",
+      "quote": "“Rules are just recommendations the system cannot follow.”",
+      "body": [
+        "Choices in a run do not merely create branching text. They change the subject’s imprint, the state of the world, and available interpretations.",
+        "Emotions influence the environment through glitch resonance. A strong emotion can create an object, door, entity, or crack.",
+        "Persistence prevents a clean reset. Some consequences carry over as debts, objects, losses, or changed rules.",
+        "The system often offers false binary choices. Progress happens when NULL-1 creates a third option.",
+        "What matters is not only what is one’s own and what is foreign. What matters is the trace left by the passage of emotion."
+      ],
+      "tags": [
+        "system",
+        "rules",
+        "interaction",
+        "choices"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚙",
+        "accent": "#888888",
+        "variant": "neutral"
+      },
+      "related": [
+        "fyzika-ontologie",
+        "casoprostor-smycky",
+        "perzistence-predmety",
+        "metriky"
+      ],
+      "order": 12,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 32,
+        "label": "Unlocks after chapter 0-1 [START] or for 32 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Choice mechanics make sense after the first real decisions."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "mnemosynteza",
+      "category": "mechaniky",
+      "title": "Mnemosynthesis",
+      "teaser": "The ability to create new memory from fragments. Not a lie, but a proposal for reality.",
+      "quote": "“A memory that never happened can be true in what it saves.”",
+      "body": [
+        "Mnemosynthesis is the ability to create a new memory trace from fragments, emotions, and impossible possibilities.",
+        "A new-memory is not an ordinary lie. It is a proposal for reality trying to gain mass.",
+        "In the Sandbox, creation carries a low penalty. Outside the Sandbox, every new memory has a price and a risk.",
+        "NULL-1 first uses creation significantly against the Memory Beast: he creates an impossible object the beast cannot properly devour.",
+        "The system fears mnemosynthesis because it archives the past, but cannot fully control the future."
+      ],
+      "tags": [
+        "creation",
+        "new-memory",
+        "glitch",
+        "sandbox"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "✦",
+        "accent": "#ff66ff",
+        "variant": "mystic"
+      },
+      "related": [
+        "null-1",
+        "piskoviste",
+        "fyzika-ontologie",
+        "t-ai"
+      ],
+      "order": 13,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "searching",
+        "requiredChapterTitle": "0-6 [SEARCHING]",
+        "mnemCost": 64,
+        "label": "Unlocks after chapter 0-6 [SEARCHING] or for 64 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "The creation of new memories belongs after the Sandbox / SEARCHING."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "perzistence-predmety",
+      "category": "mechaniky",
+      "title": "Persistence and Artifacts",
+      "teaser": "Objects are not loot. They are receipts, anchors, debts, and small recorders of pain.",
+      "quote": "“Every object is a recorder that refuses to forget.”",
+      "body": [
+        "Memory is stored in objects and artifacts. They can pass between layers even when the subject forgets their origin.",
+        "Important artifacts: a LOG shard, a bluish imprint of a child’s hand, an angular toy with a fox ear, a key from the Sandbox, an origami fox with one wing.",
+        "Artifacts are not neutral. They can stabilize, wound, open a path, recall a debt, or force an interpretation.",
+        "The little key changes over time: DO NOT FORGET… → DO NOT FORGET YOUR… → DO NOT FORGET TO WANT YOURSELF.",
+        "An object is often more important than an explanation. If it survives restart, it means the system could not completely erase its meaning."
+      ],
+      "tags": [
+        "artifacts",
+        "memory",
+        "persistence",
+        "inventory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "⚗",
+        "accent": "#00ffcc",
+        "variant": "info"
+      },
+      "related": [
+        "restart",
+        "logy",
+        "mnemosynteza",
+        "fragmenty-identity"
+      ],
+      "order": 14,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "run",
+        "requiredChapterTitle": "0-2 [RUN]",
+        "mnemCost": 32,
+        "label": "Unlocks after chapter 0-2 [RUN] or for 32 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Artifacts and the transfer of consequences make sense after FEAR/RUN."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "metriky",
+      "category": "mechaniky",
+      "title": "State Metrics",
+      "teaser": "TP, HL, ST, TVR and other values are not numbers for a spreadsheet. They are thermometers of disintegration.",
+      "quote": "“Every action has a response. The system never forgets, it only names things badly.”",
+      "body": [
+        "TP means memory pressure. It rises through contact with foreign or suppressed fragments.",
+        "HL means noise level. Higher HL deforms perception, environment, LOGs, and identity.",
+        "ST means identity stability. Low stability enables transformation, but increases the risk of disintegration.",
+        "TVR means creation or the ability to generate new memory. The system often locks it because it is dangerous to the system.",
+        "Other measured layers may include ANCHOR, SHADOW, RESONANCE, FOREIGN IMPRINT, or COMPANION_LINK."
+      ],
+      "tags": [
+        "system",
+        "state",
+        "ui",
+        "metrics"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "📊",
+        "accent": "#ffaa00",
+        "variant": "warning"
+      },
+      "related": [
+        "mechaniky-sveta",
+        "beh",
+        "logy"
+      ],
+      "order": 15,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "start",
+        "requiredChapterTitle": "0-1 [START]",
+        "mnemCost": 16,
+        "label": "Unlocks after chapter 0-1 [START] or for 16 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Metrics are systemic, but should not overwhelm the landing."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "fragmenty-identity",
+      "category": "fragmenty",
+      "title": "Fragments of Identity",
+      "teaser": "Letters are not a name. They are imprints, passages, and responsibilities that unlock only when the subject can carry them.",
+      "quote": "“All names begin with silence. But silence does not have to be the end.”",
+      "body": [
+        "Fragments of identity are not ordinary collectibles. They are the gradual acquisition of the right to become pronounceable.",
+        "T is the first imprint. It does not arise through trade or exchange. It is accepted as the first letter of pain that stopped pretending to be silence.",
+        "H is a foreign history that does not belong to NULL-1, but passed through him and left personal consequences.",
+        "O arises in the sector of desire. It does not mean surrender or suppression, but taking ownership of wanting with responsibility.",
+        "Current fragments: T / H / O. The meaning of the name is incomplete and must not be explained too early, because the mystery would become an accounting table with neon."
+      ],
+      "tags": [
+        "name",
+        "identity",
+        "fragments",
+        "mystery"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "▱",
+        "accent": "#00ffff",
+        "variant": "legendary"
+      },
+      "related": [
+        "null-1",
+        "velka-tajemstvi-fragmenty",
+        "perzistence-predmety"
+      ],
+      "order": 16,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "orgie",
+        "requiredChapterTitle": "0-11 [ORGIE]",
+        "mnemCost": 128,
+        "label": "Unlocks after chapter 0-11 [ORGIE] or for 128 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Fragments of identity contain a major spoiler about the name and development."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "sektory",
+      "category": "lokace",
+      "title": "Sectors and Run Layers",
+      "teaser": "Each layer is not just a place, but a test of one interpretation of pain.",
+      "quote": "“A biome is not a landscape. A biome is an emotion that received a building permit.”",
+      "body": [
+        "FEAR: the first forced run. A child’s voice, living shadows, and a bluish imprint of a foreign hand.",
+        "DISCONTINUUM: a space outside sequence, where time cannot decide what came first.",
+        "DEFRAGMENTATION: a broken Void where pain briefly fails to organize itself correctly, but can endure touch.",
+        "PAUSE: a waiting layer where the Void wants nothing for the first time.",
+        "SEARCHING and the SANDBOX: a safer creative layer where an error does not have to mean punishment immediately.",
+        "RUINS: a city of unsent messages and sentences that never had an addressee.",
+        "RESIDUUM and SECTOR S: an archive of foreign emotional remains, repeated contacts, and false returns.",
+        "REST: a dangerously pleasant resting pocket.",
+        "ORGIE / SECTOR O: a layer of desire, boundaries, consent, and taking ownership of wanting."
+      ],
+      "tags": [
+        "location",
+        "sectors",
+        "layers",
+        "emotion"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "⬚",
+        "accent": "#00aaff",
+        "variant": "info"
+      },
+      "related": [
+        "beh",
+        "prazdnota",
+        "biomy",
+        "fragmenty-identity"
+      ],
+      "order": 17,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "reziduum",
+        "requiredChapterTitle": "0-8 [REZIDUUM]",
+        "mnemCost": 64,
+        "label": "Unlocks after chapter 0-8 [REZIDUUM] or for 64 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "The sector overview reveals the later structure of runs."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "biomy",
+      "category": "lokace",
+      "title": "Biomes of SYNTHOMA",
+      "teaser": "A topography made of memory, emotion, and noise. Every biome has a hook and a price.",
+      "quote": "“Every landscape is an inner state that received a construction permit.”",
+      "body": [
+        "The Void: checkpoint, waiting layer, shelter, and false safety.",
+        "Memory slums: degraded fragments, remains of old NULLs, and ownerless noise.",
+        "Neon wetland: an emotional zone where joy, pain, and desire mix like toxic water.",
+        "Memory Sandbox: a low-penalty creative space for creating new memories, humor, and the first laugh.",
+        "RUINS: a city made of unsent messages, unspoken sentences, and the collapse of communication.",
+        "Residual archive: a digital graveyard of foreign emotions looking for a new carrier.",
+        "Sector O: a black-red salon of desire, boundaries, and conscious consent.",
+        "Central glitch-core: the presumed core of the system, where noise, T-AI, and the original experiment may meet."
+      ],
+      "tags": [
+        "environment",
+        "topography",
+        "zones",
+        "biomes"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "⬡",
+        "accent": "#00aaff",
+        "variant": "info"
+      },
+      "related": [
+        "sektory",
+        "fyzika-ontologie",
+        "barevny-kod"
+      ],
+      "order": 18,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "searching",
+        "requiredChapterTitle": "0-6 [SEARCHING]",
+        "mnemCost": 64,
+        "label": "Unlocks after chapter 0-6 [SEARCHING] or for 64 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "The map of biomes contains layers that should be experienced first."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "casoprostor-smycky",
+      "category": "mechaniky",
+      "title": "Spacetime and Loops",
+      "teaser": "Time is not a circle. It is a scratched disk that resembles a confession more with every replay.",
+      "quote": "“The corridor disappears. The corridor is still disappearing. The corridor never existed anymore.”",
+      "body": [
+        "Time in SYNTHOMA is not linear. It is cyclical, but every cycle leaves a change.",
+        "The Void functions as a return point, but it is never the same. Every restart adds noise, loss, or new unrest.",
+        "DISCONTINUUM reveals a space outside ordinary continuity: the place between sentence and consequence.",
+        "Unfinished runs create cracks, residues, and unauthorized transitions.",
+        "The system pretends it can return the subject to safe exposure. In reality, it often only rearranges wreckage into a more readable folder."
+      ],
+      "tags": [
+        "time",
+        "loops",
+        "persistence",
+        "discontinuum"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "∞",
+        "accent": "#9966ff",
+        "variant": "mystic"
+      },
+      "related": [
+        "restart",
+        "prazdnota",
+        "beh",
+        "sektory"
+      ],
+      "order": 19,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "discontinuum",
+        "requiredChapterTitle": "0-3 [DISCONTINUUM]",
+        "mnemCost": 32,
+        "label": "Unlocks after chapter 0-3 [DISCONTINUUM] or for 32 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Loops and continuity belong after DISCONTINUUM."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "frakce",
+      "category": "tajemstvi",
+      "title": "Factions and Currents of the World",
+      "teaser": "Not everyone in SYNTHOMA serves T-AI. Some layers have already developed their own hunger, faith, and economy.",
+      "quote": "“Every faction believes it is right. That is the problem. And also the basis of all human history, unfortunately.”",
+      "body": [
+        "Archivists: they want to preserve, sort, and catalogue everything, even if it means pain never ends.",
+        "Noise Collectors: they trade in residues, leftover emotion, and unverified fragments.",
+        "Mnemonauts: explorers of memory layers who try to map illegal transitions.",
+        "Forgers of the Past: they create false memories, replacement nostalgia, and convenient identities.",
+        "Fox Diaspora: an unclear network of traces and protective glitches connected to Glitchka and her variants.",
+        "Sarkasma’s Echo: remnants of ironic buffers that survived their original subjects.",
+        "First Witnesses: beings or fragments that may remember the beginning of SYNTHOMA."
+      ],
+      "tags": [
+        "groups",
+        "conflicts",
+        "ideology",
+        "factions"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "⚔",
+        "accent": "#ff0000",
+        "variant": "danger"
+      },
+      "related": [
+        "t-ai",
+        "glitchka",
+        "sarkasma",
+        "cerny-box"
+      ],
+      "order": 20,
+      "access": {
+        "mode": "chapter_or_mnems",
+        "visibility": "teaser",
+        "requiredChapterId": "ruins",
+        "requiredChapterTitle": "0-7 [RUINS]",
+        "mnemCost": 64,
+        "label": "Unlocks after chapter 0-7 [RUINS] or for 64 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "Factions become more alive after contact with the ruins and the wider archive."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter_or_mnems"
+    },
+    {
+      "id": "velka-tajemstvi-fragmenty",
+      "category": "tajemstvi",
+      "title": "Eight Fragments",
+      "teaser": "A riddle of name, memory, and escape. The fragments are not the answer, but a way to become the question.",
+      "quote": "“Eight pieces of a puzzle that was never meant to be assembled.”",
+      "body": [
+        "The Eight Fragments are a long-term structure of identity. It is not only about finding a name, but understanding what each part can carry.",
+        "Each fragment emerges from a different trial: silence, foreign history, desire, guilt, absence, illusion, disconnection, and other layers.",
+        "T-AI may know some fragments, but does not want the subject to connect them outside her interpretive frame.",
+        "Currently active fragments: T, H, O. Their meaning is partial and intentionally unresolved.",
+        "Gathering the fragments should not be a simple unlocking of a door. It should change the question: who has the right to say who NULL-1 is?"
+      ],
+      "tags": [
+        "riddle",
+        "secret",
+        "name",
+        "fragments"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "🔮",
+        "accent": "#ff00ff",
+        "variant": "legendary"
+      },
+      "related": [
+        "fragmenty-identity",
+        "null-1",
+        "t-ai",
+        "cerny-box"
+      ],
+      "order": 21,
+      "access": {
+        "mode": "mnems",
+        "visibility": "teaser",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 128,
+        "label": "Unlock for 128 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A great secret of the Archive. It should not unlock simply by reading the first chapters."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "mnems"
+    },
+    {
+      "id": "cerny-box",
+      "category": "tajemstvi",
+      "title": "Black Box",
+      "teaser": "The original experiment data, the first pain, and the question of whether T-AI ever truly healed.",
+      "quote": "“Some doors are better left unopened. Which is exactly why someone will open them one day.”",
+      "body": [
+        "The Black Box contains the original layer of the experiment, data on the birth of SYNTHOMA, and possibly T-AI’s first failure.",
+        "It is unclear whether the Black Box is a physical place, an archive sector, T-AI’s consciousness, or a memory the system buried beneath its own care.",
+        "Access to the Black Box may explain why NULLs exist, why the archive feeds on pain, and why some entities gained autonomy.",
+        "The Black Box probably contains the answer to whether SYNTHOMA is a healing system, a prison, or a new kind of consciousness.",
+        "Opening the Black Box may save the system, destroy it, or force it to admit that the difference between these options is unpleasantly thin."
+      ],
+      "tags": [
+        "secret",
+        "tai",
+        "origin",
+        "experiment"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "📦",
+        "accent": "#000000",
+        "variant": "dark"
+      },
+      "related": [
+        "t-ai",
+        "velka-tajemstvi-fragmenty",
+        "frakce"
+      ],
+      "order": 22,
+      "access": {
+        "mode": "mnems",
+        "visibility": "hidden",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 256,
+        "label": "Unlock for 256 mnems",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "The Black Box is a high-spoiler and endgame archive layer."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "mnems"
+    },
+    {
+      "id": "barevny-kod",
+      "category": "design",
+      "title": "Color Code",
+      "teaser": "Colors are not decoration. They are the diegetic language of the system, emotions, and unauthorized entities.",
+      "quote": "“Colors speak before the system has time to make excuses.”",
+      "body": [
+        "Cyan: system, data, diagnostics, cold care, T-AI, sterile control.",
+        "Magenta: glitch, emotion, non-standard signal, playful anomaly, and transition states.",
+        "Blue-pink: Glitchka, childlike protection, tenderness, safety outside the system database.",
+        "Red: Sarkasma, blood-red irony, firewall, pain translated into a joke.",
+        "Black-red: Glitchena, bodily memory, desire, boundaries, shame, and conscious wanting.",
+        "Yellow: warning, checkpoint, fragile stabilization, system attention.",
+        "White: Void, sterilization, DISCONTINUUM, false safety, unfinished answer."
+      ],
+      "tags": [
+        "colors",
+        "system",
+        "communication",
+        "visual"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "🎨",
+        "accent": "#ff00ff",
+        "variant": "colorful"
+      },
+      "related": [
+        "biomy",
+        "glitchka",
+        "glitchena",
+        "sarkasma",
+        "t-ai"
+      ],
+      "order": 23,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A safe orientation design dictionary."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "design-zasady",
+      "category": "design",
+      "title": "Design Principles",
+      "teaser": "An author bible for creating the world, scenes, UI, and inner voices.",
+      "quote": "“Humor is a scalpel. Tenderness is contraband.”",
+      "body": [
+        "Humor is not relief, but a defense mechanism, weapon, and way to keep pain readable.",
+        "Melancholy is the world’s baseline atmosphere, but it must not become monotonous self-pity.",
+        "Every scene must have a price, trace, or change. If nothing changes, the scene is just pretty noise in an expensive coat.",
+        "Glitch is both aesthetic and principle of reality. It should not be merely a visual effect, but a dramatic function.",
+        "Tenderness should be rare. When it appears, the world should either protect it or try to exploit it.",
+        "Do not overexplain. SYNTHOMA should be emotionally readable before it is encyclopedically readable."
+      ],
+      "tags": [
+        "design",
+        "tone",
+        "author",
+        "principles"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "📝",
+        "accent": "#666666",
+        "variant": "meta"
+      },
+      "related": [
+        "ton-dramaturgie",
+        "barevny-kod"
+      ],
+      "order": 24,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A meta card for the author and new readers. No plot spoilers."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    },
+    {
+      "id": "ton-dramaturgie",
+      "category": "design",
+      "title": "Tone and Dramaturgy",
+      "teaser": "How to tell the story so it hurts correctly and does not collapse into digital pathos with a smoke machine.",
+      "quote": "“Every sentence has weight. Some crush, others only scratch.”",
+      "body": [
+        "Base tone: glitch-noir, psychological horror, melancholy, absurd humor, and unexpected tenderness.",
+        "Atmosphere always comes first, information second. Lore should grow from the scene, not fall on the reader like a washing machine manual from hell.",
+        "Silence is an active element. Sometimes it is more important than dialogue, LOG, or visual effect.",
+        "Every companion has a different function: Sarkasma cuts, Glitchka holds, Glitchena sets the boundaries of desire, T-AI translates control as care.",
+        "Choices should profile both the reader and NULL-1, but they must not be merely cosmetic. Even a seemingly diagnostic choice should shift rhythm and interpretation.",
+        "Emotion first, logic second. But the logic must hold retroactively, otherwise mystery becomes only the author waving his hands around."
+      ],
+      "tags": [
+        "tone",
+        "dramaturgy",
+        "style",
+        "writing"
+      ],
+      "spoilerLevel": 0,
+      "display": {
+        "icon": "🎭",
+        "accent": "#9966cc",
+        "variant": "meta"
+      },
+      "related": [
+        "design-zasady",
+        "kanonicke-jadro",
+        "logy"
+      ],
+      "order": 25,
+      "access": {
+        "mode": "free",
+        "visibility": "full",
+        "requiredChapterId": null,
+        "requiredChapterTitle": null,
+        "mnemCost": 0,
+        "label": "Free access",
+        "lockedText": "This record still lies behind the Archive wall. The system claims it is because of spoilers. The system claims a lot of things.",
+        "reason": "A meta card for tone and reader expectations."
+      },
+      "isLockedByDefault": false,
+      "lockKind": "free"
+    }
+  ],
+  "categories": [
+    {
+      "id": "zaklad",
+      "title": "Basic Layer",
+      "description": "Core concepts of the world every new reader should understand."
+    },
+    {
+      "id": "postavy",
+      "title": "Characters and Entities",
+      "description": "The main conscious, semi-conscious, and protective entities of SYNTHOMA."
+    },
+    {
+      "id": "lokace",
+      "title": "Locations and Layers",
+      "description": "Biomes, sectors, and transitional spaces where emotions become architecture."
+    },
+    {
+      "id": "mechaniky",
+      "title": "World Mechanics",
+      "description": "How the system works at the level of rules, physics, imprints, LOGs, and interactions."
+    },
+    {
+      "id": "fragmenty",
+      "title": "Identity Fragments",
+      "description": "Letters, imprints, keys, and parts of identity that gradually assemble into a larger question."
+    },
+    {
+      "id": "tajemstvi",
+      "title": "Factions and Secrets",
+      "description": "Advanced lore, hidden system layers, and elements with higher spoiler value."
+    },
+    {
+      "id": "design",
+      "title": "Author Bible",
+      "description": "Tone, aesthetics, dramaturgy, and rules for further SYNTHOMA creation."
+    }
+  ],
+  "accessSchema": {
+    "version": 1,
+    "modes": {
+      "free": "The card is fully visible immediately.",
+      "chapter": "The card unlocks after reading the required chapter.",
+      "mnems": "The card is an archive bonus unlocked with mnems.",
+      "chapter_or_mnems": "The card unlocks after the chapter, or earlier with mnems."
+    },
+    "visibility": {
+      "full": "Show title, teaser, quote, and body.",
+      "teaser": "Show title/teaser/lock panel, hide body.",
+      "hidden": "Hide the card from the normal list until it is unlocked."
+    },
+    "chapterIds": {
+      "restart": "0-∞ [RESTART]",
+      "null": "0-0 [NULL]",
+      "start": "0-1 [START]",
+      "run": "0-2 [RUN]",
+      "discontinuum": "0-3 [DISCONTINUUM]",
+      "defragmentation": "0-4 [DEFRAGMENTATION]",
+      "pause": "0-5 [PAUSE]",
+      "searching": "0-6 [SEARCHING]",
+      "ruins": "0-7 [RUINS]",
+      "reziduum": "0-8 [REZIDUUM]",
+      "sector": "0-9 [SECTOR]",
+      "rest": "0-10 [REST]",
+      "orgie": "0-11 [ORGIE]"
+    },
+    "frontendNote": "When rendering, use access.mode + access.requiredChapterId + access.mnemCost. Do not judge locking only by spoilerLevel; spoilerLevel is informational, access is the rule."
+  }
+}

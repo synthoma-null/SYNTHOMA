@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import type { Artifact, Mission } from '../../content/booksManifest';
+import { useLang } from '../../lib/LangContext';
 
 interface UserRun {
   cycleNumber: number;
@@ -46,30 +47,15 @@ interface RunData {
   missions: UserMissionRow[];
 }
 
-const ENTITY_LABELS: Record<string, string> = {
-  glitchka: 'Glitchka',
-  sarkasma: 'Sarkasma',
-  tai: 'T-AI',
-  archive: 'Archiv',
-  shadow: 'Stín',
-};
-
-const ENTITY_METRIC_LABELS: Record<string, string> = {
-  trust: 'Důvěra',
-  suspicion: 'Podezření',
-  sync: 'Sync',
-  protection: 'Ochrana',
-};
-
-const PRESSURE_LABELS = [
-  { min: 0,  max: 30, label: 'KLIDNÝ BĚH',             cls: 'run-bar--calm' },
-  { min: 31, max: 60, label: 'AKTIVNÍ ZÁTĚŽ',          cls: 'run-bar--active' },
-  { min: 61, max: 80, label: 'ZVÝŠENÝ TLAK',           cls: 'run-bar--high' },
-  { min: 81, max: 100,label: 'KRITICKÝ — HROZÍ ČERNÝ BOX', cls: 'run-bar--critical' },
+const PRESSURE_CLS = [
+  { min: 0,  max: 30,  cls: 'run-bar--calm',     key: 'run.pressure.bar.calm' as const },
+  { min: 31, max: 60,  cls: 'run-bar--active',    key: 'run.pressure.bar.active' as const },
+  { min: 61, max: 80,  cls: 'run-bar--high',      key: 'run.pressure.bar.high' as const },
+  { min: 81, max: 100, cls: 'run-bar--critical',  key: 'run.pressure.bar.critical' as const },
 ];
 
-function pressureClass(v: number) {
-  return PRESSURE_LABELS.find((p) => v >= p.min && v <= p.max) ?? PRESSURE_LABELS[0];
+function pressureEntry(v: number) {
+  return PRESSURE_CLS.find((p) => v >= p.min && v <= p.max) ?? PRESSURE_CLS[0];
 }
 
 function Bar({ value, cls }: { value: number; cls: string }) {
@@ -84,6 +70,7 @@ const NAME_FRAGMENT_SLOTS = 5;
 
 export default function RunDashboard() {
   const { data: session } = useSession();
+  const { t } = useLang();
   const [data, setData] = useState<RunData | null>(null);
   const [loading, setLoading] = useState(true);
   const [section, setSection] = useState<'run' | 'psyche' | 'entities' | 'artifacts' | 'missions'>('run');
@@ -100,8 +87,8 @@ export default function RunDashboard() {
     return (
       <div className="run-dashboard run-dashboard--guest">
         <p className="run-log-prefix">LOG [AUTH_REQUIRED]:</p>
-        <p className="run-guest-msg">Subjekt není rozpoznán. Identita je podmínkou cyklu.</p>
-        <a href="/login" className="btn">PŘIHLÁSIT SE</a>
+        <p className="run-guest-msg">{t('run.guest.msg')}</p>
+        <a href="/login" className="btn">{t('run.guest.login')}</a>
       </div>
     );
   }
@@ -110,7 +97,7 @@ export default function RunDashboard() {
     return (
       <div className="run-dashboard run-dashboard--loading">
         <p className="run-log-prefix">LOG [LOADING]:</p>
-        <p className="run-loading-msg">Archiv načítá otisk...</p>
+        <p className="run-loading-msg">{t('run.loading.msg')}</p>
       </div>
     );
   }
@@ -119,7 +106,7 @@ export default function RunDashboard() {
     run: null, psyche: null, entities: [], artifacts: [], nameFragments: [], missions: [],
   };
 
-  const pressure = (run ? pressureClass(run.memoryPressure) : null) ?? PRESSURE_LABELS[0]!;
+  const pressure = (run ? pressureEntry(run.memoryPressure) : null) ?? PRESSURE_CLS[0]!;
   const dominantFn = psyche
     ? Object.entries({ Ni: psyche.ni, Fe: psyche.fe, Ti: psyche.ti, Se: psyche.se })
         .sort((a, b) => b[1] - a[1])
@@ -134,13 +121,13 @@ export default function RunDashboard() {
     <div className="run-dashboard">
       <div className="run-dashboard-header">
         <p className="run-log-prefix">LOG [SUBJECT_PROFILE]:</p>
-        <p className="run-header-desc">Subjekt byl rozpoznán. Paměťový otisk není stabilní. Což je u lidí zřejmě normální.</p>
+        <p className="run-header-desc">{t('run.header.desc')}</p>
       </div>
 
       <div className="run-identity">
-        <span className="run-label">SUBJEKT:</span>
+        <span className="run-label">{t('run.identity.subject')}</span>
         <span className="run-value">{(session.user.name ?? session.user.email ?? '?').toUpperCase()}</span>
-        <span className="run-label">CYKLUS:</span>
+        <span className="run-label">{t('run.identity.cycle')}</span>
         <span className="run-value">{String(run?.cycleNumber ?? 1).padStart(3, '0')}</span>
       </div>
 
@@ -151,10 +138,10 @@ export default function RunDashboard() {
             className={`run-nav-btn${section === s ? ' run-nav-btn--active' : ''}`}
             onClick={() => setSection(s)}
           >
-            {s === 'run' ? 'AKTIVNÍ CYKLUS' :
-             s === 'psyche' ? 'PSYCHOMAPA' :
-             s === 'entities' ? 'VZTAHY' :
-             s === 'artifacts' ? 'ARTEFAKTY' : 'MISE'}
+            {s === 'run' ? t('run.nav.run') :
+             s === 'psyche' ? t('run.nav.psyche') :
+             s === 'entities' ? t('run.nav.entities') :
+             s === 'artifacts' ? t('run.nav.artifacts') : t('run.nav.missions')}
           </button>
         ))}
       </nav>
@@ -163,7 +150,7 @@ export default function RunDashboard() {
         <div className="run-section">
           <div className="run-metric">
             <div className="run-metric-header">
-              <span className="run-metric-label">STABILITA IDENTITY</span>
+              <span className="run-metric-label">{t('run.metric.stability')}</span>
               <span className="run-metric-value">{run?.stability ?? 50} %</span>
             </div>
             <Bar value={run?.stability ?? 50} cls="run-bar--stability" />
@@ -171,36 +158,30 @@ export default function RunDashboard() {
 
           <div className="run-metric">
             <div className="run-metric-header">
-              <span className="run-metric-label">TLAK PAMĚTI</span>
+              <span className="run-metric-label">{t('run.metric.pressure')}</span>
               <span className={`run-metric-value run-metric-value--${pressure.cls.replace('run-bar--', '')}`}>
-                {run?.memoryPressure ?? 0} % — {pressure.label}
+                {run?.memoryPressure ?? 0} % — {t(pressure.key)}
               </span>
             </div>
             <Bar value={run?.memoryPressure ?? 0} cls={pressure.cls} />
             {(run?.memoryPressure ?? 0) > 80 && (
-              <p className="run-warning">
-                LOG [MEMORY_PRESSURE]: Tlak paměti překročil bezpečnou hranici. Systém doporučuje pauzu.
-                Systém samozřejmě lže.
-              </p>
+              <p className="run-warning">{t('run.warning.pressure')}</p>
             )}
           </div>
 
           <div className="run-metric">
             <div className="run-metric-header">
-              <span className="run-metric-label">STÍN</span>
+              <span className="run-metric-label">{t('run.metric.shadow')}</span>
               <span className="run-metric-value">{run?.shadow ?? 0} %</span>
             </div>
             <Bar value={run?.shadow ?? 0} cls="run-bar--shadow" />
             {(run?.shadow ?? 0) > 70 && (
-              <p className="run-warning">
-                LOG [SHADOW_INDEX]: Subjekt ukládá příliš mnoho nevysloveného. Archiv je spokojen.
-                To je špatné znamení.
-              </p>
+              <p className="run-warning">{t('run.warning.shadow')}</p>
             )}
           </div>
 
           <div className="run-fragments">
-            <span className="run-label">FRAGMENTY JMÉNA:</span>
+            <span className="run-label">{t('run.fragments.label')}</span>
             <div className="run-fragments-row">
               {Array.from({ length: NAME_FRAGMENT_SLOTS }).map((_, i) => {
                 const f = nameFragments[i];
@@ -215,7 +196,7 @@ export default function RunDashboard() {
 
           {activeMissions.length > 0 && (
             <div className="run-active-missions">
-              <span className="run-label">AKTIVNÍ MISE:</span>
+              <span className="run-label">{t('run.missions.active.label')}</span>
               {activeMissions.map((m) => (
                 <div key={m.id} className="run-mission-item">
                   <span className="run-mission-log">{m.logLabel}</span>
@@ -230,7 +211,7 @@ export default function RunDashboard() {
 
       {section === 'psyche' && (
         <div className="run-section">
-          <p className="run-section-intro">DOMINANTNÍ FUNKCE: <strong>{dominantFn}</strong></p>
+          <p className="run-section-intro">{t('run.psyche.dominant')} <strong>{dominantFn}</strong></p>
           {psyche && (
             <div className="run-psyche-grid">
               {[['Ni', psyche.ni], ['Fe', psyche.fe], ['Ti', psyche.ti], ['Se', psyche.se]].map(([k, v]) => (
@@ -242,18 +223,18 @@ export default function RunDashboard() {
               ))}
             </div>
           )}
-          {!psyche && <p className="run-empty">LOG [PSYCHE_EMPTY]: Žádné volby nebyly zaznamenány.</p>}
+          {!psyche && <p className="run-empty">{t('run.psyche.empty')}</p>}
         </div>
       )}
 
       {section === 'entities' && (
         <div className="run-section">
           {entities.length === 0 && (
-            <p className="run-empty">LOG [ENTITIES_EMPTY]: Žádné vztahy k entitám zatím neexistují.</p>
+            <p className="run-empty">{t('run.entities.empty')}</p>
           )}
           {entities.map((e) => (
             <div key={e.entity} className="run-entity">
-              <span className="run-entity-name">{ENTITY_LABELS[e.entity] ?? e.entity.toUpperCase()}</span>
+              <span className="run-entity-name">{t(`run.entity.${e.entity}` as any) || e.entity.toUpperCase()}</span>
               <div className="run-entity-metrics">
                 {(Object.entries({
                   trust: e.trust,
@@ -264,7 +245,7 @@ export default function RunDashboard() {
                   .filter(([, v]) => v > 0)
                   .map(([k, v]) => (
                     <div key={k} className="run-entity-metric">
-                      <span className="run-entity-metric-label">{ENTITY_METRIC_LABELS[k] ?? k}</span>
+                      <span className="run-entity-metric-label">{t(`run.entity.metric.${k}` as any) || k}</span>
                       <Bar value={v} cls="run-bar--entity" />
                       <span className="run-entity-metric-val">{v}</span>
                     </div>
@@ -278,7 +259,7 @@ export default function RunDashboard() {
       {section === 'artifacts' && (
         <div className="run-section">
           {artifacts.length === 0 && (
-            <p className="run-empty">LOG [ARTIFACTS_EMPTY]: Žádné artefakty nezískány.</p>
+            <p className="run-empty">{t('run.artifacts.empty')}</p>
           )}
           <div className="run-artifacts-grid">
             {artifacts.map((a) => (

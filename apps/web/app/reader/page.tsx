@@ -5,6 +5,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { readLastChapterPath } from '../../src/lib/readerState';
+import { useVideoVisibility } from '../../src/lib/useVideoVisibility';
 
 // Dynamic import to avoid SSR issues with useSearchParams
 const ReaderContent = dynamic(
@@ -25,6 +26,7 @@ export default function ReaderPage() {
   const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
   const chapterPath = useMemo(() => searchParams?.get('u') || defaultUrl, [searchParams]);
   const [bgSrc, setBgSrc] = useState<string>("");
+  const videoRef = useVideoVisibility();
 
   // If no ?u is provided, try to continue from lastChapterPath stored in localStorage
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function ReaderPage() {
       {bgSrc ? (
         <div aria-hidden className="video-background">
           <video
+            ref={videoRef}
             key={bgSrc}
             src={bgSrc}
             autoPlay

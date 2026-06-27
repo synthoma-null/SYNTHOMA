@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLang } from '../../lib/LangContext';
 
 export interface SyncDelta {
   stabilityBefore: number;
@@ -40,20 +41,13 @@ function DeltaValue({ before, after, label }: { before: number; after: number; l
   );
 }
 
-const ENTITY_LABELS: Record<string, string> = {
-  glitchka: 'Glitchka',
-  sarkasma: 'Sarkasma',
-  tai: 'T-AI',
-  archive: 'Archiv',
-  shadow: 'Stín',
-};
-
 export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose }: Props) {
+  const { t } = useLang();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 80);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setVisible(true), 80);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleClose = () => {
@@ -69,17 +63,17 @@ export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose
           <span className="sync-chapter-title">{chapterTitle}</span>
         </div>
 
-        <p className="sync-completed">Kapitola dokončena.</p>
+        <p className="sync-completed">{t('sync.completed')}</p>
 
         <div className="sync-deltas">
-          <DeltaValue before={delta.stabilityBefore} after={delta.stabilityAfter} label="Stabilita identity" />
-          <DeltaValue before={delta.pressureBefore} after={delta.pressureAfter} label="Tlak paměti" />
-          <DeltaValue before={delta.shadowBefore} after={delta.shadowAfter} label="Stín" />
+          <DeltaValue before={delta.stabilityBefore} after={delta.stabilityAfter} label={t('sync.label.stability')} />
+          <DeltaValue before={delta.pressureBefore} after={delta.pressureAfter} label={t('sync.label.pressure')} />
+          <DeltaValue before={delta.shadowBefore} after={delta.shadowAfter} label={t('sync.label.shadow')} />
         </div>
 
         {delta.dominantReaction && (
           <div className="sync-reaction">
-            <span className="sync-row-label">Dominantní reakce:</span>
+            <span className="sync-row-label">{t('sync.label.reaction')}</span>
             <span className="sync-reaction-value">{delta.dominantReaction}</span>
           </div>
         )}
@@ -89,7 +83,7 @@ export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose
             {delta.entityDeltas.map((ed, i) => (
               <div key={i} className="sync-row">
                 <span className="sync-row-label">
-                  {ENTITY_LABELS[ed.entity] ?? ed.entity}: {ed.metric}
+                  {t(`sync.entity.${ed.entity}` as any) || ed.entity}: {ed.metric}
                 </span>
                 <span className={`sync-delta ${ed.delta >= 0 ? 'sync-delta--up' : 'sync-delta--down'}`}>
                   {ed.delta >= 0 ? '+' : ''}{ed.delta}
@@ -117,13 +111,13 @@ export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose
 
         {delta.recommendedFragment && (
           <div className="sync-recommended">
-            <span className="sync-row-label">Doporučený fragment:</span>
+            <span className="sync-row-label">{t('sync.label.fragment')}</span>
             <span className="sync-recommended-value">&#8222;{delta.recommendedFragment}&#8220;</span>
           </div>
         )}
 
         <button className="btn sync-close-btn" onClick={handleClose}>
-          ZAVŘÍT LOG
+          {t('sync.close')}
         </button>
       </div>
     </div>

@@ -43,9 +43,9 @@
 .paywall-log-prefix { color: var(--accent-primary); font-weight: 700; margin-right: .4em; }
 .paywall-log-msg { color: var(--text-primary); font-style: italic; font-weight: 600;}
 .paywall-chapter { display: flex; flex-direction: column; gap: .25rem; text-align: center; font-weight: 600;}
-.paywall-chapter-label { font-size: .62rem; letter-spacing: .16em; color: var(--text-secondary); }
-.paywall-chapter-title { font-size: 1.15rem; color: var(--text-primary); font-family: var(--font-display, monospace); letter-spacing: .1em; }
-.paywall-chapter-cost { font-size: .75rem; color: var(--accent-secondary); }
+.paywall-chapter-label { font-size: .62rem; letter-spacing: .16em; color: var(--text-secondary); font-weight: 700; }
+.paywall-chapter-title { font-size: 1.15rem; color: var(--text-primary); font-family: var(--font-display, monospace); letter-spacing: .1em; font-weight: 700; }
+.paywall-chapter-cost { font-size: .75rem; color: var(--accent-secondary); font-weight: 600; }
 .paywall-packages { display: flex; flex-direction: column; gap: .8rem; }
 .paywall-package { border: 1px solid var(--border-secondary); padding: .9rem 1rem; display: flex; flex-direction: column; gap: .4rem; }
 .paywall-package-info { display: flex; justify-content: space-between; align-items: baseline; }

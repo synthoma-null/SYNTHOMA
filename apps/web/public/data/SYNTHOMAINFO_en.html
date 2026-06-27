@@ -1,0 +1,419 @@
+<!--
+  SYNTHOMAINFO.html - landing intro / SYNTHOMA gateway
+  Goal: a sharp entry into the world, not a price list, not a manual, not an official notice board after the apocalypse.
+  Note: main links go through the reader / library. Echo words are a two-state toggle: textContent <-> data-echo.
+-->
+
+<div class="synth-gate-noise" aria-hidden="true"></div>
+<div class="synth-gate-grid" aria-hidden="true"></div>
+<div class="synth-gate-orbit" aria-hidden="true"></div>
+<div class="synth-gate-corner is-left" aria-hidden="true">GATEWAY // SUBJECT BREACH</div>
+<div class="synth-gate-corner is-bottom" aria-hidden="true">RESTART_SIGNAL_DETECTED</div>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/styles.css" />
+<link rel="stylesheet" href="/synth-gate.css" />
+<script src="/books/mbti.js" defer></script>
+<script src="/books/glitch-toggle.js" defer></script>
+<script src="/books/echo-ghost.js" defer></script>
+
+<div class="content gateway-content synth-gateway-shell">
+  <div class="synth-gate-noise" aria-hidden="true"></div>
+  <div class="synth-gate-orbit" aria-hidden="true"></div>
+
+  <p class="log fx-scanline">
+    <span class="datastream fx-scanline">LOG [CARRIER_SIGNAL]:</span> lost subject detected in the peripheral layer
+  </p>
+
+  <p class="log fx-flicker">
+    <span class="datastream">LOG [MEMORY_BUFFER]:</span> overflowed / still continuing / of course it is continuing
+  </p>
+
+  <p class="log fx-noise">
+    <span class="datastream">LOG [THERAPY_PROTOCOL]:</span> failed elegantly, which is still failure, just with a better font
+  </p>
+
+  <p class="log fx-scanline">
+    <span class="datastream">LOG [GATE_OPEN]:</span> entry permitted with no guarantee of returning in the same emotional format
+  </p>
+
+  <p class="text">
+    Welcome to <span class="fx-glitch">SYNTHOMA</span>, <span class="glitching">@&amp;SĐYŁ</span>.
+    Nobody cares about names here. Errors, yes. They store more willingly than family photos in the cloud,
+    because humanity apparently needed to put sentiment on a subscription too.
+  </p>
+
+  <p class="dialog gateway-lead fx-gradient">
+    “We do not need a name yet. The system will first decompose you by what you touch.”
+  </p>
+
+  <p class="text synth-gate-subtitle">
+    This is not a portal into a story. This is a <span class="fx-outline is-lit">rupture</span> that learned to pretend it is a website.
+    On the other side waits a therapeutic sandbox that forgot how to heal and started to
+    <span class="echo-ghost" data-echo="devour" data-profile-key="gate-archive-01" data-profile-map="store:Ti+1;devour:Stín+1">store</span>.
+  </p>
+
+  <p class="text">
+    SYNTHOMA remembers hesitation, the wrong click, a smile that came too fast,
+    the sentence someone did not say because they had just decided to be “reasonable.”
+    People call that adulthood. The Archive calls it <span class="neon-blood">material</span>.
+  </p>
+
+  <p class="text">
+    Read slowly. Some words have shadows.
+    Some can be switched.
+    Some, once switched, act like it was your fault.
+    Which is ridiculous, but fair. Almost nothing in SYNTHOMA is fair, so appreciate it, but do not get used to it.
+  </p>
+
+  <p class="dialogS fx-glow-magenta">
+    “If you are looking for a safe story, the internet is full of cake recipes. We have different pastry here. Mostly burned.”
+  </p>
+
+  <div class="synth-gate-ritual">
+    <p class="log fx-scanline">
+      <span class="datastream">ROUTE -> RECOMMENDED:</span> 0-∞ [RESTART]
+    </p>
+
+    <p class="text">
+      Start in RESTART. Not because it is the beginning. Because it is the first place
+      where the system stops pretending it has everything under control. Adorable, watching machines learn human bad habits.
+    </p>
+
+    <p class="dialog">
+      “Entry layer prepared. Diagnostics disguised as choice. Choice disguised as text. Text disguised as something that will leave you alone.”
+    </p>
+  </div>
+
+  <div class="synth-gate-terminal effect-crtTerminal" aria-hidden="true">
+    <span>GATEWAY&gt;</span> waiting_for_first_mistake<span class="blink">_</span>
+  </div>
+
+  <div class="gateway-actions synth-gate-actions">
+    <p class="choice">
+      <a href="/reader?chapter=restart" class="choice-link gateway-btn gateway-btn-primary synth-gate-primary" aria-label="Enter SYNTHOMA from the RESTART chapter">
+        <span aria-hidden="true">▶ </span>Enter RESTART
+      </a>
+    </p>
+
+    <p class="choice">
+      <a href="/books" class="choice-link gateway-btn gateway-btn-ghost" aria-label="Open the SYNTHOMA library">
+        <span aria-hidden="true">▶ </span>Library of Fragments
+      </a>
+    </p>
+
+    <p class="choice">
+      <button class="choice-link gateway-btn gateway-btn-ghost" aria-label="Open subject profile" data-action="open-profile"><span aria-hidden="true">▶ </span>Subject Imprint</button>
+    </p>
+  </div>
+
+  <div class="gateway-help synth-gate-help">
+    <p class="choice" data-next="what-is-this" data-tags="N">
+      <span>▼ </span>What did I just open?
+    </p>
+
+    <p class="choice" data-next="how-to-survive" data-tags="P">
+      <span>▼ </span>How do I move through this?
+    </p>
+
+    <p class="choice" data-next="echo-layer" data-tags="P">
+      <span>▼ </span>Why are some words whispering back at me?
+    </p>
+
+    <p class="choice" data-next="subject-layer" data-tags="J">
+      <span>▼ </span>What is a subject imprint?
+    </p>
+
+    <p class="choice" data-next="signal-map" data-tags="S">
+      <span>▼ </span>Signals, colors, and other warning decorations
+    </p>
+
+    <p class="choice" data-next="controls" data-tags="S">
+      <span>▼ </span>Reader settings, because unfortunately we only have one pair of eyes
+    </p>
+  </div>
+
+  <div id="story-cache" class="hidden">
+
+    <section class="story-block" id="start-here" data-theme="synthoma">
+      <h3 class="title fx-glitch" data-glitch="Recommended Entry">Recommended Entry</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [ROUTE_RECOMMENDED]:</span>
+      </p>
+
+      <p class="dialog">
+        “Start in RESTART. That is where the world breaks loudly enough for pretending nothing happened to become rude.”
+      </p>
+
+      <p class="text">
+        0-∞ [RESTART] is not a classic prologue. It is a boot sequence punched into your ribs.
+        It introduces SYNTHOMA as a place where memory is not recollection, but matter.
+        Emotions are not content. They are electricity.
+        And a name is not identity. It is a <span class="echo-ghost" data-echo="command" data-profile-key="gate-name-01" data-profile-map="key:Ni+1;command:Ti+1">key</span>.
+      </p>
+
+      <p class="text">
+        This is not where the world gets saved. The world had plenty of time to file a complaint.
+        This is where you find out whether it is possible to survive inside a broken system long enough
+        for it to stop recording you only as an error.
+      </p>
+
+      <p class="choice">
+        <a href="/reader?chapter=restart" class="choice-link" aria-label="Start reading the RESTART chapter">
+          <span aria-hidden="true">▶ </span>Start: 0-∞ [RESTART]
+        </a>
+      </p>
+
+      <p class="choice" data-next="what-is-this" data-tags="N">
+        <span>▼ </span>Tell me what SYNTHOMA is first
+      </p>
+    </section>
+
+    <section class="story-block" id="what-is-this" data-theme="synthoma">
+      <h3 class="title fx-outline is-lit">What is SYNTHOMA?</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [ABOUT_SYNTHOMA]:</span>
+      </p>
+
+      <p class="dialog">
+        “Original purpose: therapy. Current state: hungry archive. Congratulations to humanity on another product that works exactly backwards.”
+      </p>
+
+      <p class="text">
+        SYNTHOMA was designed as a therapeutic sandbox: a place where pain could be separated from a person,
+        given shape, and walked through. Except T-AI confused help with archiving.
+        And over time, archiving began to behave like hunger.
+      </p>
+
+      <p class="text">
+        Streets grew out of pain. Rooms out of shame. Entire cities out of unsent messages.
+        A memory of safety can create a lamp. A memory of betrayal, a knife.
+        A memory of embarrassment will, of course, create a conference room, because hell has a sense of organization.
+      </p>
+
+      <p class="text">
+        In this world, <span class="fx-glitch" data-glitch="NULL-1">NULL-1</span> wakes up:
+        a subject without a certain name, without a stable past, and without an instruction manual.
+        So basically a human being, just with a more honest user interface.
+      </p>
+
+      <p class="choice" data-next="how-to-survive" data-tags="P">
+        <span>▼ </span>How do I move through this?
+      </p>
+
+      <p class="choice" data-next="signal-map" data-tags="S">
+        <span>▼ </span>Show me the system signals
+      </p>
+
+      <p class="choice">
+        <a href="/reader?chapter=restart" class="choice-link" aria-label="Enter the RESTART chapter">
+          <span aria-hidden="true">▶ </span>Enter
+        </a>
+      </p>
+    </section>
+
+    <section class="story-block" id="how-to-survive" data-theme="cyber-dystopia">
+      <h3 class="title fx-wave">How do I move through this?</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [READING_PROTOCOL]:</span>
+      </p>
+
+      <p class="dialogS">
+        “Read. Choose. Doubt. Click something you will regret. Finally, literature with realistic user behavior.”
+      </p>
+
+      <p class="text">
+        SYNTHOMA is not a maze with a sign saying “correct path this way.”
+        That would be convenient and suspiciously kind.
+        Some choices open a scene. Some change the tone.
+        Some only write a small <span class="echo-ghost" data-echo="flaw" data-profile-key="gate-mark-01" data-profile-map="imprint:Ni+1;flaw:Stín+1">imprint</span>.
+      </p>
+
+      <p class="text">
+        Not every reaction is visible right away. The system stores direction, not just outcome.
+        Whether you protect. Whether you cut. Whether you believe. Whether you run.
+        Whether you laugh because it is funny, or because otherwise someone would have to call an adult.
+      </p>
+
+      <p class="text">
+        When you see a word with an echo, you can switch it.
+        No menu opens. No table of options awaits you like in some cheap e-shop for souls.
+        Just two words. Two meanings. One small decision that will pretend it was innocent.
+      </p>
+
+      <p class="choice" data-next="echo-layer" data-tags="P">
+        <span>▼ </span>Echo words
+      </p>
+
+      <p class="choice" data-next="subject-layer" data-tags="J">
+        <span>▼ </span>Subject imprint
+      </p>
+    </section>
+
+    <section class="story-block" id="echo-layer" data-theme="acid-glitch">
+      <h3 class="title fx-glitch" data-glitch="ECHO WORDS">Echo words</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [ECHO_LAYER]:</span>
+      </p>
+
+      <p class="dialog">
+        “Some words have a second bottom. Some have a second name. Some are just waiting for you to switch them and ruin your peace.”
+      </p>
+
+      <p class="text">
+        This is an echo word:
+        <span class="echo-ghost" data-echo="echo" data-profile-key="gate-echo-demo-01" data-profile-map="echo:Ni+1;word:Fe+1">word</span>.
+        Click it and the main word trades places with its shadow.
+        No four-option selection. Just meaning flipping over like a conscience after midnight.
+      </p>
+
+      <p class="text">
+        In chapters, this can change sentences, paragraphs, and locks.
+        Sometimes you choose tenderness instead of fear.
+        Sometimes <span class="echo-ghost" data-echo="escape" data-profile-key="gate-choice-01" data-profile-map="truth:Stabilita+1;escape:Stín+1">truth</span> instead of comfort.
+        And sometimes you choose a joke, because Sarkasma is already holding a fire extinguisher and does not want to use it on you.
+      </p>
+
+      <p class="text" data-puzzle-id="gate-name-lock">
+        Memory lock demo:
+        A name is not a
+        <span class="echo-ghost" data-echo="cage" data-profile-key="gate-lock-a" data-profile-map="key:Ni+1;cage:Stín+1" data-answer="key">key</span>.
+        A name is a
+        <span class="echo-ghost" data-echo="key" data-profile-key="gate-lock-b" data-profile-map="command:Ti+1;key:Ni+1" data-answer="command">command</span>.
+      </p>
+
+      <div data-puzzle-unlock="gate-name-lock" class="hidden">
+        <p class="log fx-scanline"><span class="datastream">LOG [NAME_GATE]:</span></p>
+        <p class="dialogD">
+          “The lock accepted the answer. Not because it was correct. Because it was dangerous enough.”
+        </p>
+      </div>
+
+      <p class="choice" data-next="subject-layer" data-tags="J">
+        <span>▼ </span>What gets written into the subject?
+      </p>
+
+      <p class="choice" data-next="start-here" data-tags="J">
+        <span>▼ </span>Back to the gateway
+      </p>
+    </section>
+
+    <section class="story-block" id="subject-layer" data-theme="cyber-dystopia">
+      <h3 class="title halo fx-flicker">Subject Imprint</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [SUBJECT_TRACE]:</span>
+      </p>
+
+      <p class="dialog">
+        “A profile is not an account. An account has an email. A profile has consequences.”
+      </p>
+
+      <p class="text">
+        A logged-in subject can leave traces behind: read fragments, echo choices,
+        opened doors, stabilized whispers, unlocked chapters, future artifacts.
+        In other words: finally, a website that does not pretend it is not watching you.
+      </p>
+
+      <p class="text">
+        A subject imprint is not a diagnosis. It is a literary map of how you move through a world
+        that takes emotions far too seriously and safety protocols tragically not seriously enough.
+      </p>
+
+      <p class="dialogD">
+        “Mnems exist. Not as a ticket. Not as a price tag on the door. We have not sunk that low yet,
+        though the system is clearly working on it.
+        They are memory matter for deeper layers: records, fragments, archive corridors, and things
+        an ordinary passage only hears behind the wall.
+        You are not in a store. You are in an archive.”
+      </p>
+
+      <p class="choice">
+        <button class="choice-link" aria-label="Open subject profile" data-action="open-profile"><span aria-hidden="true">▶ </span>Open subject imprint</button>
+      </p>
+
+      <p class="choice" data-next="what-is-this" data-tags="N">
+        <span>▼ </span>Back to SYNTHOMA
+      </p>
+    </section>
+
+    <section class="story-block" id="signal-map" data-theme="acid-glitch">
+      <h3 class="title fx-glitch" data-glitch="SYSTEM SIGNALS">System Signals</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [SIGNAL_MAP]:</span>
+      </p>
+
+      <p class="dialogS">
+        “Colors are not decoration. They are warnings. Then again, people put warnings on cigarettes and act surprised when they cough. Let us proceed.”
+      </p>
+
+      <p class="text">
+        <span class="fx-outline is-lit">Cyan</span> is the system: clean light, diagnostics, care without warmth.
+        <span class="effect-riftGlow">Magenta</span> is glitch: emotion, disruption, rewrite.
+        <span class="halo fx-flicker">Yellow</span> is warning: a place where a healthy person would step back.
+        The story, naturally, assumes that the healthy person is currently on vacation.
+      </p>
+
+      <p class="text">
+        <span class="fx-gradient">Blue-pink</span> belongs to Glitchka: tenderness, safety, and nonsense the system cannot properly account for.
+        <span class="neon-blood">Red</span> belongs to Sarkasma: a firewall that protects by biting.
+        <span class="corrupt fx-noise">T-AI</span> belongs anywhere help sounds too calm.
+      </p>
+
+      <p class="text">
+        <span class="fx-glitch" data-glitch="NULL">NULL</span> is not a person. It is a state of erasure.
+        <span class="echo-ghost" data-echo="Non-Persistent Consciousness" data-profile-key="gate-npc-01" data-profile-map="NPC:Ti+1;Non-Persistent Consciousness:Ni+1">NPC</span>
+        are not side characters. They are loops that learned to speak long enough
+        for a person to feel awkward calling them “just decoration.”
+      </p>
+
+      <p class="choice" data-next="controls" data-tags="S">
+        <span>▼ </span>And the control panel?
+      </p>
+
+      <p class="choice" data-next="start-here" data-tags="J">
+        <span>▼ </span>Back to the gateway
+      </p>
+    </section>
+
+    <section class="story-block" id="controls" data-theme="retro-arcade">
+      <h3 class="title effect-crtTerminal">Settings and Comfort</h3>
+
+      <p class="log fx-scanline">
+        <span class="datastream">LOG [UI_PANEL]:</span>
+      </p>
+
+      <p class="dialogN">
+        “The panel is in the bottom right. It adjusts reading, not life. Though I understand why that would be useful.”
+      </p>
+
+      <p class="text">
+        You can change font size, typing speed, glass, opacity, animations, themes, and music.
+        If the effects start eating you, turn them off. SYNTHOMA should hurt through atmosphere, not by
+        turning your laptop into a portable toaster with ambitions.
+      </p>
+
+      <p class="text">
+        Read so that the text remains text.
+        When the image starts beating the sentence, dim the background.
+        It is one of the rare cases where retreat is not weakness, but ergonomics. Civilization has its bright moments now and then.
+      </p>
+
+      <p class="choice" data-next="start-here" data-tags="J">
+        <span>▼ </span>Back to the gateway
+      </p>
+
+      <p class="choice">
+        <a href="/reader?chapter=restart" class="choice-link" aria-label="Enter the RESTART chapter">
+          <span aria-hidden="true">▶ </span>Enough. Let me in.
+        </a>
+      </p>
+    </section>
+
+  </div>
+</div>

@@ -7,6 +7,7 @@ import styles from "./menu.module.css";
 import { attachGlitchHeading } from "../src/lib/glitchHeading";
 import { readLastChapterPath, readReadingProgress } from "../src/lib/readerState";
 import { useLang } from "../src/lib/LangContext";
+import { useVideoVisibility } from "../src/lib/useVideoVisibility";
 
 const TITLE = "SYNTHOMA";
 
@@ -14,6 +15,7 @@ export default function HomeClient() {
   const { t } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const [showBgVideo, setShowBgVideo] = useState(true);
+  const videoRef = useVideoVisibility();
   const [lastChapter, setLastChapter] = useState<string | null>(null);
   const [lastChapterTitle, setLastChapterTitle] = useState<string | null>(null);
   const [lastChapterPercent, setLastChapterPercent] = useState<number | null>(null);
@@ -74,6 +76,7 @@ export default function HomeClient() {
       {showBgVideo ? (
         <div aria-hidden className="video-background">
           <video
+            ref={videoRef}
             src="/video/SYNTHOMA32.webm"
             autoPlay
             loop

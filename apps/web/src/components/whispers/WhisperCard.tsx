@@ -2,22 +2,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-
-const TYPE_LABELS: Record<string, string> = {
-  unsent:  'NEODESLANÁ ZPRÁVA',
-  memory:  'VZPOMÍNKA',
-  fear:    'STRACH',
-  regret:  'LÍTOST',
-  wish:    'PŘÁNÍ',
-  warning: 'VAROVÁNÍ',
-  log:     'LOG',
-};
-
-const MODE_LABELS: Record<string, string> = {
-  anonymous:    'ANONYMNÍ SUBJEKT',
-  subject_type: 'ANONYMNÍ SUBJEKT',
-  title:        'ANONYMNÍ SUBJEKT',
-};
+import { useLang } from '../../lib/LangContext';
 
 export interface WhisperData {
   id: string;
@@ -38,14 +23,31 @@ interface Props {
 }
 
 const BOOST_OPTIONS = [
-  { type: 'boost',             label: 'STABILIZOVAT 7 DNÍ',   cost: 16 },
-  { type: 'pin',               label: 'PŘIPNOUT KE KAPITOLE',  cost: 32 },
-  { type: 'transform',         label: 'T-AI TRANSFORMACE',     cost: 64 },
-  { type: 'archive_highlight', label: 'ARCHIVNÍ ZVÝRAZNĚNÍ',   cost: 128 },
+  { type: 'boost',             cost: 16 },
+  { type: 'pin',               cost: 32 },
+  { type: 'transform',         cost: 64 },
+  { type: 'archive_highlight', cost: 128 },
 ];
 
 export default function WhisperCard({ whisper, showBoost = false, onResonanceChange }: Props) {
   const { data: session } = useSession();
+  const { t } = useLang();
+  const TYPE_LABELS: Record<string, string> = {
+    unsent:  t('whispercard.type.unsent'),
+    memory:  t('whispercard.type.memory'),
+    fear:    t('whispercard.type.fear'),
+    regret:  t('whispercard.type.regret'),
+    wish:    t('whispercard.type.wish'),
+    warning: t('whispercard.type.warning'),
+    log:     t('whispercard.type.log'),
+  };
+  const MODE_LABEL = t('whispercard.mode.anonymous');
+  const BOOST_LABELS: Record<string, string> = {
+    boost:             t('whispercard.boost.stabilize'),
+    pin:               t('whispercard.boost.pin'),
+    transform:         t('whispercard.boost.transform'),
+    archive_highlight: t('whispercard.boost.highlight'),
+  };
   const [resonated, setResonated] = useState(whisper.resonated ?? false);
   const [count, setCount] = useState(whisper.resonanceCount);
   const [resonating, setResonating] = useState(false);
@@ -84,9 +86,9 @@ export default function WhisperCard({ whisper, showBoost = false, onResonanceCha
       });
       const data = await res.json();
       if (res.ok) {
-        setBoostMsg(`${data.type} aktivován.`);
+        setBoostMsg(`${data.type} activated.`);
       } else {
-        setBoostMsg(data.error ?? 'Chyba.');
+        setBoostMsg(data.error ?? t('whispercard.boost.error'));
       }
     } finally {
       setBoosting(null);
@@ -97,7 +99,7 @@ export default function WhisperCard({ whisper, showBoost = false, onResonanceCha
     <div className={`whisper-card${isBoosted ? ' whisper-card--boosted' : ''}${resonated ? ' whisper-card--resonated' : ''}`}>
       <div className="whisper-card-header">
         <span className="whisper-card-type">{TYPE_LABELS[whisper.type] ?? whisper.type.toUpperCase()}</span>
-        <span className="whisper-card-mode">{MODE_LABELS[whisper.publicMode] ?? 'ANONYMNÍ SUBJEKT'}</span>
+        <span className="whisper-card-mode">{MODE_LABEL}</span>
       </div>
 
       <p className="whisper-card-text">{whisper.text}</p>
@@ -131,9 +133,9 @@ export default function WhisperCard({ whisper, showBoost = false, onResonanceCha
               className="whisper-boost-btn"
               onClick={() => handleBoost(opt.type)}
               disabled={boosting !== null}
-              title={`${opt.cost} mnemů`}
+              title={`${opt.cost} ${t('whispercard.boost.cost')}`}
             >
-              {boosting === opt.type ? '...' : `${opt.label} — ${opt.cost} mn`}
+              {boosting === opt.type ? '...' : `${BOOST_LABELS[opt.type]} — ${opt.cost} mn`}
             </button>
           ))}
           {boostMsg && <p className="whisper-boost-msg">{boostMsg}</p>}

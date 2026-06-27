@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import RegisterForm from '../components/auth/RegisterForm';
+import BgVideo from '../components/BgVideo';
 
 export const metadata: Metadata = {
   title: 'SYNTHOMA – REGISTRACE SUBJEKTU',
@@ -9,17 +10,7 @@ export const metadata: Metadata = {
 export default function RegisterPage() {
   return (
     <div className="glitch-bg auth-page-wrap">
-      <div aria-hidden className="video-background">
-        <video
-          src="/video/SYNTHOMA32.webm"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="active"
-        />
-      </div>
+      <BgVideo src="/video/SYNTHOMA32.webm" />
       <main className="auth-home-main" role="main" aria-label="Registrace">
         <h1 className="glitch-master auth-home-title" data-text="SUBJEKT INIT" aria-label="SUBJEKT INIT">
           <span className="glitch-fake1" aria-hidden>SUBJEKT INIT</span>

@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import TypewriterReader from "../../src/components/TypewriterReader";
+import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
+import { useLang } from "../../src/lib/LangContext";
 
 export default function AutorClient() {
   const TITLE = "A U T O R";
+  const { lang } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
+  const autorSrcUrl = useMemo(() => lang === 'en' ? '/data/SYNTHOMAAUTOR_en.html' : '/data/SYNTHOMAAUTOR.html', [lang]);
+  const videoRef = useVideoVisibility();
 
   useEffect(() => {
     const prefersReduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -34,11 +39,13 @@ export default function AutorClient() {
       {/* Background video layer to match visual style with Archive */}
       <div aria-hidden className="video-background">
         <video
+          ref={videoRef}
           src="/video/SYNTHOMA12.webm"
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
           className="active"
         />
       </div>
@@ -59,7 +66,7 @@ export default function AutorClient() {
 
         <section>
           <TypewriterReader
-            srcUrl="/data/SYNTHOMAAUTOR.html"
+            srcUrl={autorSrcUrl}
             ariaLabel="O autorovi"
             autoStart
             className="readerOverlay-35 readerOverlay-blur"
