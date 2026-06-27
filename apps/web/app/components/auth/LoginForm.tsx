@@ -23,10 +23,12 @@ export default function LoginForm() {
         password,
         redirect: false,
       });
-      if (res?.error) {
-        setError('Subjekt nerozpoznán. Zkontroluj přístupový otisk.');
+      if (!res || res.error) {
+        const code = res?.error ?? 'unknown';
+        setError(`Subjekt nerozpoznán. Zkontroluj přístupový otisk. (${code})`);
       } else {
-        router.replace('/profile');
+        // Navigate home, then open profile popup after session propagates
+        router.replace('/?login=1');
         router.refresh();
       }
     } catch {

@@ -2,12 +2,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import ProfileDashboard from '../../src/components/profile/ProfileDashboard';
 
 export default function ProfilePanelClient() {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -31,12 +33,26 @@ export default function ProfilePanelClient() {
     return () => document.removeEventListener('keydown', handler);
   }, [open, close]);
 
-  // Listen for custom event from IdentityPanelClient
+  // Listen for custom event from IdentityPanelClient or LoginForm
   useEffect(() => {
     const handler = () => setOpen(true);
     document.addEventListener('synthoma:open-profile', handler);
     return () => document.removeEventListener('synthoma:open-profile', handler);
   }, []);
+
+  // Auto-open after redirect from /login (?login=1) once session is ready
+  useEffect(() => {
+    if (status !== 'authenticated' || !session?.user) return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('login') !== '1') return;
+      setOpen(true);
+      // Clean URL without adding to history
+      params.delete('login');
+      const newSearch = params.toString();
+      router.replace(window.location.pathname + (newSearch ? `?${newSearch}` : ''));
+    } catch {}
+  }, [status, session, router]);
 
   // Only render for logged-in users
   if (status === 'loading' || !session?.user) return null;
