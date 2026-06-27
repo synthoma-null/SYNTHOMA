@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 import { readStorageJSON, writeStorageJSON } from "../lib/browser";
-import { clearReaderResume, readReaderResume, saveLastChapterPath, saveReaderResume } from "../lib/readerState";
+import { clearReaderResume, readReaderResume, readChoicesState, saveChoicesState, saveLastChapterPath, saveReaderResume } from "../lib/readerState";
 import {
   extractVisibleTextLength,
   getTypewriterDurationMs,
@@ -26,12 +26,19 @@ function encodePathPreserve(url: string): string {
     const rest = split[1] ?? '';
     const parts = pathWithHost.split('/').map((seg, i) => {
       if (i === 0 && seg === '') return '';
-      // Do not encode empty segments unnecessarily
-      return encodeURIComponent(seg);
+      // Normalize before re-encoding to prevent double-encoding of already-encoded segments
+      try { return encodeURIComponent(decodeURIComponent(seg)); } catch { return encodeURIComponent(seg); }
     });
     return parts.join('/') + rest;
   } catch {
     return url;
+  }
+}
+
+// Dev-only diagnostic helper — silent in production
+function softFail(scope: string, err: unknown): void {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(`[TypewriterReader:${scope}]`, err);
   }
 }
 
@@ -43,9 +50,11 @@ export interface TypewriterReaderProps {
   id?: string;               // volitelný id atribut pro root (např. "hero-info")
   instantMode?: boolean;     // skip typewriter, show all text immediately
   onFetchError?: (status: number) => void; // called with HTTP status on non-ok response
+  chapterId?: string | undefined;  // ID kapitoly z booksManifest (pro server tracking)
+  collection?: string | undefined;  // Kolekce (default: SYNTHOMA-NULL)
 }
 
-export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id, instantMode = false, onFetchError }: TypewriterReaderProps) {
+export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id, instantMode = false, onFetchError, chapterId: chapterIdProp, collection: collectionProp }: TypewriterReaderProps) {
   const router = useRouter();
   const hostRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +67,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   const liveRef = useRef<HTMLDivElement>(null);
   const storyCacheRef = useRef<string>('');
   const lastUserScrollRef = useRef<number>(Date.now());
+  const glitchCleanupRef = useRef<Array<() => void>>([]);
 
   // Prevent viewport jumping by restoring scroll after DOM mutations
   const restoreScrollSoon = useCallback(() => {
@@ -75,6 +85,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     window.addEventListener('scroll', onScroll, { passive: true });
     const mo = new MutationObserver((mutations) => {
       try {
+        // Skip during active typewriter animation to avoid fighting the animation
+        if (isTypingRef.current) return;
         // Skip if user scrolled very recently (let user intent win)
         if (Date.now() - lastUserScrollRef.current < 120) return;
         // Only react to changes within our host (should be always true)
@@ -116,17 +128,14 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     } catch {}
   }, []);
 
-  // Update MBTI scores in localStorage based on data-tags
-  // Supports weights like "N+2,S-1"; if no +/- provided, falls back to first tag +1
-  const scoreFromNode = useCallback((node: Element | null) => {
+  // Apply MBTI scores from data-tags — only when data-tags present
+  const applyMbtiScore = useCallback((node: Element | null): string => {
+    const tagsAttr = (node?.getAttribute('data-tags') || '').trim();
+    if (!node || !tagsAttr) return '';
     try {
-      if (!node) return;
-      const tagsAttr = (node.getAttribute('data-tags') || '').trim();
-      if (!tagsAttr) return;
       const parts = tagsAttr.split(',').map(s => s.trim()).filter(Boolean);
-      if (!parts.length) return;
+      if (!parts.length) return tagsAttr;
       const valid = new Set(['I','E','N','S','F','T','J','P']);
-      // Detect if any part contains explicit weight like +2 or -1
       const hasWeights = parts.some(p => /[+-]\d+$/i.test(p));
       const key = 'mbtiScores';
       let data = readStorageJSON<Record<string, number>>(key, {});
@@ -142,102 +151,182 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           data[letter] = cur + (isFinite(delta) ? delta : 0);
         }
       } else {
-        // Fallback: first tag +1 if valid
         const first = (parts[0] || '').toUpperCase();
-        if (!valid.has(first)) return;
-        const cur = typeof data[first] === 'number' ? (data[first] as number) : 0;
-        data[first] = cur + 1;
+        if (valid.has(first)) {
+          const cur = typeof data[first] === 'number' ? (data[first] as number) : 0;
+          data[first] = cur + 1;
+        }
       }
       writeStorageJSON(key, data);
       writeStorageJSON(key, data, 'session');
-      try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
-
-      // Fire-and-forget server tracking (no-op if unauthenticated)
-      try {
-        const choiceText = ((node as HTMLElement).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 200);
-        const chapterId = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.chapterId || '';
-        const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection || 'SYNTHOMA-NULL';
-        const blockId = (node as HTMLElement).dataset.blockId || (node as HTMLElement).closest('[id]')?.id || undefined;
-        const choiceId = (node as HTMLElement).dataset.choiceId || undefined;
-        const nextBlockId = (node as HTMLElement).dataset.next || (node as HTMLElement).dataset.nextBlockId || undefined;
-        const tone = (node as HTMLElement).dataset.tone || undefined;
-
-        // Parse data-functions="Ni:+2,Fe:+1" into { Ni: 2, Fe: 1 }
-        const functionsRaw = (node as HTMLElement).dataset.functions || '';
-        const functionDelta: Record<string, number> = {};
-        if (functionsRaw) {
-          for (const part of functionsRaw.split(',')) {
-            const [k, v] = part.split(':');
-            if (k && v) functionDelta[k.trim()] = parseInt(v.trim(), 10) || 0;
-          }
-        }
-
-        // Parse data-emotions="anticipation:+4,trust:+1" into { anticipation: 4, trust: 1 }
-        const emotionsRaw = (node as HTMLElement).dataset.emotions || '';
-        const emotionDelta: Record<string, number> = {};
-        if (emotionsRaw) {
-          for (const part of emotionsRaw.split(',')) {
-            const [k, v] = part.split(':');
-            if (k && v) emotionDelta[k.trim()] = parseInt(v.trim(), 10) || 0;
-          }
-        }
-
-        // Parse data-stability="+2", data-pressure="+1", data-shadow="-1"
-        const stabilityRaw = (node as HTMLElement).dataset.stability;
-        const pressureRaw = (node as HTMLElement).dataset.pressure;
-        const shadowRaw = (node as HTMLElement).dataset.shadow;
-        const stabilityDelta = stabilityRaw !== undefined ? (parseInt(stabilityRaw, 10) || 0) : undefined;
-        const pressureDelta = pressureRaw !== undefined ? (parseInt(pressureRaw, 10) || 0) : undefined;
-        const shadowDelta = shadowRaw !== undefined ? (parseInt(shadowRaw, 10) || 0) : undefined;
-
-        // Parse data-entity-glitchka="trust:+4,protection:+1" into { glitchka: { trust: 4, protection: 1 } }
-        const entityDelta: Record<string, Record<string, number>> = {};
-        for (const attr of (node as HTMLElement).getAttributeNames()) {
-          if (!attr.startsWith('data-entity-')) continue;
-          const entity = attr.replace('data-entity-', '');
-          const raw = (node as HTMLElement).getAttribute(attr) || '';
-          const metrics: Record<string, number> = {};
-          for (const part of raw.split(',')) {
-            const [k, v] = part.split(':');
-            if (k && v) metrics[k.trim()] = parseInt(v.trim(), 10) || 0;
-          }
-          if (Object.keys(metrics).length) entityDelta[entity] = metrics;
-        }
-
-        const payload = {
-          collection,
-          chapterId,
-          blockId,
-          choiceId,
-          choiceText,
-          nextBlockId,
-          tags: tagsAttr ? tagsAttr.split(',').map(s => s.trim()).filter(Boolean) : undefined,
-          functionDelta: Object.keys(functionDelta).length ? functionDelta : undefined,
-          emotionDelta: Object.keys(emotionDelta).length ? emotionDelta : undefined,
-          tone,
-          stabilityDelta,
-          pressureDelta,
-          shadowDelta,
-          entityDelta: Object.keys(entityDelta).length ? entityDelta : undefined,
-        };
-
-        if (chapterId) {
-          fetch('/api/me/choices', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          }).catch(() => {
-            // Store locally if unauthenticated
-            try {
-              const stored = JSON.parse(localStorage.getItem('synthoma_local_trace') || '[]') as unknown[];
-              stored.push({ ...payload, createdAt: new Date().toISOString() });
-              localStorage.setItem('synthoma_local_trace', JSON.stringify(stored.slice(-200)));
-            } catch {}
-          });
-        }
-      } catch {}
-    } catch {}
+    } catch (err) { softFail('applyMbtiScore', err); }
+    return tagsAttr;
   }, []);
+
+  // Fire-and-forget server tracking — always called on every choice, regardless of data-tags
+  const trackChoiceEvent = useCallback((node: Element | null, tagsAttr: string) => {
+    if (!node) return;
+    try {
+      const choiceText = ((node as HTMLElement).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 200);
+      // Prefer props over DOM dataset (avoids document.querySelector issues with multiple readers)
+      const chapterId = chapterIdProp || (hostRef.current?.dataset.chapterId) || '';
+      const collection = collectionProp || (hostRef.current?.dataset.collection) || 'SYNTHOMA-NULL';
+      const blockId = (node as HTMLElement).dataset.blockId || (node as HTMLElement).closest('[id]')?.id || undefined;
+      const choiceId = (node as HTMLElement).dataset.choiceId || undefined;
+      const nextBlockId = (node as HTMLElement).dataset.next || (node as HTMLElement).dataset.nextBlockId || undefined;
+      const tone = (node as HTMLElement).dataset.tone || undefined;
+
+      const functionsRaw = (node as HTMLElement).dataset.functions || '';
+      const functionDelta: Record<string, number> = {};
+      if (functionsRaw) {
+        for (const part of functionsRaw.split(',')) {
+          const [k, v] = part.split(':');
+          if (k && v) functionDelta[k.trim()] = parseInt(v.trim(), 10) || 0;
+        }
+      }
+
+      const emotionsRaw = (node as HTMLElement).dataset.emotions || '';
+      const emotionDelta: Record<string, number> = {};
+      if (emotionsRaw) {
+        for (const part of emotionsRaw.split(',')) {
+          const [k, v] = part.split(':');
+          if (k && v) emotionDelta[k.trim()] = parseInt(v.trim(), 10) || 0;
+        }
+      }
+
+      const stabilityRaw = (node as HTMLElement).dataset.stability;
+      const pressureRaw = (node as HTMLElement).dataset.pressure;
+      const shadowRaw = (node as HTMLElement).dataset.shadow;
+      const stabilityDelta = stabilityRaw !== undefined ? (parseInt(stabilityRaw, 10) || 0) : undefined;
+      const pressureDelta = pressureRaw !== undefined ? (parseInt(pressureRaw, 10) || 0) : undefined;
+      const shadowDelta = shadowRaw !== undefined ? (parseInt(shadowRaw, 10) || 0) : undefined;
+
+      const entityDelta: Record<string, Record<string, number>> = {};
+      for (const attr of (node as HTMLElement).getAttributeNames()) {
+        if (!attr.startsWith('data-entity-')) continue;
+        const entity = attr.replace('data-entity-', '');
+        const raw = (node as HTMLElement).getAttribute(attr) || '';
+        const metrics: Record<string, number> = {};
+        for (const part of raw.split(',')) {
+          const [k, v] = part.split(':');
+          if (k && v) metrics[k.trim()] = parseInt(v.trim(), 10) || 0;
+        }
+        if (Object.keys(metrics).length) entityDelta[entity] = metrics;
+      }
+
+      const payload = {
+        collection,
+        chapterId,
+        blockId,
+        choiceId,
+        choiceText,
+        nextBlockId,
+        tags: tagsAttr ? tagsAttr.split(',').map(s => s.trim()).filter(Boolean) : undefined,
+        functionDelta: Object.keys(functionDelta).length ? functionDelta : undefined,
+        emotionDelta: Object.keys(emotionDelta).length ? emotionDelta : undefined,
+        tone,
+        stabilityDelta,
+        pressureDelta,
+        shadowDelta,
+        entityDelta: Object.keys(entityDelta).length ? entityDelta : undefined,
+      };
+
+      if (chapterId) {
+        fetch('/api/me/choices', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).catch(() => {
+          try {
+            const stored = JSON.parse(localStorage.getItem('synthoma_local_trace') || '[]') as unknown[];
+            stored.push({ ...payload, createdAt: new Date().toISOString() });
+            localStorage.setItem('synthoma_local_trace', JSON.stringify(stored.slice(-200)));
+          } catch {}
+        });
+      } else {
+        // No chapterId: always store locally so nothing is silently lost
+        try {
+          const stored = JSON.parse(localStorage.getItem('synthoma_local_trace') || '[]') as unknown[];
+          stored.push({ ...payload, createdAt: new Date().toISOString() });
+          localStorage.setItem('synthoma_local_trace', JSON.stringify(stored.slice(-200)));
+        } catch {}
+      }
+    } catch (err) { softFail('trackChoiceEvent', err); }
+  }, [chapterIdProp, collectionProp]);
+
+  // Single entry point for scoring + tracking — call this instead of scoreFromNode everywhere
+  // Dispatches synthoma:choice-made exactly once per choice (single source of truth)
+  const scoreFromNode = useCallback((node: Element | null) => {
+    const tagsAttr = applyMbtiScore(node);
+    trackChoiceEvent(node, tagsAttr);
+    try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
+  }, [applyMbtiScore, trackChoiceEvent]);
+
+  // Restore visual state of previously chosen choices from localStorage
+  const restoreChoiceVisuals = useCallback((container: HTMLElement) => {
+    try {
+      const saved = readChoicesState(srcUrl);
+      if (!saved.length) return;
+      const allGroups = Array.from(container.querySelectorAll<HTMLElement>('.choices-locked, [data-choice-group]'));
+      // Fall back to implicit groups: adjacent choice-link siblings in same parent
+      const groupParents = new Set<Element>();
+      container.querySelectorAll<HTMLElement>('.choice-link').forEach(el => {
+        if (el.parentElement) groupParents.add(el.parentElement);
+      });
+      saved.forEach(({ groupKey, chosenIdx }) => {
+        // Find the group by key (id) or index
+        let group: HTMLElement | null = groupKey ? (container.querySelector(`#${CSS.escape(groupKey)}`) as HTMLElement | null) : null;
+        if (!group) {
+          const idx = parseInt(groupKey, 10);
+          const parents = Array.from(groupParents);
+          group = (isFinite(idx) && parents[idx]) ? parents[idx] as HTMLElement : null;
+        }
+        if (!group) return;
+        const nodes = Array.from(group.querySelectorAll<HTMLElement>('button.choice-link, a.choice-link')) as HTMLElement[];
+        if (!nodes.length) return;
+        nodes.forEach((node, i) => {
+          if (i === chosenIdx) {
+            node.classList.add('chosen'); node.classList.remove('faded');
+            node.setAttribute('aria-disabled', 'true');
+            if (node instanceof HTMLButtonElement) node.disabled = true;
+          } else {
+            node.classList.add('faded'); node.classList.remove('chosen');
+            node.setAttribute('aria-disabled', 'true');
+            if (node instanceof HTMLButtonElement) node.disabled = true;
+          }
+        });
+        group.classList.add('choices-locked');
+      });
+    } catch {}
+  }, [srcUrl]);
+
+  // Save chosen index for a group to localStorage
+  const persistChoiceState = useCallback((node: HTMLElement, container: HTMLElement) => {
+    try {
+      const saved = readChoicesState(srcUrl);
+      // Determine group parent
+      let group: HTMLElement | null = (node.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null)
+        ?? (node.parentElement as HTMLElement | null);
+      if (!group) return;
+      const nodes = Array.from(group.querySelectorAll<HTMLElement>('button.choice-link, a.choice-link')) as HTMLElement[];
+      const chosenIdx = nodes.indexOf(node);
+      if (chosenIdx < 0) return;
+      // Build groupKey: prefer id, else index among all group parents
+      const groupKey = group.id || (() => {
+        const parents = Array.from(container.querySelectorAll<HTMLElement>('.choice-link')
+          ? new Set(Array.from(container.querySelectorAll<HTMLElement>('.choice-link')).map(el => el.parentElement).filter(Boolean)) : []);
+        return String(parents.indexOf(group));
+      })();
+      const chosenText = (node.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+      const dataNextRaw = node.getAttribute('data-next') || '';
+      const existing = saved.findIndex(s => s.groupKey === groupKey);
+      const entry: import('../lib/readerState').ChoiceGroupState = dataNextRaw
+        ? { groupKey, chosenIdx, chosenText, dataNext: dataNextRaw }
+        : { groupKey, chosenIdx, chosenText };
+      if (existing >= 0) { saved[existing] = entry; } else { saved.push(entry); }
+      saveChoicesState(srcUrl, saved);
+    } catch {}
+  }, [srcUrl]);
 
   // Ensure any choices in the given container are fully interactive and not faded/disabled
   const cleanupChoices = useCallback((container: HTMLElement | null) => {
@@ -266,6 +355,37 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     } catch {}
   }, []);
 
+  // Single helper: lock a choice group visually after a selection
+  // Eliminates the 4× duplicated sibling-walk logic across click branches
+  const lockChoiceGroup = useCallback((chosen: HTMLElement, root: HTMLElement) => {
+    try {
+      const hostEl = root;
+      // Find the nearest explicit group container, or walk up to find implicit group by p.choice count
+      let group: HTMLElement | null = (chosen.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null);
+      if (!group) {
+        let cur: HTMLElement | null = chosen.parentElement as HTMLElement | null;
+        while (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length < 2) { cur = cur.parentElement as HTMLElement | null; }
+        if (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length >= 2) group = cur;
+      }
+      if (!group) group = (chosen.closest('p.choice') as HTMLElement | null) || chosen.parentElement;
+      const scope = group || chosen.parentElement || chosen;
+      const siblings = Array.from(scope.querySelectorAll<HTMLElement>('button.choice-link, a.choice-link')) as HTMLElement[];
+      siblings.forEach((sh) => {
+        const isChosen = sh === chosen;
+        sh.classList.toggle('chosen', isChosen);
+        sh.classList.toggle('faded', !isChosen);
+        sh.classList.toggle('selected', isChosen);
+        sh.classList.toggle('disabled', !isChosen);
+        sh.setAttribute('aria-disabled', 'true');
+        if (!isChosen && sh instanceof HTMLButtonElement) sh.disabled = true;
+        const isAnchor = sh.tagName.toLowerCase() === 'a' && !!sh.getAttribute('href');
+        if (isChosen && !isAnchor) sh.setAttribute('aria-pressed', 'true');
+        try { sh.closest('p.choice')?.classList.toggle('selected', isChosen); sh.closest('p.choice')?.classList.toggle('disabled', !isChosen); } catch {}
+      });
+      try { scope.classList.add('choices-locked'); } catch {}
+    } catch (err) { softFail('lockChoiceGroup', err); }
+  }, []);
+
   const bindChoiceHandlers = useCallback(() => {
     const root = hostRef.current;
     if (!root) return;
@@ -292,41 +412,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         if (label) announce(`Fokus na volbu: ${label}`);
       });
       // Pre-lock visuals ASAP to avoid hover/active flash on siblings
-      node.addEventListener('pointerdown', (e: Event) => {
-        try {
-          // Lock by nearest choice-group container (works for buttons inside paragraphs)
-          const hostEl = hostRef.current as HTMLElement | null;
-          let group = (node.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null) || undefined;
-          if (!group && hostEl) {
-            // Travel up until a container that holds at least two p.choice paragraphs
-            let cur: HTMLElement | null = node.parentElement as HTMLElement | null;
-            while (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length < 2) { cur = cur.parentElement as HTMLElement | null; }
-            if (cur && cur.querySelectorAll('p.choice').length >= 2) group = cur;
-          }
-          if (!group) group = (node.closest('p.choice') as HTMLElement | null) || (node.parentElement as HTMLElement | null) || undefined;
-          const scope = group || node.parentElement || node;
-          const choiceNodes = Array.from(scope.querySelectorAll('button.choice-link, a.choice-link[href]')) as HTMLElement[];
-          choiceNodes.forEach((sh) => {
-            const isClicked = sh === node;
-            if (!isClicked) {
-              sh.classList.add('disabled'); sh.classList.remove('selected'); sh.setAttribute?.('aria-disabled', 'true'); sh.classList.add('faded'); sh.classList.remove('chosen');
-              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
-            }
-          });
-          node.classList.add('selected');
-          node.classList.remove('disabled');
-          {
-            const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
-            if (!isAnchorWithHref) {
-              node.setAttribute('aria-pressed', 'true');
-            }
-          }
-          node.classList.add('chosen');
-          node.classList.remove('faded');
-          try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
-          // Lock only the nearest explicit choice group wrapper if any
-          try { node.closest('.choices, .choice-group, [data-choice-group]')?.classList.add('choices-locked'); } catch {}
-        } catch {}
+      node.addEventListener('pointerdown', () => {
+        const h = hostRef.current; if (h) lockChoiceGroup(node, h);
       });
 
       node.addEventListener('click', (e: Event) => {
@@ -343,6 +430,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
               e.preventDefault();
               // Score immediately on selection
               scoreFromNode(node);
+              try { const host2 = hostRef.current; if (host2) persistChoiceState(node, host2); } catch {}
               // Persist resume point for this chapter (data-next)
               try {
                 const chapter = (document.querySelector('.SYNTHOMAREADER')?.getAttribute('data-chapter') || '') || '';
@@ -428,48 +516,9 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         // If we still have a pending continuation segment, use it
         if (continueRef.current) {
           e.preventDefault();
-          // visual lock of the whole contiguous block of buttons
-          try {
-            let sib: Element | null;
-            // backward across any contiguous .choice-link siblings
-            sib = node.previousElementSibling;
-            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
-              const sh = sib as HTMLElement;
-              sh.classList.add('disabled');
-              sh.classList.remove('selected');
-              sh.setAttribute?.('aria-disabled', 'true');
-              sh.classList.add('faded');
-              sh.classList.remove('chosen');
-              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
-              sib = sib.previousElementSibling;
-            }
-            // forward
-            sib = node.nextElementSibling;
-            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
-              const sh = sib as HTMLElement;
-              sh.classList.add('disabled');
-              sh.classList.remove('selected');
-              sh.setAttribute?.('aria-disabled', 'true');
-              sh.classList.add('faded');
-              sh.classList.remove('chosen');
-              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
-              sib = sib.nextElementSibling;
-            }
-            node.classList.add('selected');
-            node.classList.remove('disabled');
-            {
-              const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
-              if (!isAnchorWithHref) {
-                node.setAttribute('aria-pressed', 'true');
-              }
-            }
-            node.classList.add('chosen');
-            node.classList.remove('faded');
-            try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
-            try { node.closest('.choices, .choice-group, [data-choice-group]')?.classList.add('choices-locked'); } catch {}
-          } catch {}
-          // MBTI scoring from data-tags (first tag)
+          const h = hostRef.current; if (h) lockChoiceGroup(node, h);
           scoreFromNode(node);
+          try { const host2 = hostRef.current; if (host2) persistChoiceState(node, host2); } catch {}
           // Persist resume point for continuation flow (no href, no data-next)
           try {
             const dataNext = node.getAttribute('data-next') || '';
@@ -485,47 +534,9 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         }
         e.preventDefault();
         if (!href) {
-          // lock contiguous block and mark selected
-          try {
-            let sib: Element | null;
-            sib = node.previousElementSibling;
-            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
-              const sh = sib as HTMLElement;
-              sh.classList.add('disabled');
-              sh.classList.remove('selected');
-              sh.setAttribute?.('aria-disabled', 'true');
-              sh.classList.add('faded');
-              sh.classList.remove('chosen');
-              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
-              sib = sib.previousElementSibling;
-            }
-            sib = node.nextElementSibling;
-            while (sib && (sib as HTMLElement).classList?.contains('choice-link')) {
-              const sh = sib as HTMLElement;
-              sh.classList.add('disabled');
-              sh.classList.remove('selected');
-              sh.setAttribute?.('aria-disabled', 'true');
-              sh.classList.add('faded');
-              sh.classList.remove('chosen');
-              try { sh.closest('p.choice')?.classList.add('disabled'); sh.closest('p.choice')?.classList.remove('selected'); } catch {}
-              sib = sib.nextElementSibling;
-            }
-            node.classList.add('selected');
-            node.classList.remove('disabled');
-            {
-              const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
-              if (!isAnchorWithHref) {
-                node.setAttribute('aria-pressed', 'true');
-              }
-            }
-            node.classList.add('chosen');
-            node.classList.remove('faded');
-            try { node.closest('p.choice')?.classList.add('selected'); node.closest('p.choice')?.classList.remove('disabled'); } catch {}
-            try { node.closest('.choices, .choice-group, [data-choice-group]')?.classList.add('choices-locked'); } catch {}
-          } catch {}
-          // Score selection without navigation
+          const h = hostRef.current; if (h) lockChoiceGroup(node, h);
           scoreFromNode(node);
-          // Persist resume (no href). Try data-next; if absent, store a hash if parent choice has id
+          try { const host2 = hostRef.current; if (host2) persistChoiceState(node, host2); } catch {}
           try {
             const dn = node.getAttribute('data-next') || '';
             if (dn) {
@@ -536,7 +547,6 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
               if (pid) saveReaderResume({ chapterPath: srcUrl, hash: `#${pid}` });
             }
           } catch {}
-          try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
           const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
           if (label) announce(`Zvoleno: ${label}.`);
           return;
@@ -546,35 +556,10 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         } else if (href.startsWith('#')) {
           const section = document.querySelector(href);
           section?.scrollIntoView({ behavior: 'smooth' });
-          // lock contiguous block and mark selected
-          try {
-            let sib: Element | null;
-            sib = node.previousElementSibling;
-            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
-              (sib as HTMLElement).classList.add('disabled');
-              (sib as HTMLElement).classList.remove('selected');
-              sib = sib.previousElementSibling;
-            }
-            sib = node.nextElementSibling;
-            while (sib && sib.tagName.toLowerCase() === 'button' && (sib as HTMLElement).classList.contains('choice-link')) {
-              (sib as HTMLElement).classList.add('disabled');
-              (sib as HTMLElement).classList.remove('selected');
-              sib = sib.nextElementSibling;
-            }
-            node.classList.add('selected');
-            node.classList.remove('disabled');
-            {
-              const isAnchorWithHref = node.tagName.toLowerCase() === 'a' && !!node.getAttribute('href');
-              if (!isAnchorWithHref) {
-                node.setAttribute('aria-pressed', 'true');
-              }
-            }
-          } catch {}
-          // Score selection on in-page jump
+          const h = hostRef.current; if (h) lockChoiceGroup(node, h);
           scoreFromNode(node);
-          // Persist resume for this chapter by hash
+          try { const host2 = hostRef.current; if (host2) persistChoiceState(node, host2); } catch {}
           try { saveReaderResume({ chapterPath: srcUrl, hash: href }); } catch {}
-          try { document.dispatchEvent(new CustomEvent('synthoma:choice-made')); } catch {}
           const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
           if (label) announce(`Zvoleno: ${label}.`);
         } else {
@@ -679,7 +664,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       node.dataset.boundGeneral = '1';
     });
 
-  }, [router, announce, cleanupChoices, restoreScrollSoon, revealChoicesStagger, scoreFromNode, srcUrl]);
+  }, [router, announce, cleanupChoices, lockChoiceGroup, restoreScrollSoon, revealChoicesStagger, scoreFromNode, srcUrl]);
 
   // Enhance inline glitching tokens: split into per-char spans and jitter occasionally
   const enhanceGlitching = useCallback((container: HTMLElement | null) => {
@@ -842,6 +827,16 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         };
         const tid = window.setInterval(runJitter, 700 + Math.floor(Math.random() * 500));
         (el as any).__glitchTimer = tid;
+        // Register cleanup so interval is cleared on content reload / unmount
+        glitchCleanupRef.current.push(() => {
+          window.clearInterval(tid);
+          const ov = (el as any).__glitchOverlay as HTMLElement | undefined;
+          if (ov) { try { ov.remove(); } catch {} (el as any).__glitchOverlay = undefined; }
+          const ms = (el as any).__glitchMeasure as HTMLElement | undefined;
+          if (ms) { try { ms.remove(); } catch {} (el as any).__glitchMeasure = undefined; }
+          (el as any).__glitchTimer = undefined;
+          (el as any).__glitchBusy = 0;
+        });
       });
     } catch {}
   }, []);
@@ -909,6 +904,9 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       try {
         setIsLoading(true);
         setError(null);
+        // Clean up any leftover glitch intervals from previous content before loading new
+        glitchCleanupRef.current.forEach(fn => { try { fn(); } catch {} });
+        glitchCleanupRef.current = [];
         const pendingResume = readReaderResume();
         const finalUrl = encodePathPreserve(srcUrl);
         const res = await fetch(finalUrl, { cache: 'no-store' });
@@ -923,10 +921,13 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         const doc = parser.parseFromString(raw, 'text/html');
         // Auto-attach external CSS if referenced in the HTML (e.g., /styles.css)
         try {
+          const STYLESHEET_WHITELIST = ['/styles.css', '/synth-gate.css'];
           const styleLinks = Array.from(doc.querySelectorAll('link[rel="stylesheet"][href]')) as HTMLLinkElement[];
           styleLinks.forEach((lnk) => {
             const href = (lnk.getAttribute('href') || '').trim();
             if (!href) return;
+            // Whitelist-only: must be a known root-relative path
+            if (!STYLESHEET_WHITELIST.includes(href)) return;
             // only attach once per href
             if (!document.head.querySelector(`link[rel="stylesheet"][href="${href}"]`)) {
               const tag = document.createElement('link');
@@ -1110,6 +1111,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           // Safety: ensure no choice starts as faded/disabled
           cleanupChoices(typedBox);
           bindChoiceHandlers();
+          restoreChoiceVisuals(typedBox);
           setChoicesShown(true);
           isTypingRef.current = false; setIsTyping(false);
           tryRestoreResume();
@@ -1133,6 +1135,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
               // Safety: ensure no choice starts as faded/disabled
               cleanupChoices(typedBox);
               bindChoiceHandlers();
+              restoreChoiceVisuals(typedBox);
               setChoicesShown(true);
               isTypingRef.current = false; setIsTyping(false);
               // autofocus first choice for keyboard users (never scroll viewport)
@@ -1245,6 +1248,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     return () => {
       cancelled = true;
       try { cancelRef.current?.(); } catch {}
+      glitchCleanupRef.current.forEach(fn => { try { fn(); } catch {} });
+      glitchCleanupRef.current = [];
     };
   }, [srcUrl, autoStart, instantMode, onFetchError, bindChoiceHandlers, announce, cleanupChoices, restoreScrollSoon, revealChoicesStagger]);
 
@@ -1253,6 +1258,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       id={id}
       className={`SYNTHOMAREADER ${isTyping ? 'typing' : ''} ${choicesShown ? 'choices-shown' : ''} ${className || ''}`.trim()}
       aria-label={ariaLabel}
+      data-chapter-id={chapterIdProp ?? ''}
+      data-collection={collectionProp ?? 'SYNTHOMA-NULL'}
     >
       <div className={"chapter-content not-prose"}>
         <div ref={hostRef} className="reader-host not-prose" />

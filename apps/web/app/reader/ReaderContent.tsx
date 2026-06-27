@@ -342,6 +342,8 @@ export default function ReaderContent() {
               autoStart
               instantMode={instantMode}
               onFetchError={handleFetchError}
+              chapterId={chapterId ?? undefined}
+              collection={bookId ?? 'SYNTHOMA-NULL'}
             />
           )}
         </section>

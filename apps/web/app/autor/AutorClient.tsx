@@ -63,6 +63,8 @@ export default function AutorClient() {
             ariaLabel="O autorovi"
             autoStart
             className="readerOverlay-35 readerOverlay-blur"
+            chapterId="autor-info"
+            collection="SYNTHOMA-NULL"
           />
         </section>
 

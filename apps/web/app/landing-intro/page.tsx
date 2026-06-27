@@ -1792,6 +1792,10 @@ export default function LandingIntroPage() {
 
               id="hero-info"
 
+              chapterId="landing-intro"
+
+              collection="SYNTHOMA-NULL"
+
             />
 
           </section>
