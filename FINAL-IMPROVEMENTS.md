@@ -122,3 +122,51 @@ Exit code: 0
 **Status**: 🚀 PRODUCTION READY (verified)  
 **Confidence**: 💯 HIGH  
 **Next step**: Deploy to Vercel 🌐
+
+---
+
+# 🔧 Economy & Build Fixes — červen 2026
+
+Třetí iterace: Mnem economy systém, opravy Vercel buildu a mobile výkon.
+
+## ✅ Implementované funkce
+
+| Funkce | Soubor | Stav |
+|---|---|---|
+| UserRun + run stats | `src/lib/access.ts`, `/api/me/run` | ✅ |
+| Volby → updateRunStats | `TypewriterReader.tsx`, `/api/me/choices` | ✅ |
+| checkAndActivateMissions po volbě | `/api/me/choices/route.ts` | ✅ |
+| RunDashboard v ProfileDashboard (CYKLUS) | `ProfileDashboard.tsx` | ✅ |
+| WhisperFloat v globálním layoutu | `layout.tsx` | ✅ |
+| ChapterSyncLog overlay po dočtení | `ReaderContent.tsx` | ✅ |
+| Completed progress do DB | `/api/me/progress` POST | ✅ |
+
+## 🐛 Opravené Vercel build chyby
+
+| Soubor | Chyba | Oprava |
+|---|---|---|
+| `choices/route.ts` | `Prisma.JsonNull` neexistuje v ^7.8.0 | conditional spread |
+| `books/route.ts` | Parameter `e` implicit any | explicitní typ |
+| `whispers/route.ts` | Parameter `w` implicit any | typ `PublicWhisper` |
+| `ReaderContent.tsx` | Missing dependency `chapterMeta?.title` | přidáno do dep array |
+| `package.json` | `PrismaClient not exported` na Vercelu | `prisma generate &&` |
+
+## 📱 Mobile opravy
+
+- **Reader sekaní**: `MutationObserver` nyní přeskočí callback při aktivním typování (`isTypingRef`)
+- **Auth formulář**: `overflow-y: auto` + `justify-content: flex-start` při otevřené klávesnici na iOS
+
+## ✅ Verified (červen 2026)
+
+```
+npm run build
+prisma generate → ✓
+next build → ✓ Compiled in 11.4s
+Exit code: 0
+```
+
+*"Třetí iterace přidala ekonomiku. Systém teď nejen čte, ale sleduje, pamatuje a odměňuje."* 💀
+
+**Status**: 🚀 PRODUCTION READY v2  
+**Confidence**: 💯 HIGH  
+**Deployed**: Vercel ✅

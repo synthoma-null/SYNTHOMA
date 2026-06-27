@@ -1,14 +1,14 @@
 # SYNTHOMA — Kompletní auditní zpráva
 
-**Datum:** červen 2025  
+**Datum:** červen 2025 (aktualizováno červen 2026)  
 **Rozsah:** Hloubková analýza celého projektu — architektura, funkčnost mechanismů, vizuální konzistence, CSS styly, bezpečnost, přístupnost, výkon a SEO.
 
 ---
 
 ## 1. Přehled projektu
 
-**Typ:** Interaktivní webová čtečka / glitch-noir knižní platforma  
-**Stack:** Next.js 14 (App Router) · React 18.3 · TypeScript 5 · CSS Modules + globální CSS  
+**Typ:** Interaktivní webová čtečka / glitch-noir knižní platforma s meta-game ekonomikou  
+**Stack:** Next.js 15.5 (App Router) · React 18.3 · TypeScript 5 · Prisma 7.8 · PostgreSQL · CSS Modules + globální CSS  
 **Monorepo:** Strukturální (root `c:\SYNTHOMA`, aplikace v `apps/web`)  
 **Runtime:** Node.js >= 20, npm >= 10  
 **Cílové prostředí:** Vercel (SSR/ISR + static export)
@@ -23,7 +23,24 @@
 | `/reader` | Client (dynamic import) | Hlavní čtečka s typewriter efektem |
 | `/archive` | ISR (1h) | Lore karty z `archiveCards.json` |
 | `/autor` | SSR + Client | Stránka autora s TypewriterReader |
+| `/profile` | Dynamic | Profil subjektu s profilem, CYKLUS, achievementy |
 | `/sitemap.xml` | Dynamic | Generováno z `manifest.json` |
+
+**API Routes (červen 2026):**
+
+| Endpoint | Metody | Funkce |
+|---|---|---|
+| `/api/me/run` | GET, PATCH | Run stav, update stability/pressure/shadow |
+| `/api/me/choices` | GET, POST | Záznam voleb, run delta, aktivace misí |
+| `/api/me/progress` | GET, POST | Čtecí pokrok, completed flag |
+| `/api/me/profile` | GET, PATCH | Profil subjektu, mnem balance |
+| `/api/me/missions` | GET | Aktivní mise subjektu |
+| `/api/me/artifacts` | GET, POST | Artefakty, nákup za mnemy |
+| `/api/me/badges` | GET | Odznaky subjektu |
+| `/api/whispers` | GET, POST | Šepoty komunity |
+| `/api/whispers/[id]/resonate` | POST | Rezonance na šepot |
+| `/api/whispers/[id]/boost` | POST | Boost šepotu za mnemy |
+| `/api/admin/whispers` | GET, PATCH | Moderace šepotů (admin only) |
 
 ### 1.2 Klíčové datové soubory
 
@@ -70,11 +87,11 @@
 
 ### 2.4 Package.json
 
-**Stav: V pořádku, drobné poznámky**
+**Stav: V pořádku**
 
-- Scripts: `dev`, `build`, `start`, `lint`, `format`, `typecheck`, `validate:chapters`, `test`
+- Scripts: `dev`, `build` (`prisma generate && next build`), `start`, `lint`, `format`, `typecheck`, `validate:chapters`, `test`
 - `engines`: Node >= 20, npm >= 10
-- Závislosti: Next.js, React 18.3.1, React DOM
+- Závislosti: Next.js 15.5, React 18.3.1, Prisma 7.8, @prisma/adapter-pg, pg, next-auth 5 beta, stripe, zod
 
 **Nález [NÍZKÁ]:** `validate:chapters` skript (`scripts/validate-books.js`) validuje pouze `data-tags` atributy na `<p class="choice">`. Nevaliduje existenci odkazovaných souborů ani konzistenci s `manifest.json`.
 
@@ -569,22 +586,23 @@ Landing intro page fetchuje `/data/SYNTHOMAINFO.html`. Existence souboru nebyla 
 
 | Oblast | Hodnocení | Komentář |
 |---|---|---|
-| **Architektura** | 9/10 | Čistá Next.js App Router architektura, ISR, správné oddělení server/client |
-| **Funkčnost** | 8/10 | Všechny mechanismy funkční, komplexní interaktivita |
+| **Architektura** | 9/10 | Čistá Next.js App Router architektura, ISR, Prisma + PostgreSQL backend |
+| **Funkčnost** | 9/10 | Economy systém, whispers, missions, artefakty — plně funkční |
 | **Vizuální konzistence** | 8/10 | Sjednocený téma systém, drobné hardcoded výjimky |
 | **CSS kvalita** | 7/10 | Bohatá, ale objemná (4000+ řádků), drobné duplikace |
-| **Bezpečnost** | 9/10 | Solidní HTML sanitizace, CSP, AI crawler blokace |
+| **Bezpečnost** | 9/10 | Solidní HTML sanitizace, CSP, AI crawler blokace, JWT session |
 | **Přístupnost** | 7/10 | Dobré základy, ale user-select: none je problematický |
-| **Výkon** | 8/10 | Správné lazy loading, will-change, visibility checks |
+| **Výkon** | 8/10 | MutationObserver debounce opravena, mobile sekaní vyřešeno |
 | **SEO** | 9/10 | Kompletní metadata, JSON-LD, sitemap, noscript fallback |
 | **Testování** | 3/10 | Konfigurováno, ale žádné testy |
-| **Dokumentace** | 8/10 | README, CONTRIBUTING, CHANGELOG existují |
+| **Dokumentace** | 9/10 | README, CONTRIBUTING, CHANGELOG, AUDIT-REPORT aktuální |
 
-**Celkové skóre: 7.6 / 10**
+**Celkové skóre: 7.9 / 10**
 
-Projekt je solidně postavený s propracovaným vizuálním systémem a bohatou interaktivitou. Hlavní oblasti ke zlepšení jsou chybějící PWA/OG assety, absence unit testů a drobné CSS duplikace.
+Projekt je solidně postavený s propracovaným vizuálním systémem, bohatou interaktivitou a funkční meta-game ekonomikou. Hlavní oblasti ke zlepšení zůstávají chybějící PWA/OG assety a absence unit testů.
 
 ---
 
 *Audit provedl: Cascade AI*  
-*Metodika: Manuální code review všech zdrojových souborů, analýza závislostí, kontrola referencí na assety*
+*Metodika: Manuální code review všech zdrojových souborů, analýza závislostí, kontrola referencí na assety*  
+*Aktualizace červen 2026: rozšíření o Prisma backend, economy systém, Vercel build opravy, mobile performance*

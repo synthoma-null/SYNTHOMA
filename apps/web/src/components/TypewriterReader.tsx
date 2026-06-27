@@ -53,6 +53,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   const cancelRef = useRef<(() => void) | null>(null);
   const [choicesShown, setChoicesShown] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const isTypingRef = useRef<boolean>(false);
   const continueRef = useRef<null | (() => void)>(null);
   const liveRef = useRef<HTMLDivElement>(null);
   const storyCacheRef = useRef<string>('');
@@ -852,11 +853,15 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     const tick = () => enhanceGlitching(host);
     // Initial pass
     try { tick(); } catch {}
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
     const obs = new MutationObserver(() => {
-      try { requestAnimationFrame(tick); } catch {}
+      // Skip observer firing during active typewriter animation (prevents mobile thrashing)
+      if (isTypingRef.current) return;
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => { try { requestAnimationFrame(tick); } catch {} }, 300);
     });
-    // Also listen to characterData changes so text edits keep glitching alive
-    obs.observe(host, { childList: true, subtree: true, characterData: true });
+    // Watch only childList (not characterData) — avoids firing on every typed character
+    obs.observe(host, { childList: true, subtree: true });
 
     // Resume glitching when tab becomes visible again
     const onVis = () => { try { if (document.visibilityState === 'visible') tick(); } catch {} };
@@ -1106,14 +1111,14 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           cleanupChoices(typedBox);
           bindChoiceHandlers();
           setChoicesShown(true);
-          setIsTyping(false);
+          isTypingRef.current = false; setIsTyping(false);
           tryRestoreResume();
         } else {
           // Progressive reveal of HTML like landing-intro
           const totalChars = Math.max(1, textLength);
           const duration = getTypewriterDurationMs(host, textLength);
           let cancelledLocal = false;
-          setIsTyping(true);
+          isTypingRef.current = true; setIsTyping(true);
           let startTs: number | null = null;
           const rafTick = (ts: number) => {
             if (cancelledLocal) return;
@@ -1129,7 +1134,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
               cleanupChoices(typedBox);
               bindChoiceHandlers();
               setChoicesShown(true);
-              setIsTyping(false);
+              isTypingRef.current = false; setIsTyping(false);
               // autofocus first choice for keyboard users (never scroll viewport)
               try {
                 const first = (typedBox.querySelector('.choice-link') as HTMLElement | null);

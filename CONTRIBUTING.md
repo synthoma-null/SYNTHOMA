@@ -24,7 +24,18 @@ Vítej v neonovém mokřadu, kde kód píšeme s ironií a glitche jsou feature,
    npm install
    ```
 
-4. **Spusť dev server**
+4. **Nastav environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Vyplň: DATABASE_URL, AUTH_SECRET, NEXTAUTH_URL, STRIPE_SECRET_KEY, ...
+   ```
+
+5. **Vygeneruj Prisma Client**
+   ```bash
+   npx prisma generate
+   ```
+
+6. **Spusť dev server**
    ```bash
    npm run dev
    # → http://localhost:3000
@@ -75,9 +86,11 @@ Přesný checklist najdeš v hlavním README, sekce "2.2) Checklist: Přidání 
 
 ## 🔒 Bezpečnostní pravidla
 
-- **Žádný user-generated HTML** – kapitoly jsou trusted content
+- **Žádný user-generated HTML** – kapitóly jsou trusted content
 - **Žádné inline styly** – používej CSS utility třídy
-- **Žádné `<script>` v kapitolách** (kromě `/books/mbti.js` a `/books/glitch-toggle.js`)
+- **Žádné `<script>` v kapitólách** (kromě `/books/mbti.js` a `/books/glitch-toggle.js`)
+- **Žádné API klíče v kódu** – vždy používej `.env.local`
+- **Prisma schema změny** – vyžaduj migraci (`prisma migrate dev`), otestuj na dev DB
 
 ---
 
@@ -88,6 +101,12 @@ Tyto soubory používají **VŠECHNY** kapitoly:
 - `/public/styles.css`
 - `/public/books/mbti.js`
 - `/public/books/glitch-toggle.js`
+
+Tyto soubory jsou kritické pro economy systém:
+
+- `src/lib/access.ts` — `updateRunStats`, `checkAndActivateMissions`, `getUserEntitlements`
+- `src/content/booksManifest.ts` — ARTIFACTS, MISSIONS, PACKAGES definice
+- `prisma/schema.prisma` — datový model (UserRun, EntityRelation, Whisper...)
 
 **Pokud MUSÍŠ něco změnit:**
 1. Vytvoř branch/verzi

@@ -39,9 +39,11 @@ npm run dev
 
 ```bash
 cd apps/web
-npm run build    # Next.js build
+npm run build    # prisma generate + next build
 npm start        # produkční server na port 3000
 ```
+
+> **Poznámka:** Build script automaticky spouští `prisma generate` před buildem. Na Vercelu vyžaduje `DATABASE_URL` v environment variables.
 
 ## Struktura projektu 🏗️
 
@@ -85,6 +87,9 @@ SYNTHOMACZ/
 ### Klíčové adresáře:
 - `apps/web/app/` – Next.js App Router stránky (routing, layouts, page komponenty)
 - `apps/web/src/` – Sdílené komponenty, utility, styles (nezávislé na routingu)
+- `apps/web/prisma/` – Prisma schema + migrace (PostgreSQL)
+- `apps/web/src/content/booksManifest.ts` – CHAPTERS, PACKAGES, ARTIFACTS, MISSIONS
+- `apps/web/src/lib/access.ts` – Economy logika (updateRunStats, checkAndActivateMissions)
 - `apps/web/public/` – Statická aktiva servírovaná na `/`
 
 > **Proč app/ a src/ vedle sebe?** Next.js App Router vyžaduje `app/` pro routing. Sdílené komponenty a logika patří do `src/`, aby se neplácaly s page strukturou.

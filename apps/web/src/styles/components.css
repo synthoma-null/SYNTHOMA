@@ -3062,6 +3062,7 @@ transition: none !important;
   font-family: 'Text02', monospace;
   font-size: .72rem;
   letter-spacing: .1em;
+  font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
   border: 1px solid var(--border-secondary, rgba(255,255,255,.15));

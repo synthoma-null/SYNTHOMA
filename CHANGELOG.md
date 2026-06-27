@@ -7,49 +7,62 @@ a projekt používá [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added (červen 2026 — Mnem Economy & Meta-game)
+- 🧠 `UserRun` systém: `stability`, `memoryPressure`, `shadow`, `cycleNumber` — aktivní cyklus subjektu
+- 🤝 `EntityRelation` model: vztahy k entitám (glitchka, sarkasma, tai, archive, shadow) s metrikami trust/suspicion/sync/protection
+- 🏺 `UserArtifact` + 10 artefaktů v `booksManifest.ts` (černý klíč, mněmová čočka, glitch-safe-mode…)
+- 🎯 `UserMission` + 8 misí v `booksManifest.ts` (first-trace, did-not-run, sarkasma-firewall…)
+- � `Whisper` systém: šepoty subjektů s moderací, rezonancí a boostem
+- 🌊 `WhisperFloat` komponenta — plovoucí vrstva šepotů v globálním layoutu
+- � `RunDashboard` komponenta — 5 sekcí: AKTIVNÍ CYKLUS, PSYCHOMAPA, VZTAHY, ARTEFAKTY, MISE
+- 📋 `ChapterSyncLog` komponenta — post-kapitolový overlay se změnami hodnot
+- 🗂️ Záložka **CYKLUS** v `ProfileDashboard` s `RunDashboard`
+- 🔒 Access control pro archive karty (`access.mode`: free/chapter/mnems/chapter_or_mnems)
+- 🔗 API endpoint `/api/me/run` (GET full run data, PATCH update stats + checkAndActivateMissions)
+- 🔗 API endpoint `/api/whispers` (GET/POST), `/api/whispers/[id]/resonate`, `/api/whispers/[id]/boost`
+- 🔗 API endpoint `/api/admin/whispers` (GET pending, PATCH moderace)
+- � `FRAGMENTS`, `COSMETICS`, `PROFILE_REPORTS`, `SUBJECT_ACHIEVEMENTS`, `ARTIFACTS`, `MISSIONS` v `booksManifest.ts`
+- 🎭 `computeSubjectTitle` — 14+ titulů dle psyche profilu
+- ⚙️ `checkAndActivateMissions` voláno po každé volbě i po dokončení kapitoly
+
+### Changed (červen 2026)
+- � `TypewriterReader`: volby nyní parsují `data-stability`, `data-pressure`, `data-shadow`, `data-entity-*` a posílají je do `/api/me/choices`
+- 🔄 `/api/me/choices` rozšířen o `stabilityDelta`, `pressureDelta`, `shadowDelta`, `entityDelta` + volá `checkAndActivateMissions`
+- 🔄 `app/layout.tsx`: přidán `<WhisperFloat />` globálně
+- � `ReaderContent`: detekce dočtení při scroll ≥ 95% → uloží `completed: true` do DB, zobrazí `ChapterSyncLog`
+- � `package.json`: build script změněn na `prisma generate && next build`
+- � `MutationObserver` v TypewriterReader: přidán debounce + skip při aktivním typování (oprava sekaní na mobilu)
+- 🔄 Auth stránka na mobilu: opravena při otevřené klávesnici (`overflow-y: auto`, `justify-content: flex-start`)
+
+### Fixed (červen 2026 — Vercel build opravy)
+- � `app/api/me/choices/route.ts`: odstraněn `import { Prisma }` (nekompatibilní s @prisma/client ^7.8.0), nahrazeno conditional spread
+- � `app/api/books/route.ts`: explicitní typ pro `e` parametr v `.map()` callback
+- 🐛 `app/api/whispers/route.ts`: přidán typ `PublicWhisper`, explicitně typovány všechny map callbacky
+- 🐛 `app/reader/ReaderContent.tsx`: přidán `chapterMeta?.title` do `useEffect` dependency array
+- � `prisma generate` přidáno před `next build` — opravuje `PrismaClient not exported` na Vercelu
+- 🐛 `SYNTHOMAINFO.html`: `onclick` atributy nahrazeny `data-action="open-profile"` (React sanitizace)
+
 ### Fixed (Final Improvements - Dec 13, 2025)
-- 🔗 Quick Links: Čtečka href nyní míří správně na `/reader` s example URL odděleně
-- 💪 Odstranění "pokud existuje" u `validate:chapters` - skript je implementovaný
-- 📅 CHANGELOG datum opraveno na 2025 (konzistence s audit reportem)
-- 🔍 Sanitizace: přidán odkaz na konkrétní implementaci v TypewriterReader.tsx
+- � Quick Links: Čtečka href nyní míří správně na `/reader` s example URL odděleně
+- � Odstranění "pokud existuje" u `validate:chapters` - skript je implementovaný
+- � CHANGELOG datum opraveno na 2025 (konzistence s audit reportem)
+- � Sanitizace: přidán odkaz na konkrétní implementaci v TypewriterReader.tsx
 
-### Verified
-- ✅ Build: Compiled successfully in 5.6s (všechny route optimalizované)
-- ✅ Lint: Exit code 0 (2 non-blocking warnings)
-- ✅ TypeCheck: Exit code 0 (žádné TS errory)
+### Verified (červen 2026)
+- ✅ Build: Exit code 0 (prisma generate + next build)
+- ✅ Prisma schema: UserRun, EntityRelation, UserArtifact, UserMission, Whisper, WhisperResonance, WhisperPurchase, WeeklyMemory, UserCosmeticUnlock, SubjectBadge, FragmentUnlock
 
-### Added
-- ✨ `.nvmrc` soubory pro konzistentní Node verzi (20 LTS)
-- 📚 `CONTRIBUTING.md` - kompletní průvodce pro přispěvatele
-- 🚀 Quick Links sekce v README pro rychlou navigaci
-- 🚨 Troubleshooting sekce s 3 nejčastějšími problémy
-- ✅ Checklist pro přidání nových kapitol
-- 🔒 Bezpečnostní dokumentace HTML renderingu
-- ⚙️ API kontrakt dokumentace pro kritické soubory
-- 🔧 `npm run validate:chapters` skript v package.json
-- 📝 Engines specifikace v package.json (Node >=20, npm >=10)
-- 🏗️ Kompletní adresářová struktura v README
-- 💡 Vysvětlení app/ vs src/ struktury
-- 🔐 Environment variables best practices (.env.local)
+---
 
-### Changed
-- 📖 Kompletně přepsaný README s lepší strukturou
-- 🎯 Monorepo story vysvětlena (strukturální monorepo, ne workspace)
-- 📦 package.json description a keywords
-- ✨ Vylepšený public/README.md s aktuální strukturou
+## [1.1.0] - 2026-06-26
 
-### Removed
-- 🗑️ Legacy prototyp: `index.html`, `app.js`, `404.html`
-- 🗑️ Nepoužívané skripty: `ui-helpers.js`, `video-visuals.js`
-- 🗑️ Duplicitní data: `chapters-media.json`
-- 🗑️ Prázdné složky: `content/`, `app/info/`, `public/archive/`, `public/autor/`
-- 🗑️ Duplicitní dokumentace: `landing-intro/README.md`
-- 📁 Celkem ~35KB mrtvého kódu
-
-### Security
-- 🔒 Dokumentována sanitizace HTML v TypewriterReader
-- 🔒 Trusted content policy vysvětlena
-- 🔒 Explicitní `.env.local` v gitignore
+### Mnem Economy & Meta-game Release
+- 🎉 Kompletní ekonomika mněmů — UserRun, PsycheStats, EntityRelation
+- � Whisper systém s moderací a komunitní rezonancí
+- 🏺 Artefakty a mise (10 + 8 položek)
+- 📊 RunDashboard v profilu (záložka CYKLUS)
+- 🔒 Archive access control dle kapitol a mněmů
+- 🌐 Vercel build opravy (Prisma generate, TypeScript any typy)
 
 ---
 
