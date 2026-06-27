@@ -8,7 +8,7 @@ export const revalidate = 3600; // ISR: 1 hodina
 
 export const metadata: Metadata = {
   title: 'Knihovna | SYNTHOMA',
-  description: 'Knihovna interaktivnĂ­ch glitch-noir pĹ™Ă­bÄ›hĹŻ v univerzu SYNTHOMA.',
+  description: 'Knihovna interaktivních glitch-noir příběhů v univerzu SYNTHOMA.',
   alternates: {
     canonical: 'https://www.synthoma.cz/books',
   },

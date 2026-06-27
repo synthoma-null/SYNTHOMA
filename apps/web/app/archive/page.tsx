@@ -7,7 +7,7 @@ export const revalidate = 3600; // ISR: 1 hodina
 
 export const metadata: Metadata = {
   title: 'Archiv | SYNTHOMA',
-  description: 'Archiv lore, pojmĹŻ, entit a fragmentĹŻ univerza SYNTHOMA.',
+  description: 'Archiv lore, pojmů, entit a fragmentů univerza SYNTHOMA.',
   alternates: {
     canonical: 'https://www.synthoma.cz/archive',
   },

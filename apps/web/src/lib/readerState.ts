@@ -13,6 +13,29 @@ export type ReadingProgressEntry = {
   updatedAt: number;
 };
 
+export type ChoiceGroupState = {
+  groupKey: string;   // identifikátor skupiny (id elementu nebo index v dokumentu)
+  chosenText: string; // text zvolené volby
+  chosenIdx: number;  // index v rámci skupiny
+  dataNext?: string;  // data-next atribut zvolené volby (pokud existuje)
+};
+
+export function getChoicesStateKey(srcUrl: string): string {
+  return `choicesState:${srcUrl}`;
+}
+
+export function saveChoicesState(srcUrl: string, state: ChoiceGroupState[]): void {
+  writeStorageJSON(getChoicesStateKey(srcUrl), state);
+}
+
+export function readChoicesState(srcUrl: string): ChoiceGroupState[] {
+  return readStorageJSON<ChoiceGroupState[]>(getChoicesStateKey(srcUrl), []);
+}
+
+export function clearChoicesState(srcUrl: string): void {
+  removeStorage(getChoicesStateKey(srcUrl));
+}
+
 export function saveLastChapterPath(path: string): void {
   writeStorage("lastChapterPath", path);
 }

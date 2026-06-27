@@ -29,6 +29,7 @@ Vítej v neonovém mokřadu, kde kód píšeme s ironií a glitche jsou feature,
    cp .env.example .env.local
    # Vyplň: DATABASE_URL, AUTH_SECRET, NEXTAUTH_URL, STRIPE_SECRET_KEY, ...
    ```
+   > **Pro produkci na Vercelu**: `DATABASE_URL` musí být nastavena v Vercel → Settings → Environment Variables **dříve než se spustí build**. Prisma ji potřebuje během `prisma generate`.
 
 5. **Vygeneruj Prisma Client**
    ```bash

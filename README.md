@@ -27,7 +27,8 @@ npm run dev
 - **Domů**: [http://localhost:3000/](http://localhost:3000/)
 - **Knihovna**: [http://localhost:3000/books](http://localhost:3000/books)
 - **Čtečka**: [http://localhost:3000/reader](http://localhost:3000/reader)  
-  _Example URL:_ `http://localhost:3000/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
+  _Nový způsob (doporučený):_ `http://localhost:3000/reader?chapter=restart`  
+  _Legacy způsob (stále funkční):_ `http://localhost:3000/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
 - **Archiv**: [http://localhost:3000/archive](http://localhost:3000/archive)
 - **Landing**: [http://localhost:3000/landing-intro](http://localhost:3000/landing-intro)
 - **Manifest knih**: `apps/web/public/books/manifest.json` ← zdroj pravdy
@@ -106,6 +107,18 @@ echo "# Lokální environment variables" > .env.local
 
 Pro produkci na Vercelu: Settings → Environment Variables
 
+**Povinné Vercel env vars:**
+
+| Proměnná | Popis |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string (nepžije build bez ní) |
+| `AUTH_SECRET` | Náhodný string pro NextAuth session podpis |
+| `NEXTAUTH_URL` | Produkční URL, např. `https://www.synthoma.cz` |
+| `STRIPE_SECRET_KEY` | Stripe API klíč (vólitelné, pro mnem platby) |
+| `NEXT_PUBLIC_STRIPE_LINK_ARCHIV_PLUS` | Stripe payment link URL (volitelné) |
+
+> **Pozor**: `DATABASE_URL` musí existovat už při buildu — Prisma ho potřebuje pro `prisma generate`. Vercel musí mít tuto proměnnou nastavenou v Environment Variables dříve než se spustí build.
+
 ## GitHub – první push do repozitáře
 
 Máte prázdný repo: https://github.com/synthoma-null/SYNTHOMA.git
@@ -135,7 +148,7 @@ Nejsnazší a nativní pro Next.js.
 - https://vercel.com -> Add New Project -> Import Git Repository -> zvolte `SYNTHOMA`
 - Framework: Next.js
 - Root Directory: `apps/web`
-- Build Command: `next build` (automaticky)
+- Build Command: ponechte **prázdné** (nebo `npm run build`) — `package.json` automaticky spustí `prisma generate && next build`
 - Output: `.next` (automaticky)
 - Deploy
 
@@ -206,11 +219,13 @@ Samostatná landing page s video pozadím na `/landing-intro`.
 ### 2. 404 na kapitolu v čtečce
 **Symptom**: Reader hlásí "Kapitola nenalezena" nebo 404  
 **Důvody**:
-- Špatná cesta v `manifest.json` (kontroluj `/books/...`)
-- Chybí URL encoding v odkazu (mezery → `%20`, závorky → `%5B` a `%5D`)
-- Příklad správného URL: `/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
+- Špatné `chapter` ID — kontřoluj `id` pole v `booksManifest.ts`
+- Legacy `?u=` cesta: špatná cesta v `manifest.json` nebo chybějící URL encoding
 
-**Fix**: Generuj odkazy přes manifest, ne ručně. Nebo použij `encodeURIComponent()`.
+**Primární URL formát (nový):** `/reader?chapter=restart`  
+**Legacy URL formát (příklad):** `/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
+
+**Fix**: Generuj odkazy přes `CHAPTERS` z `booksManifest.ts` a používej `chapter=<id>`. Legacy `?u=` je stále funkční, ale není doporučené.
 
 ### 3. Reader nezobrazuje styly (kapitola vypadá špatně)
 **Symptom**: Kapitola se načte, ale je úplně bez stylů/layoutu  
@@ -241,7 +256,8 @@ Ano, i tvoje babička to přečte. A když ne, glitch efekt ji hypnotizuje, tak�
 - **Hlavní navigace**:
   - `/` – domovská stránka
   - `/books` – knihovna kolekcí/knížek
-  - `/reader?u=/books/<kolekce>/<kapitola>.html` – čtečka konkrétní kapitoly
+  - `/reader?chapter=<id>` – čtečka konkrétní kapitoly (nový způsob, `id` viz `booksManifest.ts`)
+  - `/reader?u=/books/<kolekce>/<kapitola>.html` – legacy způsob (stále funkční)
   - `/autor` – prezentační stránka autora se sjednoceným glitch nadpisem a ukázkou čtečky
   - `/archive` – interaktivní archiv s kartami
 
@@ -293,7 +309,8 @@ Když vytváříš novou kapitolu, projdi tento checklist:
    - **Kontrola**: `path` MUSÍ začínat `/books/...`
 
 3. **Testuj v čtečce**
-   - Otevři `/reader?u=<cesta-s-encodingem>`
+   - Otevři `/reader?chapter=<id>` (kde `id` je klíč v `CHAPTERS` v `booksManifest.ts`)
+   - Legacy: `/reader?u=<cesta-s-encodingem>`
    - Zkontroluj, že se načte obsah, styly, a případná media
 
 4. **Validuj**
