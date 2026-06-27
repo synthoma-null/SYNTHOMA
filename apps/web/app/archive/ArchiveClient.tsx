@@ -7,6 +7,7 @@ const WhisperCard = dynamic(() => import('../../src/components/whispers/WhisperC
 const WhisperForm = dynamic(() => import('../../src/components/whispers/WhisperForm'), { ssr: false });
 import Link from "next/link";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
+import { useLang } from "../../src/lib/LangContext";
 
 export type ArchiveCardAccess = {
   mode: 'free' | 'chapter' | 'mnems' | 'chapter_or_mnems';
@@ -88,6 +89,7 @@ function resolveCardLock(
 
 export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveCardData[] }) {
   const TITLE = "A R C H I V";
+  const { t } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const [completedChapterIds, setCompletedChapterIds] = useState<Set<string>>(new Set());
   const [mnemBalance, setMnemBalance] = useState<number>(0);
@@ -221,7 +223,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
               <button
                 type="button"
                 className="archive-backdrop-button"
-                aria-label="Zavřít otevřenou kartu (klik mimo)"
+                aria-label={t('archive.backdrop.aria')}
                 onClick={() => setOpenId(null)}
               />
             ) : null}
@@ -255,7 +257,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                       className="card-overlay"
                       aria-expanded={isOpen}
                       aria-controls={`card-${c.id}`}
-                      aria-label={isLocked ? `Zamčená karta: ${c.title}` : isOpen ? `Zavřít kartu: ${c.title}` : `Otevřít kartu: ${c.title}`}
+                      aria-label={isLocked ? `${t('archive.card.locked')}: ${c.title}` : isOpen ? `${t('archive.card.close')}: ${c.title}` : `${t('archive.card.open')}: ${c.title}`}
                       onClick={() => { if (!isLocked) toggle(c.id); }}
                       aria-disabled={isLocked}
                     />
@@ -270,7 +272,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                     {isLocked ? (
                       <div className="card-locked-panel">
                         <p className="card-locked-text">
-                          {c.access?.lockedText ?? 'Tento záznam zatím leží za zdí Archivu.'}
+                          {c.access?.lockedText ?? t('archive.card.locked.default')}
                         </p>
                         <p className="card-locked-label">{c.access?.label}</p>
                       </div>
@@ -294,7 +296,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                             ))}
                             {Array.isArray(c.related) && c.related.length > 0 ? (
                               <div className="card-related">
-                                <p className="label">Související:</p>
+                                <p className="label">{t('archive.card.related')}</p>
                                 <div className="related-list">
                                   {c.related.map(rid => (
                                     <button
@@ -302,7 +304,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                                       type="button"
                                       className="related-chip"
                                       onClick={(e) => { e.stopPropagation?.(); setOpenId(rid); }}
-                                      aria-label={`Otevřít související kartu: ${titleById[rid] || rid}`}
+                                      aria-label={`${t('archive.card.related.open')}: ${titleById[rid] || rid}`}
                                     >
                                       {titleById[rid] || `#${rid}`}
                                     </button>
@@ -312,7 +314,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                             ) : null}
                             {Array.isArray(c.tags) && c.tags.length > 0 ? (
                               <div className="card-tags">
-                                <p className="label">Tagy:</p>
+                                <p className="label">{t('archive.card.tags')}</p>
                                 <div className="tags-list">
                                   {c.tags.map((tag, idx) => (
                                     <span key={idx} className="tag-chip">{tag}</span>
@@ -331,9 +333,9 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
           </>
         </section>
         <section className="story-block whisper-archive-section" aria-label="Šepoty Archivu">
-          <h2 className="whisper-archive-title">ŠEPOTY ARCHIVU</h2>
+          <h2 className="whisper-archive-title">{t('archive.whispers.title')}</h2>
           <p className="whisper-archive-intro">
-            Některé věty nebyly nikdy odeslány. Ne proto, že nebyly důležité. Ale protože by změnily příliš mnoho.
+            {t('archive.whispers.intro')}
           </p>
 
           <div className="whisper-archive-controls">
@@ -344,13 +346,13 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
                   className={`whisper-chip${whisperFilter === f ? ' whisper-chip--active' : ''}`}
                   onClick={() => setWhisperFilter(f)}
                 >
-                  {f === 'all' ? 'Vše' : f.toUpperCase()}
+                  {f === 'all' ? t('archive.whispers.filter.all') : f.toUpperCase()}
                 </button>
               ))}
             </div>
             <div className="whisper-archive-sorts">
               {(['random','resonance','new'] as const).map((v) => {
-                const labels: Record<string, string> = { random: 'Náhodné', resonance: 'Nejvíc rezonovalo', new: 'Nové' };
+                const labels: Record<string, string> = { random: t('archive.whispers.sort.random'), resonance: t('archive.whispers.sort.resonance'), new: t('archive.whispers.sort.new') };
                 return (
                   <button
                     key={v}
@@ -366,7 +368,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
 
           <div className="whisper-archive-grid">
             {whispers.length === 0 && (
-              <p className="whisper-archive-empty">LOG [ARCHIVE_EMPTY]: Žádné schválené stopy zatím neexistují.</p>
+              <p className="whisper-archive-empty">{t('archive.whispers.empty')}</p>
             )}
             {whispers.map((w) => (
               <WhisperCard key={w.id} whisper={w} />
@@ -375,16 +377,16 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
 
           <div className="whisper-archive-cta">
             {!showWhisperForm ? (
-              <button className="btn" onClick={() => setShowWhisperForm(true)}>ZANECHAT ŠEPOT</button>
+              <button className="btn" onClick={() => setShowWhisperForm(true)}>{t('archive.whispers.leave')}</button>
             ) : (
               <WhisperForm onSuccess={() => setShowWhisperForm(false)} />
             )}
           </div>
         </section>
 
-        <section className="story-block" aria-label="Navigace zpět">
+        <section className="story-block" aria-label={t('books.nav.back.aria')}>
           <div className="hero-cta">
-            <Link className="btn btn-lg" href="/">⟵ Hlavní stránka</Link>
+            <Link className="btn btn-lg" href="/">{t('archive.back')}</Link>
           </div>
         </section>
       </main>

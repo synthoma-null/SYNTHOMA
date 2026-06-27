@@ -62,6 +62,12 @@ export default function ControlPanelClient() {
 
     const { signal } = abort;
 
+    function getLang() {
+      try { return localStorage.getItem('synthoma_lang') === 'en' ? 'en' : 'cs'; } catch { return 'cs'; }
+    }
+
+    function cp(cs: string, en: string) { return getLang() === 'en' ? en : cs; }
+
     function debugLog(...args: any[]) {
 
       try {
@@ -162,7 +168,7 @@ export default function ControlPanelClient() {
 
         // Když jsou animace vypnuté (next=true), ukaž "Vypnuty"
 
-        if (btn) btn.textContent = next ? "Animace: Vypnuty" : "Animace: Zapnuty";
+        if (btn) btn.textContent = next ? cp('Animace: Vypnuty', 'Animations: Off') : cp('Animace: Zapnuty', 'Animations: On');
 
       },
 
@@ -610,7 +616,7 @@ export default function ControlPanelClient() {
 
         if (toggleAnimationsBtn){
 
-          toggleAnimationsBtn.textContent = areAnimationsDisabled ? "Animace: Vypnuty" : "Animace: Zapnuty";
+          toggleAnimationsBtn.textContent = areAnimationsDisabled ? cp('Animace: Vypnuty', 'Animations: Off') : cp('Animace: Zapnuty', 'Animations: On');
 
           toggleAnimationsBtn.setAttribute('aria-pressed', String(!areAnimationsDisabled));
 
@@ -620,7 +626,7 @@ export default function ControlPanelClient() {
 
         if (toggleGlassBtn){
 
-          toggleGlassBtn.textContent = isGlass ? "Sklo: Zapnuto" : "Sklo: Vypnuto";
+          toggleGlassBtn.textContent = isGlass ? cp('Sklo: Zapnuto', 'Glass: On') : cp('Sklo: Vypnuto', 'Glass: Off');
 
           toggleGlassBtn.setAttribute('aria-pressed', String(isGlass));
 
@@ -720,7 +726,7 @@ export default function ControlPanelClient() {
 
         if (toggleGlassBtn) {
 
-          toggleGlassBtn.textContent = isGlass ? "Sklo: Zapnuto" : "Sklo: Vypnuto";
+          toggleGlassBtn.textContent = isGlass ? cp('Sklo: Zapnuto', 'Glass: On') : cp('Sklo: Vypnuto', 'Glass: Off');
 
           toggleGlassBtn.setAttribute('aria-pressed', String(isGlass));
 
@@ -798,7 +804,7 @@ export default function ControlPanelClient() {
 
         if (opacityLabelEl) {
 
-          opacityLabelEl.textContent = currentGlassMode ? "Blur" : "Průhlednost";
+          opacityLabelEl.textContent = currentGlassMode ? 'Blur' : cp('Průhlednost', 'Opacity');
 
         }
 
@@ -1304,7 +1310,7 @@ export default function ControlPanelClient() {
 
             (loopBtn as HTMLElement).textContent = on ? '🔁⦿' : '🔁';
 
-            (loopBtn as HTMLElement).setAttribute('title', on ? 'Opakovat: Zapnuto' : 'Opakovat: Vypnuto');
+            (loopBtn as HTMLElement).setAttribute('title', on ? cp('Opakovat: Zapnuto', 'Loop: On') : cp('Opakovat: Vypnuto', 'Loop: Off'));
 
           }
 
@@ -1400,7 +1406,7 @@ export default function ControlPanelClient() {
 
           loopChip.textContent = initialLoop ? '🔁⦿' : '🔁';
 
-          loopChip.setAttribute('title', initialLoop ? 'Opakovat: Zapnuto' : 'Opakovat: Vypnuto');
+          loopChip.setAttribute('title', initialLoop ? cp('Opakovat: Zapnuto', 'Loop: On') : cp('Opakovat: Vypnuto', 'Loop: Off'));
 
 
 
@@ -1434,7 +1440,7 @@ export default function ControlPanelClient() {
 
             loopChip.textContent = now ? '🔁⦿' : '🔁';
 
-            loopChip.setAttribute('title', now ? 'Opakovat: Zapnuto' : 'Opakovat: Vypnuto');
+            loopChip.setAttribute('title', now ? cp('Opakovat: Zapnuto', 'Loop: On') : cp('Opakovat: Vypnuto', 'Loop: Off'));
 
             if (index === currentTrackIndex) {
 
@@ -1556,7 +1562,7 @@ export default function ControlPanelClient() {
 
           btn.setAttribute('aria-pressed', String(enabled));
 
-          btn.textContent = enabled ? 'TTS: Zapnuto 🔊' : 'TTS: Vypnuto 🔇';
+          btn.textContent = enabled ? cp('TTS: Zapnuto 🔊', 'TTS: On 🔊') : cp('TTS: Vypnuto 🔇', 'TTS: Off 🔇');
 
         } catch {}
 
@@ -1836,7 +1842,7 @@ export default function ControlPanelClient() {
 
             try { el.setAttribute('aria-pressed', String(next)); } catch {}
 
-            try { el.textContent = next ? 'TTS: Zapnuto 🔊' : 'TTS: Vypnuto 🔇'; } catch {}
+            try { el.textContent = next ? cp('TTS: Zapnuto 🔊', 'TTS: On 🔊') : cp('TTS: Vypnuto 🔇', 'TTS: Off 🔇'); } catch {}
 
             try { writeText('ttsOn', String(next)); } catch {}
 

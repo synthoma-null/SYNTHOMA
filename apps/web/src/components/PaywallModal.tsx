@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { PACKAGES } from '../content/booksManifest';
+import { useLang } from '../lib/LangContext';
 
 interface Props {
   chapterId: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClose }: Props) {
+  const { t } = useLang();
   const [code, setCode] = useState('');
   const [codeStatus, setCodeStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
   const [codeMsg, setCodeMsg] = useState('');
@@ -25,7 +27,7 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
       const data = await res.json();
       if (data.url) window.location.href = data.url;
     } catch {
-      alert('Chyba platebního terminálu.');
+      alert(t('paywall.network.terminal'));
     }
   };
 
@@ -41,38 +43,38 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
       const data = await res.json();
       if (res.ok) {
         setCodeStatus('ok');
-        setCodeMsg('Přístup odemčen. Obnovuji fragment...');
+        setCodeMsg(t('paywall.code.ok2'));
         setTimeout(() => window.location.reload(), 1500);
       } else {
         setCodeStatus('error');
-        setCodeMsg(data.error ?? 'Kód neplatný.');
+        setCodeMsg(data.error ?? t('paywall.code.invalid'));
       }
     } catch {
       setCodeStatus('error');
-      setCodeMsg('Chyba sítě.');
+      setCodeMsg(t('paywall.network'));
     }
   };
 
   return (
-    <div className="paywall-overlay" role="dialog" aria-modal="true" aria-label="Přístup odepřen">
+    <div className="paywall-overlay" role="dialog" aria-modal="true" aria-label={t('paywall.aria')}>
       <div className="paywall-modal">
-        <button className="paywall-close" onClick={onClose} aria-label="Zavřít">✕</button>
+        <button className="paywall-close" onClick={onClose} aria-label={t('paywall.close')}>✕</button>
 
         <div className="paywall-log">
           <p>
             <span className="paywall-log-prefix">LOG [ACCESS_DENIED]:</span>
-            <span className="paywall-log-msg">&#8222;Nedostatek mnemů. Paměťový fragment zůstává uzamčen.&#8220;</span>
+            <span className="paywall-log-msg">&#8222;{t('paywall.log.denied2')}&#8220;</span>
           </p>
           <p>
             <span className="paywall-log-prefix">LOG [MEMORY_TOLL]:</span>
-            <span className="paywall-log-msg">&#8222;Tento fragment neleží za zdí. Leží za cenou.&#8220;</span>
+            <span className="paywall-log-msg">&#8222;{t('paywall.log.denied')}&#8220;</span>
           </p>
         </div>
 
         <div className="paywall-chapter">
-          <span className="paywall-chapter-label">ZAMČENÝ FRAGMENT</span>
+          <span className="paywall-chapter-label">{t('paywall.fragment.label')}</span>
           <span className="paywall-chapter-title">{chapterTitle}</span>
-          <span className="paywall-chapter-cost">{mnemCost} mnemů</span>
+          <span className="paywall-chapter-cost">{mnemCost} mnems</span>
         </div>
 
         <div className="paywall-packages">
@@ -88,10 +90,10 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
                 onClick={() => handlePurchase(pkg.id)}
               >
                 {pkg.id === 'single-fragment'
-                  ? 'ODEMKNOUT PAMĚŤOVÝ FRAGMENT'
+                  ? t('paywall.unlock.fragment')
                   : pkg.id === 'act-1'
-                  ? 'ODEMKNOUT AKT I'
-                  : 'ODEMKNOUT ARCHIV 1024'}
+                  ? t('paywall.unlock.act1')
+                  : t('paywall.unlock.archive')}
               </button>
             </div>
           ))}
@@ -102,18 +104,18 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
             <input
               className="auth-input"
               type="text"
-              placeholder="MNEM-XXXX-XXXX-XXXX"
+              placeholder={t('paywall.code.placeholder')}
               value={code}
               onChange={(e) => setCode(e.target.value)}
               disabled={codeStatus === 'loading'}
-              aria-label="Přístupový kód"
+              aria-label={t('paywall.code.aria')}
             />
             <button
               className="btn"
               type="submit"
               disabled={codeStatus === 'loading' || !code}
             >
-              {codeStatus === 'loading' ? 'OVĚŘUJI...' : 'POUŽÍT KÓD'}
+              {codeStatus === 'loading' ? t('paywall.code.verifying') : t('paywall.code.use')}
             </button>
           </form>
           {codeStatus === 'ok' && <p className="paywall-code-ok">{codeMsg}</p>}
@@ -121,9 +123,9 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
         </div>
 
         <div className="paywall-auth">
-          <a href="/login" className="auth-link">PŘIHLÁSIT SE</a>
+          <a href="/login" className="auth-link">{t('paywall.auth.login')}</a>
           {' · '}
-          <a href="/register" className="auth-link">REGISTROVAT IDENTITU</a>
+          <a href="/register" className="auth-link">{t('paywall.auth.register')}</a>
         </div>
       </div>
     </div>

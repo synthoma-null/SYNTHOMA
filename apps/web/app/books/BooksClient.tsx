@@ -7,6 +7,7 @@ import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import { readReadingProgress } from "../../src/lib/readerState";
 import ChapterLockModal from "../components/ChapterLockModal";
 import { CHAPTERS } from "../../src/content/booksManifest";
+import { useLang } from "../../src/lib/LangContext";
 
 const DESCRIPTIONS: Record<string, string> = {
   'synthoma-null': `Vítejte v Synthomě. Virtuální terapii, která se zbláznila. Ve světě, kde je těžší zapomenout než přežít.<br/><br/>
@@ -32,6 +33,7 @@ export interface Manifest { collections: Collection[] }
 
 export default function BooksClient({ manifest }: { manifest: Manifest }) {
   const TITLE = "K N I H O V N A ";
+  const { t } = useLang();
   const [selected, setSelected] = useState<Collection | null>(null);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [progress, setProgress] = useState<Record<string, { path: string; percent: number; updatedAt: number }>>({})
@@ -123,7 +125,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
 
         {!manifest.collections.length ? (
           <article className="panel glass">
-            <p className="library-empty">Knihovna se načítá...</p>
+            <p className="library-empty">{t('books.empty')}</p>
           </article>
         ) : (
           <>
@@ -136,7 +138,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                         <button
                           className={`lib-link ${styles.cardButton}`}
                           onClick={() => setSelected(col)}
-                          aria-label={`Otevřít kolekci ${col.title}`}
+                          aria-label={`${t('books.open')} ${col.title}`}
                         >
                           <div className={`lib-cover ${styles.coverThumb} ${!col.cover ? styles.noCover : ''}`} aria-hidden>
                             {col.cover ? (
@@ -147,11 +149,11 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                             <h2 className={`lib-section-title ${styles.sectionTitleReset}`}>{col.title}</h2>
                             {progress[col.slug] ? (
                               <p className="lib-note" aria-live="polite">
-                                Pokračovat: {(() => {
+                                {t('books.continue')}: {(() => {
                                   const p = progress[col.slug];
-                                  if (!p) return 'Poslední kapitola';
+                                  if (!p) return t('books.last');
                                   const ch = col.chapters?.find(c => c.path === p.path);
-                                  return ch ? ch.title : 'Poslední kapitola';
+                                  return ch ? ch.title : t('books.last');
                                 })()} ({Math.max(0, Math.min(100, Math.round(progress[col.slug]?.percent ?? 0)))}%)
                               </p>
                             ) : null}
@@ -175,11 +177,11 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                       <h2 className={styles.sectionTitleReset}>{selected.title}</h2>
                       <div className={`hero-cta ${styles.ctaRow}`}>
                         {progress[selected.slug] ? (
-                          <Link className="btn btn-lg" prefetch={false} href={`/reader?u=${encodeURIComponent(progress[selected.slug]!.path)}`} aria-label="Pokračovat ve čtení">
-                            ▶ Pokračovat ({Math.max(0, Math.min(100, Math.round(progress[selected.slug]?.percent ?? 0)))}%)
+                          <Link className="btn btn-lg" prefetch={false} href={`/reader?u=${encodeURIComponent(progress[selected.slug]!.path)}`} aria-label={t('books.nav.continue.label')}>
+                            ▶ {t('books.continue')} ({Math.max(0, Math.min(100, Math.round(progress[selected.slug]?.percent ?? 0)))}%)
                           </Link>
                         ) : null}
-                        <button className="btn btn-lg" onClick={() => setSelected(null)} aria-label="Zpět na seznam knih">⟵ Zpět</button>
+                        <button className="btn btn-lg" onClick={() => setSelected(null)} aria-label={t('books.nav.back.label')}>⟵ {t('books.nav.back.label')}</button>
                       </div>
                     </div>
 
@@ -193,19 +195,19 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                       const excerpt = plain.slice(0, 260) + (plain.length > 260 ? '…' : '');
 
                       return (
-                        <section className={`story-block ${styles.descBlock}`} aria-label="Popis knihy">
+                        <section className={`story-block ${styles.descBlock}`} aria-label={t('books.desc.aria')}>
                           {!showMore ? (
                             <>
                               <p className={`text ${styles.descExcerpt}`}>{excerpt}</p>
                               <div className={`hero-cta ${styles.descActions}`}>
-                                <button className="btn btn-sm" onClick={() => setShowMore(true)} aria-expanded={showMore} aria-controls="book-desc">Zobrazit více</button>
+                                <button className="btn btn-sm" onClick={() => setShowMore(true)} aria-expanded={showMore} aria-controls="book-desc">{t('books.showmore')}</button>
                               </div>
                             </>
                           ) : (
                             <>
                               <p id="book-desc" className="text" dangerouslySetInnerHTML={{ __html: full }} />
                               <div className={`hero-cta ${styles.descActions}`}>
-                                <button className="btn btn-sm" onClick={() => setShowMore(false)} aria-expanded={showMore} aria-controls="book-desc">Skrýt</button>
+                                <button className="btn btn-sm" onClick={() => setShowMore(false)} aria-expanded={showMore} aria-controls="book-desc">{t('books.hide')}</button>
                               </div>
                             </>
                           )}
@@ -225,7 +227,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                                 className="lib-link lib-link--locked"
                                 onClick={() => setLockedChapter({ id: ch.id ?? '', title: ch.title })}
                                 data-echo={ch.title}
-                                aria-label={`${ch.title} — uzamčený fragment`}
+                                aria-label={`${ch.title} — ${t('books.locked.aria')}`}
                               >
                                 <span className="lib-link-title">{ch.title}</span>
                                 <span className={`lib-badge lib-badge--locked ${styles.badgeSpace}`}>
@@ -241,7 +243,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                               >
                                 <span className="lib-link-title">{ch.title}</span>
                                 {progress[selected.slug]?.path === ch.path ? (
-                                  <span className={`lib-badge ${styles.badgeSpace}`}>Pokračovat {Math.max(0, Math.min(100, Math.round(progress[selected.slug]!.percent)))}%</span>
+                                  <span className={`lib-badge ${styles.badgeSpace}`}>{t('books.continue')} {Math.max(0, Math.min(100, Math.round(progress[selected.slug]!.percent)))}%</span>
                                 ) : null}
                               </Link>
                             )}
@@ -262,10 +264,10 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
             onClose={() => setLockedChapter(null)}
           />
         )}
-        <article className="panel glass" aria-label="Navigace zpět">
+        <article className="panel glass" aria-label={t('books.nav.back.aria')}>
           <section className="story-block">
             <div className="hero-cta">
-              <Link className="btn btn-lg" href="/">⟵ Hlavní stránka</Link>
+              <Link className="btn btn-lg" href="/">{t('books.back')}</Link>
             </div>
           </section>
         </article>

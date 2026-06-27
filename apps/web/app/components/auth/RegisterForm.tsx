@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useLang } from '../../../src/lib/LangContext';
 
 export default function RegisterForm() {
   const router = useRouter();
+  const { t } = useLang();
   const [form, setForm] = useState({
     email: '',
     nickname: '',
@@ -32,7 +34,7 @@ export default function RegisterForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? 'Registrace selhala.');
+        setError(data.error ?? t('auth.register.error.generic'));
         return;
       }
       await signIn('credentials', {
@@ -43,7 +45,7 @@ export default function RegisterForm() {
       router.replace('/?login=1');
       router.refresh();
     } catch {
-      setError('Připojení selhalo. Zkus to znovu.');
+      setError(t('auth.register.network'));
     } finally {
       setIsPending(false);
     }
@@ -53,11 +55,11 @@ export default function RegisterForm() {
     <form className="auth-form" onSubmit={handleSubmit} noValidate>
       <div className="auth-log">
         <span className="auth-log-prefix">LOG [SUBJECT_REGISTRATION]:</span>
-        <span className="auth-log-msg">&#8222;Vytvářím nový subjekt. Paměťový otisk bude přiřazen k identitě.&#8220;</span>
+        <span className="auth-log-msg">&#8222;{t('auth.register.log')}&#8220;</span>
       </div>
 
       <div className="auth-field">
-        <label htmlFor="reg-email" className="auth-label">E-MAIL</label>
+        <label htmlFor="reg-email" className="auth-label">{t('auth.register.email')}</label>
         <input
           id="reg-email"
           className="auth-input"
@@ -72,7 +74,7 @@ export default function RegisterForm() {
       </div>
 
       <div className="auth-field">
-        <label htmlFor="reg-nickname" className="auth-label">PŘEZDÍVKA (3–24 znaků)</label>
+        <label htmlFor="reg-nickname" className="auth-label">{t('auth.register.nickname')}</label>
         <input
           id="reg-nickname"
           className="auth-input"
@@ -82,13 +84,13 @@ export default function RegisterForm() {
           onChange={set('nickname')}
           disabled={isPending}
           required
-          placeholder="Přezdívka_01"
+          placeholder="Nickname_01"
           pattern="^[a-zA-Z0-9_]{3,24}$"
         />
       </div>
 
       <div className="auth-field">
-        <label htmlFor="reg-password" className="auth-label">HESLO</label>
+        <label htmlFor="reg-password" className="auth-label">{t('auth.register.password')}</label>
         <input
           id="reg-password"
           className="auth-input"
@@ -98,12 +100,12 @@ export default function RegisterForm() {
           onChange={set('password')}
           disabled={isPending}
           required
-          placeholder="min. 8 znaků"
+          placeholder={t('auth.register.password.placeholder')}
         />
       </div>
 
       <div className="auth-field">
-        <label htmlFor="reg-password-confirm" className="auth-label">HESLO ZNOVU</label>
+        <label htmlFor="reg-password-confirm" className="auth-label">{t('auth.register.passwordConfirm')}</label>
         <input
           id="reg-password-confirm"
           className="auth-input"
@@ -120,15 +122,15 @@ export default function RegisterForm() {
       {error && <p className="auth-error" role="alert">{error}</p>}
 
       <button className="auth-submit btn" type="submit" disabled={isPending}>
-        {isPending ? 'INICIALIZACE IDENTITY...' : 'REGISTROVAT SUBJEKT'}
+        {isPending ? t('auth.register.pending') : t('auth.register.submit')}
       </button>
 
       <p className="auth-switch">
-        Existující subjekt?{' '}
-        <Link href="/login" className="auth-link">PŘIHLÁSIT SE</Link>
+        {t('auth.register.switch')}{' '}
+        <Link href="/login" className="auth-link">{t('id.login')}</Link>
       </p>
       <p className="auth-switch">
-        <Link href="/" className="auth-link">← ZPĚT NA SYNTHOMA</Link>
+        <Link href="/" className="auth-link">{t('auth.register.back')}</Link>
       </p>
     </form>
   );

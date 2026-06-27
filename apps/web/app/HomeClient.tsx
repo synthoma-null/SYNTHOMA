@@ -6,11 +6,12 @@ import { useSession } from "next-auth/react";
 import styles from "./menu.module.css";
 import { attachGlitchHeading } from "../src/lib/glitchHeading";
 import { readLastChapterPath, readReadingProgress } from "../src/lib/readerState";
+import { useLang } from "../src/lib/LangContext";
 
 const TITLE = "SYNTHOMA";
-const SUBTITLE = "Interaktivní čtečka o paměti, identitě a systému, který se naučil bolet.";
 
 export default function HomeClient() {
+  const { t } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const [showBgVideo, setShowBgVideo] = useState(true);
   const [lastChapter, setLastChapter] = useState<string | null>(null);
@@ -84,7 +85,7 @@ export default function HomeClient() {
           />
         </div>
       ) : null}
-      <main className={styles.home} role="main" aria-label="Hlavní menu">
+      <main className={styles.home} role="main" aria-label={t('home.aria')}>
         {/* Nadpis musí být mimo panel sekci, 1:1 jako na landing-intro */}
         <h1 id="glitch-synthoma" className={`glitch-master`} ref={glitchRootRef as any} aria-label={TITLE}>
           <span className="glitch-fake1" aria-hidden="true">{TITLE}</span>
@@ -98,15 +99,15 @@ export default function HomeClient() {
         </h1>
 
         <section className={`${styles.menu} panel ${styles.menuOffset}`} aria-label="Menu">
-          <nav aria-label="Primární navigace">
+          <nav aria-label={t('home.menu.aria')}>
             <ul className={styles.menuList}>
               {lastChapter ? (
                 <li className={styles.fullWidth}>
                   <article className={`${styles.card} ${styles.cardPrimary}`}>
                     <Link className={styles.cardLink} href={`/reader?u=${encodeURIComponent(lastChapter)}`}>
-                      <h2 className={styles.cardTitle}>Pokračovat ve čtení</h2>
+                      <h2 className={styles.cardTitle}>{t('home.continue')}</h2>
                       <p className={styles.cardTeaser}>
-                        {lastChapterTitle || 'Pokračovat tam, kde jsi skončil'}
+                        {lastChapterTitle || t('home.continue.fallback')}
                         {lastChapterPercent ? <span className={styles.progressBadge}>{lastChapterPercent} %</span> : null}
                       </p>
                     </Link>
@@ -116,32 +117,32 @@ export default function HomeClient() {
               <li>
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/landing-intro">
-                    <h2 className={styles.cardTitle}>Intro</h2>
-                    <p className={styles.cardTeaser}>Vstupní brána do světa SYNTHOMY – manifest, glitch show a první volby.</p>
+                    <h2 className={styles.cardTitle}>{t('home.intro.title')}</h2>
+                    <p className={styles.cardTeaser}>{t('home.intro.teaser')}</p>
                   </Link>
                 </article>
               </li>
               <li>
                 <article className={`${styles.card} ${!lastChapter ? styles.cardPrimary : ''}`}>
                   <Link className={styles.cardLink} href="/books">
-                    <h2 className={styles.cardTitle}>Knihovna</h2>
-                    <p className={styles.cardTeaser}>Procházet všechny kapitoly – od RESTARTU po hluboký glitch-core.</p>
+                    <h2 className={styles.cardTitle}>{t('home.library.title')}</h2>
+                    <p className={styles.cardTeaser}>{t('home.library.teaser')}</p>
                   </Link>
                 </article>
               </li>
               <li>
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/archive">
-                    <h2 className={styles.cardTitle}>Archiv</h2>
-                    <p className={styles.cardTeaser}>Svět SYNTHOMY: entity, biome, signály a pravidla glitch-noir reality.</p>
+                    <h2 className={styles.cardTitle}>{t('home.archive.title')}</h2>
+                    <p className={styles.cardTeaser}>{t('home.archive.teaser')}</p>
                   </Link>
                 </article>
               </li>
               <li>
                 <article className={styles.card}>
                   <Link className={styles.cardLink} href="/autor">
-                    <h2 className={styles.cardTitle}>Autor</h2>
-                    <p className={styles.cardTeaser}>WalliCzech, bug report, hudba a proces vzniku glitch-noir světa.</p>
+                    <h2 className={styles.cardTitle}>{t('home.autor.title')}</h2>
+                    <p className={styles.cardTeaser}>{t('home.autor.teaser')}</p>
                   </Link>
                 </article>
               </li>

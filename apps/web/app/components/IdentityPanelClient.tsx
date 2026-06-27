@@ -3,9 +3,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useLang } from '../../src/lib/LangContext';
 
 export default function IdentityPanelClient() {
   const { data: session, status } = useSession();
+  const { t } = useLang();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +31,7 @@ export default function IdentityPanelClient() {
     return () => document.removeEventListener('keydown', handler);
   }, [open]);
 
-  const label = status === 'loading' ? '···' : session ? (session.user?.name ?? 'SUBJEKT') : 'IDENTITA';
+  const label = status === 'loading' ? '···' : session ? (session.user?.name ?? 'SUBJEKT') : t('id.default');
 
   return (
     <div className="id-panel-root" ref={panelRef}>
@@ -37,7 +39,7 @@ export default function IdentityPanelClient() {
         className={`id-panel-btn${open ? ' active' : ''}`}
         aria-expanded={open}
         aria-controls="id-panel-popup"
-        aria-label="Identita subjektu"
+        aria-label={t('id.aria.btn')}
         onClick={() => setOpen(v => !v)}
       >
         <span className="id-panel-icon">{session ? '◉' : '○'}</span>
@@ -48,13 +50,13 @@ export default function IdentityPanelClient() {
         id="id-panel-popup"
         className={`id-panel-popup${open ? ' visible' : ''}`}
         role="region"
-        aria-label="Panel identity"
+        aria-label={t('id.aria.panel')}
       >
         {session ? (
           <>
             <div className="id-panel-log">
               <span className="id-panel-log-prefix">LOG [SUBJEKT]:</span>
-              <span className="id-panel-log-msg">&#8222;Identita ověřena. Přístup povolen.&#8220;</span>
+              <span className="id-panel-log-msg">&#8222;{t('id.log.verified')}&#8220;</span>
             </div>
             <p className="id-panel-name">{session.user?.name ?? 'subjekt'}</p>
             <p className="id-panel-email">{session.user?.email ?? ''}</p>
@@ -66,18 +68,18 @@ export default function IdentityPanelClient() {
                   document.dispatchEvent(new CustomEvent('synthoma:open-profile'));
                 }}
               >
-                PROFIL SUBJEKTU
+                {t('id.profile')}
               </button>
               {(session.user as { role?: string })?.role === 'admin' && (
                 <Link className="id-panel-link btn btn-sm id-panel-admin" href="/admin" onClick={() => setOpen(false)}>
-                  ADMIN TERMINÁL
+                  {t('id.admin')}
                 </Link>
               )}
               <button
                 className="id-panel-link btn btn-sm id-panel-signout"
                 onClick={() => { setOpen(false); signOut({ callbackUrl: '/' }); }}
               >
-                ODPOJIT IDENTITU
+                {t('id.signout')}
               </button>
             </div>
           </>
@@ -85,14 +87,14 @@ export default function IdentityPanelClient() {
           <>
             <div className="id-panel-log">
               <span className="id-panel-log-prefix">LOG [AUTH_GATE]:</span>
-              <span className="id-panel-log-msg">&#8222;Subjekt nerozpoznán. Zadej přístupový otisk.&#8220;</span>
+              <span className="id-panel-log-msg">&#8222;{t('id.log.unrecognised')}&#8220;</span>
             </div>
             <div className="id-panel-links">
               <Link className="id-panel-link btn btn-sm" href="/login" onClick={() => setOpen(false)}>
-                PŘIHLÁSIT SE
+                {t('id.login')}
               </Link>
               <Link className="id-panel-link btn btn-sm" href="/register" onClick={() => setOpen(false)}>
-                REGISTROVAT IDENTITU
+                {t('id.register')}
               </Link>
             </div>
           </>

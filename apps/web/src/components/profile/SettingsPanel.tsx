@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLang } from '../../lib/LangContext';
 
 interface Settings {
   theme: string;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function SettingsPanel({ settings: initial }: Props) {
+  const { t } = useLang();
   const [settings, setSettings] = useState<Settings>(
     initial ?? {
       theme: 'synthoma',
@@ -51,15 +53,15 @@ export default function SettingsPanel({ settings: initial }: Props) {
     <section className="settings-panel">
       <div className="psyche-log">
         <span className="psyche-log-prefix">LOG [LAYER_CONFIG]:</span>
-        <span className="psyche-log-msg">&#8222;Konfigurace vrstvy.&#8220;</span>
+        <span className="psyche-log-msg">&#8222;{t('settings.log')}&#8220;</span>
       </div>
 
       <div className="settings-grid">
         <div className="settings-row">
-          <label className="settings-label">Motiv</label>
+          <label className="settings-label">{t('settings.theme')}</label>
           <select
             className="settings-select"
-            aria-label="Motiv"
+            aria-label={t('settings.theme')}
             value={settings.theme}
             onChange={(e) => set('theme', e.target.value)}
           >
@@ -70,25 +72,25 @@ export default function SettingsPanel({ settings: initial }: Props) {
         </div>
 
         <div className="settings-row">
-          <label className="settings-label">Rychlost psacího stroje</label>
+          <label className="settings-label">{t('settings.typewriter')}</label>
           <select
             className="settings-select"
-            aria-label="Rychlost psacího stroje"
+            aria-label={t('settings.typewriter')}
             value={settings.typewriterSpeed}
             onChange={(e) => set('typewriterSpeed', e.target.value)}
           >
-            <option value="slow">Pomalá</option>
-            <option value="normal">Normální</option>
-            <option value="fast">Rychlá</option>
-            <option value="instant">Okamžitá</option>
+            <option value="slow">{t('settings.speed.slow')}</option>
+            <option value="normal">{t('settings.speed.normal')}</option>
+            <option value="fast">{t('settings.speed.fast')}</option>
+            <option value="instant">{t('settings.speed.instant')}</option>
           </select>
         </div>
 
         <div className="settings-row">
-          <label className="settings-label">Velikost písma ({Math.round(settings.fontScale * 100)}%)</label>
+          <label className="settings-label">{t('settings.fontsize')} ({Math.round(settings.fontScale * 100)}%)</label>
           <input
             type="range"
-            aria-label="Velikost písma"
+            aria-label={t('settings.fontsize')}
             min="0.8"
             max="1.4"
             step="0.05"
@@ -99,10 +101,10 @@ export default function SettingsPanel({ settings: initial }: Props) {
 
         {(
           [
-            ['animations', 'Animace'],
-            ['glass', 'Skleněný efekt'],
-            ['audioEnabled', 'Audio'],
-            ['ttsEnabled', 'TTS'],
+            ['animations', t('settings.animations')],
+            ['glass', t('settings.glass')],
+            ['audioEnabled', t('settings.audio')],
+            ['ttsEnabled', t('settings.tts')],
           ] as [keyof Settings, string][]
         ).map(([key, label]) => (
           <div key={key} className="settings-row settings-toggle">
@@ -111,16 +113,16 @@ export default function SettingsPanel({ settings: initial }: Props) {
               className={`toggle-btn${settings[key] ? ' active' : ''}`}
               onClick={() => set(key, !settings[key] as Settings[typeof key])}
             >
-              {settings[key] ? 'ZAP' : 'VYP'}
+              {settings[key] ? t('settings.on') : t('settings.off')}
             </button>
           </div>
         ))}
       </div>
 
       <button className="btn settings-save" onClick={save} disabled={status === 'saving'}>
-        {status === 'saving' ? 'UKLÁDÁM...' : status === 'saved' ? '✓ ULOŽENO' : 'ULOŽIT KONFIGURACI'}
+        {status === 'saving' ? t('settings.saving') : status === 'saved' ? t('settings.saved') : t('settings.save')}
       </button>
-      {status === 'error' && <p className="settings-error">Chyba uložení.</p>}
+      {status === 'error' && <p className="settings-error">{t('settings.error')}</p>}
     </section>
   );
 }

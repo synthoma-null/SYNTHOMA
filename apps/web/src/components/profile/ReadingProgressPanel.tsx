@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLang } from '../../lib/LangContext';
 
 interface Progress {
   id: string;
@@ -14,6 +15,7 @@ interface Progress {
 }
 
 export default function ReadingProgressPanel() {
+  const { t } = useLang();
   const [items, setItems] = useState<Progress[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,23 +34,23 @@ export default function ReadingProgressPanel() {
     <section className="progress-panel">
       <div className="psyche-log">
         <span className="psyche-log-prefix">LOG [READING_ARCHIVE]:</span>
-        <span className="psyche-log-msg">&#8222;Záznam čtení načten.&#8220;</span>
+        <span className="psyche-log-msg">&#8222;{t('reading.log')}&#8220;</span>
       </div>
 
       <dl className="progress-stats">
-        <div className="progress-stat"><dt>Dokončené fragmenty</dt><dd>{completed}</dd></div>
-        <div className="progress-stat"><dt>Celkem sledováno</dt><dd>{items.length}</dd></div>
-        <div className="progress-stat"><dt>Celkový čas čtení</dt><dd>{totalMin} min</dd></div>
+        <div className="progress-stat"><dt>{t('reading.stat.completed')}</dt><dd>{completed}</dd></div>
+        <div className="progress-stat"><dt>{t('reading.stat.tracked')}</dt><dd>{items.length}</dd></div>
+        <div className="progress-stat"><dt>{t('reading.stat.time')}</dt><dd>{totalMin} min</dd></div>
       </dl>
 
-      {loading && <p className="progress-loading">NAČÍTÁNÍ ZÁZNAMU...</p>}
+      {loading && <p className="progress-loading">{t('reading.loading')}</p>}
 
       <ul className="progress-list">
         {items.map((item) => (
           <li key={item.id} className={`progress-item${item.completed ? ' completed' : ''}`}>
             <div className="progress-item-header">
               <span className="progress-item-title">{item.chapterTitle ?? item.chapterId}</span>
-              {item.completed && <span className="progress-item-badge">✓ DOKONČENO</span>}
+              {item.completed && <span className="progress-item-badge">{t('reading.completed.badge')}</span>}
             </div>
             <div className="progress-track" aria-label={`${item.progressPercent}%`}>
               <div className="progress-fill" style={{ width: `${item.progressPercent}%` }} />
@@ -57,7 +59,7 @@ export default function ReadingProgressPanel() {
           </li>
         ))}
         {!loading && items.length === 0 && (
-          <li className="progress-empty">Žádné záznamy čtení.</li>
+          <li className="progress-empty">{t('reading.empty')}</li>
         )}
       </ul>
     </section>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useLang } from '../../lib/LangContext';
+
 interface Psyche {
   ni: number; fe: number; ti: number; se: number;
   joy: number; trust: number; fear: number; surprise: number;
@@ -26,44 +28,45 @@ function Bar({ label, value, max = 100 }: { label: string; value: number; max?: 
 }
 
 export default function PsycheMap({ psyche, detailed }: Props) {
+  const { t } = useLang();
   return (
     <section className="psyche-map">
       <div className="psyche-log">
         <span className="psyche-log-prefix">LOG [SOVEREIGN_PSYCHE_MAP]:</span>
-        <span className="psyche-log-msg">&#8222;Psychometrická mapa subjektu načtena.&#8220;</span>
+        <span className="psyche-log-msg">&#8222;{t('psyche.log')}&#8220;</span>
       </div>
 
       <div className="psyche-section">
-        <h2 className="psyche-section-title">KOGNITIVNÍ FUNKCE</h2>
-        <Bar label="Ni  Intuice" value={psyche.ni} />
-        <Bar label="Fe  Empatie" value={psyche.fe} />
-        <Bar label="Ti  Analýza" value={psyche.ti} />
-        <Bar label="Se  Vnímání" value={psyche.se} />
+        <h2 className="psyche-section-title">{t('psyche.cognitive')}</h2>
+        <Bar label={t('psyche.ni')} value={psyche.ni} />
+        <Bar label={t('psyche.fe')} value={psyche.fe} />
+        <Bar label={t('psyche.ti')} value={psyche.ti} />
+        <Bar label={t('psyche.se')} value={psyche.se} />
       </div>
 
       {detailed && (
         <>
           <div className="psyche-section">
-            <h2 className="psyche-section-title">EMOČNÍ ENERGIE</h2>
-            <Bar label="Radost" value={psyche.joy} />
-            <Bar label="Důvěra" value={psyche.trust} />
-            <Bar label="Strach" value={psyche.fear} />
-            <Bar label="Překvapení" value={psyche.surprise} />
-            <Bar label="Smutek" value={psyche.sadness} />
-            <Bar label="Odpor" value={psyche.disgust} />
-            <Bar label="Hněv" value={psyche.anger} />
-            <Bar label="Očekávání" value={psyche.anticipation} />
+            <h2 className="psyche-section-title">{t('psyche.emotion')}</h2>
+            <Bar label={t('psyche.joy')} value={psyche.joy} />
+            <Bar label={t('psyche.trust')} value={psyche.trust} />
+            <Bar label={t('psyche.fear')} value={psyche.fear} />
+            <Bar label={t('psyche.surprise')} value={psyche.surprise} />
+            <Bar label={t('psyche.sadness')} value={psyche.sadness} />
+            <Bar label={t('psyche.disgust')} value={psyche.disgust} />
+            <Bar label={t('psyche.anger')} value={psyche.anger} />
+            <Bar label={t('psyche.anticipation')} value={psyche.anticipation} />
           </div>
 
           <div className="psyche-section">
-            <h2 className="psyche-section-title">META HODNOTY</h2>
+            <h2 className="psyche-section-title">{t('psyche.meta')}</h2>
             <dl className="psyche-meta">
-              <div className="psyche-meta-row"><dt>Stín</dt><dd>{psyche.shadow}</dd></div>
-              <div className="psyche-meta-row"><dt>Tón</dt><dd>{psyche.tone}</dd></div>
-              <div className="psyche-meta-row"><dt>Iniciativa</dt><dd>{psyche.initiative}</dd></div>
-              <div className="psyche-meta-row"><dt>Riziko</dt><dd>{psyche.risk}</dd></div>
-              <div className="psyche-meta-row"><dt>Tempo</dt><dd>{psyche.tempo}</dd></div>
-              <div className="psyche-meta-row"><dt>Strategie</dt><dd>{psyche.strategy}</dd></div>
+              <div className="psyche-meta-row"><dt>{t('psyche.shadow')}</dt><dd>{psyche.shadow}</dd></div>
+              <div className="psyche-meta-row"><dt>{t('psyche.tone')}</dt><dd>{psyche.tone}</dd></div>
+              <div className="psyche-meta-row"><dt>{t('psyche.initiative')}</dt><dd>{psyche.initiative}</dd></div>
+              <div className="psyche-meta-row"><dt>{t('psyche.risk')}</dt><dd>{psyche.risk}</dd></div>
+              <div className="psyche-meta-row"><dt>{t('psyche.tempo')}</dt><dd>{psyche.tempo}</dd></div>
+              <div className="psyche-meta-row"><dt>{t('psyche.strategy')}</dt><dd>{psyche.strategy}</dd></div>
             </dl>
           </div>
         </>

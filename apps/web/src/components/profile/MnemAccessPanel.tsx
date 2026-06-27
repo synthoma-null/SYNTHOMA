@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { PACKAGES } from '../../content/booksManifest';
+import { useLang } from '../../lib/LangContext';
 
 interface Props {
   mnemBalance: number;
 }
 
 export default function MnemAccessPanel({ mnemBalance }: Props) {
+  const { t } = useLang();
   const [code, setCode] = useState('');
   const [redeemStatus, setRedeemStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
   const [redeemMsg, setRedeemMsg] = useState('');
@@ -24,15 +26,15 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
       const data = await res.json();
       if (res.ok) {
         setRedeemStatus('ok');
-        setRedeemMsg(`Fragment odemčen. Balíček: ${data.packageId}`);
+        setRedeemMsg(`${t('mnems.redeemed')} ${data.packageId}`);
         setCode('');
       } else {
         setRedeemStatus('error');
-        setRedeemMsg(data.error ?? 'Chyba redeem.');
+        setRedeemMsg(data.error ?? t('mnems.error'));
       }
     } catch {
       setRedeemStatus('error');
-      setRedeemMsg('Chyba sítě.');
+      setRedeemMsg(t('paywall.network'));
     }
   };
 
@@ -46,7 +48,7 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
       const data = await res.json();
       if (data.url) window.location.href = data.url;
     } catch {
-      alert('Chyba platebního terminálu.');
+      alert(t('paywall.network.terminal'));
     }
   };
 
@@ -54,16 +56,16 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
     <section className="mnem-panel">
       <div className="psyche-log">
         <span className="psyche-log-prefix">LOG [MNEM_LEDGER]:</span>
-        <span className="psyche-log-msg">&#8222;Paměťový účet subjektu byl načten.&#8220;</span>
+        <span className="psyche-log-msg">&#8222;{t('mnems.log')}&#8220;</span>
       </div>
 
       <div className="mnem-balance">
-        <span className="mnem-balance-label">ARCHIVNÍ STOPA</span>
-        <span className="mnem-balance-value">{mnemBalance} mnemů</span>
+        <span className="mnem-balance-label">{t('mnems.balance.label')}</span>
+        <span className="mnem-balance-value">{mnemBalance} mnems</span>
       </div>
 
       <div className="mnem-packages">
-        <h2 className="mnem-section-title">PAMĚŤOVÝ TERMINÁL</h2>
+        <h2 className="mnem-section-title">{t('mnems.terminal.title')}</h2>
         {PACKAGES.map((pkg) => (
           <div key={pkg.id} className="mnem-package">
             <div className="mnem-package-header">
@@ -78,14 +80,14 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
               className="mnem-package-btn btn"
               onClick={() => handlePurchase(pkg.id)}
             >
-              ODEMKNOUT PAMĚŤOVÝ FRAGMENT
+              {t('mnems.unlock')}
             </button>
           </div>
         ))}
       </div>
 
       <div className="mnem-redeem">
-        <h2 className="mnem-section-title">REDEEMOVAT PŘÍSTUPOVÝ KÓD</h2>
+        <h2 className="mnem-section-title">{t('mnems.redeem.title')}</h2>
         <form onSubmit={handleRedeem} className="mnem-redeem-form">
           <input
             className="auth-input"
@@ -100,7 +102,7 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
             type="submit"
             disabled={redeemStatus === 'loading' || !code}
           >
-            {redeemStatus === 'loading' ? 'OVĚŘUJI...' : 'REDEEMOVAT'}
+            {redeemStatus === 'loading' ? t('paywall.code.verifying') : t('mnems.redeem.btn')}
           </button>
         </form>
         {redeemStatus === 'ok' && <p className="mnem-redeem-ok">{redeemMsg}</p>}

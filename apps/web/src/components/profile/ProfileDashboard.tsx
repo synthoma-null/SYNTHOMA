@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLang } from '../../lib/LangContext';
 import Link from 'next/link';
 import SubjectHeader from './SubjectHeader';
 import PsycheMap from './PsycheMap';
@@ -55,6 +56,7 @@ interface Props {
 }
 
 export default function ProfileDashboard({ userId, nickname, mode = 'standalone', onClose }: Props) {
+  const { t } = useLang();
   const [data, setData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'psyche' | 'cycle' | 'reading' | 'mnems' | 'settings' | 'privacy'>('overview');
@@ -69,44 +71,44 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
   if (loading) {
     return (
       <div className="profile-loading">
-        <span className="glitch" data-text="NAČÍTÁNÍ SUBJEKTU">NAČÍTÁNÍ SUBJEKTU</span>
+        <span className="glitch" data-text={t('profile.loading')}>{t('profile.loading')}</span>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="profile-error">LOG [ERROR]: Subjekt nenalezen.</div>
+      <div className="profile-error">{t('profile.error')}</div>
     );
   }
 
   const tabs: { key: typeof activeTab; label: string }[] = [
-    { key: 'overview', label: 'SUBJEKT' },
-    { key: 'psyche', label: 'PSYCHÉ' },
-    { key: 'cycle', label: 'CYKLUS' },
-    { key: 'reading', label: 'ČTENÍ' },
-    { key: 'mnems', label: 'MNEMY' },
-    { key: 'settings', label: 'KONFIGURACE' },
-    { key: 'privacy', label: 'SOUKROMÍ' },
+    { key: 'overview', label: t('profile.tab.overview') },
+    { key: 'psyche', label: t('profile.tab.psyche') },
+    { key: 'cycle', label: t('profile.tab.cycle') },
+    { key: 'reading', label: t('profile.tab.reading') },
+    { key: 'mnems', label: t('profile.tab.mnems') },
+    { key: 'settings', label: t('profile.tab.settings') },
+    { key: 'privacy', label: t('profile.tab.privacy') },
   ];
 
   const inner = (
     <>
       {mode === 'standalone' && (
         <div className="profile-nav-back">
-          <Link href="/" className="btn profile-back-btn">← HLAVNÍ MENU</Link>
+          <Link href="/" className="btn profile-back-btn">{t('profile.back')}</Link>
         </div>
       )}
       <SubjectHeader
         nickname={nickname}
-        title={data.user.profile?.title ?? 'Nezmapovaný subjekt'}
+        title={data.user.profile?.title ?? t('subject.title.default')}
         createdAt={data.user.createdAt}
         choiceCount={data.user._count.choices}
         readingCount={data.user._count.reading}
         mnemBalance={data.mnemBalance}
       />
 
-      <nav className="profile-tabs" aria-label="Sekce profilu">
+      <nav className="profile-tabs" aria-label={t('profile.tabs.aria')}>
         {tabs.map((t) => (
           <button
             key={t.key}

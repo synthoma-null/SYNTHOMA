@@ -28,6 +28,10 @@ import CookieConsent from "../src/components/consent/CookieConsent";
 
 import MBTIHudClient from "./components/MBTIHudClient";
 
+import { LangProvider } from "../src/lib/LangContext";
+
+import LangSwitcher from "../src/components/LangSwitcher";
+
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 
 import type { Metadata, Viewport } from "next";
@@ -229,6 +233,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
         <SessionProviderClient>
 
+        <LangProvider>
+
         <MBTIProviderClient>
 
           {/* Retro Arcade pixelation canvas overlay (controlled by CSS vars in themes.css) */}
@@ -239,7 +245,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           {/* Global Control Panel trigger and container */}
 
-          <div>
+          <LangSwitcher />
+
+          <div className="top-bar-actions">
 
             <button id="toggle-panel-btn" aria-expanded="false" aria-controls="control-panel">🎛️</button>
 
@@ -384,6 +392,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <CookieConsent />
 
         </MBTIProviderClient>
+
+        </LangProvider>
 
         </SessionProviderClient>
 

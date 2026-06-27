@@ -1,5 +1,7 @@
 'use client';
 
+import { useLang } from '../../lib/LangContext';
+
 interface Props {
   nickname: string;
   title: string;
@@ -10,6 +12,7 @@ interface Props {
 }
 
 export default function SubjectHeader({ nickname, title, createdAt, choiceCount, readingCount, mnemBalance }: Props) {
+  const { t } = useLang();
   const since = new Date(createdAt).toLocaleDateString('cs-CZ');
 
   return (
@@ -22,19 +25,19 @@ export default function SubjectHeader({ nickname, title, createdAt, choiceCount,
         </div>
         <dl className="subject-stats">
           <div className="subject-stat">
-            <dt>ARCHIVNÍ STOPA</dt>
-            <dd>{mnemBalance} mnemů</dd>
+            <dt>{t('subject.stat.archiveTrace')}</dt>
+            <dd>{mnemBalance} mnems</dd>
           </div>
           <div className="subject-stat">
-            <dt>FRAGMENTY</dt>
+            <dt>{t('subject.stat.fragments')}</dt>
             <dd>{readingCount}</dd>
           </div>
           <div className="subject-stat">
-            <dt>ROZHODNUTÍ</dt>
+            <dt>{t('subject.stat.decisions')}</dt>
             <dd>{choiceCount}</dd>
           </div>
           <div className="subject-stat">
-            <dt>PRVNÍ SYNCHRONIZACE</dt>
+            <dt>{t('subject.stat.firstSync')}</dt>
             <dd>{since}</dd>
           </div>
         </dl>
