@@ -61,6 +61,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const cancelRef = useRef<(() => void) | null>(null);
   const [choicesShown, setChoicesShown] = useState<boolean>(false);
+  const setChoicesShownRef = useRef(setChoicesShown);
+  useEffect(() => { setChoicesShownRef.current = setChoicesShown; }, [setChoicesShown]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const isTypingRef = useRef<boolean>(false);
   const continueRef = useRef<null | (() => void)>(null);
@@ -349,7 +351,9 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
           a.removeAttribute('data-href');
         }
       });
-      // Mark visible state on the closest SYNTHOMAREADER host for CSS to show choices
+      // Mark visible state via React state (not just classList) so React re-renders
+      // do not strip 'choices-shown' from the host className on the next render.
+      try { setChoicesShownRef.current(true); } catch {}
       const host = container.closest('.SYNTHOMAREADER');
       if (host) { (host as HTMLElement).classList.add('choices-shown'); }
     } catch {}
@@ -359,30 +363,69 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   // Eliminates the 4× duplicated sibling-walk logic across click branches
   const lockChoiceGroup = useCallback((chosen: HTMLElement, root: HTMLElement) => {
     try {
-      const hostEl = root;
-      // Find the nearest explicit group container, or walk up to find implicit group by p.choice count
-      let group: HTMLElement | null = (chosen.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null);
-      if (!group) {
-        let cur: HTMLElement | null = chosen.parentElement as HTMLElement | null;
-        while (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length < 2) { cur = cur.parentElement as HTMLElement | null; }
-        if (cur && cur !== hostEl && cur.querySelectorAll('p.choice').length >= 2) group = cur;
+      // First try an explicit group container
+      let explicitGroup: HTMLElement | null = (chosen.closest('[data-choice-group], .choices, .choice-group') as HTMLElement | null);
+      if (explicitGroup) {
+        const siblings = Array.from(explicitGroup.querySelectorAll<HTMLElement>('button.choice-link, a.choice-link')) as HTMLElement[];
+        siblings.forEach((sh) => {
+          const isChosen = sh === chosen;
+          sh.classList.toggle('chosen', isChosen);
+          sh.classList.toggle('faded', !isChosen);
+          sh.classList.toggle('selected', isChosen);
+          sh.classList.toggle('disabled', !isChosen);
+          sh.setAttribute('aria-disabled', 'true');
+          if (!isChosen && sh instanceof HTMLButtonElement) sh.disabled = true;
+          const isAnchor = sh.tagName.toLowerCase() === 'a' && !!sh.getAttribute('href');
+          if (isChosen && !isAnchor) sh.setAttribute('aria-pressed', 'true');
+          try { sh.closest('p.choice')?.classList.toggle('selected', isChosen); sh.closest('p.choice')?.classList.toggle('disabled', !isChosen); } catch {}
+        });
+        try { explicitGroup.classList.add('choices-locked'); } catch {}
+        return;
       }
-      if (!group) group = (chosen.closest('p.choice') as HTMLElement | null) || chosen.parentElement;
-      const scope = group || chosen.parentElement || chosen;
-      const siblings = Array.from(scope.querySelectorAll<HTMLElement>('button.choice-link, a.choice-link')) as HTMLElement[];
-      siblings.forEach((sh) => {
-        const isChosen = sh === chosen;
-        sh.classList.toggle('chosen', isChosen);
-        sh.classList.toggle('faded', !isChosen);
-        sh.classList.toggle('selected', isChosen);
-        sh.classList.toggle('disabled', !isChosen);
-        sh.setAttribute('aria-disabled', 'true');
-        if (!isChosen && sh instanceof HTMLButtonElement) sh.disabled = true;
-        const isAnchor = sh.tagName.toLowerCase() === 'a' && !!sh.getAttribute('href');
-        if (isChosen && !isAnchor) sh.setAttribute('aria-pressed', 'true');
-        try { sh.closest('p.choice')?.classList.toggle('selected', isChosen); sh.closest('p.choice')?.classList.toggle('disabled', !isChosen); } catch {}
+
+      // No explicit group — collect the contiguous block of adjacent p.choice siblings
+      // around the p.choice that contains `chosen`. This avoids accidentally selecting
+      // p.choice elements elsewhere in the document (e.g. when parent is <body>).
+      const chosenRow = (chosen.closest('p.choice') as HTMLElement | null) ?? chosen.parentElement;
+      if (!chosenRow) return;
+      const parent = chosenRow.parentElement;
+      if (!parent) return;
+
+      const block: HTMLElement[] = [chosenRow];
+      // walk backwards
+      let sib: Element | null = chosenRow.previousElementSibling;
+      while (sib && sib.tagName.toLowerCase() === 'p' && (sib as HTMLElement).classList.contains('choice')) {
+        block.unshift(sib as HTMLElement);
+        sib = sib.previousElementSibling;
+      }
+      // walk forwards
+      sib = chosenRow.nextElementSibling;
+      while (sib && sib.tagName.toLowerCase() === 'p' && (sib as HTMLElement).classList.contains('choice')) {
+        block.push(sib as HTMLElement);
+        sib = sib.nextElementSibling;
+      }
+
+      // Lock all choice-links within this contiguous block only
+      block.forEach((row) => {
+        const isChosenRow = row === chosenRow;
+        row.classList.toggle('selected', isChosenRow);
+        row.classList.toggle('disabled', !isChosenRow);
+        const links = Array.from(row.querySelectorAll<HTMLElement>('button.choice-link, a.choice-link')) as HTMLElement[];
+        links.forEach((sh) => {
+          sh.classList.toggle('chosen', isChosenRow);
+          sh.classList.toggle('faded', !isChosenRow);
+          sh.classList.toggle('selected', isChosenRow);
+          sh.classList.toggle('disabled', !isChosenRow);
+          sh.setAttribute('aria-disabled', 'true');
+          if (!isChosenRow && sh instanceof HTMLButtonElement) sh.disabled = true;
+          const isAnchor = sh.tagName.toLowerCase() === 'a' && !!sh.getAttribute('href');
+          if (isChosenRow && !isAnchor) sh.setAttribute('aria-pressed', 'true');
+        });
       });
-      try { scope.classList.add('choices-locked'); } catch {}
+      // Do NOT add choices-locked to the parent — it is likely a large container (body/div)
+      // and .choices-locked .choice-link:not(.chosen) { pointer-events:none } would disable
+      // ALL future choice groups further down the page.
+      // Individual .faded links already have pointer-events:none via CSS.
     } catch (err) { softFail('lockChoiceGroup', err); }
   }, []);
 
