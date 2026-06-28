@@ -29,7 +29,9 @@ export async function GET(
     );
   }
 
-  const safeFile = safeFilename(chapter.filename);
+  const lang = req.nextUrl.searchParams.get('lang');
+  const rawFilename = (lang === 'en' && chapter.filename_en) ? chapter.filename_en : chapter.filename;
+  const safeFile = safeFilename(rawFilename);
   if (!safeFile) {
     return NextResponse.json({ error: 'INVALID_PATH' }, { status: 400 });
   }

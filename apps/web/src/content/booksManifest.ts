@@ -47,8 +47,11 @@ export interface Chapter {
   mnemCost: number;
   order: number;
   packageIds: string[];
+  filename_en?: string;
   teaser?: string;
+  teaser_en?: string;
   unlocks?: string;
+  unlocks_en?: string;
   estimatedMinutes?: number;
 }
 
@@ -81,6 +84,7 @@ export const CHAPTERS: Chapter[] = [
     title: '0-∞ [RESTART]',
     collection: 'SYNTHOMA-NULL',
     filename: '0-∞ [RESTART].html',
+    filename_en: '0-∞ [RESTART]_en.html',
     access: 'free',
     mnemCost: 0,
     order: 0,
@@ -91,6 +95,7 @@ export const CHAPTERS: Chapter[] = [
     title: '0-0 [NULL]',
     collection: 'SYNTHOMA-NULL',
     filename: '0-0 [NULL].html',
+    filename_en: '0-0 [NULL]_en.html',
     access: 'free',
     mnemCost: 0,
     order: 1,
@@ -101,6 +106,7 @@ export const CHAPTERS: Chapter[] = [
     title: '0-1 [START]',
     collection: 'SYNTHOMA-NULL',
     filename: '0-1 [START].html',
+    filename_en: '0-1 [START]_en.html',
     access: 'free',
     mnemCost: 0,
     order: 2,
@@ -111,6 +117,7 @@ export const CHAPTERS: Chapter[] = [
     title: '0-2 [RUN]',
     collection: 'SYNTHOMA-NULL',
     filename: '0-2 [RUN].html',
+    filename_en: '0-2 [RUN]_en.html',
     access: 'free',
     mnemCost: 0,
     order: 3,
@@ -136,7 +143,9 @@ export const CHAPTERS: Chapter[] = [
     order: 5,
     packageIds: ['act-1', 'archiv-1024'],
     teaser: '„Paměť není rozbitá. Jen odmítá lhát stejným způsobem jako včera."',
+    teaser_en: '"Memory is not broken. It just refuses to lie the same way as yesterday."',
     unlocks: 'První hlubší práce s Glitchkou · fragment stabilizace · začátek osobního otisku subjektu',
+    unlocks_en: 'First deeper work with Glitchka · stabilization fragment · beginning of the subject\'s personal imprint',
     estimatedMinutes: 18,
   },
   {
@@ -149,7 +158,9 @@ export const CHAPTERS: Chapter[] = [
     order: 6,
     packageIds: ['act-1', 'archiv-1024'],
     teaser: '„Ticho má ve SYNTHOMĚ strukturu. Tohle ticho má dveře."',
+    teaser_en: '"Silence has structure in SYNTHOMA. This silence has a door."',
     unlocks: 'Setkání se Sarkasminým zápisníkem · pauza jako systémová funkce · první datový otisk vztahu',
+    unlocks_en: "Encounter with Sarkasma's notebook · pause as a system function · first data imprint of a relationship",
     estimatedMinutes: 15,
   },
   {
@@ -162,7 +173,9 @@ export const CHAPTERS: Chapter[] = [
     order: 7,
     packageIds: ['act-1', 'archiv-1024'],
     teaser: '„Píškoviště paměti není bezpečné místo. Je to místo, kde si vzpomínky hrají na zbraně."',
+    teaser_en: '"The memory sandbox is not a safe place. It is a place where memories play at being weapons."',
     unlocks: 'Paměťová šelma · Glitchka jako průvodkyně · klíč k sektoru RUN',
+    unlocks_en: 'Memory beast · Glitchka as guide · key to the RUN sector',
     estimatedMinutes: 20,
   },
   {
@@ -175,7 +188,9 @@ export const CHAPTERS: Chapter[] = [
     order: 8,
     packageIds: ['act-1', 'archiv-1024'],
     teaser: '„Zříceniny nejsou důkaz konce. Jsou důkaz, že něco bylo dost silné, aby mohlo padnout."',
+    teaser_en: '"Ruins are not proof of an ending. They are proof that something was strong enough to fall."',
     unlocks: 'Město trhlin · archivní zpráva T-AI · první záblesk minulého NULLe',
+    unlocks_en: 'City of cracks · T-AI archive message · first glimpse of the previous NULL',
     estimatedMinutes: 22,
   },
   {
@@ -188,7 +203,9 @@ export const CHAPTERS: Chapter[] = [
     order: 9,
     packageIds: ['act-1', 'archiv-1024'],
     teaser: '„Reziduum je to, co zůstane po vymazání. SYNTHOMA si to pamatuje lépe než ty."',
+    teaser_en: '"Residue is what remains after deletion. SYNTHOMA remembers it better than you do."',
     unlocks: 'Závěr Aktu I · archivní uzavření smyčky · odemčení profilového otisku subjektu',
+    unlocks_en: "End of Act I · archive loop closure · unlock of the subject's profile imprint",
     estimatedMinutes: 25,
   },
   {
@@ -201,6 +218,7 @@ export const CHAPTERS: Chapter[] = [
     order: 10,
     packageIds: ['archiv-1024'],
     teaser: '„Sektor není místo. Je to způsob, jak si systém pamatuje, kde jsi byl."',
+    teaser_en: '"A sector is not a place. It is the way the system remembers where you have been."',
     estimatedMinutes: 20,
   },
   {
@@ -213,6 +231,7 @@ export const CHAPTERS: Chapter[] = [
     order: 11,
     packageIds: ['archiv-1024'],
     teaser: '„REST není odpočinek. Je to stav, kdy systém přestane předstírat, že ti rozumí."',
+    teaser_en: '"REST is not rest. It is a state in which the system stops pretending it understands you."',
     estimatedMinutes: 18,
   },
   {
@@ -225,6 +244,7 @@ export const CHAPTERS: Chapter[] = [
     order: 12,
     packageIds: ['archiv-1024'],
     teaser: '„Archiv se otevřel. To, co vypadalo jako konec, byl jen vstupní protokol."',
+    teaser_en: '"The archive opened. What looked like an ending was just an entry protocol."',
     estimatedMinutes: 30,
   },
 ];

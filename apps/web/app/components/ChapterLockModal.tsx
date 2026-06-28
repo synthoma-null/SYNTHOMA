@@ -13,7 +13,7 @@ interface Props {
 
 export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: Props) {
   const { data: session, status: sessionStatus } = useSession();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const CANON_LABELS: Record<string, string> = {
     canon:            t('canon.canon'),
     semi_canon:       t('canon.semi_canon'),
@@ -112,16 +112,16 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
           {chapter?.estimatedMinutes && (
             <span className="paywall-chapter-meta">~ {chapter.estimatedMinutes} {t('paywall.fragment.meta')}</span>
           )}
-          <span className="paywall-chapter-cost">{mnemCost} mnemů</span>
+          <span className="paywall-chapter-cost">{mnemCost} {t('paywall.unit.mnems')}</span>
         </div>
 
         {chapter?.teaser && (
           <div className="paywall-teaser">
-            <p className="paywall-teaser-text">{chapter.teaser}</p>
-            {chapter.unlocks && (
+            <p className="paywall-teaser-text">{lang === 'en' && chapter.teaser_en ? chapter.teaser_en : chapter.teaser}</p>
+            {(chapter.unlocks || chapter.unlocks_en) && (
               <div className="paywall-teaser-unlocks">
-                <span className="paywall-teaser-unlocks-label">ODEMKNE:</span>
-                <p className="paywall-teaser-unlocks-text">{chapter.unlocks}</p>
+                <span className="paywall-teaser-unlocks-label">{t('paywall.unlocks.label')}</span>
+                <p className="paywall-teaser-unlocks-text">{lang === 'en' && chapter.unlocks_en ? chapter.unlocks_en : chapter.unlocks}</p>
               </div>
             )}
           </div>
@@ -161,12 +161,12 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                 <div className="paywall-package paywall-package--primary">
                   <div className="paywall-package-badge">{t('paywall.recommended')}</div>
                   <div className="paywall-package-info">
-                    <span className="paywall-package-name">{act1Pkg.name}</span>
-                    <span className="paywall-package-price">{act1Pkg.mnems} mnemů</span>
+                    <span className="paywall-package-name">{t('paywall.pkg.act1.name')}</span>
+                    <span className="paywall-package-price">{act1Pkg.mnems} {t('paywall.unit.mnems')}</span>
                   </div>
-                  <p className="paywall-package-desc">{act1Pkg.description}</p>
+                  <p className="paywall-package-desc">{t('paywall.pkg.act1.desc')}</p>
                   <div className="paywall-package-pricing">
-                    <span className="paywall-package-czk">{act1Pkg.priceCzk} Kč</span>
+                    <span className="paywall-package-czk">{act1Pkg.priceCzk} {t('paywall.unit.czk')}</span>
                     <span className="paywall-package-includes">{t('paywall.act1.includes')}</span>
                   </div>
                   <button
@@ -174,7 +174,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                     onClick={() => handlePurchase(act1Pkg.id)}
                     disabled={purchasing !== null}
                   >
-                    {purchasing === act1Pkg.id ? t('paywall.redirecting') : `${t('paywall.act1.btn.pre')}${act1Pkg.priceCzk} Kč`}
+                    {purchasing === act1Pkg.id ? t('paywall.redirecting') : `${t('paywall.act1.btn.pre')}${act1Pkg.priceCzk} ${t('paywall.unit.czk')}`}
                   </button>
                 </div>
               )}
@@ -183,10 +183,10 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                 <div className="paywall-package paywall-package--secondary">
                   <div className="paywall-package-info">
                     <span className="paywall-package-name">{t('paywall.single.name')}</span>
-                    <span className="paywall-package-price">{mnemCost} mnemů</span>
+                    <span className="paywall-package-price">{mnemCost} {t('paywall.unit.mnems')}</span>
                   </div>
                   <div className="paywall-package-pricing">
-                    <span className="paywall-package-czk">{singlePkg.priceCzk} Kč</span>
+                    <span className="paywall-package-czk">{singlePkg.priceCzk} {t('paywall.unit.czk')}</span>
                     <span className="paywall-package-includes">{t('paywall.single.includes.pre')}{chapterTitle}</span>
                   </div>
                   <button
@@ -194,7 +194,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                     onClick={() => handlePurchase(singlePkg.id)}
                     disabled={purchasing !== null}
                   >
-                    {purchasing === singlePkg.id ? t('paywall.redirecting') : `${t('paywall.single.btn.pre')}${singlePkg.priceCzk} Kč`}
+                    {purchasing === singlePkg.id ? t('paywall.redirecting') : `${t('paywall.single.btn.pre')}${singlePkg.priceCzk} ${t('paywall.unit.czk')}`}
                   </button>
                 </div>
               )}
@@ -203,9 +203,9 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                 <div className="paywall-package paywall-package--subscription">
                   <div className="paywall-package-badge paywall-package-badge--sub">ARCHIV+</div>
                   <div className="paywall-package-info">
-                    <span className="paywall-package-name">{archivPlusPkg.name}</span>
+                    <span className="paywall-package-name">{t('paywall.pkg.archivplus.name')}</span>
                   </div>
-                  <p className="paywall-package-desc">{archivPlusPkg.description}</p>
+                  <p className="paywall-package-desc">{t('paywall.pkg.archivplus.desc')}</p>
                   <div className="paywall-package-pricing">
                     <span className="paywall-package-czk">{archivPlusPkg.priceCzk}{t('paywall.archivplus.price.post')}</span>
                   </div>
@@ -214,7 +214,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                     onClick={() => handlePurchase(archivPlusPkg.id)}
                     disabled={purchasing !== null}
                   >
-                    {purchasing === archivPlusPkg.id ? t('paywall.redirecting') : `${t('paywall.archivplus.btn.pre')}${archivPlusPkg.priceCzk} Kč`}
+                    {purchasing === archivPlusPkg.id ? t('paywall.redirecting') : `${t('paywall.archivplus.btn.pre')}${archivPlusPkg.priceCzk} ${t('paywall.unit.czk')}`}
                   </button>
                 </div>
               )}

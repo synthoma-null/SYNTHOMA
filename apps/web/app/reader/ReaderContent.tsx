@@ -16,7 +16,7 @@ import { useLang } from '../../src/lib/LangContext';
 
 export default function ReaderContent() {
   const router = useRouter();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const searchParams = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-\u221e [RESTART].html";
 
@@ -24,7 +24,7 @@ export default function ReaderContent() {
   const chapterId = searchParams?.get('chapter') ?? null;
   const legacyUrl = searchParams?.get('u') ?? null;
   const effectiveUrl = chapterId
-    ? `/api/chapter/${encodeURIComponent(chapterId)}`
+    ? `/api/chapter/${encodeURIComponent(chapterId)}${lang === 'en' ? '?lang=en' : ''}`
     : (legacyUrl ?? defaultUrl);
 
   const chapterMeta = chapterId ? getChapterById(chapterId) : null;

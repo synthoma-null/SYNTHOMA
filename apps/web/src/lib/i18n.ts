@@ -143,6 +143,13 @@ export const translations = {
   'paywall.unlock.archive': { cs: 'ODEMKNOUT ARCHIV 1024', en: 'UNLOCK ARCHIVE 1024' },
   'paywall.error.terminal': { cs: 'Chyba platebního terminálu.', en: 'Payment terminal error.' },
   'paywall.error.generic': { cs: 'Chyba platebního terminálu.', en: 'Payment terminal error.' },
+  'paywall.unit.mnems': { cs: 'mnemů', en: 'mnems' },
+  'paywall.unit.czk': { cs: 'Kč', en: 'CZK' },
+  'paywall.unlocks.label': { cs: 'ODEMKNE:', en: 'UNLOCKS:' },
+  'paywall.pkg.act1.name': { cs: 'AKT I: DEFRAGMENTACE PAMĚTI', en: 'ACT I: MEMORY DEFRAGMENTATION' },
+  'paywall.pkg.act1.desc': { cs: 'Přístup do hlubší vrstvy paměti. Kapitoly 0-4 až 0-8.', en: 'Access to the deeper memory layer. Chapters 0-4 to 0-8.' },
+  'paywall.pkg.archivplus.name': { cs: 'SYNTHOMA ARCHIV+', en: 'SYNTHOMA ARCHIV+' },
+  'paywall.pkg.archivplus.desc': { cs: '4× měsíčně novopaměť · měsíční Stínový report · supporter badge · přednostní přístup k novým fragmentům · hlasování o archivních záznamech', en: '4× monthly new memory · monthly Shadow report · supporter badge · early access to new fragments · voting on archive records' },
 
   // ─── profile dashboard ───────────────────────────────────────────────────
   'profile.loading': { cs: 'NAČÍTÁNÍ SUBJEKTU', en: 'LOADING SUBJECT' },

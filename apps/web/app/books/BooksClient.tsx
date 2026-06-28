@@ -10,12 +10,20 @@ import { CHAPTERS } from "../../src/content/booksManifest";
 import { useLang } from "../../src/lib/LangContext";
 import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
 
-const DESCRIPTIONS: Record<string, string> = {
+const DESCRIPTIONS_CS: Record<string, string> = {
   'synthoma-null': `Vítejte v Synthomě. Virtuální terapii, která se zbláznila. Ve světě, kde je těžší zapomenout než přežít.<br/><br/>
 NULL-1. Nemá jméno, paměť ani minulost. Je jen chyba v kódu, prázdná schránka naplněná fragmenty cizích trauamt a ztracených snů. Probudil se v digitálním labyrintu, kde každá vzpomínka je past a každá emoce je systémový glitch.<br/><br/>
 Jeho jedinou společností jsou dva protichůdné hlasy v jeho hlavě. <span class="accent">Sarkasma</span> – cynická a brutálně upřímná AI, která ho provází peklem s ironickým úsměvem. A <span class="fx-neon">Glitchka</span> – ztělesnití nevinnosti, hravosti a potlačených tužeb, která nabízena naději, jež může být tí nejnebezpečnější pastí ze všech.<br/><br/>
 SYNTHOMA-NULL není kniha, kterou jen čtete. Je to interaktivní psychologický román, který čte vás. Každé vaše rozhodnutí odhalí nejen další část příběhu, ale i kousek vaší vlastní duše.<br/><br/>
 Dokážete najít své skutečné já, nebo se navždy stanete jen dalším poškozeným souborem v archivu Synthomy?`,
+};
+
+const DESCRIPTIONS_EN: Record<string, string> = {
+  'synthoma-null': `Welcome to Synthoma. A virtual therapy that went insane. A world where forgetting is harder than surviving.<br/><br/>
+NULL-1. No name, no memory, no past. Just a glitch in the code — an empty shell filled with fragments of other people's trauma and lost dreams. He woke up in a digital labyrinth where every memory is a trap and every emotion is a system glitch.<br/><br/>
+His only company: two contradictory voices in his head. <span class="accent">Sarkasma</span> — a cynical, brutally honest AI who guides him through hell with an ironic smile. And <span class="fx-neon">Glitchka</span> — the embodiment of innocence, playfulness, and suppressed desire, offering hope that may be the most dangerous trap of all.<br/><br/>
+SYNTHOMA-NULL is not a book you merely read. It is an interactive psychological novel that reads you. Every decision you make reveals not only the next part of the story, but a piece of your own soul.<br/><br/>
+Can you find your true self — or will you become just another corrupted file in the Synthoma archive?`,
 };
 
 export interface Chapter {
@@ -34,7 +42,7 @@ export interface Manifest { collections: Collection[] }
 
 export default function BooksClient({ manifest }: { manifest: Manifest }) {
   const TITLE = "K N I H O V N A ";
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [selected, setSelected] = useState<Collection | null>(null);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [progress, setProgress] = useState<Record<string, { path: string; percent: number; updatedAt: number }>>({})
@@ -189,6 +197,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                     {/* Book description with excerpt/collapsible */}
                     {(() => {
                       const key = (selected?.slug || '').trim().toLowerCase();
+                      const DESCRIPTIONS = lang === 'en' ? DESCRIPTIONS_EN : DESCRIPTIONS_CS;
                       const full = DESCRIPTIONS[key] || DESCRIPTIONS['synthoma-null'];
                       if (!full) return null;
 
