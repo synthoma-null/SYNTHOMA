@@ -98,11 +98,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       // prepare and stagger
       links.forEach((btn) => {
         btn.classList.add('choice-appear');
-        btn.classList.remove('visible');
-      });
-      const baseDelay = 90; // ms between buttons
-      links.forEach((btn, i) => {
-        setTimeout(() => { btn.classList.add('visible'); }, Math.min(1200, i * baseDelay));
+        btn.classList.add('visible');
       });
     } catch {}
   }, []);

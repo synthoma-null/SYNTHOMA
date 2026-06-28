@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { readLastChapterPath } from '../../src/lib/readerState';
 import { useVideoVisibility } from '../../src/lib/useVideoVisibility';
+import { useLang } from '../../src/lib/LangContext';
 import { getChapterById } from '../../src/content/booksManifest';
 
 // Dynamic import to avoid SSR issues with useSearchParams
@@ -24,6 +25,7 @@ const ReaderContent = dynamic(
 export default function ReaderPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { lang } = useLang();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
   const chapterPath = useMemo(() => searchParams?.get('u') || defaultUrl, [searchParams]);
   const [bgSrc, setBgSrc] = useState<string>("");
@@ -99,7 +101,7 @@ export default function ReaderPage() {
           <div className="animate-pulse text-2xl">Příprava čtečky...</div>
         </div>
       }>
-        <ReaderContent />
+        <ReaderContent key={lang} />
       </Suspense>
     </div>
   );
