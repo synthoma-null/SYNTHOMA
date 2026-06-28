@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { readLastChapterPath } from '../../src/lib/readerState';
 import { useVideoVisibility } from '../../src/lib/useVideoVisibility';
+import { getChapterById } from '../../src/content/booksManifest';
 
 // Dynamic import to avoid SSR issues with useSearchParams
 const ReaderContent = dynamic(
@@ -50,11 +51,21 @@ export default function ReaderPage() {
         const res = await fetch('/books/manifest.json', { cache: 'no-store' });
         if (!res.ok) return;
         const manifest = await res.json();
+        // Map /api/chapter/<id> to the corresponding /books/<collection>/<filename> path
+        // so manifest.json can resolve backgroundVideo for the new API chapter URLs.
+        const apiMatch = chapterPath.match(/^\/api\/chapter\/([^/?]+)/);
+        const manifestPath = (() => {
+          if (apiMatch) {
+            const chapter = getChapterById(decodeURIComponent(apiMatch[1] ?? ''));
+            if (chapter) return `/books/${chapter.collection}/${chapter.filename}`;
+          }
+          return chapterPath;
+        })();
         // Extract bookId from chapterPath: /books/<bookId>/...
-        const m = chapterPath.match(/^\/books\/([^\/]+)\//);
+        const m = manifestPath.match(/^\/books\/([^\/]+)\//);
         const bookId = m ? decodeURIComponent(String(m[1] ?? '')) : '';
         const col = (manifest?.collections || []).find((c: any) => (c.slug || '').toLowerCase() === (bookId || '').toLowerCase());
-        const ch = col?.chapters?.find((x: any) => x.path === chapterPath);
+        const ch = col?.chapters?.find((x: any) => x.path === manifestPath);
         const src = (ch?.backgroundVideo || '').trim();
         if (!cancelled) setBgSrc(src);
       } catch {
