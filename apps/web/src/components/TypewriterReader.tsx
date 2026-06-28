@@ -411,12 +411,17 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         const label = (node.textContent || '').replace(/\s+/g, ' ').trim();
         if (label) announce(`Fokus na volbu: ${label}`);
       });
-      // Pre-lock visuals ASAP to avoid hover/active flash on siblings
-      node.addEventListener('pointerdown', () => {
+      // Lock visuals on click only — pointerdown was causing mobile issues where
+      // locking siblings before click fired made the tap unresponsive.
+      // touchend handles fast taps that may not reliably fire click on some mobile browsers.
+      node.addEventListener('touchend', (e: Event) => {
         const h = hostRef.current; if (h) lockChoiceGroup(node, h);
-      });
+        // Do NOT preventDefault here — let click fire naturally
+      }, { passive: true });
 
       node.addEventListener('click', (e: Event) => {
+        // Lock the group at click-time (not pointerdown) to ensure the tap registered
+        const h = hostRef.current; if (h) lockChoiceGroup(node, h);
         const href = node.getAttribute('href') || node.getAttribute('data-href') || node.getAttribute('data-next') || '';
         // PRIORITY: If this choice points to an in-cache section via data-next, do that first
         try {

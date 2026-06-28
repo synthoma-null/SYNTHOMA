@@ -121,16 +121,29 @@
       } catch(_) { /* ignore visual errors */ }
     }
 
-    // Click support
+    // Click + touch support for p.choice[data-tags] (non-anchor diagnostic choices)
     document.querySelectorAll('p.choice[data-tags]').forEach(function(el){
       // Make it focusable and button-like for a11y
       if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
       if(!el.hasAttribute('role')) el.setAttribute('role','button');
       el.setAttribute('aria-pressed','false');
+
+      // touchend fires reliably on mobile even when click does not
+      // _touched flag deduplicates the subsequent synthetic click event
+      el.addEventListener('touchend', function(e){
+        var anchor = e.target && e.target.closest && e.target.closest('a.choice-link[href]');
+        if(anchor) { return; }
+        e.preventDefault(); // prevent synthetic mouse click from also firing
+        el._touched = true;
+        handleChoiceElementActivate(el);
+      }, { passive: false });
+
       el.addEventListener('click', function(e){
         // If the click originated on an anchor choice-link, allow normal navigation
         var anchor = e.target && e.target.closest && e.target.closest('a.choice-link[href]');
         if(anchor) { return; }
+        // Skip if already handled by touchend
+        if(el._touched){ el._touched = false; return; }
         e.preventDefault();
         handleChoiceElementActivate(el);
       }, false);
