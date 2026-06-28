@@ -117,16 +117,37 @@ export function transformChoicesToButtons(html: string): string {
       p.innerHTML = "";
       p.appendChild(btn);
     });
-    const parents = new Set<HTMLElement>();
+    // Group only contiguous adjacent p.choice siblings into wrapper divs.
+    // DO NOT mark the shared parent as data-choice-group — in long chapters all
+    // p.choice elements share the same parent (<body>/root div), which would make
+    // the entire chapter one group and lock all choices after the first click.
+    const visited = new Set<HTMLElement>();
     nodes.forEach((p) => {
-      const parent = p.parentElement as HTMLElement | null;
-      if (parent) parents.add(parent);
-    });
-    parents.forEach((parent) => {
-      const count = parent.querySelectorAll("p.choice").length;
-      if (count > 1) {
-        parent.setAttribute("data-choice-group", "1");
-        parent.classList.add("choice-group");
+      if (visited.has(p)) return;
+      // Collect the contiguous block of adjacent p.choice siblings
+      const block: HTMLElement[] = [p];
+      let sib: Element | null = p.previousElementSibling;
+      while (sib && sib.tagName.toLowerCase() === 'p' && (sib as HTMLElement).classList.contains('choice')) {
+        block.unshift(sib as HTMLElement);
+        sib = sib.previousElementSibling;
+      }
+      sib = p.nextElementSibling;
+      while (sib && sib.tagName.toLowerCase() === 'p' && (sib as HTMLElement).classList.contains('choice')) {
+        block.push(sib as HTMLElement);
+        sib = sib.nextElementSibling;
+      }
+      block.forEach((n) => visited.add(n));
+      const first = block[0];
+      if (block.length > 1 && first) {
+        // Wrap the contiguous block in a div that acts as the group scope
+        const wrapper = document.createElement('div');
+        wrapper.setAttribute('data-choice-group', '1');
+        wrapper.classList.add('choice-group');
+        const parent = first.parentElement;
+        if (parent) {
+          parent.insertBefore(wrapper, first);
+          block.forEach((n) => wrapper.appendChild(n));
+        }
       }
     });
     return root.innerHTML;
