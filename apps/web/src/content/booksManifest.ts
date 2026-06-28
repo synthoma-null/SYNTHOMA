@@ -58,10 +58,12 @@ export interface Chapter {
 export interface MnemPackage {
   id: string;
   name: string;
+  name_en?: string;
   mnems: number;
   priceCzk: number;
   priceUsd: number;
   description: string;
+  description_en?: string;
   chapterIds: string[];
   supporter: boolean;
   isSubscription?: boolean;
@@ -128,6 +130,7 @@ export const CHAPTERS: Chapter[] = [
     title: '0-3 [DISCONTINUUM]',
     collection: 'SYNTHOMA-NULL',
     filename: '0-3 [DISCONTINUUM].html',
+    filename_en: '0-3 [DISCONTINUUM]_en.html',
     access: 'free',
     mnemCost: 0,
     order: 4,
@@ -253,10 +256,12 @@ export const PACKAGES: MnemPackage[] = [
   {
     id: 'single-fragment',
     name: 'JEDEN PAMĚŤOVÝ FRAGMENT',
+    name_en: 'ONE MEMORY FRAGMENT',
     mnems: 64,
     priceCzk: 29,
     priceUsd: 1,
     description: 'Odemkne jeden uzamčený fragment.',
+    description_en: 'Unlocks one locked fragment.',
     chapterIds: [],
     supporter: false,
     stripePaymentLinkEnv: 'NEXT_PUBLIC_STRIPE_LINK_SINGLE_FRAGMENT',
@@ -264,10 +269,12 @@ export const PACKAGES: MnemPackage[] = [
   {
     id: 'act-1',
     name: 'AKT I: DEFRAGMENTACE PAMĚTI',
+    name_en: 'ACT I: MEMORY DEFRAGMENTATION',
     mnems: 256,
     priceCzk: 129,
     priceUsd: 4.99,
     description: 'Přístup do hlubší vrstvy paměti. Kapitoly 0-4 až 0-8.',
+    description_en: 'Access to the deeper memory layer. Chapters 0-4 to 0-8.',
     chapterIds: [
       '0-4-defragmentation',
       '0-5-pause',
@@ -281,10 +288,12 @@ export const PACKAGES: MnemPackage[] = [
   {
     id: 'archiv-1024',
     name: 'ARCHIV 1024',
+    name_en: 'ARCHIV 1024',
     mnems: 1024,
     priceCzk: 299,
     priceUsd: 11.99,
     description: 'Podpora projektu, aktuální archiv a ztracené záznamy. Supporter status.',
+    description_en: 'Project support, current archive and lost records. Supporter status.',
     chapterIds: [
       '0-4-defragmentation',
       '0-5-pause',
@@ -301,10 +310,12 @@ export const PACKAGES: MnemPackage[] = [
   {
     id: 'archiv-plus',
     name: 'SYNTHOMA ARCHIV+',
+    name_en: 'SYNTHOMA ARCHIV+',
     mnems: 0,
     priceCzk: 99,
     priceUsd: 3.99,
     description: '4× měsíčně novopaměť · měsíční Stínový report · supporter badge · přednostní přístup k novým fragmentům · hlasování o archivních záznamech',
+    description_en: '4× monthly new memory · monthly Shadow report · supporter badge · early access to new fragments · voting on archive records',
     chapterIds: [],
     supporter: true,
     isSubscription: true,

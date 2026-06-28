@@ -4,9 +4,11 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import ProfileDashboard from '../../src/components/profile/ProfileDashboard';
+import { useLang } from '../../src/lib/LangContext';
 
 export default function ProfilePanelClient() {
   const { data: session, status } = useSession();
+  const { t } = useLang();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -81,14 +83,14 @@ export default function ProfilePanelClient() {
         className={`profile-panel-popup${open ? ' visible' : ''}`}
         role="dialog"
         aria-modal="true"
-        aria-label="Profil subjektu"
+        aria-label={t('profile.panel.aria')}
         aria-hidden={open ? undefined : 'true'}
       >
         <div className="profile-panel-header">
-          <span className="profile-panel-title">◉ PROFIL SUBJEKTU</span>
+          <span className="profile-panel-title">{t('profile.panel.title')}</span>
           <button
             className="profile-panel-close btn btn-sm"
-            aria-label="Zavřít profil"
+            aria-label={t('profile.panel.close')}
             onClick={close}
           >
             ✕

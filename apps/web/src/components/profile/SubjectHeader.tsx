@@ -12,14 +12,14 @@ interface Props {
 }
 
 export default function SubjectHeader({ nickname, title, createdAt, choiceCount, readingCount, mnemBalance }: Props) {
-  const { t } = useLang();
-  const since = new Date(createdAt).toLocaleDateString('cs-CZ');
+  const { t, lang } = useLang();
+  const since = new Date(createdAt).toLocaleDateString(lang === 'en' ? 'en-GB' : 'cs-CZ');
 
   return (
     <header className="subject-header">
       <div className="subject-header-inner">
         <div className="subject-title-block">
-          <p className="subject-log-label">LOG [SUBJECT_LOADED]:</p>
+          <p className="subject-log-label">{t('subject.log')}</p>
           <h1 className="subject-nickname glitch" data-text={nickname}>{nickname}</h1>
           <p className="subject-role-title">{title}</p>
         </div>

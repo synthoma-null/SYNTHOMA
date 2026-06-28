@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function MnemAccessPanel({ mnemBalance }: Props) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [code, setCode] = useState('');
   const [redeemStatus, setRedeemStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
   const [redeemMsg, setRedeemMsg] = useState('');
@@ -69,12 +69,12 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
         {PACKAGES.map((pkg) => (
           <div key={pkg.id} className="mnem-package">
             <div className="mnem-package-header">
-              <span className="mnem-package-name">{pkg.name}</span>
-              <span className="mnem-package-mnems">{pkg.mnems} mnemů</span>
+              <span className="mnem-package-name">{lang === 'en' && pkg.name_en ? pkg.name_en : pkg.name}</span>
+              <span className="mnem-package-mnems">{pkg.mnems} {t('paywall.unit.mnems')}</span>
             </div>
-            <p className="mnem-package-desc">{pkg.description}</p>
+            <p className="mnem-package-desc">{lang === 'en' && pkg.description_en ? pkg.description_en : pkg.description}</p>
             <div className="mnem-package-price">
-              {pkg.priceCzk} Kč / {pkg.priceUsd} USD
+              {pkg.priceCzk} {t('paywall.unit.czk')} / {pkg.priceUsd} USD
             </div>
             <button
               className="mnem-package-btn btn"
