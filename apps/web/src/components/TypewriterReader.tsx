@@ -1017,19 +1017,33 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
             return;
           }
           continueRef.current = () => {
+            // Split remHtml at its first choice group so we only type up to that group,
+            // then recurse for everything after it — handles chapters with many choice groups.
+            const remParser = new DOMParser();
+            const remDoc = remParser.parseFromString(`<div class="content">${remHtml}</div>`, 'text/html');
+            const remRoot = (remDoc.querySelector('.content') as HTMLElement) || remDoc.body;
+            const { preHtml: remPre, choiceBlockHtml: remBlock, remainderHtml: remRem } = splitContentAtChoices(remDoc, remRoot);
+            const segHtml = remPre + remBlock;
+
             const seg2 = document.createElement('div');
             seg2.className = 'tw-segment';
             typedBox.appendChild(seg2);
-            const typing3 = normalizeChoicesToPlainText(remHtml);
-            const transformed3 = transformChoicesToButtons(remHtml);
+            const typing3 = normalizeChoicesToPlainText(segHtml);
+            const transformed3 = transformChoicesToButtons(segHtml);
             const text3Length = extractVisibleTextLength(typing3);
-            if (!text3Length) {
-              seg2.innerHTML = sanitizeHTML(transformed3);
+
+            const onSegDone = () => {
+              try { seg2.innerHTML = sanitizeHTML(transformed3); } catch {}
               restoreScrollSoon();
               cleanupChoices(seg2);
               bindChoiceHandlers();
               revealChoicesStagger(seg2);
-              continueRef.current = null;
+              // Recurse: set continuation for whatever comes after this choice group
+              setContinuationFromRemainder(remRem);
+            };
+
+            if (!text3Length) {
+              onSegDone();
               return;
             }
             const len3 = Math.max(1, text3Length);
@@ -1041,15 +1055,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
               const pr3 = Math.min(1, el3 / Math.max(1, dur3));
               const cnt3 = Math.max(0, Math.floor(pr3 * len3));
               try { seg2.innerHTML = sanitizeHTML(revealHtmlPreserve(typing3, cnt3)); } catch {}
-              if (pr3 >= 1) {
-                try { seg2.innerHTML = sanitizeHTML(transformed3); } catch {}
-                restoreScrollSoon();
-                cleanupChoices(seg2);
-                bindChoiceHandlers();
-                revealChoicesStagger(seg2);
-                continueRef.current = null;
-                return;
-              }
+              if (pr3 >= 1) { onSegDone(); return; }
               requestAnimationFrame(raf3);
             };
             requestAnimationFrame(raf3);
