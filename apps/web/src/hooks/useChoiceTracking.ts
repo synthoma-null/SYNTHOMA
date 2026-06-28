@@ -83,6 +83,15 @@ export function useChoiceTracking(chapterIdProp?: string, collectionProp?: strin
       const functionDelta = parseDelta(el.dataset.functions || "");
       const emotionDelta = parseDelta(el.dataset.emotions || "");
 
+      // Fallback: MBTI dimension tags map to cognitive functions used by the psyche stats.
+      if (tagsAttr && Object.keys(functionDelta).length === 0) {
+        const tagMap: Record<string, string> = { N: "Ni", S: "Se", F: "Fe", T: "Ti" };
+        for (const tag of tagsAttr.split(",")) {
+          const key = tagMap[tag.trim().toUpperCase()];
+          if (key) functionDelta[key] = (functionDelta[key] || 0) + 1;
+        }
+      }
+
       const parseIntOrUndefined = (raw: string | undefined) =>
         raw !== undefined ? (parseInt(raw, 10) || 0) : undefined;
       const stabilityDelta = parseIntOrUndefined(el.dataset.stability);

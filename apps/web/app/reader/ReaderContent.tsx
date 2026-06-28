@@ -23,8 +23,13 @@ export default function ReaderContent() {
   // Support both ?chapter=<id> (new API path) and legacy ?u=<path>
   const chapterId = searchParams?.get('chapter') ?? null;
   const legacyUrl = searchParams?.get('u') ?? null;
-  const effectiveUrl = chapterId
-    ? `/api/chapter/${encodeURIComponent(chapterId)}${lang === 'en' ? '?lang=en' : ''}`
+  // Normalize /api/chapter/<id> legacy URLs so they also get the lang query
+  const apiChapterMatch = typeof legacyUrl === 'string'
+    ? legacyUrl.match(/^\/api\/chapter\/([^/?]+)/)
+    : null;
+  const effectiveChapterId = chapterId ?? (apiChapterMatch ? apiChapterMatch[1] : null);
+  const effectiveUrl = effectiveChapterId
+    ? `/api/chapter/${encodeURIComponent(effectiveChapterId)}${lang === 'en' ? '?lang=en' : ''}`
     : (legacyUrl ?? defaultUrl);
 
   const chapterMeta = chapterId ? getChapterById(chapterId) : null;

@@ -321,7 +321,6 @@
   transition: filter 160ms ease, opacity 220ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 #hero-info.choices-shown .choice-link { opacity: 1; pointer-events: auto; }
-#hero-info.typing .choice-link { opacity: 0; pointer-events: none; }
 #hero-info .choice-link:hover:not(:disabled) {
   border-color: var(--accent-secondary, #6ee7ff);
   background: color-mix(in srgb, var(--bg-secondary, #0b0b0f) 85%, transparent);

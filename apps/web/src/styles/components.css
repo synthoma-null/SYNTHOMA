@@ -1668,7 +1668,7 @@ transition: none !important;
     font-family: var(--font-family-ui, "VT323", monospace) !important;
   }
   
-  .SYNTHOMAREADER:not(.choices-shown) .choice-link, .SYNTHOMAREADER.typing .choice-link {
+  .SYNTHOMAREADER:not(.choices-shown) .choice-link {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;

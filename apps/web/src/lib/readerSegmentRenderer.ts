@@ -194,6 +194,9 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
 
   try {
     segment.innerHTML = sanitizeHTML(renderTypingHtml(typingHtml, 0));
+    // Make choice buttons visible immediately while the typewriter reveals text,
+    // instead of hiding them until typing finishes.
+    revealChoicesStagger(segment);
   } catch {
     segment.innerHTML = "";
   }
