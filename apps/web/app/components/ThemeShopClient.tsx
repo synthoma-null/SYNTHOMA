@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { UI_THEMES } from '../../src/lib/themes';
 
 type Theme = { id: string; label: string; cost: number; unlocked: boolean };
@@ -47,6 +47,9 @@ export default function ThemeShopClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [buying, setBuying] = useState<string | null>(null);
+  const [confirmTheme, setConfirmTheme] = useState<Theme | null>(null);
+  const previewTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const previewOriginalRef = useRef<string>(currentTheme);
 
   useEffect(() => {
     const saved = readTheme();
@@ -65,6 +68,12 @@ export default function ThemeShopClient() {
         setBalance(null);
       })
       .finally(() => setLoading(false));
+
+    return () => {
+      if (previewTimeoutRef.current) {
+        clearTimeout(previewTimeoutRef.current);
+      }
+    };
   }, []);
 
   const activate = useCallback((theme: Theme) => {
@@ -99,13 +108,37 @@ export default function ThemeShopClient() {
     }
   }, [buying, activate]);
 
+  const startPreview = useCallback((theme: Theme) => {
+    if (previewTimeoutRef.current) {
+      clearTimeout(previewTimeoutRef.current);
+    }
+    previewOriginalRef.current = currentTheme;
+    applyTheme(theme.id);
+    setCurrentTheme(theme.id);
+    previewTimeoutRef.current = setTimeout(() => {
+      applyTheme(previewOriginalRef.current);
+      setCurrentTheme(previewOriginalRef.current);
+    }, 15000);
+  }, [currentTheme]);
+
+  const cancelPreview = useCallback(() => {
+    if (previewTimeoutRef.current) {
+      clearTimeout(previewTimeoutRef.current);
+      previewTimeoutRef.current = null;
+    }
+    applyTheme(previewOriginalRef.current);
+    setCurrentTheme(previewOriginalRef.current);
+  }, []);
+
   const handleClick = useCallback((theme: Theme) => {
     if (theme.unlocked || theme.cost === 0) {
       activate(theme);
     } else {
-      buy(theme);
+      startPreview(theme);
+      setConfirmTheme(theme);
+      setError(null);
     }
-  }, [activate, buy]);
+  }, [activate, startPreview]);
 
   return (
     <fieldset id="theme-shop" className="group" role="radiogroup" aria-label="Barevný motiv">
@@ -138,6 +171,47 @@ export default function ThemeShopClient() {
               </button>
             );
           })}
+        </div>
+      )}
+
+      {confirmTheme && (
+        <div className="theme-dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-dialog-title">
+          <div className="theme-dialog">
+            <p className="theme-dialog-log">LOG [THEME_PURCHASE]:</p>
+            <h2 id="theme-dialog-title" className="theme-dialog-title">POTVRDIT NÁKUP</h2>
+            <p className="theme-dialog-body">
+              Chceš odemknout motiv <strong>{confirmTheme.label}</strong> za <strong>{confirmTheme.cost} mnemů</strong>?
+            </p>
+            {balance !== null && (
+              <p className="theme-dialog-balance">Aktuální zůstatek: <strong>{balance}</strong> mnemů</p>
+            )}
+            <div className="theme-dialog-actions">
+              <button
+                className="btn theme-dialog-btn theme-dialog-btn--cancel"
+                onClick={() => {
+                  cancelPreview();
+                  setConfirmTheme(null);
+                }}
+                disabled={!!buying}
+              >
+                Zrušit
+              </button>
+              <button
+                className="btn theme-dialog-btn theme-dialog-btn--confirm"
+                onClick={() => {
+                  if (previewTimeoutRef.current) {
+                    clearTimeout(previewTimeoutRef.current);
+                    previewTimeoutRef.current = null;
+                  }
+                  buy(confirmTheme);
+                  setConfirmTheme(null);
+                }}
+                disabled={!!buying}
+              >
+                {buying === confirmTheme.id ? 'ZPRACOVÁNÍ…' : 'Koupit'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </fieldset>

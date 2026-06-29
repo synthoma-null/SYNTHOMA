@@ -5115,3 +5115,86 @@ transition: none !important;
   color: var(--text-secondary);
 }
 .theme-error { color: var(--accent-warning, #ffb300); }
+
+/* Theme purchase confirmation dialog */
+.theme-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modals, 1000);
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  -webkit-backdrop-filter: blur(var(--blur-light, 6px));
+  backdrop-filter: blur(var(--blur-light, 6px));
+  animation: themeDialogFadeIn 0.2s ease;
+}
+.theme-dialog {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-secondary);
+  border-radius: 12px;
+  padding: 1.25rem;
+  max-width: 420px;
+  width: min(92vw, 420px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px var(--glow-secondary);
+  text-align: center;
+  animation: themeDialogSlideIn 0.2s ease;
+}
+.theme-dialog-log {
+  margin: 0 0 0.25rem;
+  font-size: 0.65rem;
+  font-family: var(--font-family-mono, monospace);
+  color: var(--accent-secondary);
+  letter-spacing: 0.08em;
+}
+.theme-dialog-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+.theme-dialog-body {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.theme-dialog-balance {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  font-family: var(--font-family-mono, monospace);
+  color: var(--accent-secondary);
+}
+.theme-dialog-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+.theme-dialog-btn {
+  flex: 1 1 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+}
+.theme-dialog-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+.theme-dialog-btn--cancel {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+}
+.theme-dialog-btn--confirm {
+  background: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  color: var(--bg-primary);
+  box-shadow: 0 0 10px var(--glow-primary);
+}
+.theme-dialog-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.theme-dialog-btn:active:not(:disabled) { transform: translateY(0); }
+
+@keyframes themeDialogFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes themeDialogSlideIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
