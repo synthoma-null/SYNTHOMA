@@ -46,7 +46,7 @@
   .SYNTHOMAREADER p {
     margin: 0 0 var(--para-gap) 0;
     line-height: 1.35;
-    text-indent: 0 !important;
+    text-indent: 0;
   }
   .SYNTHOMAREADER .hidden { display: none !important; }
   
@@ -317,17 +317,17 @@
   /* =========================
      Neon Column & Text Offset – alignment.
      ========================= */
-  .SYNTHOMAREADER .chapter-content { padding-left: 0 !important; }
+  .SYNTHOMAREADER .chapter-content { padding-left: 0; }
   .SYNTHOMAREADER .chapter-content .text, .SYNTHOMAREADER .chapter-content .textV, .SYNTHOMAREADER .chapter-content .textN,
   .SYNTHOMAREADER .chapter-content .log, .SYNTHOMAREADER .chapter-content .dialog, .SYNTHOMAREADER .chapter-content .dialogS,
   .SYNTHOMAREADER .chapter-content .dialogN, .SYNTHOMAREADER .chapter-content .dialogG, .SYNTHOMAREADER .chapter-content .title {
-    margin-left: 0 !important;
-    padding-left: 1.15rem !important;
+    margin-left: 0;
+    padding-left: 1.15rem;
     line-height: 1.35;
     box-sizing: border-box;
   }
   
-  .reader-page .story > section { padding-left: 0 !important; }
+  .reader-page .story > section { padding-left: 0; }
   
   /* =========================
      Text-only FX in Reader – no row bg.

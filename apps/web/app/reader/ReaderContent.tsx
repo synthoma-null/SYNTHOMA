@@ -258,7 +258,7 @@ export default function ReaderContent() {
     <>
       {/* Reading progress indicator (fixed at top) */}
       <div className={styles.readingProgress} aria-hidden="true">
-        <div className={styles.readingProgressBar} style={{ width: `${scrollPercent}%` }} />
+        <div className={styles.readingProgressBar} style={{ '--progress-width': `${scrollPercent}%` } as React.CSSProperties} />
       </div>
 
       {syncDelta && chapterId && (
@@ -327,7 +327,7 @@ export default function ReaderContent() {
                 setInstantMode(next);
                 try { writeStorage('instantReadMode', String(next)); } catch {}
               }}
-              aria-pressed={instantMode}
+              aria-pressed={instantMode ? 'true' : 'false'}
               title={instantMode ? t('reader.toolbar.instant.on') : t('reader.toolbar.instant.off')}
             >
               {instantMode ? '⚡ Instant' : '✍️ Typewriter'}

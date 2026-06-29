@@ -26,13 +26,13 @@ html {
   --font-size-multiplier: 1.0;
   --line-height-base: 1.5;
   --shadow-glow: 0 0 12px var(--glow-secondary, rgba(0,255,255,.4));
-  /* Výchozí UI font proměnné, témata je mohou přepsat */
-  --font-family-primary: "Text03", monospace;
-  --font-family-heading: "Text02", "Rubik Glitch", monospace;
-  --font-family-mono: "Text02", ui-monospace, monospace;
-  --font-family-ui: "Text02", system-ui, sans-serif;
-  --font-family-primary-italic: "Text03i", "VT323", monospace;
-  --font-family-primary-bold: "Text03b", "VT323", monospace;
+  /* Výchozí UI font proměnné – témata v themes.css je přepisují konkrétními rodinami */
+  --font-family-primary: ui-monospace, monospace;
+  --font-family-heading: ui-monospace, monospace;
+  --font-family-mono: ui-monospace, monospace;
+  --font-family-ui: system-ui, sans-serif;
+  --font-family-primary-italic: ui-monospace, monospace;
+  --font-family-primary-bold: ui-monospace, monospace;
 
   /* ===== Unifikované proměnné pro pozadí napříč aplikací ===== */
   /* Globální průhlednost tmavého overlaye (0..1). Ovládá slider v ControlPanelu */
@@ -44,6 +44,17 @@ html {
   /* Glow čtečky v normálním režimu (slider mapuje 0..1 na tyto tokeny) */
   --reader-glow-radius: 8px;
   --reader-glow-alpha: 40%;
+
+  /* ===== Unifikovaný z-index scale ===== */
+  --z-bg: -10;
+  --z-base: 0;
+  --z-content: 10;
+  --z-sticky: 20;
+  --z-ui: 100;
+  --z-overlay: 500;
+  --z-modal: 1000;
+  --z-top: 9000;
+  --z-skip-link: 9999;
 }
 
 /* Global focus-visible rings for keyboard accessibility */
@@ -195,13 +206,75 @@ body.no-animations *::after {
   color: #0ff;
 }
 
+/* Fallback for browsers that do not support color-mix() (Chrome < 111, Safari < 16) */
+@supports not (color: color-mix(in oklab, red, transparent)) {
+  /* Choice buttons: use solid accent color instead of transparent blends */
+  p.choice[data-tags] > .choice-link,
+  p.choice[data-tags]:not(:has(> .choice-link)),
+  .choice-box .choice-link {
+    border-color: var(--choice-accent, var(--accent-secondary, #0ff));
+    box-shadow: 0 0 8px var(--choice-accent, var(--accent-secondary, #0ff));
+    text-shadow: 0 0 4px var(--choice-accent, var(--accent-secondary, #0ff));
+  }
+  p.choice[data-tags] > .choice-link:hover,
+  p.choice[data-tags]:not(:has(> .choice-link)):hover,
+  p.choice[data-tags] > .choice-link.selected,
+  p.choice[data-tags] > .choice-link.chosen,
+  p.choice[data-tags].selected:not(:has(> .choice-link)),
+  p.choice[data-tags].chosen:not(:has(> .choice-link)) {
+    border-color: var(--choice-accent, var(--accent-secondary, #0ff));
+    box-shadow: 0 0 12px var(--choice-accent, var(--accent-secondary, #0ff));
+  }
+  .choices-locked p.choice[data-tags] > .choice-link:not(.chosen),
+  p.choice[data-tags] > .choice-link.faded,
+  p.choice[data-tags].faded:not(:has(> .choice-link)) {
+    box-shadow: none;
+  }
+
+  /* Text outlines */
+  .fx-outline,
+  .fx-outline.is-lit {
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+  }
+
+  /* Dialog rails */
+  .SYNTHOMAREADER p.log::before,
+  .SYNTHOMAREADER p.dialog::before,
+  #hero-info p.dialog::before,
+  p.dialogS::before,
+  p.dialogN::before,
+  p.dialogD::before {
+    box-shadow: none;
+    background: var(--accent-secondary, #0ff);
+  }
+
+  /* Synth gate */
+  .synth-gateway-shell,
+  .synth-gate-orbit,
+  .synth-gate-grid,
+  .synth-gate-corner,
+  .synth-gate-title,
+  .synth-gate-subtitle,
+  .synth-gate-chip,
+  .synth-gate-ritual,
+  .synth-gate-terminal,
+  .synth-gate-primary,
+  .synth-gate-help .choice {
+    background: transparent;
+    border-color: var(--border-primary, rgba(0,255,255,0.3));
+    box-shadow: none;
+    text-shadow: none;
+  }
+}
+
 /* Skip-to-content accessibility link */
 .skip-to-content {
   position: absolute;
   top: -100%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: var(--z-skip-link, 9999);
   padding: 0.75rem 1.5rem;
   background: var(--bg-tertiary, #111);
   color: var(--text-primary, #0ff);
@@ -218,10 +291,9 @@ body.no-animations *::after {
 }
 
 /* Themed visual filter for generated images (applies theme var --filter-primary) */
-.generated-image,
-img {
+.generated-image {
   filter: var(--filter-primary, none);
 }
-.crt.fog img {
+.crt.fog .generated-image {
   filter: var(--filter-primary, none);
 }

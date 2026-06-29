@@ -160,7 +160,7 @@ export default function ThemeShopClient() {
                 key={theme.id}
                 className={`theme-button ${isActive ? 'active' : ''} ${locked ? 'locked' : ''} ${cantAfford ? 'cant-afford' : ''}`}
                 data-theme={theme.id}
-                aria-pressed={isActive ? ('true' as const) : ('false' as const)}
+                aria-pressed={isActive ? 'true' : 'false'}
                 disabled={!!buying || cantAfford}
                 onClick={() => handleClick(theme)}
                 title={cantAfford ? `${theme.label} — potřebuješ ${theme.cost} mnemů` : locked ? `${theme.label} — koupit za ${theme.cost} mnemů` : theme.label}

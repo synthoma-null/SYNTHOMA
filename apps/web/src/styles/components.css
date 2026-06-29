@@ -528,6 +528,7 @@ transition: none !important;
     user-select: text;
   }
   img, svg, canvas, video {
+    /* webkit-only; Firefox does not support CSS drag suppression. Use draggable="false" on elements if needed. */
     -webkit-user-drag: none;
     pointer-events: auto;
   }
@@ -789,8 +790,11 @@ transition: none !important;
     height: 100%;
     border-radius: 2px;
     background: transparent;
-    box-shadow: -1px 0 4px 0px #0ff, 1px 0 8px 0px #ff00ff, 0px 0 12px 0px #faff00;
+    box-shadow: -1px 0 4px 0px var(--accent-secondary, #0ff), 1px 0 8px 0px var(--accent-primary, #ff00ff), 0px 0 12px 0px var(--accent-warning, #faff00);
     animation: border-glow 2.6s infinite cubic-bezier(.8,0,.23,1.1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .title::before { animation: none; }
   }
 
   /* Remove left rail/border for main title in reader contexts */
@@ -910,22 +914,6 @@ transition: none !important;
     font-size: calc(1.15rem * var(--font-size-multiplier));
   }
   
-  p.dialog::before {
-    content: '';
-    position: absolute;
-    left: 0rem;
-    width: 4px;
-    top: 0; bottom: 0; height: auto;
-    border-radius: 2px;
-    background: transparent;
-    box-shadow: -1px 0 4px 0px #f0f, 1px 0 8px 0px #f0f, 0px 0 12px 0px #0ff;
-
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.6;
-  }
-  
-  
   .dialogS {
     color: var(--accent-secondary);
     font-family: 'Text03i', monospace;
@@ -941,7 +929,7 @@ transition: none !important;
     top: 0; bottom: 0; height: auto;
     border-radius: 2px;
     background: transparent;
-    box-shadow: -1px 0 4px 0px #0ff, 1px 0 8px 0px #f0f, 0px 0 12px 0px #f00;
+    box-shadow: -1px 0 4px 0px var(--accent-secondary, #0ff), 1px 0 8px 0px var(--accent-primary, #f0f), 0px 0 12px 0px var(--accent-error, #f00);
 
     z-index: 2;
     pointer-events: none;
@@ -964,7 +952,7 @@ transition: none !important;
     top: 0; bottom: 0; height: auto;
     border-radius: 2px;
     background: transparent;
-    box-shadow: -1px 0 4px 0px #00f, 1px 0 8px 0px #f0f, 0px 0 12px 0px #0ff;
+    box-shadow: -1px 0 4px 0px #00f, 1px 0 8px 0px var(--accent-primary, #f0f), 0px 0 12px 0px var(--accent-secondary, #0ff);
 
     z-index: 2;
     pointer-events: none;
@@ -972,7 +960,7 @@ transition: none !important;
   }
 
   .dialogD {
-    color: #a2e633;
+    color: var(--accent-success, #a2e633);
     text-shadow: 
       0 0 6px rgba(14, 70, 213, 0.8),
       0 0 12px rgba(193, 168, 93, 0.6),
@@ -1016,7 +1004,7 @@ transition: none !important;
   }
 
   .dialog.fx-gradient {
-    color: #ff1744;
+    color: var(--accent-error, #ff1744);
     text-shadow: 
       0 0 8px rgba(255, 23, 68, 0.9),
       0 0 16px rgba(255, 23, 68, 0.7),
@@ -1121,7 +1109,7 @@ transition: none !important;
   }
 
   /* If .textV starts a paragraph in reader, ensure no phantom offset */
-  .SYNTHOMAREADER .chapter-content p.text > .textV:first-child { margin-left: 0 !important; padding-left: 0 !important; }
+  .SYNTHOMAREADER .chapter-content p.text > .textV:first-child { margin-left: 0; padding-left: 0; }
   
   .tw-char { color: inherit; }
   
@@ -1340,7 +1328,7 @@ transition: none !important;
   }
 
   /* Mobile fixes: prevent overflow and line-jump of fake layers */
-  @media (max-width: 800px) {
+  @media (max-width: 720px) {
     .glitch-master.title {
       display: block;
       letter-spacing: .02em;        /* víc prostoru mezi znaky */
@@ -3893,7 +3881,7 @@ transition: none !important;
   color: var(--accent-primary, #7c5cff);
 }
 
-@media (max-width: 540px) {
+@media (max-width: 640px) {
   .whisper-submit-row { flex-direction: column; align-items: stretch; }
   .whisper-submit-btn { margin-left: 0; width: 100%; }
   .whisper-submit-select { width: 100%; }
@@ -4812,7 +4800,7 @@ transition: none !important;
 .admin-whisper-actions .admin-btn { margin-top: 0; }
 
 /* ── Admin responsive ────────────────────────────────────────────────────── */
-@media (max-width: 700px) {
+@media (max-width: 720px) {
   .admin-grid { grid-template-columns: 1fr; }
   .admin-panel--overview { grid-column: 1; }
   .admin-detail-grid { grid-template-columns: 1fr; }
@@ -4973,7 +4961,7 @@ transition: none !important;
   to   { opacity: 1; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .profile-panel-popup {
     width: 100vw;
     max-height: 100dvh;
@@ -5197,4 +5185,19 @@ transition: none !important;
 @keyframes themeDialogSlideIn {
   from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Reduced motion overrides for animations not already covered */
+@media (prefers-reduced-motion: reduce) {
+  .title::before,
+  #glitch-synthoma,
+  #glitch-synthoma .glitch-fake1,
+  #glitch-synthoma .glitch-fake2,
+  .glitch-master .glitch-char.glitchy,
+  .glitch-button,
+  .dialogD::before,
+  .glitchenaPulse,
+  .border-glow {
+    animation: none !important;
+  }
 }
