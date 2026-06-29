@@ -5,6 +5,7 @@
 
 /* Glitchka dialog – žluto-cyanový akcent */
 .dialogG {
+  position: relative;
   color: var(--c-acid-yellow);
   text-shadow: 0 0 5px var(--c-acid-yellow), 0 0 10px var(--accent-secondary);
   font-family: 'Text03i', monospace;
@@ -91,6 +92,7 @@ p.dialogG::before {
 }
 
 .dialog {
+  position: relative;
   color: var(--text-primary);
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
@@ -98,6 +100,7 @@ p.dialogG::before {
 }
 
 .dialogS {
+  position: relative;
   color: var(--accent-secondary);
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
@@ -120,6 +123,7 @@ p.dialogS::before {
 }
 
 .dialogN {
+  position: relative;
   color: var(--accent-secondary);
   text-shadow: 0 0 5px var(--bg-primary), 0 0 10px var(--shadow-primary);
   font-family: 'Text03i', monospace;

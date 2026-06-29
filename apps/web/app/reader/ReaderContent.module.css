@@ -56,12 +56,9 @@
    No local background painting here to avoid double overlays. */
 /* Ensure content sits above any global ::before overlay */
 .readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content),
-.readerMain:global(.SYNTHOMAREADER) > :global(.reader-host) {
+.readerMain:global(.SYNTHOMAREADER) > :global(.reader-host),
+.readerMain:global(.SYNTHOMAREADER) * {
   position: relative;
-  z-index: 1;
-}
-.readerMain:global(.SYNTHOMAREADER) > :global(.chapter-content) *,
-.readerMain:global(.SYNTHOMAREADER) > :global(.reader-host) * {
   z-index: 1;
 }
 

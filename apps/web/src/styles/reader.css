@@ -322,7 +322,7 @@
   .SYNTHOMAREADER .chapter-content .log, .SYNTHOMAREADER .chapter-content .dialog, .SYNTHOMAREADER .chapter-content .dialogS,
   .SYNTHOMAREADER .chapter-content .dialogN, .SYNTHOMAREADER .chapter-content .dialogG, .SYNTHOMAREADER .chapter-content .title {
     margin-left: 0;
-    padding-left: 1.15rem;
+    padding-left: 1.15rem !important;
     line-height: 1.35;
     box-sizing: border-box;
   }
