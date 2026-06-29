@@ -31,7 +31,7 @@
     top: 0; bottom: 0; height: auto;
     border-radius: 2px;
     background: transparent;
-    box-shadow: -1px 0 4px 0px #ffea00, 1px 0 8px 0px #00ffff, 0px 0 12px 0px #ffd000;
+    box-shadow: -1px 0 4px 0px var(--accent-warning, #ffea00), 1px 0 8px 0px var(--accent-secondary, #0ff), 0px 0 12px 0px var(--accent-warning, #ffd000);
 
     z-index: 2;
     pointer-events: none;
@@ -574,7 +574,7 @@ transition: none !important;
     text-shadow: 0 0 6px var(--glow-primary), 0 0 12px var(--glow-primary), 0 0 18px var(--glow-secondary);
   }
   
-  .fx-glow-magenta { text-shadow: 0 0 4px #f0f, 0 0 10px #f0f, 0 0 18px #f0f; }
+  .fx-glow-magenta { text-shadow: 0 0 4px var(--accent-primary, #f0f), 0 0 10px var(--accent-primary, #f0f), 0 0 18px var(--accent-primary, #f0f); }
   
   .fx-shadow-lg { text-shadow: 0 2px 0 rgba(0,0,0,.35), 0 4px 12px rgba(0,0,0,.5); }
   
@@ -1026,7 +1026,7 @@ transition: none !important;
     width: 6px;
     top: 0; bottom: 0; height: auto;
     border-radius: 3px;
-    background: linear-gradient(45deg, #ff1744, #d50000, #ff1744);
+    background: linear-gradient(45deg, var(--accent-error, #ff1744), #d50000, var(--accent-error, #ff1744));
     box-shadow: 
       -2px 0 8px 0px rgba(255, 23, 68, 0.8),
       2px 0 12px 0px rgba(255, 23, 68, 0.6),
