@@ -4,6 +4,7 @@ import { randomBytes } from 'crypto';
 import { hash } from 'bcryptjs';
 import { auth } from '../../../../../auth';
 import prisma from '../../../../../src/lib/prisma';
+import { getPackageById } from '../../../../../src/content/booksManifest';
 
 function adminGuard(role: string | undefined): NextResponse | null {
   if (!role) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -31,6 +32,10 @@ export async function POST(req: NextRequest) {
   if (typeof packageId !== 'string' || !packageId.trim()) {
     return NextResponse.json({ error: 'packageId je povinný.' }, { status: 400 });
   }
+  const trimmedPackageId = packageId.trim();
+  if (!getPackageById(trimmedPackageId)) {
+    return NextResponse.json({ error: `Balíček ${trimmedPackageId} neexistuje v manifestu.` }, { status: 400 });
+  }
   if (typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > 100) {
     return NextResponse.json({ error: 'count musí být celé číslo 1–100.' }, { status: 400 });
   }
@@ -57,14 +62,14 @@ export async function POST(req: NextRequest) {
     } while (false);
 
     await prisma.accessCode.create({
-      data: { codeHash, packageId: packageId.trim(), expiresAt },
+      data: { codeHash, packageId: trimmedPackageId, expiresAt },
     });
     plaintexts.push(plaintext);
   }
 
   return NextResponse.json({
     ok: true,
-    packageId: packageId.trim(),
+    packageId: trimmedPackageId,
     count,
     expiresAt: expiresAt.toISOString(),
     codes: plaintexts,

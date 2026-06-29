@@ -62,9 +62,10 @@ interface AdminWhisper {
 type Tab = 'overview' | 'users' | 'mnems' | 'codes' | 'whispers' | 'log';
 
 const PACKAGE_IDS = [
-  { value: 'single-fragment-64', label: 'single-fragment-64  (64 mn)' },
-  { value: 'act-i-256', label: 'act-i-256  (256 mn)' },
-  { value: 'archive-1024', label: 'archive-1024  (1024 mn)' },
+  { value: 'single-fragment', label: 'single-fragment  (64 mn)' },
+  { value: 'act-1', label: 'act-1  (256 mn)' },
+  { value: 'archiv-1024', label: 'archiv-1024  (1024 mn)' },
+  { value: 'archiv-plus', label: 'archiv-plus  (subscription)' },
 ];
 
 const TABS: { id: Tab; label: string; log: string }[] = [
@@ -431,7 +432,7 @@ function MnemsTab({ onGrantSuccess }: { onGrantSuccess: () => void }) {
 }
 
 function CodesTab() {
-  const [codePackage, setCodePackage] = useState('single-fragment-64');
+  const [codePackage, setCodePackage] = useState('single-fragment');
   const [codeCount, setCodeCount] = useState('5');
   const [codeDays, setCodeDays] = useState('90');
   const [codeResult, setCodeResult] = useState<string[] | null>(null);
