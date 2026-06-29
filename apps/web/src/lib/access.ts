@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import prisma from './prisma';
 import { getChapterById, getPackageById, isFreeChapter, PACKAGES } from '../content/booksManifest';
 
@@ -57,15 +58,17 @@ export async function grantPackage(
   packageId: string,
   source: string,
   stripeSessionId?: string,
+  tx?: Prisma.TransactionClient,
 ): Promise<void> {
+  const client = tx ?? prisma;
   const pkg = getPackageById(packageId);
   if (!pkg) throw new Error(`Package ${packageId} not found`);
 
-  await prisma.entitlement.create({
+  await client.entitlement.create({
     data: { userId, packageId, source },
   });
 
-  await prisma.mnemLedger.create({
+  await client.mnemLedger.create({
     data: {
       userId,
       amount: pkg.mnems,
@@ -75,7 +78,7 @@ export async function grantPackage(
   });
 
   for (const chapterId of pkg.chapterIds) {
-    await prisma.entitlement.upsert({
+    await client.entitlement.upsert({
       where: { userId_chapterId: { userId, chapterId } },
       create: { userId, chapterId, packageId, source },
       update: { packageId, source },

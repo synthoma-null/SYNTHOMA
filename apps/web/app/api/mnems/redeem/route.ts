@@ -23,31 +23,46 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Neplatný formát kódu.' }, { status: 400 });
   }
 
-  const allCodes = await prisma.accessCode.findMany({
-    where: { used: false },
-    select: { id: true, codeHash: true, packageId: true, expiresAt: true },
-  });
+  try {
+    const result = await prisma.$transaction(async (tx) => {
+      const allCodes = await tx.accessCode.findMany({
+        where: { used: false },
+        select: { id: true, codeHash: true, packageId: true, expiresAt: true },
+      });
 
-  let matched: (typeof allCodes)[number] | null = null;
-  for (const row of allCodes) {
-    const ok = await compare(normalizedCode, row.codeHash);
-    if (ok) { matched = row; break; }
+      let matched: (typeof allCodes)[number] | null = null;
+      for (const row of allCodes) {
+        const ok = await compare(normalizedCode, row.codeHash);
+        if (ok) { matched = row; break; }
+      }
+
+      if (!matched) {
+        return { error: 'Kód neexistuje nebo byl již použit.', status: 404 };
+      }
+
+      if (matched.expiresAt && matched.expiresAt < new Date()) {
+        return { error: 'Platnost kódu vypršela.', status: 410 };
+      }
+
+      await tx.accessCode.update({
+        where: { id: matched.id },
+        data: { used: true, usedAt: new Date(), userId },
+      });
+
+      await grantPackage(userId, matched.packageId, 'access_code', undefined, tx);
+
+      return { ok: true, packageId: matched.packageId, status: 200 };
+    });
+
+    if (result.status !== 200) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
+    }
+    return NextResponse.json({ ok: result.ok, packageId: result.packageId });
+  } catch (err) {
+    console.error('[REDEEM ERROR]', err);
+    return NextResponse.json(
+      { error: 'Chyba serveru při uplatňování kódu. Zkus to znovu.' },
+      { status: 500 },
+    );
   }
-
-  if (!matched) {
-    return NextResponse.json({ error: 'Kód neexistuje nebo byl již použit.' }, { status: 404 });
-  }
-
-  if (matched.expiresAt && matched.expiresAt < new Date()) {
-    return NextResponse.json({ error: 'Platnost kódu vypršela.' }, { status: 410 });
-  }
-
-  await prisma.accessCode.update({
-    where: { id: matched.id },
-    data: { used: true, usedAt: new Date(), userId },
-  });
-
-  await grantPackage(userId, matched.packageId, 'access_code');
-
-  return NextResponse.json({ ok: true, packageId: matched.packageId });
 }
