@@ -4334,7 +4334,7 @@ transition: none !important;
 
 .admin-log-prefix {
   font-family: 'Text02', monospace;
-  font-size: .64rem;
+  font-size: .78rem;
   letter-spacing: .14em;
   color: rgba(255,180,0,.7);
   margin: 0;
@@ -4342,21 +4342,21 @@ transition: none !important;
 
 .admin-title {
   font-family: 'Text02', monospace;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   letter-spacing: .18em;
   color: var(--text-primary, #cfcfe3);
   margin: 0;
 }
 
 .admin-subtitle {
-  font-size: .78rem;
+  font-size: 1rem;
   color: var(--text-secondary, rgba(207,207,227,.6));
   margin: 0;
 }
 
 .admin-warning {
   font-family: 'Text02', monospace;
-  font-size: .64rem;
+  font-size: .78rem;
   letter-spacing: .07em;
   color: rgba(255,140,20,.7);
   border-left: 2px solid rgba(255,140,20,.35);
@@ -4386,7 +4386,7 @@ transition: none !important;
 
 .admin-panel-log {
   font-family: 'Text02', monospace;
-  font-size: .6rem;
+  font-size: .75rem;
   letter-spacing: .12em;
   color: rgba(255,180,0,.65);
   margin: 0;
@@ -4394,7 +4394,7 @@ transition: none !important;
 
 .admin-panel-title {
   font-family: 'Text02', monospace;
-  font-size: .9rem;
+  font-size: 1.2rem;
   letter-spacing: .12em;
   color: var(--text-primary, #cfcfe3);
   margin: 0;
@@ -4408,7 +4408,7 @@ transition: none !important;
 
 .admin-label {
   font-family: 'Text02', monospace;
-  font-size: .6rem;
+  font-size: .75rem;
   letter-spacing: .1em;
   color: var(--text-secondary, rgba(207,207,227,.55));
 }
@@ -4417,9 +4417,9 @@ transition: none !important;
   background: rgba(0,0,0,.35);
   border: 1px solid var(--border-secondary, rgba(255,255,255,.12));
   border-radius: 6px;
-  padding: 8px 10px;
+  padding: 10px 12px;
   font-family: 'Text02', monospace;
-  font-size: .78rem;
+  font-size: .95rem;
   color: var(--text-primary, #cfcfe3);
   letter-spacing: .04em;
   width: 100%;
@@ -4441,15 +4441,15 @@ transition: none !important;
   border-color: rgba(255,180,0,.7);
 }
 .admin-btn:disabled { opacity: .4; cursor: not-allowed; }
-.admin-btn--sm { font-size: .62rem; padding: 5px 10px; margin-top: 6px; }
+.admin-btn--sm { font-size: .75rem; padding: 6px 12px; margin-top: 6px; }
 
 .admin-result {
   font-family: 'Text02', monospace;
-  font-size: .66rem;
+  font-size: .82rem;
   letter-spacing: .06em;
   line-height: 1.5;
   margin: 0;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-radius: 5px;
 }
 .admin-result--ok {
@@ -4467,11 +4467,11 @@ transition: none !important;
 
 .admin-codes-warning {
   font-family: 'Text02', monospace;
-  font-size: .65rem;
+  font-size: .78rem;
   letter-spacing: .06em;
   color: rgba(255,140,20,.85);
   margin: 0;
-  padding: 6px 8px;
+  padding: 8px 10px;
   background: rgba(255,140,20,.06);
   border-left: 2px solid rgba(255,140,20,.4);
 }
@@ -4480,9 +4480,9 @@ transition: none !important;
   background: rgba(0,0,0,.45);
   border: 1px solid var(--border-secondary, rgba(255,255,255,.1));
   border-radius: 6px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   font-family: 'Text02', monospace;
-  font-size: .76rem;
+  font-size: .92rem;
   letter-spacing: .06em;
   color: rgba(0,220,140,.85);
   line-height: 1.8;
@@ -4510,14 +4510,14 @@ transition: none !important;
 
 .admin-overview-label {
   font-family: 'Text02', monospace;
-  font-size: .66rem;
+  font-size: .8rem;
   letter-spacing: .07em;
   color: var(--text-secondary, rgba(207,207,227,.55));
 }
 
 .admin-overview-value {
   font-family: 'Text02', monospace;
-  font-size: .9rem;
+  font-size: 1.1rem;
   letter-spacing: .06em;
   color: var(--text-primary, #cfcfe3);
 }
@@ -4525,7 +4525,7 @@ transition: none !important;
 
 .admin-overview-loading {
   font-family: 'Text02', monospace;
-  font-size: .7rem;
+  font-size: .85rem;
   color: var(--text-secondary, rgba(207,207,227,.4));
 }
 
@@ -4563,7 +4563,7 @@ transition: none !important;
 
 .admin-tab-log {
   font-family: 'Text02', monospace;
-  font-size: .52rem;
+  font-size: .64rem;
   letter-spacing: .12em;
   color: rgba(255,180,0,.45);
 }
@@ -4571,7 +4571,7 @@ transition: none !important;
 
 .admin-tab-label {
   font-family: 'Text02', monospace;
-  font-size: .72rem;
+  font-size: .88rem;
   letter-spacing: .1em;
   color: rgba(207,207,227,.55);
 }
@@ -4584,7 +4584,7 @@ transition: none !important;
   background: rgba(255,80,60,.8);
   color: #fff;
   font-family: 'Text02', monospace;
-  font-size: .55rem;
+  font-size: .68rem;
   padding: 1px 5px;
   border-radius: 8px;
   line-height: 1.4;
@@ -4601,7 +4601,7 @@ transition: none !important;
 .admin-panel--full { grid-column: 1 / -1; }
 
 .admin-panel-note {
-  font-size: .7rem;
+  font-size: .88rem;
   color: var(--text-secondary, rgba(207,207,227,.45));
   margin: 0;
   line-height: 1.5;

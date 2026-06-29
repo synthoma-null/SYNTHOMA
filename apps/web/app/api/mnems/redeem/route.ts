@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
   }
 
-  if (!code || !code.startsWith('MNEM-')) {
+  const normalizedCode = code.trim().toUpperCase();
+  if (!normalizedCode || !normalizedCode.startsWith('MNEM-')) {
     return NextResponse.json({ error: 'Neplatný formát kódu.' }, { status: 400 });
   }
 
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   let matched: (typeof allCodes)[number] | null = null;
   for (const row of allCodes) {
-    const ok = await compare(code, row.codeHash);
+    const ok = await compare(normalizedCode, row.codeHash);
     if (ok) { matched = row; break; }
   }
 
