@@ -42,6 +42,17 @@ export async function grantChapter(
   const chapter = getChapterById(chapterId);
   if (!chapter) throw new Error(`Chapter ${chapterId} not found in manifest`);
 
+  if (chapter.mnemCost > 0) {
+    const balanceAgg = await prisma.mnemLedger.aggregate({
+      where: { userId },
+      _sum: { amount: true },
+    });
+    const balance = balanceAgg._sum.amount ?? 0;
+    if (balance < chapter.mnemCost) {
+      throw new Error(`Nedostatek mnemů. Potřebuješ ${chapter.mnemCost}, máš ${balance}.`);
+    }
+  }
+
   await prisma.entitlement.upsert({
     where: { userId_chapterId: { userId, chapterId } },
     create: { userId, chapterId, source },
@@ -49,7 +60,7 @@ export async function grantChapter(
   });
 
   await prisma.mnemLedger.create({
-    data: { userId, amount: chapter.mnemCost, reason: `Odemčen fragment: ${chapter.title} (${source})` },
+    data: { userId, amount: -chapter.mnemCost, reason: `Odemčen fragment: ${chapter.title} (${source})` },
   });
 }
 
@@ -99,14 +110,53 @@ export async function isSupporter(userId: string): Promise<boolean> {
   return false;
 }
 
+function computeTone(emotions: Record<string, number>): string {
+  const order = ['anger', 'fear', 'sadness', 'disgust', 'joy', 'trust', 'surprise', 'anticipation'];
+  let top = '';
+  let topValue = -Infinity;
+  for (const key of order) {
+    const v = emotions[key] ?? 0;
+    if (v > topValue) {
+      top = key;
+      topValue = v;
+    }
+  }
+  if (topValue <= 0) return 'neutrální_sarkastický';
+  const map: Record<string, string> = {
+    joy: 'radostný',
+    trust: 'důvěřivý',
+    fear: 'úzkostný',
+    surprise: 'překvapený',
+    sadness: 'smutný',
+    disgust: 'odpudivý',
+    anger: 'rozhořčený',
+    anticipation: 'očekávající',
+  };
+  return map[top] ?? 'neutrální_sarkastický';
+}
+
 export async function updatePsycheStats(
   userId: string,
   functionDelta: Record<string, number>,
   emotionDelta: Record<string, number>,
 ): Promise<void> {
   const existing = await prisma.psycheStats.findUnique({ where: { userId } });
+  const run = await prisma.userRun.findUnique({ where: { userId } });
 
   const clamp = (v: number) => Math.max(0, Math.min(100, v));
+
+  const emotions = {
+    joy: clamp((existing?.joy ?? 0) + (emotionDelta['joy'] ?? 0)),
+    trust: clamp((existing?.trust ?? 0) + (emotionDelta['trust'] ?? 0)),
+    fear: clamp((existing?.fear ?? 0) + (emotionDelta['fear'] ?? 0)),
+    surprise: clamp((existing?.surprise ?? 0) + (emotionDelta['surprise'] ?? 0)),
+    sadness: clamp((existing?.sadness ?? 0) + (emotionDelta['sadness'] ?? 0)),
+    disgust: clamp((existing?.disgust ?? 0) + (emotionDelta['disgust'] ?? 0)),
+    anger: clamp((existing?.anger ?? 0) + (emotionDelta['anger'] ?? 0)),
+    anticipation: clamp((existing?.anticipation ?? 0) + (emotionDelta['anticipation'] ?? 0)),
+  };
+  const tone = computeTone(emotions);
+  const shadow = run?.shadow ?? existing?.shadow ?? 0;
 
   if (!existing) {
     await prisma.psycheStats.create({
@@ -116,14 +166,9 @@ export async function updatePsycheStats(
         fe: clamp(50 + (functionDelta['Fe'] ?? 0)),
         ti: clamp(50 + (functionDelta['Ti'] ?? 0)),
         se: clamp(50 + (functionDelta['Se'] ?? 0)),
-        joy: clamp(emotionDelta['joy'] ?? 0),
-        trust: clamp(emotionDelta['trust'] ?? 0),
-        fear: clamp(emotionDelta['fear'] ?? 0),
-        surprise: clamp(emotionDelta['surprise'] ?? 0),
-        sadness: clamp(emotionDelta['sadness'] ?? 0),
-        disgust: clamp(emotionDelta['disgust'] ?? 0),
-        anger: clamp(emotionDelta['anger'] ?? 0),
-        anticipation: clamp(emotionDelta['anticipation'] ?? 0),
+        ...emotions,
+        tone,
+        shadow,
       },
     });
     return;
@@ -136,14 +181,9 @@ export async function updatePsycheStats(
       fe: clamp(existing.fe + (functionDelta['Fe'] ?? 0)),
       ti: clamp(existing.ti + (functionDelta['Ti'] ?? 0)),
       se: clamp(existing.se + (functionDelta['Se'] ?? 0)),
-      joy: clamp(existing.joy + (emotionDelta['joy'] ?? 0)),
-      trust: clamp(existing.trust + (emotionDelta['trust'] ?? 0)),
-      fear: clamp(existing.fear + (emotionDelta['fear'] ?? 0)),
-      surprise: clamp(existing.surprise + (emotionDelta['surprise'] ?? 0)),
-      sadness: clamp(existing.sadness + (emotionDelta['sadness'] ?? 0)),
-      disgust: clamp(existing.disgust + (emotionDelta['disgust'] ?? 0)),
-      anger: clamp(existing.anger + (emotionDelta['anger'] ?? 0)),
-      anticipation: clamp(existing.anticipation + (emotionDelta['anticipation'] ?? 0)),
+      ...emotions,
+      tone,
+      shadow,
     },
   });
 }
@@ -302,10 +342,11 @@ export async function getEntityRelations(userId: string) {
 
 export async function checkAndActivateMissions(userId: string): Promise<string[]> {
   const { MISSIONS } = await import('../content/booksManifest');
-  const [run, psyche, entitlements, artifacts, nameFragments, whisperCount, missions] = await Promise.all([
+  const [run, psyche, entitlements, readingProgress, artifacts, nameFragments, whisperCount, missions] = await Promise.all([
     prisma.userRun.findUnique({ where: { userId } }),
     prisma.psycheStats.findUnique({ where: { userId } }),
     prisma.entitlement.findMany({ where: { userId }, select: { chapterId: true } }),
+    prisma.readingProgress.findMany({ where: { userId, completed: true }, select: { chapterId: true } }),
     prisma.userArtifact.findMany({ where: { userId }, select: { artifactId: true } }),
     prisma.userNameFragment.findMany({ where: { userId }, select: { fragment: true } }),
     prisma.whisper.count({ where: { userId } }),
@@ -313,7 +354,12 @@ export async function checkAndActivateMissions(userId: string): Promise<string[]
   ]);
 
   const missionMap = new Map(missions.map((m: { missionId: string; status: string }) => [m.missionId, m.status]));
-  const completedChapters = new Set(entitlements.map((e: { chapterId: string | null }) => e.chapterId).filter(Boolean));
+  const completedChapters = new Set(
+    [
+      ...entitlements.map((e: { chapterId: string | null }) => e.chapterId).filter(Boolean),
+      ...readingProgress.map((r: { chapterId: string }) => r.chapterId),
+    ].filter(Boolean) as string[],
+  );
   const artifactIds = new Set(artifacts.map((a: { artifactId: string }) => a.artifactId));
   const fragmentSet = new Set(nameFragments.map((f: { fragment: string }) => f.fragment));
   const activated: string[] = [];
@@ -323,7 +369,9 @@ export async function checkAndActivateMissions(userId: string): Promise<string[]
     if (currentStatus === 'completed' || currentStatus === 'active') continue;
 
     let conditionMet = false;
-    const [condType, condValue] = mission.condition.split(':');
+    const parts = mission.condition.split(':');
+    const condType = parts[0];
+    const condValue = parts[1];
 
     if (condType === 'chapter') conditionMet = completedChapters.has(condValue ?? '');
     else if (condType === 'whispers') conditionMet = whisperCount >= parseInt(condValue ?? '1', 10);
@@ -331,6 +379,16 @@ export async function checkAndActivateMissions(userId: string): Promise<string[]
     else if (condType === 'fragment') conditionMet = fragmentSet.has(condValue ?? '');
     else if (condType === 'shadow' && run) conditionMet = run.shadow >= parseInt(condValue ?? '0', 10);
     else if (condType === 'stability' && run) conditionMet = run.stability >= parseInt(condValue ?? '0', 10);
+    else if (condType === 'entity' && run) {
+      const entity = condValue ?? '';
+      const metric = parts[2] ?? 'sync';
+      const threshold = parseInt(parts[3] ?? '0', 10);
+      const relation = await prisma.entityRelation.findUnique({
+        where: { userId_entity: { userId, entity } },
+      });
+      const value = relation?.[metric as keyof typeof relation] as number | undefined;
+      conditionMet = typeof value === 'number' && value >= threshold;
+    }
 
     if (conditionMet && !missionMap.has(mission.id)) {
       await prisma.userMission.upsert({

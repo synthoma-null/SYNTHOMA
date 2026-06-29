@@ -50,6 +50,21 @@ export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose
     return () => clearTimeout(timer);
   }, []);
 
+  const hasCoreDelta =
+    delta.stabilityAfter !== delta.stabilityBefore ||
+    delta.pressureAfter !== delta.pressureBefore ||
+    delta.shadowAfter !== delta.shadowBefore;
+  const hasExtras =
+    !!delta.dominantReaction ||
+    (delta.entityDeltas && delta.entityDeltas.length > 0) ||
+    !!delta.newArtifact ||
+    (delta.newMissions && delta.newMissions.length > 0) ||
+    !!delta.recommendedFragment;
+
+  if (!hasCoreDelta && !hasExtras) {
+    return null;
+  }
+
   const handleClose = () => {
     setVisible(false);
     setTimeout(onClose, 300);

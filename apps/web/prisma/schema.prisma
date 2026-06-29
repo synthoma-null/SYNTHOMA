@@ -224,6 +224,7 @@ model SubjectVote {
 model UserRun {
   id             String    @id @default(cuid())
   userId         String    @unique
+  // TODO: cycleNumber should only increment on a true cycle/restart (e.g. completing a restart chapter or explicit system reset), not on every chapter completion.
   cycleNumber    Int       @default(1)
   stability      Int       @default(50)
   memoryPressure Int       @default(0)

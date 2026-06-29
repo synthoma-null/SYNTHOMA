@@ -50,6 +50,13 @@ export default function ReaderContent() {
   const [pdfBusy, setPdfBusy] = useState(false);
   const [syncDelta, setSyncDelta] = useState<SyncDelta | null>(null);
   const completionFiredRef = useRef(false);
+  const readStartRef = useRef<number>(Date.now());
+
+  // Reset completion tracker when chapter changes
+  useEffect(() => {
+    completionFiredRef.current = false;
+    readStartRef.current = Date.now();
+  }, [chapterId]);
 
   // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes, Arrow keys nav
   useEffect(() => {
@@ -169,10 +176,18 @@ export default function ReaderContent() {
 
         // Save completed progress to DB
         const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';
+        const readMs = Math.max(0, Date.now() - readStartRef.current);
         await fetch('/api/me/progress', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chapterId, collection, chapterTitle: chapterMeta?.title, completed: true, progressPercent: 100 }),
+          body: JSON.stringify({ chapterId, collection, chapterTitle: chapterMeta?.title, completed: true, progressPercent: 100, readMs }),
+        }).catch(() => {});
+
+        // Trigger mission activation check after chapter completion
+        await fetch('/api/me/run', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ stabilityDelta: 0, pressureDelta: 0, shadowDelta: 0 }),
         }).catch(() => {});
 
         // Fetch run state after
@@ -193,15 +208,29 @@ export default function ReaderContent() {
 
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
-    if (!bookId) return;
+    if (!bookId || !chapterId) return;
     const key = `readingProgress:${bookId}`;
     let rafId: number | null = null;
     let lastSaved = -1;
+    let lastServerSaved = -1;
+    let lastServerSaveTime = 0;
     const save = (percent: number) => {
       const rounded = Math.max(0, Math.min(100, Math.round(percent)));
       if (rounded === lastSaved) return;
       lastSaved = rounded;
       saveReadingProgress({ bookId, path: chapterPath, percent: rounded, updatedAt: Date.now() });
+      // Throttled server persistence so ReadingProgressPanel shows real progress
+      const now = Date.now();
+      if (rounded !== lastServerSaved && now - lastServerSaveTime >= 5000) {
+        lastServerSaved = rounded;
+        lastServerSaveTime = now;
+        const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';
+        fetch('/api/me/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chapterId, collection, chapterTitle: chapterMeta?.title, completed: false, progressPercent: rounded }),
+        }).catch(() => {});
+      }
     };
     const compute = () => {
       const doc = document.documentElement;
@@ -222,7 +251,7 @@ export default function ReaderContent() {
       window.removeEventListener('beforeunload', compute as any);
       try { compute(); } catch {}
     };
-  }, [bookId, chapterPath]);
+  }, [bookId, chapterId, chapterPath, chapterMeta?.title]);
 
   // Render content
   return (

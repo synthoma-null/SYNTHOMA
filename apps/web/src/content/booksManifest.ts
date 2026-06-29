@@ -819,7 +819,7 @@ export interface Mission {
   task: string;
   rewardText: string;
   artifactReward?: string;
-  fragmentReward?: string;
+  fragmentReward?: string | null;
   runReward?: {
     stabilityDelta?: number;
     pressureDelta?: number;
@@ -869,7 +869,7 @@ export const MISSIONS: Mission[] = [
     condition: 'shadow:60',
     task: 'Odolat a odejít od Černého boxu',
     rewardText: 'Stín -5, Stabilita +3, Fragment jména: ?',
-    fragmentReward: '?',
+    fragmentReward: null,
     runReward: { shadowDelta: -5, stabilityDelta: 3 },
   },
   {
