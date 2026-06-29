@@ -1,6 +1,7 @@
 ﻿import "../src/styles/base.css";
 import "../src/styles/components.css";
 import "../src/styles/components-dialog.css";
+import "../src/styles/components-choice.css";
 import "../src/styles/effects.css";
 import "../src/styles/themes.css";
 import "../src/styles/reader.css";

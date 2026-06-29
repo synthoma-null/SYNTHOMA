@@ -1,0 +1,274 @@
+/* =========================================================
+   SYNTHOMA CHOICE STYLES
+   Separated from components.css to reduce file size.
+   ========================================================= */
+
+/* Default / X */
+p.choice[data-tags] {
+  --choice-accent: var(--accent-secondary, #00ffff);
+  --choice-accent-soft: rgba(0, 255, 255, 0.16);
+  --choice-accent-hot: rgba(0, 255, 255, 0.42);
+  --choice-letter: "?";
+}
+
+/* E / I */
+p.choice[data-tags="E"],
+p.choice[data-tags~="E"] {
+  --choice-accent: #ff8a00;
+  --choice-accent-soft: rgba(255, 138, 0, 0.16);
+  --choice-accent-hot: rgba(255, 138, 0, 0.46);
+  --choice-letter: "E";
+}
+
+p.choice[data-tags="I"],
+p.choice[data-tags~="I"] {
+  --choice-accent: #7c7cff;
+  --choice-accent-soft: rgba(124, 124, 255, 0.18);
+  --choice-accent-hot: rgba(124, 124, 255, 0.48);
+  --choice-letter: "I";
+}
+
+/* S / N */
+p.choice[data-tags="S"],
+p.choice[data-tags~="S"] {
+  --choice-accent: #00ff99;
+  --choice-accent-soft: rgba(0, 255, 153, 0.15);
+  --choice-accent-hot: rgba(0, 255, 153, 0.42);
+  --choice-letter: "S";
+}
+
+p.choice[data-tags="N"],
+p.choice[data-tags~="N"] {
+  --choice-accent: #c300ff;
+  --choice-accent-soft: rgba(195, 0, 255, 0.17);
+  --choice-accent-hot: rgba(195, 0, 255, 0.46);
+  --choice-letter: "N";
+}
+
+/* T / F */
+p.choice[data-tags="T"],
+p.choice[data-tags~="T"] {
+  --choice-accent: #00d8ff;
+  --choice-accent-soft: rgba(0, 216, 255, 0.15);
+  --choice-accent-hot: rgba(0, 216, 255, 0.44);
+  --choice-letter: "T";
+}
+
+p.choice[data-tags="F"],
+p.choice[data-tags~="F"] {
+  --choice-accent: #ff3f8f;
+  --choice-accent-soft: rgba(255, 63, 143, 0.16);
+  --choice-accent-hot: rgba(255, 63, 143, 0.48);
+  --choice-letter: "F";
+}
+
+/* J / P */
+p.choice[data-tags="J"],
+p.choice[data-tags~="J"] {
+  --choice-accent: #f6ff00;
+  --choice-accent-soft: rgba(246, 255, 0, 0.13);
+  --choice-accent-hot: rgba(246, 255, 0, 0.42);
+  --choice-letter: "J";
+}
+
+p.choice[data-tags="P"],
+p.choice[data-tags~="P"] {
+  --choice-accent: #00ffc8;
+  --choice-accent-soft: rgba(0, 255, 200, 0.15);
+  --choice-accent-hot: rgba(0, 255, 200, 0.44);
+  --choice-letter: "P";
+}
+
+/* Sdílený vzhled pro odkazy i klikací p.choice bez odkazu */
+p.choice[data-tags] > .choice-link,
+p.choice[data-tags]:not(:has(> .choice-link)) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 14% 50%, var(--choice-accent-soft), transparent 38%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.18)),
+    color-mix(in oklab, var(--bg-secondary, #05070d) 76%, transparent);
+
+  border: 1px solid color-mix(in oklab, var(--choice-accent) 55%, transparent);
+  border-radius: 12px;
+
+  box-shadow:
+    0 0 8px color-mix(in oklab, var(--choice-accent) 24%, transparent),
+    0 0 18px color-mix(in oklab, var(--choice-accent) 12%, transparent),
+    inset 0 0 18px color-mix(in oklab, var(--choice-accent) 9%, transparent);
+
+  text-shadow:
+    0 0 4px color-mix(in oklab, var(--choice-accent) 52%, transparent),
+    0 0 10px color-mix(in oklab, var(--choice-accent) 22%, transparent);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    filter 0.22s ease;
+}
+
+/* Klikací p.choice bez <a> musí vypadat jako tlačítko, ne odstavec v depresi */
+p.choice[data-tags]:not(:has(> .choice-link)) {
+  display: inline-block;
+  width: auto;
+  max-width: min(100%, 860px);
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  padding: 0.48rem 2.85rem 0.48rem 0.85rem;
+  box-sizing: border-box;
+}
+
+/* Linkové tlačítko */
+p.choice[data-tags] > .choice-link {
+  padding: 0.48rem 2.85rem 0.48rem 0.85rem;
+}
+
+/* Barevná levá hrana */
+p.choice[data-tags] > .choice-link::after,
+p.choice[data-tags]:not(:has(> .choice-link))::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12%;
+  bottom: 12%;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--choice-accent);
+  box-shadow:
+    0 0 8px var(--choice-accent),
+    0 0 18px var(--choice-accent);
+  opacity: 0.82;
+}
+
+/* Písmeno diagnostiky vpravo */
+p.choice[data-tags] > .choice-link::before,
+p.choice[data-tags]:not(:has(> .choice-link))::before {
+  content: var(--choice-letter);
+  position: absolute;
+  right: 0.62rem;
+  top: 50%;
+  z-index: -1;
+
+  transform: translateY(-50%);
+  font-family: 'Synthoma', 'Text03i', monospace;
+  font-size: 1.55rem;
+  line-height: 1;
+  font-weight: 700;
+
+  color: color-mix(in oklab, var(--choice-accent) 78%, white);
+  opacity: 0.28;
+
+  text-shadow:
+    0 0 8px var(--choice-accent),
+    0 0 18px var(--choice-accent),
+    0 0 32px color-mix(in oklab, var(--choice-accent) 45%, transparent);
+
+  pointer-events: none;
+}
+
+/* Jemný průjezd světla přes tlačítko */
+p.choice[data-tags] > .choice-link span,
+p.choice[data-tags]:not(:has(> .choice-link)) > span {
+  color: var(--choice-accent);
+  text-shadow:
+    0 0 6px var(--choice-accent),
+    0 0 14px color-mix(in oklab, var(--choice-accent) 40%, transparent);
+}
+
+/* Hover / focus */
+p.choice[data-tags] > .choice-link:hover,
+p.choice[data-tags]:not(:has(> .choice-link)):hover,
+p.choice[data-tags] > .choice-link:focus-visible {
+  transform: translateY(-2px);
+  filter: brightness(1.08) saturate(1.12);
+
+  border-color: color-mix(in oklab, var(--choice-accent) 82%, white);
+
+  background:
+    radial-gradient(circle at 18% 50%, var(--choice-accent-hot), transparent 42%),
+    linear-gradient(90deg, color-mix(in oklab, var(--choice-accent) 13%, rgba(0,0,0,.4)), rgba(0, 0, 0, 0.20)),
+    color-mix(in oklab, var(--bg-secondary, #05070d) 70%, transparent);
+
+  box-shadow:
+    0 0 12px color-mix(in oklab, var(--choice-accent) 48%, transparent),
+    0 0 28px color-mix(in oklab, var(--choice-accent) 26%, transparent),
+    0 0 44px color-mix(in oklab, var(--choice-accent) 13%, transparent),
+    inset 0 0 24px color-mix(in oklab, var(--choice-accent) 15%, transparent);
+}
+
+/* Hover: písmeno se víc ukáže */
+p.choice[data-tags] > .choice-link:hover::before,
+p.choice[data-tags]:not(:has(> .choice-link)):hover::before,
+p.choice[data-tags] > .choice-link:focus-visible::before {
+  opacity: 0.44;
+  transform: translateY(-50%) scale(1.06);
+}
+
+/* Vybraná odpověď */
+p.choice[data-tags] > .choice-link.selected,
+p.choice[data-tags].selected:not(:has(> .choice-link)),
+p.choice[data-tags] > .choice-link.chosen,
+p.choice[data-tags].chosen:not(:has(> .choice-link)) {
+  border-color: color-mix(in oklab, var(--choice-accent) 86%, white);
+  background:
+    radial-gradient(circle at 18% 50%, var(--choice-accent-hot), transparent 45%),
+    linear-gradient(90deg, color-mix(in oklab, var(--choice-accent) 18%, rgba(0,0,0,.32)), rgba(0, 0, 0, 0.24));
+  box-shadow:
+    0 0 16px color-mix(in oklab, var(--choice-accent) 58%, transparent),
+    0 0 34px color-mix(in oklab, var(--choice-accent) 30%, transparent),
+    inset 0 0 28px color-mix(in oklab, var(--choice-accent) 18%, transparent);
+}
+
+/* Nevybrané / zamčené volby */
+.choices-locked p.choice[data-tags] > .choice-link:not(.chosen),
+p.choice[data-tags] > .choice-link.faded,
+p.choice[data-tags].faded:not(:has(> .choice-link)) {
+  opacity: 0.46 !important;
+  filter: grayscale(0.35) brightness(0.82);
+  box-shadow:
+    0 0 5px color-mix(in oklab, var(--choice-accent) 18%, transparent),
+    inset 0 0 10px rgba(255, 255, 255, 0.035);
+}
+
+/* Během psaní žádná diskotéka, systém se má tvářit funkčně */
+.SYNTHOMAREADER.typing p.choice[data-tags] > .choice-link,
+.choice-link.typing {
+  transform: none !important;
+  filter: none !important;
+  box-shadow:
+    0 0 6px color-mix(in oklab, var(--choice-accent) 18%, transparent),
+    inset 0 0 12px color-mix(in oklab, var(--choice-accent) 8%, transparent) !important;
+}
+
+/* Mobil */
+@media (max-width: 640px) {
+  p.choice[data-tags] > .choice-link,
+  p.choice[data-tags]:not(:has(> .choice-link)) {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.56rem 2.45rem 0.56rem 0.75rem;
+    text-align: left;
+  }
+
+  p.choice[data-tags] > .choice-link::before,
+  p.choice[data-tags]:not(:has(> .choice-link))::before {
+    right: 0.5rem;
+    font-size: 1.35rem;
+  }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  p.choice[data-tags] > .choice-link,
+  p.choice[data-tags]:not(:has(> .choice-link)),
+  p.choice[data-tags] > .choice-link::before,
+  p.choice[data-tags]:not(:has(> .choice-link))::before {
+    transition: none !important;
+  }
+}
