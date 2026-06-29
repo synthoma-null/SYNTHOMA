@@ -12,6 +12,7 @@ import { tracks } from "../src/data/playlist";
 import GlobalAudioClient from "./components/GlobalAudioClient";
 
 import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
+import ThemeShopClient from "./components/ThemeShopClient";
 
 import ScrollGuardClient from "./components/ScrollGuardClient";
 
@@ -299,25 +300,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
               {/* Sekce: Motivy */}
 
-              <fieldset className="group" role="radiogroup" aria-label="Barevný motiv">
-
-                <legend className="panel-section-title">Motivy</legend>
-
-                <button className="theme-button" data-theme="synthoma" aria-pressed="false">Synthoma</button>
-
-                <button className="theme-button" data-theme="green-matrix" aria-pressed="false">Green Matrix</button>
-
-                <button className="theme-button" data-theme="neon-hellfire" aria-pressed="false">Neon Hellfire</button>
-
-                <button className="theme-button" data-theme="cyber-dystopia" aria-pressed="false">Cyber Dystopia</button>
-
-                <button className="theme-button" data-theme="acid-glitch" aria-pressed="false">Acid Glitch</button>
-
-                <button className="theme-button" data-theme="retro-arcade" aria-pressed="false">Retro Arcade</button>
-
-                <button className="theme-button" data-theme="mono" aria-pressed="false">Mono BW</button>
-
-              </fieldset>
+              <ThemeShopClient />
 
               {/* Sekce: Audio */}
 

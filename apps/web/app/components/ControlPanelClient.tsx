@@ -963,6 +963,10 @@ export default function ControlPanelClient() {
 
 
       // theme buttons
+      // If the new React ThemeShopClient is present, let it own theme state.
+      if (document.getElementById("theme-shop")) {
+        try { debugLog?.('[ControlPanel] theme buttons skipped – ThemeShopClient owns them'); } catch {}
+      } else {
 
       const themeButtons = document.querySelectorAll<HTMLButtonElement>(".theme-button");
 
@@ -1031,6 +1035,8 @@ export default function ControlPanelClient() {
           });
 
         });
+
+      }
 
       }
 

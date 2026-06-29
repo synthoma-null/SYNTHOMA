@@ -5037,3 +5037,81 @@ transition: none !important;
   line-height: 1;
   user-select: none;
 }
+
+/* Theme shop in control panel */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+.theme-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  min-height: 2.6rem;
+  padding: 0.4rem 0.5rem;
+  color: var(--text-primary);
+  background: rgba(0,0,0,.45);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  font-family: var(--font-family-mono, 'Text02', monospace);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease, color .15s ease;
+}
+.theme-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(0,0,0,.6);
+  border-color: var(--accent-primary, #7c5cff);
+  box-shadow: 0 0 12px var(--glow-secondary), 0 0 2px var(--glow-primary);
+}
+.theme-button:active:not(:disabled) { transform: translateY(0); }
+.theme-button.active {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--glow-primary);
+}
+.theme-button.locked {
+  opacity: 0.75;
+  border-style: dashed;
+}
+.theme-button.cant-afford {
+  opacity: 0.5;
+  border-color: var(--accent-error, #ff4444);
+}
+.theme-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.theme-button.cant-afford:disabled {
+  opacity: 0.45;
+}
+.theme-label { line-height: 1.1; }
+.theme-cost {
+  font-size: 0.6rem;
+  color: var(--accent-warning, #ffb300);
+  font-weight: 700;
+}
+.theme-owned {
+  position: absolute;
+  top: 0.15rem;
+  right: 0.25rem;
+  font-size: 0.65rem;
+  color: var(--accent-secondary, #0ff);
+}
+.theme-balance,
+.theme-error,
+.theme-hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-family: var(--font-family-mono, monospace);
+  color: var(--text-secondary);
+}
+.theme-error { color: var(--accent-warning, #ffb300); }
