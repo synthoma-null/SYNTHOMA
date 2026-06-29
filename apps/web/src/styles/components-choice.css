@@ -85,6 +85,7 @@ p.choice[data-tags]:not(:has(> .choice-link)) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  touch-action: manipulation;
 
   color: var(--text-primary);
   background:
