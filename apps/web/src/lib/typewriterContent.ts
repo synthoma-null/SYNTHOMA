@@ -88,7 +88,7 @@ export function renderTypingHtml(srcHtml: string, count: number): string {
     container.querySelectorAll("a, button").forEach((el) => {
       if (el instanceof HTMLButtonElement) {
         el.disabled = true;
-        el.style.pointerEvents = "none";
+        el.classList.add('typing');
       }
     });
     return container.innerHTML;

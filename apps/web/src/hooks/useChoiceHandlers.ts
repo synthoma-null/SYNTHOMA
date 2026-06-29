@@ -89,16 +89,6 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
         if (label) announce(`Fokus na volbu: ${label}`);
       });
 
-      node.addEventListener(
-        "touchend",
-        (e: Event) => {
-          const h = hostRef.current;
-          if (h) lockChoiceGroup(node, h);
-          // Do NOT preventDefault here — let click fire naturally
-        },
-        { passive: true }
-      );
-
       node.addEventListener("click", (e: Event) => {
         const h = hostRef.current;
         if (h) lockChoiceGroup(node, h);

@@ -187,6 +187,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         node.classList.remove('disabled');
         node.classList.remove('choice-empty');
         node.classList.remove('typing');
+        node.style.removeProperty('pointer-events');
         if (node instanceof HTMLButtonElement) { node.disabled = false; }
         node.removeAttribute('aria-disabled');
         // restore href on anchors if it was parked in data-href during typing
