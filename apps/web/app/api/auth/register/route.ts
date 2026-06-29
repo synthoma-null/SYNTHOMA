@@ -64,6 +64,14 @@ export async function POST(req: NextRequest) {
       select: { id: true, nickname: true, email: true },
     });
 
+    await prisma.mnemLedger.create({
+      data: {
+        userId: user.id,
+        amount: 128,
+        reason: 'Startovní kredit při registraci',
+      },
+    });
+
     return NextResponse.json(
       { ok: true, userId: user.id, nickname: user.nickname },
       { status: 201 },
