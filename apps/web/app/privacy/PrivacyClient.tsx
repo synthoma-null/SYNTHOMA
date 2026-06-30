@@ -40,8 +40,7 @@ export default function PrivacyClient() {
             <h2 className="title">1. Data Controller</h2>
             <p className="text">The controller of personal data is the operator of <strong>SYNTHOMA.cz</strong>.</p>
             <ul className="text legal-list">
-              <li><strong>Controller:</strong> Tomáš Valíček</li>
-              <li><strong>Contact e-mail:</strong> add contact e-mail for GDPR requests</li>
+              <li><strong>Contact e-mail:</strong> null1@synthoma.cz</li>
             </ul>
             <p className="text">
               For questions regarding personal data protection or to exercise your rights, use the contact e-mail listed above.
@@ -237,8 +236,7 @@ export default function PrivacyClient() {
           <h2 className="title">1. Správce osobních údajů</h2>
           <p className="text">Správcem osobních údajů je provozovatel webu <strong>SYNTHOMA.cz</strong>.</p>
           <ul className="text legal-list">
-            <li><strong>Správce:</strong> Tomáš Valíček</li>
-            <li><strong>Kontaktní e-mail:</strong> doplň kontaktní e-mail pro GDPR žádosti</li>
+            <li><strong>Kontaktní e-mail:</strong> null1@synthoma.cz</li>
           </ul>
           <p className="text">Pro dotazy nebo uplatnění práv použij kontaktní e-mail uvedený výše.</p>
         </section>
@@ -308,7 +306,7 @@ export default function PrivacyClient() {
           <p className="text">
             <strong>Nezbytné cookies</strong> slouží k přihlášení a bezpečnosti (bez souhlasu).
             Volitelné cookies (analytika, personalizace) se používají pouze na základě souhlasu.
-            Nastavení může být ukládáno v <strong>localStorage</strong> v tvém prohlížeči – neodesíláno na server.
+            Nastavení může být ukládáno v <strong>localStorage</strong> ve tvém prohlížeči – neodesíláno na server.
           </p>
         </section>
 
@@ -318,7 +316,7 @@ export default function PrivacyClient() {
             <li><strong>Hosting a infrastruktura</strong> – např. Vercel (hosting, CDN, serverové funkce),</li>
             <li><strong>Platební brána</strong> – např. Stripe pro nákup mnemů a obsahu,</li>
             <li><strong>E-mailové služby</strong> – potvrzení registrace, obnova hesla, účtenky,</li>
-            <li><strong>Analytické služby</strong> – pouze pokud nasazeny a v rozsahu souhlasu,</li>
+            <li><strong>Analytické služby</strong> – pouze pokud jsou nasazeny a v rozsahu souhlasu,</li>
             <li><strong>Orgány veřejné moci</strong> – pokud to vyžaduje právní předpis.</li>
           </ul>
         </section>
