@@ -129,16 +129,16 @@ export default function RegisterForm() {
             onChange={(e) => setConsentChecked(e.target.checked)}
             required
             aria-required="true"
-            aria-label="Souhlas s podmínkami použití a zásadami ochrany osobních údajů"
+            aria-label={`${t('auth.register.consent')} ${t('auth.register.consent.terms')} ${t('auth.register.consent.and')} ${t('auth.register.consent.privacy')}`}
           />
           <span>
-            Souhlasím s{' '}
+            {t('auth.register.consent')}{' '}
             <a href="/terms" target="_blank" rel="noopener noreferrer" className="auth-link">
-              podmínkami použití
+              {t('auth.register.consent.terms')}
             </a>
-            {' '}a{' '}
+            {' '}{t('auth.register.consent.and')}{' '}
             <a href="/privacy" target="_blank" rel="noopener noreferrer" className="auth-link">
-              zásadami ochrany osobních údajů
+              {t('auth.register.consent.privacy')}
             </a>
             .
           </span>

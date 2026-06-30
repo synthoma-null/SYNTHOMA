@@ -72,6 +72,10 @@ export const translations = {
   'auth.register.submit': { cs: 'REGISTROVAT SUBJEKT', en: 'REGISTER SUBJECT' },
   'auth.register.switch': { cs: 'Existující subjekt?', en: 'Existing subject?' },
   'auth.register.back': { cs: '← ZPĚT NA SYNTHOMA', en: '← BACK TO SYNTHOMA' },
+  'auth.register.consent': { cs: 'Souhlasím s', en: 'I agree to the' },
+  'auth.register.consent.terms': { cs: 'podmínkami použití', en: 'terms of use' },
+  'auth.register.consent.and': { cs: 'a', en: 'and' },
+  'auth.register.consent.privacy': { cs: 'zásadami ochrany osobních údajů', en: 'privacy policy' },
 
   // ─── books ────────────────────────────────────────────────────────────────
   'books.empty': { cs: 'Knihovna se načítá...', en: 'Library loading...' },
