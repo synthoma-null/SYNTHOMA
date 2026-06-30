@@ -14,7 +14,6 @@ const TITLE = "SYNTHOMA";
 export default function HomeClient() {
   const { t } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
-  const [showBgVideo, setShowBgVideo] = useState(true);
   const videoRef = useVideoVisibility();
   const [lastChapter, setLastChapter] = useState<string | null>(null);
   const [lastChapterTitle, setLastChapterTitle] = useState<string | null>(null);
@@ -29,15 +28,6 @@ export default function HomeClient() {
     if (!root) return;
     const detach = attachGlitchHeading(root, TITLE, { intervalMs: 260, chance: 0.08 });
     return () => { try { detach && detach(); } catch {} };
-  }, []);
-
-  // iOS Safari: disable background video (prevents native Play overlay)
-  useEffect(() => {
-    try {
-      const ua = navigator.userAgent || "";
-      const isiOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
-      if (isiOS) setShowBgVideo(false);
-    } catch {}
   }, []);
 
   // Detect reading progress for "Continue reading" badge
@@ -72,22 +62,20 @@ export default function HomeClient() {
 
   return (
     <div className={"glitch-bg home-page"}>
-      {/* Background video layer (disabled on iOS) */}
-      {showBgVideo ? (
-        <div aria-hidden className="video-background">
-          <video
-            ref={videoRef}
-            src="/video/SYNTHOMA32.webm"
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-            preload="metadata"
-            className="active"
-          />
-        </div>
-      ) : null}
+      {/* Background video layer */}
+      <div aria-hidden className="video-background">
+        <video
+          ref={videoRef}
+          src="/video/SYNTHOMA32.webm"
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls={false}
+          preload="metadata"
+          className="active"
+        />
+      </div>
       <main className={styles.home} role="main" aria-label={t('home.aria')}>
         {/* Nadpis musí být mimo panel sekci, 1:1 jako na landing-intro */}
         <h1 id="glitch-synthoma" className={`glitch-master`} ref={glitchRootRef as any} aria-label={TITLE}>

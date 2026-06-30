@@ -96,10 +96,6 @@ export default function LandingIntroPage() {
 
   const infoFullHtmlRef = useRef<string>("");
 
-  // Background video toggle (disable on iOS Safari to avoid native play overlay)
-
-  const [showBgVideo, setShowBgVideo] = useState(true);
-
   const videoRef = useVideoVisibility();
 
   // Force using the same reader component as Autor for 1:1 visuals/behavior
@@ -1052,21 +1048,6 @@ export default function LandingIntroPage() {
 
 
 
-  // Detect iOS Safari and hide background video to prevent blocking play overlay
-
-  useEffect(() => {
-
-    try {
-
-      const ua = navigator.userAgent || '';
-
-      const isiOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
-
-      if (isiOS) setShowBgVideo(false);
-
-    } catch {}
-
-  }, []);
 
 
 
@@ -1662,37 +1643,33 @@ export default function LandingIntroPage() {
 
     <div className={"glitch-bg landing-intro-page"}>
 
-      {/* Background video layer (disabled on iOS) */}
+      {/* Background video layer */}
 
-      {showBgVideo ? (
+      <div aria-hidden className="video-background">
 
-        <div aria-hidden className="video-background">
+        <video
 
-          <video
+          ref={videoRef}
 
-            ref={videoRef}
+          src="/video/SYNTHOMA1.webm"
 
-            src="/video/SYNTHOMA1.webm"
+          autoPlay
 
-            autoPlay
+          loop
 
-            loop
+          muted
 
-            muted
+          playsInline
 
-            playsInline
+          className={`active ${styles.videoNoPointer}`.trim()}
 
-            className={`active ${styles.videoNoPointer}`.trim()}
+          controls={false}
 
-            controls={false}
+          preload="metadata"
 
-            preload="metadata"
+        />
 
-          />
-
-        </div>
-
-      ) : null}
+      </div>
 
       <main className="home" role="main">
 
