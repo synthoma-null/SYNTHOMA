@@ -4698,6 +4698,60 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* =========================
+   LEGAL FOOTER
+   ========================= */
+.legal-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  padding: .35rem 1rem;
+  pointer-events: none;
+}
+.legal-footer-nav {
+  display: inline-flex;
+  gap: .6rem;
+  align-items: center;
+  pointer-events: all;
+}
+.legal-footer-link {
+  font-size: .62rem;
+  letter-spacing: .08em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  opacity: .45;
+  transition: opacity .15s;
+}
+.legal-footer-link:hover { opacity: .9; text-decoration: underline; }
+.legal-footer-sep { color: var(--text-secondary); opacity: .3; font-size: .6rem; }
+
+/* =========================
+   LEGAL PAGES (privacy, terms)
+   ========================= */
+.legal-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+.legal-page h2.title {
+  font-size: 1rem;
+  margin-top: 0;
+  letter-spacing: .12em;
+  border-bottom: 1px solid var(--border-secondary);
+  padding-bottom: .35rem;
+}
+.legal-list {
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  list-style: disc;
+}
+.legal-list li { font-size: .9rem; }
+
 /* Reduced motion overrides for animations not already covered */
 @media (prefers-reduced-motion: reduce) {
   .title::before,

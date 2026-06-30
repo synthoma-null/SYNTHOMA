@@ -17,6 +17,7 @@ export default function RegisterForm() {
   });
   const [error, setError] = useState('');
   const [isPending, setIsPending] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -119,9 +120,34 @@ export default function RegisterForm() {
         />
       </div>
 
+      <div className="auth-field auth-consent-field">
+        <label className="auth-consent-label">
+          <input
+            type="checkbox"
+            className="auth-consent-check"
+            checked={consentChecked}
+            onChange={(e) => setConsentChecked(e.target.checked)}
+            required
+            aria-required="true"
+            aria-label="Souhlas s podmínkami použití a zásadami ochrany osobních údajů"
+          />
+          <span>
+            Souhlasím s{' '}
+            <a href="/terms" target="_blank" rel="noopener noreferrer" className="auth-link">
+              podmínkami použití
+            </a>
+            {' '}a{' '}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="auth-link">
+              zásadami ochrany osobních údajů
+            </a>
+            .
+          </span>
+        </label>
+      </div>
+
       {error && <p className="auth-error" role="alert">{error}</p>}
 
-      <button className="auth-submit btn" type="submit" disabled={isPending}>
+      <button className="auth-submit btn" type="submit" disabled={isPending || !consentChecked}>
         {isPending ? t('auth.register.pending') : t('auth.register.submit')}
       </button>
 
