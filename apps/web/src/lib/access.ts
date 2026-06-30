@@ -256,6 +256,8 @@ export async function updateRunStats(
     await prisma.userRun.create({
       data: {
         userId,
+        // TODO: cycleNumber se smí zvyšovat POUZE při skutečném restartu/cyklu (např. když stability=0
+        // nebo uživatel explicitně zvolí reset). Nikdy ji neměň v rámci normálního průchodu kapitol.
         cycleNumber: 1,
         stability: clampRun(50 + delta.stabilityDelta),
         memoryPressure: clampRun(0 + delta.pressureDelta),
@@ -263,6 +265,7 @@ export async function updateRunStats(
       },
     });
   } else {
+    // NOTE: cycleNumber se záměrně nemění — viz TODO výše.
     await prisma.userRun.update({
       where: { userId },
       data: {

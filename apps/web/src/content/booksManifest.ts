@@ -868,7 +868,7 @@ export const MISSIONS: Mission[] = [
     description: 'V Černém boxu zvolit odejít od zamčených dveří. Vyžaduje Stín > 60.',
     condition: 'shadow:60',
     task: 'Odolat a odejít od Černého boxu',
-    rewardText: 'Stín -5, Stabilita +3, Fragment jména: ?',
+    rewardText: 'Stín -5, Stabilita +3',
     fragmentReward: null,
     runReward: { shadowDelta: -5, stabilityDelta: 3 },
   },
