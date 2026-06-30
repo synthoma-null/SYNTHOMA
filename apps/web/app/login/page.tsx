@@ -5,6 +5,7 @@ import BgVideo from '../components/BgVideo';
 export const metadata: Metadata = {
   title: 'SYNTHOMA – AUTH GATE',
   description: 'Přihlášení subjektu do systému SYNTHOMA.',
+  robots: { index: false, follow: false },
 };
 
 export default function LoginPage() {

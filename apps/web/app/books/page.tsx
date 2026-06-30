@@ -24,14 +24,18 @@ function buildBookJsonLd(manifest: Manifest) {
     "@context": "https://schema.org",
     "@type": "Book",
     "name": col.title || col.slug,
-    "url": `https://www.synthoma.cz/books`,
+    "url": "https://www.synthoma.cz/books",
     "inLanguage": "cs",
-    "isAccessibleForFree": true,
+    "author": { "@type": "Person", "name": "Tomáš Valíček" },
+    "publisher": { "@type": "Organization", "name": "SYNTHOMA", "url": "https://www.synthoma.cz" },
     "hasPart": (col.chapters || []).map((ch: any, idx: number) => ({
       "@type": "Chapter",
       "name": ch.title,
       "position": idx + 1,
-      "url": `https://www.synthoma.cz/reader?u=${encodeURIComponent(ch.path)}`,
+      "url": ch.id
+        ? `https://www.synthoma.cz/chapter/${ch.id}`
+        : `https://www.synthoma.cz/reader?u=${encodeURIComponent(ch.path)}`,
+      "isAccessibleForFree": ch.free !== false,
     })),
   }));
 }
@@ -77,7 +81,7 @@ export default async function BooksPage() {
               <ul>
                 {col.chapters.map((ch) => (
                   <li key={ch.path}>
-                    <a href={`/reader?u=${encodeURIComponent(ch.path)}`}>
+                    <a href={ch.id ? `/chapter/${ch.id}` : `/reader?u=${encodeURIComponent(ch.path)}`}>
                       {ch.title}
                     </a>
                   </li>

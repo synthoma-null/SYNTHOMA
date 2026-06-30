@@ -5,6 +5,7 @@ import BgVideo from '../components/BgVideo';
 export const metadata: Metadata = {
   title: 'SYNTHOMA – REGISTRACE SUBJEKTU',
   description: 'Vytvoření nové identity v systému SYNTHOMA.',
+  robots: { index: false, follow: false },
 };
 
 export default function RegisterPage() {

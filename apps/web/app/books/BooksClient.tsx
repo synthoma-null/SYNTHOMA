@@ -248,7 +248,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                               <Link
                                 className="lib-link"
                                 prefetch={false}
-                                href={ch.id ? `/reader?chapter=${encodeURIComponent(ch.id)}` : `/reader?u=${encodeURIComponent(ch.path)}`}
+                                href={ch.id ? `/chapter/${encodeURIComponent(ch.id)}` : `/reader?u=${encodeURIComponent(ch.path)}`}
                                 data-echo={ch.title}
                               >
                                 <span className="lib-link-title">{ch.title}</span>
