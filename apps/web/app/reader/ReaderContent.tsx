@@ -83,6 +83,7 @@ export default function ReaderContent() {
   }, [prevChapter, nextChapter, router]);
 
   // Derive bookId from effectiveUrl: /books/<bookId>/...
+  // For API URLs (/api/chapter/<id>), fall back to chapterMeta collection.
   const { bookId, chapterPath } = useMemo(() => {
     try {
       const u = effectiveUrl || '';
@@ -91,9 +92,14 @@ export default function ReaderContent() {
         const captured = m[1] ?? '';
         return { bookId: decodeURIComponent(String(captured)), chapterPath: u };
       }
+      // API URL: resolve via chapterMeta
+      if (effectiveChapterId && chapterMeta) {
+        const legacyPath = `/books/${chapterMeta.collection}/${chapterMeta.filename}`;
+        return { bookId: chapterMeta.collection, chapterPath: legacyPath };
+      }
     } catch {}
     return { bookId: 'default', chapterPath: effectiveUrl };
-  }, [effectiveUrl]);
+  }, [effectiveUrl, effectiveChapterId, chapterMeta]);
 
   useEffect(() => {
     try {

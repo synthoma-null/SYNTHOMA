@@ -185,11 +185,18 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                     <div className={`lib-section-title ${styles.sectionHeader}`}>
                       <h2 className={styles.sectionTitleReset}>{selected.title}</h2>
                       <div className={`hero-cta ${styles.ctaRow}`}>
-                        {progress[selected.slug] ? (
-                          <Link className="btn btn-lg" prefetch={false} href={`/reader?u=${encodeURIComponent(progress[selected.slug]!.path)}`} aria-label={t('books.nav.continue.label')}>
-                            ▶ {t('books.continue')} ({Math.max(0, Math.min(100, Math.round(progress[selected.slug]?.percent ?? 0)))}%)
-                          </Link>
-                        ) : null}
+                        {progress[selected.slug] ? (() => {
+                          const p = progress[selected.slug]!;
+                          const matchedCh = selected.chapters?.find(c => c.path === p.path);
+                          const href = matchedCh?.id
+                            ? `/chapter/${encodeURIComponent(matchedCh.id)}`
+                            : `/reader?u=${encodeURIComponent(p.path)}`;
+                          return (
+                            <Link className="btn btn-lg" prefetch={false} href={href} aria-label={t('books.nav.continue.label')}>
+                              ▶ {t('books.continue')} ({Math.max(0, Math.min(100, Math.round(p.percent ?? 0)))}%)
+                            </Link>
+                          );
+                        })() : null}
                         <button className="btn btn-lg" onClick={() => setSelected(null)} aria-label={t('books.nav.back.label')}>⟵ {t('books.nav.back.label')}</button>
                       </div>
                     </div>

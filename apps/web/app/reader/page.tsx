@@ -27,17 +27,32 @@ export default function ReaderPage() {
   const searchParams = useSearchParams();
   const { lang } = useLang();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-∞ [RESTART].html";
-  const chapterPath = useMemo(() => searchParams?.get('u') || defaultUrl, [searchParams]);
+  const chapterId = searchParams?.get('chapter') ?? null;
+  const legacyU = searchParams?.get('u') ?? null;
+  // Resolve chapterPath for manifest/video lookup
+  const chapterPath = useMemo(() => {
+    if (chapterId) {
+      const meta = getChapterById(chapterId);
+      if (meta) return `/books/${meta.collection}/${meta.filename}`;
+    }
+    return legacyU || defaultUrl;
+  }, [chapterId, legacyU]);
   const [bgSrc, setBgSrc] = useState<string>("");
   const videoRef = useVideoVisibility();
 
-  // If no ?u is provided, try to continue from lastChapterPath stored in localStorage
+  // If no chapter params, try to continue from lastChapterPath in localStorage
   useEffect(() => {
     try {
+      const hasChapter = !!searchParams?.get('chapter');
       const hasU = !!searchParams?.get('u');
-      if (hasU) return;
+      if (hasChapter || hasU) return;
       const last = readLastChapterPath();
-      if (last) {
+      if (!last) return;
+      // lastChapterPath can be /api/chapter/<id> or legacy /books/... URL
+      const apiMatch = last.match(/^\/api\/chapter\/([^/?]+)/);
+      if (apiMatch) {
+        router.replace(`/reader?chapter=${encodeURIComponent(apiMatch[1] ?? '')}`);
+      } else {
         router.replace(`/reader?u=${encodeURIComponent(last)}`);
       }
     } catch {}
@@ -53,21 +68,11 @@ export default function ReaderPage() {
         const res = await fetch('/books/manifest.json', { cache: 'no-store' });
         if (!res.ok) return;
         const manifest = await res.json();
-        // Map /api/chapter/<id> to the corresponding /books/<collection>/<filename> path
-        // so manifest.json can resolve backgroundVideo for the new API chapter URLs.
-        const apiMatch = chapterPath.match(/^\/api\/chapter\/([^/?]+)/);
-        const manifestPath = (() => {
-          if (apiMatch) {
-            const chapter = getChapterById(decodeURIComponent(apiMatch[1] ?? ''));
-            if (chapter) return `/books/${chapter.collection}/${chapter.filename}`;
-          }
-          return chapterPath;
-        })();
-        // Extract bookId from chapterPath: /books/<bookId>/...
-        const m = manifestPath.match(/^\/books\/([^\/]+)\//);
+        // chapterPath is always /books/<collection>/<filename> (resolved above from chapterId or legacyU)
+        const m = chapterPath.match(/^\/books\/([^\/]+)\//);
         const bookId = m ? decodeURIComponent(String(m[1] ?? '')) : '';
         const col = (manifest?.collections || []).find((c: any) => (c.slug || '').toLowerCase() === (bookId || '').toLowerCase());
-        const ch = col?.chapters?.find((x: any) => x.path === manifestPath);
+        const ch = col?.chapters?.find((x: any) => x.path === chapterPath);
         const src = (ch?.backgroundVideo || '').trim();
         if (!cancelled) setBgSrc(src);
       } catch {

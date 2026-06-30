@@ -35,14 +35,22 @@ export default function HomeClient() {
     try {
       const last = readLastChapterPath();
       if (last) {
-        setLastChapter(last);
+        // Resolve chapter ID from stored path (/api/chapter/<id> or /books/...)
+        const apiMatch = last.match(/^\/api\/chapter\/([^/?]+)/);
+        const resolvedId = apiMatch ? decodeURIComponent(apiMatch[1] ?? '') : null;
+        setLastChapter(resolvedId ? `/chapter/${resolvedId}` : last);
         // Try to get title and progress from manifest
         fetch('/books/manifest.json', { cache: 'no-store' })
           .then(r => r.ok ? r.json() : null)
           .then(manifest => {
             if (!manifest) return;
             for (const col of manifest.collections || []) {
-              const ch = (col.chapters || []).find((c: any) => c.path === last);
+              const ch = (col.chapters || []).find((c: any) => {
+                if (c.path === last) return true;
+                // match via API URL
+                const apiM = last.match(/^\/api\/chapter\/([^/?]+)/);
+                return apiM ? c.id === decodeURIComponent(apiM[1] ?? '') : false;
+              });
               if (ch) {
                 setLastChapterTitle(ch.title);
                 // Read progress for this book
@@ -95,7 +103,7 @@ export default function HomeClient() {
               {lastChapter ? (
                 <li className={styles.fullWidth}>
                   <article className={`${styles.card} ${styles.cardPrimary}`}>
-                    <Link className={styles.cardLink} href={`/reader?u=${encodeURIComponent(lastChapter)}`}>
+                    <Link className={styles.cardLink} href={lastChapter}>
                       <h2 className={styles.cardTitle}>{t('home.continue')}</h2>
                       <p className={styles.cardTeaser}>
                         {lastChapterTitle || t('home.continue.fallback')}
