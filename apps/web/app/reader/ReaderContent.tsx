@@ -8,6 +8,7 @@ import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { saveLastChapterPath, saveReadingProgress } from '../../src/lib/readerState';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PaywallModal from '../../src/components/PaywallModal';
+import ChapterLockModal from '../components/ChapterLockModal';
 import { getChapterById } from '../../src/content/booksManifest';
 import ChapterSyncLog, { type SyncDelta } from '../../src/components/run/ChapterSyncLog';
 import { useLang } from '../../src/lib/LangContext';
@@ -51,6 +52,8 @@ export default function ReaderContent() {
   const [syncDelta, setSyncDelta] = useState<SyncDelta | null>(null);
   const completionFiredRef = useRef(false);
   const readStartRef = useRef<number>(Date.now());
+  const [nextLockedChapter, setNextLockedChapter] = useState<{ id: string; title: string } | null>(null);
+  const [showNextLocked, setShowNextLocked] = useState(false);
 
   // Reset completion tracker when chapter changes
   useEffect(() => {
@@ -157,7 +160,13 @@ export default function ReaderContent() {
         if (idx < 0) return;
         if (cancelled) return;
         setPrevChapter(idx > 0 ? { title: col.chapters[idx - 1].title, path: col.chapters[idx - 1].path } : null);
-        setNextChapter(idx < col.chapters.length - 1 ? { title: col.chapters[idx + 1].title, path: col.chapters[idx + 1].path } : null);
+        const next = idx < col.chapters.length - 1 ? col.chapters[idx + 1] : null;
+        setNextChapter(next ? { title: next.title, path: next.path } : null);
+        if (next && !next.free && next.id) {
+          setNextLockedChapter({ id: next.id, title: next.title });
+        } else {
+          setNextLockedChapter(null);
+        }
       } catch {}
     })();
     return () => { cancelled = true; };
@@ -266,7 +275,20 @@ export default function ReaderContent() {
           chapterId={chapterId}
           chapterTitle={chapterMeta?.title ?? chapterId}
           delta={syncDelta}
-          onClose={() => setSyncDelta(null)}
+          onClose={() => {
+            setSyncDelta(null);
+            if (nextLockedChapter) {
+              setShowNextLocked(true);
+            }
+          }}
+        />
+      )}
+
+      {showNextLocked && nextLockedChapter && (
+        <ChapterLockModal
+          chapterId={nextLockedChapter.id}
+          chapterTitle={nextLockedChapter.title}
+          onClose={() => setShowNextLocked(false)}
         />
       )}
 

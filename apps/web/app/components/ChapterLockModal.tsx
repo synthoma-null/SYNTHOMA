@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { PACKAGES, CHAPTERS } from '../../src/content/booksManifest';
 import { useLang } from '../../src/lib/LangContext';
@@ -26,6 +26,9 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
   const [code, setCode] = useState('');
   const [codeStatus, setCodeStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
   const [codeMsg, setCodeMsg] = useState('');
+  const [mnemBalance, setMnemBalance] = useState<number | null>(null);
+  const [mnemConfirm, setMnemConfirm] = useState(false);
+  const [mnemUnlocking, setMnemUnlocking] = useState(false);
 
   const chapter = CHAPTERS.find((c) => c.id === chapterId);
   const mnemCost = chapter?.mnemCost ?? 64;
@@ -35,6 +38,39 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
   const archivPlusPkg = PACKAGES.find((p) => p.id === 'archiv-plus');
 
   const isAct1Chapter = act1Pkg?.chapterIds.includes(chapterId) ?? false;
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    fetch('/api/me/chapters/unlock')
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d && typeof d.balance === 'number') setMnemBalance(d.balance); })
+      .catch(() => {});
+  }, [isLoggedIn]);
+
+  const handleMnemUnlock = async () => {
+    setMnemUnlocking(true);
+    setError('');
+    try {
+      const res = await fetch('/api/me/chapters/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chapterId }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        window.location.href = `/reader?chapter=${encodeURIComponent(chapterId)}`;
+      } else {
+        setError(data.error ?? 'Odemčení selhalo.');
+        setMnemConfirm(false);
+        if (data.balance !== undefined) setMnemBalance(data.balance);
+      }
+    } catch {
+      setError('Chyba sítě. Zkus to znovu.');
+      setMnemConfirm(false);
+    } finally {
+      setMnemUnlocking(false);
+    }
+  };
 
   const handlePurchase = async (packageId: string) => {
     setPurchasing(packageId);
@@ -219,6 +255,64 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                 </div>
               )}
             </div>
+
+            {mnemBalance !== null && mnemBalance >= mnemCost && !mnemConfirm && (
+              <div className="paywall-mnem-row">
+                <div className="paywall-mnem-balance">
+                  <span className="paywall-log-prefix">LOG [MNEM_WALLET]:</span>
+                  <span className="paywall-log-msg">&#8222;Dostupné mnemy: <strong>{mnemBalance}</strong>&#8220;</span>
+                </div>
+                <button
+                  className="btn paywall-package-btn paywall-mnem-btn"
+                  onClick={() => setMnemConfirm(true)}
+                  disabled={mnemUnlocking || purchasing !== null}
+                >
+                  Odemknout za {mnemCost} mnemů
+                </button>
+              </div>
+            )}
+
+            {mnemBalance !== null && mnemBalance < mnemCost && (
+              <div className="paywall-mnem-row paywall-mnem-row--insufficient">
+                <div className="paywall-mnem-balance">
+                  <span className="paywall-log-prefix">LOG [MNEM_WALLET]:</span>
+                  <span className="paywall-log-msg">&#8222;Dostupné mnemy: <strong>{mnemBalance}</strong> / potřeba: <strong>{mnemCost}</strong>&#8220;</span>
+                </div>
+              </div>
+            )}
+
+            {mnemConfirm && (
+              <div className="theme-dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="mnem-confirm-title">
+                <div className="theme-dialog">
+                  <p className="theme-dialog-log">LOG [MNEM_SPEND]:</p>
+                  <h2 id="mnem-confirm-title" className="theme-dialog-title">POTVRDIT ODEMČENÍ</h2>
+                  <p className="theme-dialog-body">
+                    Chceš odemknout <strong>{chapterTitle}</strong> za <strong>{mnemCost} mnemů</strong>?
+                  </p>
+                  {mnemBalance !== null && (
+                    <p className="theme-dialog-balance">
+                      Zůstatek po nákupu: <strong>{mnemBalance - mnemCost}</strong> mnemů
+                    </p>
+                  )}
+                  <div className="theme-dialog-actions">
+                    <button
+                      className="btn theme-dialog-btn theme-dialog-btn--cancel"
+                      onClick={() => setMnemConfirm(false)}
+                      disabled={mnemUnlocking}
+                    >
+                      Zrušit
+                    </button>
+                    <button
+                      className="btn theme-dialog-btn theme-dialog-btn--confirm"
+                      onClick={handleMnemUnlock}
+                      disabled={mnemUnlocking}
+                    >
+                      {mnemUnlocking ? 'ZPRACOVÁNÍ…' : 'Odemknout'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="paywall-back-row">
               <button className="btn btn-outline paywall-back-btn" onClick={onClose}>

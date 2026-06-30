@@ -2751,6 +2751,39 @@
   box-shadow: 0 0 18px rgba(124,92,255,.5);
 }
 
+.paywall-mnem-row {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: .75rem 1rem;
+  margin: .5rem 0;
+  border: 1px solid rgba(0, 255, 180, .25);
+  border-radius: 8px;
+  background: rgba(0, 255, 180, .04);
+}
+.paywall-mnem-row--insufficient {
+  border-color: rgba(255, 80, 80, .25);
+  background: rgba(255, 80, 80, .04);
+}
+.paywall-mnem-balance {
+  font-size: .8rem;
+  opacity: .8;
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.paywall-mnem-btn {
+  align-self: flex-start;
+  background: rgba(0, 255, 180, .1);
+  border-color: rgba(0, 255, 180, .4);
+  color: rgb(0, 255, 180);
+  font-size: .82rem;
+  letter-spacing: .06em;
+}
+.paywall-mnem-btn:hover:not(:disabled) {
+  background: rgba(0, 255, 180, .2);
+  border-color: rgba(0, 255, 180, .7);
+}
 .paywall-back-row {
   display: flex;
   justify-content: center;
