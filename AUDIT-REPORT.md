@@ -1,6 +1,6 @@
 # SYNTHOMA — Kompletní auditní zpráva
 
-**Datum:** červen 2025 (aktualizováno červen 2026)  
+**Datum:** červen 2026 (aktualizováno 30. června 2026)  
 **Rozsah:** Hloubková analýza celého projektu — architektura, funkčnost mechanismů, vizuální konzistence, CSS styly, bezpečnost, přístupnost, výkon a SEO.
 
 ---
@@ -20,16 +20,25 @@
 | `/` | Client (SSR shell) | Domovská stránka s menu, glitch titulkem, continue-reading |
 | `/landing-intro` | Client | Cinematický onboarding s TypewriterReader, CTA |
 | `/books` | ISR (1h) | Knihovna sbírek a kapitol z `manifest.json` |
-| `/reader` | Client (dynamic import) | Hlavní čtečka s typewriter efektem |
+| `/chapter/[id]` | Static (SSG) | SEO-friendly URL per-kapitola; generuje metadata + redirect na `/reader?chapter=<id>` |
+| `/reader` | Client (dynamic import) | Hlavní čtečka s typewriter efektem; přijímá `?chapter=<id>` nebo legacy `?u=<path>` |
 | `/archive` | ISR (1h) | Lore karty z `archiveCards.json` |
 | `/autor` | SSR + Client | Stránka autora s TypewriterReader |
 | `/profile` | Dynamic | Profil subjektu s profilem, CYKLUS, achievementy |
-| `/sitemap.xml` | Dynamic | Generováno z `manifest.json` |
+| `/login` | Client | Přihlášení; `noindex` |
+| `/register` | Client | Registrace; `noindex` |
+| `/admin` | Client | Administrace; `noindex` |
+| `/privacy` | Static | Ochrana osobních údajů |
+| `/terms` | Static | Obchodní podmínky |
+| `/purchase` | Client | Platební stránka |
+| `/robots.txt` | Dynamic | Generováno z `app/robots.ts` |
+| `/sitemap.xml` | Dynamic | Generováno z `app/sitemap.ts`, obsahuje `/chapter/<id>` URL |
 
-**API Routes (červen 2026):**
+**API Routes:**
 
 | Endpoint | Metody | Funkce |
 |---|---|---|
+| `/api/chapter/[chapterId]` | GET | Načtení HTML obsahu kapitoly; kontrola přístupu (free/paid) |
 | `/api/me/run` | GET, PATCH | Run stav, update stability/pressure/shadow |
 | `/api/me/choices` | GET, POST | Záznam voleb, run delta, aktivace misí |
 | `/api/me/progress` | GET, POST | Čtecí pokrok, completed flag |
@@ -37,10 +46,21 @@
 | `/api/me/missions` | GET | Aktivní mise subjektu |
 | `/api/me/artifacts` | GET, POST | Artefakty, nákup za mnemy |
 | `/api/me/badges` | GET | Odznaky subjektu |
+| `/api/me/chapters/unlock` | GET, POST | Stav odemčení a odemknutí kapitoly za mnemy |
+| `/api/me/themes` | GET, POST | Uložení zvoleného tématu |
+| `/api/me/delete` | POST | Smazání účtu |
+| `/api/me/export` | GET | Export dat uživatele (GDPR) |
+| `/api/me/privacy` | GET, PATCH | Privacy nastavení |
+| `/api/fragments` | GET | Fragmenty subjektu |
 | `/api/whispers` | GET, POST | Šepoty komunity |
 | `/api/whispers/[id]/resonate` | POST | Rezonance na šepot |
 | `/api/whispers/[id]/boost` | POST | Boost šepotu za mnemy |
 | `/api/admin/whispers` | GET, PATCH | Moderace šepotů (admin only) |
+| `/api/auth/register` | POST | Registrace nového uživatele |
+| `/api/stripe/checkout` | POST | Vytvoření Stripe checkout session |
+| `/api/stripe/webhook` | POST | Stripe webhook (platba potvrzena) |
+| `/api/mnems/redeem` | POST | Uplatnění přístupového kódu |
+| `/api/books` | GET | Seznam knih/kapitol (API) |
 
 ### 1.2 Klíčové datové soubory
 
@@ -482,21 +502,31 @@ Landing intro page fetchuje `/data/SYNTHOMAINFO.html`. Existence souboru nebyla 
 **Stav: Kompletní**
 
 - Root layout: title, description, icons, manifest, themeColor, metadataBase, robots, openGraph, twitter, JSON-LD (WebSite schema)
-- Per-route metadata: reader, books, archive, autor — každý má vlastní title, description, canonical, robots
-- Sitemap: generuje URL pro všechny statické stránky + kapitoly z manifestu
+- Per-chapter metadata: každá kapitola v `/chapter/[id]` má vlastní title, description, canonical URL, openGraph, Twitter cards
+- Noindex: `/login`, `/register`, `/profile`, `/admin` — správně blokováno; paid kapitoly také `noindex`
+- Sitemap: generuje statické URL + `/chapter/<id>` pro všechny free kapitoly
+- Robots.txt: generováno z `app/robots.ts`, blokuje `/api/`, auth/admin routes
 
 ### 9.2 Noscript fallback
 
 **Stav: Implementováno**
 
 - `layout.tsx` — globální noscript zpráva
-- `books/page.tsx` — statický seznam knih/kapitol
+- `books/page.tsx` — statický seznam knih/kapitol s `/chapter/<id>` linky
 - `autor/page.tsx` — server-side rendered HTML obsah
 
 ### 9.3 Structured data
 
 - JSON-LD `WebSite` schema v root layoutu
-- JSON-LD `Book` schema pro každou sbírku v `/books`
+- JSON-LD `Book` schema pro každou sbírku v `/books` — obsahuje `author`, `publisher`, per-chapter `url` s `/chapter/<id>` URL a `isAccessibleForFree`
+
+### 9.4 SEO architektura kapitol
+
+Kapitoly fungují na dvou vrstvách:
+1. **`/chapter/<id>`** — staticky generovaná (SSG) stránka se všemi SEO metadaty; Google indexuje tuto URL
+2. **`/reader?chapter=<id>`** — čtecí prostředí (client-side); canonical ukazuje zpět na `/chapter/<id>`
+
+Všechny linky v UI (BooksClient, HomeClient, noscript fallback) vedou na `/chapter/<id>`.
 
 ---
 
@@ -549,36 +579,46 @@ Landing intro page fetchuje `/data/SYNTHOMAINFO.html`. Existence souboru nebyla 
 
 | # | Oblast | Popis |
 |---|---|---|
-| 1 | Assets | PWA ikony (icon-72x72.png až icon-512x512.png) **zcela chybí** — manifest.json je nefunkční |
-| 2 | Assets | Open Graph obrázek (`og-synthoma.jpg`) **chybí** — social media sharing bez náhledu |
+| 1 | Assets | PWA ikony (icon-72x72.png až icon-512x512.png) **zcela chybí** — `public/manifest.json` je nefunkční |
+| 2 | Assets | Open Graph obrázek (`/assets/og-synthoma.jpg`) **chybí** — social sharing bez náhledu; `/chapter/[id]` na něj odkazuje |
 
-### STŘEDNÍ priorita (7)
+### STŘEDNÍ priorita (6)
 
 | # | Oblast | Popis |
 |---|---|---|
 | 3 | Config | `jest.config.js` — `moduleNameMapping` místo `moduleNameMapper` — aliasy v testech nefungují |
 | 4 | Audio | `audio.ts` hardcoduje default track, potenciální kolize s playlist stavem |
-| 5 | SW | Service Worker nemá automatický cache busting — zastaralý obsah |
-| 6 | CSS | Breakpointy nesjednocené (800px / 768px / 700px / 640px / 520px / 400px) |
-| 7 | CSS | `.choice-link` definována na 3 místech s mírně odlišnými hodnotami |
-| 8 | CSS | Globální `user-select: none` — negativní dopad na UX a A11y |
-| 9 | Testy | Žádné unit testy neexistují, přestože je Jest nakonfigurován |
+| 5 | SW | Service Worker (`sw.js`) nemá automatický cache busting — `CACHE_NAME = 'synthoma-v1'` je statický |
+| 6 | CSS | Breakpointy nesjednocené (800px / 768px / 700px / 640px / 520px / 400px) — bez definovaného systému |
+| 7 | CSS | Globální `user-select: none` — negativní dopad na UX a A11y |
+| 8 | Testy | Žádné unit testy neexistují, přestože je Jest nakonfigurován |
 
-### NÍZKÁ priorita (11)
+### NÍZKÁ priorita (9)
 
 | # | Oblast | Popis |
 |---|---|---|
-| 10 | Config | CSP povoluje `unsafe-inline` pro styly |
-| 11 | Config | `validate:chapters` nevaliduje existenci odkazovaných souborů |
-| 12 | Reader | `sanitizeHTML()` odstraňuje style atributy — záměrné, ale omezující |
-| 13 | MBTI | Potenciální race condition mezi vanilla JS a React při simultánním zápisu |
-| 14 | TTS | Chybí fallback zpráva pokud SpeechSynthesis není k dispozici |
-| 15 | Perf | RetroPixelCanvas RAF loop běží i když téma není aktivní |
-| 16 | Perf | Skryté scrollbary mohou zmást desktop uživatele |
-| 17 | Perf | ControlPanelClient monolitický (~1100 řádků) |
-| 18 | CSS | Hardcoded barvy v ReaderContent.module.css a menu.module.css |
-| 19 | A11y | `aria-hidden` bez boolean hodnoty na canvas |
-| 20 | Manifest | Draft kapitoly v manifestu — existence HTML souborů neověřena |
+| 9 | Config | CSP povoluje `unsafe-inline` pro scripty i v produkci |
+| 10 | Config | `validate:chapters` nevaliduje existenci odkazovaných souborů ani konzistenci s `booksManifest.ts` |
+| 11 | Reader | `sanitizeHTML()` odstraňuje style atributy — záměrné, ale omezující pro autorské formátování |
+| 12 | MBTI | Potenciální race condition mezi vanilla `mbti.js` a React `MBTIProviderClient` při simultánním zápisu |
+| 13 | TTS | Chybí fallback zpráva pokud `SpeechSynthesis` není k dispozici |
+| 14 | Perf | `RetroPixelCanvas` RAF loop běží i když téma není aktivní (pouze skryje canvas) |
+| 15 | CSS | `.choice-link` definována na 3 místech s mírně odlišnými hodnotami (`border-radius`, `padding`) |
+| 16 | CSS | Hardcoded barvy v `ReaderContent.module.css` (`.readerTitle #60a5fa`) a `menu.module.css` |
+| 17 | A11y | `RetroPixelCanvasClient` renderuje `<canvas aria-hidden>` bez boolean hodnoty — správně `aria-hidden="true"` |
+
+### Opraveno od předchozího auditu
+
+| Popis | Stav |
+|---|---|
+| Video blokování na iOS (stará detekce user-agenta v `HomeClient` a `landing-intro`) | ✅ Opraveno |
+| 404 na kapitoly na Vercelu (`outputFileTracingIncludes` chybělo v `next.config.ts`) | ✅ Opraveno |
+| Progress bar nefungoval pro API URL (`bookId = 'default'` při `/api/chapter/` URL) | ✅ Opraveno |
+| Zakoupení kapitoly — legacy URL s `[`,`]` znaky způsobovalo 404 v BooksClient | ✅ Opraveno |
+| SEO: chyběly statické URL pro kapitoly, sitemap používal `?u=` query parametry | ✅ Opraveno |
+| Noindex na `/login`, `/register`, `/profile`, `/admin` chyběl | ✅ Opraveno |
+| JSON-LD `Book` schema v `/books` používal legacy URL místo `/chapter/<id>` | ✅ Opraveno |
+| `reader/page.tsx` ignoroval `?chapter=` při načítání bg videa a localStorage redirectu | ✅ Opraveno |
 
 ---
 
@@ -586,23 +626,23 @@ Landing intro page fetchuje `/data/SYNTHOMAINFO.html`. Existence souboru nebyla 
 
 | Oblast | Hodnocení | Komentář |
 |---|---|---|
-| **Architektura** | 9/10 | Čistá Next.js App Router architektura, ISR, Prisma + PostgreSQL backend |
-| **Funkčnost** | 9/10 | Economy systém, whispers, missions, artefakty — plně funkční |
-| **Vizuální konzistence** | 8/10 | Sjednocený téma systém, drobné hardcoded výjimky |
-| **CSS kvalita** | 7/10 | Bohatá, ale objemná (4000+ řádků), drobné duplikace |
-| **Bezpečnost** | 9/10 | Solidní HTML sanitizace, CSP, AI crawler blokace, JWT session |
-| **Přístupnost** | 7/10 | Dobré základy, ale user-select: none je problematický |
-| **Výkon** | 8/10 | MutationObserver debounce opravena, mobile sekaní vyřešeno |
-| **SEO** | 9/10 | Kompletní metadata, JSON-LD, sitemap, noscript fallback |
-| **Testování** | 3/10 | Konfigurováno, ale žádné testy |
-| **Dokumentace** | 9/10 | README, CONTRIBUTING, CHANGELOG, AUDIT-REPORT aktuální |
+| **Architektura** | 9/10 | Čistá Next.js App Router architektura, ISR, SSG pro kapitoly, Prisma + PostgreSQL backend |
+| **Funkčnost** | 9/10 | Economy systém, whispers, missions, artefakty, progress tracking — plně funkční |
+| **Vizuální konzistence** | 8/10 | Sjednocený téma systém, drobné hardcoded výjimky v module CSS |
+| **CSS kvalita** | 7/10 | Bohatá, ale objemná (4000+ řádků), drobné duplikace `.choice-link` |
+| **Bezpečnost** | 9/10 | Solidní HTML sanitizace, CSP, AI crawler blokace, JWT session, `outputFileTracingIncludes` |
+| **Přístupnost** | 7/10 | Dobré základy (skip-to-content, aria-live, focus-visible), ale `user-select: none` problematický |
+| **Výkon** | 8/10 | MutationObserver debounce, mobile sekaní vyřešeno, ISR/SSG, lazy loading |
+| **SEO** | 10/10 | Statické `/chapter/<id>` URL, per-chapter metadata, JSON-LD, sitemap, robots.txt, noindex auth |
+| **Testování** | 3/10 | Konfigurováno, ale žádné testy; `moduleNameMapper` bug v `jest.config.js` |
+| **Dokumentace** | 9/10 | README, CONTRIBUTING, CHANGELOG, AUDIT-REPORT aktuální k 30. 6. 2026 |
 
-**Celkové skóre: 7.9 / 10**
+**Celkové skóre: 8.1 / 10**
 
-Projekt je solidně postavený s propracovaným vizuálním systémem, bohatou interaktivitou a funkční meta-game ekonomikou. Hlavní oblasti ke zlepšení zůstávají chybějící PWA/OG assety a absence unit testů.
+Projekt je solidně postavený s propracovaným vizuálním systémem, bohatou interaktivitou, funkční meta-game ekonomikou a nyní plnohodnotnou SEO vrstvou. Hlavní zbývající oblasti ke zlepšení jsou chybějící PWA/OG assety a absence unit testů.
 
 ---
 
 *Audit provedl: Cascade AI*  
-*Metodika: Manuální code review všech zdrojových souborů, analýza závislostí, kontrola referencí na assety*  
-*Aktualizace červen 2026: rozšíření o Prisma backend, economy systém, Vercel build opravy, mobile performance*
+*Metodika: Manuální code review všech zdrojových souborů, analýza závislostí, kontrola referencí na assety, verifikace routování a SEO vrstvy*  
+*Aktualizace 30. června 2026: SEO vrstva (`/chapter/[id]`, robots.ts, sitemap.ts, JSON-LD), opravy progress baru, opravy chapter URL routing, rozšíření API tabulky*

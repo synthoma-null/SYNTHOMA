@@ -26,8 +26,8 @@ npm run dev
 
 - **Domů**: [http://localhost:3000/](http://localhost:3000/)
 - **Knihovna**: [http://localhost:3000/books](http://localhost:3000/books)
-- **Čtečka**: [http://localhost:3000/reader](http://localhost:3000/reader)  
-  _Nový způsob (doporučený):_ `http://localhost:3000/reader?chapter=restart`  
+- **Kapitola (SEO URL)**: `http://localhost:3000/chapter/0-inf-restart` → přesměruje do čtečky  
+- **Čtečka (přímý přístup)**: `http://localhost:3000/reader?chapter=0-inf-restart`  
   _Legacy způsob (stále funkční):_ `http://localhost:3000/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
 - **Archiv**: [http://localhost:3000/archive](http://localhost:3000/archive)
 - **Landing**: [http://localhost:3000/landing-intro](http://localhost:3000/landing-intro)
@@ -58,19 +58,27 @@ SYNTHOMACZ/
 │   │   ├── archive/             # /archive
 │   │   ├── autor/               # /autor
 │   │   ├── books/               # /books knihovna
+│   │   ├── chapter/[id]/        # /chapter/<id> SEO URL → redirect na /reader
 │   │   ├── components/          # Sdílené komponenty
 │   │   ├── landing-intro/       # /landing-intro (standalone page)
+│   │   ├── login/               # /login (noindex)
+│   │   ├── register/            # /register (noindex)
+│   │   ├── profile/             # /profile (noindex)
+│   │   ├── admin/               # /admin (noindex)
+│   │   ├── privacy/             # /privacy
+│   │   ├── terms/               # /terms
+│   │   ├── purchase/            # /purchase
+│   │   ├── robots.ts            # /robots.txt (generováno)
+│   │   ├── sitemap.ts           # /sitemap.xml (generováno)
 │   │   └── reader/              # /reader čtečka kapitol
 │   ├── public/                  # Statické soubory
-│   │   ├── assets/              # Ikony, shadery
+│   │   ├── assets/              # Ikony, shadery, OG obrázek
 │   │   ├── audio/               # Hudba, SFX
 │   │   ├── video/               # Background videa
 │   │   ├── fonts/               # Webfonty
 │   │   ├── books/               # HTML kapitoly + manifest
 │   │   ├── data/                # Archivní data
-│   │   ├── robots.txt           # SEO
-│   │   ├── sitemap.xml          # SEO
-│   │   └── styles.css           # Globální styly pro kapitoly
+│   │   └── styles.css           # Globální styly pro kapitoly (legacy standalone)
 │   ├── src/                     # Zdrojové soubory
 │   │   ├── components/          # React komponenty
 │   │   ├── lib/                 # Utility, helpery
@@ -219,13 +227,15 @@ Samostatná landing page s video pozadím na `/landing-intro`.
 ### 2. 404 na kapitolu v čtečce
 **Symptom**: Reader hlásí "Kapitola nenalezena" nebo 404  
 **Důvody**:
-- Špatné `chapter` ID — kontřoluj `id` pole v `booksManifest.ts`
-- Legacy `?u=` cesta: špatná cesta v `manifest.json` nebo chybějící URL encoding
+- Špatné `chapter` ID — kontroluj `id` pole v `booksManifest.ts` a `CHAPTERS` pole
+- Na Vercelu: `outputFileTracingIncludes` musí zahrnovat `./public/books/**/*` v `next.config.ts`
+- Legacy `?u=` cesta se soubory s `[`, `]` nebo mezerami v názvu — Vercel je routuje jako dynamic segmenty
 
-**Primární URL formát (nový):** `/reader?chapter=restart`  
-**Legacy URL formát (příklad):** `/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
+**Doporučený URL formát:** `/chapter/<id>` (SSG stránka s metadaty, přesměruje do čtečky)  
+**Přímý přístup:** `/reader?chapter=<id>`  
+**Legacy (funkční, nedoporučené):** `/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
 
-**Fix**: Generuj odkazy přes `CHAPTERS` z `booksManifest.ts` a používej `chapter=<id>`. Legacy `?u=` je stále funkční, ale není doporučené.
+**Fix**: Všechny kapitolové linky v UI (BooksClient, HomeClient) vedou na `/chapter/<id>` automaticky.
 
 ### 3. Reader nezobrazuje styly (kapitola vypadá špatně)
 **Symptom**: Kapitola se načte, ale je úplně bez stylů/layoutu  
@@ -256,8 +266,9 @@ Ano, i tvoje babička to přečte. A když ne, glitch efekt ji hypnotizuje, tak�
 - **Hlavní navigace**:
   - `/` – domovská stránka
   - `/books` – knihovna kolekcí/knížek
-  - `/reader?chapter=<id>` – čtečka konkrétní kapitoly (nový způsob, `id` viz `booksManifest.ts`)
-  - `/reader?u=/books/<kolekce>/<kapitola>.html` – legacy způsob (stále funkční)
+  - `/chapter/<id>` – **doporučená** SEO URL kapitoly (přesměruje do čtečky, `id` viz `CHAPTERS` v `booksManifest.ts`)
+  - `/reader?chapter=<id>` – přímý přístup do čtečky
+  - `/reader?u=/books/<kolekce>/<kapitola>.html` – legacy způsob (stále funkční, ale nedoporučené)
   - `/autor` – prezentační stránka autora se sjednoceným glitch nadpisem a ukázkou čtečky
   - `/archive` – interaktivní archiv s kartami
 

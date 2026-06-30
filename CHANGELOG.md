@@ -7,6 +7,21 @@ a projekt používá [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added (30. června 2026 — SEO vrstva & opravy routingu)
+- 🗺️ `app/chapter/[id]/page.tsx` — staticky generovaná (SSG) SEO URL per-kapitola s `generateMetadata` (title, description, canonical, OG, Twitter cards)
+- 🤖 `app/robots.ts` — `/robots.txt` generováno Next.js; blokuje `/api/`, `/login`, `/register`, `/profile`, `/admin`
+- 🗺️ `app/sitemap.ts` — přepsán: kapitoly přes `/chapter/<id>`, přidány `/privacy` a `/terms`
+- 🔒 Noindex metadata na `/login`, `/register`, `/profile`, `/admin`
+
+### Fixed (30. června 2026)
+- 🐛 `reader/ReaderContent.tsx`: `bookId` se derivoval jako `'default'` pro API URL → progress bar nezobrazoval pokrok; opraveno derivací z `chapterMeta.collection`
+- 🐛 `reader/page.tsx`: ignoroval `?chapter=` parametr při načítání bg videa a localStorage redirectu; opraveno správnou resolucí `chapterPath` z `getChapterById()`
+- 🐛 `books/BooksClient.tsx`: „Pokračovat" tlačítko generovalo legacy `?u=` URL se `[`,`]` znaky → 404 na Vercelu; opraveno na `/chapter/<id>`
+- 🐛 `HomeClient.tsx`: „Pokračovat ve čtení" link generoval legacy URL; opraveno na `/chapter/<id>`
+- 🔧 `books/BooksClient.tsx`: všechny kapitolové linky přepnuty na `/chapter/<id>`
+- 🔧 `books/page.tsx`: JSON-LD `Book` schema opraveno — `author`, `publisher`, per-chapter URL na `/chapter/<id>`, `isAccessibleForFree`
+- 🔧 `books/page.tsx`: noscript fallback odkazuje na `/chapter/<id>`
+
 ### Added (červen 2026 — Mnem Economy & Meta-game)
 - 🧠 `UserRun` systém: `stability`, `memoryPressure`, `shadow`, `cycleNumber` — aktivní cyklus subjektu
 - 🤝 `EntityRelation` model: vztahy k entitám (glitchka, sarkasma, tai, archive, shadow) s metrikami trust/suspicion/sync/protection
