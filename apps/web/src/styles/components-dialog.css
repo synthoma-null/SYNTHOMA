@@ -3,11 +3,11 @@
    Separated from components.css to reduce file size.
    ========================================================= */
 
-/* Glitchka dialog – žluto-cyanový akcent */
+/* Glitchka dialog – růžový akcent */
 .dialogG {
   position: relative;
-  color: var(--c-acid-yellow);
-  text-shadow: 0 0 5px var(--c-acid-yellow), 0 0 10px var(--accent-secondary);
+  color: #ff69c8;
+  text-shadow: 0 0 5px #ff69c8, 0 0 10px #ff00aa;
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
   font-size: calc(1.15rem * var(--font-size-multiplier));
@@ -20,11 +20,11 @@ p.dialogG::before {
   top: 0; bottom: 0; height: auto;
   border-radius: 2px;
   background: transparent;
-  box-shadow: -1px 0 4px 0px var(--accent-warning, #ffea00), 1px 0 8px 0px var(--accent-secondary, #0ff), 0px 0 12px 0px var(--accent-warning, #ffd000);
+  box-shadow: -1px 0 4px 0px #ff69c8, 1px 0 8px 0px #ff00aa, 0px 0 12px 0px #ff69c8;
 
   z-index: 2;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 /* Reader: Nepoužívej text-indent – falešné mezery jsou jako falešní přátelé. */
@@ -101,7 +101,8 @@ p.dialogG::before {
 
 .dialogS {
   position: relative;
-  color: var(--accent-secondary);
+  color: #ff2244;
+  text-shadow: 0 0 4px #ff2244, 0 0 8px #cc0022;
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
   font-size: calc(1.15rem * var(--font-size-multiplier));
@@ -115,11 +116,11 @@ p.dialogS::before {
   top: 0; bottom: 0; height: auto;
   border-radius: 2px;
   background: transparent;
-  box-shadow: -1px 0 4px 0px var(--accent-secondary, #0ff), 1px 0 8px 0px var(--accent-primary, #f0f), 0px 0 12px 0px var(--accent-error, #f00);
+  box-shadow: -1px 0 4px 0px #ff2244, 1px 0 8px 0px #cc0022, 0px 0 12px 0px #ff2244;
 
   z-index: 2;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .dialogN {

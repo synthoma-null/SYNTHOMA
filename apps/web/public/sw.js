@@ -7,7 +7,7 @@ const STATIC_CACHE = [
   '/archive',
   '/landing-intro',
   '/assets/favicon.ico',
-  '/assets/og-synthoma.jpg'
+  '/assets/og-synthoma.png'
 ]
 
 // Install event - cache static assets

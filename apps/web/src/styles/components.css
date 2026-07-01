@@ -545,6 +545,7 @@
     color: var(--text-primary);
     text-shadow: 0 0 2px var(--glow-primary), 0 0 4px var(--glow-secondary);
     font-family: var(--font-family-primary);
+    font-weight: 400;
     font-size: calc(1.15rem * var(--font-size-multiplier));
     overflow-wrap: anywhere;
     word-break: normal;
