@@ -162,13 +162,15 @@ export default function ControlPanelClient() {
 
         });
 
-        // Button label update
+        // Dispatch event so all listeners (incl. useVideoVisibility) react
+        try { document.dispatchEvent(new CustomEvent('synthoma:animations-changed')); } catch {}
 
+        // Button label + aria-pressed update
         const btn = document.getElementById("toggle-animations");
-
-        // Když jsou animace vypnuté (next=true), ukaž "Vypnuty"
-
-        if (btn) btn.textContent = next ? cp('Animace: Vypnuty', 'Animations: Off') : cp('Animace: Zapnuty', 'Animations: On');
+        if (btn) {
+          btn.textContent = next ? cp('Animace: Vypnuty', 'Animations: Off') : cp('Animace: Zapnuty', 'Animations: On');
+          btn.setAttribute('aria-pressed', String(!next));
+        }
 
       },
 
@@ -1883,8 +1885,6 @@ export default function ControlPanelClient() {
             try { console.warn('[ControlPanel] click toggle-animations'); } catch {}
 
             window.animationManager?.toggleAll();
-
-            try { document.dispatchEvent(new CustomEvent('synthoma:animations-changed')); } catch {}
 
             updateButtonState();
 

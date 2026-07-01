@@ -253,7 +253,7 @@ export default function PrivacyClient() {
           <ul className="text legal-list">
             <li><strong>e-mailová adresa</strong> – přihlášení, obnova přístupu, komunikace,</li>
             <li><strong>přezdívka</strong> – identifikátor uživatele v systému,</li>
-            <li><strong>heslo</strong> – ukládáme pouze jako kryptografický hash,</li>
+            <li><strong>heslo</strong> – je ukládáno pouze jako kryptografický hash,</li>
             <li><strong>identifikátor účtu</strong> – technický identifikátor pro správu účtu.</li>
           </ul>
           <h3 className="subtitle">2.3 Při čtení</h3>
