@@ -3,6 +3,7 @@
 import { useCallback, type RefObject } from "react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { saveLastChapterPath, saveReaderResume } from "../lib/readerState";
+import { CHAPTERS } from "../content/booksManifest";
 
 function softFail(scope: string, err: unknown): void {
   if (process.env.NODE_ENV !== "production") {
@@ -184,6 +185,25 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
           // Site route
           if (href.startsWith("/")) {
             if (/^\/books\/.+\.html(\?.*)?(#.*)?$/i.test(href)) {
+              // Resolve legacy /books/<collection>/<filename>.html to /chapter/<id>
+              try {
+                const hrefPath = href.split("?")[0] ?? href;
+                const filenameRaw = decodeURIComponent(hrefPath.split("/").pop() ?? "");
+                const matched = CHAPTERS.find(
+                  (ch) => ch.filename === filenameRaw || ch.filename_en === filenameRaw,
+                );
+                if (matched) {
+                  scoreFromNode(node);
+                  try {
+                    const host2 = hostRef.current;
+                    if (host2) persistChoiceState(node, host2);
+                  } catch {}
+                  saveLastChapterPath(`/chapter/${matched.id}`);
+                  router.push(`/chapter/${encodeURIComponent(matched.id)}`);
+                  return;
+                }
+              } catch {}
+              // Fallback: legacy ?u= if no manifest match
               try {
                 saveLastChapterPath(href);
               } catch {}

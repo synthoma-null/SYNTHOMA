@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ['@prisma/client', '@prisma/adapter-pg', 'pg', 'bcryptjs'],
   outputFileTracingIncludes: {
-    '/api/chapter/[chapterId]': ['./public/books/**/*'],
+    '/api/chapter/[chapterId]': ['./public/books/**/*', './src/content/protected/**/*'],
   },
   async headers() {
     return [
