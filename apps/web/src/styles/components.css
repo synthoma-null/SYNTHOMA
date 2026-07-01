@@ -2761,6 +2761,11 @@
   border-radius: 8px;
   background: rgba(0, 255, 180, .04);
 }
+.paywall-mnem-row--primary {
+  border-color: rgba(0, 255, 180, .6);
+  background: rgba(0, 255, 180, .08);
+  margin-bottom: 1rem;
+}
 .paywall-mnem-row--insufficient {
   border-color: rgba(255, 80, 80, .25);
   background: rgba(255, 80, 80, .04);

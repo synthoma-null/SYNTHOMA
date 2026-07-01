@@ -191,79 +191,15 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
           </>
         ) : (
           <>
-            <div className="paywall-packages paywall-packages--structured">
-
-              {isAct1Chapter && act1Pkg && (
-                <div className="paywall-package paywall-package--primary">
-                  <div className="paywall-package-badge">{t('paywall.recommended')}</div>
-                  <div className="paywall-package-info">
-                    <span className="paywall-package-name">{t('paywall.pkg.act1.name')}</span>
-                    <span className="paywall-package-price">{act1Pkg.mnems} {t('paywall.unit.mnems')}</span>
-                  </div>
-                  <p className="paywall-package-desc">{t('paywall.pkg.act1.desc')}</p>
-                  <div className="paywall-package-pricing">
-                    <span className="paywall-package-czk">{act1Pkg.priceCzk} {t('paywall.unit.czk')}</span>
-                    <span className="paywall-package-includes">{t('paywall.act1.includes')}</span>
-                  </div>
-                  <button
-                    className="btn paywall-package-btn paywall-package-btn--primary"
-                    onClick={() => handlePurchase(act1Pkg.id)}
-                    disabled={purchasing !== null}
-                  >
-                    {purchasing === act1Pkg.id ? t('paywall.redirecting') : `${t('paywall.act1.btn.pre')}${act1Pkg.priceCzk} ${t('paywall.unit.czk')}`}
-                  </button>
-                </div>
-              )}
-
-              {singlePkg && (
-                <div className="paywall-package paywall-package--secondary">
-                  <div className="paywall-package-info">
-                    <span className="paywall-package-name">{t('paywall.single.name')}</span>
-                    <span className="paywall-package-price">{mnemCost} {t('paywall.unit.mnems')}</span>
-                  </div>
-                  <div className="paywall-package-pricing">
-                    <span className="paywall-package-czk">{singlePkg.priceCzk} {t('paywall.unit.czk')}</span>
-                    <span className="paywall-package-includes">{t('paywall.single.includes.pre')}{chapterTitle}</span>
-                  </div>
-                  <button
-                    className="btn btn-outline paywall-package-btn"
-                    onClick={() => handlePurchase(singlePkg.id)}
-                    disabled={purchasing !== null}
-                  >
-                    {purchasing === singlePkg.id ? t('paywall.redirecting') : `${t('paywall.single.btn.pre')}${singlePkg.priceCzk} ${t('paywall.unit.czk')}`}
-                  </button>
-                </div>
-              )}
-
-              {archivPlusPkg && (
-                <div className="paywall-package paywall-package--subscription">
-                  <div className="paywall-package-badge paywall-package-badge--sub">ARCHIV+</div>
-                  <div className="paywall-package-info">
-                    <span className="paywall-package-name">{t('paywall.pkg.archivplus.name')}</span>
-                  </div>
-                  <p className="paywall-package-desc">{t('paywall.pkg.archivplus.desc')}</p>
-                  <div className="paywall-package-pricing">
-                    <span className="paywall-package-czk">{archivPlusPkg.priceCzk}{t('paywall.archivplus.price.post')}</span>
-                  </div>
-                  <button
-                    className="btn btn-outline paywall-package-btn"
-                    onClick={() => handlePurchase(archivPlusPkg.id)}
-                    disabled={purchasing !== null}
-                  >
-                    {purchasing === archivPlusPkg.id ? t('paywall.redirecting') : `${t('paywall.archivplus.btn.pre')}${archivPlusPkg.priceCzk} ${t('paywall.unit.czk')}`}
-                  </button>
-                </div>
-              )}
-            </div>
-
+            {/* === PRIMÁRNÍ AKCE: Odemknout za mnemy (pokud jich má dost) === */}
             {mnemBalance !== null && mnemBalance >= mnemCost && !mnemConfirm && (
-              <div className="paywall-mnem-row">
+              <div className="paywall-mnem-row paywall-mnem-row--primary">
                 <div className="paywall-mnem-balance">
                   <span className="paywall-log-prefix">LOG [MNEM_WALLET]:</span>
-                  <span className="paywall-log-msg">&#8222;Dostupné mnemy: <strong>{mnemBalance}</strong>&#8220;</span>
+                  <span className="paywall-log-msg">&#8222;Dostupné mnemy: <strong>{mnemBalance}</strong> / potřeba: <strong>{mnemCost}</strong>&#8220;</span>
                 </div>
                 <button
-                  className="btn paywall-package-btn paywall-mnem-btn"
+                  className="btn paywall-package-btn paywall-package-btn--primary paywall-mnem-btn"
                   onClick={() => setMnemConfirm(true)}
                   disabled={mnemUnlocking || purchasing !== null}
                 >
@@ -278,6 +214,74 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                   <span className="paywall-log-prefix">LOG [MNEM_WALLET]:</span>
                   <span className="paywall-log-msg">&#8222;Dostupné mnemy: <strong>{mnemBalance}</strong> / potřeba: <strong>{mnemCost}</strong>&#8220;</span>
                 </div>
+              </div>
+            )}
+
+            {/* === SEKUNDÁRNÍ: Zakoupit mnemy / balíčky (vždy dostupné) === */}
+            {(mnemBalance === null || mnemBalance < mnemCost) && (
+              <div className="paywall-packages paywall-packages--structured">
+
+                {isAct1Chapter && act1Pkg && (
+                  <div className="paywall-package paywall-package--primary">
+                    <div className="paywall-package-badge">{t('paywall.recommended')}</div>
+                    <div className="paywall-package-info">
+                      <span className="paywall-package-name">{t('paywall.pkg.act1.name')}</span>
+                      <span className="paywall-package-price">{act1Pkg.mnems} {t('paywall.unit.mnems')}</span>
+                    </div>
+                    <p className="paywall-package-desc">{t('paywall.pkg.act1.desc')}</p>
+                    <div className="paywall-package-pricing">
+                      <span className="paywall-package-czk">{act1Pkg.priceCzk} {t('paywall.unit.czk')}</span>
+                      <span className="paywall-package-includes">{t('paywall.act1.includes')}</span>
+                    </div>
+                    <button
+                      className="btn paywall-package-btn paywall-package-btn--primary"
+                      onClick={() => handlePurchase(act1Pkg.id)}
+                      disabled={purchasing !== null}
+                    >
+                      {purchasing === act1Pkg.id ? t('paywall.redirecting') : `${t('paywall.act1.btn.pre')}${act1Pkg.priceCzk} ${t('paywall.unit.czk')}`}
+                    </button>
+                  </div>
+                )}
+
+                {singlePkg && (
+                  <div className="paywall-package paywall-package--secondary">
+                    <div className="paywall-package-info">
+                      <span className="paywall-package-name">{t('paywall.single.name')}</span>
+                      <span className="paywall-package-price">{mnemCost} {t('paywall.unit.mnems')}</span>
+                    </div>
+                    <div className="paywall-package-pricing">
+                      <span className="paywall-package-czk">{singlePkg.priceCzk} {t('paywall.unit.czk')}</span>
+                      <span className="paywall-package-includes">{t('paywall.single.includes.pre')}{chapterTitle}</span>
+                    </div>
+                    <button
+                      className="btn btn-outline paywall-package-btn"
+                      onClick={() => handlePurchase(singlePkg.id)}
+                      disabled={purchasing !== null}
+                    >
+                      {purchasing === singlePkg.id ? t('paywall.redirecting') : `${t('paywall.single.btn.pre')}${singlePkg.priceCzk} ${t('paywall.unit.czk')}`}
+                    </button>
+                  </div>
+                )}
+
+                {archivPlusPkg && (
+                  <div className="paywall-package paywall-package--subscription">
+                    <div className="paywall-package-badge paywall-package-badge--sub">ARCHIV+</div>
+                    <div className="paywall-package-info">
+                      <span className="paywall-package-name">{t('paywall.pkg.archivplus.name')}</span>
+                    </div>
+                    <p className="paywall-package-desc">{t('paywall.pkg.archivplus.desc')}</p>
+                    <div className="paywall-package-pricing">
+                      <span className="paywall-package-czk">{archivPlusPkg.priceCzk}{t('paywall.archivplus.price.post')}</span>
+                    </div>
+                    <button
+                      className="btn btn-outline paywall-package-btn"
+                      onClick={() => handlePurchase(archivPlusPkg.id)}
+                      disabled={purchasing !== null}
+                    >
+                      {purchasing === archivPlusPkg.id ? t('paywall.redirecting') : `${t('paywall.archivplus.btn.pre')}${archivPlusPkg.priceCzk} ${t('paywall.unit.czk')}`}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
