@@ -3,11 +3,15 @@
    Separated from components.css to reduce file size.
    ========================================================= */
 
-/* Glitchka dialog – růžový akcent */
+/* Glitchka dialog – modrorůžový gradient */
 .dialogG {
   position: relative;
-  color: #ff69c8;
-  text-shadow: 0 0 5px #ff69c8, 0 0 10px #ff00aa;
+  background: linear-gradient(90deg, #a78bff 0%, #f472d0 50%, #67e8f9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #f472d0;
+  text-shadow: none;
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
   font-size: calc(1.15rem * var(--font-size-multiplier));
