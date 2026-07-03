@@ -91,4 +91,14 @@ export const CYKLUS_UNLOCKS: CardUnlock[] = [
     poolId: 'market_sells_no_pool',
     condition: { type: 'hasItem', itemId: 'returned_no' },
   },
+  {
+    id: 'glitch_pool_unlock',
+    poolId: 'glitch_pool',
+    condition: { type: 'cycleAtLeast', cycle: 0 },
+  },
+  {
+    id: 'residuum_pool_unlock',
+    poolId: 'residuum_pool',
+    condition: { type: 'sector', sector: 'residuum' },
+  },
 ];

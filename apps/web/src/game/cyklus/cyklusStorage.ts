@@ -35,6 +35,22 @@ export function loadCyklusRun(): CyklusRunState | null {
     } else {
       parsed.tension = { ...DEFAULT_TENSION, ...parsed.tension };
     }
+    // Migration: new fields added in refactor
+    if (!parsed.seed) parsed.seed = `migrated-${Date.now().toString(36)}`;
+    if (parsed.rngStep === undefined) parsed.rngStep = 0;
+    if (!parsed.unlockedCards) parsed.unlockedCards = [];
+    if (!parsed.cycleSummaries) parsed.cycleSummaries = [];
+    // Migration: history records missing new diff fields
+    if (parsed.history) {
+      parsed.history = parsed.history.map((r) => ({
+        ...r,
+        itemsLost: r.itemsLost ?? [],
+        imprintsGained: r.imprintsGained ?? [],
+        poolsUnlocked: r.poolsUnlocked ?? [],
+        scheduledAdded: r.scheduledAdded ?? [],
+        entityDelta: r.entityDelta ?? {},
+      }));
+    }
     return parsed as CyklusRunState;
   } catch {
     return null;

@@ -150,6 +150,25 @@ export const CYKLUS_ITEMS: Record<string, CyklusItem> = {
     description: 'Žeton už nic neznamená. A přesto ho pořád máš.',
     tags: ['object', 'void', 'loss'],
   },
+  calibration_receipt: {
+    id: 'calibration_receipt',
+    title: 'Kalibrační potvrzení',
+    description: 'T-AI odškrtla. Systém souhlasí. Ty ne.',
+    tags: ['document', 'tai', 'system'],
+    passiveEffects: [{ type: 'flag', flag: 'officially_calibrated' }],
+  },
+  named_soft_bug: {
+    id: 'named_soft_bug',
+    title: 'Pojmenovaná chyba',
+    description: 'Měkká chyba, které někdo dal jméno. Tím se z ní stal vztahový problém.',
+    tags: ['glitch', 'bug', 'bond'],
+  },
+  market_coin: {
+    id: 'market_coin',
+    title: 'Mince z tržiště',
+    description: 'Mince, která neexistovala, dokud ji někdo nepoužil jako platidlo.',
+    tags: ['market', 'trade'],
+  },
 };
 
 export function getItemById(id: string): CyklusItem | undefined {

@@ -204,10 +204,19 @@ describe('Cyklus engine', () => {
     it('returns a stable profile for balanced choices', () => {
       const state = createCyklusRun();
       const profile = computeProfile(state);
-      expect(profile.dominantLabel).toHaveLength(4);
+      expect(profile.dominantLabel).toBeTruthy();
+      expect(profile.dominantLabel.length).toBeGreaterThanOrEqual(4);
       expect(profile.stability).toBeGreaterThanOrEqual(0);
       expect(profile.stability).toBeLessThanOrEqual(100);
+      expect(profile.profileConfidence).toBeGreaterThanOrEqual(0);
       expect(profile.archetype).toBeTruthy();
+    });
+    it('returns 4-char label when profile is decisive', () => {
+      let state = createCyklusRun();
+      state = { ...state, profile: { E: 10, I: 0, S: 0, N: 10, T: 10, F: 0, J: 10, P: 0 } };
+      const profile = computeProfile(state);
+      expect(profile.dominantLabel).toHaveLength(4);
+      expect(profile.uncertainAxis).toBeUndefined();
     });
   });
 
@@ -270,8 +279,8 @@ describe('Cyklus engine', () => {
         usedCardIds: ['restart_0', 'restart_1', 'restart_2', 'restart_3', 'restart_4', 'restart_5'],
         stats: { energy: 100, memory: 50, bond: 50, control: 50 },
         history: [
-          { turn: 1, cycle: 1, cardId: 'overclock', direction: 'yes', statDelta: { energy: 12 }, profileDelta: {}, flagsGained: [], itemsGained: [], sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
-          { turn: 2, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 38 }, profileDelta: {}, flagsGained: [], itemsGained: [], sectorBefore: 'void', sectorAfter: 'void', ts: 2 },
+          { turn: 1, cycle: 1, cardId: 'overclock', direction: 'yes', statDelta: { energy: 12 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+          { turn: 2, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 38 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 2 },
         ],
       };
       const analysis = analyzeDeath(state);

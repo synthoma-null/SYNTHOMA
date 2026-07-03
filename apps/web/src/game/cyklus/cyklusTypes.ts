@@ -21,7 +21,8 @@ export type EntityId =
   | 'form'
   | 'selma'
   | 'cult'
-  | 'residuum';
+  | 'residuum'
+  | 'shadow';
 
 export type Rarity = 'common' | 'uncommon' | 'rare' | 'critical' | 'unique';
 
@@ -38,7 +39,8 @@ export type CardCategory =
   | 'unlock'
   | 'silent'
   | 'trap'
-  | 'item_trigger';
+  | 'item_trigger'
+  | 'rare';
 
 export type ProfileKey =
   | 'I'
@@ -75,15 +77,29 @@ export type CyklusEffect =
   | { type: 'noImmediateEffect' };
 
 export interface CardCondition {
-  type: 'hasItem' | 'missingItem' | 'hasFlag' | 'missingFlag' | 'statBelow' | 'statAbove' | 'sector' | 'cycleAtLeast' | 'difficultyAtLeast' | 'unlockedPool';
+  type:
+    | 'hasItem' | 'missingItem'
+    | 'hasFlag' | 'missingFlag' | 'hasAnyFlag' | 'hasAllFlags'
+    | 'statBelow' | 'statAbove'
+    | 'sector' | 'visitedSector' | 'visitedSectorCountAtLeast'
+    | 'cycleAtLeast' | 'difficultyAtLeast' | 'unlockedPool'
+    | 'hasImprint' | 'missingImprint' | 'imprintCountAtLeast'
+    | 'entityRelationAtLeast' | 'entityRelationAtMost'
+    | 'usedCard' | 'notUsedCard'
+    | 'totalChoicesAtLeast';
   itemId?: string;
   flag?: string;
+  flags?: string[];
   stat?: StatKey;
   value?: number;
   sector?: SectorId;
   cycle?: number;
   difficulty?: number;
   poolId?: string;
+  imprintId?: string;
+  entity?: EntityId;
+  cardId?: string;
+  count?: number;
 }
 
 export interface ChoicePreview {
@@ -97,6 +113,9 @@ export interface CardOutcome {
   effects: CyklusEffect[];
   preview?: ChoicePreview;
 }
+
+export type TriggerMode = 'pool' | 'scheduledOnly' | 'both';
+export type ScheduledIfInvalid = 'drop' | 'delay' | 'force';
 
 export interface SwipeCard {
   id: string;
@@ -112,8 +131,12 @@ export interface SwipeCard {
   rarity: Rarity;
   conditions?: CardCondition[];
   cooldown?: number;
+  maxUses?: number;
+  cooldownTurns?: number;
   once?: boolean;
   tags: string[];
+  triggerMode?: TriggerMode;
+  ifInvalid?: ScheduledIfInvalid;
 }
 
 export interface CyklusItem {
@@ -150,6 +173,11 @@ export interface CyklusChoiceRecord {
   profileDelta: Partial<Record<ProfileKey, number>>;
   flagsGained: string[];
   itemsGained: string[];
+  itemsLost: string[];
+  imprintsGained: string[];
+  poolsUnlocked: string[];
+  scheduledAdded: string[];
+  entityDelta: Partial<Record<EntityId, number>>;
   sectorBefore: SectorId;
   sectorAfter: SectorId;
   ts: number;
@@ -166,6 +194,13 @@ export interface CyklusTension {
   lastEntityAt: number;
 }
 
+export interface ScheduledCardEntry {
+  cardId: string;
+  turnsRemaining: number;
+  cycle?: number;
+  ifInvalid?: ScheduledIfInvalid;
+}
+
 export interface CyklusRunState {
   id: string;
   status: 'playing' | 'dead' | 'completed';
@@ -180,16 +215,21 @@ export interface CyklusRunState {
   inventory: string[];
   flags: string[];
   imprints: string[];
-  scheduledCards: { cardId: string; turnsRemaining: number; cycle?: number }[];
+  scheduledCards: ScheduledCardEntry[];
   entityRelations: Partial<Record<EntityId, number>>;
   unlockedPools: string[];
+  unlockedCards: string[];
   usedCardIds: string[];
   currentCardId: string;
   lastOutcomeText?: string;
+  lastCycleSummary?: string;
+  cycleSummaries: string[];
   history: CyklusChoiceRecord[];
   startedAt: number;
   updatedAt: number;
   tension: CyklusTension;
+  seed: string;
+  rngStep: number;
 }
 
 export interface CyklusRunSummary {
@@ -211,6 +251,8 @@ export interface ProfileResult {
   dominantFunction: string;
   shadowFunction: string;
   stability: number;
+  profileConfidence: number;
+  uncertainAxis?: string;
   archetype: string;
 }
 
@@ -267,4 +309,5 @@ export const ENTITY_LABELS: Record<EntityId, string> = {
   selma: 'Selma',
   cult: 'Acidová žluť',
   residuum: 'Reziduum',
+  shadow: 'Stín',
 };

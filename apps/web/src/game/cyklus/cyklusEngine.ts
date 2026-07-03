@@ -1,4 +1,4 @@
-import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord } from './cyklusTypes';
+import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { CYKLUS_CARDS } from './cyklusCards';
 import { CYKLUS_IMPRINTS } from './cyklusImprints';
@@ -10,9 +10,10 @@ const MAX_DIFFICULTY = 5;
 
 export function createCyklusRun(): CyklusRunState {
   const now = Date.now();
+  const seed = `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   const startStats = { energy: 50, memory: 50, bond: 50, control: 50 };
   const state: CyklusRunState = {
-    id: `cyklus_${now}_${Math.random().toString(36).slice(2, 8)}`,
+    id: `cyklus_${now}_${seed.slice(-6)}`,
     status: 'playing',
     cycle: 1,
     choiceInCycle: 1,
@@ -28,8 +29,10 @@ export function createCyklusRun(): CyklusRunState {
     scheduledCards: [],
     entityRelations: {},
     unlockedPools: [],
+    unlockedCards: [],
     usedCardIds: [],
     currentCardId: 'restart_0',
+    cycleSummaries: [],
     history: [],
     startedAt: now,
     updatedAt: now,
@@ -43,6 +46,8 @@ export function createCyklusRun(): CyklusRunState {
       lastRewardAt: 0,
       lastEntityAt: 0,
     },
+    seed,
+    rngStep: 0,
   };
   return state;
 }
@@ -69,12 +74,24 @@ export function checkCondition(state: CyklusRunState, condition: CardCondition):
     case 'missingItem': return condition.itemId ? !hasItem(state, condition.itemId) : true;
     case 'hasFlag': return condition.flag ? hasFlag(state, condition.flag) : false;
     case 'missingFlag': return condition.flag ? !hasFlag(state, condition.flag) : true;
+    case 'hasAnyFlag': return condition.flags ? condition.flags.some((f) => state.flags.includes(f)) : false;
+    case 'hasAllFlags': return condition.flags ? condition.flags.every((f) => state.flags.includes(f)) : false;
     case 'statBelow': return condition.stat ? state.stats[condition.stat] < (condition.value ?? 50) : false;
     case 'statAbove': return condition.stat ? state.stats[condition.stat] > (condition.value ?? 50) : false;
     case 'sector': return condition.sector ? state.sector === condition.sector : false;
+    case 'visitedSector': return condition.sector ? state.visitedSectors.includes(condition.sector) : false;
+    case 'visitedSectorCountAtLeast': return new Set(state.visitedSectors).size >= (condition.count ?? 1);
     case 'cycleAtLeast': return state.cycle >= (condition.cycle ?? 1);
     case 'difficultyAtLeast': return state.difficulty >= (condition.difficulty ?? 1);
     case 'unlockedPool': return condition.poolId ? state.unlockedPools.includes(condition.poolId) : false;
+    case 'hasImprint': return condition.imprintId ? state.imprints.includes(condition.imprintId) : false;
+    case 'missingImprint': return condition.imprintId ? !state.imprints.includes(condition.imprintId) : true;
+    case 'imprintCountAtLeast': return state.imprints.length >= (condition.count ?? 1);
+    case 'entityRelationAtLeast': return condition.entity ? (state.entityRelations[condition.entity] ?? 0) >= (condition.value ?? 0) : false;
+    case 'entityRelationAtMost': return condition.entity ? (state.entityRelations[condition.entity] ?? 0) <= (condition.value ?? 0) : false;
+    case 'usedCard': return condition.cardId ? state.usedCardIds.includes(condition.cardId) : false;
+    case 'notUsedCard': return condition.cardId ? !state.usedCardIds.includes(condition.cardId) : true;
+    case 'totalChoicesAtLeast': return state.totalChoices >= (condition.count ?? 0);
     default: return false;
   }
 }
@@ -150,8 +167,13 @@ function moveSector(state: CyklusRunState, sectorId: SectorId): CyklusRunState {
   return { ...state, sector: sectorId, visitedSectors: visited };
 }
 
-function scheduleCard(state: CyklusRunState, cardId: string, inTurns: number): CyklusRunState {
-  return { ...state, scheduledCards: [...state.scheduledCards, { cardId, turnsRemaining: inTurns, cycle: state.cycle }] };
+function clampRelation(value: number): number {
+  return Math.max(-10, Math.min(10, value));
+}
+
+function scheduleCard(state: CyklusRunState, cardId: string, inTurns: number, entry?: Partial<ScheduledCardEntry>): CyklusRunState {
+  const newEntry: ScheduledCardEntry = { cardId, turnsRemaining: inTurns, cycle: state.cycle, ...entry };
+  return { ...state, scheduledCards: [...state.scheduledCards, newEntry] };
 }
 
 function applySingleEffect(state: CyklusRunState, effect: CyklusEffect): CyklusRunState {
@@ -171,11 +193,14 @@ function applySingleEffect(state: CyklusRunState, effect: CyklusEffect): CyklusR
     case 'schedule': return scheduleCard(state, effect.cardId, effect.inTurns);
     case 'scheduleNextCycle': return scheduleCard(state, effect.cardId, Math.max(1, CHOICES_PER_CYCLE - state.choiceInCycle + 1));
     case 'unlockPool': return unlockPool(state, effect.poolId);
-    case 'unlockCard': return unlockPool(state, `card_${effect.cardId}`);
+    case 'unlockCard': {
+      if (state.unlockedCards.includes(effect.cardId)) return state;
+      return { ...state, unlockedCards: [...state.unlockedCards, effect.cardId] };
+    }
     case 'moveSector': return moveSector(state, effect.sectorId);
     case 'entityRelation': {
       const relations = state.entityRelations ?? {};
-      const entityRelations = { ...relations, [effect.entity]: (relations[effect.entity] ?? 0) + effect.delta };
+      const entityRelations = { ...relations, [effect.entity]: clampRelation((relations[effect.entity] ?? 0) + effect.delta) };
       return { ...state, entityRelations };
     }
     case 'imprint': return addImprint(state, effect.imprintId);
@@ -209,7 +234,7 @@ function maybeApplyRubberStamp(state: CyklusRunState, card: SwipeCard, effects: 
   return { effects: filtered, consumed: true };
 }
 
-function applyCrisisItems(state: CyklusRunState): CyklusRunState {
+function applyCrisisItems(state: CyklusRunState): { state: CyklusRunState; interventionText: string | undefined } {
   let s = state;
   const interventions: string[] = [];
 
@@ -227,7 +252,7 @@ function applyCrisisItems(state: CyklusRunState): CyklusRunState {
   // Acid filter: energy high
   if (s.inventory.includes('acid_filter') && s.stats.energy >= 100) {
     s = { ...s, stats: { ...s.stats, energy: 85 }, inventory: s.inventory.filter((i) => i !== 'acid_filter'), flags: [...s.flags, 'acid_filter_burned'] };
-    interventions.push('LOG [ACID_FILTER_BURNED]\n\nFiltr zachytil přepětí. Pak se roztekl způsobem, který by výrobce určitě označil jako „očekávané opotřebení“.');
+    interventions.push('LOG [ACID_FILTER_BURNED]\n\nFiltr zachytil přepětí. Pak se roztekl způsobem, který by výrobce určitě označil jako „očekávané opotřebení".');
   }
 
   // Archive key: memory extremes
@@ -238,10 +263,10 @@ function applyCrisisItems(state: CyklusRunState): CyklusRunState {
     interventions.push('LOG [ARCHIVE_KEY]\n\nArchivní klíč se otočil sám. Dveře, které předstíraly, že nejsou dveře, se otevřely. Paměť byla evakuována.');
   }
 
-  if (interventions.length > 0) {
-    s = { ...s, lastOutcomeText: interventions.join('\n\n───\n\n') };
-  }
-  return s;
+  return {
+    state: s,
+    interventionText: interventions.length > 0 ? interventions.join('\n\n───\n\n') : undefined,
+  };
 }
 
 const STAT_NARRATIVE_POOLS: Record<StatKey, { up: string[]; down: string[] }> = {
@@ -355,6 +380,41 @@ function composeImpactNarrative(record: CyklusChoiceRecord, card: SwipeCard): st
     ];
     parts.push(pickFromPool(itemPool, `${card.id}-item-${turn}`));
   }
+  if (record.itemsLost.length > 0) {
+    parts.push(pickFromPool([
+      'Něco ti zmizelo z kapsy. Možná to bylo nutné.',
+      'Předmět zmizel. Systém to neeviduje jako ztrátu.',
+      'Kapsa je lehčí. Ty si toho všimnul.',
+    ], `${card.id}-itemlost-${turn}`));
+  }
+  if (record.imprintsGained.length > 0) {
+    parts.push(pickFromPool([
+      'Něco se neuložilo do kapsy, ale přímo do tebe.',
+      'Otisk se zabydlel tam, kde nemáš přístup.',
+      'Paměť dostala novou vrstvu. Nebyla to její volba.',
+    ], `${card.id}-imprint-${turn}`));
+  }
+  if (record.poolsUnlocked.length > 0) {
+    parts.push(pickFromPool([
+      'Systém otevřel novou sadu možností. Netváří se, že by to bylo bezpečné.',
+      'Někde se odkryly dveře, které předtím neexistovaly.',
+      'Nový přístup. Nový problém. Klasický pořadí.',
+    ], `${card.id}-pool-${turn}`));
+  }
+  if (record.scheduledAdded.length > 0) {
+    parts.push(pickFromPool([
+      'Něco bylo odloženo na později. Později je oblíbené úložiště problémů.',
+      'Časovaný záchvat vložen do fronty. Fronta se netváří nadšeně.',
+      'Systém si tě zaznamenal. Vrátí se k tomu.',
+    ], `${card.id}-scheduled-${turn}`));
+  }
+  if (record.entityDelta && Object.keys(record.entityDelta).length > 0) {
+    parts.push(pickFromPool([
+      'Někdo v systému změnil názor. Nejspíš ne naposledy.',
+      'Vztahová rovnováha se posunula. Milimetrem nebo kilometry — záleží na perspektivě.',
+      'Entita zaregistrovala změnu. Výsledek: zatím neznámý.',
+    ], `${card.id}-entity-${turn}`));
+  }
   const profileShifted = Object.values(record.profileDelta).some((v) => v !== 0);
   if (profileShifted) {
     const profilePool = [
@@ -365,6 +425,14 @@ function composeImpactNarrative(record: CyklusChoiceRecord, card: SwipeCard): st
     parts.push(pickFromPool(profilePool, `${card.id}-profile-${turn}`));
   }
   return parts.join(' ');
+}
+
+function diffAdded<T>(before: T[], after: T[]): T[] {
+  return after.filter((x) => !before.includes(x));
+}
+
+function diffRemoved<T>(before: T[], after: T[]): T[] {
+  return before.filter((x) => !after.includes(x));
 }
 
 export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): CyklusRunState {
@@ -378,7 +446,8 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
   if (rubberStamp.consumed) {
     s = { ...s, flags: s.flags.filter((f) => f !== 'rubber_stamp_ready') };
   }
-  s = applyCrisisItems(s);
+  const crisisResult = applyCrisisItems(s);
+  s = crisisResult.state;
 
   const statDelta: Partial<Record<StatKey, number>> = {};
   for (const key of Object.keys(state.stats) as StatKey[]) {
@@ -391,14 +460,24 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     const delta = (s.profile[key] ?? 0) - (state.profile[key] ?? 0);
     if (delta !== 0) profileDelta[key] = delta;
   }
-  const flagsGained: string[] = [];
-  const itemsGained: string[] = [];
-  for (const effect of outcome.effects) {
-    if (effect.type === 'flag' && !state.flags.includes(effect.flag)) flagsGained.push(effect.flag);
-    if (effect.type === 'item' && !state.inventory.includes(effect.itemId)) itemsGained.push(effect.itemId);
+
+  // Diff-based tracking: captures all sources (passive effects, crisis items, imprints, etc.)
+  const flagsGained = diffAdded(state.flags, s.flags);
+  const itemsGained = diffAdded(state.inventory, s.inventory);
+  const itemsLost = diffRemoved(state.inventory, s.inventory);
+  const imprintsGained = diffAdded(state.imprints, s.imprints);
+  const poolsUnlocked = diffAdded(state.unlockedPools, s.unlockedPools);
+  const scheduledAdded = diffAdded(
+    state.scheduledCards.map((e) => e.cardId),
+    s.scheduledCards.map((e) => e.cardId),
+  );
+  const entityDelta: Partial<Record<EntityId, number>> = {};
+  for (const key of Object.keys({ ...state.entityRelations, ...s.entityRelations }) as EntityId[]) {
+    const delta = (s.entityRelations[key] ?? 0) - (state.entityRelations[key] ?? 0);
+    if (delta !== 0) entityDelta[key] = delta;
   }
 
-  const record = {
+  const record: CyklusChoiceRecord = {
     turn: state.totalChoices + 1,
     cycle: state.cycle,
     cardId: card.id,
@@ -407,19 +486,27 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     profileDelta,
     flagsGained,
     itemsGained,
+    itemsLost,
+    imprintsGained,
+    poolsUnlocked,
+    scheduledAdded,
+    entityDelta,
     sectorBefore,
     sectorAfter: s.sector,
     ts: Date.now(),
   };
-  // Compose narrative impact text that actually relates to the choice
-  const impactNarrative = composeImpactNarrative(record, card);
+
+  // Compose outcome text: resultText + impactNarrative + crisis intervention (never stale lastOutcomeText)
   let outcomeText = outcome.resultText;
+  const impactNarrative = composeImpactNarrative(record, card);
   if (impactNarrative) {
-    outcomeText = outcomeText ? `${outcome.resultText}\n\n${impactNarrative}` : impactNarrative;
+    outcomeText = outcomeText ? `${outcomeText}\n\n${impactNarrative}` : impactNarrative;
   }
-  // Crisis text takes precedence over normal outcome text
-  outcomeText = s.lastOutcomeText || outcomeText;
-  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card) };
+  if (crisisResult.interventionText) {
+    outcomeText = outcomeText ? `${outcomeText}\n\n${crisisResult.interventionText}` : crisisResult.interventionText;
+  }
+
+  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card) };
 
   // Check for ending
   const ending = computeEnding(s);
@@ -434,8 +521,9 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     s = processCycleEnd(s);
   }
 
-  // Decrement scheduled cards and pick next card
+  // Decrement scheduled cards, cleanup invalid ones, pick next card
   s = tickScheduledCards(s);
+  s = cleanupScheduledCards(s);
   s = pickNextCardState(s);
   return s;
 }
@@ -453,6 +541,30 @@ function getReadyScheduledCards(state: CyklusRunState): string[] {
     .map((entry) => entry.cardId);
 }
 
+function cleanupScheduledCards(state: CyklusRunState): CyklusRunState {
+  const updated = state.scheduledCards.filter((entry) => {
+    if (entry.turnsRemaining > 0) return true;
+    const card = CYKLUS_CARDS[entry.cardId];
+    if (!card) return false;
+    const conditionsOk = checkCardConditions(state, card);
+    if (conditionsOk) return true;
+    const strategy = entry.ifInvalid ?? card.ifInvalid ?? 'drop';
+    if (strategy === 'force') return true;
+    if (strategy === 'delay') return true;
+    return false;
+  }).map((entry) => {
+    if (entry.turnsRemaining > 0) return entry;
+    const card = CYKLUS_CARDS[entry.cardId];
+    if (!card) return entry;
+    const conditionsOk = checkCardConditions(state, card);
+    if (conditionsOk) return entry;
+    const strategy = entry.ifInvalid ?? card.ifInvalid ?? 'drop';
+    if (strategy === 'delay') return { ...entry, turnsRemaining: 3 };
+    return entry;
+  });
+  return { ...state, scheduledCards: updated };
+}
+
 function clearScheduledCard(state: CyklusRunState, cardId: string): CyklusRunState {
   let removed = false;
   return {
@@ -466,6 +578,8 @@ function clearScheduledCard(state: CyklusRunState, cardId: string): CyklusRunSta
     }),
   };
 }
+
+const CYCLE_CENTER_DRIFT = 0.15;
 
 function processCycleEnd(state: CyklusRunState): CyklusRunState {
   let s = { ...state, cycle: state.cycle + 1, choiceInCycle: 1 };
@@ -484,8 +598,13 @@ function processCycleEnd(state: CyklusRunState): CyklusRunState {
   // Reset stats slightly toward center
   for (const key of Object.keys(s.stats) as StatKey[]) {
     const center = 50;
-    const drift = Math.round((center - s.stats[key]) * 0.15);
+    const drift = Math.round((center - s.stats[key]) * CYCLE_CENTER_DRIFT);
     s = { ...s, stats: { ...s.stats, [key]: clampStat(s.stats[key] + drift) } };
+  }
+  // Save cycle summary
+  const summary = composeCycleSummary(s);
+  if (summary.length > 0) {
+    s = { ...s, lastCycleSummary: summary, cycleSummaries: [...s.cycleSummaries, summary] };
   }
   return s;
 }
@@ -754,13 +873,26 @@ export function composeBehavioralAnalysis(state: CyklusRunState): string[] {
   return patterns;
 }
 
+function pickAxis(a: string, b: string, av: number, bv: number): string {
+  const diff = av - bv;
+  if (Math.abs(diff) <= 1) return 'x';
+  return diff > 0 ? a : b;
+}
+
 export function computeProfile(state: CyklusRunState): ProfileResult {
   const p = state.profile;
-  const ei = (p.E ?? 0) >= (p.I ?? 0) ? 'E' : 'I';
-  const sn = (p.S ?? 0) >= (p.N ?? 0) ? 'S' : 'N';
-  const tf = (p.T ?? 0) >= (p.F ?? 0) ? 'T' : 'F';
-  const jp = (p.J ?? 0) >= (p.P ?? 0) ? 'J' : 'P';
-  const type = `${ei}${sn}${tf}${jp}`;
+  const eiPick = pickAxis('E', 'I', p.E ?? 0, p.I ?? 0);
+  const snPick = pickAxis('S', 'N', p.S ?? 0, p.N ?? 0);
+  const tfPick = pickAxis('T', 'F', p.T ?? 0, p.F ?? 0);
+  const jpPick = pickAxis('J', 'P', p.J ?? 0, p.P ?? 0);
+  const type = `${eiPick}${snPick}${tfPick}${jpPick}`;
+  const uncertainAxis = [
+    eiPick === 'x' ? 'E/I' : null,
+    snPick === 'x' ? 'S/N' : null,
+    tfPick === 'x' ? 'T/F' : null,
+    jpPick === 'x' ? 'J/P' : null,
+  ].filter(Boolean).join(', ') || undefined;
+
   const functions: { key: ProfileKey; score: number }[] = [
     { key: 'Ni' as ProfileKey, score: p.Ni ?? 0 }, { key: 'Ne' as ProfileKey, score: p.Ne ?? 0 },
     { key: 'Si' as ProfileKey, score: p.Si ?? 0 }, { key: 'Se' as ProfileKey, score: p.Se ?? 0 },
@@ -769,74 +901,159 @@ export function computeProfile(state: CyklusRunState): ProfileResult {
   ].sort((a, b) => b.score - a.score);
   const dominant = functions[0]?.key ?? 'Ni';
   const shadow = functions[functions.length - 1]?.key ?? 'Se';
-  const total = state.history.length;
-  const extremes = Object.values(state.stats).some((v) => v < 15 || v > 85) ? 0 : 10;
-  const stability = Math.max(0, Math.min(100, 50 - Math.abs((p.I ?? 0) - (p.E ?? 0)) - Math.abs((p.J ?? 0) - (p.P ?? 0)) + extremes));
+
+  // profileConfidence: how decisive are all 4 axes (0–100)
+  const axisDiffs = [
+    Math.abs((p.E ?? 0) - (p.I ?? 0)),
+    Math.abs((p.S ?? 0) - (p.N ?? 0)),
+    Math.abs((p.T ?? 0) - (p.F ?? 0)),
+    Math.abs((p.J ?? 0) - (p.P ?? 0)),
+  ];
+  const totalAxisPoints =
+    (p.E ?? 0) + (p.I ?? 0) + (p.S ?? 0) + (p.N ?? 0) +
+    (p.T ?? 0) + (p.F ?? 0) + (p.J ?? 0) + (p.P ?? 0);
+  const profileConfidence = totalAxisPoints <= 0
+    ? 0
+    : Math.min(100, Math.round((axisDiffs.reduce((a, b) => a + b, 0) / totalAxisPoints) * 100));
+
+  // subjectStability: based on stats distance from extremes
+  const extremeCount = Object.values(state.stats).filter((v) => v < 15 || v > 85).length;
+  const stability = Math.max(0, Math.min(100, 100 - extremeCount * 25));
+
+  const cleanType = type.replace(/x/g, '');
   const archetypes: Record<string, string> = {
     INFJ: 'Prorok v mlze', INFP: 'Archivář citu', INTJ: 'Tichý architekt', INTP: 'Schéma ve tmě',
     ENFJ: 'Most mezi světy', ENFP: 'Rozbíječ forem', ENTJ: 'Velitel restartu', ENTP: 'Nepřítel protokolu',
     ISFJ: 'Strážce ztracených řádů', ISFP: 'Tichý tvůrce zázraků', ISTJ: 'Pevný záznam', ISTP: 'Samoúčelný nástroj',
     ESFJ: 'Slunečné rozhraní', ESFP: 'Divoký signál', ESTJ: 'Ředitel systému', ESTP: 'Adrenalinový kabel',
   };
-  return { dominantLabel: type, dominantFunction: dominant, shadowFunction: shadow, stability, archetype: archetypes[type] ?? 'Neklasifikovatelný subjekt' };
+  const dominantLabel = uncertainAxis ? `${type}-like` : type;
+  return {
+    dominantLabel,
+    dominantFunction: dominant,
+    shadowFunction: shadow,
+    stability,
+    profileConfidence,
+    ...(uncertainAxis ? { uncertainAxis } : {}),
+    archetype: archetypes[cleanType] ?? 'Neklasifikovatelný subjekt',
+  };
 }
 
+// ── SEEDED RNG ────────────────────────────────────────────────────────────────
+
+function seededRandom(seed: string, step: number): number {
+  let h = 2166136261;
+  const input = `${seed}:${step}`;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ((h >>> 0) % 1_000_000) / 1_000_000;
+}
+
+// ── SECTOR MATCHING ───────────────────────────────────────────────────────────
+
+const SECTOR_TAG_MAP: Record<SectorId, string[]> = {
+  void: ['void'],
+  archive: ['archive'],
+  memory_sandbox: ['memory_sandbox', 'childhood', 'sandbox', 'memory'],
+  sarkasma_terminal: ['sarkasma', 'terminal'],
+  glitchka_nest: ['glitchka', 'glitch', 'bug'],
+  tai_core: ['tai'],
+  acid_yellow: ['acid', 'cult'],
+  market: ['market', 'trade'],
+  mirror: ['mirror', 'shadow'],
+  residuum: ['residuum'],
+  form_office: ['form', 'office'],
+};
+
+export function cardMatchesCurrentSector(state: CyklusRunState, card: SwipeCard): boolean {
+  if (card.sector === state.sector) return true;
+  if (card.conditions?.some((c) => c.type === 'sector' && c.sector === state.sector)) return true;
+  if (card.tags.includes(state.sector)) return true;
+  const sectorTags = SECTOR_TAG_MAP[state.sector] ?? [];
+  return sectorTags.some((tag) => card.tags.includes(tag));
+}
+
+// ── COOLDOWN HELPERS ──────────────────────────────────────────────────────────
+
+function turnsSinceLastUsed(state: CyklusRunState, cardId: string): number | null {
+  const lastIndex = state.usedCardIds.lastIndexOf(cardId);
+  if (lastIndex === -1) return null;
+  return state.usedCardIds.length - 1 - lastIndex;
+}
+
+// ── CARD POOL + SCORING ───────────────────────────────────────────────────────
+
 export function getCardPool(state: CyklusRunState): SwipeCard[] {
+  const readyScheduled = getReadyScheduledCards(state);
   return Object.values(CYKLUS_CARDS).filter((card) => {
-    if (isRestartCard(card)) return false; // restarts handled separately
+    if (isRestartCard(card)) return false;
     if (card.once && state.usedCardIds.includes(card.id)) return false;
+    if (card.maxUses && state.usedCardIds.filter((id) => id === card.id).length >= card.maxUses) return false;
     if (card.cooldown && state.usedCardIds.filter((id) => id === card.id).length >= card.cooldown) return false;
+    if (card.cooldownTurns) {
+      const since = turnsSinceLastUsed(state, card.id);
+      if (since !== null && since < card.cooldownTurns) return false;
+    }
+    if (card.triggerMode === 'scheduledOnly' && !readyScheduled.includes(card.id)) return false;
     return true;
   });
 }
 
-export function scoreCard(state: CyklusRunState, card: SwipeCard): number {
-  let score = 0;
-  if (!checkCardConditions(state, card)) return 0;
+export type CardScoreBreakdown = { card: SwipeCard; score: number; reasons: string[] };
 
-  // Scheduled ready
-  if (getReadyScheduledCards(state).includes(card.id)) score += 1000;
+export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardScoreBreakdown {
+  const reasons: string[] = [];
+  if (!checkCardConditions(state, card)) return { card, score: 0, reasons: ['conditions failed'] };
 
-  // Crisis
-  if (isCrisisCard(card)) score += 500;
+  const readyScheduled = getReadyScheduledCards(state);
+  const isScheduled = readyScheduled.includes(card.id);
 
-  // Item triggers
-  if (isItemTrigger(card)) score += 400;
-
-  // Follow-ups with conditions
-  if (isFollowup(card) && card.conditions) score += 300;
-
-  // Sector match
-  if (isSectorCard(card) && card.sector === state.sector) score += 250;
-
-  // Unlocked pool tags
-  if (state.unlockedPools.some((poolId) => card.tags.includes(poolId) || card.tags.includes(poolId.replace('_pool', '')))) score += 200;
-
-  // Difficulty gating
-  score += (card.rarity === 'common' ? 20 : card.rarity === 'uncommon' ? 35 : card.rarity === 'rare' ? 50 : 60);
-
-  // Profile affinity (small bonus)
-  const profile = state.profile;
-  if (card.tags.includes('memory') && ((profile.N ?? 0) > (profile.S ?? 0))) score += 10;
-  if (card.tags.includes('system') && ((profile.J ?? 0) > (profile.P ?? 0))) score += 10;
-  if (card.tags.includes('bond') && ((profile.F ?? 0) > (profile.T ?? 0))) score += 10;
-  if (card.tags.includes('chaos') && ((profile.P ?? 0) > (profile.J ?? 0))) score += 10;
-
-  // Avoid repeating the same card too soon
-  const lastUsedId = state.usedCardIds[state.usedCardIds.length - 1];
-  if (lastUsedId === card.id) return 0; // hard block immediate repeat
-  const recentIndex = state.usedCardIds.slice(-8).lastIndexOf(card.id);
-  if (recentIndex !== -1) {
-    const distance = state.usedCardIds.length - (state.usedCardIds.length - 8 + recentIndex);
-    if (distance <= 2) score -= 800;
-    else if (distance <= 4) score -= 400;
-    else score -= 150;
+  if (isScheduled) {
+    return { card, score: 10_000, reasons: ['scheduled ready +10000 (bypasses anti-repeat)'] };
   }
 
-  // Tension director adjusts pacing
-  score = applyTensionScore(state, score, card);
+  let score = 0;
+  if (isCrisisCard(card)) { score += 500; reasons.push('crisis +500'); }
+  if (isItemTrigger(card)) { score += 400; reasons.push('item_trigger +400'); }
+  if (isFollowup(card) && card.conditions) { score += 300; reasons.push('followup +300'); }
+  if (cardMatchesCurrentSector(state, card)) { score += 250; reasons.push('sector match +250'); }
+  if (state.unlockedPools.some((poolId) => card.tags.includes(poolId) || card.tags.includes(poolId.replace('_pool', '')))) {
+    score += 200; reasons.push('unlocked pool tag +200');
+  }
+  const rarityBonus = card.rarity === 'common' ? 20 : card.rarity === 'uncommon' ? 35 : card.rarity === 'rare' ? 50 : 60;
+  score += rarityBonus; reasons.push(`rarity ${card.rarity} +${rarityBonus}`);
 
-  return score;
+  const profile = state.profile;
+  if (card.tags.includes('memory') && ((profile.N ?? 0) > (profile.S ?? 0))) { score += 10; reasons.push('profile N +10'); }
+  if (card.tags.includes('system') && ((profile.J ?? 0) > (profile.P ?? 0))) { score += 10; reasons.push('profile J +10'); }
+  if (card.tags.includes('bond') && ((profile.F ?? 0) > (profile.T ?? 0))) { score += 10; reasons.push('profile F +10'); }
+  if (card.tags.includes('chaos') && ((profile.P ?? 0) > (profile.J ?? 0))) { score += 10; reasons.push('profile P +10'); }
+
+  const lastUsedId = state.usedCardIds[state.usedCardIds.length - 1];
+  if (lastUsedId === card.id) return { card, score: 0, reasons: ['hard block: immediate repeat'] };
+  const recentWindow = 15;
+  const recentSlice = state.usedCardIds.slice(-recentWindow);
+  const recentIndex = recentSlice.lastIndexOf(card.id);
+  if (recentIndex !== -1) {
+    const distance = recentSlice.length - recentIndex;
+    if (distance <= 3) return { card, score: 0, reasons: ['hard block: within 3 turns'] };
+    else if (distance <= 6) { score -= 900; reasons.push('recent -900'); }
+    else if (distance <= 10) { score -= 500; reasons.push('recent -500'); }
+    else { score -= 200; reasons.push('recent -200'); }
+  }
+
+  const tensionScore = applyTensionScore(state, score, card);
+  const tensionDelta = tensionScore - score;
+  if (tensionDelta !== 0) reasons.push(`tension ${tensionDelta > 0 ? '+' : ''}${tensionDelta}`);
+  score = tensionScore;
+
+  return { card, score, reasons };
+}
+
+export function scoreCard(state: CyklusRunState, card: SwipeCard): number {
+  return explainCardScore(state, card).score;
 }
 
 function getNextRestartCard(state: CyklusRunState): SwipeCard | null {
@@ -848,10 +1065,10 @@ function getNextRestartCard(state: CyklusRunState): SwipeCard | null {
   return (CYKLUS_CARDS[nextId] as SwipeCard | undefined) ?? null;
 }
 
-function weightedPick<T>(candidates: { item: T; weight: number }[]): T | null {
+function weightedPick<T>(candidates: { item: T; weight: number }[], seed: string, step: number): T | null {
   const total = candidates.reduce((sum, c) => sum + c.weight, 0);
   if (total <= 0) return candidates[0]?.item ?? null;
-  let roll = Math.random() * total;
+  let roll = seededRandom(seed, step) * total;
   for (const c of candidates) {
     roll -= c.weight;
     if (roll <= 0) return c.item;
@@ -868,24 +1085,22 @@ export function pickNextCard(state: CyklusRunState): SwipeCard {
   const pool = getCardPool(state);
   const scored = pool.map((card) => ({ card, score: scoreCard(state, card) })).filter((entry) => entry.score > 0);
   if (scored.length === 0) {
-    // Fallback to any valid card, excluding the immediately previous one
     const lastId = state.usedCardIds[state.usedCardIds.length - 1];
     const fallback = pool.find((c) => checkCardConditions(state, c) && c.id !== lastId) ?? pool.find((c) => c.id !== lastId) ?? CYKLUS_CARDS.first_boot!;
     return fallback;
   }
 
-  // Scheduled cards still have absolute priority via score; if one is ready, it almost always wins.
+  // Scheduled cards have absolute priority — bypass everything
   const readyScheduled = getReadyScheduledCards(state);
   const hasScheduled = scored.some((entry) => readyScheduled.includes(entry.card.id));
   if (hasScheduled) {
-    // Keep only scheduled-ready cards among the top candidates so they are guaranteed to appear.
     const scheduledTop = scored.filter((entry) => readyScheduled.includes(entry.card.id));
-    const picked = weightedPick(scheduledTop.map((entry) => ({ item: entry.card, weight: entry.score })));
+    const picked = weightedPick(scheduledTop.map((entry) => ({ item: entry.card, weight: entry.score })), state.seed, state.rngStep);
     if (picked) return picked;
   }
 
   const top = scored.sort((a, b) => b.score - a.score).slice(0, TOP_CANDIDATES);
-  const picked = weightedPick(top.map((entry) => ({ item: entry.card, weight: entry.score })));
+  const picked = weightedPick(top.map((entry) => ({ item: entry.card, weight: entry.score })), state.seed, state.rngStep);
   return picked ?? top[0]?.card ?? CYKLUS_CARDS.first_boot!;
 }
 
@@ -895,7 +1110,7 @@ export function pickNextCardState(state: CyklusRunState): CyklusRunState {
   const readyScheduled = getReadyScheduledCards(state);
   const wasScheduled = readyScheduled.includes(next.id);
   const s = wasScheduled ? clearScheduledCard(state, next.id) : state;
-  return { ...s, currentCardId: next.id };
+  return { ...s, currentCardId: next.id, rngStep: s.rngStep + 1 };
 }
 
 export function getCycleProgress(state: CyklusRunState): number {
@@ -967,13 +1182,13 @@ export function updateTension(state: CyklusRunState, card: SwipeCard): CyklusTen
   const cardIsItemTrigger = isItemTrigger(card);
   const isCalm = !cardIsCrisis && !cardIsItemTrigger && !hasEntity && !hasEntityEffect && card.category !== 'path';
   const hasReward = card.yes.effects.some((e) => e.type === 'item' || e.type === 'imprint') || card.no.effects.some((e) => e.type === 'item' || e.type === 'imprint');
-  const sameSector = card.sector === state.sector;
+  const matchesSector = cardMatchesCurrentSector(state, card);
 
   return {
     calmStreak: isCalm ? t.calmStreak + 1 : 0,
     crisisStreak: cardIsCrisis ? t.crisisStreak + 1 : 0,
     itemTriggerStreak: cardIsItemTrigger ? t.itemTriggerStreak + 1 : 0,
-    sameSectorStreak: sameSector ? t.sameSectorStreak + 1 : 0,
+    sameSectorStreak: matchesSector ? t.sameSectorStreak + 1 : 0,
     rewardStreak: hasReward ? 0 : t.rewardStreak + 1,
     entityStreak: hasEntity || hasEntityEffect ? 0 : t.entityStreak + 1,
     lastRewardAt: hasReward ? state.totalChoices : t.lastRewardAt,
@@ -990,7 +1205,7 @@ function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard
   if (t.crisisStreak >= 2 && (card.tags.includes('calm') || card.tags.includes('stabilize') || card.tags.includes('system') || card.tags.includes('archive'))) {
     s += 150;
   }
-  if (t.sameSectorStreak >= 3 && (isSectorCard(card) || card.tags.includes('path'))) {
+  if (t.sameSectorStreak >= 4 && !cardMatchesCurrentSector(state, card)) {
     s += 140;
   }
   if (t.entityStreak >= 4 && (card.tags.includes('sarkasma') || card.tags.includes('glitchka') || card.tags.includes('tai') || card.tags.includes('archive'))) {
@@ -1002,3 +1217,12 @@ function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard
   return s;
 }
 
+
+export function getTopScoredCards(state: CyklusRunState, count = 5): CardScoreBreakdown[] {
+  const pool = getCardPool(state);
+  return pool
+    .map((card) => explainCardScore(state, card))
+    .filter((b) => b.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, count);
+}
