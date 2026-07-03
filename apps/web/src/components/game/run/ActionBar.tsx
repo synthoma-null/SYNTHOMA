@@ -107,7 +107,7 @@ export default function ActionBar({
             >
               <span className="action-bar__btn-key">[{action.key}]</span>
               <span className="action-bar__btn-main v1-action-card__title">{action.label}</span>
-              <span className="action-bar__btn-sep">//</span>
+              <span className="action-bar__btn-sep">{`//`}</span>
               <span className="action-bar__btn-sub v1-action-card__sub">{action.sub}</span>
               {hint === 'strong' && <span className="action-bar__btn-hint-icon v1-badge v1-badge--accent">▲</span>}
               {hint === 'weak' && <span className="action-bar__btn-hint-icon action-bar__btn-hint-icon--weak v1-badge v1-badge--danger">▼</span>}
@@ -118,7 +118,7 @@ export default function ActionBar({
 
       {hand.length > 0 && (
         <div className="action-bar__hand">
-          <span className="action-bar__hand-label">// KARTY V RUCE ({hand.length})</span>
+          <span className="action-bar__hand-label">{`// KARTY V RUCE (${hand.length})`}</span>
           <div className="action-bar__cards">
             {hand.map((cardId, idx) => {
               const card = cardDefs[cardId];

@@ -160,7 +160,7 @@ export default function SoloClient() {
       <div className="solo-menu v1-menu-shell v1-enter">
         <div className="v1-scanlines" aria-hidden="true" />
         <div className="solo-menu__title v1-menu-title">PRŮCHOD PRÁZDNOTOU</div>
-        <div className="solo-menu__subtitle v1-menu-subtitle">// Systém čeká na identifikaci subjektu</div>
+        <div className="solo-menu__subtitle v1-menu-subtitle">{`// Systém čeká na identifikaci subjektu`}</div>
 
         <div className="solo-menu__form">
           <label className="solo-menu__label" htmlFor="solo-player-name">JMÉNO SUBJEKTU</label>
@@ -176,7 +176,7 @@ export default function SoloClient() {
         </div>
 
         <div className="solo-menu__run-types">
-          <div className="solo-menu__section-label">// VYBER TYP PRŮCHODU</div>
+          <div className="solo-menu__section-label">{`// VYBER TYP PRŮCHODU`}</div>
           <div className="solo-menu__run-type-grid">
             {RUN_TYPES.map((rt) => (
               <button
@@ -208,7 +208,7 @@ export default function SoloClient() {
 
         {history.entries.length > 0 && (
           <div className="solo-menu__history v1-panel">
-            <div className="solo-menu__section-label">// ARCHIV PRŮCHODŮ</div>
+            <div className="solo-menu__section-label">{`// ARCHIV PRŮCHODŮ`}</div>
             <div className="solo-menu__history-stats">
               <span className="v1-badge">{history.stats.runsStarted} startů</span>
               <span className="v1-badge v1-badge--accent">{history.stats.runsWon} výher</span>
@@ -238,27 +238,27 @@ export default function SoloClient() {
               <button className="solo-menu__help-close" onClick={() => setShowHelp(false)} aria-label="Zavřít nápovědu">×</button>
               <div className="solo-menu__help-title">JAK HRÁT — PRŮCHOD PRÁZDNOTOU</div>
               <div className="solo-menu__help-section">
-                <h3>// CÍL</h3>
+                <h3>{`// CÍL`}</h3>
                 <p>{HELP_TEXT.goal}</p>
               </div>
               <div className="solo-menu__help-section">
-                <h3>// MAPA</h3>
+                <h3>{`// MAPA`}</h3>
                 <p>{HELP_TEXT.map}</p>
               </div>
               <div className="solo-menu__help-section">
-                <h3>// COMBAT</h3>
+                <h3>{`// COMBAT`}</h3>
                 <p>{HELP_TEXT.combat}</p>
               </div>
               <div className="solo-menu__help-section">
-                <h3>// ZDROJE</h3>
+                <h3>{`// ZDROJE`}</h3>
                 <p>{HELP_TEXT.resources}</p>
               </div>
               <div className="solo-menu__help-section">
-                <h3>// VOLBY</h3>
+                <h3>{`// VOLBY`}</h3>
                 <p>{HELP_TEXT.choices}</p>
               </div>
               <div className="solo-menu__help-section">
-                <h3>// KARTY</h3>
+                <h3>{`// KARTY`}</h3>
                 <p>{HELP_TEXT.cards}</p>
               </div>
             </div>
@@ -335,27 +335,27 @@ export default function SoloClient() {
             <button className="solo-menu__help-close" onClick={() => setShowHelp(false)} aria-label="Zavřít nápovědu">×</button>
             <div className="solo-menu__help-title">JAK HRÁT — PRŮCHOD PRÁZDNOTOU</div>
             <div className="solo-menu__help-section">
-              <h3>// CÍL</h3>
+              <h3>{`// CÍL`}</h3>
               <p>{HELP_TEXT.goal}</p>
             </div>
             <div className="solo-menu__help-section">
-              <h3>// MAPA</h3>
+              <h3>{`// MAPA`}</h3>
               <p>{HELP_TEXT.map}</p>
             </div>
             <div className="solo-menu__help-section">
-              <h3>// COMBAT</h3>
+              <h3>{`// COMBAT`}</h3>
               <p>{HELP_TEXT.combat}</p>
             </div>
             <div className="solo-menu__help-section">
-              <h3>// ZDROJE</h3>
+              <h3>{`// ZDROJE`}</h3>
               <p>{HELP_TEXT.resources}</p>
             </div>
             <div className="solo-menu__help-section">
-              <h3>// VOLBY</h3>
+              <h3>{`// VOLBY`}</h3>
               <p>{HELP_TEXT.choices}</p>
             </div>
             <div className="solo-menu__help-section">
-              <h3>// KARTY</h3>
+              <h3>{`// KARTY`}</h3>
               <p>{HELP_TEXT.cards}</p>
             </div>
           </div>

@@ -94,7 +94,7 @@ export default function EncounterPanel({
             <div className="encounter-panel__log-column">
               <div className="encounter-panel__log">
                 {recentLog.length === 0 && (
-                  <div className="encounter-panel__log-empty">// čekám na vstup subjektu</div>
+                  <div className="encounter-panel__log-empty">{`// čekám na vstup subjektu`}</div>
                 )}
                 {recentLog.map((entry) => (
                   <LogEntry
@@ -131,7 +131,7 @@ export default function EncounterPanel({
           />
           {encounter.phase === 'choose_actions' && (
             <div className="encounter-panel__hint">
-              // TIP: Vyber akci, poté kartu z ruky. Zelený rámeček = silná proti příchozímu záměru. Červený/slábnoucí = slabá.
+              {`// TIP: Vyber akci, poté kartu z ruky. Zelený rámeček = silná proti příchozímu záměru. Červený/slábnoucí = slabá.`}
             </div>
           )}
         </div>
@@ -175,7 +175,7 @@ export default function EncounterPanel({
             ))}
           </div>
           {encounter.lastResolutionText && (
-            <div className="encounter-panel__resolution-text">// {encounter.lastResolutionText}</div>
+            <div className="encounter-panel__resolution-text">{`// ${encounter.lastResolutionText}`}</div>
           )}
         </div>
       )}

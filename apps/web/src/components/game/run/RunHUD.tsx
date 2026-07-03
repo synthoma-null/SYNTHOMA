@@ -129,7 +129,7 @@ export default function RunHUD({ player, voidPressure, deckSize, discardSize, ac
 
       {isVoidCritical && (
         <div className="run-hud__void-overlay-hint">
-          // PRÁZDNOTA JE TADY
+          {`// PRÁZDNOTA JE TADY`}
         </div>
       )}
     </div>

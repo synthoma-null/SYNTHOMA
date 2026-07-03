@@ -72,7 +72,7 @@ export default function RunEndReport({ run, onNewRun, onMainMenu }: RunEndReport
 
       {fragStatus && (
         <div className="run-end-report__frag-note">
-          // Fragmentace při ukončení: {fragStatus.stacks}/3
+          {`// Fragmentace při ukončení: ${fragStatus.stacks}/3`}
         </div>
       )}
 
@@ -111,7 +111,7 @@ export default function RunEndReport({ run, onNewRun, onMainMenu }: RunEndReport
 
       {run.relics.length > 0 && (
         <div className="run-end-report__relics">
-          <div className="run-end-report__section-label">// ZÍSKANÉ RELIKVIE</div>
+          <div className="run-end-report__section-label">{`// ZÍSKANÉ RELIKVIE`}</div>
           <div className="run-end-report__relic-list">
             {run.relics.map((relicId) => {
               const relic = RELICS[relicId];
@@ -128,7 +128,7 @@ export default function RunEndReport({ run, onNewRun, onMainMenu }: RunEndReport
 
       {profileEntries.length > 0 && (
         <div className="run-end-report__profile">
-          <div className="run-end-report__section-label">// PROFIL PRŮCHODU — MOJE PRÁZDNOTA</div>
+          <div className="run-end-report__section-label">{`// PROFIL PRŮCHODU — MOJE PRÁZDNOTA`}</div>
           <div className="run-end-report__profile-bars">
             {profileEntries.slice(0, 5).map(([key, val]) => (
               <div key={key} className={`run-end-report__profile-row ${key === dominantProfile?.[0] ? 'run-end-report__profile-row--dominant' : ''}`}>

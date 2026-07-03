@@ -59,7 +59,7 @@ export default function EnemyCard({
       </div>
 
       {flavour && (
-        <div className="enemy-card__flavour">// {flavour}</div>
+        <div className="enemy-card__flavour">{`// ${flavour}`}</div>
       )}
 
       <div className="enemy-card__stability-label">
