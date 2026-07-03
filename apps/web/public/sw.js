@@ -50,7 +50,7 @@ self.addEventListener('fetch', (event) => {
           // For HTML files, try network first (stale-while-revalidate)
           if (request.headers.get('accept')?.includes('text/html')) {
             fetch(request).then((networkResponse) => {
-              if (networkResponse.ok) {
+              if (networkResponse.ok && networkResponse.status !== 206) {
                 caches.open(CACHE_NAME).then((cache) => {
                   cache.put(request, networkResponse.clone())
                 })
@@ -65,7 +65,7 @@ self.addEventListener('fetch', (event) => {
         // For HTML files, always try network first
         if (request.headers.get('accept')?.includes('text/html')) {
           return fetch(request).then((networkResponse) => {
-            if (networkResponse.ok) {
+            if (networkResponse.ok && networkResponse.status !== 206) {
               // Cache successful responses
               const responseClone = networkResponse.clone()
               caches.open(CACHE_NAME).then((cache) => {
@@ -81,7 +81,7 @@ self.addEventListener('fetch', (event) => {
         
         // For other assets, cache first, then network
         return fetch(request).then((networkResponse) => {
-          if (networkResponse.ok) {
+          if (networkResponse.ok && networkResponse.status !== 206) {
             const responseClone = networkResponse.clone()
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(request, responseClone)
