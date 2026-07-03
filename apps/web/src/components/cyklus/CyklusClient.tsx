@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress } from '../../game/cyklus/cyklusEngine';
+import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis } from '../../game/cyklus/cyklusEngine';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary } from '../../game/cyklus/cyklusStorage';
 import { STAT_LABELS, STAT_DESCRIPTIONS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord } from '../../game/cyklus/cyklusTypes';
 import { CYKLUS_ITEMS } from '../../game/cyklus/cyklusItems';
@@ -17,6 +17,10 @@ export default function CyklusClient() {
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
   const [showMenu, setShowMenu] = useState(false);
   const [savedRun, setSavedRun] = useState<CyklusRunState | null>(null);
+  const [sectorIntro, setSectorIntro] = useState<string | null>(null);
+  const [cycleSummary, setCycleSummary] = useState<string | null>(null);
+  const prevSectorRef = useRef<string | null>(null);
+  const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
   const outcomeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -43,6 +47,25 @@ export default function CyklusClient() {
   useEffect(() => {
     if (state) saveCyklusRun(state);
   }, [state]);
+
+  useEffect(() => {
+    if (!state || state.status !== 'playing') return;
+    const prevSector = prevSectorRef.current;
+    const prevCycle = prevCycleRef.current;
+
+    if (prevSector !== null && prevSector !== state.sector && !outcomeVisible) {
+      const seed = `${state.id}-${state.sector}-${state.totalChoices}`;
+      setSectorIntro(getSectorIntroText(state.sector, seed));
+    }
+
+    if (prevCycle !== state.cycle) {
+      const summary = composeCycleSummary(state);
+      if (summary) setCycleSummary(summary);
+    }
+
+    prevSectorRef.current = state.sector;
+    prevCycleRef.current = state.cycle;
+  }, [state?.sector, state?.cycle, state?.totalChoices]);
 
   useEffect(() => {
     if (!state || state.status === 'playing') return;
@@ -148,13 +171,31 @@ export default function CyklusClient() {
   const card = getCardById(state.currentCardId) ?? getCardById('first_boot');
   const profile = computeProfile(state);
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
+  const chapter = getCycleChapterName(state.cycle);
 
   return (
     <div className="cyklus-root">
+      {sectorIntro && (
+        <div className="cyklus-overlay cyklus-overlay--sector" onClick={() => setSectorIntro(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSectorIntro(null); }}>
+          <div className="cyklus-overlay__sector-label">{SECTOR_LABELS[state.sector]}</div>
+          <div className="cyklus-overlay__sector-text">{sectorIntro}</div>
+          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
+        </div>
+      )}
+      {cycleSummary && (
+        <div className="cyklus-overlay cyklus-overlay--summary" onClick={() => setCycleSummary(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCycleSummary(null); }}>
+          <div className="cyklus-overlay__summary-text">{cycleSummary}</div>
+          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
+        </div>
+      )}
       <header className="cyklus-header">
         <div className="cyklus-title">SYNTHOMA: CYKLUS</div>
+        <div className="cyklus-chapter">
+          <span className="cyklus-chapter__number">{chapter.number}</span>
+          <span className="cyklus-chapter__title">{chapter.title}</span>
+          <span className="cyklus-chapter__subtitle">{chapter.subtitle}</span>
+        </div>
         <div className="cyklus-meta">
-          <span className="cyklus-cycle">CYKLUS {state.cycle}</span>
           <span className="cyklus-sector">{SECTOR_LABELS[state.sector]}</span>
           <span className="cyklus-progress">{state.choiceInCycle}/{12}</span>
           <button
@@ -216,6 +257,7 @@ export default function CyklusClient() {
             <div className="cyklus-end__title">{ending.title}</div>
             <div className="cyklus-end__text">{ending.text}</div>
             {state.status === 'dead' && <DeathAnalysis state={state} />}
+            <BehavioralAnalysis state={state} />
             <div className="cyklus-end__profile">
               <div className="cyklus-profile__type">{profile.dominantLabel}</div>
               <div className="cyklus-profile__archetype">{profile.archetype}</div>
@@ -372,6 +414,21 @@ function DeathAnalysis({ state }: { state: CyklusRunState }) {
   );
 }
 
+function BehavioralAnalysis({ state }: { state: CyklusRunState }) {
+  const patterns = composeBehavioralAnalysis(state);
+  if (patterns.length === 0) return null;
+  return (
+    <div className="cyklus-behavioral">
+      <div className="cyklus-behavioral__title">Behaviorální analýza subjektu</div>
+      <div className="cyklus-behavioral__list">
+        {patterns.map((p) => (
+          <div key={p} className="cyklus-behavioral__pattern">— {p}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function RunHistoryList({ history }: { history: CyklusRunSummary[] }) {
   return (
     <div className="cyklus-history">
@@ -393,6 +450,19 @@ function RunHistoryList({ history }: { history: CyklusRunSummary[] }) {
   );
 }
 
+function getRewardType(record: CyklusChoiceRecord | undefined): { label: string; cls: string } | null {
+  if (!record) return null;
+  if (record.itemsGained.length > 0) return { label: 'PŘEDMĚT', cls: 'reward--item' };
+  if (record.sectorBefore !== record.sectorAfter) return { label: 'PŘESUN', cls: 'reward--sector' };
+  if (record.flagsGained.length > 0) return { label: 'STOPA', cls: 'reward--flag' };
+  const totalDelta = Object.values(record.statDelta).reduce((s, v) => s + Math.abs(v), 0);
+  if (totalDelta >= 15) return { label: 'VELKÝ DOPAD', cls: 'reward--big' };
+  if (totalDelta >= 8) return { label: 'DOPAD', cls: 'reward--medium' };
+  const profileShifted = Object.values(record.profileDelta).some((v) => v !== 0);
+  if (profileShifted) return { label: 'PROFIL', cls: 'reward--profile' };
+  return { label: 'TICHÝ DOPAD', cls: 'reward--silent' };
+}
+
 function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: () => void }) {
   const record = state.history[state.history.length - 1];
   const deltas = record ? Object.entries(record.statDelta) as [StatKey, number][] : [];
@@ -401,10 +471,14 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
   const entityDeltas = record
     ? (Object.entries(record.profileDelta) as [string, number][]).filter(([key]) => ['Ni', 'Ne', 'Si', 'Se', 'Ti', 'Te', 'Fi', 'Fe'].includes(key)).length > 0
     : false;
+  const reward = getRewardType(record);
 
   return (
     <div className="cyklus-outcome" onClick={onDismiss} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onDismiss(); }}>
-      <div className="cyklus-outcome__label">Dopad volby</div>
+      <div className="cyklus-outcome__label">
+        Dopad volby
+        {reward && <span className={`cyklus-outcome__reward ${reward.cls}`}>{reward.label}</span>}
+      </div>
       <div className="cyklus-outcome__story">{state.lastOutcomeText}</div>
       {deltas.length > 0 && (
         <div className="cyklus-outcome__stats">

@@ -551,6 +551,209 @@ function getEnding(stat: StatKey, extreme: 'low' | 'high'): RunEnding {
   return endings[stat][extreme];
 }
 
+// ── CYCLE CHAPTER NAMES ───────────────────────────────────────────────────────
+
+export function getCycleChapterName(cycle: number): { number: string; title: string; subtitle: string } {
+  const chapters: Record<number, { title: string; subtitle: string }> = {
+    1: { title: 'PROBUZENI', subtitle: 'Systém se inicializuje. Ty ještě nevíš, co to znamená.' },
+    2: { title: 'REZIDUALNI VRSTVA', subtitle: 'Vzpomínky ještě nejsou tvoje. Ale přicházejí.' },
+    3: { title: 'REZIDUUM', subtitle: 'Systém přestal předstírat, že tě opravuje. Teď už jen sleduje, co z tebe zůstane.' },
+    4: { title: 'KOLAPS IDENTITY', subtitle: 'Jméno se rozpadlo na součásti. Zbývá otázka: které jsou tvoje?' },
+    5: { title: 'STABILIZACE / SMRT', subtitle: 'Tady se rozhoduje. Systém čeká na výsledek. Ty také.' },
+  };
+  const c = chapters[Math.min(cycle, 5)] ?? { title: `CYKLUS ${cycle}`, subtitle: 'Nekonečno má strukturu. Jen ji nevidíš.' };
+  return { number: `CYKLUS ${String(cycle).padStart(2, '0')}`, title: c.title, subtitle: c.subtitle };
+}
+
+// ── SECTOR INTRO TEXTS ────────────────────────────────────────────────────────
+
+const SECTOR_INTROS: Record<SectorId, string[]> = {
+  void: [
+    'Prázdnota tě přijala. Bez otázek, bez podmínek. To je u přijetí podezřelé.',
+    'Vrátil ses do Prázdnoty. Nebo nikdy neodešel. Těžko říct.',
+    'Prázdnota neznamená nic. Ale to "nic" má tvar.',
+  ],
+  archive: [
+    'Vzduch voní starým papírem a mokrým kabelem. Archiv tě nepozval. Archiv tě rozpoznal. To je horší.',
+    'Police se natáhly dál, než by geometrie dovolila. Archiv tě eviduje.',
+    'Archiv přijal tvůj příchod. Někde se otočí stránka, která měla zůstat zavřená.',
+  ],
+  memory_sandbox: [
+    'Písek je starý. Stopy v něm nejsou tvoje. Nebo jsou — jen jiné.',
+    'Pískoviště tě znalo dřív, než ses naučil jméno. Přivítalo tě mlčením.',
+    'Tady jsou uložené věci, které jsi přestal nosit. Čekaly.',
+  ],
+  sarkasma_terminal: [
+    'Terminál zablikal. Sarkasma si tě všimla. To není vždy dobré.',
+    'Sarkasmin prostor má vlastní gravitaci. Věci, které řekneš, padají jinak.',
+    'Terminál tě ohlásil. Sarkasma nedorazila. Zatím.',
+  ],
+  glitchka_nest: [
+    'Hnízdo je jinak než včera. Nebo jsi jiný ty. Glitchka by řekla: obojí.',
+    'Glitchka tě vítá smíchem, který předchází vtip o tři sekundy.',
+    'Chaos má tady správce. Správce se tváří, že to ví.',
+  ],
+  tai_core: [
+    'T-AI Jádro je přesné. Teplota, osvětlení, vzduch — všechno seřízené. Trochu děsivé.',
+    'T-AI tě skenuje. Výsledek uloží na místo, které nenajdeš.',
+    'Jádro hučí tiše. T-AI eviduje anomálie. Ty jsi evidovaná anomálie.',
+  ],
+  acid_yellow: [
+    'Barva tě udeřila dřív než cokoli jiného. Acidová žluť nemá zábrany.',
+    'Kult tě přijal jako hosta nebo jako materiál. Ještě nevíš čím jsi.',
+    'Energie je tady hustší. Jako vzduch těsně před bouřkou, která nikdy nepřijde.',
+  ],
+  market: [
+    'Tržiště eviduje, co máš. A co ti chybí. Ceny jsou v měně, která se mění.',
+    'Něco se tu prodává. Cena je napsaná jinak, než si myslíš.',
+    'Trh nezná náladu. Jen nabídku a poptávku. Ty jsi obojí.',
+  ],
+  mirror: [
+    'Zrcadlo nezačíná u skla. Začíná u tebe.',
+    'Odraz přišel o zlomek sekundy dřív než ty. Nebo o zlomek sekundy pozdě.',
+    'Zrcadlový sektor tě viděl, než jsi vstoupil. Připravil se.',
+  ],
+  residuum: [
+    'Reziduum je to, co zbyde po smazání. Ty jsi tady. Přemýšlej nad tím.',
+    'Tady žijí věci, které systém nestačil smazat. A ty.',
+    'Reziduální práh voní po smazaných větách a nedokončených rozhodnutích.',
+  ],
+  form_office: [
+    'Formuláře se dívají. Ne oči — pozornost. Úřad tě zaevidoval.',
+    'Form Office tě přijal jako případ. Číslo jednací ještě nezná. Brzy bude znát.',
+    'Vzduch tady váží víc. Je to tíha papíru, který čeká na podpis.',
+  ],
+};
+
+export function getSectorIntroText(sectorId: SectorId, seed: string): string {
+  const pool = SECTOR_INTROS[sectorId];
+  return pickFromPool(pool, seed);
+}
+
+// ── CYCLE SUMMARY ────────────────────────────────────────────────────────────
+
+export function composeCycleSummary(state: CyklusRunState): string {
+  const cycleHistory = state.history.filter((r) => r.cycle === state.cycle - 1);
+  if (cycleHistory.length === 0) return '';
+
+  const itemsGained = cycleHistory.flatMap((r) => r.itemsGained);
+  const uniqueSectors = [...new Set(cycleHistory.map((r) => r.sectorAfter))];
+  const totalStatDelta: Partial<Record<StatKey, number>> = {};
+  for (const r of cycleHistory) {
+    for (const [k, v] of Object.entries(r.statDelta) as [StatKey, number][]) {
+      totalStatDelta[k] = (totalStatDelta[k] ?? 0) + v;
+    }
+  }
+  const dominantKey = (Object.entries(totalStatDelta) as [StatKey, number][])
+    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0]?.[0] ?? null;
+  const yesCount = cycleHistory.filter((r) => r.direction === 'yes').length;
+  const noCount = cycleHistory.filter((r) => r.direction === 'no').length;
+
+  const cycleNum = state.cycle - 1;
+  const lines: string[] = [];
+  lines.push(`SYSTEMOVE HODNOCENI CYKLU ${String(cycleNum).padStart(2, '0')}`);
+  lines.push('');
+
+  if (yesCount > noCount * 2) {
+    lines.push('Subjekt souhlasil se vším. I s tím, co neslibovalo nic dobrého.');
+  } else if (noCount > yesCount * 2) {
+    lines.push('Subjekt odmítal konzistentně. Systém to eviduje jako politiku, ne charakter.');
+  } else {
+    lines.push(`Subjekt v cyklu ${cycleNum}x přijal a ${noCount}x odmítl. Bez jasné logiky. Nebo s logikou, kterou systém zatím nepochopil.`);
+  }
+
+  if (dominantKey) {
+    const delta = totalStatDelta[dominantKey]!;
+    const statName = STAT_LABELS[dominantKey];
+    if (delta > 0) {
+      lines.push(`Nejznatelnější posun: ${statName} vzrostla o ${delta}. Systém to zaznamenal jako vývoj nebo varovný signál.`);
+    } else {
+      lines.push(`Nejznatelnější posun: ${statName} klesla o ${Math.abs(delta)}. Systém to zaznamenal jako ztrátu nebo úsporu.`);
+    }
+  }
+
+  if (itemsGained.length > 0) {
+    const names = itemsGained.map((id) => CYKLUS_ITEMS[id]?.title ?? id).join(', ');
+    lines.push(`Předměty přinesené z cyklu: ${names}. Důvod jejich výběru: zatím neklasifikován.`);
+  }
+
+  if (uniqueSectors.length >= 3) {
+    lines.push(`Subjekt navštívil ${uniqueSectors.length} sektorů. Systém to hodnotí jako neklid nebo zvědavost. Obojí je podezřelé.`);
+  }
+
+  lines.push('');
+  lines.push('Zaver:');
+  const conclusions = [
+    'Subjekt vykazuje neobvyklou odolnost vůči klasifikaci.',
+    'Subjekt funguje. Definice "fungovat" se upřesňuje.',
+    'Cyklus skončil. Subjekt přežil. To nebylo jisté.',
+    'Systém nemá dostatek dat. Subjekt má dostatek odhodlání. Zatím remíza.',
+    'Výsledek cyklu: neurčitý. Přesně jak má být.',
+  ];
+  lines.push(pickFromPool(conclusions, `cycle-summary-${cycleNum}-${state.id}`));
+
+  return lines.join('\n');
+}
+
+// ── BEHAVIORAL ANALYSIS ──────────────────────────────────────────────────────
+
+export function composeBehavioralAnalysis(state: CyklusRunState): string[] {
+  const h = state.history;
+  if (h.length < 5) return [];
+  const patterns: string[] = [];
+
+  const objectCards = h.filter((r) => {
+    const card = CYKLUS_CARDS[r.cardId];
+    return card?.category === 'object' || card?.tags.includes('object');
+  });
+  if (objectCards.length >= 4) {
+    patterns.push('casto prijima nezname predmety');
+  }
+
+  const helpRefused = h.filter((r) => {
+    const card = CYKLUS_CARDS[r.cardId];
+    return card?.tags.includes('tai') && r.direction === 'no';
+  });
+  if (helpRefused.length >= 2) {
+    patterns.push('odmita primou pomoc');
+  }
+
+  const controlOverBond = (state.stats.control - state.stats.bond) > 20;
+  if (controlOverBond) {
+    patterns.push('preferuje kontrolu pred vazbou');
+  }
+
+  const bondOverControl = (state.stats.bond - state.stats.control) > 20;
+  if (bondOverControl) {
+    patterns.push('preferuje vazbu pred kontrolou');
+  }
+
+  const memoryHigh = state.stats.memory > 70;
+  if (memoryHigh) {
+    patterns.push('pamet otevira i za cenu energie');
+  }
+
+  const crisisYes = h.filter((r) => {
+    const card = CYKLUS_CARDS[r.cardId];
+    return card?.category === 'crisis' && r.direction === 'yes';
+  });
+  if (crisisYes.length >= 2) {
+    patterns.push('v krizich voli stabilizaci, ne risk');
+  }
+
+  const archiveAffinity = (state.entityRelations.archive ?? 0) >= 3;
+  if (archiveAffinity) {
+    patterns.push('vykazuje afinitu k Archivu');
+  }
+
+  const sarkasmaNegative = (state.entityRelations.sarkasma ?? 0) < -2;
+  if (sarkasmaNegative) {
+    patterns.push('komplikovaný vztah se Sarkasou');
+  }
+
+  return patterns;
+}
+
 export function computeProfile(state: CyklusRunState): ProfileResult {
   const p = state.profile;
   const ei = (p.E ?? 0) >= (p.I ?? 0) ? 'E' : 'I';

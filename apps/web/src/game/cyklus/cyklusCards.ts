@@ -1,4 +1,4 @@
-import type { SwipeCard } from './cyklusTypes';
+﻿import type { SwipeCard } from './cyklusTypes';
 
 export const CYKLUS_CARDS: Record<string, SwipeCard> = {
   // ── SCENES (20) ──────────────────────────────────────────────────────────────
@@ -461,8 +461,8 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     rarity: 'uncommon',
     conditions: [{ type: 'hasFlag', flag: 'sarkasma_debt' }],
     tags: ['followup', 'sarkasma', 'debt'],
-    yes: { resultText: 'Řekl jsi pravdu. Místnost na okamžik ztichla, protože i systémy poznají nepohodlí.', effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'stat', key: 'bond', amount: -5 }, { type: 'removeFlag', flag: 'sarkasma_debt' }, { type: 'profile', key: 'Ti', amount: 2 }, { type: 'profile', key: 'T', amount: 2 }], preview: { hint: 'Kontrola ↑ · Vazba ↓', statHints: { control: 'up', bond: 'down' }, risk: 'medium' } },
-    no: { resultText: 'Zkusil jsi to uhrát vtipem. Sarkasma se nezasmála. Ale účtenku roztrhla.', effects: [{ type: 'stat', key: 'energy', amount: 4 }, { type: 'stat', key: 'bond', amount: 2 }, { type: 'stat', key: 'control', amount: -4 }, { type: 'removeFlag', flag: 'sarkasma_debt' }, { type: 'profile', key: 'Ne', amount: 2 }, { type: 'profile', key: 'Fe', amount: 1 }], preview: { hint: 'Energie ↑ · Vazba ↑ · Kontrola ↓', statHints: { energy: 'up', bond: 'up', control: 'down' }, risk: 'medium' } },
+    yes: { resultText: 'Řekl jsi pravdu. Místnost na okamžik ztichla, protože i systémy poznají nepohodlí. Sarkasma si to zapíše. Ale neodejde.', effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'stat', key: 'bond', amount: -5 }, { type: 'removeFlag', flag: 'sarkasma_debt' }, { type: 'entityRelation', entity: 'sarkasma', delta: 1 }, { type: 'schedule', cardId: 'sarkasma_collects', inTurns: 4 }, { type: 'profile', key: 'Ti', amount: 2 }, { type: 'profile', key: 'T', amount: 2 }], preview: { hint: 'Kontrola ↑ · Vazba ↓ · chain pokračuje', statHints: { control: 'up', bond: 'down' }, risk: 'medium' } },
+    no: { resultText: 'Zkusil jsi to uhrát vtipem. Sarkasma se nezasmála. Ale účtenku neroztrhla. Uložila ji. Znepokojivě klidně.', effects: [{ type: 'stat', key: 'energy', amount: 4 }, { type: 'stat', key: 'bond', amount: 2 }, { type: 'stat', key: 'control', amount: -4 }, { type: 'removeFlag', flag: 'sarkasma_debt' }, { type: 'entityRelation', entity: 'sarkasma', delta: -1 }, { type: 'schedule', cardId: 'sarkasma_collects', inTurns: 2 }, { type: 'profile', key: 'Ne', amount: 2 }, { type: 'profile', key: 'Fe', amount: 1 }], preview: { hint: 'Energie ↑ · Vazba ↑ · chain pokračuje', statHints: { energy: 'up', bond: 'up', control: 'down' }, risk: 'medium' } },
   },
   archive_key_warms: {
     id: 'archive_key_warms',
@@ -1699,6 +1699,207 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     no: { resultText: 'Vybral jsi poetické vysvětlení. Věci nedávají smysl. Ale ladí. To je také forma pravdy.', effects: [{ type: 'stat', key: 'bond', amount: 4 }, { type: 'stat', key: 'memory', amount: 5 }, { type: 'stat', key: 'control', amount: -3 }, { type: 'profile', key: 'F', amount: 1 }, { type: 'profile', key: 'N', amount: 1 }], preview: { hint: 'Vazba ↑ · Paměť ↑ · Kontrola ↓', statHints: { bond: 'up', memory: 'up', control: 'down' }, risk: 'medium' } },
   },
 
+  // ── CARD CHAINS (pokračování) ─────────────────────────────────────────────────
+  //  Nové karty doplňující existující chain spouštěče (trigger karty jsou výše).
+  //  Spouštěče: sarkasma_account, archive_key_warms, mirror_shard_hums, black_folder_rustles
+  //  Zde jsou jejich druhé a třetí články.
+
+  sarkasma_collects: {
+    id: 'sarkasma_collects',
+    title: 'Sarkasma vybírá',
+    logLabel: 'SARKASMA_COLLECTS',
+    scene: 'Sarkasma stojí ve dveřích. Nerýpe. Nečeká. Prostě je tam. A ty víš proč.',
+    yesLabel: 'ZAPLATIT ENERGIÍ',
+    noLabel: 'ZAPLATIT VZPOMÍNKOU',
+    category: 'followup',
+    rarity: 'rare',
+    tags: ['sarkasma', 'debt', 'crisis'],
+    yes: {
+      resultText: 'Zaplatil jsi energií. Sarkasma přijala platbu bez komentáře. Ticho bylo uznáním. Nebo pohrdáním. U Sarkasmy nelze rozlišit.',
+      effects: [{ type: 'stat', key: 'energy', amount: -12 }, { type: 'stat', key: 'bond', amount: 5 }, { type: 'entityRelation', entity: 'sarkasma', delta: 1 }, { type: 'schedule', cardId: 'sarkasma_forgives', inTurns: 5 }, { type: 'profile', key: 'Se', amount: 1 }],
+      preview: { hint: 'Energie ↓↓ · Vazba ↑', statHints: { energy: 'down', bond: 'up' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Zaplatil jsi vzpomínkou. Sarkasma ji přijala a odešla. Vzpomínka, která ji zajímala, byla ta nejpříjemnější. To bylo záměrné.',
+      effects: [{ type: 'stat', key: 'memory', amount: -10 }, { type: 'stat', key: 'control', amount: 4 }, { type: 'entityRelation', entity: 'sarkasma', delta: 1 }, { type: 'imprint', imprintId: 'sarkasma_debt' }, { type: 'profile', key: 'Si', amount: 1 }],
+      preview: { hint: 'Paměť ↓↓ · imprint', statHints: { memory: 'down', control: 'up' }, risk: 'high' },
+    },
+  },
+  sarkasma_forgives: {
+    id: 'sarkasma_forgives',
+    title: 'Sarkasma odpouští',
+    logLabel: 'SARKASMA_FORGIVES',
+    scene: 'Sarkasma sedí v koutě. Výraz má jako vždy neurčitý. Ale tentokrát řekne: „Nevadí." Jen tak.',
+    yesLabel: 'PŘIJMOUT ODPUŠTĚNÍ',
+    noLabel: 'ODMÍTNOUT TUTO NARRATIVU',
+    category: 'entity',
+    rarity: 'rare',
+    tags: ['sarkasma', 'resolution', 'entity'],
+    yes: {
+      resultText: 'Přijal jsi odpuštění. Bylo to těžší než dluh. Věci, které se uvolňují, bolí jinak než věci, které drží.',
+      effects: [{ type: 'stat', key: 'bond', amount: 10 }, { type: 'stat', key: 'memory', amount: 5 }, { type: 'entityRelation', entity: 'sarkasma', delta: 3 }, { type: 'imprint', imprintId: 'unfinished_conversation' }, { type: 'profile', key: 'Fi', amount: 1 }],
+      preview: { hint: 'Vazba ↑↑ · imprint', statHints: { bond: 'up', memory: 'up' }, risk: 'low' },
+    },
+    no: {
+      resultText: 'Odmítl jsi narrativu. „Tohle je jen příběh," řekl jsi. Sarkasma pokrčila rameny. „Všechno je jen příběh," řekla. „A ty ses rozhodl v tomhle zemřít."',
+      effects: [{ type: 'stat', key: 'control', amount: 6 }, { type: 'stat', key: 'bond', amount: -4 }, { type: 'entityRelation', entity: 'sarkasma', delta: -1 }, { type: 'profile', key: 'T', amount: 2 }],
+      preview: { hint: 'Kontrola ↑ · Vazba ↓', statHints: { control: 'up', bond: 'down' }, risk: 'medium' },
+    },
+  },
+
+  archive_recognizes_key: {
+    id: 'archive_recognizes_key',
+    title: 'Archiv poznal klíč',
+    logLabel: 'ARCHIVE_RECOGNIZES_KEY',
+    scene: 'Archiv tě poznal přes klíč. Ne tebe jako osobu. Tebe jako klíčonosiče. Rozdíl existuje a záleží na něm.',
+    yesLabel: 'ZŮSTAT V ARCHIVU',
+    noLabel: 'ODMÍTNOUT ROLI',
+    category: 'entity',
+    rarity: 'rare',
+    tags: ['archive', 'identity', 'key'],
+    yes: {
+      resultText: 'Zůstal jsi. Archiv ti ukázal polici, která nemá štítek. Polici, kde jsou věci, které přišly bez vlastníka. Teď jsi jejich vlastník. To přišlo nečekaně snadno.',
+      effects: [{ type: 'stat', key: 'memory', amount: 10 }, { type: 'stat', key: 'energy', amount: -5 }, { type: 'imprint', imprintId: 'archive_scent' }, { type: 'entityRelation', entity: 'archive', delta: 2 }, { type: 'profile', key: 'Ni', amount: 1 }],
+      preview: { hint: 'Paměť ↑↑ · imprint · Archiv +2', statHints: { memory: 'up', energy: 'down' }, risk: 'medium' },
+    },
+    no: {
+      resultText: 'Odmítl jsi roli klíčonosiče. Archiv to respektoval. Klíč přestal fungovat. Dveře, které by se otevřely, zůstanou zavřené. Ale jsi stále ty.',
+      effects: [{ type: 'removeItem', itemId: 'archive_key' }, { type: 'stat', key: 'control', amount: 6 }, { type: 'stat', key: 'memory', amount: -3 }, { type: 'entityRelation', entity: 'archive', delta: -1 }, { type: 'profile', key: 'Te', amount: 1 }],
+      preview: { hint: 'Kontrola ↑ · Klíč zmizí', statHints: { control: 'up', memory: 'down' }, risk: 'low' },
+    },
+  },
+
+  mirror_accepts: {
+    id: 'mirror_accepts',
+    title: 'Zrcadlo přijalo',
+    logLabel: 'MIRROR_ACCEPTS',
+    scene: 'Odraz a ty jste se dohodli. Ne slovně. Ale ta věc, která bzučela, teď mlčí. Spokojené ticho.',
+    yesLabel: 'PŘIJMOUT SPOJENÍ',
+    noLabel: 'SETŘÍT ZRCADLO',
+    category: 'entity',
+    rarity: 'rare',
+    tags: ['mirror', 'identity', 'resolution'],
+    yes: {
+      resultText: 'Přijal jsi spojení. Střep se stal průhledný. Vidíš skrz něj víc než dřív. Nevíš přesně co, ale víc.',
+      effects: [{ type: 'stat', key: 'memory', amount: 8 }, { type: 'stat', key: 'bond', amount: 6 }, { type: 'imprint', imprintId: 'mirror_crack' }, { type: 'entityRelation', entity: 'glitchka', delta: 2 }, { type: 'profile', key: 'Ni', amount: 2 }],
+      preview: { hint: 'Paměť ↑ · Vazba ↑ · imprint', statHints: { memory: 'up', bond: 'up' }, risk: 'low' },
+    },
+    no: {
+      resultText: 'Setřel jsi zrcadlo. Odraz zmizel. Nebo ty jsi zmizel z odrazu. Ty jsi sám ví, kdo z vás odešel.',
+      effects: [{ type: 'stat', key: 'control', amount: 7 }, { type: 'stat', key: 'bond', amount: -5 }, { type: 'removeItem', itemId: 'mirror_shard' }, { type: 'profile', key: 'Te', amount: 1 }],
+      preview: { hint: 'Kontrola ↑ · Střep zmizí', statHints: { control: 'up', bond: 'down' }, risk: 'medium' },
+    },
+  },
+
+  folder_wrong_name: {
+    id: 'folder_wrong_name',
+    title: 'Stránka s jiným jménem',
+    logLabel: 'FOLDER_WRONG_NAME',
+    scene: 'Stránka v černé složce má jméno. Není to tvoje jméno. Ale písmena jsou stejná. Jiné pořadí.',
+    yesLabel: 'PŘEČÍST CELÉ',
+    noLabel: 'VYTRHNOUT STRÁNKU',
+    category: 'followup',
+    rarity: 'rare',
+    tags: ['archive', 'identity', 'memory'],
+    yes: {
+      resultText: 'Přečetl jsi stránku celou. Je to záznam. Série rozhodnutí. Osoba na stránce dělala věci jinak, ale stejně špatně. Na konci stránky: „Subjekt se vrátil k výchozímu bodu." To jsem byl já. Před tím.',
+      effects: [{ type: 'stat', key: 'memory', amount: 12 }, { type: 'stat', key: 'bond', amount: -4 }, { type: 'stat', key: 'control', amount: -4 }, { type: 'entityRelation', entity: 'archive', delta: 2 }, { type: 'schedule', cardId: 'forbidden_shelf', inTurns: 5 }, { type: 'profile', key: 'Ni', amount: 2 }],
+      preview: { hint: 'Paměť ↑↑ · meta-odhalení', statHints: { memory: 'up', bond: 'down', control: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Vytrhl jsi stránku. Složka přijala defekt beze slova. Stránka, kterou jsi vytrhl, stále existuje někde jinde. Věci, které se vyrh, nějak vždy nacházejí cestu zpátky.',
+      effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'stat', key: 'memory', amount: -5 }, { type: 'entityRelation', entity: 'archive', delta: -1 }, { type: 'profile', key: 'Se', amount: 1 }],
+      preview: { hint: 'Kontrola ↑ · Paměť ↓', statHints: { control: 'up', memory: 'down' }, risk: 'medium' },
+    },
+  },
+  forbidden_shelf: {
+    id: 'forbidden_shelf',
+    title: 'Zakázaná police',
+    logLabel: 'FORBIDDEN_SHELF',
+    scene: 'V Archivu je police bez štítku. Stojíš před ní. Archiv tě přivedl sem záměrně. Nebo tě sem přivedla složka. Nebo ty sám.',
+    yesLabel: 'SÁHNOUT NA POLICI',
+    noLabel: 'PŘEJÍT KOLEM',
+    category: 'entity',
+    rarity: 'rare',
+    tags: ['archive', 'memory', 'forbidden'],
+    conditions: [{ type: 'sector', sector: 'archive' }],
+    yes: {
+      resultText: 'Sáhl jsi na polici. Tvoje ruka se vrátila prázdná. Ale cosi si s ní odnesla informaci. Teď víš věci, o jejichž pravdivosti nejsi jistý. A to je přesně to, co archiv chtěl.',
+      effects: [{ type: 'stat', key: 'memory', amount: 10 }, { type: 'stat', key: 'control', amount: -7 }, { type: 'imprint', imprintId: 'archive_scent' }, { type: 'entityRelation', entity: 'archive', delta: 3 }, { type: 'profile', key: 'Ni', amount: 2 }],
+      preview: { hint: 'Paměť ↑↑ · imprint · Archiv +3', statHints: { memory: 'up', control: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Přešel jsi kolem. Police tě sledovala. Nebo si to myslíš. Věci, kolem nichž jsme prošli, nás mohou sledovat. Ale nemají oči. Nebo možná mají.',
+      effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'stat', key: 'memory', amount: 3 }, { type: 'profile', key: 'Si', amount: 1 }, { type: 'profile', key: 'J', amount: 1 }],
+      preview: { hint: 'Kontrola ↑ · Paměť ↑', statHints: { control: 'up', memory: 'up' }, risk: 'low' },
+    },
+  },
+
+  // CHAIN: Portál platby (portal_payment → portal_waits → portal_remembers)
+  portal_payment: {
+    id: 'portal_payment',
+    title: 'Portál platby',
+    logLabel: 'PORTAL_PAYMENT',
+    scene: 'Portál nechce heslo. Chce vzpomínku, kterou používáš jako důkaz, že jsi pořád stejný člověk.',
+    yesLabel: 'ZAPLATIT VZPOMÍNKOU',
+    noLabel: 'ODMÍTNOUT',
+    category: 'path',
+    rarity: 'uncommon',
+    tags: ['path', 'mirror', 'sacrifice', 'memory'],
+    yes: {
+      resultText: 'Zaplatil jsi vzpomínkou. Portál přijal platbu beze slova. Dveře se otevřely. Uvnitř bylo Zrcadlo. Vzpomínka, kterou sis vzal jako důkaz totožnosti, je teď tam.',
+      effects: [{ type: 'moveSector', sectorId: 'mirror' }, { type: 'stat', key: 'memory', amount: -12 }, { type: 'stat', key: 'bond', amount: 4 }, { type: 'entityRelation', entity: 'glitchka', delta: 1 }, { type: 'unlockPool', poolId: 'mirror_pool' }, { type: 'profile', key: 'Si', amount: 1 }],
+      preview: { hint: 'Přesun do Zrcadla · Paměť ↓↓ · odemknout mirror_pool', statHints: { memory: 'down', bond: 'up' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odmítl jsi zaplatit. Portál čekal. Portály mají trpělivost, která je osobní urážkou pro každého, kdo spěchá.',
+      effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'schedule', cardId: 'portal_waits', inTurns: 4 }, { type: 'profile', key: 'J', amount: 1 }],
+      preview: { hint: 'Kontrola ↑ · Portál čeká', statHints: { control: 'up' }, risk: 'low' },
+    },
+  },
+  portal_waits: {
+    id: 'portal_waits',
+    title: 'Portál čeká',
+    logLabel: 'PORTAL_WAITS',
+    scene: 'Portál je stále tam. Neobtěžoval se odejít. Říkal, že počká. A čekal. Portály jsou odporně konzistentní.',
+    yesLabel: 'TENTOKRÁT ZAPLATIT',
+    noLabel: 'IGNOROVAT NAVŽDY',
+    category: 'followup',
+    rarity: 'uncommon',
+    tags: ['path', 'mirror', 'followup'],
+    yes: {
+      resultText: 'Tentokrát jsi zaplatil. Portál přijal platbu s jistou satisfakcí. Nebo si to jen myslíš, protože jsi čekal, že bude spokojený.',
+      effects: [{ type: 'moveSector', sectorId: 'mirror' }, { type: 'stat', key: 'memory', amount: -10 }, { type: 'stat', key: 'energy', amount: 5 }, { type: 'unlockPool', poolId: 'mirror_pool' }, { type: 'schedule', cardId: 'portal_remembers', inTurns: 5 }],
+      preview: { hint: 'Přesun do Zrcadla · Paměť ↓↓', statHints: { memory: 'down', energy: 'up' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Ignoroval jsi portál navždy. Portál to přijal jako datum ukončení. Portál si uložil tvůj profil pod: odmítnuto — záměrně. Datum: tenhle moment.',
+      effects: [{ type: 'stat', key: 'control', amount: 7 }, { type: 'stat', key: 'bond', amount: -3 }, { type: 'entityRelation', entity: 'glitchka', delta: -1 }, { type: 'schedule', cardId: 'portal_remembers', inTurns: 6 }],
+      preview: { hint: 'Kontrola ↑ · Vazba ↓', statHints: { control: 'up', bond: 'down' }, risk: 'low' },
+    },
+  },
+  portal_remembers: {
+    id: 'portal_remembers',
+    title: 'Portál si pamatuje',
+    logLabel: 'PORTAL_REMEMBERS',
+    scene: 'Na zdi je nápis. Neznal jsi ho. Ale poznáváš rukopis. Je to tvůj rukopis. Jen jiný. Portál zanechal pro tebe vzkaz od tebe.',
+    yesLabel: 'PŘEČÍST VZKAZ',
+    noLabel: 'OPSAT VZKAZ JINAK',
+    category: 'memory',
+    rarity: 'rare',
+    tags: ['mirror', 'memory', 'identity'],
+    yes: {
+      resultText: 'Přečetl jsi vzkaz. Byl krátký: „Tady je víc místa, než si myslíš." Nevíš, co to znamená. Ale pamatuješ si to. A paměť je základ, ne cíl.',
+      effects: [{ type: 'stat', key: 'memory', amount: 9 }, { type: 'stat', key: 'bond', amount: 5 }, { type: 'imprint', imprintId: 'mirror_crack' }, { type: 'profile', key: 'Ni', amount: 2 }],
+      preview: { hint: 'Paměť ↑ · Vazba ↑ · imprint', statHints: { memory: 'up', bond: 'up' }, risk: 'low' },
+    },
+    no: {
+      resultText: 'Opsal jsi vzkaz jinak. Nyní zeď říká: „Tady je méně místa." Portál si uložil obě verze. Teď má kontext. To není vždy dobré.',
+      effects: [{ type: 'stat', key: 'control', amount: 6 }, { type: 'stat', key: 'memory', amount: 4 }, { type: 'entityRelation', entity: 'glitchka', delta: 1 }, { type: 'profile', key: 'Te', amount: 1 }, { type: 'profile', key: 'N', amount: 1 }],
+      preview: { hint: 'Kontrola ↑ · Paměť ↑', statHints: { control: 'up', memory: 'up' }, risk: 'medium' },
+    },
+  },
+
   // ── COMBINATION & RARE CARDS ──────────────────────────────────────────────────
   mirror_in_archive: {
     id: 'mirror_in_archive',
@@ -1727,3 +1928,4 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     no: { resultText: 'Rozbil jsi zrcadlo. Formulář zůstal nepodpisany. Ale vidíš ho teď všude. V každém lesklém povrchu.', effects: [{ type: 'stat', key: 'energy', amount: 6 }, { type: 'stat', key: 'memory', amount: -5 }, { type: 'stat', key: 'bond', amount: 3 }, { type: 'entityRelation', entity: 'glitchka', delta: -1 }, { type: 'profile', key: 'P', amount: 1 }, { type: 'profile', key: 'Se', amount: 1 }], preview: { hint: 'Energie ↑ · Vazba ↑ · Paměť ↓', statHints: { energy: 'up', bond: 'up', memory: 'down' }, risk: 'high' } },
   },
 };
+
