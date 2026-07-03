@@ -1,0 +1,336 @@
+import type { GameCard } from './types';
+
+export const CARDS: GameCard[] = [
+  // ── ACTION ×8 ────────────────────────────────────────────────────────────
+  {
+    id: 'sprint',
+    type: 'action',
+    timing: 'before_roll',
+    title: 'Nelegální sprint',
+    text: 'Otevřel jsi nastavení, které nemělo existovat. Tři položky byly latinsky, jedna brečela.',
+    flavor: 'Přesuň se o 2 pole navíc. Při hodu 1 vrať se na Start.',
+    target: 'self',
+    effect: { kind: 'move_steps', steps: 2 },
+  },
+  {
+    id: 'reroll',
+    type: 'action',
+    timing: 'after_roll',
+    title: 'Znovu hodit',
+    text: 'Výsledek byl technicky platný. Byl ale také nevhodný. Systém připouští přehodení.',
+    flavor: 'Zahoď výsledek hodu a hoď znovu.',
+    target: 'self',
+    effect: { kind: 'reroll_dice' },
+  },
+  {
+    id: 'draw-two',
+    type: 'action',
+    timing: 'any_turn',
+    title: 'Nouzový přístup',
+    text: 'Heslo bylo "admin123". Fungovalo to. Systém byl zklamán, ale otevřel se.',
+    flavor: 'Lízni 2 karty.',
+    target: 'self',
+    effect: { kind: 'draw_cards', amount: 2 },
+  },
+  {
+    id: 'cancel-event',
+    type: 'action',
+    timing: 'before_event',
+    title: 'Tuleňův štít',
+    text: 'Gumový tuleň s razítkem. Bezmocný vzhled. Nepřekvapivě silný efekt.',
+    flavor: 'Zruš aktivní event nebo past.',
+    target: 'self',
+    effect: { kind: 'cancel_event' },
+  },
+  {
+    id: 'skip-trap',
+    type: 'action',
+    timing: 'after_event',
+    title: 'Přesměrování problému',
+    text: 'Problém byl přesměrován. Přesměrování je správní jazyk pro "je to teď tvůj problém".',
+    flavor: 'Zruš efekt pasti na svém poli.',
+    target: 'self',
+    effect: { kind: 'cancel_trap' },
+  },
+  {
+    id: 'fast-forward',
+    type: 'action',
+    timing: 'any_turn',
+    title: 'Kompresní průchod',
+    text: 'Data zkomprimována na 3 %. Ztráty: bezvýznamné. Gain: signifikantní.',
+    flavor: 'Přesuň se o 3 pole dopředu.',
+    target: 'self',
+    effect: { kind: 'move_steps', steps: 3 },
+  },
+  {
+    id: 'void-shield',
+    type: 'action',
+    timing: 'any_turn',
+    title: 'Archivní pečeť',
+    text: 'Pečeť z archivu. Pravá nebo ne, to záleží na tom, komu se ptáš.',
+    flavor: 'Sniž Void pressure o 1.',
+    target: 'none',
+    effect: { kind: 'global_void', amount: -1 },
+  },
+  {
+    id: 'laugh-boost',
+    type: 'action',
+    timing: 'any_turn',
+    title: 'Sarkasmin výbuch',
+    text: 'Sarkasma uvolnila akumulovaný humor. Byl to humor nepozvaný a o to efektivnější.',
+    flavor: 'Získej 2 Smích.',
+    target: 'self',
+    effect: { kind: 'gain_resource', resource: 'laugh', amount: 2 },
+  },
+
+  // ── SABOTAGE ×9 ──────────────────────────────────────────────────────────
+  {
+    id: 'kdo-to-nasadil-v-patek',
+    type: 'sabotage',
+    timing: 'reaction',
+    title: 'Kdo to nasadil v pátek?',
+    text: 'Všichni hráči hodí D6. Nejnižší výsledek se vrací na poslední checkpoint.',
+    flavor: 'Zahraj, když někdo hodí 1. Získáš 1 Smích. On získá 1 Šum.',
+    target: 'player',
+    effect: { kind: 'steal_laugh', amount: 1 },
+  },
+  {
+    id: 'administrativni-chyba',
+    type: 'sabotage',
+    timing: 'any_turn',
+    title: 'Administrativní chyba',
+    text: 'Systém tvrdí, že k výměně došlo na základě interní logiky. Interní logika se odmítla vyjádřit.',
+    flavor: 'Vyměň pozici dvou hráčů.',
+    target: 'player',
+    effect: { kind: 'swap_positions' },
+  },
+  {
+    id: 'falesna-zkratka',
+    type: 'sabotage',
+    timing: 'any_turn',
+    title: 'Falešná zkratka',
+    text: 'Polož na mapu past. Hráč, který na ni vstoupí, se přesune o 3 pole zpět.',
+    flavor: 'Umísti skrytou past na sousední pole.',
+    target: 'node',
+    effect: { kind: 'place_trap', trapId: 'falesny-checkpoint', visible: false },
+  },
+  {
+    id: 'sarkasmin-komentar',
+    type: 'sabotage',
+    timing: 'reaction',
+    title: 'Sarkasmin komentář',
+    text: 'Ukradneš hráči 1 Smích. Pokud žádný nemá, dáš mu 1 Šum, protože humor bez zásob je jen bolest v kabátě.',
+    flavor: 'Ukradni 1 Smích cílovému hráči.',
+    target: 'player',
+    effect: { kind: 'steal_laugh', amount: 1 },
+  },
+  {
+    id: 'firewall-z-papiru',
+    type: 'sabotage',
+    timing: 'any_turn',
+    title: 'Firewall z papíru',
+    text: 'Postav překážku na cestu. První hráč, který přes ni projde, musí zahodit kartu.',
+    flavor: 'Blokuj cestu na sousedním poli po dobu 1 kola.',
+    target: 'node',
+    effect: { kind: 'place_trap', trapId: 'formular-47c', visible: true },
+  },
+  {
+    id: 'ja-to-rikal',
+    type: 'sabotage',
+    timing: 'reaction',
+    title: 'Já to říkal',
+    text: 'Zahraj, když jiný hráč vstoupí do pasti. Získáš 1 Smích. On získá 1 Šum.',
+    flavor: 'Reakce na past. +1 Smích tobě, +1 Šum cíli.',
+    target: 'player',
+    effect: { kind: 'steal_laugh', amount: 1 },
+  },
+  {
+    id: 'neprijemna-pravda',
+    type: 'sabotage',
+    timing: 'any_turn',
+    title: 'Nepříjemná pravda',
+    text: 'Sarkasma ti dala kartu pro ostatní. Použití zaručeno. Příjemnost nezaručena.',
+    flavor: 'Cíl přeskočí svůj příští tah.',
+    target: 'player',
+    effect: { kind: 'skip_turn', turns: 1 },
+  },
+  {
+    id: 'hr-formular',
+    type: 'sabotage',
+    timing: 'any_turn',
+    title: 'Náhodný HR formulář',
+    text: 'Vyber hráče. Musí jedno kolo stát, pokud nehodí 5+.',
+    flavor: 'Cíl stojí 1 kolo nebo musí hodit ≥5.',
+    target: 'player',
+    effect: { kind: 'skip_turn', turns: 1 },
+  },
+  {
+    id: 'spatne-pojmenovane-tlacitko',
+    type: 'sabotage',
+    timing: 'any_turn',
+    title: 'Špatně pojmenované tlačítko',
+    text: 'Tlačítko říkalo "uložit". Dělalo opak. Designér byl nápomocný.',
+    flavor: 'Cíl přijde o 1 kartu z ruky.',
+    target: 'player',
+    effect: { kind: 'discard_card', amount: 1 },
+  },
+
+  // ── RELIC ×5 ─────────────────────────────────────────────────────────────
+  {
+    id: 'gumovy-tulel',
+    type: 'relic',
+    timing: 'any_turn',
+    title: 'Gumový tuleň zasahuje',
+    text: 'Zruš negativní efekt pole. Pokud tím zachráníš jiného hráče, oba získáte Smích.',
+    flavor: 'Zruš efekt pasti nebo eventu pro sebe nebo jiného hráče.',
+    target: 'player',
+    effect: { kind: 'cancel_trap' },
+  },
+  {
+    id: 'kompas-do-spatneho-sektoru',
+    type: 'relic',
+    timing: 'before_roll',
+    title: 'Kompas do špatného sektoru',
+    text: 'Přehoď pohyb. Při hodu 1 tě přesune na nejhorší pole. Je krásný.',
+    flavor: 'Použij místo výsledku D6 výsledek 4. Při hodu 1 — jdeš na trap.',
+    target: 'self',
+    effect: { kind: 'reroll_dice' },
+  },
+  {
+    id: 'archivni-pecet',
+    type: 'relic',
+    timing: 'any_turn',
+    title: 'Archivní pečeť',
+    text: 'Pečeť z Archivu. Autentičnost nejistá. Efekt reálný.',
+    flavor: 'Získej 1 Fragment.',
+    target: 'self',
+    effect: { kind: 'gain_resource', resource: 'fragments', amount: 1 },
+  },
+  {
+    id: 'echo-shard',
+    type: 'relic',
+    timing: 'any_turn',
+    title: 'Ozvěnový střep',
+    text: 'Fragment ozvěny. Minulosti nebo budoucnosti, to záleží na pozorovateli.',
+    flavor: 'Lízni 2 karty a zahoď 1.',
+    target: 'self',
+    effect: { kind: 'draw_cards', amount: 2 },
+  },
+  {
+    id: 'glitch-safe-mode',
+    type: 'relic',
+    timing: 'any_turn',
+    title: 'Glitch bezpečný mód',
+    text: 'Glitch v bezpečném módu funguje předvídatelně. Je to tedy stále glitch, ale s kobercem.',
+    flavor: 'Immunitní na past nebo event v tomto kole.',
+    target: 'self',
+    effect: { kind: 'cancel_event' },
+  },
+
+  // ── GLITCH ×4 ────────────────────────────────────────────────────────────
+  {
+    id: 'glitch-teleport',
+    type: 'glitch',
+    timing: 'any_turn',
+    title: 'Neautorizovaný teleport',
+    text: 'Teleport není podporován. Teleport funguje. Tento rozpor nikoho nezajímá.',
+    flavor: 'Přesuň se na libovolné safe pole na mapě.',
+    target: 'self',
+    effect: { kind: 'move_to', nodeId: 'safe-5' },
+  },
+  {
+    id: 'glitch-swap',
+    type: 'glitch',
+    timing: 'any_turn',
+    title: 'Výměna identit',
+    text: 'Systém zaměnil záznamy. Systém to zjistil až po výměně. Systém to neopravil.',
+    flavor: 'Vyměň místo s náhodným hráčem.',
+    target: 'player',
+    effect: { kind: 'swap_positions' },
+  },
+  {
+    id: 'glitch-void-drain',
+    type: 'glitch',
+    timing: 'any_turn',
+    title: 'Prázdnotový odtok',
+    text: 'Nalezl jsi odtokový kanál Prázdnoty. Je nelegální. Funguje.',
+    flavor: 'Sniž Void pressure o 2.',
+    target: 'none',
+    effect: { kind: 'global_void', amount: -2 },
+  },
+  {
+    id: 'glitch-noise-redirect',
+    type: 'glitch',
+    timing: 'any_turn',
+    title: 'Přesměrování Šumu',
+    text: 'Tvůj Šum byl přesměrován. Přesměrování je technicky legitimní. Morálně ne.',
+    flavor: 'Přesuň svůj Šum na cílového hráče.',
+    target: 'player',
+    effect: { kind: 'pass_noise' },
+  },
+
+  // ── VOID ×2 ──────────────────────────────────────────────────────────────
+  {
+    id: 'void-event-skip',
+    type: 'void',
+    timing: 'before_event',
+    title: 'Výpadek Prázdnoty',
+    text: 'Prázdnota se na chvíli odvrátila. Systém to klasifikoval jako "plánovanou údržbu".',
+    flavor: 'Zruš příští globální Void event.',
+    target: 'none',
+    effect: { kind: 'cancel_event' },
+  },
+  {
+    id: 'void-pressure-dump',
+    type: 'void',
+    timing: 'any_turn',
+    title: 'Kompresní ventil',
+    text: 'Ventil byl nelegální. Byl tam od verze 1.0 a nikdo ho nikdy nezavřel.',
+    flavor: 'Sniž Void pressure o 3, ale všichni hráči dostanou 1 Šum.',
+    target: 'none',
+    effect: { kind: 'global_void', amount: -3 },
+  },
+
+  // ── EVENT ×2 ─────────────────────────────────────────────────────────────
+  {
+    id: 'pass-card-left',
+    type: 'event',
+    timing: 'any_turn',
+    title: 'Glitchka se nudí',
+    text: 'Glitchka iniciovala emocionální cirkulaci. Odmítnutí není možné. Odmítnutí je Šum.',
+    flavor: 'Všichni hráči předají 1 kartu hráči nalevo.',
+    target: 'none',
+    effect: { kind: 'pass_card_left' },
+  },
+  {
+    id: 'group-laugh',
+    type: 'event',
+    timing: 'any_turn',
+    title: 'Skupinový Smích',
+    text: 'Sarkasma otevřela komentáře. Všichni se zúčastnili. I ti, co nechtěli.',
+    flavor: 'Všichni hráči získají 1 Smích.',
+    target: 'none',
+    effect: { kind: 'gain_resource', resource: 'laugh', amount: 1 },
+  },
+];
+
+export const CARD_IDS = CARDS.map((c) => c.id);
+
+export function getCardById(id: string): GameCard | undefined {
+  return CARDS.find((c) => c.id === id);
+}
+
+export function getCardsByType(type: GameCard['type']): GameCard[] {
+  return CARDS.filter((c) => c.type === type);
+}
+
+export function getPlayableCards(hand: string[], phase: string): GameCard[] {
+  return hand
+    .map((id) => getCardById(id))
+    .filter((c): c is GameCard => {
+      if (!c) return false;
+      if (c.timing === 'any_turn') return true;
+      if (c.timing === phase) return true;
+      return false;
+    });
+}

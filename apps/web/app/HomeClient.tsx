@@ -145,6 +145,14 @@ export default function HomeClient() {
                   </Link>
                 </article>
               </li>
+              <li>
+                <article className={`${styles.card} ${styles.cardPrimary}`}>
+                  <Link className={styles.cardLink} href="/cyklus">
+                    <h2 className={styles.cardTitle}>{t('home.game.title')}</h2>
+                    <p className={styles.cardTeaser}>{t('home.game.teaser')}</p>
+                  </Link>
+                </article>
+              </li>
             </ul>
           </nav>
         </section>

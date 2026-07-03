@@ -1383,6 +1383,95 @@
     font-size: 14px; /* fixed px size, not impacted by --font-size-multiplier */
     line-height: 1.2;
   }
+
+  /* === Control panel layout === */
+
+  /* Wider panel */
+  #control-panel { width: min(460px, 94vw); }
+  @media (max-width: 480px) { #control-panel { width: min(98vw, 460px); } }
+
+  /* Header row */
+  #control-panel .cp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-secondary);
+  }
+  #control-panel .cp-title {
+    font-family: 'Text02', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--text-accent, var(--accent-primary));
+    opacity: 0.75;
+  }
+  #control-panel .cp-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding: 2px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+  }
+  #control-panel .cp-close:hover { opacity: 1; }
+
+  /* controls-grid – stacks rows vertically */
+  #control-panel .controls-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Full-width row */
+  #control-panel .cp-row--full {
+    width: 100%;
+  }
+
+  /* Half row – 2 equal columns */
+  #control-panel .cp-row--half {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+  @media (max-width: 380px) {
+    #control-panel .cp-row--half { grid-template-columns: 1fr; }
+  }
+
+  /* Fieldset inside half row – subtle border */
+  #control-panel .cp-row--half fieldset.group {
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin: 0;
+    background: rgba(255,255,255,0.025);
+  }
+
+  /* Button column inside Zobrazení */
+  #control-panel .cp-btn-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  #control-panel .cp-btn-col .panel-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Slider labels in narrow column – allow text wrap */
+  #control-panel .cp-row--half .slider-label-text {
+    min-width: 58px;
+    font-size: 12px;
+  }
+  #control-panel .cp-row--half .slider-label input[type="range"] {
+    min-width: 60px;
+  }
   
   /* Globální theme-button fallback – zafixováno na px, aby nerostlo s rem */
   .theme-button {

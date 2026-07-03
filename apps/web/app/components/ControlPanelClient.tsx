@@ -556,6 +556,12 @@ export default function ControlPanelClient() {
 
             }
 
+            if (t.closest('#cp-close-btn')) {
+              try { ev.preventDefault(); ev.stopPropagation(); } catch {}
+              doTogglePanel(false);
+              return;
+            }
+
             const btn = t.closest('#toggle-panel-btn');
 
             if (!btn) return;

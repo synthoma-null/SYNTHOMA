@@ -1,0 +1,491 @@
+/* ───────────────────────────────────────────────────────────────────────────────
+   SYNTHOMA ROGUELITE — v1.0 visual layer
+   Diegetic terminal in the Void. CRT glow, glass panels, animated transitions.
+   ─────────────────────────────────────────────────────────────────────────────── */
+
+/* ── v1.0 design tokens (game scope) ──────────────────────────────────────────── */
+
+:root {
+  --v1-accent: #00ffe0;
+  --v1-accent-dim: rgba(0, 255, 224, 0.12);
+  --v1-danger: #ff4d4d;
+  --v1-warning: #ff9f43;
+  --v1-success: #00ff9f;
+  --v1-info: #74b9ff;
+  --v1-glow: 0 0 20px rgba(0, 255, 224, 0.25);
+  --v1-panel-bg: rgba(12, 16, 20, 0.78);
+  --v1-panel-border: rgba(0, 255, 224, 0.18);
+  --v1-font-mono: 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* ── CRT scanline overlay ───────────────────────────────────────────────────── */
+
+.v1-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.08) 0px,
+      rgba(0, 0, 0, 0.08) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+
+.v1-scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+/* ── Glassmorphism panels ───────────────────────────────────────────────────── */
+
+.v1-panel {
+  background: var(--v1-panel-bg);
+  border: 1px solid var(--v1-panel-border);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), var(--v1-glow);
+  border-radius: 6px;
+}
+
+.v1-panel-strong {
+  background: rgba(8, 12, 16, 0.92);
+  border: 1px solid rgba(0, 255, 224, 0.35);
+  box-shadow: 0 0 30px rgba(0, 255, 224, 0.15), inset 0 0 20px rgba(0, 255, 224, 0.04);
+}
+
+/* ── Phase transitions ──────────────────────────────────────────────────────── */
+
+@keyframes v1-fade-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes v1-slide-in-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes v1-slide-in-right {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes v1-pulse-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(0, 255, 224, 0.15); }
+  50% { box-shadow: 0 0 28px rgba(0, 255, 224, 0.4); }
+}
+
+.v1-enter {
+  animation: v1-fade-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.v1-enter-left {
+  animation: v1-slide-in-left 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.v1-enter-right {
+  animation: v1-slide-in-right 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.v1-glow-pulse {
+  animation: v1-pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── Floating HUD bars (v1.0) ───────────────────────────────────────────────── */
+
+.v1-hud-bar {
+  position: relative;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.v1-hud-bar__fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s ease, background 0.3s;
+}
+
+.v1-hud-bar__fill--hp {
+  background: linear-gradient(90deg, #00ff9f 0%, #00ccff 100%);
+  box-shadow: 0 0 10px rgba(0, 255, 224, 0.3);
+}
+
+.v1-hud-bar__fill--noise {
+  background: linear-gradient(90deg, #ff9f43 0%, #ff4d4d 100%);
+}
+
+.v1-hud-bar__fill--void {
+  background: linear-gradient(90deg, #a855f7 0%, #ff4d4d 100%);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+/* ── v1.0 buttons ───────────────────────────────────────────────────────────── */
+
+.v1-btn {
+  font-family: var(--v1-font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid var(--v1-panel-border);
+  background: rgba(0, 255, 224, 0.06);
+  color: var(--v1-accent);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  border-radius: 4px;
+}
+
+.v1-btn:hover {
+  background: rgba(0, 255, 224, 0.14);
+  border-color: rgba(0, 255, 224, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 224, 0.25);
+  transform: translateY(-2px);
+}
+
+.v1-btn:active {
+  transform: translateY(0);
+}
+
+.v1-btn--primary {
+  background: var(--v1-accent);
+  color: #000;
+  border-color: var(--v1-accent);
+}
+
+.v1-btn--primary:hover {
+  background: #4dfff0;
+  box-shadow: 0 0 28px rgba(0, 255, 224, 0.45);
+}
+
+/* ── v1.0 map enhancements ──────────────────────────────────────────────────── */
+
+.v1-map-edge {
+  stroke: rgba(0, 255, 224, 0.25);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  filter: drop-shadow(0 0 4px rgba(0, 255, 224, 0.25));
+}
+
+.v1-map-node-circle {
+  fill: rgba(12, 16, 20, 0.9);
+  stroke: rgba(0, 255, 224, 0.35);
+  stroke-width: 2;
+  transition: fill 0.2s, stroke 0.2s, filter 0.2s;
+}
+
+.v1-map-node--current .v1-map-node-circle {
+  fill: var(--v1-accent);
+  stroke: var(--v1-accent);
+  filter: drop-shadow(0 0 10px var(--v1-accent));
+}
+
+.v1-map-node--available .v1-map-node-circle {
+  stroke: var(--v1-accent);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 224, 0.4));
+}
+
+.v1-map-node--clickable:not(.v1-map-node--current):hover .v1-map-node-circle {
+  fill: rgba(0, 255, 224, 0.15);
+  stroke: var(--v1-accent);
+  filter: drop-shadow(0 0 14px rgba(0, 255, 224, 0.5));
+}
+
+.v1-map-node-icon {
+  font-size: 20px;
+  fill: var(--v1-accent);
+  font-family: var(--v1-font-mono);
+  pointer-events: none;
+}
+
+.v1-map-node-label {
+  font-size: 12px;
+  fill: rgba(255, 255, 255, 0.65);
+  font-family: var(--v1-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+@keyframes v1-map-pulse {
+  0%, 100% { opacity: 0; r: 34; }
+  50% { opacity: 0.6; r: 44; }
+}
+
+.v1-map-node-pulse {
+  fill: none;
+  stroke: var(--v1-accent);
+  stroke-width: 1.5;
+  opacity: 0;
+  animation: v1-map-pulse 1.6s ease-in-out infinite;
+}
+
+/* ── v1.0 action cards ─────────────────────────────────────────────────────── */
+
+.v1-action-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  min-height: 56px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.v1-action-card:hover {
+  background: rgba(0, 255, 224, 0.08);
+  border-color: rgba(0, 255, 224, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.v1-action-card--selected {
+  background: rgba(0, 255, 224, 0.12);
+  border-color: var(--v1-accent);
+  box-shadow: 0 0 18px rgba(0, 255, 224, 0.25);
+}
+
+.v1-action-card__title {
+  font-family: var(--v1-font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.v1-action-card__sub {
+  font-family: var(--v1-font-mono);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── v1.0 enemy card ────────────────────────────────────────────────────────── */
+
+.v1-enemy-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.v1-enemy-card--targeted {
+  border-color: var(--v1-accent);
+  box-shadow: 0 0 24px rgba(0, 255, 224, 0.15);
+}
+
+.v1-enemy-card__name {
+  font-family: var(--v1-font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v1-accent);
+}
+
+.v1-enemy-card__intent {
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid var(--v1-warning);
+  padding: 0.6rem 0.8rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.v1-enemy-card__hp-bar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.v1-enemy-card__hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4d4d 0%, #ff9f43 100%);
+  border-radius: 5px;
+  transition: width 0.4s ease;
+}
+
+/* ── v1.0 menu screens ──────────────────────────────────────────────────────── */
+
+.v1-menu-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  gap: 2rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(0, 255, 224, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+    var(--bg-primary);
+}
+
+.v1-menu-title {
+  font-family: var(--v1-font-mono);
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v1-accent);
+  text-shadow: 0 0 20px rgba(0, 255, 224, 0.4);
+  text-align: center;
+}
+
+.v1-menu-subtitle {
+  font-family: var(--v1-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── v1.0 run shell ─────────────────────────────────────────────────────────── */
+
+.v1-run-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(0, 255, 224, 0.04) 0%, transparent 40%),
+    var(--bg-primary);
+  position: relative;
+}
+
+.v1-run-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.05) 0%, transparent 35%);
+  pointer-events: none;
+}
+
+/* ── v1.0 floating numbers (damage / heal) ─────────────────────────────────── */
+
+@keyframes v1-float-up {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-40px) scale(1.1); }
+}
+
+.v1-float-number {
+  position: absolute;
+  font-family: var(--v1-font-mono);
+  font-size: 1.2rem;
+  font-weight: 800;
+  pointer-events: none;
+  animation: v1-float-up 1s ease-out forwards;
+  text-shadow: 0 0 10px currentColor;
+}
+
+.v1-float-number--damage { color: var(--v1-danger); }
+.v1-float-number--heal { color: var(--v1-success); }
+.v1-float-number--block { color: var(--v1-info); }
+
+/* ── v1.0 badges / chips ──────────────────────────────────────────────────────── */
+
+.v1-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--v1-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.v1-badge--accent {
+  border-color: var(--v1-accent);
+  color: var(--v1-accent);
+  background: rgba(0, 255, 224, 0.06);
+}
+
+.v1-badge--danger {
+  border-color: var(--v1-danger);
+  color: var(--v1-danger);
+  background: rgba(255, 77, 77, 0.06);
+}
+
+/* ── v1.0 menu history / meta-progression ──────────────────────────────────── */
+
+.solo-menu__history {
+  width: 100%;
+  max-width: 620px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.solo-menu__history-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.solo-menu__history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.solo-menu__history-item {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-family: var(--v1-font-mono);
+  font-size: 0.85rem;
+}
+
+.solo-menu__history-type {
+  color: var(--v1-accent);
+  letter-spacing: 0.08em;
+}
+
+.solo-menu__history-name {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.solo-menu__history-nodes {
+  color: rgba(255, 255, 255, 0.55);
+  text-align: right;
+}
+
+/* ── v1.0 responsive tweaks ─────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .v1-menu-shell { padding: 1rem; gap: 1.25rem; }
+  .v1-menu-title { font-size: 1.3rem; }
+  .v1-btn { padding: 0.7rem 1.1rem; font-size: 0.8rem; }
+  .solo-menu__history-item {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .solo-menu__history-nodes { text-align: left; }
+}

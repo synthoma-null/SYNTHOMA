@@ -338,3 +338,59 @@ model WhisperPurchase {
   @@index([userId])
   @@index([whisperId])
 }
+
+model GameRoom {
+  id           String   @id @default(cuid())
+  code         String   @unique
+  hostUserId   String?
+  hostPlayerId String?
+  status       String   @default("lobby")
+  mode         String   @default("party")
+  maxPlayers   Int      @default(6)
+  stateJson    Json
+  stateVersion Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  players      GameRoomPlayer[]
+  moves        GameMove[]
+
+  @@index([code])
+  @@index([status])
+}
+
+model GameRoomPlayer {
+  id              String    @id @default(cuid())
+  roomId          String
+  room            GameRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  userId          String?
+  clientTokenHash String?
+  nickname        String
+  seatIndex       Int
+  color           String
+  isHost          Boolean   @default(false)
+  status          String    @default("connected")
+  lastSeenAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([roomId, seatIndex])
+  @@index([roomId])
+  @@index([userId])
+}
+
+model GameMove {
+  id          String   @id @default(cuid())
+  roomId      String
+  room        GameRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  playerId    String?
+  turnNumber  Int
+  actionType  String
+  payload     Json
+  stateAfter  Json?
+  createdAt   DateTime @default(now())
+
+  @@index([roomId])
+  @@index([turnNumber])
+}

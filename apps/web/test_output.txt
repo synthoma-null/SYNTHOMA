@@ -1,0 +1,82 @@
+﻿
+> web@1.0.0 test
+> jest --testPathPatterns=cyklus --verbose
+
+  console.log
+    Missing flag: acid_pool_unlocked in unlock acid_pool_unlock
+
+      at log (src/game/cyklus/__tests__/cyklusEngine.test.ts:376:21)
+          at Array.forEach (<anonymous>)
+
+node.exe : FAIL src/game/cyklus/__tests__/cyklusEngine.test.ts
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (FAIL src/game/c...sEngine.test.ts:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Cyklus engine
+    createCyklusRun
+      ÔłÜ starts with balanced stats and restart_0 (2 ms)
+    resolveChoice
+      ÔłÜ runs the first six restart cards in order (2 ms)
+      ÔłÜ kills on stat zero
+      ÔłÜ kills on stat 100 (1 ms)
+    crisis items
+      ÔłÜ rubber_seal_ready saves from bond 0
+      ÔłÜ acid_filter saves from energy 100
+      ÔłÜ archive_key saves from memory 0 and moves to archive (1 ms)
+      ÔłÜ archive_key saves from memory 100
+    rubber_stamp
+      ÔłÜ cancels negative stat effects on form/office cards (1 ms)
+    completed ending
+      ÔłÜ returns stabilized ending when all conditions are met
+      ÔłÜ does not stabilize without enough imprints
+      ÔłÜ sets status to completed via resolveChoice (1 ms)
+    computeProfile
+      ÔłÜ returns a stable profile for balanced choices
+    applyEffects
+      ÔłÜ grants items and flags
+      ÔłÜ grants imprints
+      ÔłÜ updates entity relations (1 ms)
+      ÔłÜ clamps stats to [0, 100]
+    run summary and death analysis
+      ÔłÜ summarizes a completed run
+      ÔłÜ analyzes death by stat (1 ms)
+      ÔłÜ computes stabilization progress
+    tension director
+      ÔłÜ updates calm and crisis streaks
+    content reachability and consistency
+      ÔłÜ every item referenced by cards or unlocks exists (1 ms)
+      ÔłÜ every imprint referenced by cards or unlocks exists
+      ÔłÜ every pool referenced by cards or unlocks exists (1 ms)
+      ÔłÜ every card referenced by schedules, unlockCards, triggers, or conditions exists (1 ms)
+      ├Ś every flag referenced by cards or unlocks exists in some effect (17 ms)
+      ÔłÜ starting cards and basic items are reachable from cards
+
+  ÔŚĆ Cyklus engine ÔÇ║ content reachability and consistency ÔÇ║ every flag referenced by cards or unlocks exists in some effect
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 376 |[39m             console[33m.[39mlog([32m'Missing flag:'[39m[33m,[39m u[33m.[39mcondition[33m.[39mflag[33m,[39m [32m'in unlock'[39m[33m,[39m u[33m.[3
+9mid)[33m;[39m
+     [90m 377 |[39m           }
+    [31m[1m>[22m[39m[90m 378 |[39m           expect(definedFlagIds[33m.[39mhas(u[33m.[39mcondition[33m.[39mflag [33m?[39m[33m?[39m [32m''[39m))[33m.[39mtoBe([36mtrue[
+39m)[33m;[39m
+     [90m     |[39m                                                              [31m[1m^[22m[39m
+     [90m 379 |[39m         }
+     [90m 380 |[39m       })[33m;[39m
+     [90m 381 |[39m     })[33m;[39m[0m
+
+      at toBe (src/game/cyklus/__tests__/cyklusEngine.test.ts:378:62)
+          at Array.forEach (<anonymous>)
+      at Object.forEach (src/game/cyklus/__tests__/cyklusEngine.test.ts:373:22)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 26 passed, 27 total
+Snapshots:   0 total
+Time:        0.663 s, estimated 1 s
+Ran all test suites matching cyklus.
