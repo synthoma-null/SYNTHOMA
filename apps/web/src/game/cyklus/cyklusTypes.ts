@@ -40,7 +40,8 @@ export type CardCategory =
   | 'silent'
   | 'trap'
   | 'item_trigger'
-  | 'rare';
+  | 'rare'
+  | 'tutorial';
 
 export type ProfileKey =
   | 'I'
@@ -137,6 +138,7 @@ export interface SwipeCard {
   tags: string[];
   triggerMode?: TriggerMode;
   ifInvalid?: ScheduledIfInvalid;
+  qualityHint?: 'intentionally_thin' | 'narrative_pause' | 'stat_only_ok';
 }
 
 export interface CyklusItem {
@@ -237,6 +239,7 @@ export interface CyklusRunSummary {
   endedAt: number;
   status: 'dead' | 'completed';
   endingTitle: string;
+  codename?: string;
   cyclesSurvived: number;
   totalChoices: number;
   dominantProfile: string;
@@ -280,10 +283,49 @@ export const STAT_LABELS: Record<StatKey, string> = {
 };
 
 export const STAT_DESCRIPTIONS: Record<StatKey, string> = {
-  energy: 'Síla a pohon subjektu. Příliš vysoká = přepálení, příliš nízká = vypnutí.',
-  memory: 'Schopnost držet obsah. Příliš vysoká = přesycení, příliš nízká = formátování.',
-  bond: 'Spojení s ostatními. Příliš vysoká = rozpustění, příliš nízká = odpojení.',
-  control: 'Řád nad vlastním tokem. Příliš vysoká = krystalizace, příliš nízká = rozpad.',
+  energy: 'Vnitřní napětí, jas, aktivita.\n\n0 = Vypnutí\n100 = Přepálení\n\nBezpečné pásmo: 20–80\nCílem není maximum. Cílem je rovnováha.',
+  memory: 'Množství uchovaných dat, vzpomínek, šumu.\n\n0 = Formátování\n100 = Přesycení\n\nBezpečné pásmo: 20–80\nCílem není maximum. Cílem je rovnováha.',
+  bond: 'Spojení s ostatními, systémem, entitami.\n\n0 = Odpojení\n100 = Rozpuštění\n\nBezpečné pásmo: 20–80\nCílem není maximum. Cílem je rovnováha.',
+  control: 'Schopnost udržet strukturu, rozhodovat se.\n\n0 = Rozpad\n100 = Krystalizace\n\nBezpečné pásmo: 20–80\nCílem není maximum. Cílem je rovnováha.',
+};
+
+export interface StatDescriptionDetail {
+  description: string;
+  low: string;
+  high: string;
+  lowDeath: string;
+  highDeath: string;
+}
+
+export const STAT_DETAIL: Record<StatKey, StatDescriptionDetail> = {
+  energy: {
+    description: 'Vnitřní napětí, jas, aktivita.',
+    low: 'Vypnutí',
+    high: 'Přepálení',
+    lowDeath: 'Systém přestal reagovat. Energie klesla na nulu.',
+    highDeath: 'Přetaktování selhalo. Systém shořel vlastním výkonem.',
+  },
+  memory: {
+    description: 'Množství uchovaných dat, vzpomínek, šumu.',
+    low: 'Formátování',
+    high: 'Přesycení',
+    lowDeath: 'Paměť se vymazala. Nezůstalo nic k uchování.',
+    highDeath: 'Příliš mnoho dat. Systém se zhroutil pod vlastní zátěží.',
+  },
+  bond: {
+    description: 'Spojení s ostatními, systémem, entitami.',
+    low: 'Odpojení',
+    high: 'Rozpuštění',
+    lowDeath: 'Všechna vlákna přetrhána. Subjekt existuje sám.',
+    highDeath: 'Příliš mnoho spojení. Subjekt přestal být oddělen od ostatních.',
+  },
+  control: {
+    description: 'Schopnost udržet strukturu, rozhodovat se.',
+    low: 'Rozpad',
+    high: 'Krystalizace',
+    lowDeath: 'Struktura se rozpadla. Žádné rozhodnutí není možné.',
+    highDeath: 'Přílišný řád zastavil vše. Systém zkrystalizoval.',
+  },
 };
 
 export const SECTOR_LABELS: Record<SectorId, string> = {

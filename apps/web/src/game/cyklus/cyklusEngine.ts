@@ -1,5 +1,6 @@
 import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
+import { loadMetaUnlockPools } from './cyklusFindings';
 import { CYKLUS_CARDS } from './cyklusCards';
 import { CYKLUS_IMPRINTS } from './cyklusImprints';
 import { CYKLUS_ITEMS } from './cyklusItems';
@@ -8,10 +9,11 @@ import { CYKLUS_UNLOCKS } from './cyklusUnlocks';
 const CHOICES_PER_CYCLE = 12;
 const MAX_DIFFICULTY = 5;
 
-export function createCyklusRun(): CyklusRunState {
+export function createCyklusRun(tutorialSeen = false): CyklusRunState {
   const now = Date.now();
   const seed = `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   const startStats = { energy: 50, memory: 50, bond: 50, control: 50 };
+  const { pools: unlockedPools, cards: unlockedCards } = loadMetaUnlockPools();
   const state: CyklusRunState = {
     id: `cyklus_${now}_${seed.slice(-6)}`,
     status: 'playing',
@@ -28,10 +30,10 @@ export function createCyklusRun(): CyklusRunState {
     imprints: [],
     scheduledCards: [],
     entityRelations: {},
-    unlockedPools: [],
-    unlockedCards: [],
+    unlockedPools,
+    unlockedCards,
     usedCardIds: [],
-    currentCardId: 'restart_0',
+    currentCardId: tutorialSeen ? 'restart_0' : 'tutorial_stats',
     cycleSummaries: [],
     history: [],
     startedAt: now,
@@ -115,6 +117,27 @@ function isFollowup(card: SwipeCard): boolean {
 
 function isSectorCard(card: SwipeCard): boolean {
   return card.category === 'path' && !!card.sector;
+}
+
+function cardWouldIncreaseStat(card: SwipeCard, stat: StatKey): boolean {
+  return [...card.yes.effects, ...card.no.effects].some(
+    (e) => e.type === 'stat' && e.key === stat && (e as { amount: number }).amount > 0,
+  );
+}
+
+function cardWouldDecreaseStat(card: SwipeCard, stat: StatKey): boolean {
+  return [...card.yes.effects, ...card.no.effects].some(
+    (e) => e.type === 'stat' && e.key === stat && (e as { amount: number }).amount < 0,
+  );
+}
+
+const BASIC_SCENE_CATEGORIES = new Set(['system', 'choice', 'memory', 'silent', 'object']);
+const BASIC_SCENE_EXCLUDE_TAGS = new Set(['crisis', 'danger', 'followup', 'item_trigger', 'restart', 'tutorial', 'trap']);
+
+function isBasicSceneCard(card: SwipeCard): boolean {
+  if (!BASIC_SCENE_CATEGORIES.has(card.category)) return false;
+  if (card.tags.some((t) => BASIC_SCENE_EXCLUDE_TAGS.has(t))) return false;
+  return true;
 }
 
 function isRestartCard(card: SwipeCard): boolean {
@@ -584,16 +607,17 @@ const CYCLE_CENTER_DRIFT = 0.15;
 function processCycleEnd(state: CyklusRunState): CyklusRunState {
   let s = { ...state, cycle: state.cycle + 1, choiceInCycle: 1 };
   s = { ...s, difficulty: Math.min(MAX_DIFFICULTY, s.difficulty + 1) };
-  // Add imprint based on dominant stat
+  // Add imprint based on dominant stat — pick first from pool not yet owned
   const dominantStat = getDominantStat(s);
-  const imprintMap: Record<StatKey, string> = {
-    energy: 'acid_echo',
-    memory: 'archive_scent',
-    bond: 'unfinished_conversation',
-    control: 'rubber_stamp',
+  const imprintPools: Record<StatKey, string[]> = {
+    energy: ['acid_echo', 'noise_resident'],
+    memory: ['archive_scent', 'mirror_crack'],
+    bond: ['unfinished_conversation', 'childhood_anchor'],
+    control: ['rubber_stamp', 'sarkasma_debt'],
   };
-  if (imprintMap[dominantStat]) {
-    s = addImprint(s, imprintMap[dominantStat]);
+  const imprintId = imprintPools[dominantStat].find((id) => !s.imprints.includes(id)) ?? null;
+  if (imprintId) {
+    s = addImprint(s, imprintId);
   }
   // Reset stats slightly toward center
   for (const key of Object.keys(s.stats) as StatKey[]) {
@@ -990,8 +1014,8 @@ export function getCardPool(state: CyklusRunState): SwipeCard[] {
   return Object.values(CYKLUS_CARDS).filter((card) => {
     if (isRestartCard(card)) return false;
     if (card.once && state.usedCardIds.includes(card.id)) return false;
-    if (card.maxUses && state.usedCardIds.filter((id) => id === card.id).length >= card.maxUses) return false;
-    if (card.cooldown && state.usedCardIds.filter((id) => id === card.id).length >= card.cooldown) return false;
+    const maxUses = card.maxUses ?? card.cooldown;
+    if (maxUses && state.usedCardIds.filter((id) => id === card.id).length >= maxUses) return false;
     if (card.cooldownTurns) {
       const since = turnsSinceLastUsed(state, card.id);
       if (since !== null && since < card.cooldownTurns) return false;
@@ -1059,7 +1083,11 @@ export function scoreCard(state: CyklusRunState, card: SwipeCard): number {
 function getNextRestartCard(state: CyklusRunState): SwipeCard | null {
   const restartIds = state.usedCardIds.filter((id) => id.startsWith('restart_'));
   if (restartIds.length === 0) return CYKLUS_CARDS.restart_0 ?? null;
-  const last = restartIds.sort().pop() ?? 'restart_0';
+  const last = restartIds.sort((a, b) => {
+    const na = Number.parseInt(a.split('_')[1] ?? '0', 10);
+    const nb = Number.parseInt(b.split('_')[1] ?? '0', 10);
+    return na - nb;
+  }).pop() ?? 'restart_0';
   const nextNum = Number.parseInt(last.split('_')[1] ?? '0', 10) + 1;
   const nextId = `restart_${nextNum}`;
   return (CYKLUS_CARDS[nextId] as SwipeCard | undefined) ?? null;
@@ -1079,7 +1107,11 @@ function weightedPick<T>(candidates: { item: T; weight: number }[], seed: string
 const TOP_CANDIDATES = 8;
 
 export function pickNextCard(state: CyklusRunState): SwipeCard {
-  const nextRestart = getNextRestartCard(state);
+  const tutorialDone = state.flags.includes('tutorial_done') || state.usedCardIds.includes('tutorial_consequences');
+  const hasPendingTutorial = state.scheduledCards.some((sc) => sc.cardId.startsWith('tutorial_'));
+  const isOnTutorialCard = state.currentCardId.startsWith('tutorial_');
+  const tutorialActive = !tutorialDone && (hasPendingTutorial || isOnTutorialCard);
+  const nextRestart = tutorialActive ? null : getNextRestartCard(state);
   if (nextRestart) return nextRestart;
 
   const pool = getCardPool(state);
@@ -1126,11 +1158,13 @@ export function summarizeRun(state: CyklusRunState): CyklusRunSummary {
   const ending = computeEnding(state);
   const endingTitle = ending?.title ?? 'Neznámý konec';
   const deathStat = ending?.type === 'death' ? ending.stat : undefined;
+  const codename = generateRunCodename(state);
   return {
     id: state.id,
     endedAt: Date.now(),
     status: state.status === 'completed' ? 'completed' : 'dead',
     endingTitle,
+    codename,
     cyclesSurvived: state.cycle,
     totalChoices: state.totalChoices,
     dominantProfile: profile.dominantLabel,
@@ -1199,6 +1233,8 @@ export function updateTension(state: CyklusRunState, card: SwipeCard): CyklusTen
 function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard): number {
   const t = state.tension;
   let s = score;
+
+  // ── Rhythm / streak adjustments ────────────────────────────────────────────
   if (t.calmStreak >= 3 && (card.tags.includes('chaos') || card.tags.includes('glitch') || card.tags.includes('noise') || card.tags.includes('anomaly') || card.category === 'crisis')) {
     s += 120;
   }
@@ -1214,6 +1250,53 @@ function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard
   if (t.rewardStreak >= 5 && (card.tags.includes('reward') || card.tags.includes('item_trigger') || card.tags.includes('item'))) {
     s += 110;
   }
+  if (t.itemTriggerStreak >= 2 && isItemTrigger(card)) {
+    s -= 250;
+  }
+  if (t.itemTriggerStreak >= 2 && (card.category === 'path' || card.tags.includes('system') || card.tags.includes('silent'))) {
+    s += 120;
+  }
+
+  // ── Stat-aware scoring: penalize/boost based on current stat extremes ──────
+  const stats = state.stats;
+  for (const stat of ['energy', 'memory', 'bond', 'control'] as StatKey[]) {
+    const val = stats[stat];
+    if (val > 85 && cardWouldIncreaseStat(card, stat)) {
+      s -= stat === 'memory' ? 400 : 250; // memory gets harder penalty
+    } else if (val > 75 && cardWouldIncreaseStat(card, stat)) {
+      s -= stat === 'memory' ? 280 : 180;
+    }
+    if (val > 85 && cardWouldDecreaseStat(card, stat)) {
+      s += stat === 'memory' ? 350 : 220;
+    }
+    if (val < 15 && cardWouldDecreaseStat(card, stat)) {
+      s -= 250;
+    }
+    if (val < 25 && cardWouldIncreaseStat(card, stat)) {
+      s += 220;
+    }
+  }
+
+  // ── Sector diversity: boost path cards when < 4 unique sectors visited ─────
+  const visitedCount = new Set(state.visitedSectors).size;
+  if (visitedCount < 4 && (card.category === 'path' || card.tags.includes('path'))) {
+    s += 220;
+  }
+  if (t.sameSectorStreak >= 3 && !cardMatchesCurrentSector(state, card) && (card.category === 'path' || card.tags.includes('path'))) {
+    s += 180;
+  }
+
+  // ── Basic scene pressure: restore variety after 4+ non-basic cards ─────────
+  const recentBasicGap = state.usedCardIds.slice(-5).filter((id) => {
+    const c = CYKLUS_CARDS[id];
+    return c ? isBasicSceneCard(c) : false;
+  }).length;
+  if (recentBasicGap === 0 && isBasicSceneCard(card)) {
+    s += 220;
+  } else if (recentBasicGap <= 1 && isBasicSceneCard(card)) {
+    s += 80;
+  }
+
   return s;
 }
 
@@ -1225,4 +1308,339 @@ export function getTopScoredCards(state: CyklusRunState, count = 5): CardScoreBr
     .filter((b) => b.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, count);
+}
+
+// ── STABILIZATION VARIANTS ────────────────────────────────────────────────────
+
+export type StabilizationVariantId =
+  | 'archive_stabilization'
+  | 'glitch_stabilization'
+  | 'form_stabilization'
+  | 'mirror_stabilization'
+  | 'seal_stabilization'
+  | 'generic_stabilization';
+
+export interface StabilizationVariant {
+  id: StabilizationVariantId;
+  title: string;
+  text: string;
+  reasons?: string[];
+}
+
+export function computeStabilizationVariant(state: CyklusRunState): StabilizationVariant {
+  const archiveRel = state.entityRelations.archive ?? 0;
+  const glitchkaRel = state.entityRelations.glitchka ?? 0;
+  const formRel = state.entityRelations.form ?? 0;
+  const shadowRel = state.entityRelations.shadow ?? 0;
+
+  const hasGlitchItem = state.inventory.some((id) => ['wrong_map', 'glitch_pebble', 'noise_clump', 'soft_bug'].includes(id));
+  const hasFormItem = state.inventory.includes('rubber_stamp') || state.inventory.includes('blank_form');
+  const hasMirrorImprint = state.imprints.some((id) => ['mirror_crack', 'reflected_self', 'second_face'].includes(id));
+  const hasSealSave = state.flags.includes('rubber_seal_saved');
+
+  if (hasSealSave) {
+    return {
+      id: 'seal_stabilization',
+      title: 'Tuleňova stabilizace',
+      text: 'Byl jsi blízko konce. Tuleň tě zadržel. Systém to nezaznamenal jako zázrak. Zaznamenal to jako "nepředvídaná záchrana gumovým objektem". Záznamy jsou přesnější než poezie.',
+      reasons: ['Gumový tuleň zasahoval v kritickém momentu', 'Staty v bezpečném pásmu (20–80)'],
+    };
+  }
+
+  if (archiveRel >= 4 && state.stats.memory >= 40 && state.stats.memory <= 75 &&
+    state.imprints.some((id) => ['archive_echo', 'recorded_truth', 'drowned_log'].includes(id))) {
+    return {
+      id: 'archive_stabilization',
+      title: 'Archivní stabilizace',
+      text: 'Archiv tě nezařadil mezi mrtvé věci. To je od archivu téměř náklonnost. Tvůj záznam bude uložen s poznámkou: subjekt zůstal čitelný. V archivních podmínkách je to chvála.',
+      reasons: [`Vztah k Archivu +${archiveRel}`, `Paměť ${state.stats.memory} (stabilní pásmo)`, 'Archivní otisk získán'],
+    };
+  }
+
+  if (glitchkaRel >= 5 && hasGlitchItem && state.stats.control >= 25 && state.stats.control <= 65) {
+    return {
+      id: 'glitch_stabilization',
+      title: 'Glitchova stabilizace',
+      text: 'Systém tě neopravil. Glitchka tě jen naučila fungovat šikmo. Kupodivu to stačilo. Systém má k tomu poznámku. Poznámka je nečitelná.',
+      reasons: [`Vztah ke Glitchce +${glitchkaRel}`, 'Glitch předmět v kapse', `Kontrola ${state.stats.control} (ne příliš vysoko)`],
+    };
+  }
+
+  if (hasFormItem && formRel >= 0 && state.stats.control >= 50 && state.stats.control <= 78) {
+    return {
+      id: 'form_stabilization',
+      title: 'Administrativní stabilizace',
+      text: 'Byl jsi schválen. Nikdo neví proč. Razítko odmítlo další dotazy. Formulář byl archivován ve složce "nestandardní subjekty / přijatelné výsledky". Složka existuje.',
+      reasons: ['Administrativní předmět v kapse', `Kontrola ${state.stats.control} (byrokracie spokojná)`],
+    };
+  }
+
+  if (hasMirrorImprint && shadowRel >= 2 && state.stats.memory < 80) {
+    return {
+      id: 'mirror_stabilization',
+      title: 'Zrcadlová stabilizace',
+      text: 'Neodpustil sis všechno. Jen dost na to, aby odraz přestal útočit. Zrcadlo tě pustilo. Systém to nezaznamenal. Zrcadla záznamy nevede.',
+      reasons: ['Zrcadlový otisk získán', `Vztah ke Stínu +${shadowRel}`, `Paměť ${state.stats.memory} (pod hranicí přetlačení)`],
+    };
+  }
+
+  return {
+    id: 'generic_stabilization',
+    title: 'Stabilizovaný subjekt',
+    text: 'Systém tě nedokázal vymazat, opravit ani správně zařadit. Po dlouhé interní debatě tě označil jako stabilní. To je prakticky kompliment.',
+    reasons: [`${new Set(state.visitedSectors).size} navštívených sektorů`, `${state.imprints.length} otisků`, 'Staty v povoleném pásmu'],
+  };
+}
+
+// ── CYCLE FORECAST ────────────────────────────────────────────────────────────
+
+export function composeCycleForecast(state: CyklusRunState): string {
+  const lines: string[] = [];
+  const { energy, memory, bond, control } = state.stats;
+
+  const stats = { energy, memory, bond, control } as Record<StatKey, number>;
+  const sorted = (Object.entries(stats) as [StatKey, number][]).sort((a, b) => b[1] - a[1]);
+  const highest = sorted[0];
+  const lowest = sorted[sorted.length - 1];
+
+  const highLabel: Record<StatKey, string> = {
+    energy: 'Energie je zvýšená. Karty s vysokou aktivitou budou pravděpodobnější.',
+    memory: 'Paměť je zvýšená. Archivní a vzpomínkové karty budou pravděpodobnější.',
+    bond: 'Vazba je zvýšená. Entity budou aktivnější.',
+    control: 'Kontrola je zvýšená. Formuláře a systémové karty budou pravděpodobnější.',
+  };
+  const lowLabel: Record<StatKey, string> = {
+    energy: 'Energie je nízká. Doporučuje se vyhýbat dalšímu vyčerpání.',
+    memory: 'Paměť je nízká. Riziko ztráty záznamu.',
+    bond: 'Vazba je nízká. Entity nebudou ochotné.',
+    control: 'Kontrola je nízká. Struktura není spolehlivá.',
+  };
+
+  if (highest && highest[1] > 65) lines.push(highLabel[highest[0]]);
+  if (lowest && lowest[1] < 35) lines.push(lowLabel[lowest[0]]);
+
+  const archiveRel = state.entityRelations.archive ?? 0;
+  const glitchkaRel = state.entityRelations.glitchka ?? 0;
+  const sarkasmRel = state.entityRelations.sarkasma ?? 0;
+  if (archiveRel >= 3) lines.push('Archiv sleduje tento průchod s neobvyklým zájmem.');
+  if (glitchkaRel >= 3) lines.push('Glitchka má připravený vtip. Pravděpodobnost je znepokojivá.');
+  if (sarkasmRel <= -3) lines.push('Sarkasma nesouhlasí s aktuální trajektorií. Sarkasma nesouhlasí s mnoha věcmi.');
+
+  const hasScheduled = state.scheduledCards.filter((sc) => sc.turnsRemaining <= 2).length;
+  if (hasScheduled >= 2) lines.push('Více naplánovaných událostí čeká. Systém doporučuje přípravu. Systém neupřesňuje, co to znamená.');
+  else if (hasScheduled === 1) lines.push('Jedna naplánovaná událost je blízko.');
+
+  if (state.inventory.length >= 4) lines.push('Kapsa je plná. Předměty mají tendenci si toho všímat.');
+  if (state.imprints.length >= 3) lines.push('Otisky se hromadí. Systém začíná rozeznávat vzorec.');
+
+  const sectorComments: Partial<Record<SectorId, string>> = {
+    void: 'Prázdnota tě drží déle, než bylo naplánováno.',
+    archive: 'Archiv je otevřen. To se nestane vždy.',
+    mirror: 'Zrcadlo reflektuje. Doporučuje se opatrnost při pohledu.',
+    glitchka_nest: 'Hnízdo je aktivní. Nepředvídatelnost je standardní.',
+    form_office: 'Formuláře čekají. Jsou vždy připraveny.',
+    residuum: 'Reziduum obsahuje věci, které nepatří nikam jinam. Tedy sem.',
+  };
+  const sectorComment = sectorComments[state.sector];
+  if (sectorComment) lines.push(sectorComment);
+
+  if (lines.length === 0) lines.push('Systém nemá předpověď. Systém tím říká, že nemá tušení. Nebo se nechce prozradit.');
+
+  const doporuceni: string[] = [];
+  if (memory > 75) doporuceni.push('Nevstupuj do dalšího archivu s plnou pamětí.');
+  if (energy > 75) doporuceni.push('Zbytečně se nenadchni.');
+  if (bond < 25) doporuceni.push('Odpověz alespoň jedné entitě. I otázkou.');
+  if (control > 75) doporuceni.push('Uvolni jeden formulář. Záměrně.');
+  if (doporuceni.length > 0) lines.push(`Doporučení: ${doporuceni[0]}`);
+
+  return lines.join('\n');
+}
+
+// ── EXPORT RUN LOG ────────────────────────────────────────────────────────────
+
+export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'full'): string {
+  const profile = computeProfile(state);
+  const ending = computeEnding(state);
+  const death = analyzeDeath(state);
+  const codename = generateRunCodename(state);
+  const sectors = [...new Set(state.visitedSectors)].map((s) => SECTOR_LABELS[s]).join(' → ');
+  const near = getNearestExtreme(state.stats);
+
+  if (mode === 'short') {
+    const lines: string[] = [
+      'SYNTHOMA: CYKLUS',
+      `Kódové označení: ${codename}`,
+      '────────────────────────────────────',
+      `Konec: ${ending?.title ?? 'neznámý'}`,
+      `Profil: ${profile.dominantLabel}-like · ${profile.archetype}`,
+      `Trasa: ${sectors}`,
+    ];
+    if (death) {
+      lines.push(`Příčina: ${STAT_LABELS[death.stat]} ${death.extreme === 'high' ? '(přetlak)' : '(krize)'}`);
+    }
+    if (near) {
+      lines.push(`Nejbližší hrozba: ${STAT_LABELS[near.stat]} ${near.value} (vzdálenost ${near.distance})`);
+    }
+    if (ending?.text) lines.push('', ending.text);
+    lines.push('', '────────────────────────────────────');
+    lines.push('Záznam vygenerován systémem SYNTHOMA.');
+    return lines.join('\n');
+  }
+
+  const lines: string[] = [
+    'SYNTHOMA: CYKLUS',
+    `Kódové označení: ${codename}`,
+    '────────────────────────────────────',
+    `Seed: ${state.seed ?? 'neznámý'}`,
+    `Cykly: ${state.cycle}`,
+    `Celkem voleb: ${state.totalChoices}`,
+    '',
+    `Konec: ${ending?.title ?? 'neznámý'}`,
+    `Profil: ${profile.dominantLabel}-like`,
+    `Archetyp: ${profile.archetype}`,
+    '',
+    'Staty při konci:',
+    `  Energie:  ${state.stats.energy}`,
+    `  Paměť:    ${state.stats.memory}`,
+    `  Vazba:    ${state.stats.bond}`,
+    `  Kontrola: ${state.stats.control}`,
+    '',
+    `Trasa: ${sectors}`,
+    '',
+  ];
+
+  if (state.inventory.length > 0) {
+    lines.push('Inventář:');
+    for (const id of state.inventory) lines.push(`  · ${CYKLUS_ITEMS[id]?.title ?? id}`);
+    lines.push('');
+  }
+
+  if (state.imprints.length > 0) {
+    lines.push('Otisky:');
+    for (const id of state.imprints) lines.push(`  · ${CYKLUS_IMPRINTS[id]?.title ?? id}`);
+    lines.push('');
+  }
+
+  if (death?.topContributors.length) {
+    lines.push(`Primární příčina: ${STAT_LABELS[death.stat]} ${death.extreme === 'high' ? '(přetlak)' : '(krize)'}`);
+    lines.push('Nejvíce přispěly:');
+    for (const c of death.topContributors) {
+      const card = CYKLUS_CARDS[c.cardId];
+      lines.push(`  ${card?.title ?? c.cardId}  ${c.delta > 0 ? '+' : ''}${c.delta}`);
+    }
+    lines.push('');
+  }
+
+  if (near) {
+    lines.push(`Největší hrozba příštího cyklu: ${STAT_LABELS[near.stat]} ${near.value} (vzdálenost ${near.distance})`);
+    lines.push('');
+  }
+
+  const behavior = composeBehavioralAnalysis(state);
+  if (behavior.length > 0) {
+    lines.push('Chování subjektu:');
+    for (const b of behavior) lines.push(`  · ${b}`);
+    lines.push('');
+  }
+
+  if (state.cycleSummaries && state.cycleSummaries.length > 0) {
+    lines.push('Souhrny cyklů:');
+    for (const s of state.cycleSummaries) lines.push(`  ${s}`);
+    lines.push('');
+  }
+
+  if (ending?.text) {
+    lines.push('Systémový komentář:');
+    lines.push(ending.text);
+    lines.push('');
+  }
+
+  lines.push('────────────────────────────────────');
+  lines.push('Záznam vygenerován systémem SYNTHOMA.');
+
+  return lines.join('\n');
+}
+
+// ── NEAREST EXTREME ───────────────────────────────────────────────────────────
+
+export interface NearestExtreme {
+  stat: StatKey;
+  value: number;
+  direction: 'low' | 'high';
+  distance: number;
+}
+
+export function getNearestExtreme(stats: CyklusRunState['stats']): NearestExtreme | null {
+  let nearest: NearestExtreme | null = null;
+  for (const key of Object.keys(stats) as StatKey[]) {
+    const v = stats[key];
+    const distLow = v;
+    const distHigh = 100 - v;
+    const dist = Math.min(distLow, distHigh);
+    const direction: 'low' | 'high' = distLow <= distHigh ? 'low' : 'high';
+    if (!nearest || dist < nearest.distance) {
+      nearest = { stat: key, value: v, direction, distance: dist };
+    }
+  }
+  return nearest;
+}
+
+// ── RUN CODENAME ──────────────────────────────────────────────────────────────
+
+const CODENAME_STAT: Record<StatKey, string[]> = {
+  energy: ['Žhavý', 'Přepálený', 'Jiskrový', 'Hořící', 'Tichý reaktor'],
+  memory: ['Mokrý', 'Archivní', 'Zapomenutý', 'Přetékající', 'Záznam'],
+  bond: ['Propojený', 'Opuštěný', 'Síťový', 'Vláknovitý', 'Ztracený signál'],
+  control: ['Přesný', 'Rozbitý', 'Formulářový', 'Rigidní', 'Výjimka'],
+};
+
+const CODENAME_SECTOR: Partial<Record<SectorId, string[]>> = {
+  void: ['Prázdnota', 'Nicota', 'Bezjmenný'],
+  archive: ['Archiv', 'Záznamník', 'Katalog'],
+  mirror: ['Zrcadlo', 'Odraz', 'Tvář'],
+  glitchka_nest: ['Hnízdo', 'Glitch', 'Anomálie'],
+  form_office: ['Formulář', 'Kancelář', 'Razítko'],
+  residuum: ['Reziduum', 'Zbytek', 'Sediment'],
+  market: ['Tržiště', 'Obchod', 'Transakce'],
+  acid_yellow: ['Žluč', 'Kyselina', 'Kult'],
+};
+
+const CODENAME_ITEM: Record<string, string> = {
+  rubber_seal: 'Tuleň',
+  archive_key: 'Klíč',
+  mirror_shard: 'Střep',
+  noise_clump: 'Chomáč',
+  black_folder: 'Složka',
+  glitch_pebble: 'Kamínek',
+  soft_bug: 'Chyba',
+  ownerless_shadow: 'Stín',
+};
+
+const CODENAME_ENDING: Record<string, string[]> = {
+  stabilized: ['který zůstal', 'co nepodlehl', 's razítkem na čele'],
+  death: ['bez výstupu', 'co neodpověděl', 'který neuměl zavřít dveře'],
+};
+
+export function generateRunCodename(state: CyklusRunState): string {
+  const stats = state.stats as Record<StatKey, number>;
+  const dominantStat = (Object.entries(stats) as [StatKey, number][])
+    .sort((a, b) => Math.abs(b[1] - 50) - Math.abs(a[1] - 50))[0]?.[0] ?? 'energy';
+
+  const mostVisitedSector = Object.entries(
+    state.visitedSectors.reduce<Record<string, number>>((acc, s) => { acc[s] = (acc[s] ?? 0) + 1; return acc; }, {})
+  ).sort((a, b) => b[1] - a[1])[0]?.[0] as SectorId | undefined ?? 'void';
+
+  const significantItem = state.inventory.find((id) => CODENAME_ITEM[id]);
+
+  const ending = computeEnding(state);
+  const endType = ending?.type === 'death' ? 'death' : 'stabilized';
+
+  const rng = (arr: string[]) => arr[Math.abs(state.totalChoices + state.cycle) % arr.length] ?? arr[0] ?? '';
+
+  const adj = rng(CODENAME_STAT[dominantStat] ?? ['Neznámý']);
+  const noun = rng(CODENAME_SECTOR[mostVisitedSector] ?? ['Průchod']);
+  const item = significantItem ? ` se ${CODENAME_ITEM[significantItem]}` : '';
+  const end = rng(CODENAME_ENDING[endType] ?? ['']);
+
+  return `${adj} ${noun}${item}, ${end}`;
 }

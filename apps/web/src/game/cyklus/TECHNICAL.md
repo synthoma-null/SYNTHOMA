@@ -6,198 +6,254 @@ Tento dokument popisuje architekturu, datový model a herní smyčku modulu `cyk
 
 Modul je čistě klientský. Herní stav žije v React komponentě `CyklusClient`, engine je bezstavový (funkce přijímají stav a vracejí nový stav). Ukládání probíhá do `localStorage`.
 
-| Vrstva   | Soubor                                       | Účel                                                              |
-|----------|----------------------------------------------|-------------------------------------------------------------------|
-| UI       | `src/components/cyklus/CyklusClient.tsx`     | React komponenta, ovládání, zobrazení karet, endingů, inventáře. |
-| Styly | `src/styles/cyklus.css` | Vizuální styl karet, statů, outcome, tlačítek, menu, story logu. |
-| Engine | `src/game/cyklus/cyklusEngine.ts` | Herní logika: výběr karet, aplikace efektů, krizové itemy, konce, příběhový dopad. |
-| Typy | `src/game/cyklus/cyklusTypes.ts` | TypeScript definice stavu, efektů, karet, endingů. |
-| Karty | `src/game/cyklus/cyklusCards.ts` | Databáze všech karet (scény, efekty, podmínky, tagy). |
-| Itemy | `src/game/cyklus/cyklusItems.ts` | Itemy a jejich pasivní efekty. |
-| Imprinty | `src/game/cyklus/cyklusImprints.ts` | Imprinty a odemykání poolů. |
-| Unlocky | `src/game/cyklus/cyklusUnlocks.ts` | Podmínky pro odemčení karet/poolů. |
-| Storage | `src/game/cyklus/cyklusStorage.ts` | Ukládání/načítání běhu z localStorage; migrace starých stavů (např. inicializace `tension`). |
-| Testy | `src/game/cyklus/__tests__/cyklusEngine.test.ts` | Jest unit testy. |
+| Vrstva    | Soubor                                             | Účel                                                                               |
+|-----------|----------------------------------------------------|------------------------------------------------------------------------------------|
+| UI        | `src/components/cyklus/CyklusClient.tsx`           | React komponenta, ovládání, zobrazení karet, endingů, inventáře.                   |
+| Styly     | `src/styles/cyklus.css`                            | Vizuální styl karet, statů, outcome, tlačítek, menu, story logu.                   |
+| Engine    | `src/game/cyklus/cyklusEngine.ts`                  | Herní logika: výběr karet, efekty, krizové itemy, konce, příběhový dopad.          |
+| Typy      | `src/game/cyklus/cyklusTypes.ts`                   | TypeScript definice stavu, efektů, karet, endingů.                                 |
+| Karty     | `src/game/cyklus/cyklusCards.ts`                   | Databáze všech karet (scény, efekty, podmínky, tagy).                              |
+| Itemy     | `src/game/cyklus/cyklusItems.ts`                   | Itemy a jejich pasivní efekty.                                                     |
+| Imprinty  | `src/game/cyklus/cyklusImprints.ts`                | Imprinty a odemykání poolů.                                                        |
+| Unlocky   | `src/game/cyklus/cyklusUnlocks.ts`                 | Podmínky pro odemčení karet/poolů.                                                 |
+| Storage   | `src/game/cyklus/cyklusStorage.ts`                 | Ukládání/načítání běhu z localStorage; migrace starých stavů.                      |
+| Testy     | `src/game/cyklus/__tests__/cyklusEngine.test.ts`   | Jest unit testy.                                                                   |
 
 ## Herní stav (`CyklusRunState`)
 
-| Pole            | Typ                                    | Popis                                                             |
-|-----------------|----------------------------------------|-------------------------------------------------------------------|
-| `status`        | `'playing' \| 'dead' \| 'completed'`    | Aktuální stav běhu.                                               |
-| `cycle` | `number` | Číslo aktuálního cyklu. |
-| `choiceInCycle` | `number` | Počet tahů v aktuálním cyklu (max 12). |
-| `totalChoices` | `number` | Celkový počet voleb. |
-| `difficulty` | `number` | Stoupá každý cyklus. |
-| `sector` | `SectorId` | Aktuální sektor. |
-| `visitedSectors` | `SectorId[]` | Unikátní historie sektorů. |
-| `stats` | `Record<StatKey, number>` | `energy`, `memory`, `bond`, `control` (0–100). |
-| `profile` | `Partial<Record<ProfileKey, number>>` | MBTI osy a funkce. |
-| `inventory` | `string[]` | ID itemů. |
-| `flags` | `string[]` | Stavové vlajky. |
-| `imprints` | `string[]` | Získané imprinty. |
-| `entityRelations` | `Record<EntityId, number>` | Vztahy k entitám. |
-| `unlockedPools` | `string[]` | Odemčené karetní pooly. |
-| `usedCardIds` | `string[]` | Historie použitých karet. |
-| `scheduledCards` | `{ cardId, turnsRemaining, cycle }[]` | Naplánované karty. |
-| `currentCardId` | `string` | ID karty aktuálně na stole. |
-| `history` | `CyklusChoiceRecord[]` | Historie voleb pro analýzu a profil. |
-| `lastOutcomeText` | `string` | Text posledního outcome, nyní kombinuje kartu a dynamický příběhový dopad. |
-| `tension` | `CyklusTension` | Stav tension directoru. |
+| Pole               | Typ                                        | Popis                                                              |
+|--------------------|--------------------------------------------|--------------------------------------------------------------------|
+| `status`           | `'playing' \| 'dead' \| 'completed'`       | Aktuální stav běhu.                                                |
+| `cycle`            | `number`                                   | Číslo aktuálního cyklu.                                            |
+| `choiceInCycle`    | `number`                                   | Počet tahů v cyklu (max 12).                                       |
+| `totalChoices`     | `number`                                   | Celkový počet voleb.                                               |
+| `difficulty`       | `number`                                   | Stoupá každý cyklus (max 5).                                       |
+| `sector`           | `SectorId`                                 | Aktuální sektor.                                                   |
+| `visitedSectors`   | `SectorId[]`                               | Unikátní historie sektorů.                                         |
+| `stats`            | `Record<StatKey, number>`                  | `energy`, `memory`, `bond`, `control` (0–100).                     |
+| `profile`          | `Partial<Record<ProfileKey, number>>`      | MBTI osy a funkce.                                                 |
+| `inventory`        | `string[]`                                 | ID itemů.                                                          |
+| `flags`            | `string[]`                                 | Stavové vlajky.                                                    |
+| `imprints`         | `string[]`                                 | Získané imprinty.                                                  |
+| `entityRelations`  | `Partial<Record<EntityId, number>>`        | Vztahy k entitám, clampnuto na −10..10.                            |
+| `unlockedPools`    | `string[]`                                 | Odemčené karetní pooly.                                            |
+| `unlockedCards`    | `string[]`                                 | Explicitně odemčené karty (efekt `unlockCard`).                    |
+| `usedCardIds`      | `string[]`                                 | Celá historie použitých karet (full log, ne unikátní).             |
+| `scheduledCards`   | `ScheduledCardEntry[]`                     | Naplánované karty s `turnsRemaining` a `ifInvalid`.                |
+| `currentCardId`    | `string`                                   | ID karty aktuálně na stole.                                        |
+| `history`          | `CyklusChoiceRecord[]`                     | Záznamy voleb pro analýzu a profil.                                |
+| `lastOutcomeText`  | `string?`                                  | Text posledního outcome (resultText + impactNarrative + krize).    |
+| `lastCycleSummary` | `string?`                                  | Shrnutí posledního ukončeného cyklu.                               |
+| `cycleSummaries`   | `string[]`                                 | Archiv shrnutí všech cyklů.                                        |
+| `tension`          | `CyklusTension`                            | Stav tension directoru.                                            |
+| `seed`             | `string`                                   | Seed pro RNG (formát: `timestamp-random`).                         |
+| `rngStep`          | `number`                                   | Čítač kroků RNG, inkrementuje se po každém weighted picku.         |
+
+## Seeded RNG
+
+`seededRandom(seed, step)` implementuje FNV-1a hash nad řetězcem `"seed:step"`. Výstup je číslo 0–1. `Math.random()` se v enginu **nepoužívá** — všechny náhodné volby jsou deterministické a reprodukovatelné ze stejného `seed` + sekvence akcí.
+
+`rngStep` se inkrementuje:
+- v `resolveChoice` po každé volbě (o +1),
+- v `pickNextCardState` po výběru karty (o +1).
+
+## Volby (`CyklusChoiceRecord`)
+
+Každá volba zaznamenává diff stavu před a po aplikaci všech efektů (včetně krizových itemů):
+
+| Pole              | Typ                                    | Popis                                  |
+|-------------------|----------------------------------------|----------------------------------------|
+| `statDelta`       | `Partial<Record<StatKey, number>>`     | Δ statů.                               |
+| `profileDelta`    | `Partial<Record<ProfileKey, number>>`  | Δ profilových os.                      |
+| `flagsGained`     | `string[]`                             | Nové vlajky.                           |
+| `itemsGained`     | `string[]`                             | Získané itemy.                         |
+| `itemsLost`       | `string[]`                             | Ztracené itemy.                        |
+| `imprintsGained`  | `string[]`                             | Nové imprinty.                         |
+| `poolsUnlocked`   | `string[]`                             | Nově odemčené pooly.                   |
+| `scheduledAdded`  | `string[]`                             | Naplánované karty (cardId).            |
+| `entityDelta`     | `Partial<Record<EntityId, number>>`    | Δ vztahů k entitám.                    |
+| `sectorBefore`    | `SectorId`                             | Sektor před volbou.                    |
+| `sectorAfter`     | `SectorId`                             | Sektor po volbě.                       |
 
 ## Tension director (`CyklusTension`)
 
-Sleduje herní rytmus a modifikuje skóre karet, aby se příliš často neopakovaly stejné typy situací.
+| Pole                | Popis                                                          |
+|---------------------|----------------------------------------------------------------|
+| `calmStreak`        | Po sobě jdoucí klidné karty bez rizika.                        |
+| `crisisStreak`      | Po sobě jdoucí krizové karty.                                  |
+| `itemTriggerStreak` | Item trigger karty za sebou.                                   |
+| `sameSectorStreak`  | Karty „sedící" v aktuálním sektoru (viz `cardMatchesCurrentSector`). |
+| `rewardStreak`      | Tahy od poslední karty s odměnou (item/imprint).               |
+| `entityStreak`      | Tahy od poslední entity karty.                                 |
+| `lastRewardAt`      | `totalChoices` při poslední odměně.                            |
+| `lastEntityAt`      | `totalChoices` při poslední entitě.                            |
 
-| Pole | Popis |
-| --- | --- |
-| `calmStreak` | Počet po sobě jdoucích "klidných" karet bez rizika. |
-| `crisisStreak` | Počet po sobě jdoucích krizových karet. |
-| `itemTriggerStreak` | Počet item trigger karet za sebou. |
-| `sameSectorStreak` | Počet karet ze stejného sektoru. |
-| `rewardStreak` / `entityStreak` | Sledování odměn a entit. |
-| `lastRewardAt` / `lastEntityAt` | Pozice poslední odměny/entity. |
+`applyTensionScore` zvyšuje skóre karet, které průběh rozruší (např. krize po 3 klidných kartách, nebo karta mimo sektor po 4 sektorových). `sameSectorStreak >= 4` zvýhodní karty **mimo** aktuální sektor o +140.
 
-`updateTension` se volá po každé volbě. `applyTensionScore` pak přidává nebo odečítá body podle aktuálních streaků (např. příliš klidný run snižuje skóre klidných karet a zvyšuje krizové karty). Kromě toho `scoreCard` obsahuje robustní anti-repetition logiku: okamžité zopakování předchozí karty je zakázáno, karty z posledních 2 tahů dostávají penalizaci -800, z posledních 4 tahů -400 a z posledních 8 tahů -150.
+## Sektor matching (`cardMatchesCurrentSector`)
+
+Karta „sedí" v sektoru, pokud platí **alespoň jedna** z podmínek:
+
+1. `card.sector === state.sector`
+2. karta má podmínku `{ type: 'sector', sector: state.sector }`
+3. `card.tags.includes(state.sector)`
+4. karta sdílí tag s `SECTOR_TAG_MAP[state.sector]`
+
+`SECTOR_TAG_MAP` mapuje každý sektor na sadu tagů (např. `glitchka_nest → ['glitchka', 'glitch', 'bug']`).
+
+## Podmínky karet (`checkCondition`)
+
+Podporované typy:
+
+| Typ                      | Popis                                                          |
+|--------------------------|----------------------------------------------------------------|
+| `hasItem` / `missingItem`| Inventář obsahuje/neobsahuje itemId.                           |
+| `hasFlag` / `missingFlag`| Flags obsahuje/neobsahuje flag.                                |
+| `hasAnyFlag`             | Alespoň jedna z `flags[]` je aktivní.                          |
+| `hasAllFlags`            | Všechny z `flags[]` jsou aktivní.                              |
+| `statBelow` / `statAbove`| Stat pod/nad hodnotou.                                         |
+| `sector`                 | Aktuální sektor.                                               |
+| `visitedSector`          | Sektor byl navštíven.                                          |
+| `visitedSectorCountAtLeast` | Počet unikátních sektorů ≥ count.                           |
+| `cycleAtLeast`           | Číslo cyklu ≥ cycle.                                           |
+| `difficultyAtLeast`      | Obtížnost ≥ difficulty.                                        |
+| `unlockedPool`           | Pool je odemčen.                                               |
+| `hasImprint` / `missingImprint` | Imprint je/není přítomen.                              |
+| `imprintCountAtLeast`    | Počet imprintů ≥ count.                                        |
+| `entityRelationAtLeast`  | Vztah k entitě ≥ value.                                        |
+| `entityRelationAtMost`   | Vztah k entitě ≤ value.                                        |
+| `usedCard` / `notUsedCard` | Karta byla/nebyla použita.                                   |
+| `totalChoicesAtLeast`    | Celkový počet voleb ≥ count.                                   |
 
 ## Efekty (`CyklusEffect`)
 
-| Typ                 | Parametry                | Popis                                                                 |
-|---------------------|--------------------------|-----------------------------------------------------------------------|
-| `stat`              | `key`, `amount`          | Změna statu o `amount`, clampnuto na 0–100.                           |
-| `profile` | `key`, `amount` | Posun MBTI osy. |
-| `flag` | `flag` | Přidá vlajku, pokud již není. |
-| `removeFlag` | `flag` | Odebere vlajku. |
-| `item` | `itemId` | Přidá item a aplikuje jeho pasivní efekty. |
-| `removeItem` | `itemId` | Odebere item. |
-| `imprint` | `imprintId` | Přidá imprint a odemkne případný pool. |
-| `unlockPool` | `poolId` | Odemkne pool karet. |
-| `unlockCard` | `cardId` | Odemkne konkrétní kartu. |
-| `moveSector` | `sectorId` | Přesune subjekt do sektoru. |
-| `schedule` | `cardId`, `inTurns` | Naplánuje kartu za N tahů. |
-| `scheduleNextCycle` | `cardId` | Naplánuje kartu na začátek příštího cyklu. |
-| `entityRelation` | `entity`, `delta` | Změní vztah k entitě. |
-| `noImmediateEffect` | — | Technický, žádný efekt. |
+| Typ                 | Parametry          | Popis                                                            |
+|---------------------|--------------------|------------------------------------------------------------------|
+| `stat`              | `key`, `amount`    | Δ statu, clamp 0–100.                                            |
+| `profile`           | `key`, `amount`    | Δ MBTI osy.                                                      |
+| `flag`              | `flag`             | Přidá vlajku.                                                    |
+| `removeFlag`        | `flag`             | Odebere vlajku.                                                  |
+| `item`              | `itemId`           | Přidá item + pasivní efekty.                                     |
+| `removeItem`        | `itemId`           | Odebere item.                                                    |
+| `imprint`           | `imprintId`        | Přidá imprint + odemkne pool.                                    |
+| `unlockPool`        | `poolId`           | Odemkne pool karet (přidá do `unlockedPools`).                   |
+| `unlockCard`        | `cardId`           | Odemkne kartu (přidá do `unlockedCards`).                        |
+| `moveSector`        | `sectorId`         | Přesune subjekt do sektoru.                                      |
+| `schedule`          | `cardId`, `inTurns`| Naplánuje kartu za N tahů.                                       |
+| `scheduleNextCycle` | `cardId`           | Naplánuje na začátek příštího cyklu.                             |
+| `entityRelation`    | `entity`, `delta`  | Δ vztahu, clamp −10..10.                                         |
+| `noImmediateEffect` | —                  | Žádný efekt (technický placeholder).                             |
+
+## Scheduled karty
+
+`ScheduledCardEntry` má pole: `cardId`, `turnsRemaining`, `cycle?`, `ifInvalid?`.
+
+Po každé volbě:
+
+1. `tickScheduledCards` — sníží `turnsRemaining` o 1.
+2. `cleanupScheduledCards` — pro karty s `turnsRemaining <= 0` zkontroluje podmínky. Pokud nesedí, aplikuje `ifInvalid`:
+   - `'drop'` (výchozí) — odstraní záznam.
+   - `'delay'` — nastaví `turnsRemaining = 3`.
+   - `'force'` — zachová záznam, karta se přehraje i bez podmínek.
+3. `pickNextCardState` — pokud je karta ready, vymaže `ScheduledCardEntry` přes `clearScheduledCard`.
+
+Scheduled karty obcházejí anti-repetition penalizaci (dostávají fixní skóre 10 000).
 
 ## Tok herní smyčky (`resolveChoice`)
 
-1. Zkontroluje, že stav je `playing`.
-2. Načte aktuální kartu a zvolený outcome (`yes`/`no`).
-3. Volá `maybeApplyRubberStamp` — pokud je aktivní `rubber_stamp_ready` a karta je form/office/trap, filtruje negativní stat efekty a spotřebuje vlajku.
-4. Aplikuje efekty přes `applyEffects` (volá `applySingleEffect` pro každý efekt a pak `evaluateUnlocks`).
-5. Volá `applyCrisisItems` — kontroluje a aplikuje krizové itemy (`rubber_seal_ready`, `acid_filter`, `archive_key`).
-6. Zaznamená volbu do `history` včetně `statDelta`, `profileDelta`, `itemsGained` a změny sektoru.
-7. Složí `lastOutcomeText` jako spojení původního textu karty (`resultText`) a dynamického příběhového dopadu generovaného `composeImpactNarrative` — ten reaguje na dominantní stat, změnu sektoru, získané itemy a posun profilu.
-8. Zkontroluje ending přes `computeEnding`. Pokud je výsledek typu `stabilized`, nastaví `status` na `completed`, jinak `dead`.
-9. Pokud není konec, zpracuje konec cyklu (`processCycleEnd`) a vybere další kartu (`pickNextCard`).
+1. Zkontroluje `status === 'playing'`.
+2. Načte kartu a outcome (`yes`/`no`).
+3. `maybeApplyRubberStamp` — filtruje negativní stat-efekty pro form/office/trap karty.
+4. `applyEffects` — aplikuje všechny efekty a `evaluateUnlocks`.
+5. `applyCrisisItems` — vrací `{ state, interventionText? }`. **Intervention text se připojí k outcomeText — nikoliv nezávisle přepíše `lastOutcomeText`.**
+6. Diff stavu před/po → `CyklusChoiceRecord` (statDelta, flagsGained, itemsLost, imprintsGained, poolsUnlocked, scheduledAdded, entityDelta…).
+7. `composeImpactNarrative(record, card)` — generuje příběhový dopad (stat, sektor, itemy, ztráty, imprinty, pooly, entity, profil).
+8. Složení `outcomeText = resultText + impactNarrative + interventionText`.
+9. `computeEnding` — kontrola smrti/stabilizace.
+10. Pokud cyklus skončil: `processCycleEnd` → `composeCycleSummary` → uloží do `cycleSummaries`.
+11. `tickScheduledCards` → `cleanupScheduledCards` → `pickNextCardState`.
 
 ## Výběr karet (`pickNextCard`)
 
-1. **Restart sekvence** má prioritu — dokud hráč neprojde `restart_0` až `restart_5`, vybírá se vždy další restart karta.
-2. Po restart sekvenci se skórují karty z `getCardPool` pomocí `scoreCard`:
-   - Připravené scheduled karty +1000.
-   - Krize (`crisis`) +500.
-   - Item trigger +400.
-   - Follow-up s podmínkami +300.
-   - Shoda sektoru +250.
-   - Odemčený pool tag +200.
-   - Rarita +20–60.
-   - Profilová afinita +10.
-   - Anti-repetition: okamžitá repetice = 0, posledních 2 tahů -800, 4 tahy -400, 8 tahů -150.
-3. Karta nesmí porušit podmínky (`checkCardConditions`).
-4. Karty se seřadí podle skóre a vezme se prvních `TOP_CANDIDATES` (max 8) karet s kladným skóre.
-5. Z top kandidátů se provede **weighted random** výběr — pravděpodobnost úměrná skóre. Díky tomu není další karta deterministická, ale stále respektuje herní prioritu.
-6. Scheduled karty a restart sekvence mají nadále absolutní prioritu a nejsou součástí weighted picku.
+1. **Restart sekvence** — `restart_0` až `restart_5` mají absolutní prioritu.
+2. `getCardPool` filtruje karty:
+   - `once` karta již použita → out.
+   - `maxUses` vyčerpán → out.
+   - `cooldown` (alias pro maxUses) vyčerpán → out.
+   - `cooldownTurns` — méně tahů od posledního použití než limit → out.
+   - `triggerMode: 'scheduledOnly'` — karta není ready-scheduled → out.
+3. `explainCardScore` (nebo `scoreCard`) ohodnotí každou kartu:
+   - Ready-scheduled: **10 000** (bypass anti-repeat).
+   - Crisis: +500, item trigger: +400, followup: +300.
+   - `cardMatchesCurrentSector`: +250.
+   - Unlocked pool tag: +200.
+   - Rarita: +20–60.
+   - Profilová afinita: +10.
+   - Anti-repetition: okamžitá → 0, ≤3 tahy → 0, ≤6 → −900, ≤10 → −500, ≤15 → −200.
+   - `applyTensionScore`: ±100–150 podle streaků.
+4. Top 8 kandidátů → **seeded weighted random** (`weightedPick` s `seed` a `rngStep`).
+5. Pokud jsou ready-scheduled karty, výběr proběhne jen z nich.
+
+### Debug helper
+
+```typescript
+explainCardScore(state, card)  // CardScoreBreakdown { score, reasons[] }
+getTopScoredCards(state, 5)    // top N karet s rozpisem skóre
+```
+
+## Profil (`computeProfile`)
+
+- `pickAxis(a, b, av, bv)` — pokud `|av - bv| <= 1`, osa je remíza (`'x'`). `dominantLabel` pak obsahuje `x` a suffix `-like`.
+- `profileConfidence` (0–100) — součet rozdílů os děleno celkový počet profilových bodů. Nízká hodnota = málo dat.
+- `stability` (0–100) — počet statů mimo 15–85 × 25; 4 extremní staty = 0.
+- `uncertainAxis` — string se jmény os v remíze, nebo `undefined` (exactOptionalPropertyTypes kompatibilní).
 
 ## Konce (`computeEnding`)
 
-Funkce nejprve volá `computeCompletion`. Pokud nejsou splněny podmínky stabilizace, kontroluje staty na 0/100. Vrací union `RunEnding`:
+- **Smrt**: stat ≤ 0 nebo ≥ 100 → `RunEnding` s `type: 'death'`.
+- **Stabilizace**: `restart_5` použit, ≥ 3 imprinty, ≥ 4 unikátní sektory, všechny staty 20–80 → `type: 'stabilized'`.
 
-- `EndingResult` s `type: 'death'` pro statní smrti.
-- `CompletionResult` s `type: 'stabilized'` pro úspěšnou stabilizaci.
+## Ukládání (`cyklusStorage`)
 
-Podmínky stabilizace:
+`loadCyklusRun()` obsahuje **migraci** pro staré uložené stavy:
 
-- `usedCardIds` obsahuje `restart_5`.
-- `imprints.length >= 3`.
-- `new Set(visitedSectors).size >= 4`.
-- Všechny staty jsou mezi 20 a 80.
+- Chybějící `seed` → `"migrated-{timestamp}"`.
+- Chybějící `rngStep`, `unlockedCards`, `cycleSummaries` → výchozí hodnoty.
+- Záznamy `history` bez nových polí (`itemsLost`, `imprintsGained`, `poolsUnlocked`, `scheduledAdded`, `entityDelta`) → doplní prázdné pole/objekty.
 
-## Ukládání a historie běhů
+## Analýza smrti a stabilizace
 
-`cyklusStorage.ts` ukládá aktivní běh do `localStorage` pod klíčem `STORAGE_KEY`. Dohromavy s ním ukládá i **historii ukončených běhů** (`HISTORY_KEY`) s limitem `MAX_HISTORY` (50).
-
-Funkce:
-
-- `saveCyklusRun(state)` — uloží aktivní běh.
-- `loadCyklusRun()` — načte aktivní běh.
-- `clearCyklusRun()` — smaže aktivní běh.
-- `loadCyklusRunHistory()` / `saveCyklusRunHistory()` — práce s historií.
-- `appendCyklusRunSummary(summary)` — přidá krátký `CyklusRunSummary` do archivu.
-- `clearCyklusRunHistory()` — vymaže archiv.
-
-`CyklusRunSummary` obsahuje: `id`, `endedAt`, `status`, `endingTitle`, `cyclesSurvived`, `totalChoices`, `dominantProfile`, `archetype`, `imprints`, `visitedSectors` a případně `deathStat`.
-
-## Analýza smrti (`analyzeDeath`)
-
-Pokud je běh mrtvý, funkce najde stat, který dosáhl 0 nebo 100, a vybere až 3 karty z historie, které k tomu nejvíce přispěly. Vrátí také systemový komentář podle extrému (např. "Příliš vysoká Energie = systém přetaktován").
-
-## Stabilizační pokrok (`computeStabilizationProgress`)
-
-UI panel zobrazuje splněné podmínky pro stabilizovaný konec:
-
-- Přežití restart sekvence (`restart_5`).
-- Minimálně 3 imprints.
-- Minimálně 4 unikátní sektory.
-- Všechny staty mezi 20 a 80.
-
-Panel se zobrazí, jakmile hráč projde restart sekvencí, nebo pokud už má nějakou historii běhů.
-
-## UI komponenty
-
-`CyklusClient.tsx` zobrazuje:
-
-- **Uvítací menu** — při vstupu do hry s uloženým během zobrazí tlačítka `Pokračovat` a `Nová hra`.
-- **Kategorie karet** — každá kategorie má vlastní barevný horní pruh (např. `crisis`, `memory`, `entity`, `path`).
-- **Trasu sektorů** — vizuální řetězec `void → archive → form_office …` nad hlavní kartou.
-- **Stabilizační panel** — kontrolní seznam podmínek pro stabilizaci.
-- **Death analysis** — na obrazovce smrti se zobrazí zabitý stat, top karty a komentář.
-- **Archiv cyklů** — tlačítkem lze rozbalit seznam posledních běhů s typem konce, profilem, archetypem a počtem cyklů.
-- **Outcome panel** — po každé volbě zobrazí příběhový dopad, statové změny, případný přesun sektoru a získané itemy. Zavírá se kliknutím.
-- **Story log** — v patičce ukazuje řetěz posledních 3 karet pro lepší příběhovou kontinuitu.
-- **Stat popisy** — kliknutí na stat otevře popup s popisem, co daný stat znamená a jaké extrémy hrozí.
+- `analyzeDeath(state)` — najde stat na 0/100, top 3 přispívající karty z history, systemový komentář.
+- `computeStabilizationProgress(state)` — boolean stav 4 podmínek stabilizace pro UI.
 
 ## Testy
 
-Spuštění:
-
 ```bash
-npm test -- --testPathPatterns="cyklusEngine" --no-coverage
+npx jest src/game/cyklus --no-coverage
 ```
 
-Testy pokrývají:
+Pokrytí (29 testů):
 
-- Vytvoření běhu a restart sekvenci.
-- Smrt při statu 0/100.
-- Krizové itemy (`rubber_seal`, `acid_filter`, `archive_key`).
-- Rubber stamp ochranu proti form/office kartám.
-- Stabilizovaný konec včetně nastavení `status: 'completed'`.
-- Aplikaci efektů (itemy, vlajky, imprinty, entity relation, clamp).
-- Výpočet profilu.
-- Tension director (update streaků).
-- **Anti-repetition** — stejná karta se nezobrazí okamžitě po sobě.
-- Shrnutí běhu, analýzu smrti a stabilizační pokrok.
-- **Content reachability / consistency** — každý odkazovaný item, imprint, pool, karta, flag a sektor existuje.
+- Vytvoření běhu, restart sekvence.
+- Smrt při statu 0/100, krizové itemy, rubber stamp.
+- Stabilizovaný konec.
+- Efekty (itemy, vlajky, imprinty, entity, clamp).
+- `computeProfile` — prázdný profil, rozhodný profil, `uncertainAxis`.
+- Tension director.
+- Anti-repetition.
+- Shrnutí běhu, analýza smrti, stabilizační pokrok.
+- **Content reachability** — každý odkazovaný item, imprint, pool, karta a flag existuje.
 
 ## Rozšiřitelnost
 
-- Nová karta se přidá jako záznam v `CYKLUS_CARDS` v `cyklusCards.ts`.
-- Nový item do `CYKLUS_ITEMS` v `cyklusItems.ts`; pasivní efekty se aplikují automaticky při získání.
-- Nový imprint do `CYKLUS_IMPRINTS` v `cyklusImprints.ts`; `unlockPool` odemkne pool při získání.
-- Nový unlock poolu se přidá do `CYKLUS_UNLOCKS` v `cyklusUnlocks.ts`.
-- Nová entita do `EntityId` v `cyklusTypes.ts` a případně `ENTITY_LABELS` v `CyklusClient.tsx`.
-- Nový sektor do `SectorId` v `cyklusTypes.ts` a `SECTOR_LABELS` v `CyklusClient.tsx`.
-- Pro doplnění tension logiky uprav `updateTension` a `applyTensionScore` v `cyklusEngine.ts`.
-- Pro změnu příběhového dopadu uprav `composeImpactNarrative` a `statChangeNarrative` v `cyklusEngine.ts`.
-- Pro nové ukončení běhu aktualizuj `summarizeRun` a `computeEnding` v `cyklusEngine.ts`.
-- Pro nové statové popisy uprav `STAT_DESCRIPTIONS` v `cyklusTypes.ts`.
-- Pro změnu vstupního menu uprav `CyklusClient.tsx` a `cyklus.css`.
+- **Nová karta** → `CYKLUS_CARDS` v `cyklusCards.ts`.
+- **Nový item** → `CYKLUS_ITEMS` v `cyklusItems.ts`; pasivní efekty se aplikují automaticky.
+- **Nový imprint** → `CYKLUS_IMPRINTS` v `cyklusImprints.ts`.
+- **Nový pool** → `CYKLUS_UNLOCKS` v `cyklusUnlocks.ts`.
+- **Nová entita** → `EntityId` v `cyklusTypes.ts`.
+- **Nový sektor** → `SectorId` v `cyklusTypes.ts` + řádek v `SECTOR_TAG_MAP` v `cyklusEngine.ts`.
+- **Nová podmínka** → přidat typ do `CardCondition` v `cyklusTypes.ts` + case do `checkCondition`.
+- **Nový efekt** → přidat do `CyklusEffect` union v `cyklusTypes.ts` + case do `applySingleEffect`.
+- **Tension** → `updateTension` a `applyTensionScore`.
+- **Příběhový dopad** → `composeImpactNarrative` a `statChangeNarrative`.
+- **Nový konec** → `computeEnding` a `summarizeRun`.

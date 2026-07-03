@@ -101,4 +101,9 @@ export const CYKLUS_UNLOCKS: CardUnlock[] = [
     poolId: 'residuum_pool',
     condition: { type: 'sector', sector: 'residuum' },
   },
+  {
+    id: 'archive_scent_pool_unlock',
+    poolId: 'archive_scent_pool',
+    condition: { type: 'hasFlag', flag: 'archive_scent_active' },
+  },
 ];

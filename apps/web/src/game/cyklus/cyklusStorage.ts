@@ -100,6 +100,35 @@ export function appendCyklusRunSummary(summary: CyklusRunSummary): void {
   saveCyklusRunHistory(history);
 }
 
+const TUTORIAL_KEY = 'synthoma_cyklus_tutorial_seen';
+
+export function isTutorialSeen(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem(TUTORIAL_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function setTutorialSeen(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(TUTORIAL_KEY, 'true');
+  } catch {
+    // ignore
+  }
+}
+
+export function clearTutorialSeen(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(TUTORIAL_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 export function clearCyklusRunHistory(): void {
   if (typeof window === 'undefined') return;
   try {

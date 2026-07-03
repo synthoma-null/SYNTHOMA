@@ -13,28 +13,35 @@ import {
   computeStabilizationProgress,
   updateTension,
   pickNextCard,
+  getNearestExtreme,
+  generateRunCodename,
 } from '../cyklusEngine';
 import type { CyklusRunState } from '../cyklusTypes';
 import { CYKLUS_CARDS } from '../cyklusCards';
 import { CYKLUS_ITEMS } from '../cyklusItems';
 import { CYKLUS_IMPRINTS } from '../cyklusImprints';
 import { CYKLUS_UNLOCKS } from '../cyklusUnlocks';
+import { getDeathUnlocks, saveMetaUnlocks, loadMetaUnlocks, loadMetaUnlockPools } from '../cyklusFindings';
 
 describe('Cyklus engine', () => {
   describe('createCyklusRun', () => {
-    it('starts with balanced stats and restart_0', () => {
-      const state = createCyklusRun();
+    it('starts with balanced stats and restart_0 when tutorial seen', () => {
+      const state = createCyklusRun(true);
       expect(state.status).toBe('playing');
       expect(state.stats).toEqual({ energy: 50, memory: 50, bond: 50, control: 50 });
       expect(state.currentCardId).toBe('restart_0');
       expect(state.sector).toBe('void');
       expect(state.visitedSectors).toContain('void');
     });
+    it('starts with tutorial_stats when tutorial not seen', () => {
+      const state = createCyklusRun(false);
+      expect(state.currentCardId).toBe('tutorial_stats');
+    });
   });
 
   describe('resolveChoice', () => {
     it('runs the first six restart cards in order', () => {
-      let state = createCyklusRun();
+      let state = createCyklusRun(true);
       const restartCards = ['restart_0', 'restart_1', 'restart_2', 'restart_3', 'restart_4', 'restart_5'];
       for (let i = 0; i < restartCards.length; i++) {
         expect(state.currentCardId).toBe(restartCards[i]);
@@ -405,6 +412,87 @@ describe('Cyklus engine', () => {
       expect(grantedImprintIds.has('unfinished_conversation')).toBe(true);
       expect(CYKLUS_CARDS['restart_0']).toBeDefined();
       expect(CYKLUS_CARDS['first_boot']).toBeDefined();
+    });
+  });
+
+  describe('meta unlock flow', () => {
+    const LS_KEY = 'synthoma_cyklus_meta_unlocks';
+
+    beforeEach(() => {
+      if (typeof localStorage !== 'undefined') localStorage.removeItem(LS_KEY);
+    });
+
+    afterEach(() => {
+      if (typeof localStorage !== 'undefined') localStorage.removeItem(LS_KEY);
+    });
+
+    it('getDeathUnlocks returns unlocks for memory_high death', () => {
+      const unlocks = getDeathUnlocks('memory', 'high');
+      expect(unlocks.length).toBeGreaterThan(0);
+      expect(unlocks[0]).toHaveProperty('unlockPool');
+    });
+
+    it('saveMetaUnlocks persists and deduplicates', () => {
+      const unlocks = getDeathUnlocks('energy', 'low');
+      const saved1 = saveMetaUnlocks(unlocks);
+      expect(saved1.length).toBe(unlocks.length);
+      const saved2 = saveMetaUnlocks(unlocks);
+      expect(saved2.length).toBe(0);
+      const all = loadMetaUnlocks();
+      expect(all.length).toBe(unlocks.length);
+    });
+
+    it('loadMetaUnlockPools maps saved unlock IDs to poolIds', () => {
+      const unlocks = getDeathUnlocks('control', 'high');
+      saveMetaUnlocks(unlocks);
+      const { pools } = loadMetaUnlockPools();
+      expect(pools.length).toBeGreaterThan(0);
+      expect(typeof pools[0]).toBe('string');
+    });
+
+    it('createCyklusRun includes previously unlocked pools from localStorage', () => {
+      const unlocks = getDeathUnlocks('bond', 'low');
+      saveMetaUnlocks(unlocks);
+      const { pools: expectedPools } = loadMetaUnlockPools();
+      const run = createCyklusRun(true);
+      for (const pool of expectedPools) {
+        expect(run.unlockedPools).toContain(pool);
+      }
+    });
+  });
+
+  describe('getNearestExtreme', () => {
+    it('returns the stat closest to 0 or 100', () => {
+      const near = getNearestExtreme({ energy: 50, memory: 5, bond: 60, control: 40 });
+      expect(near?.stat).toBe('memory');
+      expect(near?.direction).toBe('low');
+      expect(near?.distance).toBe(5);
+    });
+
+    it('handles balanced stats', () => {
+      const near = getNearestExtreme({ energy: 50, memory: 50, bond: 50, control: 50 });
+      expect(near?.distance).toBe(50);
+    });
+  });
+
+  describe('generateRunCodename', () => {
+    it('returns a non-empty string', () => {
+      const state = createCyklusRun(true);
+      const name = generateRunCodename(state);
+      expect(typeof name).toBe('string');
+      expect(name.length).toBeGreaterThan(0);
+    });
+
+    it('produces different names for different dominant stats', () => {
+      const s1 = createCyklusRun(true);
+      s1.stats.energy = 90;
+      s1.stats.memory = 50;
+      const s2 = createCyklusRun(true);
+      s2.stats.memory = 90;
+      s2.stats.energy = 50;
+      const n1 = generateRunCodename(s1);
+      const n2 = generateRunCodename(s2);
+      expect(n1).not.toBe(n2);
     });
   });
 });
