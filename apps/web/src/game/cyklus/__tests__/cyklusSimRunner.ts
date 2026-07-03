@@ -16,7 +16,7 @@ import {
   getTopScoredCards,
 } from '../cyklusEngine';
 import { CYKLUS_CARDS } from '../cyklusCards';
-import { evaluateFindings } from '../cyklusFindings';
+import { evaluateFindings, getDeathUnlocks, CYKLUS_FINDINGS } from '../cyklusFindings';
 import type { CyklusRunState, StatKey } from '../cyklusTypes';
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
@@ -405,4 +405,229 @@ export function runSimulationAndPrint(count = SIM_DEFAULTS.runs): SimReport {
   const report = runSimulation(count);
   console.log(formatSimReport(report));
   return report;
+}
+
+// ── CAMPAIGN SIMULATION ───────────────────────────────────────────────────────
+
+export interface CampaignRunSlot {
+  runIndexInCampaign: number;
+  status: 'dead' | 'completed' | 'timeout';
+  totalChoices: number;
+  deathStat?: StatKey | undefined;
+  deathExtreme?: 'low' | 'high' | undefined;
+  metaPoolsActive: string[];
+  metaCardsAppeared: string[];
+  newMetaPoolsUnlocked: string[];
+}
+
+export interface CampaignReport {
+  campaigns: number;
+  runsPerCampaign: number;
+  completionByRunIndex: number[];
+  deathByRunIndex: number[];
+  metaCardAppearancesByRunIndex: number[];
+  totalMetaPoolsEverUnlocked: Record<string, number>;
+  deadMetaPoolsByEndOfCampaign: number;
+  avgMetaCardsAppearedPerRun: number;
+  completionRateEarlyRuns: number;
+  completionRateLateRuns: number;
+}
+
+function collectMetaPools(state: CyklusRunState): string[] {
+  const pools: string[] = [];
+  const summary = summarizeRun(state);
+  const deathStat = summary.deathStat;
+  if (deathStat) {
+    const extreme = state.stats[deathStat] <= 0 ? 'low' : 'high';
+    const unlocks = getDeathUnlocks(deathStat, extreme);
+    for (const u of unlocks) {
+      if (u.unlockPool) pools.push(u.unlockPool);
+    }
+  }
+  const findings = evaluateFindings(state);
+  for (const f of findings) {
+    if (f.reward?.unlockPool) pools.push(f.reward.unlockPool);
+  }
+  return pools;
+}
+
+export function simulateSingleRunWithMeta(
+  seed: string,
+  safetyLimit: number,
+  metaPools: string[],
+): { result: SimRunResult; newMetaPools: string[] } {
+  let state: CyklusRunState = createCyklusRun(true);
+  state = { ...state, seed, rngStep: 0, unlockedPools: [...state.unlockedPools, ...metaPools] };
+  state = pickNextCardState(state);
+
+  let step = 0;
+  while (state.status === 'playing' && step < safetyLimit) {
+    const roll = simRandom(seed, step);
+    const direction: 'yes' | 'no' = roll > 0.5 ? 'yes' : 'no';
+    state = resolveChoice(state, direction);
+    if (state.status === 'playing') state = pickNextCardState(state);
+    step++;
+  }
+
+  const timedOut = state.status === 'playing';
+  if (timedOut) state = { ...state, status: 'dead' };
+
+  const progress = computeStabilizationProgress(state);
+  const blockers: string[] = [];
+  if (!progress.survivedRestart) blockers.push('restart_5_missing');
+  if (progress.imprints < progress.imprintsNeeded) blockers.push('not_enough_imprints');
+  if (progress.sectors < progress.sectorsNeeded) blockers.push('not_enough_sectors');
+  if (!progress.statsStable) blockers.push('stats_unstable');
+
+  let stabilizationVariant: string | undefined;
+  if (state.status === 'completed') stabilizationVariant = computeStabilizationVariant(state).id;
+
+  const findings = evaluateFindings(state);
+  const summary = summarizeRun(state);
+  const deathStat: StatKey | undefined = summary.deathStat;
+  const deathExtreme: 'low' | 'high' | undefined = deathStat
+    ? (state.stats[deathStat] <= 0 ? 'low' : 'high')
+    : undefined;
+
+  const newMetaPools = collectMetaPools(state);
+
+  const result: SimRunResult = {
+    runIndex: 0,
+    status: timedOut ? 'timeout' : (state.status as 'dead' | 'completed'),
+    totalChoices: step,
+    cyclesSurvived: state.cycle,
+    deathStat,
+    deathExtreme,
+    finalStats: { ...state.stats },
+    usedCardIds: [...state.usedCardIds],
+    unlockedPools: [...state.unlockedPools],
+    imprints: [...state.imprints],
+    visitedSectors: [...state.visitedSectors],
+    stabilizationVariant,
+    stabilizationBlockers: blockers,
+    findingsEarned: findings.map((f) => f.id),
+    metaUnlocksEarned: newMetaPools,
+  };
+
+  return { result, newMetaPools };
+}
+
+export function simulateCampaign(
+  campaigns = 100,
+  runsPerCampaign = 10,
+  safetyLimit = SIM_DEFAULTS.safetyLimit,
+): CampaignReport {
+  const completionByRunIndex = Array(runsPerCampaign).fill(0);
+  const deathByRunIndex = Array(runsPerCampaign).fill(0);
+  const metaCardAppearancesByRunIndex = Array(runsPerCampaign).fill(0);
+  const totalMetaPoolsEverUnlocked: Record<string, number> = {};
+  let totalMetaCardsAppeared = 0;
+  let deadMetaPoolsByEnd = 0;
+
+  const allMetaPoolIds = new Set<string>();
+  for (const stat of ['memory', 'energy', 'bond', 'control'] as StatKey[]) {
+    for (const ext of ['low', 'high'] as const) {
+      for (const u of (getDeathUnlocks(stat, ext))) {
+        if (u.unlockPool) allMetaPoolIds.add(u.unlockPool);
+      }
+    }
+  }
+  for (const f of CYKLUS_FINDINGS) {
+    if (f.reward?.unlockPool) allMetaPoolIds.add(f.reward.unlockPool);
+  }
+
+  for (let c = 0; c < campaigns; c++) {
+    let accumulatedMetaPools: string[] = [];
+
+    for (let r = 0; r < runsPerCampaign; r++) {
+      const seed = `campaign-${c}-run-${r}`;
+      const { result, newMetaPools } = simulateSingleRunWithMeta(seed, safetyLimit, accumulatedMetaPools);
+
+      if (result.status === 'completed') completionByRunIndex[r]++;
+      else if (result.status === 'dead') deathByRunIndex[r]++;
+
+      const allMetaCardIds = new Set<string>();
+      for (const id of Object.keys(CYKLUS_CARDS)) {
+        const card = CYKLUS_CARDS[id];
+        if (card?.conditions?.some((cond) => cond.type === 'unlockedPool' && accumulatedMetaPools.includes(cond.poolId ?? ''))) {
+          allMetaCardIds.add(id);
+        }
+      }
+      const appearedMetaCards = result.usedCardIds.filter((id) => allMetaCardIds.has(id));
+      metaCardAppearancesByRunIndex[r] += appearedMetaCards.length;
+      totalMetaCardsAppeared += appearedMetaCards.length;
+
+      for (const p of newMetaPools) {
+        totalMetaPoolsEverUnlocked[p] = (totalMetaPoolsEverUnlocked[p] ?? 0) + 1;
+        if (!accumulatedMetaPools.includes(p)) accumulatedMetaPools.push(p);
+      }
+    }
+
+    const unlockedByEnd = new Set(accumulatedMetaPools);
+    deadMetaPoolsByEnd += [...allMetaPoolIds].filter((p) => !unlockedByEnd.has(p)).length;
+  }
+
+  const earlyRuns = 3;
+  const completionRateEarlyRuns =
+    completionByRunIndex.slice(0, earlyRuns).reduce((s, n) => s + n, 0) / (campaigns * earlyRuns);
+  const completionRateLateRuns =
+    completionByRunIndex.slice(-3).reduce((s, n) => s + n, 0) / (campaigns * 3);
+
+  return {
+    campaigns,
+    runsPerCampaign,
+    completionByRunIndex: completionByRunIndex.map((n) => Math.round((n / campaigns) * 100)),
+    deathByRunIndex: deathByRunIndex.map((n) => Math.round((n / campaigns) * 100)),
+    metaCardAppearancesByRunIndex: metaCardAppearancesByRunIndex.map((n) =>
+      Math.round((n / campaigns) * 10) / 10,
+    ),
+    totalMetaPoolsEverUnlocked,
+    deadMetaPoolsByEndOfCampaign: Math.round(deadMetaPoolsByEnd / campaigns),
+    avgMetaCardsAppearedPerRun: Math.round((totalMetaCardsAppeared / (campaigns * runsPerCampaign)) * 10) / 10,
+    completionRateEarlyRuns: Math.round(completionRateEarlyRuns * 100),
+    completionRateLateRuns: Math.round(completionRateLateRuns * 100),
+  };
+}
+
+export function formatCampaignReport(report: CampaignReport): string {
+  const lines: string[] = [];
+  lines.push('════════════════════════════════════════════════════════');
+  lines.push('  SYNTHOMA: CYKLUS — CAMPAIGN SIMULATION REPORT');
+  lines.push(`  ${report.campaigns} campaigns × ${report.runsPerCampaign} runs`);
+  lines.push('════════════════════════════════════════════════════════');
+
+  lines.push('');
+  lines.push('── COMPLETION % BY RUN INDEX ──');
+  report.completionByRunIndex.forEach((pct, i) => {
+    const bar = '█'.repeat(Math.round(pct / 5));
+    lines.push(`  Run ${String(i + 1).padStart(2)}  ${String(pct).padStart(3)}%  ${bar}`);
+  });
+
+  lines.push('');
+  lines.push('── DEATH % BY RUN INDEX ──');
+  report.deathByRunIndex.forEach((pct, i) => {
+    lines.push(`  Run ${String(i + 1).padStart(2)}  ${String(pct).padStart(3)}%`);
+  });
+
+  lines.push('');
+  lines.push('── META CARD APPEARANCES (avg per campaign per run) ──');
+  report.metaCardAppearancesByRunIndex.forEach((n, i) => {
+    lines.push(`  Run ${String(i + 1).padStart(2)}  ${n}`);
+  });
+
+  lines.push('');
+  lines.push(`── META UNLOCKED POOLS (across all campaigns) ──`);
+  for (const [p, n] of Object.entries(report.totalMetaPoolsEverUnlocked).sort((a, b) => b[1] - a[1])) {
+    lines.push(`  ${p.padEnd(35)} ${n}x`);
+  }
+
+  lines.push('');
+  lines.push(`  Avg dead meta pools per campaign end: ${report.deadMetaPoolsByEndOfCampaign}`);
+  lines.push(`  Avg meta cards appeared / run:        ${report.avgMetaCardsAppearedPerRun}`);
+  lines.push(`  Completion rate runs 1-3:              ${report.completionRateEarlyRuns}%`);
+  lines.push(`  Completion rate runs 8-10:             ${report.completionRateLateRuns}%`);
+
+  lines.push('');
+  lines.push('════════════════════════════════════════════════════════');
+  return lines.join('\n');
 }

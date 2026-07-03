@@ -1257,44 +1257,48 @@ function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard
     s += 120;
   }
 
-  // ── Stat-aware scoring: penalize/boost based on current stat extremes ──────
+  // ── Stat-aware scoring: gentle guidance, not a safety net (B1.1) ───────────
   const stats = state.stats;
   for (const stat of ['energy', 'memory', 'bond', 'control'] as StatKey[]) {
     const val = stats[stat];
     if (val > 85 && cardWouldIncreaseStat(card, stat)) {
-      s -= stat === 'memory' ? 400 : 250; // memory gets harder penalty
+      s -= 220;
     } else if (val > 75 && cardWouldIncreaseStat(card, stat)) {
-      s -= stat === 'memory' ? 280 : 180;
+      s -= 80;
     }
     if (val > 85 && cardWouldDecreaseStat(card, stat)) {
-      s += stat === 'memory' ? 350 : 220;
+      s += 150;
     }
-    if (val < 15 && cardWouldDecreaseStat(card, stat)) {
-      s -= 250;
+    if (val < 10 && cardWouldDecreaseStat(card, stat)) {
+      s -= 160;
     }
-    if (val < 25 && cardWouldIncreaseStat(card, stat)) {
-      s += 220;
+    if (val < 10 && cardWouldIncreaseStat(card, stat)) {
+      s += 150;
     }
   }
 
   // ── Sector diversity: boost path cards when < 4 unique sectors visited ─────
   const visitedCount = new Set(state.visitedSectors).size;
   if (visitedCount < 4 && (card.category === 'path' || card.tags.includes('path'))) {
-    s += 220;
+    s += 160;
   }
   if (t.sameSectorStreak >= 3 && !cardMatchesCurrentSector(state, card) && (card.category === 'path' || card.tags.includes('path'))) {
-    s += 180;
+    s += 120;
   }
 
-  // ── Basic scene pressure: restore variety after 4+ non-basic cards ─────────
-  const recentBasicGap = state.usedCardIds.slice(-5).filter((id) => {
-    const c = CYKLUS_CARDS[id];
-    return c ? isBasicSceneCard(c) : false;
-  }).length;
-  if (recentBasicGap === 0 && isBasicSceneCard(card)) {
-    s += 220;
-  } else if (recentBasicGap <= 1 && isBasicSceneCard(card)) {
-    s += 80;
+  // ── Basic scene pressure: muted in stat extremes (B1.1) ────────────────────
+  const statVals = Object.values(state.stats) as number[];
+  const inStatExtreme = statVals.some((v) => v < 15 || v > 85);
+  if (!inStatExtreme) {
+    const recentBasicGap = state.usedCardIds.slice(-5).filter((id) => {
+      const c = CYKLUS_CARDS[id];
+      return c ? isBasicSceneCard(c) : false;
+    }).length;
+    if (recentBasicGap === 0 && isBasicSceneCard(card)) {
+      s += 140;
+    } else if (recentBasicGap <= 1 && isBasicSceneCard(card)) {
+      s += 60;
+    }
   }
 
   return s;

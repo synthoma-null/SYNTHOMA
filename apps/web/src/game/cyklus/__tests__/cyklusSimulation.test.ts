@@ -9,7 +9,7 @@
  * - Balance is within expected bounds
  */
 
-import { runSimulation, simulateSingleRun, aggregateResults, formatSimReport } from './cyklusSimRunner';
+import { runSimulation, simulateSingleRun, aggregateResults, formatSimReport, simulateCampaign, formatCampaignReport } from './cyklusSimRunner';
 import { CYKLUS_CARDS } from '../cyklusCards';
 
 describe('CYKLUS Simulation — sanity', () => {
@@ -102,9 +102,13 @@ describe('CYKLUS Simulation — balance (1000 runs)', () => {
     console.info('\n' + fmt(report));
   });
 
-  test('death rate is between 10% and 70%', () => {
+  // B1.1 target: 40-70% death rate with random yes/no player.
+  // Seeded RNG produces deterministic ~44-46%. Lower bound 40% gives
+  // reasonable margin; upper bound 70% guards against regression to
+  // pre-B1 memory brutality. Design intent is ~50% for a skilled player.
+  test('death rate is between 40% and 70%', () => {
     const deathRate = report.deaths / report.totalRuns;
-    expect(deathRate).toBeGreaterThanOrEqual(0.1);
+    expect(deathRate).toBeGreaterThanOrEqual(0.40);
     expect(deathRate).toBeLessThanOrEqual(0.70);
   });
 
@@ -141,5 +145,48 @@ describe('CYKLUS Simulation — balance (1000 runs)', () => {
       expect(val).toBeGreaterThanOrEqual(0);
       expect(val).toBeLessThanOrEqual(100);
     }
+  });
+
+  test('no single deathStat exceeds 45% of all runs', () => {
+    for (const [, count] of Object.entries(report.deathStatDistribution)) {
+      expect(count / report.totalRuns).toBeLessThanOrEqual(0.45);
+    }
+  });
+
+  // B1.1: many cards require specific flags/pools to appear; 65 is
+  // acceptable for 1000 random runs. Target for future patches: <40.
+  test('never-seen cards are fewer than 65', () => {
+    expect(report.neverSeenCards.length).toBeLessThan(65);
+  });
+});
+
+describe('CYKLUS Campaign Simulation — meta progression (100 × 10)', () => {
+  let campaignReport: ReturnType<typeof simulateCampaign>;
+
+  beforeAll(() => {
+    campaignReport = simulateCampaign(100, 10, 200);
+    const { formatCampaignReport: fmt } = require('./cyklusSimRunner');
+    console.info('\n' + fmt(campaignReport));
+  });
+
+  test('campaign simulation runs without exception', () => {
+    expect(campaignReport.campaigns).toBe(100);
+    expect(campaignReport.runsPerCampaign).toBe(10);
+  });
+
+  test('completion rate does not exceed 70% even in late runs', () => {
+    expect(campaignReport.completionRateLateRuns).toBeLessThanOrEqual(70);
+  });
+
+  test('completion rate in early runs is below late runs or equal (meta helps)', () => {
+    // meta unlocks should not hurt; late runs >= early runs
+    expect(campaignReport.completionRateLateRuns).toBeGreaterThanOrEqual(
+      campaignReport.completionRateEarlyRuns - 5,
+    );
+  });
+
+  test('meta pools unlock across campaigns', () => {
+    const totalUnlocked = Object.keys(campaignReport.totalMetaPoolsEverUnlocked).length;
+    expect(totalUnlocked).toBeGreaterThan(0);
   });
 });

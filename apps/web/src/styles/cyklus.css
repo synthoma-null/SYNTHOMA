@@ -132,6 +132,7 @@
   letter-spacing: 0.12em;
   color: #fff;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .cyklus-meta {
@@ -498,10 +499,7 @@
 }
 
 .cyklus-btn__hint {
-  font-size: 0.7rem;
-  font-weight: 400;
-  color: #a0a0b0;
-  text-align: center;
+  display: none;
 }
 
 .cyklus-outcome {
@@ -1866,4 +1864,8 @@
   font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.35);
   font-weight: 400;
+}
+
+.cyklus-page .legal-footer {
+  display: none;
 }
