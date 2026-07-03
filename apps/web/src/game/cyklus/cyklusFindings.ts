@@ -270,6 +270,38 @@ export function saveMetaUnlocks(unlocks: MetaUnlock[]): MetaUnlock[] {
   } catch { return []; }
 }
 
+// ── FRESH META POOL STORAGE ───────────────────────────────────────────────────
+
+const FRESH_META_POOLS_KEY = 'synthoma_cyklus_fresh_meta_pools';
+
+export function loadFreshMetaPools(): string[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(FRESH_META_POOLS_KEY);
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch { return []; }
+}
+
+export function saveFreshMetaPools(pools: string[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(FRESH_META_POOLS_KEY, JSON.stringify(pools));
+  } catch { /* ignore */ }
+}
+
+export function addFreshMetaPools(newPools: string[]): void {
+  if (typeof window === 'undefined') return;
+  const existing = new Set(loadFreshMetaPools());
+  for (const p of newPools) existing.add(p);
+  saveFreshMetaPools([...existing]);
+}
+
+export function consumeFreshMetaPool(poolId: string): void {
+  if (typeof window === 'undefined') return;
+  const current = loadFreshMetaPools().filter((p) => p !== poolId);
+  saveFreshMetaPools(current);
+}
+
 export function loadMetaUnlockPools(): { pools: string[]; cards: string[] } {
   const savedIds = loadMetaUnlocks();
   const allUnlocks = Object.values(DEATH_UNLOCKS).flatMap((extremeMap) =>

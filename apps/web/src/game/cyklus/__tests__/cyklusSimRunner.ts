@@ -429,6 +429,8 @@ export interface CampaignReport {
   totalMetaPoolsEverUnlocked: Record<string, number>;
   deadMetaPoolsByEndOfCampaign: number;
   avgMetaCardsAppearedPerRun: number;
+  avgFreshMetaCardsPerRun: number;
+  freshPoolsUnseenAfterRun1: number;
   completionRateEarlyRuns: number;
   completionRateLateRuns: number;
 }
@@ -457,7 +459,7 @@ export function simulateSingleRunWithMeta(
   metaPools: string[],
 ): { result: SimRunResult; newMetaPools: string[] } {
   let state: CyklusRunState = createCyklusRun(true);
-  state = { ...state, seed, rngStep: 0, unlockedPools: [...state.unlockedPools, ...metaPools] };
+  state = { ...state, seed, rngStep: 0, unlockedPools: [...state.unlockedPools, ...metaPools], freshMetaPools: [...metaPools] };
   state = pickNextCardState(state);
 
   let step = 0;
@@ -536,11 +538,15 @@ export function simulateCampaign(
     if (f.reward?.unlockPool) allMetaPoolIds.add(f.reward.unlockPool);
   }
 
+  let totalFreshMetaCardsAppeared = 0;
+  let freshPoolsUnseenAfterRun1Total = 0;
+
   for (let c = 0; c < campaigns; c++) {
     let accumulatedMetaPools: string[] = [];
 
     for (let r = 0; r < runsPerCampaign; r++) {
       const seed = `campaign-${c}-run-${r}`;
+      const freshAtStartOfRun = [...accumulatedMetaPools];
       const { result, newMetaPools } = simulateSingleRunWithMeta(seed, safetyLimit, accumulatedMetaPools);
 
       if (result.status === 'completed') completionByRunIndex[r]++;
@@ -556,6 +562,29 @@ export function simulateCampaign(
       const appearedMetaCards = result.usedCardIds.filter((id) => allMetaCardIds.has(id));
       metaCardAppearancesByRunIndex[r] += appearedMetaCards.length;
       totalMetaCardsAppeared += appearedMetaCards.length;
+
+      // Fresh meta: cards from pools that were fresh at start of this run
+      const freshMetaCardIds = new Set<string>();
+      for (const id of Object.keys(CYKLUS_CARDS)) {
+        const card = CYKLUS_CARDS[id];
+        if (card?.conditions?.some((cond) => cond.type === 'unlockedPool' && freshAtStartOfRun.includes(cond.poolId ?? ''))) {
+          freshMetaCardIds.add(id);
+        }
+      }
+      const appearedFreshMetaCards = result.usedCardIds.filter((id) => freshMetaCardIds.has(id));
+      totalFreshMetaCardsAppeared += appearedFreshMetaCards.length;
+
+      // After run 1 (r===1): count fresh pools from run 0 that were never seen
+      if (r === 1) {
+        const unseenFresh = freshAtStartOfRun.filter((p) => {
+          const cardsInPool = Object.keys(CYKLUS_CARDS).filter((id) => {
+            const card = CYKLUS_CARDS[id];
+            return card?.conditions?.some((cond) => cond.type === 'unlockedPool' && cond.poolId === p);
+          });
+          return !cardsInPool.some((id) => result.usedCardIds.includes(id));
+        });
+        freshPoolsUnseenAfterRun1Total += unseenFresh.length;
+      }
 
       for (const p of newMetaPools) {
         totalMetaPoolsEverUnlocked[p] = (totalMetaPoolsEverUnlocked[p] ?? 0) + 1;
@@ -584,6 +613,8 @@ export function simulateCampaign(
     totalMetaPoolsEverUnlocked,
     deadMetaPoolsByEndOfCampaign: Math.round(deadMetaPoolsByEnd / campaigns),
     avgMetaCardsAppearedPerRun: Math.round((totalMetaCardsAppeared / (campaigns * runsPerCampaign)) * 10) / 10,
+    avgFreshMetaCardsPerRun: Math.round((totalFreshMetaCardsAppeared / (campaigns * runsPerCampaign)) * 10) / 10,
+    freshPoolsUnseenAfterRun1: Math.round(freshPoolsUnseenAfterRun1Total / campaigns * 10) / 10,
     completionRateEarlyRuns: Math.round(completionRateEarlyRuns * 100),
     completionRateLateRuns: Math.round(completionRateLateRuns * 100),
   };
@@ -624,6 +655,8 @@ export function formatCampaignReport(report: CampaignReport): string {
   lines.push('');
   lines.push(`  Avg dead meta pools per campaign end: ${report.deadMetaPoolsByEndOfCampaign}`);
   lines.push(`  Avg meta cards appeared / run:        ${report.avgMetaCardsAppearedPerRun}`);
+  lines.push(`  Avg FRESH meta cards appeared / run:  ${report.avgFreshMetaCardsPerRun}`);
+  lines.push(`  Fresh pools unseen after run 1 (avg): ${report.freshPoolsUnseenAfterRun1}`);
   lines.push(`  Completion rate runs 1-3:              ${report.completionRateEarlyRuns}%`);
   lines.push(`  Completion rate runs 8-10:             ${report.completionRateLateRuns}%`);
 

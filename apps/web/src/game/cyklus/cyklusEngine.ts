@@ -1,6 +1,6 @@
 import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
-import { loadMetaUnlockPools } from './cyklusFindings';
+import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
 import { CYKLUS_CARDS } from './cyklusCards';
 import { CYKLUS_IMPRINTS } from './cyklusImprints';
 import { CYKLUS_ITEMS } from './cyklusItems';
@@ -50,6 +50,7 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
     },
     seed,
     rngStep: 0,
+    freshMetaPools: loadFreshMetaPools(),
   };
   return state;
 }
@@ -133,6 +134,13 @@ function cardWouldDecreaseStat(card: SwipeCard, stat: StatKey): boolean {
 
 const BASIC_SCENE_CATEGORIES = new Set(['system', 'choice', 'memory', 'silent', 'object']);
 const BASIC_SCENE_EXCLUDE_TAGS = new Set(['crisis', 'danger', 'followup', 'item_trigger', 'restart', 'tutorial', 'trap']);
+
+function isFreshMetaPoolCard(state: CyklusRunState, card: SwipeCard): boolean {
+  if (!state.freshMetaPools || state.freshMetaPools.length === 0) return false;
+  return card.conditions?.some(
+    (cond) => cond.type === 'unlockedPool' && state.freshMetaPools.includes(cond.poolId ?? ''),
+  ) ?? false;
+}
 
 function isBasicSceneCard(card: SwipeCard): boolean {
   if (!BASIC_SCENE_CATEGORIES.has(card.category)) return false;
@@ -529,7 +537,16 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     outcomeText = outcomeText ? `${outcomeText}\n\n${crisisResult.interventionText}` : crisisResult.interventionText;
   }
 
-  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card) };
+  // Consume fresh meta pool if this was a fresh meta card
+  let freshMetaPools = s.freshMetaPools ?? [];
+  if (freshMetaPools.length > 0 && isFreshMetaPoolCard(state, card)) {
+    const consumedPool = card.conditions?.find(
+      (cond) => cond.type === 'unlockedPool' && freshMetaPools.includes(cond.poolId ?? ''),
+    )?.poolId;
+    if (consumedPool) freshMetaPools = freshMetaPools.filter((p) => p !== consumedPool);
+  }
+
+  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card), freshMetaPools };
 
   // Check for ending
   const ending = computeEnding(s);
@@ -1284,6 +1301,11 @@ function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard
   }
   if (t.sameSectorStreak >= 3 && !cardMatchesCurrentSector(state, card) && (card.category === 'path' || card.tags.includes('path'))) {
     s += 120;
+  }
+
+  // ── Fresh meta pool visibility boost ────────────────────────────────────────
+  if (isFreshMetaPoolCard(state, card)) {
+    s += 350;
   }
 
   // ── Basic scene pressure: muted in stat extremes (B1.1) ────────────────────

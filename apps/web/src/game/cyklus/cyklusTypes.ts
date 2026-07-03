@@ -232,6 +232,7 @@ export interface CyklusRunState {
   tension: CyklusTension;
   seed: string;
   rngStep: number;
+  freshMetaPools: string[];
 }
 
 export interface CyklusRunSummary {

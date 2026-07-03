@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename } from '../../game/cyklus/cyklusEngine';
-import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
+import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialSeen, clearTutorialSeen } from '../../game/cyklus/cyklusStorage';
 import StatDock from './StatDock';
-import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord } from '../../game/cyklus/cyklusTypes';
+import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
 import { CYKLUS_ITEMS } from '../../game/cyklus/cyklusItems';
+import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
 import { CYKLUS_IMPRINTS } from '../../game/cyklus/cyklusImprints';
 
 export default function CyklusClient() {
@@ -110,6 +111,8 @@ export default function CyklusClient() {
       const unlocks = getDeathUnlocks(ending.stat, ending.extreme);
       const saved = saveMetaUnlocks(unlocks);
       setNewMetaUnlocks(saved);
+      const newPools = saved.map((u) => u.unlockPool).filter(Boolean) as string[];
+      if (newPools.length > 0) addFreshMetaPools(newPools);
     }
   }, [state?.status]);
 
@@ -676,6 +679,11 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
     ? (Object.entries(record.profileDelta) as [string, number][]).filter(([key]) => ['Ni', 'Ne', 'Si', 'Se', 'Ti', 'Te', 'Fi', 'Fe'].includes(key)).length > 0
     : false;
   const reward = getRewardType(record);
+  const freshPools: string[] = state.freshMetaPools ?? [];
+  const playedCard = record ? CYKLUS_CARDS[record.cardId] : undefined;
+  const isFreshMeta = !!(playedCard && freshPools.length > 0 && playedCard.conditions?.some(
+    (cond: CardCondition) => cond.type === 'unlockedPool' && freshPools.includes(cond.poolId ?? ''),
+  ));
 
   return (
     <div className="cyklus-outcome" onClick={onDismiss} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onDismiss(); }}>
@@ -704,6 +712,7 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
         </div>
       )}
       {entityDeltas && <div className="cyklus-outcome__hint">Profil se posunul.</div>}
+      {isFreshMeta && <div className="cyklus-outcome__fresh-meta">Tato karta byla odemčena předchozím koncem.</div>}
       <div className="cyklus-outcome__continue">Klikni pro pokračování</div>
     </div>
   );

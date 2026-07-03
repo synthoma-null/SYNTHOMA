@@ -189,4 +189,52 @@ describe('CYKLUS Campaign Simulation — meta progression (100 × 10)', () => {
     const totalUnlocked = Object.keys(campaignReport.totalMetaPoolsEverUnlocked).length;
     expect(totalUnlocked).toBeGreaterThan(0);
   });
+
+  test('fresh meta cards per run is higher than before patch (target >= 0.5)', () => {
+    expect(campaignReport.avgFreshMetaCardsPerRun).toBeGreaterThanOrEqual(0.5);
+  });
+
+  test('completion rate does not spike due to fresh meta boost (max +8pp vs early)', () => {
+    expect(campaignReport.completionRateLateRuns).toBeLessThanOrEqual(
+      campaignReport.completionRateEarlyRuns + 8,
+    );
+  });
+});
+
+describe('CYKLUS Visibility Patch — fresh meta pool mechanics', () => {
+  test('fresh meta pool card gets scoring boost', () => {
+    const { simulateSingleRunWithMeta } = require('./cyklusSimRunner');
+    const { CYKLUS_CARDS } = require('../cyklusCards');
+
+    const metaPool = 'post_format';
+    const metaCard = Object.values(CYKLUS_CARDS as Record<string, import('../cyklusTypes').SwipeCard>).find(
+      (c) => c.conditions?.some((cond) => cond.type === 'unlockedPool' && cond.poolId === metaPool),
+    );
+    if (!metaCard) return;
+
+    // With fresh pool: run 5 times, meta card should appear in at least 1 of them
+    let appearedCount = 0;
+    for (let i = 0; i < 5; i++) {
+      const { result } = simulateSingleRunWithMeta(`fresh-test-${i}`, 80, [metaPool]);
+      if (result.usedCardIds.includes(metaCard.id)) appearedCount++;
+    }
+    expect(appearedCount).toBeGreaterThanOrEqual(1);
+  });
+
+  test('fresh pool is consumed after playing a fresh meta card', () => {
+    const { createCyklusRun, resolveChoice } = require('../cyklusEngine');
+    const { CYKLUS_CARDS } = require('../cyklusCards');
+
+    const metaPool = 'post_format';
+    const metaCard = Object.values(CYKLUS_CARDS as Record<string, import('../cyklusTypes').SwipeCard>).find(
+      (c) => c.conditions?.some((cond) => cond.type === 'unlockedPool' && cond.poolId === metaPool),
+    );
+    if (!metaCard) return;
+
+    let state = createCyklusRun(true) as import('../cyklusTypes').CyklusRunState;
+    state = { ...state, currentCardId: metaCard.id, unlockedPools: [...state.unlockedPools, metaPool], freshMetaPools: [metaPool] };
+
+    const after = resolveChoice(state, 'yes');
+    expect((after.freshMetaPools ?? []).includes(metaPool)).toBe(false);
+  });
 });

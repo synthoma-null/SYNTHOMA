@@ -587,6 +587,14 @@
   letter-spacing: 0.02em;
 }
 
+.cyklus-outcome__fresh-meta {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: rgba(160, 200, 255, 0.7);
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
 .cyklus-outcome__continue {
   margin-top: 0.85rem;
   font-size: 0.68rem;

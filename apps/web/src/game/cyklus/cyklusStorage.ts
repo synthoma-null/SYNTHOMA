@@ -40,6 +40,7 @@ export function loadCyklusRun(): CyklusRunState | null {
     if (parsed.rngStep === undefined) parsed.rngStep = 0;
     if (!parsed.unlockedCards) parsed.unlockedCards = [];
     if (!parsed.cycleSummaries) parsed.cycleSummaries = [];
+    if (!parsed.freshMetaPools) parsed.freshMetaPools = [];
     // Migration: history records missing new diff fields
     if (parsed.history) {
       parsed.history = parsed.history.map((r) => ({
