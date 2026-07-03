@@ -407,7 +407,7 @@ export default function CyklusClient() {
                 <div className="cyklus-end__section-label">ODEMČENO</div>
                 {newMetaUnlocks.map((u) => (
                   <div key={u.id} className="cyklus-meta-unlock">
-                    <div className="cyklus-meta-unlock__name">Karta „{u.displayText}"</div>
+                    <div className="cyklus-meta-unlock__name">Karta &bdquo;{u.displayText}&ldquo;</div>
                     <div className="cyklus-meta-unlock__reason">Systém zaznamenal vzorec. Odemčeno pro příští průchod.</div>
                   </div>
                 ))}
