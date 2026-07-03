@@ -19,7 +19,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         const identifier = (credentials?.identifier as string | undefined) ?? '';
         const password = (credentials?.password as string | undefined) ?? '';
-        if (!identifier || !password) return null;
+        if (!identifier || !password) {
+          console.error('[auth] authorize: missing identifier or password');
+          return null;
+        }
 
         const lower = identifier.toLowerCase().trim();
         let user = await prisma.user.findFirst({
@@ -50,15 +53,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
         }
 
-        if (!user) return null;
+        if (!user) {
+          console.error('[auth] authorize: user not found for identifier:', lower);
+          return null;
+        }
 
         const valid = await compare(password, user.passwordHash);
-        if (!valid) return null;
+        if (!valid) {
+          console.error('[auth] authorize: invalid password for user:', user.id);
+          return null;
+        }
 
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { lastLoginAt: new Date() },
-        });
+        try {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { lastLoginAt: new Date() },
+          });
+        } catch (e) {
+          console.error('[auth] authorize: lastLoginAt update failed (column may be missing):', e);
+        }
 
         return {
           id: user.id,

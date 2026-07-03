@@ -35,6 +35,7 @@ export default function IdentityPanelClient() {
 
   return (
     <div className="id-panel-root" ref={panelRef}>
+      <Link className="id-panel-home" href="/" aria-label="Zpět na hlavní stránku" tabIndex={0}>⌂</Link>
       <button
         className={`id-panel-btn${open ? ' active' : ''}`}
         aria-expanded={open}

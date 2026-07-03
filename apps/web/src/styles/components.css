@@ -2481,6 +2481,30 @@
   top: calc(12px + env(safe-area-inset-top));
   right: calc(12px + env(safe-area-inset-right));
   z-index: 4100;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.id-panel-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: var(--bg-surface, rgba(11,11,12,.85));
+  backdrop-filter: blur(10px);
+  color: var(--text-secondary, rgba(207,207,227,.5));
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color .15s, border-color .15s, background .15s;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+}
+.id-panel-home:hover {
+  color: var(--text-primary, #cfcfe3);
+  border-color: rgba(255,255,255,.2);
+  background: color-mix(in oklab, var(--accent-primary, #7c5cff) 10%, var(--bg-surface, #0b0b0c));
 }
 .id-panel-btn {
   display: flex;
