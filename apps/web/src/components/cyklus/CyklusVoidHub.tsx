@@ -467,39 +467,41 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
 
   return (
     <div className="cyklus-void-hub">
-      <div className="cyklus-void-hub__header">
-        <div className="cyklus-void-hub__title">PRÁZDN0TA</div>
-        <div className="cyklus-void-hub__actions">
-          {onStartRun && (
-            <button className="cyklus-void-button" onClick={onStartRun}>DALŠÍ CYKLUS</button>
-          )}
-          {onClose && (
-            <button className="cyklus-void-button cyklus-void-button--danger" onClick={onClose}>ZAVŘÍT</button>
-          )}
+      <div className="cyklus-void-hub__frame">
+        <div className="cyklus-void-hub__header">
+          <div className="cyklus-void-hub__title">PRÁZDN0TA</div>
+          <div className="cyklus-void-hub__actions">
+            {onStartRun && (
+              <button className="cyklus-void-button cyklus-void-button--primary" onClick={onStartRun}>DALŠÍ CYKLUS</button>
+            )}
+            {onClose && (
+              <button className="cyklus-void-button cyklus-void-button--danger" onClick={onClose}>ZAVŘÍT</button>
+            )}
+          </div>
         </div>
-      </div>
-      {message && (
-        <div className="cyklus-void-hub__message">{message}</div>
-      )}
-      <div className="cyklus-void-tabs">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`cyklus-void-tab ${activeTab === tab.id ? 'cyklus-void-tab--active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      <div className="cyklus-void-hub__content">
-        {activeTab === 'overview' && renderOverview()}
-        {activeTab === 'rooms' && renderRooms()}
-        {activeTab === 'protocols' && renderProtocols()}
-        {activeTab === 'upgrades' && renderUpgrades()}
-        {activeTab === 'pocket' && renderPocket()}
-        {activeTab === 'crafting' && renderCrafting()}
-        {activeTab === 'scars' && renderScars()}
+        {message && (
+          <div className="cyklus-void-hub__message">{message}</div>
+        )}
+        <div className="cyklus-void-tabs">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`cyklus-void-tab ${activeTab === tab.id ? 'cyklus-void-tab--active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        <div className="cyklus-void-hub__content">
+          {activeTab === 'overview' && renderOverview()}
+          {activeTab === 'rooms' && renderRooms()}
+          {activeTab === 'protocols' && renderProtocols()}
+          {activeTab === 'upgrades' && renderUpgrades()}
+          {activeTab === 'pocket' && renderPocket()}
+          {activeTab === 'crafting' && renderCrafting()}
+          {activeTab === 'scars' && renderScars()}
+        </div>
       </div>
     </div>
   );
