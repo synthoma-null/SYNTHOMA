@@ -16,6 +16,7 @@ export default function CyklusClient() {
   const [loading, setLoading] = useState(true);
   const [outcomeVisible, setOutcomeVisible] = useState(false);
   const [dragX, setDragX] = useState(0);
+  const [flyDirection, setFlyDirection] = useState<'yes' | 'no' | null>(null);
   const [runHistory, setRunHistory] = useState<CyklusRunSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
@@ -118,12 +119,15 @@ export default function CyklusClient() {
 
   const handleChoice = useCallback((direction: 'yes' | 'no') => {
     if (!state || state.status !== 'playing') return;
-    const next = resolveChoice(state, direction);
-    setState(next);
-    setOutcomeVisible(true);
-    setDragX(0);
+    setFlyDirection(direction);
     if (outcomeTimer.current) clearTimeout(outcomeTimer.current);
-    // Popup stays until user clicks
+    outcomeTimer.current = setTimeout(() => {
+      const next = resolveChoice(state, direction);
+      setState(next);
+      setOutcomeVisible(true);
+      setDragX(0);
+      setFlyDirection(null);
+    }, 280);
   }, [state]);
 
   const dismissOutcome = useCallback(() => {
@@ -178,19 +182,22 @@ export default function CyklusClient() {
   }, []);
 
   const onTouchStart = (e: React.TouchEvent) => {
+    if (flyDirection) return;
     const touch = e.touches[0];
     if (touch) startX.current = touch.clientX;
   };
   const onTouchMove = (e: React.TouchEvent) => {
+    if (flyDirection) return;
     const touch = e.touches[0];
     if (!touch) return;
     const x = touch.clientX - startX.current;
-    setDragX(Math.max(-120, Math.min(120, x)));
+    setDragX(Math.max(-160, Math.min(160, x)));
   };
   const onTouchEnd = () => {
-    if (dragX > 60) handleChoice('yes');
-    else if (dragX < -60) handleChoice('no');
-    setDragX(0);
+    if (flyDirection) return;
+    if (dragX > 80) handleChoice('yes');
+    else if (dragX < -80) handleChoice('no');
+    else setDragX(0);
   };
 
   useEffect(() => {
@@ -460,8 +467,17 @@ export default function CyklusClient() {
           <>
             <div
               ref={cardRef}
-              className={`cyklus-card cyklus-card--category-${card.category} ${outcomeVisible ? 'cyklus-card--outcome' : ''}`}
-              style={{ transform: `translateX(${dragX}px) rotate(${dragX * 0.1}deg)` }}
+              className={[
+                'cyklus-card',
+                `cyklus-card--category-${card.category}`,
+                outcomeVisible ? 'cyklus-card--outcome' : '',
+                dragX > 0 ? 'cyklus-card--swipe-yes' : dragX < 0 ? 'cyklus-card--swipe-no' : '',
+                flyDirection === 'yes' ? 'cyklus-card--fly-yes' : flyDirection === 'no' ? 'cyklus-card--fly-no' : '',
+              ].filter(Boolean).join(' ')}
+              style={{
+                transform: `translateX(${dragX}px) rotate(${dragX * 0.14}deg) scale(${1 - Math.abs(dragX) * 0.0004})`,
+                '--swipe-opacity': Math.abs(dragX) / 120,
+              } as React.CSSProperties}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}

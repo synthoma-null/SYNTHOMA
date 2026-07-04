@@ -323,10 +323,56 @@
   animation: cyklus-card-pulse 0.4s ease;
 }
 
+.cyklus-card--swipe-yes,
+.cyklus-card--swipe-no {
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  transition: transform 0.06s ease-out, box-shadow 0.12s ease, background 0.18s ease;
+}
+
+.cyklus-card--swipe-yes::after,
+.cyklus-card--swipe-no::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  mix-blend-mode: soft-light;
+}
+
+.cyklus-card--swipe-yes::after {
+  background: linear-gradient(100deg, rgba(123, 237, 159, 0) 30%, rgba(123, 237, 159, 0.35) 100%);
+  opacity: var(--swipe-opacity, 0);
+}
+
+.cyklus-card--swipe-no::after {
+  background: linear-gradient(260deg, rgba(255, 107, 107, 0) 30%, rgba(255, 107, 107, 0.35) 100%);
+  opacity: var(--swipe-opacity, 0);
+}
+
+.cyklus-card--fly-yes {
+  animation: cyklus-card-fly-yes 0.28s ease-in forwards;
+}
+
+.cyklus-card--fly-no {
+  animation: cyklus-card-fly-no 0.28s ease-in forwards;
+}
+
 @keyframes cyklus-card-pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.02); }
   100% { transform: scale(1); }
+}
+
+@keyframes cyklus-card-fly-yes {
+  0% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateX(120vw) rotate(18deg) scale(0.92); opacity: 0; }
+}
+
+@keyframes cyklus-card-fly-no {
+  0% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateX(-120vw) rotate(-18deg) scale(0.92); opacity: 0; }
 }
 
 .cyklus-card__category {
