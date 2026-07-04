@@ -346,14 +346,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           <CookieConsent />
 
-          <footer className="legal-footer" aria-label="Právní informace">
-            <nav className="legal-footer-nav" aria-label="Právní dokumenty">
-              <a href="/privacy" className="legal-footer-link">Ochrana osobních údajů</a>
-              <span className="legal-footer-sep" aria-hidden="true">·</span>
-              <a href="/terms" className="legal-footer-link">Podmínky použití</a>
-            </nav>
-          </footer>
-
         </MBTIProviderClient>
 
         </LangProvider>
