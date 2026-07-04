@@ -58,6 +58,24 @@ export const CYKLUS_IMPRINTS: Record<string, CyklusImprint> = {
     tags: ['childhood', 'memory', 'bond'],
     passiveEffects: [{ type: 'flag', flag: 'childhood_anchor_active' }],
   },
+  archive_echo: {
+    id: 'archive_echo',
+    title: 'Archivní ozvěna',
+    description: 'Vzácný regál z Archivu tě označil. Paměť k tobě chová respekt.',
+    tags: ['archive', 'memory', 'overload'],
+  },
+  reflected_self: {
+    id: 'reflected_self',
+    title: 'Odražené já',
+    description: 'Zrcadlo neukazuje tvůj odraz. Ukazuje toho, kdo se na tebe dívá.',
+    tags: ['mirror', 'shadow', 'self'],
+  },
+  sarkasma_mark: {
+    id: 'sarkasma_mark',
+    title: 'Sarkasmin cejch',
+    description: 'Sarkasma si tě zaznamenala. Ticho mezi vámi má teď váhu.',
+    tags: ['sarkasma', 'contract', 'stabilization'],
+  },
 };
 
 export function getImprintById(id: string): CyklusImprint | undefined {

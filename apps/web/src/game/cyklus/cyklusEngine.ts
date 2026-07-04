@@ -1,19 +1,112 @@
-import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry } from './cyklusTypes';
+import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry, CyklusRunModifier, CyklusRunGoal } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
 import { CYKLUS_CARDS } from './cyklusCards';
 import { CYKLUS_IMPRINTS } from './cyklusImprints';
 import { CYKLUS_ITEMS } from './cyklusItems';
 import { CYKLUS_UNLOCKS } from './cyklusUnlocks';
+import { loadCyklusRunHistory } from './cyklusStorage';
 
 const CHOICES_PER_CYCLE = 12;
 const MAX_DIFFICULTY = 5;
+
+export const CYKLUS_RUN_MODIFIERS: CyklusRunModifier[] = [
+  { id: 'archive_rain', title: 'Archivní déšť', description: 'Paměťové karty častější, ale Paměť se po cyklu víc snižuje.', tags: ['memory', 'archive'] },
+  { id: 'silent_shift', title: 'Němý sektor', description: 'Méně entity karet, více silent karet.', tags: ['silent', 'entity'] },
+  { id: 'acid_shift', title: 'Acidová směna', description: 'Energie roste rychleji, path karty mají vyšší šanci.', tags: ['energy', 'acid', 'path'] },
+  { id: 'form_day', title: 'Úřední den', description: 'Form Office karty častější, rubber_stamp je silnější.', tags: ['form', 'office'] },
+  { id: 'glitch_weather', title: 'Glitch počasí', description: 'Více glitch/noise karet, Kontrola je křehčí.', tags: ['glitch', 'noise', 'control'] },
+];
+
+export function pickRunModifier(seed: string): CyklusRunModifier {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  const index = Math.abs(hash) % CYKLUS_RUN_MODIFIERS.length;
+  return CYKLUS_RUN_MODIFIERS[index] ?? { id: 'none', title: 'Standardní cyklus', description: 'Žádná anomálie.', tags: [] };
+}
+
+export function updateRunGoals(state: CyklusRunState, previousState: CyklusRunState, card: SwipeCard): { goals: CyklusRunGoal[]; log: string | null; newlyCompleted: CyklusRunGoal[] } {
+  const previouslyCompleted = new Set(state.goals.filter((g) => g.completed).map((g) => g.id));
+  const updated = state.goals.map((g) => {
+    if (g.completed) return g;
+    let progress = g.progress;
+    switch (g.id) {
+      case 'visit_3_sectors':
+        progress = Math.min(g.target, new Set(state.visitedSectors).size);
+        break;
+      case 'item_speaks':
+        progress = state.lastItemActivationCycle > 0 ? 1 : 0;
+        break;
+      case 'activate_pocket_2':
+        progress = Math.min(g.target, state.itemActivationCount ?? 0);
+        break;
+      case 'memory_high_5':
+        progress = Math.min(g.target, state.history.filter((r) => r.statDelta.memory && r.statDelta.memory > 0 && state.stats.memory > 75).length);
+        break;
+      case 'reject_entity_help':
+        if (card.category === 'entity' && state.history.length > previousState.history.length) {
+          const lastRecord = state.history[state.history.length - 1];
+          if (lastRecord && lastRecord.direction === 'no') {
+            progress = Math.min(g.target, g.progress + 1);
+          }
+        }
+        break;
+      case 'no_crisis_item':
+        progress = state.flags.includes('crisis_item_used') ? 0 : 1;
+        break;
+    }
+    return { ...g, progress, completed: progress >= g.target };
+  });
+  const newlyCompleted = updated.filter((g) => g.completed && !previouslyCompleted.has(g.id));
+  let log: string | null = null;
+  if (newlyCompleted.length > 0) {
+    const lines = newlyCompleted.map((g) => `CÍL DOKONČEN: ${g.title}${g.rewardTitle ? ` · ${g.rewardTitle}` : ''}`);
+    log = lines.join('\n');
+  }
+  return { goals: updated, log, newlyCompleted };
+}
+
+export function generateRunGoals(seed: string): CyklusRunGoal[] {
+  const allGoals: Omit<CyklusRunGoal, 'progress' | 'completed'>[] = [
+    { id: 'visit_3_sectors', title: 'Nech Prázdnotu třikrát změnit názor', description: 'Navštiv tři různá místa, než se cyklus naučí tvou polohu.', target: 3, rewardPool: 'explorer', rewardTitle: 'Třísektorový subjekt' },
+    { id: 'item_speaks', title: 'Nech kapsu promluvit, když by bylo lepší mlčet', description: 'Aktivuj předmět alespoň jednou. Systém zaznamená i ticho.', target: 1, rewardPool: 'collector', rewardTitle: 'Mistr kapsy' },
+    { id: 'memory_high_5', title: 'Přežij pět tahů s Pamětí nad 75', description: 'Udrž vysokou paměť bez toho, aby tě Archiv považoval za plný.', target: 5, rewardPool: 'archive', rewardTitle: 'Archivářský případ' },
+    { id: 'activate_pocket_2', title: 'Aktivuj kapsu dvakrát. I když to bolelo', description: 'Použij předmět dvakrát během runu. Předměty si toho pamatují.', target: 2, rewardPool: 'pocket', rewardTitle: 'Dvojitá aktivace' },
+    { id: 'reject_entity_help', title: 'Odmítni pomoc a pak lituj', description: 'Vyber možnost odmítnutí u entity karty. Osamění má svou cenu.', target: 1, rewardPool: 'lone', rewardTitle: 'Osamělý subjekt' },
+    { id: 'no_crisis_item', title: 'Dokonči bez krizového zásahu', description: 'Krizový předmět nesmí zasáhnout. Pýcha předchází pád.', target: 1, rewardPool: 'clean', rewardTitle: 'Čistý průchod' },
+  ];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  const shuffled = [...allGoals].sort((a, b) => {
+    const ha = Math.abs(hash + a.id.length) % 7;
+    const hb = Math.abs(hash + b.id.length) % 7;
+    return ha - hb;
+  });
+  return shuffled.slice(0, 3).map((g) => ({ ...g, progress: 0, completed: false }));
+}
+
+export function generatePreRunWarning(seed: string): string | null {
+  const history = loadCyklusRunHistory();
+  if (history.length === 0) return null;
+  const last = history[history.length - 1];
+  if (!last || last.status !== 'dead') return null;
+  const endings = ['Paměť', 'Energie', 'Vazba', 'Kontrola'];
+  const chosen = endings[Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % endings.length];
+  return `Poslední subjekt zemřel kvůli ${chosen}. Systém to zaznamenal. Možná to tentokrát nebudeš ty.`;
+}
 
 export function createCyklusRun(tutorialSeen = false): CyklusRunState {
   const now = Date.now();
   const seed = `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   const startStats = { energy: 50, memory: 50, bond: 50, control: 50 };
   const { pools: unlockedPools, cards: unlockedCards } = loadMetaUnlockPools();
+  const modifier = pickRunModifier(seed);
   const state: CyklusRunState = {
     id: `cyklus_${now}_${seed.slice(-6)}`,
     status: 'playing',
@@ -51,6 +144,13 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
     seed,
     rngStep: 0,
     freshMetaPools: loadFreshMetaPools(),
+    modifier,
+    goals: generateRunGoals(seed),
+    lastItemActivationCycle: 0,
+    itemActivationCount: 0,
+    activeContracts: [],
+    preRunWarning: generatePreRunWarning(seed),
+    preRunChoice: null,
   };
   return state;
 }
@@ -253,6 +353,148 @@ function evaluateUnlocks(state: CyklusRunState): CyklusRunState {
 
 export function applyEffects(state: CyklusRunState, effects: CyklusEffect[]): CyklusRunState {
   return evaluateUnlocks(effects.reduce((s, effect) => applySingleEffect(s, effect), state));
+}
+
+const COMBO_CARDS: { cardId: string; items: [string, string]; flag: string }[] = [
+  { cardId: 'mirror_shadow', items: ['mirror_shard', 'sarkasma_receipt'], flag: 'combo_mirror_shadow_scheduled' },
+  { cardId: 'token_stamp_combo', items: ['rusty_token', 'rubber_stamp'], flag: 'combo_token_stamp_scheduled' },
+  { cardId: 'bug_pebble_nest', items: ['acid_filter', 'glitch_pebble'], flag: 'combo_bug_pebble_scheduled' },
+];
+
+export interface ContractStatus {
+  id: string;
+  title: string;
+  given: string;
+  takes: string;
+  collectCardId: string;
+  collectPending: boolean;
+}
+
+const CONTRACTS: Record<string, Omit<ContractStatus, 'collectPending'>> = {
+  contract_tai: {
+    id: 'contract_tai',
+    title: 'Smlouva T-AI',
+    given: 'Kontrola ↑',
+    takes: 'Později rozhodne za tebe',
+    collectCardId: 'tai_collects',
+  },
+  contract_glitchka: {
+    id: 'contract_glitchka',
+    title: 'Smlouva Glitchky',
+    given: 'Vazba ↑ · Energie ↑',
+    takes: 'Později kus řádu',
+    collectCardId: 'glitchka_collects',
+  },
+  contract_archive: {
+    id: 'contract_archive',
+    title: 'Archivní smlouva',
+    given: 'Paměť ↓ do bezpečného pásma',
+    takes: 'Opakování a přetlak později',
+    collectCardId: 'archive_collects',
+  },
+  contract_sarkasma: {
+    id: 'contract_sarkasma',
+    title: 'Sarkasmin účet',
+    given: 'Otisk stability',
+    takes: 'Úrok v energii nebo vzpomínce',
+    collectCardId: 'sarkasma_collects',
+  },
+};
+
+export function getActiveContracts(state: CyklusRunState): ContractStatus[] {
+  return state.activeContracts
+    .map((id) => {
+      const def = CONTRACTS[id];
+      if (!def) return null;
+      const pending = state.scheduledCards.some((sc) => sc.cardId === def.collectCardId);
+      return { ...def, collectPending: pending };
+    })
+    .filter(Boolean) as ContractStatus[];
+}
+
+export function getComboHint(state: CyklusRunState): string | null {
+  for (const combo of COMBO_CARDS) {
+    const hasOne = combo.items.filter((id) => state.inventory.includes(id)).length === 1;
+    const alreadyScheduled = state.flags.includes(combo.flag);
+    if (hasOne && !alreadyScheduled) {
+      const present = combo.items.find((id) => state.inventory.includes(id));
+      const missing = combo.items.find((id) => !state.inventory.includes(id));
+      if (present && missing) {
+        const presentTitle = CYKLUS_ITEMS[present]?.title ?? present;
+        const missingTitle = CYKLUS_ITEMS[missing]?.title ?? missing;
+        const hints: Record<string, string> = {
+          mirror_shadow: `${presentTitle} se dívá po ${missingTitle}. Stín v zrcadle čeká.`,
+          token_stamp_combo: `${presentTitle} by chtěl razítko. ${missingTitle} by ho potvrdila.`,
+          bug_pebble_nest: `${presentTitle} se třese vedle chybějícího ${missingTitle}. Hnízdo by mohlo růst.`,
+        };
+        return hints[combo.cardId] ?? `${presentTitle} čeká na svůj protějšek.`;
+      }
+    }
+  }
+  return null;
+}
+
+export function checkItemCombos(state: CyklusRunState): { state: CyklusRunState; log: string | null } {
+  let s = state;
+  let log: string | null = null;
+  for (const combo of COMBO_CARDS) {
+    const hasBoth = combo.items.every((id) => s.inventory.includes(id));
+    const alreadyScheduled = s.flags.includes(combo.flag);
+    if (hasBoth && !alreadyScheduled) {
+      s = scheduleCard(s, combo.cardId, Math.max(1, CHOICES_PER_CYCLE - s.choiceInCycle + 1));
+      s = addFlag(s, combo.flag);
+      const card = CYKLUS_CARDS[combo.cardId];
+      log = `KOMBINACE AKTIVOVÁNA: ${card?.title ?? combo.cardId}. Systém zaznamenal neobvyklé spojení předmětů.`;
+    }
+  }
+  return { state: s, log };
+}
+
+export function activateItem(state: CyklusRunState, itemId: string): { state: CyklusRunState; log: string } | null {
+  if (!state.inventory.includes(itemId)) return null;
+  if (state.lastItemActivationCycle >= state.cycle) return null;
+
+  let s = { ...state, lastItemActivationCycle: state.cycle, itemActivationCount: (state.itemActivationCount ?? 0) + 1 };
+
+  switch (itemId) {
+    case 'rubber_seal': {
+      s = applyEffects(s, [
+        { type: 'stat', key: 'bond', amount: 8 },
+        { type: 'flag', flag: 'rubber_seal_ready' },
+      ]);
+      return { state: s, log: 'Gumový tuleň se napjal. Vazba je pevnější. Krizová ochrana připravena.' };
+    }
+    case 'mirror_shard': {
+      s = applyEffects(s, [
+        { type: 'flag', flag: 'mirror_shard_active' },
+        { type: 'schedule', cardId: 'mirror_shard_hums', inTurns: 3 },
+      ]);
+      return { state: s, log: 'Zrcadlový střep zavibroval. Odraz přijde brzy.' };
+    }
+    case 'archive_key': {
+      s = applyEffects(s, [
+        { type: 'stat', key: 'memory', amount: -12 },
+        { type: 'moveSector', sectorId: 'archive' },
+      ]);
+      return { state: s, log: 'Archivní klíč se otočil. Paměť byla evakuována do Archivu.' };
+    }
+    case 'soft_bug': {
+      s = applyEffects(s, [
+        { type: 'stat', key: 'bond', amount: 8 },
+        { type: 'stat', key: 'control', amount: -6 },
+        { type: 'schedule', cardId: 'soft_bug_followup', inTurns: 4 },
+      ]);
+      return { state: s, log: 'Měkká chyba se roztáhla. Cítíš víc, kontroluješ míň.' };
+    }
+    case 'warm_token': {
+      s = applyEffects(s, [
+        { type: 'schedule', cardId: 'token_market_door', inTurns: 3 },
+      ]);
+      return { state: s, log: 'Teplý žeton se připomněl. Tržiště ho zaznamenalo.' };
+    }
+    default:
+      return null;
+  }
 }
 
 function maybeApplyRubberStamp(state: CyklusRunState, card: SwipeCard, effects: CyklusEffect[]): { effects: CyklusEffect[]; consumed: boolean } {
@@ -477,6 +719,8 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
   if (rubberStamp.consumed) {
     s = { ...s, flags: s.flags.filter((f) => f !== 'rubber_stamp_ready') };
   }
+  const comboResult = checkItemCombos(s);
+  s = comboResult.state;
   const crisisResult = applyCrisisItems(s);
   s = crisisResult.state;
 
@@ -527,7 +771,7 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     ts: Date.now(),
   };
 
-  // Compose outcome text: resultText + impactNarrative + crisis intervention (never stale lastOutcomeText)
+  // Compose outcome text: resultText + impactNarrative + crisis intervention + combo + goal logs
   let outcomeText = outcome.resultText;
   const impactNarrative = composeImpactNarrative(record, card);
   if (impactNarrative) {
@@ -536,6 +780,15 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
   if (crisisResult.interventionText) {
     outcomeText = outcomeText ? `${outcomeText}\n\n${crisisResult.interventionText}` : crisisResult.interventionText;
   }
+  if (comboResult.log) {
+    outcomeText = outcomeText ? `${outcomeText}\n\n${comboResult.log}` : comboResult.log;
+  }
+
+  // Track active contracts from newly gained flags
+  const contractFlags = flagsGained.filter((f) => f.startsWith('contract_'));
+  const activeContracts = contractFlags.length > 0
+    ? [...new Set([...s.activeContracts, ...contractFlags])]
+    : s.activeContracts;
 
   // Consume fresh meta pool if this was a fresh meta card
   let freshMetaPools = s.freshMetaPools ?? [];
@@ -546,7 +799,20 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     if (consumedPool) freshMetaPools = freshMetaPools.filter((p) => p !== consumedPool);
   }
 
-  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card), freshMetaPools };
+  // Update run goals progress and apply rewards before saving outcome
+  const updatedGoals = updateRunGoals(s, state, card);
+  s = { ...s, goals: updatedGoals.goals };
+  if (updatedGoals.log) {
+    outcomeText = outcomeText ? `${outcomeText}\n\n${updatedGoals.log}` : updatedGoals.log;
+  }
+  // Apply goal rewards: unlock pool or card if defined
+  for (const g of updatedGoals.newlyCompleted) {
+    if (g.rewardPool) {
+      s = unlockPool(s, g.rewardPool);
+    }
+  }
+
+  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card), freshMetaPools, activeContracts };
 
   // Check for ending
   const ending = computeEnding(s);
@@ -1416,6 +1682,116 @@ export function computeStabilizationVariant(state: CyklusRunState): Stabilizatio
     text: 'Systém tě nedokázal vymazat, opravit ani správně zařadit. Po dlouhé interní debatě tě označil jako stabilní. To je prakticky kompliment.',
     reasons: [`${new Set(state.visitedSectors).size} navštívených sektorů`, `${state.imprints.length} otisků`, 'Staty v povoleném pásmu'],
   };
+}
+
+export interface BuildVariantProgress {
+  id: StabilizationVariantId;
+  title: string;
+  progress: number;
+  requirements: { label: string; met: boolean }[];
+  hint: string;
+}
+
+export function getStabilizationBuildProgress(state: CyklusRunState): BuildVariantProgress[] {
+  const archiveRel = state.entityRelations.archive ?? 0;
+  const glitchkaRel = state.entityRelations.glitchka ?? 0;
+  const formRel = state.entityRelations.form ?? 0;
+  const shadowRel = state.entityRelations.shadow ?? 0;
+  const hasGlitchItem = state.inventory.some((id) => ['wrong_map', 'glitch_pebble', 'noise_clump', 'soft_bug'].includes(id));
+  const hasFormItem = state.inventory.includes('rubber_stamp') || state.inventory.includes('blank_form');
+  const hasMirrorImprint = state.imprints.some((id) => ['mirror_crack', 'reflected_self', 'second_face'].includes(id));
+  const hasSealSave = state.flags.includes('rubber_seal_saved');
+  const visitedSectorCount = new Set(state.visitedSectors).size;
+  const statsInRange = (['energy', 'memory', 'bond', 'control'] as StatKey[])
+    .filter((k) => state.stats[k] >= 20 && state.stats[k] <= 80).length;
+
+  return [
+    {
+      id: 'seal_stabilization',
+      title: 'Tuleňova stabilizace',
+      progress: hasSealSave ? 100 : Math.min(100, state.flags.includes('rubber_stamp_ready') ? 60 : 30),
+      requirements: [
+        { label: 'Gumový tuleň zachránil v kritickém momentu', met: hasSealSave },
+        { label: 'Staty v bezpečném pásmu', met: statsInRange >= 3 },
+      ],
+      hint: 'Sežeň gumového tuleně a nech ho zasáhnout, až bude nejhůř.',
+    },
+    {
+      id: 'archive_stabilization',
+      title: 'Archivní stabilizace',
+      progress: Math.min(100, Math.round(
+        (archiveRel >= 4 ? 40 : archiveRel * 10) +
+        (state.imprints.some((id) => ['archive_echo', 'recorded_truth', 'drowned_log'].includes(id)) ? 35 : 0) +
+        (state.stats.memory >= 40 && state.stats.memory <= 75 ? 25 : 0),
+      )),
+      requirements: [
+        { label: 'Vztah k Archivu +4', met: archiveRel >= 4 },
+        { label: 'Archivní otisk', met: state.imprints.some((id) => ['archive_echo', 'recorded_truth', 'drowned_log'].includes(id)) },
+        { label: 'Paměť 40–75', met: state.stats.memory >= 40 && state.stats.memory <= 75 },
+      ],
+      hint: 'Zapřáhni se s Archivem, získej archivní otisk a udrž Paměť v klidném pásmu.',
+    },
+    {
+      id: 'glitch_stabilization',
+      title: 'Glitchova stabilizace',
+      progress: Math.min(100, Math.round(
+        (glitchkaRel >= 5 ? 40 : glitchkaRel * 8) +
+        (hasGlitchItem ? 30 : 0) +
+        (state.stats.control >= 25 && state.stats.control <= 65 ? 30 : 0),
+      )),
+      requirements: [
+        { label: 'Vztah ke Glitchce +5', met: glitchkaRel >= 5 },
+        { label: 'Glitch předmět', met: hasGlitchItem },
+        { label: 'Kontrola 25–65', met: state.stats.control >= 25 && state.stats.control <= 65 },
+      ],
+      hint: 'Sbírej glitch předměty a udržuj Kontrolu v rozumném pásmu.',
+    },
+    {
+      id: 'form_stabilization',
+      title: 'Administrativní stabilizace',
+      progress: Math.min(100, Math.round(
+        (hasFormItem ? 35 : 0) +
+        (formRel >= 0 ? 25 : 0) +
+        (state.stats.control >= 50 && state.stats.control <= 78 ? 40 : 0),
+      )),
+      requirements: [
+        { label: 'Formulářový předmět', met: hasFormItem },
+        { label: 'Byrokracie nezaujatá', met: formRel >= 0 },
+        { label: 'Kontrola 50–78', met: state.stats.control >= 50 && state.stats.control <= 78 },
+      ],
+      hint: 'Najdi razítko nebo formulář a drž Kontrolu v úředně přijatelné zóně.',
+    },
+    {
+      id: 'mirror_stabilization',
+      title: 'Zrcadlová stabilizace',
+      progress: Math.min(100, Math.round(
+        (hasMirrorImprint ? 40 : 0) +
+        (shadowRel >= 2 ? 30 : 0) +
+        (state.stats.memory < 80 ? 30 : 0),
+      )),
+      requirements: [
+        { label: 'Zrcadlový otisk', met: hasMirrorImprint },
+        { label: 'Vztah ke Stínu +2', met: shadowRel >= 2 },
+        { label: 'Paměť pod 80', met: state.stats.memory < 80 },
+      ],
+      hint: 'Získej zrcadlový otisk, spřáteli se se Stínem a nedovol Paměti přetéct.',
+    },
+    {
+      id: 'generic_stabilization',
+      title: 'Stabilizovaný subjekt',
+      progress: Math.min(100, Math.round(
+        (visitedSectorCount >= 4 ? 35 : visitedSectorCount * 8) +
+        (state.imprints.length >= 3 ? 35 : state.imprints.length * 10) +
+        (statsInRange >= 3 ? 30 : statsInRange * 10),
+      )),
+      requirements: [
+        { label: '4+ sektory', met: visitedSectorCount >= 4 },
+        { label: '3+ otisky', met: state.imprints.length >= 3 },
+        { label: 'Staty v bezpečném pásmu', met: statsInRange >= 3 },
+      ],
+      hint: 'Prozkoumej sektory, sbírej otisky a drž staty mimo extrémy.',
+    },
+  ];
 }
 
 // ── CYCLE FORECAST ────────────────────────────────────────────────────────────

@@ -196,6 +196,32 @@ export interface CyklusTension {
   lastEntityAt: number;
 }
 
+export type CyklusRunModifierId =
+  | 'archive_rain'
+  | 'silent_shift'
+  | 'acid_shift'
+  | 'form_day'
+  | 'glitch_weather'
+  | 'none';
+
+export interface CyklusRunModifier {
+  id: CyklusRunModifierId;
+  title: string;
+  description: string;
+  tags: string[];
+}
+
+export interface CyklusRunGoal {
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  target: number;
+  completed: boolean;
+  rewardPool?: string;
+  rewardTitle?: string;
+}
+
 export interface ScheduledCardEntry {
   cardId: string;
   turnsRemaining: number;
@@ -233,6 +259,13 @@ export interface CyklusRunState {
   seed: string;
   rngStep: number;
   freshMetaPools: string[];
+  modifier: CyklusRunModifier;
+  goals: CyklusRunGoal[];
+  lastItemActivationCycle: number;
+  itemActivationCount: number;
+  activeContracts: string[];
+  preRunWarning: string | null;
+  preRunChoice: string | null;
 }
 
 export interface CyklusRunSummary {

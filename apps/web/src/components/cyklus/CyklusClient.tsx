@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename } from '../../game/cyklus/cyklusEngine';
+import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialSeen, clearTutorialSeen } from '../../game/cyklus/cyklusStorage';
@@ -10,6 +10,7 @@ import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId,
 import { CYKLUS_ITEMS } from '../../game/cyklus/cyklusItems';
 import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
 import { CYKLUS_IMPRINTS } from '../../game/cyklus/cyklusImprints';
+import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
 
 export default function CyklusClient() {
   const [state, setState] = useState<CyklusRunState | null>(null);
@@ -26,10 +27,14 @@ export default function CyklusClient() {
   const [sectorIntro, setSectorIntro] = useState<string | null>(null);
   const [cycleSummary, setCycleSummary] = useState<string | null>(null);
   const [cycleForecast, setCycleForecast] = useState<string | null>(null);
+  const [preRunWarning, setPreRunWarning] = useState<string | null>(null);
   const [newFindings, setNewFindings] = useState<EarnedFinding[]>([]);
   const [knownFindings, setKnownFindings] = useState<EarnedFinding[]>([]);
   const [newMetaUnlocks, setNewMetaUnlocks] = useState<MetaUnlock[]>([]);
   const [showPocket, setShowPocket] = useState(false);
+  const [showBuild, setShowBuild] = useState(false);
+  const [showDiscovery, setShowDiscovery] = useState(false);
+  const [discovery, setDiscovery] = useState<CyklusDiscovery>(loadDiscovery());
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -64,7 +69,11 @@ export default function CyklusClient() {
   useEffect(() => {
     if (!state || state.status !== 'playing') return;
     const forecast = composeCycleForecast(state);
-    if (state.choiceInCycle === 1 && state.cycle > 1) {
+    if (state.choiceInCycle === 1 && state.cycle === 1 && state.preRunWarning) {
+      setPreRunWarning(state.preRunWarning);
+      setCycleForecast(forecast);
+    } else if (state.choiceInCycle === 1 && state.cycle > 1) {
+      setPreRunWarning(null);
       setCycleForecast(forecast);
     }
   }, [state?.cycle]);
@@ -115,6 +124,7 @@ export default function CyklusClient() {
       const newPools = saved.map((u) => u.unlockPool).filter(Boolean) as string[];
       if (newPools.length > 0) addFreshMetaPools(newPools);
     }
+    setDiscovery(updateDiscoveryFromRun(state));
   }, [state?.status]);
 
   const handleChoice = useCallback((direction: 'yes' | 'no') => {
@@ -135,6 +145,18 @@ export default function CyklusClient() {
     setOutcomeVisible(false);
   }, []);
 
+  const handleActivateItem = useCallback((itemId: string) => {
+    if (!state || state.status !== 'playing') return;
+    const result = activateItem(state, itemId);
+    if (!result) return;
+    setState(result.state);
+    setOutcomeVisible(true);
+    setState((prev) => {
+      if (!prev) return prev;
+      return { ...prev, lastOutcomeText: result.log };
+    });
+  }, [state]);
+
   const handleRestart = useCallback(() => {
     clearCyklusRun();
     const seen = isTutorialSeen();
@@ -146,6 +168,7 @@ export default function CyklusClient() {
     setKnownFindings([]);
     setNewMetaUnlocks([]);
     setCycleForecast(null);
+    setPreRunWarning(null);
   }, []);
 
   const handleContinue = useCallback(() => {
@@ -168,6 +191,7 @@ export default function CyklusClient() {
     setKnownFindings([]);
     setNewMetaUnlocks([]);
     setCycleForecast(null);
+    setPreRunWarning(null);
   }, []);
 
   const handleRepeatTutorial = useCallback(() => {
@@ -264,7 +288,14 @@ export default function CyklusClient() {
           <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
         </div>
       )}
-      {cycleForecast && (
+      {preRunWarning && (
+        <div className="cyklus-overlay cyklus-overlay--warning" onClick={() => setPreRunWarning(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setPreRunWarning(null); }}>
+          <div className="cyklus-overlay__warning-label">ZÁZNAM PŘEDCHOZÍHO SUBJEKTU</div>
+          <div className="cyklus-overlay__warning-text">{preRunWarning}</div>
+          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
+        </div>
+      )}
+      {cycleForecast && !preRunWarning && (
         <div className="cyklus-overlay cyklus-overlay--forecast" onClick={() => setCycleForecast(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCycleForecast(null); }}>
           <div className="cyklus-overlay__forecast-title">PREDIKCE CYKLU {String(state.cycle).padStart(2, '0')}</div>
           <div className="cyklus-overlay__forecast-text">{cycleForecast}</div>
@@ -482,7 +513,19 @@ export default function CyklusClient() {
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
-              <div className="cyklus-card__category">{card.logLabel}</div>
+              {state.modifier.id !== 'none' && (
+              <div className="cyklus-modifier">
+                <span className="cyklus-modifier__title">{state.modifier.title}</span>
+                <span className="cyklus-modifier__desc">{state.modifier.description}</span>
+              </div>
+            )}
+            {card.tags.includes('overload') && (
+              <div className="cyklus-card__overload">
+                <span className="cyklus-card__overload-label">⚠ PŘETLAKOVÉ POKUŠENÍ</span>
+                <span className="cyklus-card__overload-risk">Vysoké riziko · extrémní reward</span>
+              </div>
+            )}
+            <div className="cyklus-card__category">{card.logLabel}</div>
               <h2 className="cyklus-card__title">{card.title}</h2>
               <p className="cyklus-card__scene">{card.scene}</p>
               {card.category === 'restart' && (
@@ -545,14 +588,31 @@ export default function CyklusClient() {
                   {getPocketAmbientText(state) && (
                     <div className="cyklus-pocket__ambient">{getPocketAmbientText(state)}</div>
                   )}
+                  {getComboHint(state) && (
+                    <div className="cyklus-pocket__combo-hint">{getComboHint(state)}</div>
+                  )}
                   <div className="cyklus-pocket__items">
-                    {getPocketItems(state).map((item: ItemWithMood) => (
-                      <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
-                        <span className="cyklus-pocket__item-name">{item.title}</span>
-                        <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
-                        <span className="cyklus-pocket__item-text">{item.moodText}</span>
-                      </div>
-                    ))}
+                    {getPocketItems(state).map((item: ItemWithMood) => {
+                      const activatable = ['rubber_seal', 'mirror_shard', 'archive_key', 'soft_bug', 'warm_token'].includes(item.id);
+                      const canActivate = activatable && state.lastItemActivationCycle < state.cycle;
+                      return (
+                        <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
+                          <span className="cyklus-pocket__item-name">{item.title}</span>
+                          <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
+                          <span className="cyklus-pocket__item-text">{item.moodText}</span>
+                          {activatable && (
+                            <button
+                              type="button"
+                              className="cyklus-pocket__activate"
+                              disabled={!canActivate}
+                              onClick={() => handleActivateItem(item.id)}
+                            >
+                              {canActivate ? 'Aktivovat' : 'Aktivováno'}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </>
               )}
@@ -575,7 +635,152 @@ export default function CyklusClient() {
             })}
           </div>
         )}
+        <div className="cyklus-footer-actions">
+          <button type="button" className="cyklus-footer__button" onClick={() => setShowBuild((v) => !v)}>
+            Build
+          </button>
+          <button type="button" className="cyklus-footer__button" onClick={() => setShowDiscovery((v) => !v)}>
+            Archiv
+          </button>
+        </div>
       </footer>
+
+      {showBuild && state && (
+        <div className="cyklus-overlay cyklus-overlay--build" onClick={() => setShowBuild(false)}>
+          <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+            <div className="cyklus-build__title">Možný typ přežití</div>
+            <BuildPanel state={state} />
+            <div className="cyklus-build__title cyklus-build__title--goals">Dnešní cíle</div>
+            <GoalsPanel state={state} />
+            <ContractPanel state={state} />
+          </div>
+        </div>
+      )}
+
+      {showDiscovery && (
+        <div className="cyklus-overlay cyklus-overlay--discovery" onClick={() => setShowDiscovery(false)}>
+          <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+            <DiscoveryPanel discovery={discovery} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BuildPanel({ state }: { state: CyklusRunState }) {
+  const progress = getStabilizationBuildProgress(state);
+  const sorted = [...progress].sort((a, b) => b.progress - a.progress);
+  const top = sorted.slice(0, 3);
+  const rest = sorted.slice(3);
+  const [showAll, setShowAll] = useState(false);
+  return (
+    <div className="cyklus-build">
+      <div className="cyklus-build__intro">
+        <span className="cyklus-build__intro-label">MOŽNÝ TYP PŘEŽITÍ</span>
+        {top[0] && <span className="cyklus-build__intro-top">{top[0].title} — {top[0].progress}%</span>}
+      </div>
+      {top.map((p) => (
+        <div key={p.id} className={`cyklus-build__variant ${p.progress >= 80 ? 'cyklus-build__variant--close' : ''}`}>
+          <div className="cyklus-build__header">
+            <span className="cyklus-build__name">{p.title}</span>
+            <span className="cyklus-build__value">{p.progress}%</span>
+          </div>
+          <div className="cyklus-build__bar"><div className="cyklus-build__fill" style={{ width: `${p.progress}%` }} /></div>
+          <div className="cyklus-build__next-step">
+            <span className="cyklus-build__next-step-label">DALŠÍ KROK:</span>
+            <span>{p.hint}</span>
+          </div>
+          <div className="cyklus-build__reqs">
+            {p.requirements.map((r) => (
+              <span key={r.label} className={`cyklus-build__req ${r.met ? 'cyklus-build__req--met' : ''}`}>{r.met ? '✓' : '○'} {r.label}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+      {rest.length > 0 && (
+        <button type="button" className="cyklus-build__toggle" onClick={() => setShowAll((v) => !v)}>
+          {showAll ? 'Skrýt ostatní varianty' : `Zobrazit další varianty (${rest.length})`}
+        </button>
+      )}
+      {showAll && rest.map((p) => (
+        <div key={p.id} className="cyklus-build__variant cyklus-build__variant--secondary">
+          <div className="cyklus-build__header">
+            <span className="cyklus-build__name">{p.title}</span>
+            <span className="cyklus-build__value">{p.progress}%</span>
+          </div>
+          <div className="cyklus-build__bar"><div className="cyklus-build__fill" style={{ width: `${p.progress}%` }} /></div>
+          <div className="cyklus-build__next-step">
+            <span className="cyklus-build__next-step-label">DALŠÍ KROK:</span>
+            <span>{p.hint}</span>
+          </div>
+          <div className="cyklus-build__reqs">
+            {p.requirements.map((r) => (
+              <span key={r.label} className={`cyklus-build__req ${r.met ? 'cyklus-build__req--met' : ''}`}>{r.met ? '✓' : '○'} {r.label}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function GoalsPanel({ state }: { state: CyklusRunState }) {
+  return (
+    <div className="cyklus-goals">
+      <div className="cyklus-goals__label">DNEŠNÍ DIAGNOSTICKÉ ÚKOLY</div>
+      {state.goals.map((g) => (
+        <div key={g.id} className={`cyklus-goal ${g.completed ? 'cyklus-goal--completed' : ''}`}>
+          <span className="cyklus-goal__title">{g.completed ? '✓' : '○'} {g.title}</span>
+          <span className="cyklus-goal__progress">{g.progress}/{g.target}</span>
+          <span className="cyklus-goal__desc">{g.description}</span>
+          {g.rewardTitle && <span className="cyklus-goal__reward">Odměna: {g.rewardTitle}</span>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ContractPanel({ state }: { state: CyklusRunState }) {
+  const contracts = getActiveContracts(state);
+  if (contracts.length === 0) return null;
+  return (
+    <div className="cyklus-contracts">
+      <div className="cyklus-contracts__label">AKTIVNÍ SMLOUVY</div>
+      {contracts.map((c) => (
+        <div key={c.id} className={`cyklus-contract ${c.collectPending ? 'cyklus-contract--pending' : ''}`}>
+          <div className="cyklus-contract__title">{c.title}</div>
+          <div className="cyklus-contract__row"><span className="cyklus-contract__label">Dává:</span> {c.given}</div>
+          <div className="cyklus-contract__row"><span className="cyklus-contract__label">Vezme si:</span> {c.takes}</div>
+          <div className="cyklus-contract__status">
+            {c.collectPending ? '⚠ Splátka je na cestě' : '✓ Splátka zatím nečeká'}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DiscoveryPanel({ discovery }: { discovery: CyklusDiscovery }) {
+  const allCards = Object.keys(CYKLUS_CARDS).length;
+  const sections = [
+    { label: 'Karty', current: discovery.cards.length, total: allCards },
+    { label: 'Sektory', current: discovery.sectors.length, total: 11 },
+    { label: 'Itemy', current: discovery.items.length, total: 20 },
+    { label: 'Imprinty', current: discovery.imprints.length, total: 12 },
+    { label: 'Konce', current: discovery.endings.length, total: 12 },
+    { label: 'Varianty', current: discovery.variants.length, total: 6 },
+  ];
+  return (
+    <div className="cyklus-discovery">
+      <div className="cyklus-discovery__title">Archiv objevů</div>
+      {sections.map((s) => (
+        <div key={s.label} className="cyklus-discovery__row">
+          <span className="cyklus-discovery__label">{s.label}</span>
+          <span className="cyklus-discovery__value">{s.current} / {s.total}</span>
+          <div className="cyklus-discovery__bar"><div className="cyklus-discovery__fill" style={{ width: `${Math.round((s.current / s.total) * 100)}%` }} /></div>
+        </div>
+      ))}
     </div>
   );
 }

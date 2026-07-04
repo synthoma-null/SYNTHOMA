@@ -14,6 +14,7 @@ import {
   computeStabilizationProgress,
   summarizeRun,
   getTopScoredCards,
+  getCardById,
 } from '../cyklusEngine';
 import { CYKLUS_CARDS } from '../cyklusCards';
 import { evaluateFindings, getDeathUnlocks, CYKLUS_FINDINGS } from '../cyklusFindings';
@@ -57,6 +58,19 @@ export interface SimRunResult {
   stabilizationBlockers: string[];
   findingsEarned: string[];
   metaUnlocksEarned: string[];
+  modifierId: string;
+  activeContracts: string[];
+  itemActivationCount: number;
+  goalsCompleted: number;
+  goalCompletionIds: string[];
+  overloadCards: string[];
+  overloadAccepted: string[];
+  overloadRefused: string[];
+  comboCards: string[];
+  comboTriggers: string[];
+  contractAccepted: string[];
+  contractCollectSeen: string[];
+  deathAfterOverload: boolean;
 }
 
 export interface SimReport {
@@ -80,6 +94,20 @@ export interface SimReport {
   deadPools: string[];
   findingUnlockCounts: Record<string, number>;
   metaUnlockCounts: Record<string, number>;
+  modifierDistribution: Record<string, number>;
+  avgContracts: number;
+  avgActivations: number;
+  avgGoalsCompleted: number;
+  overloadCardCounts: Record<string, number>;
+  comboCardCounts: Record<string, number>;
+  goalCompletionCounts: Record<string, number>;
+  contractAcceptanceCounts: Record<string, number>;
+  contractCollectCounts: Record<string, number>;
+  comboTriggerCounts: Record<string, number>;
+  overloadAcceptCounts: Record<string, number>;
+  overloadRefuseCounts: Record<string, number>;
+  deathAfterOverloadCount: number;
+  overloadAcceptDeathRate: number;
 }
 
 // ── SINGLE RUN SIMULATION ─────────────────────────────────────────────────────
@@ -91,11 +119,34 @@ export function simulateSingleRun(runIndex: number, safetyLimit = SIM_DEFAULTS.s
   state = pickNextCardState(state);
 
   let step = 0;
+  const overloadAccepted: string[] = [];
+  const overloadRefused: string[] = [];
+  const contractAccepted: string[] = [];
+  const contractCollectSeen: string[] = [];
+  const comboTriggers: string[] = [];
 
   while (state.status === 'playing' && step < safetyLimit) {
+    const card = getCardById(state.currentCardId);
     const roll = simRandom(`sim-${runIndex}`, step);
     const direction: 'yes' | 'no' = roll > 0.5 ? 'yes' : 'no';
+    const wasOverload = card?.tags.includes('overload') ?? false;
+    const wasContract = card?.tags.includes('contract') ?? false;
+    const wasCollect = card?.tags.includes('collect') ?? false;
+    const previousComboCards = state.usedCardIds.filter((id) => CYKLUS_CARDS[id]?.tags.includes('combo'));
     state = resolveChoice(state, direction);
+    if (wasOverload) {
+      (direction === 'yes' ? overloadAccepted : overloadRefused).push(card!.id);
+    }
+    if (wasContract && direction === 'yes') {
+      contractAccepted.push(card!.id);
+    }
+    if (wasCollect) {
+      contractCollectSeen.push(card!.id);
+    }
+    const newComboCards = state.usedCardIds.filter((id) => CYKLUS_CARDS[id]?.tags.includes('combo') && !previousComboCards.includes(id));
+    for (const id of newComboCards) {
+      if (!comboTriggers.includes(id)) comboTriggers.push(id);
+    }
     if (state.status === 'playing') {
       state = pickNextCardState(state);
     }
@@ -133,6 +184,11 @@ export function simulateSingleRun(runIndex: number, safetyLimit = SIM_DEFAULTS.s
     deathExtreme = state.stats[deathStat] <= 0 ? 'low' : 'high';
   }
 
+  const overloadCards = state.usedCardIds.filter((id) => CYKLUS_CARDS[id]?.tags.includes('overload'));
+  const comboCards = state.usedCardIds.filter((id) => CYKLUS_CARDS[id]?.tags.includes('combo'));
+  const goalCompletionIds = state.goals.filter((g) => g.completed).map((g) => g.id);
+  const deathAfterOverload = state.status === 'dead' && overloadCards.length > 0;
+
   return {
     runIndex,
     status: timedOut ? 'timeout' : (state.status as 'dead' | 'completed'),
@@ -149,6 +205,19 @@ export function simulateSingleRun(runIndex: number, safetyLimit = SIM_DEFAULTS.s
     stabilizationBlockers: blockers,
     findingsEarned,
     metaUnlocksEarned: [],
+    modifierId: state.modifier.id,
+    activeContracts: [...state.activeContracts],
+    itemActivationCount: state.itemActivationCount,
+    goalsCompleted: goalCompletionIds.length,
+    goalCompletionIds,
+    overloadCards,
+    overloadAccepted,
+    overloadRefused,
+    comboCards,
+    comboTriggers,
+    contractAccepted,
+    contractCollectSeen,
+    deathAfterOverload,
   };
 }
 
@@ -271,6 +340,54 @@ export function aggregateResults(results: SimRunResult[]): SimReport {
   // Meta unlock counts (placeholder — meta unlocks come from localStorage, skip in headless sim)
   const metaUnlockCounts: Record<string, number> = {};
 
+  // New mechanics
+  const modifierDistribution: Record<string, number> = {};
+  const overloadCardCounts: Record<string, number> = {};
+  const comboCardCounts: Record<string, number> = {};
+  const goalCompletionCounts: Record<string, number> = {};
+  const contractAcceptanceCounts: Record<string, number> = {};
+  const contractCollectCounts: Record<string, number> = {};
+  const comboTriggerCounts: Record<string, number> = {};
+  const overloadAcceptCounts: Record<string, number> = {};
+  const overloadRefuseCounts: Record<string, number> = {};
+  let totalContracts = 0;
+  let totalActivations = 0;
+  let totalGoalsCompleted = 0;
+  let deathAfterOverloadCount = 0;
+  let overloadAcceptWithDeath = 0;
+  for (const r of results) {
+    modifierDistribution[r.modifierId] = (modifierDistribution[r.modifierId] ?? 0) + 1;
+    totalContracts += r.activeContracts.length;
+    totalActivations += r.itemActivationCount;
+    totalGoalsCompleted += r.goalsCompleted;
+    for (const id of r.overloadCards) {
+      overloadCardCounts[id] = (overloadCardCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.comboCards) {
+      comboCardCounts[id] = (comboCardCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.goalCompletionIds) {
+      goalCompletionCounts[id] = (goalCompletionCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.contractAccepted) {
+      contractAcceptanceCounts[id] = (contractAcceptanceCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.contractCollectSeen) {
+      contractCollectCounts[id] = (contractCollectCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.comboTriggers) {
+      comboTriggerCounts[id] = (comboTriggerCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.overloadAccepted) {
+      overloadAcceptCounts[id] = (overloadAcceptCounts[id] ?? 0) + 1;
+    }
+    for (const id of r.overloadRefused) {
+      overloadRefuseCounts[id] = (overloadRefuseCounts[id] ?? 0) + 1;
+    }
+    if (r.deathAfterOverload) deathAfterOverloadCount++;
+    if (r.overloadAccepted.length > 0 && r.status === 'dead') overloadAcceptWithDeath++;
+  }
+
   return {
     totalRuns: total,
     deaths,
@@ -294,6 +411,20 @@ export function aggregateResults(results: SimRunResult[]): SimReport {
     deadPools,
     findingUnlockCounts,
     metaUnlockCounts,
+    modifierDistribution,
+    avgContracts: Math.round((totalContracts / total) * 10) / 10,
+    avgActivations: Math.round((totalActivations / total) * 10) / 10,
+    avgGoalsCompleted: Math.round((totalGoalsCompleted / total) * 10) / 10,
+    overloadCardCounts,
+    comboCardCounts,
+    goalCompletionCounts,
+    contractAcceptanceCounts,
+    contractCollectCounts,
+    comboTriggerCounts,
+    overloadAcceptCounts,
+    overloadRefuseCounts,
+    deathAfterOverloadCount,
+    overloadAcceptDeathRate: Math.round((overloadAcceptWithDeath / Math.max(1, results.reduce((s, r) => s + r.overloadAccepted.length, 0))) * 100),
   };
 }
 
@@ -396,6 +527,71 @@ export function formatSimReport(report: SimReport): string {
   }
 
   lines.push('');
+  lines.push('── NEW MECHANICS ──');
+  lines.push(`  Avg contracts per run:       ${report.avgContracts}`);
+  lines.push(`  Avg item activations:        ${report.avgActivations}`);
+  lines.push(`  Avg goals completed:         ${report.avgGoalsCompleted}`);
+  lines.push('');
+  lines.push('  Modifier distribution:');
+  for (const [id, count] of Object.entries(report.modifierDistribution).sort((a, b) => b[1] - a[1])) {
+    lines.push(`    ${id.padEnd(20)} ${count} (${pct(count)})`);
+  }
+  if (Object.keys(report.goalCompletionCounts).length > 0) {
+    lines.push('');
+    lines.push('  Goal completion rate:');
+    for (const [id, count] of Object.entries(report.goalCompletionCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${id.padEnd(25)} ${count} (${pct(count)})`);
+    }
+  }
+  if (Object.keys(report.contractAcceptanceCounts).length > 0) {
+    lines.push('');
+    lines.push('  Contract acceptance rate:');
+    for (const [id, count] of Object.entries(report.contractAcceptanceCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${id.padEnd(25)} ${count} (${pct(count)})`);
+    }
+  }
+  if (Object.keys(report.contractCollectCounts).length > 0) {
+    lines.push('');
+    lines.push('  Contract collect appearance:');
+    for (const [id, count] of Object.entries(report.contractCollectCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${id.padEnd(25)} ${count} (${pct(count)})`);
+    }
+  }
+  if (Object.keys(report.comboTriggerCounts).length > 0) {
+    lines.push('');
+    lines.push('  Combo trigger rate:');
+    for (const [id, count] of Object.entries(report.comboTriggerCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${id.padEnd(25)} ${count} (${pct(count)})`);
+    }
+  }
+  if (Object.keys(report.overloadAcceptCounts).length > 0 || Object.keys(report.overloadRefuseCounts).length > 0) {
+    lines.push('');
+    lines.push('  Overload accept / refuse rate:');
+    for (const [id, count] of Object.entries(report.overloadAcceptCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${(id + ' accept').padEnd(25)} ${count} (${pct(count)})`);
+    }
+    for (const [id, count] of Object.entries(report.overloadRefuseCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${(id + ' refuse').padEnd(25)} ${count} (${pct(count)})`);
+    }
+    lines.push(`    ${'Death after overload'.padEnd(25)} ${report.deathAfterOverloadCount} (${pct(report.deathAfterOverloadCount)})`);
+    lines.push(`    ${'Death after overload accept'.padEnd(25)} ${report.overloadAcceptDeathRate}%`);
+  }
+  if (Object.keys(report.overloadCardCounts).length > 0) {
+    lines.push('');
+    lines.push('  Overload cards seen:');
+    for (const [id, count] of Object.entries(report.overloadCardCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${id.padEnd(25)} ${count} (${pct(count)})`);
+    }
+  }
+  if (Object.keys(report.comboCardCounts).length > 0) {
+    lines.push('');
+    lines.push('  Combo cards seen:');
+    for (const [id, count] of Object.entries(report.comboCardCounts).sort((a, b) => b[1] - a[1])) {
+      lines.push(`    ${id.padEnd(25)} ${count} (${pct(count)})`);
+    }
+  }
+
+  lines.push('');
   lines.push('════════════════════════════════════════════════════════');
 
   return lines.join('\n');
@@ -493,6 +689,10 @@ export function simulateSingleRunWithMeta(
 
   const newMetaPools = collectMetaPools(state);
 
+  const overloadCards = state.usedCardIds.filter((id) => CYKLUS_CARDS[id]?.tags.includes('overload'));
+  const comboCards = state.usedCardIds.filter((id) => CYKLUS_CARDS[id]?.tags.includes('combo'));
+
+  const goalCompletionIds = state.goals.filter((g) => g.completed).map((g) => g.id);
   const result: SimRunResult = {
     runIndex: 0,
     status: timedOut ? 'timeout' : (state.status as 'dead' | 'completed'),
@@ -509,6 +709,19 @@ export function simulateSingleRunWithMeta(
     stabilizationBlockers: blockers,
     findingsEarned: findings.map((f) => f.id),
     metaUnlocksEarned: newMetaPools,
+    modifierId: state.modifier.id,
+    activeContracts: [...state.activeContracts],
+    itemActivationCount: state.itemActivationCount,
+    goalsCompleted: goalCompletionIds.length,
+    goalCompletionIds,
+    overloadCards,
+    overloadAccepted: [],
+    overloadRefused: [],
+    comboCards,
+    comboTriggers: [],
+    contractAccepted: [],
+    contractCollectSeen: [],
+    deathAfterOverload: state.status === 'dead' && overloadCards.length > 0,
   };
 
   return { result, newMetaPools };

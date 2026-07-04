@@ -650,6 +650,27 @@
   text-transform: uppercase;
 }
 
+.cyklus-modifier {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid rgba(180, 160, 255, 0.7);
+  background: rgba(180, 160, 255, 0.08);
+  border-radius: 0 6px 6px 0;
+}
+.cyklus-modifier__title {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #b4a0ff;
+  text-transform: uppercase;
+}
+.cyklus-modifier__desc {
+  display: block;
+  font-size: 0.75rem;
+  color: #c0c0d0;
+  margin-top: 0.15rem;
+}
+
 .cyklus-footer {
   margin-top: 1rem;
   padding-top: 0.75rem;
@@ -659,6 +680,177 @@
   gap: 0.5rem;
   font-size: 0.8rem;
   color: #9090a0;
+}
+
+.cyklus-footer-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.cyklus-footer__button {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #c0c0d0;
+  cursor: pointer;
+}
+.cyklus-footer__button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cyklus-pocket__activate {
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(123, 237, 159, 0.12);
+  border: 1px solid rgba(123, 237, 159, 0.3);
+  border-radius: 0.35rem;
+  color: #7bed9f;
+  cursor: pointer;
+}
+.cyklus-pocket__activate:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cyklus-overlay--build .cyklus-overlay__panel,
+.cyklus-overlay--discovery .cyklus-overlay__panel {
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.cyklus-build__title,
+.cyklus-discovery__title,
+.cyklus-goal__title {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b0b0d0;
+  margin-bottom: 0.75rem;
+}
+.cyklus-build__title--goals {
+  margin-top: 1.25rem;
+}
+
+.cyklus-build__variant {
+  margin-bottom: 0.85rem;
+  padding: 0.6rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.cyklus-build__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.cyklus-build__name {
+  color: #e0e0f0;
+  font-weight: 600;
+}
+.cyklus-build__value {
+  color: #b0b0d0;
+}
+.cyklus-build__bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  margin-bottom: 0.4rem;
+  overflow: hidden;
+}
+.cyklus-build__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #74b9ff, #a29bfe);
+  transition: width 0.3s ease;
+}
+.cyklus-build__reqs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+.cyklus-build__req {
+  font-size: 0.65rem;
+  color: #808090;
+}
+.cyklus-build__req--met {
+  color: #7bed9f;
+}
+.cyklus-build__hint {
+  font-size: 0.65rem;
+  color: #606070;
+  font-style: italic;
+}
+
+.cyklus-goals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.cyklus-goal {
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.72rem;
+  color: #c0c0d0;
+}
+.cyklus-goal--completed {
+  border-color: rgba(123, 237, 159, 0.25);
+  background: rgba(123, 237, 159, 0.06);
+}
+.cyklus-goal__progress {
+  display: block;
+  font-size: 0.65rem;
+  color: #808090;
+  margin-top: 0.15rem;
+}
+.cyklus-goal__desc {
+  display: block;
+  font-size: 0.65rem;
+  color: #707080;
+  margin-top: 0.15rem;
+}
+.cyklus-goal__reward {
+  display: block;
+  font-size: 0.65rem;
+  color: #b4a0ff;
+  margin-top: 0.25rem;
+}
+
+.cyklus-discovery {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.cyklus-discovery__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.72rem;
+  color: #c0c0d0;
+}
+.cyklus-discovery__bar {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.cyklus-discovery__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #74b9ff, #7bed9f);
+  transition: width 0.3s ease;
 }
 
 .cyklus-footer__label {
@@ -1922,4 +2114,176 @@
 
 .cyklus-page .legal-footer {
   display: none;
+}
+
+/* ── C2: COHESION & VISIBILITY ─────────────────────────────────────────────── */
+
+.cyklus-build__intro {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cyklus-build__intro-label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.2rem;
+}
+
+.cyklus-build__intro-top {
+  display: block;
+  font-size: 0.92rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.cyklus-build__variant--close {
+  border-color: rgba(100, 255, 180, 0.35);
+  background: rgba(100, 255, 180, 0.05);
+}
+
+.cyklus-build__next-step {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0.4rem 0;
+}
+
+.cyklus-build__next-step-label {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}
+
+.cyklus-build__toggle {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.cyklus-build__variant--secondary {
+  opacity: 0.75;
+}
+
+.cyklus-goals__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.cyklus-contracts {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cyklus-contracts__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.cyklus-contract {
+  padding: 0.6rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(255, 100, 100, 0.2);
+  background: rgba(255, 60, 60, 0.05);
+}
+
+.cyklus-contract--pending {
+  border-color: rgba(255, 180, 60, 0.4);
+  background: rgba(255, 140, 40, 0.08);
+}
+
+.cyklus-contract__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.35rem;
+}
+
+.cyklus-contract__row {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 0.2rem;
+}
+
+.cyklus-contract__label {
+  color: rgba(255, 255, 255, 0.4);
+  margin-right: 0.35rem;
+}
+
+.cyklus-contract__status {
+  font-size: 0.72rem;
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cyklus-pocket__combo-hint {
+  font-size: 0.78rem;
+  color: rgba(180, 160, 255, 0.85);
+  padding: 0.45rem 0.6rem;
+  margin: 0.5rem 0;
+  border-left: 2px solid rgba(180, 160, 255, 0.4);
+  background: rgba(180, 160, 255, 0.06);
+}
+
+.cyklus-card__overload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid rgba(255, 80, 80, 0.45);
+  background: rgba(255, 40, 40, 0.12);
+  animation: cyklus-overload-pulse 2s infinite;
+}
+
+@keyframes cyklus-overload-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 60, 60, 0.25); }
+  50% { box-shadow: 0 0 12px 2px rgba(255, 60, 60, 0.35); }
+}
+
+.cyklus-card__overload-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 120, 120, 1);
+}
+
+.cyklus-card__overload-risk {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cyklus-overlay--warning {
+  background: rgba(20, 10, 10, 0.92);
+}
+
+.cyklus-overlay__warning-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: rgba(255, 100, 100, 0.85);
+  margin-bottom: 0.75rem;
+}
+
+.cyklus-overlay__warning-text {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 520px;
+  text-align: center;
 }

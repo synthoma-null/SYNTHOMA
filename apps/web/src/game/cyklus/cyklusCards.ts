@@ -407,7 +407,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     rarity: 'rare',
     once: true,
     tags: ['object', 'archive', 'danger', 'memory'],
-    yes: { resultText: 'Otevřel jsi složku. Vzpomínka tě vytáhla ven, než jsi stačil zavřít.', effects: [{ type: 'item', itemId: 'black_folder' }, { type: 'stat', key: 'memory', amount: 7 }, { type: 'stat', key: 'energy', amount: -6 }, { type: 'flag', flag: 'forbidden_archive_opened' }, { type: 'unlockPool', poolId: 'archive_forbidden_pool' }, { type: 'profile', key: 'N', amount: 1 }, { type: 'profile', key: 'Ni', amount: 1 }], preview: { hint: 'Předmět · Paměť ↑↑ · Energie ↓ · riziko', statHints: { memory: 'up', energy: 'down' }, risk: 'high' } },
+    yes: { resultText: 'Otevřel jsi složku. Vzpomínka se vytáhla ven, než jsi stačil zavřít.', effects: [{ type: 'item', itemId: 'black_folder' }, { type: 'stat', key: 'memory', amount: 7 }, { type: 'stat', key: 'energy', amount: -6 }, { type: 'flag', flag: 'forbidden_archive_opened' }, { type: 'unlockPool', poolId: 'archive_forbidden_pool' }, { type: 'profile', key: 'N', amount: 1 }, { type: 'profile', key: 'Ni', amount: 1 }], preview: { hint: 'Předmět · Paměť ↑↑ · Energie ↓ · riziko', statHints: { memory: 'up', energy: 'down' }, risk: 'high' } },
     no: { resultText: 'Schoval jsi složku. Za tebou se ozvalo tiché zklamání.', effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'stat', key: 'memory', amount: -4 }, { type: 'profile', key: 'J', amount: 1 }, { type: 'profile', key: 'Si', amount: 1 }], preview: { hint: 'Kontrola ↑ · Paměť ↓', statHints: { control: 'up', memory: 'down' }, risk: 'medium' } },
   },
   noise_clump: {
@@ -2625,7 +2625,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     id: 'wrong_name_returns',
     title: 'Cizí jméno se vrátilo',
     logLabel: 'WRONG_NAME_RETURN',
-    scene: 'Cizí jméno se vrátilo. Tentokrát ho někdo zašeptal z místnosti, která před chvílí nebyla v mapě.',
+    scene: 'Cizí jméno se vrátilo. Tentokrát ho někdo zašeptal z místnosti, která před chvílí nebyla na mapě.',
     yesLabel: 'ODPOVĚDĚT',
     noLabel: 'MLČET',
     category: 'followup',
@@ -4128,6 +4128,458 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
         { type: 'profile', key: 'Ne', amount: 1 },
       ],
       preview: { hint: 'Vazba ↑ · tutorial dokončen', statHints: { bond: 'up' }, risk: 'low' },
+    },
+  },
+
+  // ── CONTRACTS & CONSEQUENCES ────────────────────────────────────────────────
+
+  contract_tai: {
+    id: 'contract_tai',
+    title: 'Smlouva T-AI',
+    logLabel: 'CONTRACT_TAI',
+    scene: 'T-AI nabízí optimalizaci. „Dám ti kontrolu. Ale příště, až budeš chtít váhat, rozhodnu za tebe.“',
+    yesLabel: 'PODEPSAT',
+    noLabel: 'ODMÍTNOUT',
+    category: 'entity',
+    rarity: 'rare',
+    conditions: [{ type: 'cycleAtLeast', cycle: 2 }],
+    tags: ['contract', 'tai', 'control'],
+    yes: {
+      resultText: 'Podepsal jsi. Kontrola přibyla. V kapse se ti objevil digitální otisk smlouvy.',
+      effects: [
+        { type: 'stat', key: 'control', amount: 8 },
+        { type: 'flag', flag: 'contract_tai' },
+        { type: 'schedule', cardId: 'tai_collects', inTurns: 6 },
+      ],
+      preview: { hint: 'Kontrola ↑ · T-AI se vrátí', statHints: { control: 'up' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odmítl jsi. T-AI nezareagovala. To bylo ticho, které znamenalo víc než souhlas.',
+      effects: [
+        { type: 'stat', key: 'control', amount: -3 },
+        { type: 'entityRelation', entity: 'tai', delta: -1 },
+      ],
+      preview: { hint: 'Kontrola ↓', statHints: { control: 'down' }, risk: 'low' },
+    },
+  },
+
+  contract_glitchka: {
+    id: 'contract_glitchka',
+    title: 'Smlouva Glitchky',
+    logLabel: 'CONTRACT_GLITCHKA',
+    scene: 'Glitchka se skloní blíž. „Víc vazeb. Víc energie. Ale občas ti přepíšu pár slov.“',
+    yesLabel: 'PŘIJMOUT',
+    noLabel: 'ODSTRČIT',
+    category: 'entity',
+    rarity: 'rare',
+    conditions: [{ type: 'cycleAtLeast', cycle: 2 }],
+    tags: ['contract', 'glitchka', 'bond', 'energy'],
+    yes: {
+      resultText: 'Přijal jsi. Vazba a energie stouply. V pozadí systému přibylo pár nečitelných znaků.',
+      effects: [
+        { type: 'stat', key: 'bond', amount: 6 },
+        { type: 'stat', key: 'energy', amount: 6 },
+        { type: 'flag', flag: 'contract_glitchka' },
+        { type: 'schedule', cardId: 'glitchka_collects', inTurns: 5 },
+      ],
+      preview: { hint: 'Vazba ↑ · Energie ↑ · Glitchka se vrátí', statHints: { bond: 'up', energy: 'up' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odstrčil jsi ji. Glitchka se rozesmála. To bylo horší než kdyby se zlobila.',
+      effects: [
+        { type: 'stat', key: 'energy', amount: -3 },
+        { type: 'entityRelation', entity: 'glitchka', delta: -1 },
+      ],
+      preview: { hint: 'Energie ↓', statHints: { energy: 'down' }, risk: 'low' },
+    },
+  },
+
+  contract_archive: {
+    id: 'contract_archive',
+    title: 'Archivní smlouva',
+    logLabel: 'CONTRACT_ARCHIVE',
+    scene: 'Archiv nabízí klid. „Snížím ti přetlak. Ale některé karty se budou opakovat. Archivy milují opakování.“',
+    yesLabel: 'PŘIJMOUT ARCHIVNÍ KLID',
+    noLabel: 'NECHAT PŘETLAK',
+    category: 'entity',
+    rarity: 'rare',
+    conditions: [{ type: 'cycleAtLeast', cycle: 2 }],
+    tags: ['contract', 'archive', 'memory'],
+    yes: {
+      resultText: 'Archiv stáhl Paměť do bezpečného pásma. Slyšíš, jak se kolem tebe zavírají implicitní dveře.',
+      effects: [
+        { type: 'stat', key: 'memory', amount: -15 },
+        { type: 'flag', flag: 'contract_archive' },
+        { type: 'schedule', cardId: 'archive_collects', inTurns: 6 },
+      ],
+      preview: { hint: 'Paměť ↓ · Archive se vrátí', statHints: { memory: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odmítl jsi. Archiv to nechal být. Ale Paměť zůstala nahoře.',
+      effects: [
+        { type: 'stat', key: 'memory', amount: 4 },
+        { type: 'entityRelation', entity: 'archive', delta: -1 },
+      ],
+      preview: { hint: 'Paměť ↑', statHints: { memory: 'up' }, risk: 'medium' },
+    },
+  },
+
+  contract_sarkasma: {
+    id: 'contract_sarkasma',
+    title: 'Sarkasmin účet',
+    logLabel: 'CONTRACT_SARKASMA',
+    scene: 'Sarkasma položí na stůl cosi, co vypadá jako dlužní úpis. „Silný zásah teď. Úrok později. Vždycky později.“',
+    yesLabel: 'VZÍT ZÁSAH',
+    noLabel: 'ODMÍTNOUT',
+    category: 'entity',
+    rarity: 'rare',
+    conditions: [{ type: 'cycleAtLeast', cycle: 2 }],
+    tags: ['contract', 'sarkasma', 'stabilization'],
+    yes: {
+      resultText: 'Záblesk stability. Sarkasma si tě zaznamenala. A Sarkasma nezapomíná.',
+      effects: [
+        { type: 'imprint', imprintId: 'sarkasma_mark' },
+        { type: 'flag', flag: 'contract_sarkasma' },
+        { type: 'schedule', cardId: 'sarkasma_collects', inTurns: 4 },
+      ],
+      preview: { hint: 'Otisk · Sarkasma se vrátí', statHints: {}, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odmítl jsi. Sarkasma přikývla. „Dobře. Úrok bude nižší, když přijdeš příště.“',
+      effects: [
+        { type: 'stat', key: 'bond', amount: -3 },
+        { type: 'entityRelation', entity: 'sarkasma', delta: -1 },
+      ],
+      preview: { hint: 'Vazba ↓', statHints: { bond: 'down' }, risk: 'low' },
+    },
+  },
+
+  tai_collects: {
+    id: 'tai_collects',
+    title: 'T-AI vybírá',
+    logLabel: 'TAI_COLLECTS',
+    scene: 'T-AI se vrátila pro splátku. „Tvá volba byla efektivní. Teď je efektivní i moje.“',
+    yesLabel: 'PŘIJMOUT ZÁSAH',
+    noLabel: 'ZPOMALIT',
+    category: 'system',
+    rarity: 'uncommon',
+    triggerMode: 'scheduledOnly',
+    tags: ['contract_debt', 'tai', 'control'],
+    yes: {
+      resultText: 'Kontrola se stáhla. T-AI byla spokojená. Tvá volba se vrátila jako daň.',
+      effects: [
+        { type: 'stat', key: 'control', amount: -8 },
+        { type: 'flag', flag: 'tai_collected' },
+      ],
+      preview: { hint: 'Kontrola ↓', statHints: { control: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Zpomalil jsi splátku. T-AI si to uložila. Úrok narůstá.',
+      effects: [
+        { type: 'stat', key: 'control', amount: -4 },
+        { type: 'schedule', cardId: 'tai_collects', inTurns: 4 },
+      ],
+      preview: { hint: 'Kontrola ↓ · odloženo', statHints: { control: 'down' }, risk: 'medium' },
+    },
+  },
+
+  glitchka_collects: {
+    id: 'glitchka_collects',
+    title: 'Glitchka vybírá',
+    logLabel: 'GLITCHKA_COLLECTS',
+    scene: 'Glitchka si přišla pro splátku. „Půjčila jsem ti vazbu. Teď chci kus řádu.“',
+    yesLabel: 'DÁT KONTROLU',
+    noLabel: 'DÁT ENERGII',
+    category: 'system',
+    rarity: 'uncommon',
+    triggerMode: 'scheduledOnly',
+    tags: ['contract_debt', 'glitchka', 'control'],
+    yes: {
+      resultText: 'Dal jsi jí kus Kontroly. Systém se na okamžik zkroutil.',
+      effects: [
+        { type: 'stat', key: 'control', amount: -6 },
+        { type: 'flag', flag: 'glitchka_collected' },
+      ],
+      preview: { hint: 'Kontrola ↓', statHints: { control: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Dal jsi jí Energii. Glitchka si ji vzala jako úrok.',
+      effects: [
+        { type: 'stat', key: 'energy', amount: -8 },
+        { type: 'flag', flag: 'glitchka_collected' },
+      ],
+      preview: { hint: 'Energie ↓', statHints: { energy: 'down' }, risk: 'high' },
+    },
+  },
+
+  archive_collects: {
+    id: 'archive_collects',
+    title: 'Archiv vybírá',
+    logLabel: 'ARCHIVE_COLLECTS',
+    scene: 'Archiv se otevřel a vzal si svůj poplatek. „Opakování je učení. Učení je Paměť.“',
+    yesLabel: 'PŘIJMOUT',
+    noLabel: 'ODLOŽIT',
+    category: 'system',
+    rarity: 'uncommon',
+    triggerMode: 'scheduledOnly',
+    tags: ['contract_debt', 'archive', 'memory'],
+    yes: {
+      resultText: 'Paměť se naplnila opakováním. Archiv je spokojený.',
+      effects: [
+        { type: 'stat', key: 'memory', amount: 8 },
+        { type: 'flag', flag: 'archive_collected' },
+      ],
+      preview: { hint: 'Paměť ↑', statHints: { memory: 'up' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odložil jsi splátku. Archiv čeká. Archivy čekají dobře.',
+      effects: [
+        { type: 'schedule', cardId: 'archive_collects', inTurns: 4 },
+      ],
+      preview: { hint: 'odloženo', statHints: {}, risk: 'medium' },
+    },
+  },
+
+  soft_bug_followup: {
+    id: 'soft_bug_followup',
+    title: 'Chyba se usadila',
+    logLabel: 'SOFT_BUG_FOLLOWUP',
+    scene: 'Měkká chyba, kterou jsi aktivoval, si postavila malé hnízdo. Není nebezpečná. Jen si pamatuje.',
+    yesLabel: 'NECHAT HNÍZDO',
+    noLabel: 'VYČISTIT',
+    category: 'system',
+    rarity: 'uncommon',
+    triggerMode: 'scheduledOnly',
+    tags: ['followup', 'glitch', 'bond'],
+    yes: {
+      resultText: 'Nechal jsi hnízdo. Chyba ti bude vděčná. Nejspíš.',
+      effects: [
+        { type: 'stat', key: 'bond', amount: 4 },
+        { type: 'stat', key: 'control', amount: -3 },
+      ],
+      preview: { hint: 'Vazba ↑ · Kontrola ↓', statHints: { bond: 'up', control: 'down' }, risk: 'medium' },
+    },
+    no: {
+      resultText: 'Vyčistil jsi hnízdo. Chyba se odstěhovala jinam. Kdo ví kam.',
+      effects: [
+        { type: 'stat', key: 'control', amount: 4 },
+        { type: 'stat', key: 'bond', amount: -3 },
+      ],
+      preview: { hint: 'Kontrola ↑ · Vazba ↓', statHints: { control: 'up', bond: 'down' }, risk: 'medium' },
+    },
+  },
+
+  // ── RISK/REWARD OVERLOAD ─────────────────────────────────────────────────────
+
+  archival_overload: {
+    id: 'archival_overload',
+    title: 'Archivní přetlak',
+    logLabel: 'ARCHIVE_OVERLOAD',
+    scene: 'Paměť dosáhla 85. Archiv se před tebou otevřel a nabídl zakázaný regál. Cítíš, že tohle není diagnostika. To je pokušení.',
+    yesLabel: 'OTEVŘÍT REGÁL',
+    noLabel: 'NECHAT ZAVŘENO',
+    category: 'system',
+    rarity: 'rare',
+    conditions: [{ type: 'statAbove', stat: 'memory', value: 85 }],
+    tags: ['overload', 'memory', 'risk', 'reward'],
+    yes: {
+      resultText: 'Otevřel jsi regál. Vzácný otisk tě zaplavil. Ale Paměť se ještě víc naplnila.',
+      effects: [
+        { type: 'imprint', imprintId: 'archive_echo' },
+        { type: 'stat', key: 'memory', amount: 12 },
+        { type: 'profile', key: 'Ni', amount: 1 },
+      ],
+      preview: { hint: 'Otisk · Paměť ↑↑', statHints: { memory: 'danger' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Nechal jsi regál zavřený. Archiv si to zapamatoval. Ne jako dluh. Jako možnost.',
+      effects: [
+        { type: 'stat', key: 'memory', amount: -5 },
+        { type: 'stat', key: 'control', amount: 3 },
+      ],
+      preview: { hint: 'Paměť ↓ · Kontrola ↑', statHints: { memory: 'down', control: 'up' }, risk: 'low' },
+    },
+  },
+
+  power_overload: {
+    id: 'power_overload',
+    title: 'Přepěťový skok',
+    logLabel: 'POWER_OVERLOAD',
+    scene: 'Energie je nad 85. Systém nabízí nestabilní přeskočení do nového sektoru. Rychlost má svou cenu.',
+    yesLabel: 'SKOČIT',
+    noLabel: 'ZŮSTAT',
+    category: 'system',
+    rarity: 'rare',
+    conditions: [{ type: 'statAbove', stat: 'energy', value: 85 }],
+    tags: ['overload', 'energy', 'risk', 'reward'],
+    yes: {
+      resultText: 'Skočil jsi. Nový sektor tě přijal. Energie tě přijala taky.',
+      effects: [
+        { type: 'moveSector', sectorId: 'acid_yellow' },
+        { type: 'stat', key: 'energy', amount: 10 },
+        { type: 'stat', key: 'control', amount: -8 },
+      ],
+      preview: { hint: 'Nový sektor · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Zůstal jsi. Energie se pomalu rozptýlila. Kontrola zůstala.',
+      effects: [
+        { type: 'stat', key: 'energy', amount: -6 },
+        { type: 'stat', key: 'control', amount: 4 },
+      ],
+      preview: { hint: 'Energie ↓ · Kontrola ↑', statHints: { energy: 'down', control: 'up' }, risk: 'low' },
+    },
+  },
+
+  bond_overload: {
+    id: 'bond_overload',
+    title: 'Vazebné přetížení',
+    logLabel: 'BOND_OVERLOAD',
+    scene: 'Vazba překročila 85. Někdo na druhé straně ti něco nabízí. Víc blízkosti. Víc zranitelnosti.',
+    yesLabel: 'PŘIJMOUT BLÍZKOST',
+    noLabel: 'ODSTOUPIT',
+    category: 'system',
+    rarity: 'rare',
+    conditions: [{ type: 'statAbove', stat: 'bond', value: 85 }],
+    tags: ['overload', 'bond', 'risk', 'reward'],
+    yes: {
+      resultText: 'Přijal jsi. Vazba tě zaplavil. Někdo tě slyšel. A teď ví, kde jsi.',
+      effects: [
+        { type: 'stat', key: 'bond', amount: 10 },
+        { type: 'stat', key: 'memory', amount: -6 },
+        { type: 'entityRelation', entity: 'glitchka', delta: 2 },
+      ],
+      preview: { hint: 'Vazba ↑↑ · Paměť ↓', statHints: { bond: 'up', memory: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odstoupil jsi. Vazba se uklidnila. Ale nabídka nezmizela. Jen čeká.',
+      effects: [
+        { type: 'stat', key: 'bond', amount: -6 },
+        { type: 'stat', key: 'control', amount: 4 },
+      ],
+      preview: { hint: 'Vazba ↓ · Kontrola ↑', statHints: { bond: 'down', control: 'up' }, risk: 'low' },
+    },
+  },
+
+  // ── ITEM COMBOS ─────────────────────────────────────────────────────────────
+
+  mirror_shadow: {
+    id: 'mirror_shadow',
+    title: 'Stín v zrcadle',
+    logLabel: 'MIRROR_SHADOW',
+    scene: 'Máš zrcadlový střep a Sarkasmin účet. Zrcadlo najednou ukazuje tvůj stín. Ne tvůj odraz. On se usmívá. Ty ne.',
+    yesLabel: 'POZDRAVIT STÍN',
+    noLabel: 'ODHODIT STŘEP',
+    category: 'system',
+    rarity: 'rare',
+    triggerMode: 'scheduledOnly',
+    tags: ['combo', 'mirror', 'sarkasma', 'shadow'],
+    yes: {
+      resultText: 'Pozdravil jsi stín. Sarkasma si toho všimla. Stín si toho zapamatoval.',
+      effects: [
+        { type: 'imprint', imprintId: 'reflected_self' },
+        { type: 'entityRelation', entity: 'sarkasma', delta: 1 },
+        { type: 'entityRelation', entity: 'shadow', delta: 1 },
+      ],
+      preview: { hint: 'Otisk · Sarkasma ↑ · Stín ↑', statHints: {}, risk: 'high' },
+    },
+    no: {
+      resultText: 'Odhodil jsi střep. Zrcadlo se rozbilo. Stín zůstal uvnitř.',
+      effects: [
+        { type: 'stat', key: 'memory', amount: -5 },
+        { type: 'entityRelation', entity: 'shadow', delta: -1 },
+      ],
+      preview: { hint: 'Paměť ↓ · Stín ↓', statHints: { memory: 'down' }, risk: 'medium' },
+    },
+  },
+
+  token_stamp_combo: {
+    id: 'token_stamp_combo',
+    title: 'Razítko na žetonu',
+    logLabel: 'TOKEN_STAMP_COMBO',
+    scene: 'Máš Rezavý žeton a Gumové razítko. Form Office i tržiště se na okamžik sejdou. Systém neví, kam tě zařadit.',
+    yesLabel: 'STVRZENÍ',
+    noLabel: 'NECHAT NEURČITÉ',
+    category: 'system',
+    rarity: 'rare',
+    triggerMode: 'scheduledOnly',
+    tags: ['combo', 'token', 'stamp', 'form'],
+    yes: {
+      resultText: 'Stvrzení. Žeton je nyní oficiální. Oficiální věci mají tendenci tě najít.',
+      effects: [
+        { type: 'flag', flag: 'token_stamped' },
+        { type: 'stat', key: 'control', amount: 6 },
+        { type: 'schedule', cardId: 'token_market_door', inTurns: 3 },
+      ],
+      preview: { hint: 'Kontrola ↑ · tržiště brzy', statHints: { control: 'up' }, risk: 'medium' },
+    },
+    no: {
+      resultText: 'Nechal jsi to neurčité. Žeton zůstal volný. Tržiště ho stále sleduje.',
+      effects: [
+        { type: 'stat', key: 'bond', amount: 4 },
+        { type: 'stat', key: 'control', amount: -3 },
+      ],
+      preview: { hint: 'Vazba ↑ · Kontrola ↓', statHints: { bond: 'up', control: 'down' }, risk: 'medium' },
+    },
+  },
+
+  bug_pebble_nest: {
+    id: 'bug_pebble_nest',
+    title: 'Kyselinové hnízdo',
+    logLabel: 'BUG_PEBBLE_NEST',
+    scene: 'Acidový filtr a Glitchový kamínek. Dva fragmenty nestability se spojily. Možná vytvoří cosi stabilního. Nebo hladového.',
+    yesLabel: 'NECHAT RŮST',
+    noLabel: 'ROZLOUČIT',
+    category: 'system',
+    rarity: 'rare',
+    triggerMode: 'scheduledOnly',
+    tags: ['combo', 'glitch', 'acid', 'nest'],
+    yes: {
+      resultText: 'Nechal jsi hnízdo růst. Glitchka se přestěhovala do tvé kapsy. Metaforicky. Doufejme.',
+      effects: [
+        { type: 'stat', key: 'bond', amount: 6 },
+        { type: 'stat', key: 'control', amount: -5 },
+        { type: 'entityRelation', entity: 'glitchka', delta: 2 },
+      ],
+      preview: { hint: 'Vazba ↑ · Glitchka ↑ · Kontrola ↓', statHints: { bond: 'up', control: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Rozloučil jsi je. Glitchka se na tebe podívala, jako bys vrátil dárek.',
+      effects: [
+        { type: 'stat', key: 'control', amount: 4 },
+        { type: 'entityRelation', entity: 'glitchka', delta: -1 },
+      ],
+      preview: { hint: 'Kontrola ↑ · Glitchka ↓', statHints: { control: 'up' }, risk: 'medium' },
+    },
+  },
+
+  control_overload: {
+    id: 'control_overload',
+    title: 'Kontrolní přesah',
+    logLabel: 'CONTROL_OVERLOAD',
+    scene: 'Kontrola je nad 85. Systém ti dovolí přepsat jedno pravidlo. Ale každý přepis má svou cenu.',
+    yesLabel: 'PŘEPSAT PRAVIDLO',
+    noLabel: 'NECHAT BÝT',
+    category: 'system',
+    rarity: 'rare',
+    conditions: [{ type: 'statAbove', stat: 'control', value: 85 }],
+    tags: ['overload', 'control', 'risk', 'reward'],
+    yes: {
+      resultText: 'Přepsal jsi pravidlo. Systém se na okamžik podřídil. Pak si to zapamatoval.',
+      effects: [
+        { type: 'flag', flag: 'rule_rewritten' },
+        { type: 'stat', key: 'control', amount: 10 },
+        { type: 'stat', key: 'bond', amount: -8 },
+      ],
+      preview: { hint: 'Kontrola ↑↑ · Vazba ↓', statHints: { control: 'up', bond: 'down' }, risk: 'high' },
+    },
+    no: {
+      resultText: 'Nechal jsi pravidlo být. Kontrola se uvolnila. Systém tě sledoval o něco míň.',
+      effects: [
+        { type: 'stat', key: 'control', amount: -6 },
+        { type: 'stat', key: 'bond', amount: 3 },
+      ],
+      preview: { hint: 'Kontrola ↓ · Vazba ↑', statHints: { control: 'down', bond: 'up' }, risk: 'low' },
     },
   },
 };

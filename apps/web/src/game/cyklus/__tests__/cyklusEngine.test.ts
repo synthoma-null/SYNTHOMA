@@ -15,6 +15,15 @@ import {
   pickNextCard,
   getNearestExtreme,
   generateRunCodename,
+  activateItem,
+  getStabilizationBuildProgress,
+  pickRunModifier,
+  generateRunGoals,
+  updateRunGoals,
+  checkItemCombos,
+  getComboHint,
+  getActiveContracts,
+  generatePreRunWarning,
 } from '../cyklusEngine';
 import type { CyklusRunState } from '../cyklusTypes';
 import { CYKLUS_CARDS } from '../cyklusCards';
@@ -493,6 +502,128 @@ describe('Cyklus engine', () => {
       const n1 = generateRunCodename(s1);
       const n2 = generateRunCodename(s2);
       expect(n1).not.toBe(n2);
+    });
+  });
+
+  describe('new mechanics', () => {
+    it('activateItem works only once per cycle', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['rubber_seal'];
+      const first = activateItem(state, 'rubber_seal');
+      expect(first).not.toBeNull();
+      expect(first!.state.lastItemActivationCycle).toBe(1);
+      const second = activateItem(first!.state, 'rubber_seal');
+      expect(second).toBeNull();
+    });
+
+    it('activateItem increments itemActivationCount', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['archive_key'];
+      const result = activateItem(state, 'archive_key');
+      expect(result!.state.itemActivationCount).toBe(1);
+    });
+
+    it('getStabilizationBuildProgress returns 0-100 values', () => {
+      const state = createCyklusRun(true);
+      const progress = getStabilizationBuildProgress(state);
+      expect(progress.length).toBeGreaterThan(0);
+      for (const p of progress) {
+        expect(p.progress).toBeGreaterThanOrEqual(0);
+        expect(p.progress).toBeLessThanOrEqual(100);
+        expect(p.requirements.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('pickRunModifier is deterministic for same seed', () => {
+      const m1 = pickRunModifier('same-seed');
+      const m2 = pickRunModifier('same-seed');
+      expect(m1.id).toBe(m2.id);
+    });
+
+    it('generateRunGoals returns 3 goals', () => {
+      const goals = generateRunGoals('seed');
+      expect(goals.length).toBe(3);
+      expect(goals.every((g) => g.progress === 0 && !g.completed)).toBe(true);
+    });
+
+    it('updateRunGoals updates visit_3_sectors progress and returns log', () => {
+      const state = createCyklusRun(true);
+      state.visitedSectors = ['void', 'acid_yellow', 'archive'];
+      state.goals = [
+        { id: 'visit_3_sectors', title: 'Navštiv 3 sektory', description: 'test', target: 3, progress: 0, completed: false, rewardPool: 'explorer', rewardTitle: 'Průzkumník' },
+      ];
+      const card = getCardById('restart_0')!;
+      const result = updateRunGoals(state, state, card);
+      const g = result.goals.find((x) => x.id === 'visit_3_sectors');
+      expect(g?.progress).toBe(3);
+      expect(g?.completed).toBe(true);
+      expect(result.log).toContain('CÍL DOKONČEN');
+      expect(result.newlyCompleted.length).toBe(1);
+    });
+
+    it('checkItemCombos schedules combo card when both items present', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['mirror_shard', 'sarkasma_receipt'];
+      const result = checkItemCombos(state);
+      const scheduled = result.state.scheduledCards.map((e) => e.cardId);
+      expect(scheduled).toContain('mirror_shadow');
+      expect(result.state.flags).toContain('combo_mirror_shadow_scheduled');
+      expect(result.log).toContain('KOMBINACE AKTIVOVÁNA');
+    });
+
+    it('checkItemCombos does not duplicate schedule', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['mirror_shard', 'sarkasma_receipt'];
+      state.flags = ['combo_mirror_shadow_scheduled'];
+      const result = checkItemCombos(state);
+      expect(result.state.scheduledCards.map((e) => e.cardId)).not.toContain('mirror_shadow');
+    });
+
+    it('getComboHint returns text when one combo item present', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['mirror_shard'];
+      const hint = getComboHint(state);
+      expect(hint).toBeTruthy();
+      expect(hint).toContain('Zrcadlový střep');
+    });
+
+    it('getActiveContracts returns visible contract data', () => {
+      const state = createCyklusRun(true);
+      state.activeContracts = ['contract_tai'];
+      state.scheduledCards = [{ cardId: 'tai_collects', turnsRemaining: 2, ifInvalid: 'delay' }];
+      const contracts = getActiveContracts(state);
+      expect(contracts.length).toBe(1);
+      expect(contracts[0]?.id).toBe('contract_tai');
+      expect(contracts[0]?.collectPending).toBe(true);
+    });
+
+    it('resolveChoice applies goal reward pool upon completion', () => {
+      let state = createCyklusRun(true);
+      state = { ...state, visitedSectors: ['void', 'acid_yellow', 'archive'] };
+      state.goals = [
+        { id: 'visit_3_sectors', title: 'Nech Prázdnotu třikrát změnit názor', description: 'test', target: 3, progress: 0, completed: false, rewardPool: 'explorer', rewardTitle: 'Průzkumník' },
+      ];
+      const initialPools = state.unlockedPools.length;
+      state = { ...state, currentCardId: 'restart_0' };
+      state = resolveChoice(state, 'yes');
+      expect(state.unlockedPools.length).toBeGreaterThan(initialPools);
+      expect(state.lastOutcomeText).toContain('CÍL DOKONČEN');
+    });
+
+    it('overload cards are tagged as high risk', () => {
+      const overloadIds = Object.keys(CYKLUS_CARDS).filter((id) => CYKLUS_CARDS[id]?.tags.includes('overload'));
+      expect(overloadIds.length).toBeGreaterThan(0);
+      for (const id of overloadIds) {
+        const card = CYKLUS_CARDS[id]!;
+        expect(card.yes.preview?.risk).toBe('high');
+      }
+    });
+
+    it('generatePreRunWarning returns warning only when history contains death', () => {
+      const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => null);
+      const warn = generatePreRunWarning('seed');
+      expect(warn).toBeNull();
+      spy.mockRestore();
     });
   });
 });
