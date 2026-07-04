@@ -2793,7 +2793,10 @@
 
 .cyklus-void-hub {
   position: fixed;
-  inset: 0;
+  top: calc(52px + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -2815,7 +2818,7 @@
   flex-direction: column;
   width: 100%;
   max-width: 680px;
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100% - 2rem);
   background: rgba(8, 8, 16, 0.97);
   border: 1px solid rgba(0, 255, 255, 0.18);
   border-radius: 1rem;
@@ -3268,7 +3271,7 @@
 
   .cyklus-void-hub__frame {
     max-width: 100%;
-    max-height: 100vh;
+    max-height: 100%;
     border-radius: 0;
     border-left: none;
     border-right: none;
