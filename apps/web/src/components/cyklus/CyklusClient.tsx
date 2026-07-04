@@ -491,7 +491,7 @@ export default function CyklusClient() {
         <div className="cyklus-tutorial-progress">
           <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
           <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
-          <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: „{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}"</span>
+          <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
         </div>
       )}
 
