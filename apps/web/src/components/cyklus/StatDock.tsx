@@ -113,6 +113,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight }: Sta
               className={[
                 'cyklus-stat-chip',
                 `cyklus-stat-chip--${state}`,
+                `cyklus-stat-chip--${key}`,
                 isHighlighted ? 'cyklus-stat-chip--highlight' : '',
                 isChanged ? 'cyklus-stat-chip--changed' : '',
               ].filter(Boolean).join(' ')}

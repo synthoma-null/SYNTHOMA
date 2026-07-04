@@ -438,24 +438,53 @@
   margin-bottom: 1rem;
 }
 
-.cyklus-preview {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.cyklus-card__preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-  font-size: 0.8rem;
-  color: #a0a0b0;
-  padding: 0.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.cyklus-preview--yes {
+.cyklus-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #a0a0b0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
   text-align: left;
 }
 
 .cyklus-preview--no {
-  text-align: right;
-  opacity: 0.85;
+  border-left: 3px solid rgba(255, 107, 107, 0.5);
+}
+
+.cyklus-preview--yes {
+  border-right: 3px solid rgba(123, 237, 159, 0.5);
+}
+
+.cyklus-preview::before {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #808090;
+  margin-bottom: 0.2rem;
+}
+
+.cyklus-preview--no::before {
+  content: 'NE';
+  color: rgba(255, 107, 107, 0.85);
+}
+
+.cyklus-preview--yes::before {
+  content: 'ANO';
+  color: rgba(123, 237, 159, 0.85);
 }
 
 .cyklus-preview--no .cyklus-preview__risk {
@@ -463,6 +492,7 @@
 }
 
 .cyklus-preview__risk {
+  align-self: flex-start;
   text-transform: uppercase;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
@@ -1430,20 +1460,20 @@
 /* ── STAT DOCK ───────────────────────────────────────────────────────────────── */
 
 .cyklus-stat-dock {
-  position: sticky;
-  top: 0;
-  z-index: 30;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.4rem;
+  width: 100%;
+  max-width: 420px;
+  margin: 0.75rem auto 0.5rem;
   padding: 0.6rem 0.65rem;
   border: 1px solid rgba(0, 255, 255, 0.18);
+  border-top: 4px solid rgba(0, 255, 255, 0.18);
   border-radius: 0.9rem;
   background: linear-gradient(180deg, rgba(0, 13, 26, 0.94), rgba(0, 0, 0, 0.82));
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.06);
-  margin-bottom: 0.5rem;
 }
 
 .cyklus-stat-chip {
@@ -1535,6 +1565,39 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Stat-specific motifs tied to card category colors */
+.cyklus-stat-chip--energy {
+  border-top-color: rgba(255, 209, 102, 0.6);
+  color: #ffe0a0;
+}
+.cyklus-stat-chip--energy .cyklus-stat-chip__fill--stable {
+  background: rgba(255, 209, 102, 0.85);
+}
+
+.cyklus-stat-chip--memory {
+  border-top-color: rgba(162, 155, 254, 0.6);
+  color: #d4c8ff;
+}
+.cyklus-stat-chip--memory .cyklus-stat-chip__fill--stable {
+  background: rgba(162, 155, 254, 0.85);
+}
+
+.cyklus-stat-chip--bond {
+  border-top-color: rgba(123, 237, 159, 0.6);
+  color: #b8f0c8;
+}
+.cyklus-stat-chip--bond .cyklus-stat-chip__fill--stable {
+  background: rgba(123, 237, 159, 0.85);
+}
+
+.cyklus-stat-chip--control {
+  border-top-color: rgba(52, 152, 219, 0.6);
+  color: #a0d0f0;
+}
+.cyklus-stat-chip--control .cyklus-stat-chip__fill--stable {
+  background: rgba(52, 152, 219, 0.85);
 }
 
 .cyklus-stat-chip--low-danger {

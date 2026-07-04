@@ -419,8 +419,6 @@ export default function CyklusClient() {
         </div>
       </header>
 
-      <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} />
-
       {state.visitedSectors.length > 0 && (
         <div className="cyklus-route">
           <span className="cyklus-route__label">Trasa cyklu:</span>
@@ -632,8 +630,8 @@ export default function CyklusClient() {
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
               <div className="cyklus-card__preview">
-                {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card))}
                 {directionPreview(state, card, card.no.preview, 'no', shouldLimitPreview(card))}
+                {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card))}
               </div>
             </div>
 
@@ -651,6 +649,7 @@ export default function CyklusClient() {
             {outcomeVisible && state.lastOutcomeText && (
               <OutcomePanel state={state} onDismiss={dismissOutcome} />
             )}
+            <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} />
           </>
         ) : (
           <div className="cyklus-empty">Karta nenalezena.</div>
