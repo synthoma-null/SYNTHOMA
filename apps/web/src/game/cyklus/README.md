@@ -128,21 +128,55 @@ Ukončené běhy se ukládají do `localStorage` jako `CyklusRunSummary`. Aktivn
 # Hra
 app/cyklus/page.tsx
 
-# Testy
+# Testy (engine + UI)
 npx jest src/game/cyklus --no-coverage
+npx jest src/components/cyklus --no-coverage
+
+# Type check
+npx tsc --noEmit
 ```
 
-Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozohraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami.
+Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozohraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami. Meta-progression se ukládá pod klíčem `synthoma_cyklus_progression_v1`, discovery pod `synthoma_cyklus_discovery`.
 
 ## Content overview
 
 | Asset               | Count |
 |---------------------|-------|
-| Cards               | 205   |
+| Cards               | 300+  |
 | Items               | 24    |
 | Imprints            | 11    |
 | Unlock conditions   | 21    |
 | Diagnostic findings | 12    |
+| Profile protocols   | 8     |
+| Void rooms          | 9     |
+| Subject upgrades    | 8     |
+| Crafted artifacts   | 8     |
+| Craft recipes       | 8     |
+| Subject scars       | 6     |
+
+## Meta-progression (C4 — operating table of one's own identity)
+
+Po každém běhu subjekt neodejde s prázdnou. Reziduum a další měny se ukládají do persistentního `SubjectProgression` a otevírají tři propletené systémy:
+
+- **Prázdnota (Void)** — devět upgradovatelných místností. Každá místnost není statický bonus, ale nový herní nástroj: skrytý startovní item, náhled profilového směru, detekce falešné entity, přesnější preview smluv, crafting stůl nebo rozšíření loadoutu.
+- **Profilové protokoly** — osm protokolů odpovídajících osmi MBTI funkcím (Ni/Ne/Si/Se/Ti/Te/Fi/Fe). Každý se odemkne až po 20 bodech zkušenosti v dané funkci a přináší nové informace nebo volby, nikoliv stat boosty. Každý má explicitní drawback.
+- **Crafting / Kapsa** — z běhů padají craft suroviny (`fox_warmth`, `mirror_sand`, `red_smoke`, `broken_log_splinter`...). Na Stolu nepravděpodobných kombinací se z předmětů, otisků a nálezů vyrábějí artefakty, které lze vybavit do slotu a které při startu přidají vlajky, itemy nebo imprinty — opět s drawbackem. Recepty se odemykají na základě `discovery.items`, `discovery.imprints` a `discovery.findings`.
+
+### C4.1 — Loadout & Crafting Integrity
+
+- `purchaseUpgrade` a `equipUpgrade` respektují dynamické limity z `getLoadoutLimits(progression)` místo pevné konstanty.
+- `canCraftRecipe` kontroluje kromě surovin i úroveň `crafting_table`, discovery požadavky (`itemIds`, `imprintIds`, `findingIds`) a zda artefakt již nebyl vyroben.
+- `computeRunRewards` a `awardRunRewards` rozšířeny o `deathStat`, `deathsByStat`, odemykání jizev, materiály, recepty, profilové mastery a hinty pro místnosti Prázdnoty.
+- `applyMetaProgressionCardScoring` v enginu zvyšuje skóre karet podle vybavených protokolů (`scoringTags`), artefaktů a úrovně místností Prázdnoty.
+- `applyMetaProgressionPreviewHint` doplňuje preview texty o meta-progression informace.
+
+### C4.2 — UI Prázdnoty
+
+- Nová komponenta `CyklusVoidHub` (soubor + testy) zobrazuje meziběhový hub s taby: Přehled, Místnosti, Protokoly, Upgrady, Kapsa, Crafting, Jizvy.
+- Hub je dostupný z hlavního menu (`PRÁZDN0TA`) a z end screenu (`VRÁTIT SE DO PRÁZDNOTY`).
+- CSS v `cyklus.css` přidává styly pro taby, karty, loadout sloty, craft stavy a zprávy.
+
+Loadout má dynamické sloty: upgrady (3), artefakty (2), protokoly (1), jizva (1). Po vylepšení `stabilization_core` se sloty rozšiřují.
 
 ## C2 visibility pass (completed)
 

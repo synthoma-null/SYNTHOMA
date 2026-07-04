@@ -106,4 +106,64 @@ export const CYKLUS_UNLOCKS: CardUnlock[] = [
     poolId: 'archive_scent_pool',
     condition: { type: 'hasFlag', flag: 'archive_scent_active' },
   },
+  {
+    id: 'desire_aftercare_pool_unlock',
+    poolId: 'desire_aftercare_pool',
+    condition: { type: 'hasImprint', imprintId: 'wanted_without_erasing' },
+  },
+  {
+    id: 'blackbox_aftermath_pool_unlock',
+    poolId: 'blackbox_aftermath_pool',
+    condition: { type: 'hasAnyFlag', flags: ['anonymization_refused', 'named_error_claimed'] },
+  },
+  {
+    id: 'sandbox_aftermath_pool_unlock',
+    poolId: 'sandbox_aftermath_pool',
+    condition: { type: 'hasAnyFlag', flags: ['dirty_laugh_active', 'safe_mistake_active'] },
+  },
+  {
+    id: 'romance_aftermath_pool_unlock',
+    poolId: 'romance_aftermath_pool',
+    condition: { type: 'hasAnyFlag', flags: ['tender_static_active', 'stay_without_owning_active'] },
+  },
+  {
+    id: 'toll_dvanactnik_pool_unlock',
+    poolId: 'toll_dvanactnik_pool',
+    condition: { type: 'unlockedPool', poolId: 'market_pool' },
+  },
+  {
+    id: 'toll_debt_pool_unlock',
+    poolId: 'toll_debt_pool',
+    condition: { type: 'hasAnyFlag', flags: ['debt_named_active', 'late_fee_deferred', 'paid_with_fake_memory', 'unpaid_exit_active'] },
+  },
+  {
+    id: 'detective_echo_case_pool_unlock',
+    poolId: 'detective_echo_case_pool',
+    condition: { type: 'unlockedPool', poolId: 'archive_pool' },
+  },
+  {
+    id: 'detective_cold_case_pool_unlock',
+    poolId: 'detective_cold_case_pool',
+    condition: { type: 'hasAnyFlag', flags: ['case_questioned', 'case_left_open', 'wrong_culprit_accused'] },
+  },
+  {
+    id: 'sarkasma_therapy_pool_unlock',
+    poolId: 'sarkasma_therapy_pool',
+    condition: { type: 'unlockedPool', poolId: 'sarkasma_pool' },
+  },
+  {
+    id: 'sarkasma_aftercare_pool_unlock',
+    poolId: 'sarkasma_aftercare_pool',
+    condition: { type: 'hasAnyFlag', flags: ['sarkasma_cut_held', 'scalpel_taken_back', 'cut_that_held_active'] },
+  },
+  {
+    id: 'glitchka_chat_pool_unlock',
+    poolId: 'glitchka_chat_pool',
+    condition: { type: 'unlockedPool', poolId: 'memory_sandbox_pool' },
+  },
+  {
+    id: 'glitchka_deeper_chat_pool_unlock',
+    poolId: 'glitchka_deeper_chat_pool',
+    condition: { type: 'hasAnyFlag', flags: ['held_without_fixing_active', 'allowed_silence_active', 'brave_small_talk_active', 'fake_glitchka_exposed'] },
+  },
 ];

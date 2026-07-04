@@ -25,11 +25,14 @@ import {
   getActiveContracts,
   generatePreRunWarning,
   scoreCard,
+  rerollRunGoals,
+  explainCardScore,
+  exportRunLog,
+  composeCycleSummary,
 } from '../cyklusEngine';
-import type { CyklusRunState, SectorId } from '../cyklusTypes';
-import { CYKLUS_CARDS } from '../cyklusCards';
-import { CYKLUS_ITEMS } from '../cyklusItems';
-import { CYKLUS_IMPRINTS } from '../cyklusImprints';
+import type { CyklusRunState, SectorId, SwipeCard } from '../cyklusTypes';
+import type { RunReward } from '../cyklusProgression';
+import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../content';
 import { CYKLUS_UNLOCKS } from '../cyklusUnlocks';
 import { getDeathUnlocks, saveMetaUnlocks, loadMetaUnlocks, loadMetaUnlockPools } from '../cyklusFindings';
 import { updateDiscoveryFromRun } from '../cyklusDiscovery';
@@ -561,6 +564,76 @@ describe('Cyklus engine', () => {
     });
   });
 
+  describe('export run log', () => {
+    it('does not produce like-like profile label', () => {
+      const state = createCyklusRun(true);
+      state.profile = { E: 1, I: 0, S: 0, N: 2, T: 1, F: 0, J: 1, P: 0 };
+      const log = exportRunLog(state, 'full');
+      expect(log).not.toContain('like-like');
+      expect(log).toContain('-like');
+    });
+
+    it('codename uses neutral item construction', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['black_folder'];
+      const name = generateRunCodename(state);
+      expect(name).not.toMatch(/ se [A-ZÁÉÍÓÚŮÝ][a-zA-ZÁÉÍÓÚŮÝáéíóúůý]+/);
+      expect(name).toContain('nese:');
+    });
+
+    it('completed run export includes goals and rewards', () => {
+      const state = createCyklusRun(true);
+      state.status = 'completed';
+      state.totalChoices = 20;
+      state.goals = [
+        { id: 'visit_3_sectors', title: 'Navštiv 3 sektory', description: 'test', target: 3, progress: 3, completed: true, rewardPool: 'explorer', rewardTitle: 'Průzkumník' },
+      ];
+      const reward: RunReward = {
+        currencies: { residuum: 12 },
+        unlockedUpgrades: [],
+        unlockedScars: [],
+        newTitles: [],
+        reasons: ['Stabilizace'],
+        craftingMaterials: {},
+        unlockedRecipes: [],
+        profileMastery: {},
+        voidRoomHints: [],
+        recommendedActions: [],
+        deathStat: undefined,
+      };
+      const log = exportRunLog(state, 'full', reward);
+      expect(log).toContain('Splněné cíle:');
+      expect(log).toContain('Navštiv 3 sektory');
+      expect(log).toContain('Odměny:');
+      expect(log).toContain('Reziduum: +12');
+    });
+
+    it('death run export includes cause and key threat', () => {
+      const state = createCyklusRun(true);
+      state.status = 'dead';
+      state.totalChoices = 10;
+      state.stats = { energy: 100, memory: 50, bond: 50, control: 50 };
+      state.history = [
+        { turn: 1, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 30 }, statsAfter: { energy: 80, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+      ];
+      const log = exportRunLog(state, 'full');
+      expect(log).toContain('Primární příčina:');
+      expect(log).toContain('Energie');
+      expect(log).toContain('Nejnebezpečnější rozhodnutí:');
+    });
+
+    it('cycle summaries use consistent recorded-choices wording', () => {
+      const state = createCyklusRun(true);
+      state.status = 'completed';
+      state.history = [
+        { turn: 1, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: {}, statsAfter: { energy: 50, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+      ];
+      state.cycleSummaries = [composeCycleSummary({ ...state, cycle: 2, history: state.history })];
+      const log = exportRunLog(state, 'full');
+      expect(log).toContain('zaznamenaných voleb');
+    });
+  });
+
   describe('new mechanics', () => {
     it('activateItem works only once per cycle', () => {
       const state = createCyklusRun(true);
@@ -643,6 +716,79 @@ describe('Cyklus engine', () => {
       expect(hint).toContain('Zrcadlový střep');
     });
 
+    it('inventory_instinct makes combo hint name the missing item', () => {
+      const state = createCyklusRun(true);
+      state.inventory = ['mirror_shard'];
+      state.flags = ['inventory_instinct_active'];
+      const hint = getComboHint(state);
+      expect(hint).toContain('Sarkasmin účet');
+    });
+
+    it('second_touch allows second item activation in same cycle with energy cost', () => {
+      let state = createCyklusRun(true);
+      state.inventory = ['rubber_seal'];
+      state.flags = ['second_touch_active'];
+      const first = activateItem(state, 'rubber_seal');
+      expect(first).not.toBeNull();
+      expect(first!.state.itemActivationCountThisCycle).toBe(1);
+      const second = activateItem(first!.state, 'rubber_seal');
+      expect(second).not.toBeNull();
+      expect(second!.state.itemActivationCountThisCycle).toBe(2);
+      expect(second!.state.stats.energy).toBe(state.stats.energy + 6);
+      const third = activateItem(second!.state, 'rubber_seal');
+      expect(third).toBeNull();
+    });
+
+    it('rerollRunGoals changes goals once with goal_reroll_active', () => {
+      const state = createCyklusRun(true);
+      state.flags = ['goal_reroll_active'];
+      const original = state.goals.map((g) => g.id);
+      const rerolled = rerollRunGoals(state);
+      expect(rerolled.goals.map((g) => g.id)).not.toEqual(original);
+      expect(rerolled.flags).toContain('goal_reroll_used');
+      const second = rerollRunGoals(rerolled);
+      expect(second.goals.map((g) => g.id)).toEqual(rerolled.goals.map((g) => g.id));
+    });
+
+    it('incomplete_manual adds nearest extreme stat to pre-run warning', () => {
+      const state = createCyklusRun(true);
+      state.flags = ['incomplete_manual_active'];
+      state.stats = { energy: 58, memory: 50, bond: 50, control: 50 };
+      const warn = generatePreRunWarning(state);
+      expect(warn).toContain('Energie');
+    });
+
+    it('applyUpgradeScore boosts tai cards when tai_trust is active', () => {
+      const state = createCyklusRun(true);
+      state.flags = ['tai_trust_active'];
+      const taiCard = Object.values(CYKLUS_CARDS).find((c) => c.tags.includes('tai'))!;
+      const without = explainCardScore({ ...state, flags: [] }, taiCard);
+      const withUpgrade = explainCardScore(state, taiCard);
+      expect(withUpgrade.score).toBeGreaterThan(without.score);
+    });
+
+    it('applyMetaProgressionCardScoring boosts pattern cards when ni_premonition is active', () => {
+      const state = createCyklusRun(true);
+      const patternCard: SwipeCard = {
+        id: 'test_pattern',
+        title: 'Test pattern',
+        scene: 'Test.',
+        category: 'choice',
+        tags: ['pattern'],
+        rarity: 'common',
+        logLabel: 'test',
+        yesLabel: 'yes',
+        noLabel: 'no',
+        yes: { effects: [], preview: { hint: 'test' }, resultText: 'yes' },
+        no: { effects: [], preview: { hint: 'test' }, resultText: 'no' },
+      };
+      const without = explainCardScore({ ...state, flags: [] }, patternCard);
+      state.flags = ['ni_premonition_active'];
+      const withMeta = explainCardScore(state, patternCard);
+      expect(withMeta.score).toBeGreaterThan(without.score);
+      expect(withMeta.reasons.some((r) => r.includes('meta'))).toBe(true);
+    });
+
     it('getActiveContracts returns visible contract data', () => {
       const state = createCyklusRun(true);
       state.activeContracts = ['contract_tai'];
@@ -713,7 +859,8 @@ describe('Cyklus engine', () => {
 
     it('generatePreRunWarning returns warning only when history contains death', () => {
       const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => null);
-      const warn = generatePreRunWarning('seed');
+      const state = createCyklusRun(true);
+      const warn = generatePreRunWarning(state);
       expect(warn).toBeNull();
       spy.mockRestore();
     });
@@ -721,7 +868,8 @@ describe('Cyklus engine', () => {
     it('generatePreRunWarning uses actual deathStat from history', () => {
       const history = [{ id: 'run-1', endedAt: 1, status: 'dead' as const, endingTitle: 'Konec', cyclesSurvived: 1, totalChoices: 1, dominantProfile: 'Ni', archetype: 'test', profile: { Ni: 5 }, imprints: [], visitedSectors: ['void'], deathStat: 'memory' as const }];
       const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => JSON.stringify(history));
-      const warn = generatePreRunWarning('seed');
+      const state = createCyklusRun(true);
+      const warn = generatePreRunWarning(state);
       expect(warn).toContain('Paměť');
       spy.mockRestore();
     });

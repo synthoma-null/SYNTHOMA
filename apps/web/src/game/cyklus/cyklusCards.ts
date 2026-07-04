@@ -513,14 +513,14 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     id: 'wrong_map_leads',
     title: 'Špatná mapa ukazuje cestu',
     logLabel: 'ITEM_TRIGGER',
-    scene: 'Mapa, kterou máš vzhůru nohama, teď najedně dává smysl. Směr vede k Hnízdu Glitchky.',
+    scene: 'Mapa, kterou máš vzhůru nohama, teď najedně dává smysl. Směr vede k Pelechu Glitchky.',
     yesLabel: 'JÍT',
     noLabel: 'OTOČIT MAPU',
     category: 'followup',
     rarity: 'uncommon',
     conditions: [{ type: 'hasItem', itemId: 'wrong_map' }],
     tags: ['followup', 'item', 'path'],
-    yes: { resultText: 'Odešel jsi směrem, který na správné mapě neexistuje.', effects: [{ type: 'moveSector', sectorId: 'glitchka_nest' }, { type: 'stat', key: 'energy', amount: 5 }, { type: 'stat', key: 'control', amount: -6 }, { type: 'profile', key: 'Ne', amount: 1 }, { type: 'profile', key: 'P', amount: 1 }], preview: { hint: 'Přesun do Hnízda Glitchky · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' } },
+    yes: { resultText: 'Odešel jsi směrem, který na správné mapě neexistuje.', effects: [{ type: 'moveSector', sectorId: 'glitchka_nest' }, { type: 'stat', key: 'energy', amount: 5 }, { type: 'stat', key: 'control', amount: -6 }, { type: 'profile', key: 'Ne', amount: 1 }, { type: 'profile', key: 'P', amount: 1 }], preview: { hint: 'Přesun do Pelechu Glitchky · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' } },
     no: { resultText: 'Otočil jsi mapu. Správný svět se vrátil, ale trochu nudněji.', effects: [{ type: 'stat', key: 'control', amount: 6 }, { type: 'stat', key: 'memory', amount: -2 }, { type: 'profile', key: 'S', amount: 1 }, { type: 'profile', key: 'J', amount: 1 }], preview: { hint: 'Kontrola ↑ · Paměť ↓', statHints: { control: 'up', memory: 'down' }, risk: 'low' } },
   },
   black_folder_rustles: {
@@ -597,7 +597,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
   },
   choose_glitchka_nest: {
     id: 'choose_glitchka_nest',
-    title: 'Hnízdo Glitchky',
+    title: 'Pelech Glitchky',
     logLabel: 'SECTOR_PATH',
     scene: 'Místo vypadá, jako by ho někdo sestavil z chyb cizích operačních systémů.',
     yesLabel: 'ŠPLHNOUT',
@@ -606,7 +606,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     rarity: 'common',
     sector: 'glitchka_nest',
     tags: ['path', 'glitchka', 'chaos'],
-    yes: { resultText: 'Šplhnul jsi dovnitř. Glitchka tě koukala jedním okem, které mělo navíc. Září.', effects: [{ type: 'moveSector', sectorId: 'glitchka_nest' }, { type: 'stat', key: 'energy', amount: 5 }, { type: 'stat', key: 'control', amount: -6 }, { type: 'profile', key: 'Ne', amount: 1 }, { type: 'profile', key: 'P', amount: 1 }], preview: { hint: 'Přesun do Hnízda Glitchky · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' } },
+    yes: { resultText: 'Šplhnul jsi dovnitř. Glitchka tě koukala jedním okem, které mělo navíc. Září.', effects: [{ type: 'moveSector', sectorId: 'glitchka_nest' }, { type: 'stat', key: 'energy', amount: 5 }, { type: 'stat', key: 'control', amount: -6 }, { type: 'profile', key: 'Ne', amount: 1 }, { type: 'profile', key: 'P', amount: 1 }], preview: { hint: 'Přesun do Pelechu Glitchky · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' } },
     no: { resultText: 'Obešel jsi. Glitchka se za tebou podívala. Možná si tě vyrobí zítra.', effects: [{ type: 'stat', key: 'control', amount: 5 }, { type: 'stat', key: 'bond', amount: -3 }, { type: 'profile', key: 'J', amount: 1 }, { type: 'profile', key: 'S', amount: 1 }], preview: { hint: 'Kontrola ↑ · Vazba ↓', statHints: { control: 'up', bond: 'down' }, risk: 'low' } },
   },
   choose_memory_sandbox: {
@@ -2263,7 +2263,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
         { type: 'profile', key: 'Se', amount: 1 },
         { type: 'profile', key: 'P', amount: 1 },
       ],
-      preview: { hint: 'Hnízdo Glitchky · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' },
+      preview: { hint: 'Pelech Glitchky · Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' },
     },
     no: {
       resultText: 'Šel jsi za melodií. Zněla jako něco, co sis kdysi pamatoval špatně.',

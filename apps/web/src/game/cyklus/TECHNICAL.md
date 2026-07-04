@@ -6,18 +6,24 @@ Tento dokument popisuje architekturu, datový model a herní smyčku modulu `cyk
 
 Modul je čistě klientský. Herní stav žije v React komponentě `CyklusClient`, engine je bezstavový (funkce přijímají stav a vracejí nový stav). Ukládání probíhá do `localStorage`.
 
-| Vrstva    | Soubor                                             | Účel                                                                               |
-|-----------|----------------------------------------------------|------------------------------------------------------------------------------------|
-| UI        | `src/components/cyklus/CyklusClient.tsx`           | React komponenta, ovládání, zobrazení karet, endingů, inventáře.                   |
-| Styly     | `src/styles/cyklus.css`                            | Vizuální styl karet, statů, outcome, tlačítek, menu, story logu.                   |
-| Engine    | `src/game/cyklus/cyklusEngine.ts`                  | Herní logika: výběr karet, efekty, krizové itemy, konce, příběhový dopad.          |
-| Typy      | `src/game/cyklus/cyklusTypes.ts`                   | TypeScript definice stavu, efektů, karet, endingů.                                 |
-| Karty     | `src/game/cyklus/cyklusCards.ts`                   | Databáze všech karet (scény, efekty, podmínky, tagy).                              |
-| Itemy     | `src/game/cyklus/cyklusItems.ts`                   | Itemy a jejich pasivní efekty.                                                     |
-| Imprinty  | `src/game/cyklus/cyklusImprints.ts`                | Imprinty a odemykání poolů.                                                        |
-| Unlocky   | `src/game/cyklus/cyklusUnlocks.ts`                 | Podmínky pro odemčení karet/poolů.                                                 |
-| Storage   | `src/game/cyklus/cyklusStorage.ts`                 | Ukládání/načítání běhu z localStorage; migrace starých stavů.                      |
-| Testy     | `src/game/cyklus/__tests__/cyklusEngine.test.ts`   | Jest unit testy.                                                                   |
+| Vrstva           | Soubor                                        | Účel                                                                               |
+|------------------|-----------------------------------------------|------------------------------------------------------------------------------------|
+| UI               | `src/components/cyklus/CyklusClient.tsx`    | React komponenta, ovládání, zobrazení karet, endingů, inventáře, reward screen.    |
+| UI               | `src/components/cyklus/CyklusVoidHub.tsx`     | Meziběhový meta-progression hub (místnosti, protokoly, upgrady, crafting, jizvy).   |
+| Styly            | `src/styles/cyklus.css`                       | Vizuální styl karet, statů, outcome, tlačítek, menu, story logu, Void hub.         |
+| Engine           | `src/game/cyklus/cyklusEngine.ts`             | Herní logika: výběr karet, efekty, krizové itemy, konce, dopad, meta skórování.    |
+| Typy             | `src/game/cyklus/cyklusTypes.ts`              | TypeScript definice stavu, efektů, karet, endingů.                                 |
+| Karty            | `src/game/cyklus/cyklusCards.ts` + packs      | Databáze všech karet (scény, efekty, podmínky, tagy).                              |
+| Itemy            | `src/game/cyklus/cyklusItems.ts`              | Itemy a jejich pasivní efekty.                                                     |
+| Imprinty         | `src/game/cyklus/cyklusImprints.ts`           | Imprinty a odemykání poolů.                                                        |
+| Unlocky          | `src/game/cyklus/cyklusUnlocks.ts`            | Podmínky pro odemčení karet/poolů.                                                 |
+| Storage          | `src/game/cyklus/cyklusStorage.ts`            | Ukládání/načítání běhu z localStorage; migrace starých stavů.                      |
+| Discovery        | `src/game/cyklus/cyklusDiscovery.ts`          | Archiv nalezených karet, sektorů, itemů, otisků, endings, variant, nálezů.         |
+| Findings         | `src/game/cyklus/cyklusFindings.ts`           | Diagnostické nálezy, meta unlocky, death unlocky.                                  |
+| Item mood        | `src/game/cyklus/cyklusItemMood.ts`           | Kapsa s mood klasifikací itemů a ambientními texty.                                |
+| Testy            | `src/game/cyklus/__tests__/*.test.ts`         | Jest unit testy enginu, progression a obsahu.                                        |
+| UI testy         | `src/components/cyklus/__tests__/*.test.tsx`  | Jest + React Testing Library testy pro UI komponenty.                                |
+| Meta-progression | `src/game/cyklus/cyklusProgression.ts`        | Progression store, měny, místnosti Prázdnoty, protokoly, crafting, loadout, jizvy. |
 
 ## Herní stav (`CyklusRunState`)
 
@@ -260,13 +266,119 @@ getTopScoredCards(state, 5)    // top N karet s rozpisem skóre
 - Mobile-first responsive tweaks keep the stat dock sticky and readable down to 360 px.
 - `focus-visible` rings and `prefers-reduced-motion` guards improve accessibility.
 
+## Meta-progression (C4 redesign)
+
+Meta-progression se liší od tradičního obchodu: subjekt si postupně buduje **Prázdnotu** jako vlastní operační stůl identity, odemyká **profilové protokoly** podle svého herního stylu a vyrábí z nálezů z předchozích běhů **artefakty**.
+
+### Měny (`MetaCurrencyId`)
+
+| Měna | Získání | Použití |
+|------|---------|---------|
+| `residuum` | Přežité cykly, cíle, nové karty/sektory/itemy/imprinty/endings, nálezy, varianty. | Většina nákupů v Prázdnotě. |
+| `memoryResidue` | Smrt při extrému Paměti. | Protokoly, zrcadlová stěna, archive drawer. |
+| `energySpark` | Smrt při extrému Energie. | Mýtnice, stůl kombinací. |
+| `bondThread` | Smrt při extrému Vazby. | Liščí hnízdo, protokoly Fe/Fi. |
+| `controlShard` | Smrt při extrému Kontroly. | T-AI terminál, protokoly Ti/Te. |
+| `stabilizationCore` | Pouze při stabilizovaném běhu. | Stabilizační jádro, poslední upgrade větev. |
+
+### SubjectProgression
+
+| Pole | Popis |
+|------|-------|
+| `currencies` | Zůstatky měn. |
+| `purchasedUpgrades` / `equippedUpgrades` | Trvalé upgrady a aktuální vybavení. |
+| `activeScar` / `unlockedScars` | Vybraná jizva a odemčené jizvy. |
+| `profileMastery` | Kumulované absolutní hodnoty `profileDelta` napříč všemi běhy. |
+| `unlockedProtocols` / `equippedProtocols` | Profilové protokoly a vybavené sloty. |
+| `voidRooms` | Úroveň a upgrade jednotlivých místností Prázdnoty. |
+| `knownRecipes` / `craftedArtifacts` / `equippedArtifacts` | Crafting stav. |
+| `craftingInventory` | Suroviny získané po bězích. |
+| `totalRuns` / `stabilizedRuns` / `totalResiduumEarned` / `deathsByStat` | Statistiky pro UI a doporučení. |
+
+### Místnosti Prázdnoty (`VoidRoomId`)
+
+| Místnost | Efekt |
+|----------|-------|
+| `corner` | Skrytý startovní item. |
+| `mirror_wall` | Náhled profilového směru, později slot navíc. |
+| `fox_nest` | Měkčí start, podpora poolů, detekce falešné Glitchky. |
+| `sarkasma_couch` | Terapeutické protokoly, upozornění na overcut, čistý řez. |
+| `archive_drawer` | Uložení stopy jako craft surovina, recyklace. |
+| `tai_terminal` | Přesnější smluvní preview. |
+| `crafting_table` | Odemyká a zvyšuje úroveň crafting. |
+| `toll_shelf` | Platební a smluvní možnosti. |
+| `stabilization_core` | Rozšiřuje loadout sloty (upgrades, artefakty, protokoly). |
+
+### Profilové protokoly (`ProfileProtocol`)
+
+Každý protokol vyžaduje 20 bodů v dané profilové funkci (např. `Ni: 20`) a stojí měny. Po zakoupení se může vybavit do limitovaného slotu. Efekty nejsou stat boosty, ale nové informace (preview, detekce rozporu) nebo nové volby (boční dveře, kotva). Každý protokol má explicitní **drawback**.
+
+### Crafting
+
+Recepty (`CraftRecipe`) vyžadují:
+- Odemčený recept (`knownRecipes`).
+- Alespoň `crafting_table` úroveň 1 (u pokročilých receptů i vyšší úroveň a specifická místnost).
+- Suroviny z `craftingInventory` a případně měny.
+- `hiddenUntil` podmínky: itemy, imprints a findings musí být v `discovery` (kontroluje `canCraftRecipe`).
+- Artefakt nesmí být již vyroben (`craftedArtifacts`).
+
+Výsledkem receptu je `CraftedArtifact`, který lze vybavit do slotu a který při startu běhu přidá vlajky, itemy nebo imprinty. Artefakty mají vždy **drawback**.
+
+### Loadout (`getLoadoutLimits`)
+
+| Slot | Základ | S `stabilization_core` L1 | S `stabilization_core` L2 |
+|------|--------|---------------------------|---------------------------|
+| Upgrades | 3 | 4 | 4 |
+| Artifacts | 2 | 2 | 3 |
+| Protocols | 1 | 1 | 2 |
+| Scar | 1 | 1 | 1 |
+
+`purchaseUpgrade` a `equipUpgrade` respektují aktuální `upgradeSlots`. `MAX_EQUIPPED_UPGRADES` bylo zachováno jen jako fallback minimum.
+
+### Aplikace do běhu
+
+`applyProgressionToNewRun` aplikuje v pořadí: equipped upgrades → active scar → void rooms → equipped protocols → equipped artifacts. Žádný z těchto kroků nedává čistý permanentní stat boost; jizva výrazně přeskládá startovní staty a vše ostatní přidává informaci, volby, itemy nebo vlajky.
+
+### UI helpery
+
+- `getProgressionOverview` — přehled pro dashboard.
+- `getAvailablePurchases` — upgrady, protokoly a místnosti, které lze právě koupit.
+- `getAvailableCrafts` — recepty splňující všechny podmínky.
+- `getVoidRoomOverview` / `getProfileProtocolOverview` — stav a dostupnost.
+- `getRecommendedNextProgressionActions` — tematická doporučení pro hráče.
+
+### Odměny po běhu
+
+`computeRunRewards` vrací kromě měn i:
+- `craftingMaterials` podle použitých packů a tagů.
+- `profileMastery` z `history[].profileDelta`.
+- `unlockedRecipes` podle `hiddenUntil` podmínek (současný `discovery`).
+- `voidRoomHints` podle témat běhu.
+- `recommendedActions` — tematické shrnutí dalších kroků.
+- `deathStat` — stat, který způsobil smrt, použitý pro `deathsByStat` a unlock jizev.
+
+`awardRunRewards` aplikuje všechny složky do `SubjectProgression`, včetně `deathsByStat`, `unlockedScars`, `knownRecipes`, `craftingInventory`, `profileMastery`, `discoveredUpgradeHints` a celkových statistik.
+
+### Meta skórování a preview
+
+- `applyMetaProgressionCardScoring` se volá v `explainCardScore` po upgrade skóru. Zvyšuje skóre karet podle `scoringTags` vybavených protokolů, artefaktů a úrovní místností Prázdnoty.
+- `applyMetaProgressionPreviewHint` doplní card preview o informace z aktivních protokolů (např. pattern detekce, cost preview, contradiction).
+
+### C4.2 — UI Prázdnoty
+
+- `CyklusVoidHub` je samostatný overlay s 7 taby: Přehled, Místnosti, Protokoly, Upgrady, Kapsa, Crafting, Jizvy.
+- Komponenta používá `useState(loadSubjectProgression)` a refresh po každé interakci (nákup, vybavení, crafting, upgrade místnosti).
+- Hub je integrován v `CyklusClient` jako tlačítko v menu a end screenu, předává `onStartRun` pro plynulý přechod do nového běhu.
+- Testy pro `CyklusVoidHub` pokrývají render, interakce a dynamické sloty.
+
 ## Testy
 
 ```bash
 npx jest src/game/cyklus --no-coverage
+npx jest src/components/cyklus --no-coverage
 ```
 
-Pokrytí (82+ testů):
+Pokrytí (111+ testů):
 
 - Vytvoření běhu, restart sekvence.
 - Smrt při statu 0/100, krizové itemy, rubber stamp.
@@ -275,10 +387,12 @@ Pokrytí (82+ testů):
 - `computeProfile` — prázdný profil, rozhodný profil, `uncertainAxis`.
 - Tension director.
 - Anti-repetition.
-- Shrnutí běhu, analýza smrti, stabilizační pokrok.
+- Shrnutí běhu, analýza smrti, stabilizační pokrok, export záznamu.
 - **Content reachability** — každý odkazovaný item, imprint, pool, karta a flag existuje.
 - C2 helpers: `updateRunGoals`, `checkItemCombos`, `getComboHint`, `getActiveContracts`, `generatePreRunWarning`, goal reward application, overload risk tags.
 - Simulace: balance assertions (death 40–70%, completion ≤ 65%) a campaign progression.
+- C4.1 meta-progression: migrace starého save, void room upgrade, profilové mastery, nákup/vybavení protokolů, crafting, vybavení artefaktů, loadout limity, absence čistých stat boostů bez drawbacku.
+- C4.2 UI: `CyklusVoidHub` render, interakce místností/protokolů/upgradů/artefaktů/jizev, craft tlačítko, dynamické sloty.
 
 ## Rozšiřitelnost
 

@@ -1,11 +1,10 @@
 import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry, CyklusRunModifier, CyklusRunGoal } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
-import { CYKLUS_CARDS } from './cyklusCards';
-import { CYKLUS_IMPRINTS } from './cyklusImprints';
-import { CYKLUS_ITEMS } from './cyklusItems';
+import { CYKLUS_CARDS, CYKLUS_IMPRINTS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
 import { CYKLUS_UNLOCKS } from './cyklusUnlocks';
 import { loadCyklusRunHistory } from './cyklusStorage';
+import { applyProgressionToNewRun, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, PROFILE_PROTOCOLS, CRAFTED_ARTIFACTS, type RunReward } from './cyklusProgression';
 
 const CHOICES_PER_CYCLE = 12;
 const MAX_DIFFICULTY = 5;
@@ -74,6 +73,13 @@ export function updateRunGoals(state: CyklusRunState, previousState: CyklusRunSt
   return { goals: updated, log, newlyCompleted };
 }
 
+export function rerollRunGoals(state: CyklusRunState): CyklusRunState {
+  if (!state.flags.includes('goal_reroll_active')) return state;
+  if (state.flags.includes('goal_reroll_used')) return state;
+  const newGoals = generateRunGoals(`${state.seed}_reroll`);
+  return { ...state, goals: newGoals, flags: [...state.flags, 'goal_reroll_used'] };
+}
+
 export function generateRunGoals(seed: string): CyklusRunGoal[] {
   const allGoals: Omit<CyklusRunGoal, 'progress' | 'completed'>[] = [
     { id: 'visit_3_sectors', title: 'Nech Prázdnotu třikrát změnit názor', description: 'Navštiv tři různá místa, než se cyklus naučí tvou polohu.', target: 3, rewardPool: 'explorer', rewardTitle: 'Třísektorový subjekt' },
@@ -96,19 +102,36 @@ export function generateRunGoals(seed: string): CyklusRunGoal[] {
   return shuffled.slice(0, 3).map((g) => ({ ...g, progress: 0, completed: false }));
 }
 
-export function generatePreRunWarning(seed: string): string | null {
+export function generatePreRunWarning(state: CyklusRunState): string | null {
   const history = loadCyklusRunHistory();
-  if (history.length === 0) return null;
-  const last = history[history.length - 1];
-  if (!last || last.status !== 'dead' || !last.deathStat) return null;
-  const label = STAT_LABELS[last.deathStat];
-  const variants = [
-    `Poslední subjekt zemřel kvůli ${label}. Systém to zaznamenal. Možná to tentokrát nebudeš ty.`,
-    `Předchozí subjekt ukončil běh v ${label}. Varování zůstává v logu.`,
-    `Záznam: selhání ${label}. Cyklus se restartuje s jiným seedem.`,
-  ];
-  const index = Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % variants.length;
-  return variants[index] ?? null;
+  const seed = state.seed;
+  let warning: string | null = null;
+  if (history.length > 0) {
+    const last = history[history.length - 1];
+    if (last && last.status === 'dead' && last.deathStat) {
+      const label = STAT_LABELS[last.deathStat];
+      const variants = [
+        `Poslední subjekt zemřel kvůli ${label}. Systém to zaznamenal. Možná to tentokrát nebudeš ty.`,
+        `Předchozí subjekt ukončil běh v ${label}. Varování zůstává v logu.`,
+        `Záznam: selhání ${label}. Cyklus se restartuje s jiným seedem.`,
+      ];
+      const index = Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % variants.length;
+      warning = variants[index] ?? null;
+    }
+  }
+
+  if (state.flags.includes('incomplete_manual_active')) {
+    const stats = state.stats;
+    const distances = (Object.keys(stats) as StatKey[]).map((k) => ({ key: k, dist: Math.min(stats[k], 100 - stats[k]) }));
+    distances.sort((a, b) => a.dist - b.dist);
+    const mostDangerous = distances[0]?.key;
+    if (mostDangerous) {
+      const manual = `Neúplný návod: ${STAT_LABELS[mostDangerous]} je na začátku nejblíž hranici.`;
+      warning = warning ? `${warning}\n${manual}` : manual;
+    }
+  }
+
+  return warning;
 }
 
 function computeBaselineProfileFromHistory(history: CyklusRunSummary[]): Partial<Record<ProfileKey, number>> {
@@ -182,11 +205,14 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
     goals: generateRunGoals(seed),
     lastItemActivationCycle: 0,
     itemActivationCount: 0,
+    itemActivationCountThisCycle: 0,
     activeContracts: [],
-    preRunWarning: generatePreRunWarning(seed),
+    preRunWarning: null,
     preRunChoice: null,
   };
-  return state;
+  const progression = loadSubjectProgression();
+  const withProgression = applyProgressionToNewRun(state, progression);
+  return { ...withProgression, preRunWarning: generatePreRunWarning(withProgression) };
 }
 
 export function clampStat(value: number): number {
@@ -456,12 +482,15 @@ export function getComboHint(state: CyklusRunState): string | null {
       if (present && missing) {
         const presentTitle = CYKLUS_ITEMS[present]?.title ?? present;
         const missingTitle = CYKLUS_ITEMS[missing]?.title ?? missing;
+        const instinct = state.flags.includes('inventory_instinct_active');
         const hints: Record<string, string> = {
           mirror_shadow: `${presentTitle} se dívá po ${missingTitle}. Stín v zrcadle čeká.`,
           token_stamp_combo: `${presentTitle} by chtěl razítko. ${missingTitle} by ho potvrdila.`,
           bug_pebble_nest: `${presentTitle} se třese vedle chybějícího ${missingTitle}. Hnízdo by mohlo růst.`,
         };
-        return hints[combo.cardId] ?? `${presentTitle} čeká na svůj protějšek.`;
+        const base = hints[combo.cardId] ?? `${presentTitle} čeká na svůj protějšek.`;
+        if (!instinct) return base;
+        return `${base} (hledej ${missingTitle} — objekt/předmět).`;
       }
     }
   }
@@ -486,9 +515,21 @@ export function checkItemCombos(state: CyklusRunState): { state: CyklusRunState;
 
 export function activateItem(state: CyklusRunState, itemId: string): { state: CyklusRunState; log: string } | null {
   if (!state.inventory.includes(itemId)) return null;
-  if (state.lastItemActivationCycle >= state.cycle) return null;
+  const cycleChanged = state.lastItemActivationCycle < state.cycle;
+  const activationsThisCycle = cycleChanged ? 0 : state.itemActivationCountThisCycle;
+  const secondTouch = state.flags.includes('second_touch_active') && activationsThisCycle === 1;
+  if (activationsThisCycle >= 1 && !secondTouch) return null;
 
-  let s = { ...state, lastItemActivationCycle: state.cycle, itemActivationCount: (state.itemActivationCount ?? 0) + 1 };
+  let s = {
+    ...state,
+    lastItemActivationCycle: state.cycle,
+    itemActivationCount: (state.itemActivationCount ?? 0) + 1,
+    itemActivationCountThisCycle: activationsThisCycle + 1,
+  };
+
+  if (secondTouch) {
+    s = applyEffects(s, [{ type: 'stat', key: 'energy', amount: 6 }]);
+  }
 
   switch (itemId) {
     case 'rubber_seal': {
@@ -923,7 +964,7 @@ function clearScheduledCard(state: CyklusRunState, cardId: string): CyklusRunSta
 const CYCLE_CENTER_DRIFT = 0.15;
 
 function processCycleEnd(state: CyklusRunState): CyklusRunState {
-  let s = { ...state, cycle: state.cycle + 1, choiceInCycle: 1 };
+  let s = { ...state, cycle: state.cycle + 1, choiceInCycle: 1, itemActivationCountThisCycle: 0 };
   s = { ...s, difficulty: Math.min(MAX_DIFFICULTY, s.difficulty + 1) };
   // Add imprint based on dominant stat — pick first from pool not yet owned
   const dominantStat = getDominantStat(s);
@@ -1116,11 +1157,11 @@ export function composeCycleSummary(state: CyklusRunState): string {
   lines.push('');
 
   if (yesCount > noCount * 2) {
-    lines.push('Subjekt souhlasil se vším. I s tím, co neslibovalo nic dobrého.');
+    lines.push(`V cyklu provedl ${cycleHistory.length} zaznamenaných voleb: ${yesCount}x přijal, ${noCount}x odmítl. Subjekt souhlasil se vším. I s tím, co neslibovalo nic dobrého.`);
   } else if (noCount > yesCount * 2) {
-    lines.push('Subjekt odmítal konzistentně. Systém to eviduje jako politiku, ne charakter.');
+    lines.push(`V cyklu provedl ${cycleHistory.length} zaznamenaných voleb: ${yesCount}x přijal, ${noCount}x odmítl. Subjekt odmítal konzistentně. Systém to eviduje jako politiku, ne charakter.`);
   } else {
-    lines.push(`Subjekt v cyklu ${cycleNum}x přijal a ${noCount}x odmítl. Bez jasné logiky. Nebo s logikou, kterou systém zatím nepochopil.`);
+    lines.push(`V cyklu provedl ${cycleHistory.length} zaznamenaných voleb: ${yesCount}x přijal, ${noCount}x odmítl. Bez jasné logiky. Nebo s logikou, kterou systém zatím nepochopil.`);
   }
 
   if (dominantKey) {
@@ -1168,7 +1209,7 @@ export function composeBehavioralAnalysis(state: CyklusRunState): string[] {
     return card?.category === 'object' || card?.tags.includes('object');
   });
   if (objectCards.length >= 4) {
-    patterns.push('casto prijima nezname predmety');
+    patterns.push('často přijímá neznámé předměty');
   }
 
   const helpRefused = h.filter((r) => {
@@ -1176,22 +1217,22 @@ export function composeBehavioralAnalysis(state: CyklusRunState): string[] {
     return card?.tags.includes('tai') && r.direction === 'no';
   });
   if (helpRefused.length >= 2) {
-    patterns.push('odmita primou pomoc');
+    patterns.push('odmítá přímou pomoc');
   }
 
   const controlOverBond = (state.stats.control - state.stats.bond) > 20;
   if (controlOverBond) {
-    patterns.push('preferuje kontrolu pred vazbou');
+    patterns.push('preferuje kontrolu před vazbou');
   }
 
   const bondOverControl = (state.stats.bond - state.stats.control) > 20;
   if (bondOverControl) {
-    patterns.push('preferuje vazbu pred kontrolou');
+    patterns.push('preferuje vazbu před kontrolou');
   }
 
   const memoryHigh = state.stats.memory > 70;
   if (memoryHigh) {
-    patterns.push('pamet otevira i za cenu energie');
+    patterns.push('paměť otevírá i za cenu energie');
   }
 
   const crisisYes = h.filter((r) => {
@@ -1199,7 +1240,7 @@ export function composeBehavioralAnalysis(state: CyklusRunState): string[] {
     return card?.category === 'crisis' && r.direction === 'yes';
   });
   if (crisisYes.length >= 2) {
-    patterns.push('v krizich voli stabilizaci, ne risk');
+    patterns.push('v krizích volí stabilizaci, ne risk');
   }
 
   const archiveAffinity = (state.entityRelations.archive ?? 0) >= 3;
@@ -1209,7 +1250,7 @@ export function composeBehavioralAnalysis(state: CyklusRunState): string[] {
 
   const sarkasmaNegative = (state.entityRelations.sarkasma ?? 0) < -2;
   if (sarkasmaNegative) {
-    patterns.push('komplikovaný vztah se Sarkasou');
+    patterns.push('komplikovaný vztah se Sarkasmou');
   }
 
   return patterns;
@@ -1396,6 +1437,16 @@ export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardSc
   if (tensionDelta !== 0) reasons.push(`tension ${tensionDelta > 0 ? '+' : ''}${tensionDelta}`);
   score = tensionScore;
 
+  const upgradeScore = applyUpgradeScore(state, score, card);
+  const upgradeDelta = upgradeScore - score;
+  if (upgradeDelta !== 0) reasons.push(`upgrade ${upgradeDelta > 0 ? '+' : ''}${upgradeDelta}`);
+  score = upgradeScore;
+
+  const metaScore = applyMetaProgressionCardScoring(state, score, card);
+  const metaDelta = metaScore - score;
+  if (metaDelta !== 0) reasons.push(`meta ${metaDelta > 0 ? '+' : ''}${metaDelta}`);
+  score = metaScore;
+
   return { card, score, reasons };
 }
 
@@ -1577,6 +1628,143 @@ function applyModifierScore(state: CyklusRunState, score: number, card: SwipeCar
       break;
   }
   return s;
+}
+
+function applyUpgradeScore(state: CyklusRunState, score: number, card: SwipeCard): number {
+  let s = score;
+  const flags = state.flags;
+
+  if (flags.includes('tai_trust_active')) {
+    if (card.tags.includes('tai') || card.tags.includes('contract')) s += 80;
+  }
+
+  if (flags.includes('archive_reader_active')) {
+    if (state.stats.memory > 85 && (card.tags.includes('archive') || card.tags.includes('memory')) && cardWouldDecreaseStat(card, 'memory')) {
+      s += 100;
+    }
+  }
+
+  if (flags.includes('glitchka_affinity_active')) {
+    if (card.tags.includes('glitch') || card.tags.includes('noise')) {
+      s += 50;
+      if (card.category === 'crisis') s += 60;
+    }
+  }
+
+  if (flags.includes('sarkasma_debtor_active')) {
+    if (card.tags.includes('sarkasma') || card.tags.includes('collect')) s += 70;
+  }
+
+  if (flags.includes('stabilization_echo_active')) {
+    if (card.tags.includes('stabilize') || card.tags.includes('system') || card.tags.includes('calm')) s += 40;
+  }
+
+  if (flags.includes('inner_pocket_active')) {
+    if (isItemTrigger(card)) s += 80;
+  }
+
+  return s;
+}
+
+function applyMetaProgressionCardScoring(state: CyklusRunState, score: number, card: SwipeCard): number {
+  let s = score;
+  const flags = state.flags;
+
+  const voidRoomBonuses: Record<string, { tags: string[]; bonus: number }> = {
+    fox_nest_pool_support_active: { tags: ['glitchka'], bonus: 70 },
+    sarkasma_couch_therapy_active: { tags: ['sarkasma'], bonus: 70 },
+    sarkasma_couch_clean_cut_active: { tags: ['sarkasma', 'overcut'], bonus: 50 },
+    noise_lens_active: { tags: ['mirror', 'noise'], bonus: 50 },
+    ni_premonition_active: { tags: ['pattern'], bonus: 40 },
+    fi_authentic_no_active: { tags: ['boundary'], bonus: 40 },
+    fe_warm_thread_active: { tags: ['entity', 'care'], bonus: 40 },
+    ne_side_door_active: { tags: ['path', 'sandbox'], bonus: 40 },
+    se_now_cut_active: { tags: ['action', 'physical'], bonus: 40 },
+    refund_stamp_active: { tags: ['toll', 'contract'], bonus: 40 },
+    named_shell_active: { tags: ['blackbox', 'form'], bonus: 40 },
+    soft_pause_protocol_active: { tags: ['silent', 'pause'], bonus: 40 },
+    archive_drawer_recycle_active: { tags: ['archive'], bonus: 40 },
+    tai_terminal_preview_active: { tags: ['contract', 'tai'], bonus: 40 },
+    toll_shelf_active: { tags: ['toll', 'contract'], bonus: 40 },
+  };
+
+  for (const [flag, config] of Object.entries(voidRoomBonuses)) {
+    if (flags.includes(flag) && config.tags.some((tag) => card.tags.includes(tag))) {
+      s += config.bonus;
+    }
+  }
+
+  for (const protocol of Object.values(PROFILE_PROTOCOLS)) {
+    const startFlag = protocol.effect.startFlag;
+    if (!startFlag || !flags.includes(startFlag)) continue;
+    const tags = protocol.effect.scoringTags;
+    if (tags && tags.some((tag) => card.tags.includes(tag))) {
+      s += 40;
+    }
+  }
+
+  for (const artifact of Object.values(CRAFTED_ARTIFACTS)) {
+    const active = artifact.effects.startFlags?.some((f) => flags.includes(f));
+    if (!active) continue;
+    const tags = artifact.effects.scoringTags;
+    if (tags && tags.some((tag) => card.tags.includes(tag))) {
+      s += 40;
+    }
+  }
+
+  return s;
+}
+
+export function applyMetaProgressionPreviewHint(
+  state: CyklusRunState,
+  card: SwipeCard,
+  hint: string,
+): string {
+  const flags = state.flags;
+  const extras: string[] = [];
+
+  if (flags.includes('ni_premonition_active') && card.tags.includes('pattern')) {
+    extras.push('Předtucha: tato karta skrývá vzor.');
+  }
+  if (flags.includes('ti_contradiction_active') && (card.tags.includes('trap') || card.tags.includes('overload'))) {
+    extras.push('Detektor rozporu: text a efekt nesedí.');
+  }
+  if (flags.includes('te_cost_preview_active') && (card.tags.includes('contract') || card.tags.includes('toll'))) {
+    extras.push('Cena před podpisem: vysoká.');
+  }
+  if (flags.includes('se_now_cut_active') && (card.tags.includes('action') || card.tags.includes('physical'))) {
+    extras.push('Se: řez přítomností je možný.');
+  }
+  if (flags.includes('ne_side_door_active') && (card.tags.includes('path') || card.tags.includes('sandbox'))) {
+    extras.push('Ne: boční dveře se otevírají.');
+  }
+  if (flags.includes('si_anchor_active') && (card.tags.includes('archive') || card.tags.includes('memory'))) {
+    extras.push('Si: kotva minulého cyklu.');
+  }
+  if (flags.includes('fi_authentic_no_active') && card.tags.includes('boundary')) {
+    extras.push('Fi: autentické ne chrání hranici.');
+  }
+  if (flags.includes('fe_warm_thread_active') && (card.tags.includes('entity') || card.tags.includes('care'))) {
+    extras.push('Fe: teplé vlákno.');
+  }
+  if (flags.includes('mirror_wall_profile_preview_active')) {
+    extras.push('Zrcadlová stěna: profil ovlivňuje výběr.');
+  }
+  if (flags.includes('tai_terminal_preview_active') && (card.tags.includes('contract') || card.tags.includes('tai'))) {
+    extras.push('T-AI: smluvní detaily čitelnější.');
+  }
+  if (flags.includes('archive_drawer_recycle_active') && card.tags.includes('archive')) {
+    extras.push('Archiv: stopu jde recyklovat.');
+  }
+  if (flags.includes('noise_lens_active') && (card.tags.includes('noise') || card.tags.includes('mirror'))) {
+    extras.push('Šumová čočka: neuvěř hned.');
+  }
+  if (flags.includes('clean_cut_scalpel_active') && (card.tags.includes('sarkasma') || card.tags.includes('overcut'))) {
+    extras.push('Čistý řez: krutost lze oddělit.');
+  }
+
+  if (extras.length === 0) return hint;
+  return `${hint} [${extras.join(' · ')}]`;
 }
 
 function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard): number {
@@ -1926,13 +2114,19 @@ export function composeCycleForecast(state: CyklusRunState): string {
 
 // ── EXPORT RUN LOG ────────────────────────────────────────────────────────────
 
-export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'full'): string {
+function formatProfileLabel(profile: ProfileResult): string {
+  const label = profile.dominantLabel;
+  return label.endsWith('-like') ? label : `${label}-like`;
+}
+
+export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'full', reward?: RunReward): string {
   const profile = computeProfile(state);
   const ending = computeEnding(state);
   const death = analyzeDeath(state);
   const codename = generateRunCodename(state);
   const sectors = [...new Set(state.visitedSectors)].map((s) => SECTOR_LABELS[s]).join(' → ');
   const near = getNearestExtreme(state.stats);
+  const profileLabel = formatProfileLabel(profile);
 
   if (mode === 'short') {
     const lines: string[] = [
@@ -1940,7 +2134,7 @@ export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'fu
       `Kódové označení: ${codename}`,
       '────────────────────────────────────',
       `Konec: ${ending?.title ?? 'neznámý'}`,
-      `Profil: ${profile.dominantLabel}-like · ${profile.archetype}`,
+      `Profil: ${profileLabel} · ${profile.archetype}`,
       `Trasa: ${sectors}`,
     ];
     if (death) {
@@ -1964,7 +2158,7 @@ export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'fu
     `Celkem voleb: ${state.totalChoices}`,
     '',
     `Konec: ${ending?.title ?? 'neznámý'}`,
-    `Profil: ${profile.dominantLabel}-like`,
+    `Profil: ${profileLabel}`,
     `Archetyp: ${profile.archetype}`,
     '',
     'Staty při konci:',
@@ -2004,9 +2198,84 @@ export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'fu
     lines.push('');
   }
 
+  if (state.goals && state.goals.length > 0) {
+    const completed = state.goals.filter((g) => g.completed);
+    if (completed.length > 0) {
+      lines.push('Splněné cíle:');
+      for (const g of completed) lines.push(`  · ${g.title}${g.rewardTitle ? ` · ${g.rewardTitle}` : ''}`);
+      lines.push('');
+    }
+  }
+
+  if (reward) {
+    const residuum = reward.currencies.residuum ?? 0;
+    const special = Object.entries(reward.currencies)
+      .filter(([k, v]) => k !== 'residuum' && v > 0)
+      .map(([k, v]) => `${k}: +${v}`);
+    if (residuum > 0 || special.length > 0) {
+      lines.push('Odměny:');
+      if (residuum > 0) lines.push(`  · Reziduum: +${residuum}`);
+      for (const s of special) lines.push(`  · ${s}`);
+      if (reward.unlockedUpgrades.length > 0) {
+        lines.push('  Nové protokoly:');
+        for (const id of reward.unlockedUpgrades) lines.push(`    · ${SUBJECT_UPGRADES[id]?.title ?? id}`);
+      }
+      if (reward.unlockedScars.length > 0) {
+        lines.push('  Nové jizvy:');
+        for (const id of reward.unlockedScars) lines.push(`    · ${SUBJECT_SCARS[id]?.title ?? id}`);
+      }
+      if (Object.keys(reward.craftingMaterials).length > 0) {
+        lines.push('  Suroviny:');
+        for (const [id, amount] of Object.entries(reward.craftingMaterials)) {
+          if (amount && amount > 0) lines.push(`    · ${id}: +${amount}`);
+        }
+      }
+      if (reward.unlockedRecipes.length > 0) {
+        lines.push('  Odemčené recepty:');
+        for (const id of reward.unlockedRecipes) lines.push(`    · ${id}`);
+      }
+      if (Object.keys(reward.profileMastery).length > 0) {
+        lines.push('  Profilový posun:');
+        for (const [key, value] of Object.entries(reward.profileMastery)) {
+          if (value) lines.push(`    · ${key}: +${value}`);
+        }
+      }
+      if (reward.voidRoomHints.length > 0) {
+        lines.push('  Prázdnota doporučuje:');
+        for (const id of reward.voidRoomHints) lines.push(`    · ${id}`);
+      }
+      if (reward.recommendedActions.length > 0) {
+        lines.push('  Další kroky:');
+        for (const a of reward.recommendedActions) lines.push(`    · ${a}`);
+      }
+      lines.push('');
+    }
+  }
+
+  const keyMoment = findKeyMoment(state);
+  if (keyMoment) {
+    lines.push('Klíčový moment:');
+    lines.push(`  · ${keyMoment}`);
+    lines.push('');
+  }
+
+  const riskiest = findRiskiestChoice(state);
+  if (riskiest) {
+    lines.push('Nejnebezpečnější rozhodnutí:');
+    lines.push(`  · ${riskiest}`);
+    lines.push('');
+  }
+
+  const anchor = findStabilizingAnchor(state);
+  if (anchor) {
+    lines.push('Stabilizační kotva:');
+    lines.push(`  · ${anchor}`);
+    lines.push('');
+  }
+
   const behavior = composeBehavioralAnalysis(state);
   if (behavior.length > 0) {
-    lines.push('Chování subjektu:');
+    lines.push('Styl průchodu:');
     for (const b of behavior) lines.push(`  · ${b}`);
     lines.push('');
   }
@@ -2027,6 +2296,78 @@ export function exportRunLog(state: CyklusRunState, mode: 'short' | 'full' = 'fu
   lines.push('Záznam vygenerován systémem SYNTHOMA.');
 
   return lines.join('\n');
+}
+
+function findKeyMoment(state: CyklusRunState): string | null {
+  const records = state.history;
+  if (records.length === 0) return null;
+  const combo = records.find((r) => r.flagsGained.some((f) => f.startsWith('combo_')));
+  if (combo) {
+    const card = CYKLUS_CARDS[combo.cardId];
+    return `${card?.title ?? combo.cardId} spustila neobvyklou kombinaci.`;
+  }
+  const crisis = records.filter((r) => {
+    const card = CYKLUS_CARDS[r.cardId];
+    return card?.category === 'crisis';
+  });
+  const crisisRecord = crisis[0];
+  if (crisisRecord) {
+    const card = CYKLUS_CARDS[crisisRecord.cardId];
+    return `${card?.title ?? crisisRecord.cardId} přivedla run do krizového bodu.`;
+  }
+  const maxDelta = records
+    .map((r) => ({ record: r, totalDelta: Object.values(r.statDelta).reduce((a, b) => a + Math.abs(b), 0) }))
+    .sort((a, b) => b.totalDelta - a.totalDelta)[0];
+  if (maxDelta && maxDelta.totalDelta > 0) {
+    const card = CYKLUS_CARDS[maxDelta.record.cardId];
+    return `${card?.title ?? maxDelta.record.cardId} způsobila největší statový posun.`;
+  }
+  return null;
+}
+
+function findRiskiestChoice(state: CyklusRunState): string | null {
+  const records = state.history;
+  if (records.length === 0) return null;
+  let riskiest: { record: CyklusChoiceRecord; risk: number } | null = null;
+  for (const r of records) {
+    const card = CYKLUS_CARDS[r.cardId];
+    if (!card) continue;
+    const risk = Object.entries(r.statDelta).reduce((sum, [k, v]) => {
+      const stat = k as StatKey;
+      const after = r.statsAfter[stat];
+      const pushedToExtreme = (after > 70 && v > 0) || (after < 30 && v < 0);
+      return sum + (pushedToExtreme ? Math.abs(v) * 2 : 0);
+    }, 0);
+    if (risk > 0 && (!riskiest || risk > riskiest.risk)) {
+      riskiest = { record: r, risk };
+    }
+  }
+  if (!riskiest) return null;
+  const card = CYKLUS_CARDS[riskiest.record.cardId];
+  return `${card?.title ?? riskiest.record.cardId} (${riskiest.record.direction === 'yes' ? 'přijetí' : 'odmítnutí'}) tě nejvíc přiblížilo hranici.`;
+}
+
+function findStabilizingAnchor(state: CyklusRunState): string | null {
+  const records = state.history;
+  if (records.length === 0) return null;
+  const stabilizing = records
+    .map((r) => {
+      const card = CYKLUS_CARDS[r.cardId];
+      const stabilization = Object.entries(r.statDelta).reduce((sum, [k, v]) => {
+        const key = k as StatKey;
+        const after = r.statsAfter[key] ?? 0;
+        const before = after - v;
+        const beforeDist = Math.abs(before - 50);
+        const afterDist = Math.abs(after - 50);
+        return sum + (afterDist < beforeDist ? Math.abs(v) : 0);
+      }, 0);
+      return { record: r, stabilization, card };
+    })
+    .sort((a, b) => b.stabilization - a.stabilization)[0];
+  if (stabilizing && stabilizing.stabilization > 0) {
+    return `${stabilizing.card?.title ?? stabilizing.record.cardId} přitáhla staty zpátky k rovnováze.`;
+  }
+  return null;
 }
 
 // ── NEAREST EXTREME ───────────────────────────────────────────────────────────
@@ -2107,7 +2448,8 @@ export function generateRunCodename(state: CyklusRunState): string {
 
   const adj = rng(CODENAME_STAT[dominantStat] ?? ['Neznámý']);
   const noun = rng(CODENAME_SECTOR[mostVisitedSector] ?? ['Průchod']);
-  const item = significantItem ? ` se ${CODENAME_ITEM[significantItem]}` : '';
+  const itemTitle = significantItem ? (CYKLUS_ITEMS[significantItem]?.title ?? CODENAME_ITEM[significantItem]) : null;
+  const item = itemTitle ? ` nese: ${itemTitle}` : '';
   const end = rng(CODENAME_ENDING[endType] ?? ['']);
 
   return `${adj} ${noun}${item}, ${end}`;

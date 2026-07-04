@@ -1,5 +1,5 @@
 import type { CyklusRunState } from './cyklusTypes';
-import { CYKLUS_ITEMS } from './cyklusItems';
+import { CYKLUS_ITEMS } from './content';
 
 // ── TYPES ─────────────────────────────────────────────────────────────────────
 

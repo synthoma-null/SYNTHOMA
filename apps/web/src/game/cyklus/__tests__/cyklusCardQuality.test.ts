@@ -1,4 +1,4 @@
-import { CYKLUS_CARDS } from '../cyklusCards';
+import { CYKLUS_CARDS } from '../content';
 import type { SwipeCard, CyklusEffect } from '../cyklusTypes';
 
 // ── CARD DEPTH CLASSIFIER ─────────────────────────────────────────────────────

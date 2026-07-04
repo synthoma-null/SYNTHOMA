@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
+import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialSeen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression } from '../../game/cyklus/cyklusProgression';
 import StatDock from './StatDock';
+import CyklusVoidHub from './CyklusVoidHub';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
@@ -22,9 +24,7 @@ function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'a
       return null;
   }
 }
-import { CYKLUS_ITEMS } from '../../game/cyklus/cyklusItems';
-import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
-import { CYKLUS_IMPRINTS } from '../../game/cyklus/cyklusImprints';
+import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../../game/cyklus/content';
 import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
 
 export default function CyklusClient() {
@@ -51,6 +51,10 @@ export default function CyklusClient() {
   const [showBuild, setShowBuild] = useState(false);
   const [showDiscovery, setShowDiscovery] = useState(false);
   const [discovery, setDiscovery] = useState<CyklusDiscovery>(loadDiscovery());
+  const [runReward, setRunReward] = useState<RunReward | null>(null);
+  const [progression, setProgression] = useState<SubjectProgression>(loadSubjectProgression());
+  const [showReward, setShowReward] = useState(false);
+  const [showVoidHub, setShowVoidHub] = useState(false);
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -176,8 +180,14 @@ export default function CyklusClient() {
       }
       const variantId = current.status === 'completed' ? computeStabilizationVariant(current).id : undefined;
       const findingIds = evaluateFindings(current).map((f) => f.id);
+      const beforeDiscovery = loadDiscovery();
       const nextDiscovery = updateDiscoveryFromRun(current, { variantId, findingIds });
       setDiscovery(nextDiscovery);
+      const reward = computeRunRewards(current, beforeDiscovery, findingIds, variantId);
+      awardRunRewards(reward);
+      setRunReward(reward);
+      setProgression(loadSubjectProgression());
+      setShowReward(true);
       await saveCyklusRun(current);
     }
     finalize().catch(() => { /* ignore */ });
@@ -211,6 +221,14 @@ export default function CyklusClient() {
       if (!prev) return prev;
       return { ...prev, lastOutcomeText: result.log };
     });
+  }, [state]);
+
+  const handleRerollGoals = useCallback(() => {
+    if (!state || state.status !== 'playing') return;
+    const next = rerollRunGoals(state);
+    if (next === state) return;
+    setState(next);
+    saveCyklusRun(next);
   }, [state]);
 
   const handleRestart = useCallback(() => {
@@ -325,8 +343,20 @@ export default function CyklusClient() {
                 Zopakovat tutorial
               </button>
             )}
+            <button className="cyklus-menu__button cyklus-menu__button--secondary" type="button" onClick={() => setShowVoidHub(true)}>
+              PRÁZDN0TA
+            </button>
           </div>
         </div>
+        {showVoidHub && (
+          <CyklusVoidHub
+            onClose={() => setShowVoidHub(false)}
+            onStartRun={() => {
+              setShowVoidHub(false);
+              handleNewGame();
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -417,6 +447,7 @@ export default function CyklusClient() {
               <div className="cyklus-end__title">{state.status === 'completed' ? computeStabilizationVariant(state).title : ending.title}</div>
               <div className="cyklus-end__subtitle">{state.status === 'completed' ? 'Konec: Stabilizace' : `Konec: ${ending.title}`}</div>
             </div>
+            {runReward && <RewardSection reward={runReward} progression={progression} />}
             {(() => {
               const variant = state.status === 'completed' ? computeStabilizationVariant(state) : null;
               return variant ? (
@@ -521,11 +552,14 @@ export default function CyklusClient() {
               </div>
             )}
             <div className="cyklus-end__actions">
-              <button className="cyklus-btn cyklus-btn--primary" onClick={handleRestart}>NOVÝ CYKLUS</button>
+              <button className="cyklus-btn cyklus-btn--primary" onClick={() => setShowVoidHub(true)}>
+                VRÁTIT SE DO PRÁZDNOTY
+              </button>
+              <button className="cyklus-btn cyklus-btn--primary" onClick={handleRestart}>DALŠÍ CYKLUS</button>
               <button
                 className="cyklus-btn cyklus-btn--secondary"
                 onClick={() => {
-                  const log = exportRunLog(state, 'short');
+                  const log = exportRunLog(state, 'short', runReward ?? undefined);
                   const blob = new Blob([log], { type: 'text/plain' });
                   const url = URL.createObjectURL(blob);
                   const a = document.createElement('a');
@@ -540,7 +574,7 @@ export default function CyklusClient() {
               <button
                 className="cyklus-btn cyklus-btn--secondary"
                 onClick={() => {
-                  const log = exportRunLog(state, 'full');
+                  const log = exportRunLog(state, 'full', runReward ?? undefined);
                   const blob = new Blob([log], { type: 'text/plain' });
                   const url = URL.createObjectURL(blob);
                   const a = document.createElement('a');
@@ -598,19 +632,19 @@ export default function CyklusClient() {
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
               <div className="cyklus-card__preview">
-                {directionPreview(card.yes.preview, 'yes', shouldLimitPreview(card))}
-                {directionPreview(card.no.preview, 'no', shouldLimitPreview(card))}
+                {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card))}
+                {directionPreview(state, card, card.no.preview, 'no', shouldLimitPreview(card))}
               </div>
             </div>
 
             <div className={`cyklus-actions ${tutorialHighlight?.actions ? 'cyklus-actions--highlight' : ''}`}>
               <button className="cyklus-btn cyklus-btn--no" onClick={() => handleChoice('no')} disabled={outcomeVisible}>
                 <span className="cyklus-btn__label">{card.noLabel}</span>
-                {card.no.preview && <span className="cyklus-btn__hint">{shouldLimitPreview(card) ? limitedPreviewHint(card.no.preview.hint) : card.no.preview.hint}</span>}
+                {card.no.preview && state && <span className="cyklus-btn__hint">{applyMetaProgressionPreviewHint(state, card, shouldLimitPreview(card) ? limitedPreviewHint(card.no.preview.hint) : card.no.preview.hint)}</span>}
               </button>
               <button className="cyklus-btn cyklus-btn--yes" onClick={() => handleChoice('yes')} disabled={outcomeVisible}>
                 <span className="cyklus-btn__label">{card.yesLabel}</span>
-                {card.yes.preview && <span className="cyklus-btn__hint">{shouldLimitPreview(card) ? limitedPreviewHint(card.yes.preview.hint) : card.yes.preview.hint}</span>}
+                {card.yes.preview && state && <span className="cyklus-btn__hint">{applyMetaProgressionPreviewHint(state, card, shouldLimitPreview(card) ? limitedPreviewHint(card.yes.preview.hint) : card.yes.preview.hint)}</span>}
               </button>
             </div>
 
@@ -717,7 +751,7 @@ export default function CyklusClient() {
             <div className="cyklus-build__title">Možný typ přežití</div>
             <BuildPanel state={state} />
             <div className="cyklus-build__title cyklus-build__title--goals">Dnešní cíle</div>
-            <GoalsPanel state={state} />
+            <GoalsPanel state={state} onReroll={handleRerollGoals} />
             <ContractPanel state={state} />
           </div>
         </div>
@@ -729,6 +763,15 @@ export default function CyklusClient() {
             <DiscoveryPanel discovery={discovery} />
           </div>
         </div>
+      )}
+      {showVoidHub && (
+        <CyklusVoidHub
+          onClose={() => setShowVoidHub(false)}
+          onStartRun={() => {
+            setShowVoidHub(false);
+            handleRestart();
+          }}
+        />
       )}
     </div>
   );
@@ -791,10 +834,16 @@ function BuildPanel({ state }: { state: CyklusRunState }) {
   );
 }
 
-function GoalsPanel({ state }: { state: CyklusRunState }) {
+function GoalsPanel({ state, onReroll }: { state: CyklusRunState; onReroll?: () => void }) {
+  const canReroll = state.flags.includes('goal_reroll_active') && !state.flags.includes('goal_reroll_used');
   return (
     <div className="cyklus-goals">
-      <div className="cyklus-goals__label">DNEŠNÍ DIAGNOSTICKÉ ÚKOLY</div>
+      <div className="cyklus-goals__label">
+        DNEŠNÍ DIAGNOSTICKÉ ÚKOLY
+        {canReroll && onReroll && (
+          <button type="button" className="cyklus-goals__reroll" onClick={onReroll}>Přegenerovat</button>
+        )}
+      </div>
       {state.goals.map((g) => (
         <div key={g.id} className={`cyklus-goal ${g.completed ? 'cyklus-goal--completed' : ''}`}>
           <span className="cyklus-goal__title">{g.completed ? '✓' : '○'} {g.title}</span>
@@ -877,16 +926,200 @@ function StabilizationPanel({ state }: { state: CyklusRunState }) {
   );
 }
 
+function RewardSection({ reward, progression }: { reward: RunReward; progression: SubjectProgression }) {
+  const totalResiduum = reward.currencies.residuum ?? 0;
+  const limits = getLoadoutLimits(progression);
+  const specialCurrencies = (Object.entries(reward.currencies) as [import('../../game/cyklus/cyklusProgression').MetaCurrencyId, number][]).filter(
+    ([key]) => key !== 'residuum' && (reward.currencies[key] ?? 0) > 0,
+  );
+  return (
+    <div className="cyklus-reward">
+      <div className="cyklus-reward__header">
+        <div className="cyklus-reward__system-label">ZÁZNAM REZIDUA</div>
+        <div className="cyklus-reward__flavor">
+          Systém nedokázal smazat všechno. Něco zůstalo. Bohužel pro něj. Bohužel pro tebe.
+        </div>
+      </div>
+      {totalResiduum > 0 && (
+        <div className="cyklus-reward__residuum">
+          <span className="cyklus-reward__residuum-value">+{totalResiduum}</span>
+          <span className="cyklus-reward__residuum-label">{CURRENCY_LABELS.residuum}</span>
+        </div>
+      )}
+      {reward.reasons.length > 0 && (
+        <ul className="cyklus-reward__reasons">
+          {reward.reasons.map((r, i) => (
+            <li key={i} className="cyklus-reward__reason">{r}</li>
+          ))}
+        </ul>
+      )}
+      {specialCurrencies.length > 0 && (
+        <div className="cyklus-reward__special">
+          <div className="cyklus-reward__section-label">TEMATICKÉ FRAGMENTY</div>
+          <div className="cyklus-reward__currencies">
+            {specialCurrencies.map(([key, value]) => (
+              <div key={key} className="cyklus-reward__currency">
+                <span className="cyklus-reward__currency-value">+{value}</span>
+                <span className="cyklus-reward__currency-label">{CURRENCY_LABELS[key]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {reward.unlockedUpgrades.length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">NOVĚ DOSTUPNÉ PROTOKOLY</div>
+          {reward.unlockedUpgrades.map((id) => {
+            const u = SUBJECT_UPGRADES[id];
+            if (!u) return null;
+            return (
+              <div key={id} className="cyklus-reward__unlock">
+                <div className="cyklus-reward__unlock-title">{u.title}</div>
+                <div className="cyklus-reward__unlock-desc">{u.description}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {reward.unlockedScars.length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">NOVĚ DOSTUPNÉ JIZVY</div>
+          {reward.unlockedScars.map((id) => {
+            const s = SUBJECT_SCARS[id];
+            if (!s) return null;
+            return (
+              <div key={id} className="cyklus-reward__unlock">
+                <div className="cyklus-reward__unlock-title">{s.title}</div>
+                <div className="cyklus-reward__unlock-desc">{s.description}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {Object.keys(reward.craftingMaterials).length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">ZÍSKANÉ SUROVINY</div>
+          <div className="cyklus-reward__currencies">
+            {(Object.entries(reward.craftingMaterials) as [import('../../game/cyklus/cyklusProgression').CraftMaterialId, number][]).map(([key, value]) => (
+              <div key={key} className="cyklus-reward__currency">
+                <span className="cyklus-reward__currency-value">+{value}</span>
+                <span className="cyklus-reward__currency-label">{MATERIAL_LABELS[key]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {reward.unlockedRecipes.length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">ODEMČENÉ RECEPTY</div>
+          {reward.unlockedRecipes.map((id) => {
+            const r = CRAFT_RECIPES[id];
+            if (!r) return null;
+            return (
+              <div key={id} className="cyklus-reward__unlock">
+                <div className="cyklus-reward__unlock-title">{r.title}</div>
+                <div className="cyklus-reward__unlock-desc">{r.description}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {Object.keys(reward.profileMastery).length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">PROFILOVÝ POSUN</div>
+          {Object.entries(reward.profileMastery).map(([key, value]) => (
+            <div key={key} className="cyklus-reward__unlock">
+              <div className="cyklus-reward__unlock-title">{key}</div>
+              <div className="cyklus-reward__unlock-desc">+{value} zkušenosti</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {reward.voidRoomHints.length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">PRÁZDNOTA DOPORUČUJE</div>
+          {reward.voidRoomHints.map((id) => {
+            const room = VOID_ROOMS[id];
+            return (
+              <div key={id} className="cyklus-reward__unlock">
+                <div className="cyklus-reward__unlock-title">{room?.title ?? id}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {reward.recommendedActions.length > 0 && (
+        <div className="cyklus-reward__unlocks">
+          <div className="cyklus-reward__section-label">DALŠÍ KROKY</div>
+          <ul className="cyklus-reward__reasons">
+            {reward.recommendedActions.map((a, i) => (
+              <li key={i} className="cyklus-reward__reason">{a}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="cyklus-reward__purse">
+        <div className="cyklus-reward__section-label">STAV SUBJEKTU</div>
+        <div className="cyklus-reward__purse-currencies">
+          {(Object.entries(CURRENCY_LABELS) as [import('../../game/cyklus/cyklusProgression').MetaCurrencyId, string][]).map(([key, label]) => {
+            const value = progression.currencies[key] ?? 0;
+            return (
+              <div key={key} className="cyklus-reward__purse-currency">
+                <span className="cyklus-reward__purse-value">{value}</span>
+                <span className="cyklus-reward__purse-label">{label}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="cyklus-reward__loadout">
+          <div className="cyklus-reward__loadout-label">Aktivní protokoly ({progression.equippedUpgrades.length}/{limits.upgradeSlots}):</div>
+          {progression.equippedUpgrades.length === 0 ? (
+            <span className="cyklus-reward__loadout-empty">žádné</span>
+          ) : (
+            <div className="cyklus-reward__loadout-list">
+              {progression.equippedUpgrades.map((id) => {
+                const u = SUBJECT_UPGRADES[id];
+                return <span key={id} className="cyklus-reward__loadout-item">{u?.title ?? id}</span>;
+              })}
+            </div>
+          )}
+        </div>
+        {progression.activeScar && (
+          <div className="cyklus-reward__active-scar">
+            <span className="cyklus-reward__active-scar-label">Aktivní jizva:</span>
+            <span className="cyklus-reward__active-scar-title">{SUBJECT_SCARS[progression.activeScar]?.title ?? progression.activeScar}</span>
+          </div>
+        )}
+      </div>
+      <div className="cyklus-reward__advice">
+        <div className="cyklus-reward__section-label">DOPORUČENÍ SYSTÉMU</div>
+        <div className="cyklus-reward__advice-text">
+          {progression.equippedUpgrades.length < limits.upgradeSlots && (progression.currencies.residuum ?? 0) >= 20
+            ? 'Máš volný slot a reziduum. Zvaž protokol.'
+            : 'Příště nečti všechno, co se tváří jako pravda.'}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function DeathAnalysis({ state }: { state: CyklusRunState }) {
   const analysis = analyzeDeath(state);
   if (!analysis) return null;
   const card = getCardById(analysis.topContributors[0]?.cardId ?? '');
+  const blackBox = state.flags.includes('black_box_active');
   return (
     <div className="cyklus-death-analysis">
-      <div className="cyklus-death-analysis__title">Co tě zničilo</div>
+      <div className="cyklus-death-analysis__title">{blackBox ? 'Černá skříň: detail kolapsu' : 'Co tě zničilo'}</div>
       <div className="cyklus-death-analysis__stat">
         {STAT_LABELS[analysis.stat]} dosáhla {analysis.extreme === 'high' ? '100' : '0'}.
       </div>
+      {blackBox && card && (
+        <div className="cyklus-death-analysis__card">
+          <span className="cyklus-death-analysis__card-label">Rozhodující karta:</span>
+          <span className="cyklus-death-analysis__card-title">{card.title}</span>
+        </div>
+      )}
       {analysis.topContributors.length > 0 && (
         <div className="cyklus-death-analysis__contributors">
           <div className="cyklus-death-analysis__subtitle">Nejvíc ji ovlivnily:</div>
@@ -1017,9 +1250,10 @@ function limitedPreviewHint(hint: string): string {
   return 'Následek není plně jasný';
 }
 
-function directionPreview(preview: { hint: string; risk?: 'low' | 'medium' | 'high' | 'unknown'; statHints?: Partial<Record<StatKey, 'up' | 'down' | 'danger'>> } | undefined, dir: 'yes' | 'no', limited: boolean) {
+function directionPreview(state: CyklusRunState, card: SwipeCard, preview: { hint: string; risk?: 'low' | 'medium' | 'high' | 'unknown'; statHints?: Partial<Record<StatKey, 'up' | 'down' | 'danger'>> } | undefined, dir: 'yes' | 'no', limited: boolean) {
   if (!preview) return null;
-  const hint = limited ? limitedPreviewHint(preview.hint) : preview.hint;
+  const baseHint = limited ? limitedPreviewHint(preview.hint) : preview.hint;
+  const hint = applyMetaProgressionPreviewHint(state, card, baseHint);
   return (
     <div className={`cyklus-preview cyklus-preview--${dir}`}>
       <span className="cyklus-preview__hint">{hint}</span>

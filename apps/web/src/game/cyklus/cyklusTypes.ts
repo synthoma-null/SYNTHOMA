@@ -16,6 +16,7 @@ export type SectorId =
 export type EntityId =
   | 'sarkasma'
   | 'glitchka'
+  | 'glitchena'
   | 'tai'
   | 'archive'
   | 'form'
@@ -139,7 +140,30 @@ export interface SwipeCard {
   triggerMode?: TriggerMode;
   ifInvalid?: ScheduledIfInvalid;
   qualityHint?: 'intentionally_thin' | 'narrative_pause' | 'stat_only_ok';
+  packId?: string;
+  role?: PackCardRole;
+  tone?: string[];
 }
+
+export type PackCardRole =
+  | 'entry'
+  | 'temptation'
+  | 'object'
+  | 'escalation'
+  | 'twist'
+  | 'bill'
+  | 'resolution'
+  | 'echo';
+
+export type PackTone =
+  | 'absurd'
+  | 'brutal'
+  | 'romantic'
+  | 'erotic_symbolic'
+  | 'horror'
+  | 'tender'
+  | 'comic'
+  | 'tragic';
 
 export interface CyklusItem {
   id: string;
@@ -264,6 +288,7 @@ export interface CyklusRunState {
   goals: CyklusRunGoal[];
   lastItemActivationCycle: number;
   itemActivationCount: number;
+  itemActivationCountThisCycle: number;
   activeContracts: string[];
   preRunWarning: string | null;
   preRunChoice: string | null;
@@ -381,6 +406,7 @@ export const SECTOR_LABELS: Record<SectorId, string> = {
 export const ENTITY_LABELS: Record<EntityId, string> = {
   sarkasma: 'Sarkasma',
   glitchka: 'Glitchka',
+  glitchena: 'Glitchena',
   tai: 'T-AI',
   archive: 'Archiv',
   form: 'Form Office',

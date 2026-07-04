@@ -16,7 +16,7 @@ import {
   getTopScoredCards,
   getCardById,
 } from '../cyklusEngine';
-import { CYKLUS_CARDS } from '../cyklusCards';
+import { CYKLUS_CARDS } from '../content';
 import { evaluateFindings, getDeathUnlocks, CYKLUS_FINDINGS } from '../cyklusFindings';
 import type { CyklusRunState, StatKey } from '../cyklusTypes';
 

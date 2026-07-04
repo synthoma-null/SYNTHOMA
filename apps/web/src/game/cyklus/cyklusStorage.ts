@@ -34,6 +34,7 @@ function migrateState(parsed: Partial<CyklusRunState>): CyklusRunState {
   if (!parsed.goals) parsed.goals = [];
   if (parsed.lastItemActivationCycle === undefined) parsed.lastItemActivationCycle = 0;
   if (parsed.itemActivationCount === undefined) parsed.itemActivationCount = 0;
+  if (parsed.itemActivationCountThisCycle === undefined) parsed.itemActivationCountThisCycle = 0;
   if (!parsed.activeContracts) parsed.activeContracts = [];
   if (parsed.preRunWarning === undefined) parsed.preRunWarning = null;
   if (parsed.preRunChoice === undefined) parsed.preRunChoice = null;
