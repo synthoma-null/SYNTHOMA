@@ -6,24 +6,25 @@ Tento dokument popisuje architekturu, datový model a herní smyčku modulu `cyk
 
 Modul je čistě klientský. Herní stav žije v React komponentě `CyklusClient`, engine je bezstavový (funkce přijímají stav a vracejí nový stav). Ukládání probíhá do `localStorage`.
 
-| Vrstva           | Soubor                                        | Účel                                                                               |
-|------------------|-----------------------------------------------|------------------------------------------------------------------------------------|
-| UI               | `src/components/cyklus/CyklusClient.tsx`    | React komponenta, ovládání, zobrazení karet, endingů, inventáře, reward screen.    |
-| UI               | `src/components/cyklus/CyklusVoidHub.tsx`     | Meziběhový meta-progression hub (místnosti, protokoly, upgrady, crafting, jizvy).   |
-| Styly            | `src/styles/cyklus.css`                       | Vizuální styl karet, statů, outcome, tlačítek, menu, story logu, Void hub.         |
-| Engine           | `src/game/cyklus/cyklusEngine.ts`             | Herní logika: výběr karet, efekty, krizové itemy, konce, dopad, meta skórování.    |
-| Typy             | `src/game/cyklus/cyklusTypes.ts`              | TypeScript definice stavu, efektů, karet, endingů.                                 |
-| Karty            | `src/game/cyklus/cyklusCards.ts` + packs      | Databáze všech karet (scény, efekty, podmínky, tagy).                              |
-| Itemy            | `src/game/cyklus/cyklusItems.ts`              | Itemy a jejich pasivní efekty.                                                     |
-| Imprinty         | `src/game/cyklus/cyklusImprints.ts`           | Imprinty a odemykání poolů.                                                        |
-| Unlocky          | `src/game/cyklus/cyklusUnlocks.ts`            | Podmínky pro odemčení karet/poolů.                                                 |
-| Storage          | `src/game/cyklus/cyklusStorage.ts`            | Ukládání/načítání běhu z localStorage; migrace starých stavů.                      |
-| Discovery        | `src/game/cyklus/cyklusDiscovery.ts`          | Archiv nalezených karet, sektorů, itemů, otisků, endings, variant, nálezů.         |
-| Findings         | `src/game/cyklus/cyklusFindings.ts`           | Diagnostické nálezy, meta unlocky, death unlocky.                                  |
-| Item mood        | `src/game/cyklus/cyklusItemMood.ts`           | Kapsa s mood klasifikací itemů a ambientními texty.                                |
-| Testy            | `src/game/cyklus/__tests__/*.test.ts`         | Jest unit testy enginu, progression a obsahu.                                        |
-| UI testy         | `src/components/cyklus/__tests__/*.test.tsx`  | Jest + React Testing Library testy pro UI komponenty.                                |
-| Meta-progression | `src/game/cyklus/cyklusProgression.ts`        | Progression store, měny, místnosti Prázdnoty, protokoly, crafting, loadout, jizvy. |
+| Vrstva           | Soubor                                         | Účel                                                                               |
+|------------------|------------------------------------------------|------------------------------------------------------------------------------------|
+| UI               | `src/components/cyklus/CyklusClient.tsx`       | React komponenta, ovládání, zobrazení karet, endingů, inventáře, reward screen.  |
+| UI               | `src/components/cyklus/CyklusVoidHub.tsx`      | Meziběhový meta-progression hub (místnosti, protokoly, upgrady, crafting, jizvy). |
+| Styly            | `src/styles/cyklus.css`                        | Vizuální styl karet, statů, outcome, tlačítek, menu, story logu, Void hub.         |
+| Engine           | `src/game/cyklus/cyklusEngine.ts`              | Herní logika: karty, efekty, krize, konce, dopad, meta skórování, story directive. |
+| Typy             | `src/game/cyklus/cyklusTypes.ts`               | TypeScript definice stavu, efektů, karet, endingů.                               |
+| Karty            | `src/game/cyklus/cyklusCards.ts` + packs       | Databáze všech karet (scény, efekty, podmínky, tagy).                              |
+| Itemy            | `src/game/cyklus/cyklusItems.ts`               | Itemy a jejich pasivní efekty.                                                     |
+| Imprinty         | `src/game/cyklus/cyklusImprints.ts`            | Imprinty a odemykání poolů.                                                        |
+| Unlocky          | `src/game/cyklus/cyklusUnlocks.ts`             | Podmínky pro odemčení karet/poolů.                                                 |
+| Storage          | `src/game/cyklus/cyklusStorage.ts`             | Ukládání/načítání běhu z localStorage; migrace starých stavů.                    |
+| Discovery        | `src/game/cyklus/cyklusDiscovery.ts`           | Archiv nalezených karet, sektorů, itemů, otisků, endings, variant, nálezů.        |
+| Findings         | `src/game/cyklus/cyklusFindings.ts`            | Diagnostické nálezy, meta unlocky, death unlocky.                                 |
+| Item mood        | `src/game/cyklus/cyklusItemMood.ts`            | Kapsa s mood klasifikací itemů a ambientními texty.                               |
+| Story            | `src/game/cyklus/cyklusStory.ts`               | Story progression, akt, thread, directive, interlude scheduling.                   |
+| Testy            | `src/game/cyklus/__tests__/*.test.ts`          | Jest unit testy enginu, progression a obsahu.                                      |
+| UI testy         | `src/components/cyklus/__tests__/*.test.tsx`   | Jest + React Testing Library testy pro UI komponenty.                              |
+| Meta-progression | `src/game/cyklus/cyklusProgression.ts`         | Progression store, měny, místnosti Prázdnoty, protokoly, crafting, loadout, jizvy. |
 
 ## Herní stav (`CyklusRunState`)
 
@@ -181,14 +182,15 @@ Scheduled karty obcházejí anti-repetition penalizaci (dostávají fixní skór
 
 ## Výběr karet (`pickNextCard`)
 
-1. **Restart sekvence** — `restart_0` až `restart_5` mají absolutní prioritu.
-2. `getCardPool` filtruje karty:
+1. **Tutorial protection** — dokud není `tutorial_v2_done` nebo `tutorial_15_ready` v `usedCardIds`, tutorial karty mají prioritu a story interlude se nezobrazuje.
+2. **Story directive** — pokud `StoryDirective` vydá `forcedCardId` (např. restart prolog), karta se vynutí jen když není aktivní tutorial.
+3. `getCardPool` filtruje karty:
    - `once` karta již použita → out.
    - `maxUses` vyčerpán → out.
    - `cooldown` (alias pro maxUses) vyčerpán → out.
    - `cooldownTurns` — méně tahů od posledního použití než limit → out.
    - `triggerMode: 'scheduledOnly'` — karta není ready-scheduled → out.
-3. `explainCardScore` (nebo `scoreCard`) ohodnotí každou kartu:
+4. `explainCardScore` (nebo `scoreCard`) ohodnotí každou kartu:
    - Ready-scheduled: **10 000** (bypass anti-repeat).
    - Crisis: +500, item trigger: +400, followup: +300.
    - `cardMatchesCurrentSector`: +250.
@@ -197,8 +199,8 @@ Scheduled karty obcházejí anti-repetition penalizaci (dostávají fixní skór
    - Profilová afinita: +10.
    - Anti-repetition: okamžitá → 0, ≤3 tahy → 0, ≤6 → −900, ≤10 → −500, ≤15 → −200.
    - `applyTensionScore`: ±100–150 podle streaků.
-4. Top 8 kandidátů → **seeded weighted random** (`weightedPick` s `seed` a `rngStep`).
-5. Pokud jsou ready-scheduled karty, výběr proběhne jen z nich.
+5. Top 8 kandidátů → **seeded weighted random** (`weightedPick` s `seed` a `rngStep`).
+6. Pokud jsou ready-scheduled karty, výběr proběhne jen z nich.
 
 ### Debug helper
 
@@ -371,6 +373,25 @@ Výsledkem receptu je `CraftedArtifact`, který lze vybavit do slotu a který p�
 - Hub je integrován v `CyklusClient` jako tlačítko v menu a end screenu, předává `onStartRun` pro plynulý přechod do nového běhu.
 - Testy pro `CyklusVoidHub` pokrývají render, interakce a dynamické sloty.
 
+## C5 — Story Director
+
+- `cyklusStory.ts` definuje `StoryProgression`, `StoryActId`, `StoryEpisodeId` a `StoryDirective`.
+- `getStoryDirective(state, story)` vrací `forcedCardId`, preferované packy/tagy, potlačené tagy a preferred sektory.
+- **Restart prologue** — dokud hráč neviděl `restart_5`, `pickNextCard` vynucuje `restart_0`…`restart_5` (pokud není aktivní tutorial).
+- **Act progression** — akt se posouvá podle počtu navštívených sektorů, celkových smrtí, nebo použitých pack karet.
+- **Threads** — `StoryEpisodeId` (glitchka, sarkasma, tai, desire, toll, archive) odemykají packy a epizody; `selectStoryThread` zapíše akt.
+- **Interlude** — `scheduleInterludeIfDue` přidá interlude kartu každý sudý cyklus, ale **ne během tutorialu**.
+- **Story tab** — `CyklusVoidHub` zobrazuje akt, dokončené epizody, thread selector a pack progress.
+- `updateStoryAfterChoice` a `updateStoryAfterRun` se volají v `CyklusClient` a přepisují localStorage key `synthoma_cyklus_story_v1`.
+
+## C5.1 — Tutorial V2
+
+- `cyklusCards.ts` obsahuje 16 tutorial karet (`tutorial_00_welcome` až `tutorial_15_ready`).
+- `createCyklusRun(skipTutorial)` začíná `tutorial_00_welcome` pro nové hráče; skip začíná prologem.
+- `cyklusStorage.ts` ukládá `synthoma_cyklus_tutorial_v2_seen` pro trvalé přeskočení tutorialu.
+- `CyklusClient` zobrazuje `cyklus-tutorial-progress` panel a tlačítko `Přeskočit` s potvrzovacím overlay.
+- Skip nastaví `tutorial_v2_done` + `tutorial_done` a skočí na `restart_0`.
+
 ## Testy
 
 ```bash
@@ -378,7 +399,7 @@ npx jest src/game/cyklus --no-coverage
 npx jest src/components/cyklus --no-coverage
 ```
 
-Pokrytí (111+ testů):
+Pokrytí (138+ testů):
 
 - Vytvoření běhu, restart sekvence.
 - Smrt při statu 0/100, krizové itemy, rubber stamp.
@@ -390,9 +411,11 @@ Pokrytí (111+ testů):
 - Shrnutí běhu, analýza smrti, stabilizační pokrok, export záznamu.
 - **Content reachability** — každý odkazovaný item, imprint, pool, karta a flag existuje.
 - C2 helpers: `updateRunGoals`, `checkItemCombos`, `getComboHint`, `getActiveContracts`, `generatePreRunWarning`, goal reward application, overload risk tags.
-- Simulace: balance assertions (death 40–70%, completion ≤ 65%) a campaign progression.
+- Simulace: sanity (100 runs bez výjimky), balance assertions (death 40–70%, completion ≤ 65%) a campaign progression.
 - C4.1 meta-progression: migrace starého save, void room upgrade, profilové mastery, nákup/vybavení protokolů, crafting, vybavení artefaktů, loadout limity, absence čistých stat boostů bez drawbacku.
 - C4.2 UI: `CyklusVoidHub` render, interakce místností/protokolů/upgradů/artefaktů/jizev, craft tlačítko, dynamické sloty.
+- C5 Story Director: `getStoryDirective`, `updateStoryAfterChoice`, `updateStoryAfterRun`, interlude scheduling, restart prologue forcing.
+- C5.1 Tutorial V2: 16 karet, linked scheduling, `tutorial_v2_done` flag, skip button, UI progress panel, restart blocking.
 
 ## Rozšiřitelnost
 
@@ -407,3 +430,6 @@ Pokrytí (111+ testů):
 - **Tension** → `updateTension` a `applyTensionScore`.
 - **Příběhový dopad** → `composeImpactNarrative` a `statChangeNarrative`.
 - **Nový konec** → `computeEnding` a `summarizeRun`.
+- **Nový story act** → `StoryActId` v `cyklusStory.ts`, aktualizovat `ACT_DIRECTIVES`, `actProgressionRules` a `interludeMap` v `cyklusEngine.ts`.
+- **Nový thread** → `StoryEpisodeId` v `cyklusStory.ts` + pack podmínky v `cyklusUnlocks.ts`.
+- **Nová tutorial karta** → `CYKLUS_CARDS` se jménem `tutorial_XX_*`, `category: 'tutorial'`, `rarity: 'unique'`, `triggerMode: 'scheduledOnly'`, `once: true`. Přidat entry do `TUTORIAL_PROGRESS_MAP` v `CyklusClient.tsx`.

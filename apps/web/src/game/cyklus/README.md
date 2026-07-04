@@ -142,10 +142,10 @@ Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihl�
 
 | Asset               | Count |
 |---------------------|-------|
-| Cards               | 300+  |
-| Items               | 24    |
-| Imprints            | 11    |
-| Unlock conditions   | 21    |
+| Cards               | 315+  |
+| Items               | 24+   |
+| Imprints            | 11+   |
+| Unlock conditions   | 21+   |
 | Diagnostic findings | 12    |
 | Profile protocols   | 8     |
 | Void rooms          | 9     |
@@ -153,6 +153,28 @@ Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihl�
 | Crafted artifacts   | 8     |
 | Craft recipes       | 8     |
 | Subject scars       | 6     |
+| Story acts          | 6     |
+| Tutorial V2 cards   | 16    |
+
+## Story Director (C5)
+
+Příběh není lineární, ale řízený stavem. `cyklusStory.ts` udržuje `StoryProgression` (akt, seen story events, thread, restart prologue fatigue, pack progress) a vydává `StoryDirective`:
+
+- **Restart prologue** — dokud hráč neviděl `restart_0`…`restart_5`, engine vynucuje tuto sekvenci před normální smyčkou.
+- **Act progression** — akt se posouvá podle počtu sektorů, smrtí nebo použitých pack karet; preferované packy a tagy se mění.
+- **Threads** — episodní linky (Glitchka, Sarkasma, T-AI, Desire, Toll, Archive) odemykají packy a epizody.
+- **Interlude** — každý sudý cyklus se scheduleuje interlude karta podle aktu (`interlude_glitchka_sandbox`, `interlude_sarkasma_blackbox`, …).
+- **Storage** — progress se ukládá do `localStorage` pod klíčem `synthoma_cyklus_story_v1` a po běhu se aktualizuje v `CyklusClient`.
+
+## Tutorial V2
+
+Starý 4-kartový tutorial byl nahrazen sekvencí 16 diegetických karet `tutorial_00_welcome` → `tutorial_15_ready`:
+
+- Každá karta vysvětluje jeden mechanický koncept (staty, rovnováha, preview, profil, itemy, otisky, následky, sektory, cyklus, restart, Void Hub, progrese, packy, start).
+- Všechny tutorial karty mají `category: 'tutorial'`, `rarity: 'unique'`, `triggerMode: 'scheduledOnly'`, `once: true`.
+- Finální karta `tutorial_15_ready` nastaví `tutorial_v2_done` + `tutorial_done` a scheduleuje `restart_0`.
+- Pro nové hráče začíná běh `tutorial_00_welcome`; pro hráče, kteří tutorial už viděli, začíná rovnou prologem.
+- UI zobrazuje `TUTORIAL X / 16` + label mechaniky + Sarkasmin závěr. Tlačítko *Přeskočit* uloží `tutorial_v2_done` a skočí na `restart_0`.
 
 ## Meta-progression (C4 — operating table of one's own identity)
 
