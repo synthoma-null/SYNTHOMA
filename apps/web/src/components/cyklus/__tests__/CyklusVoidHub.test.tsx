@@ -189,4 +189,19 @@ describe('CyklusVoidHub', () => {
     expect(screen.getByText(/Upgrady: 0 \/ 4/)).toBeInTheDocument();
     spy.mockRestore();
   });
+
+  it('renders story tab with act and threads', () => {
+    const originalGetItem = Storage.prototype.getItem;
+    const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
+      if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
+      if (key === 'synthoma_cyklus_story_v1') return JSON.stringify({ currentAct: 'act1_sandbox_glitchka', completedEpisodes: [], seenStoryEvents: [], restartPrologueSeen: true, restartFatigue: 0, packProgress: {} });
+      return originalGetItem.call(localStorage, key);
+    });
+    mockProgression();
+    render(<CyklusVoidHub />);
+    fireEvent.click(screen.getByText('Příběh'));
+    expect(screen.getByText(/Akt:/)).toBeInTheDocument();
+    expect(screen.getByText(/Pískoviště a Glitchka/)).toBeInTheDocument();
+    spy.mockRestore();
+  });
 });

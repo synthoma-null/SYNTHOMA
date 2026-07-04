@@ -3,8 +3,19 @@ import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
 import { CYKLUS_CARDS, CYKLUS_IMPRINTS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
 import { CYKLUS_UNLOCKS } from './cyklusUnlocks';
-import { loadCyklusRunHistory } from './cyklusStorage';
+import { loadCyklusRunHistory, isTutorialV2Seen } from './cyklusStorage';
 import { applyProgressionToNewRun, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, PROFILE_PROTOCOLS, CRAFTED_ARTIFACTS, type RunReward } from './cyklusProgression';
+import {
+  loadStoryProgression,
+  getStoryDirective,
+  getNextRestartPrologueCardId,
+  applyStoryScore,
+  updateStoryAfterChoice,
+  updateStoryAfterRun,
+  getStoryInitialSector,
+  getStoryStartFlags,
+  saveStoryProgression,
+} from './cyklusStory';
 
 const CHOICES_PER_CYCLE = 12;
 const MAX_DIFFICULTY = 5;
@@ -156,7 +167,7 @@ function computeBaselineProfileFromHistory(history: CyklusRunSummary[]): Partial
   return result;
 }
 
-export function createCyklusRun(tutorialSeen = false): CyklusRunState {
+export function createCyklusRun(skipTutorial = false): CyklusRunState {
   const now = Date.now();
   const seed = `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   const startStats = { energy: 50, memory: 50, bond: 50, control: 50 };
@@ -164,6 +175,13 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
   const modifier = pickRunModifier(seed);
   const history = loadCyklusRunHistory();
   const baselineProfile = computeBaselineProfileFromHistory(history);
+  const story = loadStoryProgression();
+  const startSector = getStoryInitialSector(story) ?? 'void';
+  const startFlags = getStoryStartFlags(story);
+  const showTutorial = !skipTutorial && !isTutorialV2Seen();
+  const currentCardId = showTutorial
+    ? 'tutorial_00_welcome'
+    : (story.restartPrologueSeen ? 'first_boot' : 'restart_0');
   const state: CyklusRunState = {
     id: `cyklus_${now}_${seed.slice(-6)}`,
     status: 'playing',
@@ -171,19 +189,19 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
     choiceInCycle: 1,
     totalChoices: 0,
     difficulty: 1,
-    sector: 'void',
-    visitedSectors: ['void'],
+    sector: startSector,
+    visitedSectors: [startSector],
     stats: { ...startStats },
     profile: { ...baselineProfile },
     inventory: [],
-    flags: [],
+    flags: startFlags,
     imprints: [],
     scheduledCards: [],
     entityRelations: {},
     unlockedPools,
     unlockedCards,
     usedCardIds: [],
-    currentCardId: tutorialSeen ? 'restart_0' : 'tutorial_stats',
+    currentCardId,
     cycleSummaries: [],
     history: [],
     startedAt: now,
@@ -890,6 +908,13 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
 
   s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card), freshMetaPools, activeContracts };
 
+  // Persist story progression after each choice so the next card follows the narrative arc
+  if (typeof window !== 'undefined') {
+    const story = loadStoryProgression();
+    const updatedStory = updateStoryAfterChoice(story, s, card.id, direction);
+    saveStoryProgression(updatedStory);
+  }
+
   // Check for ending
   const ending = computeEnding(s);
   if (ending) {
@@ -963,9 +988,33 @@ function clearScheduledCard(state: CyklusRunState, cardId: string): CyklusRunSta
 
 const CYCLE_CENTER_DRIFT = 0.15;
 
+function scheduleInterludeIfDue(state: CyklusRunState): CyklusRunState {
+  if (state.cycle % 2 !== 0) return state;
+  const tutorialDone = state.flags.includes('tutorial_v2_done') || state.usedCardIds.includes('tutorial_15_ready');
+  if (!tutorialDone) return state;
+  const story = loadStoryProgression();
+  const interludeMap: Record<import('./cyklusStory').StoryActId, string> = {
+    act0_restart_prologue: 'interlude_glitchka_sandbox',
+    act1_sandbox_glitchka: 'interlude_glitchka_sandbox',
+    act2_sarkasma_blackbox: 'interlude_sarkasma_blackbox',
+    act3_desire_residuum: 'interlude_residuum_desire',
+    act4_detective_toll: 'interlude_detective_toll',
+    act5_no_restart: 'interlude_no_restart',
+  };
+  const cardId = interludeMap[story.currentAct];
+  if (!cardId) return state;
+  if (state.usedCardIds.includes(cardId)) return state;
+  if (state.scheduledCards.some((sc) => sc.cardId === cardId)) return state;
+  return {
+    ...state,
+    scheduledCards: [...state.scheduledCards, { cardId, turnsRemaining: 2, cycle: state.cycle }],
+  };
+}
+
 function processCycleEnd(state: CyklusRunState): CyklusRunState {
   let s = { ...state, cycle: state.cycle + 1, choiceInCycle: 1, itemActivationCountThisCycle: 0 };
   s = { ...s, difficulty: Math.min(MAX_DIFFICULTY, s.difficulty + 1) };
+  s = scheduleInterludeIfDue(s);
   // Add imprint based on dominant stat — pick first from pool not yet owned
   const dominantStat = getDominantStat(s);
   const imprintPools: Record<StatKey, string[]> = {
@@ -1447,6 +1496,13 @@ export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardSc
   if (metaDelta !== 0) reasons.push(`meta ${metaDelta > 0 ? '+' : ''}${metaDelta}`);
   score = metaScore;
 
+  const story = loadStoryProgression();
+  const directive = getStoryDirective(state, story);
+  const storyResult = applyStoryScore(state, score, card, directive, story);
+  const storyDelta = storyResult.score - score;
+  if (storyDelta !== 0) reasons.push(...storyResult.reasons);
+  score = storyResult.score;
+
   return { card, score, reasons };
 }
 
@@ -1481,12 +1537,21 @@ function weightedPick<T>(candidates: { item: T; weight: number }[], seed: string
 const TOP_CANDIDATES = 8;
 
 export function pickNextCard(state: CyklusRunState): SwipeCard {
-  const tutorialDone = state.flags.includes('tutorial_done') || state.usedCardIds.includes('tutorial_consequences');
+  const tutorialDone =
+    state.flags.includes('tutorial_v2_done') ||
+    state.flags.includes('tutorial_done') ||
+    state.usedCardIds.includes('tutorial_15_ready') ||
+    state.usedCardIds.includes('tutorial_consequences');
   const hasPendingTutorial = state.scheduledCards.some((sc) => sc.cardId.startsWith('tutorial_'));
   const isOnTutorialCard = state.currentCardId.startsWith('tutorial_');
   const tutorialActive = !tutorialDone && (hasPendingTutorial || isOnTutorialCard);
-  const nextRestart = tutorialActive ? null : getNextRestartCard(state);
-  if (nextRestart) return nextRestart;
+
+  const story = loadStoryProgression();
+  const storyDirective = getStoryDirective(state, story);
+  if (!tutorialActive && storyDirective.forcedCardId) {
+    const forced = CYKLUS_CARDS[storyDirective.forcedCardId];
+    if (forced && checkCardConditions(state, forced)) return forced;
+  }
 
   const pool = getCardPool(state);
   const scored = pool.map((card) => ({ card, score: scoreCard(state, card) })).filter((entry) => entry.score > 0);

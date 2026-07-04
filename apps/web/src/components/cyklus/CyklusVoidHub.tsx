@@ -38,8 +38,18 @@ import {
 } from '../../game/cyklus/cyklusProgression';
 import type { ProfileKey } from '../../game/cyklus/cyklusTypes';
 import { loadDiscovery } from '../../game/cyklus/cyklusDiscovery';
+import {
+  loadStoryProgression,
+  saveStoryProgression,
+  setActiveThread,
+  getStoryActTitle,
+  getStoryActDescription,
+  getAvailableStoryThreads,
+  getActiveThreadInfo,
+  type StoryProgression,
+} from '../../game/cyklus/cyklusStory';
 
-type Tab = 'overview' | 'rooms' | 'protocols' | 'upgrades' | 'pocket' | 'crafting' | 'scars';
+type Tab = 'overview' | 'rooms' | 'protocols' | 'upgrades' | 'pocket' | 'crafting' | 'scars' | 'story';
 
 interface Props {
   onClose?: () => void;
@@ -50,9 +60,11 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
   const [progression, setProgression] = useState(loadSubjectProgression);
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [message, setMessage] = useState<string | null>(null);
+  const [story, setStory] = useState<StoryProgression>(loadStoryProgression);
 
   const refresh = useCallback(() => {
     setProgression(loadSubjectProgression());
+    setStory(loadStoryProgression());
   }, []);
 
   const showMessage = useCallback((text: string) => {
@@ -455,8 +467,74 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
     );
   }
 
+  function renderStory() {
+    const activeThread = getActiveThreadInfo(story);
+    const availableThreads = getAvailableStoryThreads(story, discovery, progression);
+    const handleSetThread = (threadId: StoryProgression['activeThread']) => {
+      const updated = setActiveThread(story, threadId);
+      saveStoryProgression(updated);
+      setStory(updated);
+      showMessage(activeThread?.id === threadId ? 'Stopa zůstává aktivní.' : 'Příběhová stopa vybrána. Příští run začne jinde.');
+    };
+    return (
+      <div className="cyklus-void-panel">
+        <div className="cyklus-void-section">
+          <div className="cyklus-void-section__title">Akt: {getStoryActTitle(story.currentAct)}</div>
+          <p className="cyklus-void-flavour">{getStoryActDescription(story.currentAct)}</p>
+        </div>
+        {activeThread && (
+          <div className="cyklus-void-section">
+            <div className="cyklus-void-section__title">Aktivní stopa</div>
+            <div className="cyklus-void-card cyklus-void-card--equipped">
+              <div className="cyklus-void-card__title">{activeThread.title}</div>
+              <div className="cyklus-void-card__desc">{activeThread.description}</div>
+              <div className="cyklus-void-card__meta">Sektor: {activeThread.preferredSector}</div>
+            </div>
+          </div>
+        )}
+        {story.completedEpisodes.length > 0 && (
+          <div className="cyklus-void-section">
+            <div className="cyklus-void-section__title">Dokončené epizody</div>
+            <ul className="cyklus-void-list">
+              {story.completedEpisodes.map((ep) => (
+                <li key={ep} className="cyklus-void-list__item">{ep}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {availableThreads.length > 0 && (
+          <div className="cyklus-void-section">
+            <div className="cyklus-void-section__title">Dostupné další stopy</div>
+            <div className="cyklus-void-grid">
+              {availableThreads.map((thread) => (
+                <div key={thread.id} className={`cyklus-void-card ${story.activeThread === thread.id ? 'cyklus-void-card--equipped' : ''}`}>
+                  <div className="cyklus-void-card__title">{thread.title}</div>
+                  <div className="cyklus-void-card__desc">{thread.description}</div>
+                  <div className="cyklus-void-card__meta">Sektor: {thread.preferredSector}</div>
+                  <div className="cyklus-void-actions">
+                    <button className="cyklus-void-button" onClick={() => handleSetThread(thread.id)}>
+                      {story.activeThread === thread.id ? 'AKTIVNÍ' : 'VYBRAT'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {activeThread && (
+          <div className="cyklus-void-actions">
+            <button className="cyklus-void-button cyklus-void-button--danger" onClick={() => handleSetThread(undefined)}>
+              ZRUŠIT AKTIVNÍ STOPU
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const tabs: { id: Tab; label: string }[] = [
     { id: 'overview', label: 'Přehled' },
+    { id: 'story', label: 'Příběh' },
     { id: 'rooms', label: 'Místnosti' },
     { id: 'protocols', label: 'Protokoly' },
     { id: 'upgrades', label: 'Upgrady' },
@@ -495,6 +573,7 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
         </div>
         <div className="cyklus-void-hub__content">
           {activeTab === 'overview' && renderOverview()}
+          {activeTab === 'story' && renderStory()}
           {activeTab === 'rooms' && renderRooms()}
           {activeTab === 'protocols' && renderProtocols()}
           {activeTab === 'upgrades' && renderUpgrades()}

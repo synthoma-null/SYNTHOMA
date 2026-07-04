@@ -261,7 +261,7 @@ getTopScoredCards(state, 5)    // top N karet s rozpisem skóre
 ## UI / CSS vylepšení
 
 - `StatDock` highlights chips whose values changed after a choice (`cyklus-stat-chip--changed`) and accepts `highlight` for tutorial focus (`cyklus-stat-chip--highlight`).
-- Tutorial cards (`tutorial_stats`, `tutorial_balance`, `tutorial_choice`, `tutorial_consequences`) pulse the corresponding UI element (stats, action buttons, pocket).
+- Tutorial V2 (`tutorial_00_welcome` through `tutorial_15_ready`) replaces the old 4-card tutorial. Progress panel shows `TUTORIAL X / 16` + mechanic label + sarcastic summary. Skip button stores `tutorial_v2_done` and jumps to `restart_0`.
 - Pocket shows mood-based ambient glow via `cyklus-pocket--mood-{mood}`; `unstable` and `angry` items pulse subtly.
 - Mobile-first responsive tweaks keep the stat dock sticky and readable down to 360 px.
 - `focus-visible` rings and `prefers-reduced-motion` guards improve accessibility.

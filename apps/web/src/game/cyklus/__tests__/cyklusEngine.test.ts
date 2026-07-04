@@ -39,6 +39,9 @@ import { updateDiscoveryFromRun } from '../cyklusDiscovery';
 import { loadCyklusRun } from '../cyklusStorage';
 
 describe('Cyklus engine', () => {
+  beforeEach(() => {
+    if (typeof localStorage !== 'undefined') localStorage.removeItem('synthoma_cyklus_story_v1');
+  });
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -52,9 +55,14 @@ describe('Cyklus engine', () => {
       expect(state.sector).toBe('void');
       expect(state.visitedSectors).toContain('void');
     });
-    it('starts with tutorial_stats when tutorial not seen', () => {
+    it('starts with tutorial_00_welcome when tutorial not seen', () => {
       const state = createCyklusRun(false);
-      expect(state.currentCardId).toBe('tutorial_stats');
+      expect(state.currentCardId).toBe('tutorial_00_welcome');
+    });
+
+    it('starts with restart_0 or first_boot when tutorial skipped', () => {
+      const state = createCyklusRun(true);
+      expect(['restart_0', 'first_boot']).toContain(state.currentCardId);
     });
 
     it('migrates old partial save to include new state fields', () => {
@@ -885,6 +893,84 @@ describe('Cyklus engine', () => {
       expect(d.cards).toContain('first_boot');
       expect(d.variants).toContain('variant_a');
       expect(d.findings).toContain('finding_x');
+    });
+  });
+
+  describe('tutorial V2', () => {
+    it('tutorial cards are unique, scheduledOnly, category tutorial', () => {
+      const tutorialIds = Object.keys(CYKLUS_CARDS).filter((id) => id.startsWith('tutorial_'));
+      expect(tutorialIds.length).toBeGreaterThanOrEqual(16);
+      for (const id of tutorialIds) {
+        const card = CYKLUS_CARDS[id]!;
+        expect(card.category).toBe('tutorial');
+        expect(card.rarity).toBe('unique');
+        expect(card.once).toBe(true);
+        expect(card.triggerMode).toBe('scheduledOnly');
+        expect(card.yes).toBeDefined();
+        expect(card.no).toBeDefined();
+        expect(card.yes.preview).toBeDefined();
+        expect(card.no.preview).toBeDefined();
+      }
+    });
+
+    it('tutorial_00_welcome schedules tutorial_01_swipe', () => {
+      const card = CYKLUS_CARDS['tutorial_00_welcome']!;
+      const yesSchedule = card.yes.effects.find((e) => e.type === 'schedule');
+      const noSchedule = card.no.effects.find((e) => e.type === 'schedule');
+      expect(yesSchedule?.type === 'schedule' ? yesSchedule.cardId : '').toBe('tutorial_01_swipe');
+      expect(noSchedule?.type === 'schedule' ? noSchedule.cardId : '').toBe('tutorial_01_swipe');
+    });
+
+    it('tutorial sequence is a linked chain', () => {
+      const ids = [
+        'tutorial_00_welcome', 'tutorial_01_swipe', 'tutorial_02_stats', 'tutorial_03_balance',
+        'tutorial_04_preview', 'tutorial_05_profile', 'tutorial_06_items', 'tutorial_07_imprints',
+        'tutorial_08_consequences', 'tutorial_09_sectors', 'tutorial_10_cycle', 'tutorial_11_restart',
+        'tutorial_12_void', 'tutorial_13_progression', 'tutorial_14_packs', 'tutorial_15_ready',
+      ];
+      for (let i = 0; i < ids.length - 1; i++) {
+        const card = CYKLUS_CARDS[ids[i]!]!;
+        const next = ids[i + 1]!;
+        const yesNext = card.yes.effects.find((e) => e.type === 'schedule');
+        const noNext = card.no.effects.find((e) => e.type === 'schedule');
+        expect(yesNext?.type === 'schedule' ? yesNext.cardId : '').toBe(next);
+        expect(noNext?.type === 'schedule' ? noNext.cardId : '').toBe(next);
+      }
+    });
+
+    it('tutorial_15_ready sets tutorial_v2_done and schedules restart_0', () => {
+      const card = CYKLUS_CARDS['tutorial_15_ready']!;
+      const yesFlags = card.yes.effects.filter((e) => e.type === 'flag').map((e) => e.flag);
+      const noFlags = card.no.effects.filter((e) => e.type === 'flag').map((e) => e.flag);
+      expect(yesFlags).toContain('tutorial_v2_done');
+      expect(noFlags).toContain('tutorial_v2_done');
+      const yesSchedule = card.yes.effects.find((e) => e.type === 'schedule');
+      const noSchedule = card.no.effects.find((e) => e.type === 'schedule');
+      expect(yesSchedule?.type === 'schedule' ? yesSchedule.cardId : '').toBe('restart_0');
+      expect(noSchedule?.type === 'schedule' ? noSchedule.cardId : '').toBe('restart_0');
+    });
+
+    it('pickNextCard does not force restart before tutorial_v2_done', () => {
+      let state = createCyklusRun(false);
+      expect(state.currentCardId).toBe('tutorial_00_welcome');
+      for (let i = 0; i < 20; i++) {
+        if (state.currentCardId === 'tutorial_15_ready') {
+          state = resolveChoice(state, 'yes');
+          break;
+        }
+        state = resolveChoice(state, 'yes');
+        expect(state.currentCardId.startsWith('tutorial_') || state.currentCardId === 'restart_0').toBe(true);
+      }
+      expect(state.flags).toContain('tutorial_v2_done');
+      expect(state.currentCardId).toBe('restart_0');
+    });
+
+    it('pickNextCard allows restart after tutorial_v2_done', () => {
+      let state = createCyklusRun(false);
+      while (state.currentCardId !== 'restart_0' && state.totalChoices < 30) {
+        state = resolveChoice(state, 'yes');
+      }
+      expect(state.currentCardId).toBe('restart_0');
     });
   });
 });

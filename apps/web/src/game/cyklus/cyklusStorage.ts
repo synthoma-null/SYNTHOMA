@@ -177,11 +177,21 @@ export async function appendCyklusRunSummary(summary: CyklusRunSummary): Promise
 }
 
 const TUTORIAL_KEY = 'synthoma_cyklus_tutorial_seen';
+const TUTORIAL_V2_KEY = 'synthoma_cyklus_tutorial_v2_seen';
 
 export function isTutorialSeen(): boolean {
   if (typeof window === 'undefined') return false;
   try {
-    return localStorage.getItem(TUTORIAL_KEY) === 'true';
+    return localStorage.getItem(TUTORIAL_KEY) === 'true' || localStorage.getItem(TUTORIAL_V2_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function isTutorialV2Seen(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem(TUTORIAL_V2_KEY) === '1';
   } catch {
     return false;
   }
@@ -196,10 +206,20 @@ export function setTutorialSeen(): void {
   }
 }
 
+export function setTutorialV2Seen(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(TUTORIAL_V2_KEY, '1');
+  } catch {
+    // ignore
+  }
+}
+
 export function clearTutorialSeen(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(TUTORIAL_KEY);
+    localStorage.removeItem(TUTORIAL_V2_KEY);
   } catch {
     // ignore
   }

@@ -1,0 +1,467 @@
+﻿  console.info
+    
+    ÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉ
+      SYNTHOMA: CYKLUS ÔÇö SIMULATION REPORT
+      1000 runs ┬Ě safety limit per run applied
+    ÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉ
+    
+    ÔöÇÔöÇ OUTCOMES ÔöÇÔöÇ
+      Deaths:        1000 (100%)
+      Completions:   0 (0%)
+      Timeouts:      0 (0%)
+      Avg choices:   44.7
+      Avg cycles:    4.1
+    
+    ÔöÇÔöÇ DEATH STATS ÔöÇÔöÇ
+      memory       819 (82%)
+      energy       126 (13%)
+      control      53 (5%)
+      bond         2 (0%)
+    
+    ÔöÇÔöÇ DEATH EXTREMES ÔöÇÔöÇ
+      memory_high          815 (82%)
+      energy_high          66 (7%)
+      energy_low           60 (6%)
+      control_high         48 (5%)
+      control_low          5 (1%)
+      memory_low           4 (0%)
+      bond_high            2 (0%)
+    
+    ÔöÇÔöÇ FINAL STAT AVERAGES ÔöÇÔöÇ
+      energy       33.4
+      memory       89.6
+      bond         64
+      control      44.8
+    
+    ÔöÇÔöÇ STABILIZATION BLOCKERS (non-completed runs) ÔöÇÔöÇ
+      stats_unstable                 1000 (100% of non-completed)
+      restart_5_missing              999 (100% of non-completed)
+      not_enough_sectors             173 (17% of non-completed)
+      not_enough_imprints            77 (8% of non-completed)
+    
+    ÔöÇÔöÇ STABILIZATION VARIANTS ÔöÇÔöÇ
+    
+    ÔöÇÔöÇ TOP 20 CARDS ÔöÇÔöÇ
+      choose_residuum                          2874
+      system_overheat                          2350
+      audit_siren                              2267
+      sarkasma_collects                        1838
+      choose_archive                           1613
+      archive_scent_path                       1605
+      mirror_in_archive                        1527
+      folder_wrong_name                        1275
+      crisis_memory_flood                      1224
+      memory_flood                             1191
+      archive_recognizes_key                   1113
+      black_folder                             996
+      choose_acid_yellow                       938
+      corridor_breathes                        838
+      key_waits                                797
+      foreign_bookmark                         797
+      detective_crime_scene_in_memory          793
+      interlude_sarkasma_blackbox              773
+      bookmark_knows_more                      759
+      mirror_crack                             731
+    
+    ÔöÇÔöÇ NEVER SEEN CARDS (138) ÔöÇÔöÇ
+      first_boot                               conditions: ÔÇö
+      emergency_calibration                    conditions: ÔÇö
+      overclock                                conditions: ÔÇö
+      gravity_outage                           conditions: ÔÇö
+      admin_access                             conditions: ÔÇö
+      cache_of_pain                            conditions: ÔÇö
+      manual_mode                              conditions: ÔÇö
+      disconnect_peripherals                   conditions: ÔÇö
+      heart_diagnostic                         conditions: ÔÇö
+      observer_mode                            conditions: ÔÇö
+      hard_restart                             conditions: ÔÇö
+      confession_challenge                     conditions: ÔÇö
+      power_save                               conditions: ÔÇö
+      incoming_message                         conditions: ÔÇö
+      childhood_spade                          conditions: ÔÇö
+      childhood_spade_digs                     conditions: hasItem
+      unfinished_conversation                  conditions: ÔÇö
+      token_market_door                        conditions: hasItem
+      token_final_trade                        conditions: hasItem
+      seal_wants_stamp_again                   conditions: ÔÇö
+      failed_refusal                           conditions: ÔÇö
+      quiet_room                               conditions: ÔÇö
+      two_explanations                         conditions: ÔÇö
+      integrity_check_returns                  conditions: hasFlag
+      integrity_breaks_window                  conditions: hasFlag
+      tai_notes_ignored                        conditions: hasFlag
+      tai_forces_update                        conditions: hasFlag
+      silent_room_answer                       conditions: hasFlag
+      overclock_invoice                        conditions: ÔÇö
+      pain_cache_interest                      conditions: ÔÇö
+      quiet_room_coat                          conditions: ÔÇö
+      wall_laughter                            conditions: ÔÇö
+      wall_laughter_returns                    conditions: hasFlag
+      glitchka_forgot_punchline                conditions: sector
+      four_reactors_align                      conditions: ÔÇö
+      stable_enough                            conditions: ÔÇö
+      seal_of_not_dying_today                  conditions: hasItem
+      archive_recognizes_pattern               conditions: unlockedPool
+      subject_has_been_here                    conditions: ÔÇö
+      diagnostic_finding_collector             conditions: ÔÇö
+      shutdown_echo                            conditions: unlockedPool
+      dormant_signal                           conditions: unlockedPool
+      empty_archive_page                       conditions: unlockedPool
+      format_survivor_card                     conditions: unlockedPool
+      last_contact_log                         conditions: unlockedPool
+      dissolved_boundary_card                  conditions: unlockedPool
+      perfect_room_card                        conditions: unlockedPool
+      chaos_residue_card                       conditions: unlockedPool
+      warm_token_memory                        conditions: hasItem
+      drowned_in_memory_card                   conditions: unlockedPool
+      tutorial_stats                           conditions: ÔÇö
+      tutorial_balance                         conditions: ÔÇö
+      tutorial_choice                          conditions: ÔÇö
+      tutorial_consequences                    conditions: ÔÇö
+      tai_collects                             conditions: ÔÇö
+      glitchka_collects                        conditions: ÔÇö
+      soft_bug_followup                        conditions: ÔÇö
+      archival_overload                        conditions: statAbove
+      power_overload                           conditions: statAbove
+      bond_overload                            conditions: statAbove
+      mirror_shadow                            conditions: ÔÇö
+      token_stamp_combo                        conditions: ÔÇö
+      bug_pebble_nest                          conditions: ÔÇö
+      control_overload                         conditions: statAbove
+      sandbox_banana_court                     conditions: unlockedPool
+      sandbox_banana_appeal                    conditions: unlockedPool,hasAnyFlag
+      sandbox_glasses_committee                conditions: unlockedPool
+      sandbox_wrong_perspective                conditions: unlockedPool,hasItem
+      sandbox_umbrella_inside_rain             conditions: unlockedPool
+      sandbox_inside_rain_returns              conditions: unlockedPool,hasItem
+      sandbox_bucket_of_rules                  conditions: unlockedPool
+      sandbox_rule_castle                      conditions: unlockedPool
+      sandbox_rule_spill                       conditions: unlockedPool,hasItem
+      sandbox_too_safe                         conditions: unlockedPool,hasAnyFlag
+      sandbox_toy_rebellion                    conditions: unlockedPool,hasFlag
+      sandbox_dirty_laugh                      conditions: unlockedPool,hasAnyFlag
+      sandbox_glitchka_draws_exit              conditions: unlockedPool,hasAnyFlag
+      sandbox_safe_mistake_audit               conditions: unlockedPool,hasImprint
+      orgie_salon_without_touch                conditions: unlockedPool
+      orgie_mirror_of_consent                  conditions: unlockedPool,hasAnyFlag
+      orgie_boundary_on_tongue                 conditions: unlockedPool,hasAnyFlag
+      orgie_false_yes_echo                     conditions: unlockedPool,hasFlag
+      orgie_red_room_invoice                   conditions: unlockedPool,hasAnyFlag
+      orgie_hunger_names_itself                conditions: unlockedPool,hasItem
+      orgie_glitchena_waits                    conditions: unlockedPool,hasAnyFlag
+      orgie_desire_not_command                 conditions: unlockedPool,hasAnyFlag
+      orgie_afterglow_empty                    conditions: unlockedPool,hasAnyFlag
+      orgie_aftercare_protocol                 conditions: unlockedPool,hasAnyFlag
+      orgie_room_learns_no                     conditions: unlockedPool,hasItem
+      orgie_wanted_without_erasing             conditions: unlockedPool,hasAnyFlag
+      romance_unsent_goodnight                 conditions: unlockedPool
+      romance_message_reads_back               conditions: unlockedPool,hasAnyFlag
+      romance_hand_in_static                   conditions: unlockedPool
+      romance_warm_pixel_cools                 conditions: unlockedPool,hasItem
+      romance_wrong_memory_kiss                conditions: unlockedPool
+      romance_waiting_window                   conditions: unlockedPool,hasAnyFlag
+      romance_stay_without_chain               conditions: unlockedPool,hasAnyFlag
+      romance_finish_the_stay                  conditions: unlockedPool,hasItem
+      romance_dependency_echo                  conditions: unlockedPool,hasAnyFlag
+      romance_return_the_memory                conditions: unlockedPool,hasAnyFlag
+      romance_static_lullaby                   conditions: unlockedPool,hasAnyFlag
+      romance_tender_exit                      conditions: unlockedPool,hasAnyFlag
+      romance_afterimage_message               conditions: unlockedPool
+      blackbox_patient_label                   conditions: unlockedPool
+      blackbox_press                           conditions: unlockedPool,hasAnyFlag
+      blackbox_no_face_archive                 conditions: unlockedPool,hasAnyFlag
+      blackbox_index_cage                      conditions: unlockedPool,hasAnyFlag
+      blackbox_log_blade                       conditions: unlockedPool,hasAnyFlag
+      blackbox_log_splinter                    conditions: unlockedPool,hasAnyFlag
+      blackbox_unperson_form                   conditions: unlockedPool,hasAnyFlag
+      blackbox_named_error                     conditions: unlockedPool,hasAnyFlag
+      blackbox_refuse_anonymization            conditions: unlockedPool,hasAnyFlag
+      blackbox_exit_without_face               conditions: unlockedPool,hasAnyFlag
+      blackbox_afterimage                      conditions: unlockedPool
+      toll_comfort_invoice                     conditions: unlockedPool,hasItem
+      toll_refund_counter                      conditions: unlockedPool,hasAnyFlag
+      toll_gate_opens_without_payment          conditions: unlockedPool,hasAnyFlag
+      detective_alibi_burns_again              conditions: unlockedPool,hasAnyFlag
+      detective_case_stays_open                conditions: unlockedPool,hasAnyFlag
+      sarkasma_intake_session                  conditions: unlockedPool
+      sarkasma_diagnosis_as_insult             conditions: unlockedPool,hasAnyFlag
+      sarkasma_defense_mechanism               conditions: unlockedPool,hasAnyFlag
+      sarkasma_joke_as_scalpel                 conditions: unlockedPool,hasAnyFlag
+      sarkasma_cut_too_deep                    conditions: unlockedPool,hasAnyFlag
+      sarkasma_empty_chair_for_pain            conditions: unlockedPool,hasAnyFlag
+      sarkasma_almost_apologizes               conditions: unlockedPool,hasAnyFlag
+      sarkasma_receipt_for_defense             conditions: unlockedPool,hasItem
+      sarkasma_therapy_rupture                 conditions: unlockedPool,hasAnyFlag
+      sarkasma_cut_that_held                   conditions: unlockedPool,hasAnyFlag
+      sarkasma_homework_you_hate               conditions: unlockedPool,hasAnyFlag
+      glitchka_tiny_question                   conditions: unlockedPool,hasAnyFlag
+      glitchka_draws_feeling                   conditions: unlockedPool,hasAnyFlag
+      glitchka_wrong_answer_is_allowed         conditions: unlockedPool,hasAnyFlag
+      glitchka_question_that_waits             conditions: unlockedPool,hasFlag
+      glitchka_draws_you_smaller               conditions: unlockedPool,hasAnyFlag
+      glitchka_fake_fox_test                   conditions: unlockedPool,hasAnyFlag
+      glitchka_answer_floats_back              conditions: unlockedPool,hasAnyFlag
+      glitchka_walks_you_to_exit               conditions: unlockedPool,hasAnyFlag
+    
+    ÔöÇÔöÇ UNLOCKEDPOOL CARDS NEVER SEEN (84) ÔöÇÔöÇ
+      archive_recognizes_pattern               poolId: archive_pattern
+      shutdown_echo                            poolId: post_shutdown
+      dormant_signal                           poolId: dormant
+      empty_archive_page                       poolId: empty_memory
+      format_survivor_card                     poolId: post_format
+      last_contact_log                         poolId: isolation_cards
+      dissolved_boundary_card                  poolId: dissolution
+      perfect_room_card                        poolId: crystal_cards
+      chaos_residue_card                       poolId: collapse_cards
+      drowned_in_memory_card                   poolId: drowned_imprints
+      sandbox_banana_court                     poolId: sandbox_absurd_pool
+      sandbox_banana_appeal                    poolId: sandbox_absurd_pool
+      sandbox_glasses_committee                poolId: sandbox_absurd_pool
+      sandbox_wrong_perspective                poolId: sandbox_absurd_pool
+      sandbox_umbrella_inside_rain             poolId: sandbox_absurd_pool
+      sandbox_inside_rain_returns              poolId: sandbox_absurd_pool
+      sandbox_bucket_of_rules                  poolId: sandbox_absurd_pool
+      sandbox_rule_castle                      poolId: sandbox_absurd_pool
+      sandbox_rule_spill                       poolId: sandbox_absurd_pool
+      sandbox_too_safe                         poolId: sandbox_absurd_pool
+      sandbox_toy_rebellion                    poolId: sandbox_absurd_pool
+      sandbox_dirty_laugh                      poolId: sandbox_absurd_pool
+      sandbox_glitchka_draws_exit              poolId: sandbox_absurd_pool
+      sandbox_safe_mistake_audit               poolId: sandbox_aftermath_pool
+      orgie_salon_without_touch                poolId: desire_orgie_pool
+      orgie_mirror_of_consent                  poolId: desire_orgie_pool
+      orgie_boundary_on_tongue                 poolId: desire_orgie_pool
+      orgie_false_yes_echo                     poolId: desire_orgie_pool
+      orgie_red_room_invoice                   poolId: desire_orgie_pool
+      orgie_hunger_names_itself                poolId: desire_orgie_pool
+      orgie_glitchena_waits                    poolId: desire_orgie_pool
+      orgie_desire_not_command                 poolId: desire_orgie_pool
+      orgie_afterglow_empty                    poolId: desire_orgie_pool
+      orgie_aftercare_protocol                 poolId: desire_orgie_pool
+      orgie_room_learns_no                     poolId: desire_orgie_pool
+      orgie_wanted_without_erasing             poolId: desire_orgie_pool
+      romance_unsent_goodnight                 poolId: romance_residuum_pool
+      romance_message_reads_back               poolId: romance_residuum_pool
+      romance_hand_in_static                   poolId: romance_residuum_pool
+      romance_warm_pixel_cools                 poolId: romance_residuum_pool
+      romance_wrong_memory_kiss                poolId: romance_residuum_pool
+      romance_waiting_window                   poolId: romance_residuum_pool
+      romance_stay_without_chain               poolId: romance_residuum_pool
+      romance_finish_the_stay                  poolId: romance_residuum_pool
+      romance_dependency_echo                  poolId: romance_residuum_pool
+      romance_return_the_memory                poolId: romance_residuum_pool
+      romance_static_lullaby                   poolId: romance_residuum_pool
+      romance_tender_exit                      poolId: romance_residuum_pool
+      romance_afterimage_message               poolId: romance_aftermath_pool
+      blackbox_patient_label                   poolId: brutal_blackbox_pool
+      blackbox_press                           poolId: brutal_blackbox_pool
+      blackbox_no_face_archive                 poolId: brutal_blackbox_pool
+      blackbox_index_cage                      poolId: brutal_blackbox_pool
+      blackbox_log_blade                       poolId: brutal_blackbox_pool
+      blackbox_log_splinter                    poolId: brutal_blackbox_pool
+      blackbox_unperson_form                   poolId: brutal_blackbox_pool
+      blackbox_named_error                     poolId: brutal_blackbox_pool
+      blackbox_refuse_anonymization            poolId: brutal_blackbox_pool
+      blackbox_exit_without_face               poolId: brutal_blackbox_pool
+      blackbox_afterimage                      poolId: blackbox_aftermath_pool
+      toll_comfort_invoice                     poolId: toll_dvanactnik_pool
+      toll_refund_counter                      poolId: toll_debt_pool
+      toll_gate_opens_without_payment          poolId: toll_debt_pool
+      detective_alibi_burns_again              poolId: detective_echo_case_pool
+      detective_case_stays_open                poolId: detective_cold_case_pool
+      sarkasma_intake_session                  poolId: sarkasma_therapy_pool
+      sarkasma_diagnosis_as_insult             poolId: sarkasma_therapy_pool
+      sarkasma_defense_mechanism               poolId: sarkasma_therapy_pool
+      sarkasma_joke_as_scalpel                 poolId: sarkasma_therapy_pool
+      sarkasma_cut_too_deep                    poolId: sarkasma_therapy_pool
+      sarkasma_empty_chair_for_pain            poolId: sarkasma_therapy_pool
+      sarkasma_almost_apologizes               poolId: sarkasma_therapy_pool
+      sarkasma_receipt_for_defense             poolId: sarkasma_therapy_pool
+      sarkasma_therapy_rupture                 poolId: sarkasma_therapy_pool
+      sarkasma_cut_that_held                   poolId: sarkasma_therapy_pool
+      sarkasma_homework_you_hate               poolId: sarkasma_aftercare_pool
+      glitchka_tiny_question                   poolId: glitchka_chat_pool
+      glitchka_draws_feeling                   poolId: glitchka_chat_pool
+      glitchka_wrong_answer_is_allowed         poolId: glitchka_chat_pool
+      glitchka_question_that_waits             poolId: glitchka_chat_pool
+      glitchka_draws_you_smaller               poolId: glitchka_deeper_chat_pool
+      glitchka_fake_fox_test                   poolId: glitchka_deeper_chat_pool
+      glitchka_answer_floats_back              poolId: glitchka_deeper_chat_pool
+      glitchka_walks_you_to_exit               poolId: glitchka_deeper_chat_pool
+    
+    ÔöÇÔöÇ DEAD POOLS (condition exists but pool never unlocked, 20) ÔöÇÔöÇ
+      archive_pattern
+      post_shutdown
+      dormant
+      empty_memory
+      post_format
+      isolation_cards
+      dissolution
+      crystal_cards
+      collapse_cards
+      drowned_imprints
+      sandbox_absurd_pool
+      sandbox_aftermath_pool
+      desire_orgie_pool
+      romance_residuum_pool
+      romance_aftermath_pool
+      brutal_blackbox_pool
+      blackbox_aftermath_pool
+      sarkasma_therapy_pool
+      sarkasma_aftercare_pool
+      glitchka_deeper_chat_pool
+    
+    ÔöÇÔöÇ POOL UNLOCK COUNTS ÔöÇÔöÇ
+      glitch_pool                         1000 (100%)
+      archive_pool                        941 (94%)
+      detective_echo_case_pool            941 (94%)
+      archive_scent_pool                  895 (90%)
+      residuum_pool                       874 (87%)
+      acid_pool                           781 (78%)
+      wrong_name_pool                     486 (49%)
+      explorer                            457 (46%)
+      archive                             448 (45%)
+      mirror_pool                         437 (44%)
+      noise_pool                          406 (41%)
+      relationship_followups              193 (19%)
+      soft_bug_pool                       166 (17%)
+      glitchka_pool                       156 (16%)
+      archive_forbidden_pool              124 (12%)
+      shadow_pool                         103 (10%)
+      sarkasma_debt_pool                  100 (10%)
+      memory_sandbox_pool                 55 (6%)
+      glitchka_chat_pool                  55 (6%)
+      sealarium_pool                      48 (5%)
+      form_office_pool                    27 (3%)
+      detective_cold_case_pool            26 (3%)
+      market_sells_no_pool                5 (1%)
+      market_pool                         4 (0%)
+      token_market_pool                   4 (0%)
+      toll_dvanactnik_pool                4 (0%)
+node_modules\.bin\jest.cmd : FAIL src/game/cyklus/__tests__/cyklusSimulation.test.ts (120.358 s)
+At line:1 char:36
++ ... A\apps\web; node_modules\.bin\jest.cmd --no-coverage --runInBand src/ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (FAIL src/game/c....ts (120.358 s):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+      toll_debt_pool                      2 (0%)
+      memory_beast_pool                   2 (0%)
+    
+    ÔöÇÔöÇ DIAGNOSTIC FINDING UNLOCK COUNTS ÔöÇÔöÇ
+      first_run                      1000 (100%)
+      detective_echo_case_entry      793 (79%)
+      imprint_hoarder                725 (73%)
+      faceless_witness_interrogated  415 (42%)
+      five_cycles                    306 (31%)
+      collector                      225 (23%)
+      help_refuser                   131 (13%)
+      entity_bridge                  108 (11%)
+      shattered_tourist              61 (6%)
+      wrong_culprit_accused          23 (2%)
+      void_loyal                     14 (1%)
+      false_pattern_broken           14 (1%)
+      cold_case_allowed_to_breathe   13 (1%)
+      toll_dvanactnik_entry          3 (0%)
+      debt_named                     2 (0%)
+      glitchka_chat_entry            1 (0%)
+      sat_silent_with_glitchka       1 (0%)
+      paid_with_fake_memory          1 (0%)
+    
+    ÔöÇÔöÇ NEW MECHANICS ÔöÇÔöÇ
+      Avg contracts per run:       0.3
+      Avg item activations:        0
+      Avg goals completed:         0.9
+    
+      Modifier distribution:
+        form_day             225 (23%)
+        acid_shift           222 (22%)
+        archive_rain         194 (19%)
+        silent_shift         180 (18%)
+        glitch_weather       179 (18%)
+    
+      Goal completion rate:
+        visit_3_sectors           457 (46%)
+        memory_high_5             448 (45%)
+    
+      Contract acceptance rate:
+        contract_archive          291 (29%)
+        contract_sarkasma         35 (4%)
+        contract_glitchka         22 (2%)
+        contract_tai              1 (0%)
+    
+    ÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉÔĽÉ
+
+      at Object.info (src/game/cyklus/__tests__/cyklusSimulation.test.ts:106:13)
+
+  CYKLUS Simulation ÔÇö sanity
+    ÔŚő skipped 100 runs complete without exception
+    ÔŚő skipped no run exceeds safety limit
+    ÔŚő skipped non-restart cards appear in runs
+    ÔŚő skipped card coverage > 0
+    ÔŚő skipped stabilization blocker report is produced
+    ÔŚő skipped aggregateResults returns correct totals
+    ÔŚő skipped formatSimReport returns non-empty string
+    ÔŚő skipped death stat distribution only contains valid stat keys
+    ÔŚő skipped top cards list is sorted descending
+  CYKLUS Simulation ÔÇö balance (1000 runs)
+    ├Ś death rate is between 35% and 70% (2 ms)
+    ÔłÜ completion rate does not exceed 65%
+    ÔłÜ average run length is between 5 and 195 choices
+    ÔłÜ average cycles survived is at least 1
+    ÔłÜ at least 40% of cards appear in 1000 runs
+    ÔłÜ no single non-tutorial card dominates unreasonably
+    ÔłÜ final stat averages are in valid range (0-100)
+    ├Ś no single deathStat exceeds 45% of all runs
+    ÔłÜ never-seen cards are fewer than 160 (1 ms)
+  CYKLUS Campaign Simulation ÔÇö meta progression (100 ├Ś 10)
+    ÔŚő skipped campaign simulation runs without exception
+    ÔŚő skipped completion rate does not exceed 70% even in late runs
+    ÔŚő skipped completion rate in early runs is below late runs or equal (meta helps)
+    ÔŚő skipped meta pools unlock across campaigns
+    ÔŚő skipped fresh meta cards per run is higher than before patch (target >= 0.5)
+    ÔŚő skipped completion rate does not spike due to fresh meta boost (max +10pp vs early)
+  CYKLUS Visibility Patch ÔÇö fresh meta pool mechanics
+    ÔŚő skipped fresh meta pool card gets scoring boost
+    ÔŚő skipped fresh pool is consumed after playing a fresh meta card
+
+  ÔŚĆ CYKLUS Simulation ÔÇö balance (1000 runs) ÔÇ║ death rate is between 35% and 70%
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 0.7
+    Received:    1
+
+    [0m [90m 115 |[39m     [36mconst[39m deathRate [33m=[39m report[33m.[39mdeaths [33m/[39m report[33m.[39mtotalRuns[33m;[39m
+     [90m 116 |[39m     expect(deathRate)[33m.[39mtoBeGreaterThanOrEqual([35m0.35[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 117 |[39m     expect(deathRate)[33m.[39mtoBeLessThanOrEqual([35m0.70[39m)[33m;[39m
+     [90m     |[39m                       [31m[1m^[22m[39m
+     [90m 118 |[39m   })[33m;[39m
+     [90m 119 |[39m
+     [90m 120 |[39m   test([32m'completion rate does not exceed 65%'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.toBeLessThanOrEqual (src/game/cyklus/__tests__/cyklusSimulation.test.ts:117:23)
+
+  ÔŚĆ CYKLUS Simulation ÔÇö balance (1000 runs) ÔÇ║ no single deathStat exceeds 45% of all runs
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 0.45
+    Received:    0.819
+
+    [0m [90m 160 |[39m   test([32m'no single deathStat exceeds 45% of all runs'[39m[33m,[39m () [33m=>[39m {
+     [90m 161 |[39m     [36mfor[39m ([36mconst[39m [[33m,[39m count] [36mof[39m [33mObject[39m[33m.[39mentries(report[33m.[39mdeathStatDistributio
+n)) {
+    [31m[1m>[22m[39m[90m 162 |[39m       expect(count [33m/[39m report[33m.[39mtotalRuns)[33m.[39mtoBeLessThanOrEqual([35m0.45[39m)[33m;[39m
+     [90m     |[39m                                        [31m[1m^[22m[39m
+     [90m 163 |[39m     }
+     [90m 164 |[39m   })[33m;[39m
+     [90m 165 |[39m[0m
+
+      at Object.toBeLessThanOrEqual (src/game/cyklus/__tests__/cyklusSimulation.test.ts:162:40)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 17 skipped, 7 passed, 26 total
+Snapshots:   0 total
+Time:        120.903 s
+Ran all test suites matching src/game/cyklus/__tests__/cyklusSimulation.test.ts with tests matching "balance".

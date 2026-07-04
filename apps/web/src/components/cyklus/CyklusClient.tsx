@@ -5,25 +5,48 @@ import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
-import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialSeen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
 import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression } from '../../game/cyklus/cyklusProgression';
+import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from '../../game/cyklus/cyklusStory';
 import StatDock from './StatDock';
 import CyklusVoidHub from './CyklusVoidHub';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
   switch (cardId) {
-    case 'tutorial_stats':
-    case 'tutorial_balance':
+    case 'tutorial_02_stats':
+    case 'tutorial_03_balance':
+    case 'tutorial_04_preview':
       return { stat: 'all' };
-    case 'tutorial_choice':
+    case 'tutorial_01_swipe':
+    case 'tutorial_06_items':
+    case 'tutorial_07_imprints':
       return { actions: true };
-    case 'tutorial_consequences':
+    case 'tutorial_08_consequences':
       return { pocket: true };
     default:
       return null;
   }
 }
+
+const TUTORIAL_PROGRESS_MAP: Record<string, { index: number; label: string; flavour: string }> = {
+  tutorial_00_welcome: { index: 1, label: 'Úvod', flavour: 'Profesionalita je jen lépe formátovaná panika.' },
+  tutorial_01_swipe: { index: 2, label: 'Volby', flavour: 'Pravá/levá není dobro/zlo. Obě změní subjekt.' },
+  tutorial_02_stats: { index: 3, label: 'Staty', flavour: 'Čtyři čudlíky, kterými se dá subjekt elegantně poslat do háje.' },
+  tutorial_03_balance: { index: 4, label: 'Rovnováha', flavour: 'Stabilita není nuda. Je to méně dramatická smrt.' },
+  tutorial_04_preview: { index: 5, label: 'Preview', flavour: 'Číst náznaky není slabost. Je to méně estetická smrt.' },
+  tutorial_05_profile: { index: 6, label: 'Profil', flavour: 'Profil není diagnóza. Systémy jen milují krabičky.' },
+  tutorial_06_items: { index: 7, label: 'Itemy', flavour: 'Kapsa není dekorace. Kapse se nedá věřit.' },
+  tutorial_07_imprints: { index: 8, label: 'Otisky', flavour: 'Otisk není item. Drží on tebe.' },
+  tutorial_08_consequences: { index: 9, label: 'Následky', flavour: 'Následky mají kalendář. Systém je objednává později.' },
+  tutorial_09_sectors: { index: 10, label: 'Sektory', flavour: 'Sektor je místnost, která se tváří, že má osobnost.' },
+  tutorial_10_cycle: { index: 11, label: 'Cyklus', flavour: 'Dvanáct chyb, pak pětiminutová přestávka na sebemrzenčí.' },
+  tutorial_11_restart: { index: 12, label: 'Restart', flavour: 'Restart není undo. Je to diagnostika s mezinápravou.' },
+  tutorial_12_void: { index: 13, label: 'Prázdnota', flavour: 'Prázdnota není menu. Je to místnost, co si pamatuje tvůj rozpad.' },
+  tutorial_13_progression: { index: 14, label: 'Progrese', flavour: 'Utrácení zbytků sebe za protokoly je zdravý rozvoj.' },
+  tutorial_14_packs: { index: 15, label: 'Příběhové linky', flavour: 'Packy tě naučí, že ses myslel, že víš, kdo jsi.' },
+  tutorial_15_ready: { index: 16, label: 'Start', flavour: 'Konec návodu. Začátek poškození.' },
+};
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../../game/cyklus/content';
 import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
 
@@ -55,6 +78,7 @@ export default function CyklusClient() {
   const [progression, setProgression] = useState<SubjectProgression>(loadSubjectProgression());
   const [showReward, setShowReward] = useState(false);
   const [showVoidHub, setShowVoidHub] = useState(false);
+  const [showSkipConfirm, setShowSkipConfirm] = useState(false);
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -150,8 +174,8 @@ export default function CyklusClient() {
   }, [state?.sector, state?.cycle, state?.totalChoices]);
 
   useEffect(() => {
-    if (state?.status === 'playing' && state.flags.includes('tutorial_done') && !isTutorialSeen()) {
-      setTutorialSeen();
+    if (state?.status === 'playing' && state.flags.includes('tutorial_v2_done') && !isTutorialSeen()) {
+      setTutorialV2Seen();
       setTutorialSeenState(true);
     }
   }, [state?.flags]);
@@ -188,6 +212,9 @@ export default function CyklusClient() {
       setRunReward(reward);
       setProgression(loadSubjectProgression());
       setShowReward(true);
+      const story = loadStoryProgression();
+      const updatedStory = updateStoryAfterRun(story, current);
+      saveStoryProgression(updatedStory);
       await saveCyklusRun(current);
     }
     finalize().catch(() => { /* ignore */ });
@@ -287,6 +314,21 @@ export default function CyklusClient() {
     }
     reset().catch(() => { /* ignore */ });
   }, []);
+
+  const handleSkipTutorial = useCallback(() => {
+    if (!state) return;
+    setTutorialV2Seen();
+    setTutorialSeenState(true);
+    const skipped = {
+      ...state,
+      flags: [...state.flags, 'tutorial_done', 'tutorial_v2_done'],
+      usedCardIds: [...state.usedCardIds, 'tutorial_15_ready'],
+      currentCardId: 'restart_0' as const,
+    };
+    setState(skipped);
+    saveCyklusRun(skipped).catch(() => { /* ignore */ });
+    setShowSkipConfirm(false);
+  }, [state]);
 
   const onTouchStart = (e: React.TouchEvent) => {
     if (flyDirection) return;
@@ -398,6 +440,22 @@ export default function CyklusClient() {
           <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
         </div>
       )}
+      {showSkipConfirm && (
+        <div className="cyklus-overlay cyklus-overlay--warning">
+          <div className="cyklus-overlay__warning-label">PŘESKOČIT TUTORIÁL?</div>
+          <div className="cyklus-overlay__warning-text">
+            Systém ti nebude vysvětlovat, proč se rozpadáš. Což je tvoje právo a naše budoucí zábava.
+          </div>
+          <div className="cyklus-overlay__actions">
+            <button className="cyklus-btn cyklus-btn--secondary" type="button" onClick={() => setShowSkipConfirm(false)}>
+              Zůstat v onboarding
+            </button>
+            <button className="cyklus-btn cyklus-btn--yes" type="button" onClick={handleSkipTutorial}>
+              Přeskočit
+            </button>
+          </div>
+        </div>
+      )}
       <header className="cyklus-header">
         <div className="cyklus-title">SYNTHOMA: CYKLUS</div>
         <div className="cyklus-chapter">
@@ -408,6 +466,16 @@ export default function CyklusClient() {
         <div className="cyklus-meta">
           <span className="cyklus-sector">{SECTOR_LABELS[state.sector]}</span>
           <span className="cyklus-progress">{state.choiceInCycle}/{12}</span>
+          {card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') && (
+            <button
+              className="cyklus-header__skip"
+              onClick={() => setShowSkipConfirm(true)}
+              type="button"
+              title="Přeskočit tutorial"
+            >
+              Přeskočit
+            </button>
+          )}
           <button
             className="cyklus-header__reset"
             onClick={handleRestart}
@@ -418,6 +486,14 @@ export default function CyklusClient() {
           </button>
         </div>
       </header>
+
+      {card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') && (
+        <div className="cyklus-tutorial-progress">
+          <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
+          <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
+          <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: „{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}"</span>
+        </div>
+      )}
 
       {state.visitedSectors.length > 0 && (
         <div className="cyklus-route">
