@@ -1,18 +1,34 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
-import { getPocketItems, getPocketAmbientText, MOOD_LABELS, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
-import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialSeen, clearTutorialSeen } from '../../game/cyklus/cyklusStorage';
+import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
+import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialSeen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
 import StatDock from './StatDock';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
+
+function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
+  switch (cardId) {
+    case 'tutorial_stats':
+    case 'tutorial_balance':
+      return { stat: 'all' };
+    case 'tutorial_choice':
+      return { actions: true };
+    case 'tutorial_consequences':
+      return { pocket: true };
+    default:
+      return null;
+  }
+}
 import { CYKLUS_ITEMS } from '../../game/cyklus/cyklusItems';
 import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
 import { CYKLUS_IMPRINTS } from '../../game/cyklus/cyklusImprints';
 import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
 
 export default function CyklusClient() {
+  const { data: session } = useSession();
   const [state, setState] = useState<CyklusRunState | null>(null);
   const [loading, setLoading] = useState(true);
   const [outcomeVisible, setOutcomeVisible] = useState(false);
@@ -42,28 +58,60 @@ export default function CyklusClient() {
   const outcomeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const saved = loadCyklusRun();
-    const history = loadCyklusRunHistory();
-    const seen = isTutorialSeen();
-    setTutorialSeenState(seen);
-    setRunHistory(history);
-    if (saved && (saved.status === 'dead' || saved.status === 'completed') && !history.find((h) => h.id === saved.id)) {
-      appendCyklusRunSummary(summarizeRun(saved));
-      setRunHistory(loadCyklusRunHistory());
+    let cancelled = false;
+    async function init() {
+      const seen = isTutorialSeen();
+      setTutorialSeenState(seen);
+      const localHistory = loadCyklusRunHistory();
+      setRunHistory(localHistory);
+
+      let saved: CyklusRunState | null = null;
+      let history = localHistory;
+      let discovery = loadDiscovery();
+
+      if (session?.user?.id) {
+        const server = await loadServerCyklusRun();
+        if (server) {
+          saved = server.state;
+          if (server.history.length > 0) {
+            history = server.history;
+            setRunHistory(history);
+          }
+          if (server.discovery) {
+            discovery = server.discovery;
+            setDiscovery(discovery);
+          }
+        }
+      }
+
+      if (!saved) {
+        saved = loadCyklusRun();
+      }
+
+      if (saved && (saved.status === 'dead' || saved.status === 'completed') && !history.find((h) => h.id === saved!.id)) {
+        await appendCyklusRunSummary(summarizeRun(saved));
+        setRunHistory(loadCyklusRunHistory());
+      }
+      if (!cancelled) {
+        if (saved && saved.status === 'playing') {
+          setSavedRun(saved);
+          setShowMenu(true);
+        } else {
+          const fresh = createCyklusRun(seen);
+          setState(fresh);
+          await saveCyklusRun(fresh);
+        }
+        setLoading(false);
+      }
     }
-    if (saved && saved.status === 'playing') {
-      setSavedRun(saved);
-      setShowMenu(true);
-    } else {
-      const fresh = createCyklusRun(seen);
-      setState(fresh);
-      saveCyklusRun(fresh);
-    }
-    setLoading(false);
-  }, []);
+    init();
+    return () => { cancelled = true; };
+  }, [session?.user?.id]);
 
   useEffect(() => {
-    if (state) saveCyklusRun(state);
+    if (state) {
+      saveCyklusRun(state).catch(() => { /* ignore */ });
+    }
   }, [state]);
 
   useEffect(() => {
@@ -106,25 +154,33 @@ export default function CyklusClient() {
 
   useEffect(() => {
     if (!state || state.status === 'playing') return;
-    const history = loadCyklusRunHistory();
-    if (!history.find((h) => h.id === state.id)) {
-      appendCyklusRunSummary(summarizeRun(state));
-      setRunHistory(loadCyklusRunHistory());
+    const current = state;
+    async function finalize() {
+      const history = loadCyklusRunHistory();
+      if (!history.find((h) => h.id === current.id)) {
+        await appendCyklusRunSummary(summarizeRun(current));
+        setRunHistory(loadCyklusRunHistory());
+      }
+      const before = loadEarnedFindings();
+      const allFindings = evaluateFindings(current);
+      const newOnes = saveNewFindings(allFindings);
+      setNewFindings(newOnes);
+      setKnownFindings(before.filter((f) => !newOnes.some((n) => n.id === f.id)));
+      const ending = computeEnding(current);
+      if (ending?.type === 'death') {
+        const unlocks = getDeathUnlocks(ending.stat, ending.extreme);
+        const saved = saveMetaUnlocks(unlocks);
+        setNewMetaUnlocks(saved);
+        const newPools = saved.map((u) => u.unlockPool).filter(Boolean) as string[];
+        if (newPools.length > 0) addFreshMetaPools(newPools);
+      }
+      const variantId = current.status === 'completed' ? computeStabilizationVariant(current).id : undefined;
+      const findingIds = evaluateFindings(current).map((f) => f.id);
+      const nextDiscovery = updateDiscoveryFromRun(current, { variantId, findingIds });
+      setDiscovery(nextDiscovery);
+      await saveCyklusRun(current);
     }
-    const before = loadEarnedFindings();
-    const allFindings = evaluateFindings(state);
-    const newOnes = saveNewFindings(allFindings);
-    setNewFindings(newOnes);
-    setKnownFindings(before.filter((f) => !newOnes.some((n) => n.id === f.id)));
-    const ending = computeEnding(state);
-    if (ending?.type === 'death') {
-      const unlocks = getDeathUnlocks(ending.stat, ending.extreme);
-      const saved = saveMetaUnlocks(unlocks);
-      setNewMetaUnlocks(saved);
-      const newPools = saved.map((u) => u.unlockPool).filter(Boolean) as string[];
-      if (newPools.length > 0) addFreshMetaPools(newPools);
-    }
-    setDiscovery(updateDiscoveryFromRun(state));
+    finalize().catch(() => { /* ignore */ });
   }, [state?.status]);
 
   const handleChoice = useCallback((direction: 'yes' | 'no') => {
@@ -158,11 +214,14 @@ export default function CyklusClient() {
   }, [state]);
 
   const handleRestart = useCallback(() => {
-    clearCyklusRun();
-    const seen = isTutorialSeen();
-    const fresh = createCyklusRun(seen);
-    setState(fresh);
-    saveCyklusRun(fresh);
+    async function reset() {
+      await clearCyklusRun();
+      const seen = isTutorialSeen();
+      const fresh = createCyklusRun(seen);
+      setState(fresh);
+      await saveCyklusRun(fresh);
+    }
+    reset().catch(() => { /* ignore */ });
     setOutcomeVisible(false);
     setNewFindings([]);
     setKnownFindings([]);
@@ -180,13 +239,16 @@ export default function CyklusClient() {
   }, [savedRun]);
 
   const handleNewGame = useCallback(() => {
-    clearCyklusRun();
-    const seen = isTutorialSeen();
-    const fresh = createCyklusRun(seen);
-    setState(fresh);
-    saveCyklusRun(fresh);
-    setSavedRun(null);
-    setShowMenu(false);
+    async function reset() {
+      await clearCyklusRun();
+      const seen = isTutorialSeen();
+      const fresh = createCyklusRun(seen);
+      setState(fresh);
+      await saveCyklusRun(fresh);
+      setSavedRun(null);
+      setShowMenu(false);
+    }
+    reset().catch(() => { /* ignore */ });
     setNewFindings([]);
     setKnownFindings([]);
     setNewMetaUnlocks([]);
@@ -195,14 +257,17 @@ export default function CyklusClient() {
   }, []);
 
   const handleRepeatTutorial = useCallback(() => {
-    clearTutorialSeen();
-    setTutorialSeenState(false);
-    clearCyklusRun();
-    const fresh = createCyklusRun(false);
-    setState(fresh);
-    saveCyklusRun(fresh);
-    setSavedRun(null);
-    setShowMenu(false);
+    async function reset() {
+      clearTutorialSeen();
+      setTutorialSeenState(false);
+      await clearCyklusRun();
+      const fresh = createCyklusRun(false);
+      setState(fresh);
+      await saveCyklusRun(fresh);
+      setSavedRun(null);
+      setShowMenu(false);
+    }
+    reset().catch(() => { /* ignore */ });
   }, []);
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -272,6 +337,7 @@ export default function CyklusClient() {
   const profile = computeProfile(state);
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
   const chapter = getCycleChapterName(state.cycle);
+  const tutorialHighlight = getTutorialHighlight(card?.id);
 
   return (
     <div className="cyklus-root">
@@ -323,7 +389,7 @@ export default function CyklusClient() {
         </div>
       </header>
 
-      <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} />
+      <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} />
 
       {state.visitedSectors.length > 0 && (
         <div className="cyklus-route">
@@ -537,7 +603,7 @@ export default function CyklusClient() {
               </div>
             </div>
 
-            <div className="cyklus-actions">
+            <div className={`cyklus-actions ${tutorialHighlight?.actions ? 'cyklus-actions--highlight' : ''}`}>
               <button className="cyklus-btn cyklus-btn--no" onClick={() => handleChoice('no')} disabled={outcomeVisible}>
                 <span className="cyklus-btn__label">{card.noLabel}</span>
                 {card.no.preview && <span className="cyklus-btn__hint">{shouldLimitPreview(card) ? limitedPreviewHint(card.no.preview.hint) : card.no.preview.hint}</span>}
@@ -569,7 +635,7 @@ export default function CyklusClient() {
             </div>
           </div>
         )}
-        <div className="cyklus-pocket">
+        <div className={`cyklus-pocket ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
           <button
             className="cyklus-pocket__toggle"
             type="button"

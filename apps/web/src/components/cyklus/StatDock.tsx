@@ -1,9 +1,20 @@
 'use client';
 
 import type React from 'react';
+import { useEffect, useState } from 'react';
 import { STAT_LABELS, STAT_DETAIL, type StatKey } from '../../game/cyklus/cyklusTypes';
 
 const STAT_ORDER: StatKey[] = ['energy', 'memory', 'bond', 'control'];
+
+function usePrevious<T>(value: T): T | undefined {
+  const [prev, setPrev] = useState<T | undefined>(undefined);
+  const [current, setCurrent] = useState<T>(value);
+  if (value !== current) {
+    setPrev(current);
+    setCurrent(value);
+  }
+  return prev;
+}
 
 type StatState = 'low-danger' | 'stable' | 'high-danger';
 
@@ -68,20 +79,43 @@ interface StatDockProps {
   stats: Record<StatKey, number>;
   openStat: StatKey | null;
   onOpenStat: (key: StatKey | null) => void;
+  highlight?: StatKey | 'all' | null | undefined;
 }
 
-export default function StatDock({ stats, openStat, onOpenStat }: StatDockProps) {
+export default function StatDock({ stats, openStat, onOpenStat, highlight }: StatDockProps) {
+  const previousStats = usePrevious(stats);
+  const [changedKeys, setChangedKeys] = useState<Set<StatKey>>(new Set());
+
+  useEffect(() => {
+    if (!previousStats) return;
+    const changed = new Set<StatKey>();
+    for (const key of STAT_ORDER) {
+      if (previousStats[key] !== stats[key]) changed.add(key);
+    }
+    if (changed.size === 0) return;
+    setChangedKeys(changed);
+    const timer = setTimeout(() => setChangedKeys(new Set()), 650);
+    return () => clearTimeout(timer);
+  }, [stats, previousStats]);
+
   return (
     <>
-      <aside className="cyklus-stat-dock" aria-label="Stav subjektu">
+      <aside className={`cyklus-stat-dock ${highlight ? 'cyklus-stat-dock--highlighted' : ''}`} aria-label="Stav subjektu">
         {STAT_ORDER.map((key) => {
           const value = stats[key];
           const state = getStatState(value);
           const label = statStateLabel(state, value);
+          const isHighlighted = highlight === 'all' || highlight === key;
+          const isChanged = changedKeys.has(key);
           return (
             <button
               key={key}
-              className={`cyklus-stat-chip cyklus-stat-chip--${state}`}
+              className={[
+                'cyklus-stat-chip',
+                `cyklus-stat-chip--${state}`,
+                isHighlighted ? 'cyklus-stat-chip--highlight' : '',
+                isChanged ? 'cyklus-stat-chip--changed' : '',
+              ].filter(Boolean).join(' ')}
               onClick={() => onOpenStat(openStat === key ? null : key)}
               type="button"
               aria-label={`${STAT_LABELS[key]}: ${value}, ${label}. Klikni pro popis.`}

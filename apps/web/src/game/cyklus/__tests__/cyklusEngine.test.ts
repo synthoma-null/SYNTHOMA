@@ -24,15 +24,22 @@ import {
   getComboHint,
   getActiveContracts,
   generatePreRunWarning,
+  scoreCard,
 } from '../cyklusEngine';
-import type { CyklusRunState } from '../cyklusTypes';
+import type { CyklusRunState, SectorId } from '../cyklusTypes';
 import { CYKLUS_CARDS } from '../cyklusCards';
 import { CYKLUS_ITEMS } from '../cyklusItems';
 import { CYKLUS_IMPRINTS } from '../cyklusImprints';
 import { CYKLUS_UNLOCKS } from '../cyklusUnlocks';
 import { getDeathUnlocks, saveMetaUnlocks, loadMetaUnlocks, loadMetaUnlockPools } from '../cyklusFindings';
+import { updateDiscoveryFromRun } from '../cyklusDiscovery';
+import { loadCyklusRun } from '../cyklusStorage';
 
 describe('Cyklus engine', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   describe('createCyklusRun', () => {
     it('starts with balanced stats and restart_0 when tutorial seen', () => {
       const state = createCyklusRun(true);
@@ -45,6 +52,22 @@ describe('Cyklus engine', () => {
     it('starts with tutorial_stats when tutorial not seen', () => {
       const state = createCyklusRun(false);
       expect(state.currentCardId).toBe('tutorial_stats');
+    });
+
+    it('migrates old partial save to include new state fields', () => {
+      const old = {
+        id: 'old-run',
+        status: 'playing',
+        stats: { energy: 50, memory: 50, bond: 50, control: 50 },
+      };
+      const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => JSON.stringify(old));
+      const migrated = loadCyklusRun();
+      expect(migrated).not.toBeNull();
+      expect(migrated?.modifier).toBeDefined();
+      expect(migrated?.goals).toEqual([]);
+      expect(migrated?.activeContracts).toEqual([]);
+      expect(migrated?.preRunWarning).toBeNull();
+      spy.mockRestore();
     });
   });
 
@@ -236,6 +259,23 @@ describe('Cyklus engine', () => {
     });
   });
 
+  describe('profile across runs', () => {
+    it('new run inherits weighted baseline profile from run history', () => {
+      const history = [
+        { id: 'run-1', endedAt: 1, status: 'completed' as const, endingTitle: 'Konec', cyclesSurvived: 1, totalChoices: 10, dominantProfile: 'Ni', archetype: 'test', profile: { Ni: 4 }, imprints: [], visitedSectors: ['void'] as SectorId[] },
+        { id: 'run-2', endedAt: 2, status: 'completed' as const, endingTitle: 'Konec', cyclesSurvived: 2, totalChoices: 12, dominantProfile: 'Ne', archetype: 'test', profile: { Ne: 6 }, imprints: [], visitedSectors: ['void'] as SectorId[] },
+      ];
+      const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
+        if (key === 'synthoma_cyklus_history_v1') return JSON.stringify(history);
+        return null;
+      });
+      const state = createCyklusRun(true);
+      expect(state.profile.Ni).toBeCloseTo(4 / 3, 1); // weight 1/3
+      expect(state.profile.Ne).toBeCloseTo(12 / 3, 1); // weight 2/3
+      spy.mockRestore();
+    });
+  });
+
   describe('applyEffects', () => {
     it('grants items and flags', () => {
       let state = createCyklusRun();
@@ -295,8 +335,8 @@ describe('Cyklus engine', () => {
         usedCardIds: ['restart_0', 'restart_1', 'restart_2', 'restart_3', 'restart_4', 'restart_5'],
         stats: { energy: 100, memory: 50, bond: 50, control: 50 },
         history: [
-          { turn: 1, cycle: 1, cardId: 'overclock', direction: 'yes', statDelta: { energy: 12 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
-          { turn: 2, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 38 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 2 },
+          { turn: 1, cycle: 1, cardId: 'overclock', direction: 'yes', statDelta: { energy: 12 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, statsAfter: { energy: 62, memory: 50, bond: 50, control: 50 }, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+          { turn: 2, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 38 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, statsAfter: { energy: 100, memory: 50, bond: 50, control: 50 }, sectorBefore: 'void', sectorAfter: 'void', ts: 2 },
         ],
       };
       const analysis = analyzeDeath(state);
@@ -411,6 +451,22 @@ describe('Cyklus engine', () => {
         if (u.condition.type === 'hasFlag' || u.condition.type === 'missingFlag') {
           expect(definedFlagIds.has(u.condition.flag ?? '')).toBe(true);
         }
+      });
+    });
+
+    it('every goal rewardPool has at least one reachable card', () => {
+      const allGoalPools = new Set(
+        [
+          'explorer', 'collector', 'archive', 'pocket', 'lone', 'clean',
+        ].filter((p): p is string => Boolean(p)),
+      );
+      allGoalPools.forEach((poolId) => {
+        const hasReachableCard = allCards.some(
+          (card) =>
+            card.tags.includes(poolId) ||
+            card.conditions?.some((c) => c.type === 'unlockedPool' && c.poolId === poolId),
+        );
+        expect(hasReachableCard).toBe(true);
       });
     });
 
@@ -597,6 +653,42 @@ describe('Cyklus engine', () => {
       expect(contracts[0]?.collectPending).toBe(true);
     });
 
+    it('modifier affects card scoring based on tags', () => {
+      let state = createCyklusRun(true);
+      const card = getCardById('archive_scent_path')!;
+      state.modifier = { id: 'archive_rain', title: 'Archive rain', description: 'test', tags: [] };
+      const modified = scoreCard(state, card);
+      state.modifier = { id: 'none', title: 'None', description: 'test', tags: [] };
+      const base = scoreCard(state, card);
+      expect(modified).toBeGreaterThan(base);
+    });
+
+    it('no_crisis_item goal completes only when run is completed', () => {
+      const state = createCyklusRun(true);
+      state.goals = [{ id: 'no_crisis_item', title: 'No crisis', description: 'test', target: 1, progress: 0, completed: false, rewardPool: 'clean', rewardTitle: 'Clean' }];
+      state.status = 'playing';
+      const playing = updateRunGoals(state, state, getCardById('restart_0')!);
+      expect(playing.goals[0]?.completed).toBe(false);
+      state.status = 'completed';
+      const completed = updateRunGoals(state, state, getCardById('restart_0')!);
+      expect(completed.goals[0]?.completed).toBe(true);
+    });
+
+    it('memory_high_5 counts turns with memory above 75', () => {
+      const state = createCyklusRun(true);
+      state.goals = [{ id: 'memory_high_5', title: 'Memory', description: 'test', target: 5, progress: 0, completed: false, rewardPool: 'archive', rewardTitle: 'Archiv' }];
+      state.history = Array.from({ length: 5 }, (_, i) => ({
+        turn: i + 1, cycle: 1, cardId: 'first_boot', direction: 'yes' as const,
+        statDelta: {}, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [],
+        imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {},
+        statsAfter: { energy: 50, memory: 80, bond: 50, control: 50 },
+        sectorBefore: 'void', sectorAfter: 'void', ts: i + 1,
+      }));
+      const result = updateRunGoals(state, state, getCardById('restart_0')!);
+      expect(result.goals[0]?.progress).toBe(5);
+      expect(result.goals[0]?.completed).toBe(true);
+    });
+
     it('resolveChoice applies goal reward pool upon completion', () => {
       let state = createCyklusRun(true);
       state = { ...state, visitedSectors: ['void', 'acid_yellow', 'archive'] };
@@ -624,6 +716,27 @@ describe('Cyklus engine', () => {
       const warn = generatePreRunWarning('seed');
       expect(warn).toBeNull();
       spy.mockRestore();
+    });
+
+    it('generatePreRunWarning uses actual deathStat from history', () => {
+      const history = [{ id: 'run-1', endedAt: 1, status: 'dead' as const, endingTitle: 'Konec', cyclesSurvived: 1, totalChoices: 1, dominantProfile: 'Ni', archetype: 'test', profile: { Ni: 5 }, imprints: [], visitedSectors: ['void'], deathStat: 'memory' as const }];
+      const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => JSON.stringify(history));
+      const warn = generatePreRunWarning('seed');
+      expect(warn).toContain('Paměť');
+      spy.mockRestore();
+    });
+
+    it('updateDiscoveryFromRun saves variants and findings', () => {
+      const state = createCyklusRun(true);
+      state.status = 'completed';
+      state.usedCardIds = ['first_boot', 'restart_0'];
+      state.visitedSectors = ['void', 'archive'];
+      state.inventory = ['rusty_token'];
+      state.imprints = ['unfinished_conversation'];
+      const d = updateDiscoveryFromRun(state, { variantId: 'variant_a', findingIds: ['finding_x'] });
+      expect(d.cards).toContain('first_boot');
+      expect(d.variants).toContain('variant_a');
+      expect(d.findings).toContain('finding_x');
     });
   });
 });

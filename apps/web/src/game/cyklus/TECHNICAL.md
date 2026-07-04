@@ -215,6 +215,12 @@ getTopScoredCards(state, 5)    // top N karet s rozpisem skóre
 
 ## Ukládání (`cyklusStorage`)
 
+- **localStorage** — primární cache, funguje i bez přihlášení.
+- **Server sync** — pro přihlášené uživatele se stav, historie i discovery ukládají na server přes `/api/me/cyklus`. Při načtení `CyklusClient` nejprve zkusí server, při selhání fallback na localStorage.
+- `loadServerCyklusRun()` — async načtení z DB.
+- `saveCyklusRun(state)` / `saveCyklusRunHistory(history)` — persistují localStorage a fire-and-forget server sync.
+- `clearCyklusRun()` — smaže localStorage i serverový záznam.
+
 `loadCyklusRun()` obsahuje **migraci** pro staré uložené stavy:
 
 - Chybějící `seed` → `"migrated-{timestamp}"`.
@@ -226,13 +232,41 @@ getTopScoredCards(state, 5)    // top N karet s rozpisem skóre
 - `analyzeDeath(state)` — najde stat na 0/100, top 3 přispívající karty z history, systemový komentář.
 - `computeStabilizationProgress(state)` — boolean stav 4 podmínek stabilizace pro UI.
 
+## C2 engine extensions
+
+- `updateRunGoals(state, cardId, direction)` — returns `{ state, log, newlyCompleted }`. Goal rewards are applied via `rewardPool` unlocks only when `newlyCompleted` is non-empty.
+- `checkItemCombos(state, cardId, direction)` — returns `{ state, log, activatedCombo }`. Logs when an item combo becomes active.
+- `getComboHint(state, itemId)` — returns a localized hint for the missing combo piece when one item of a known combo is held.
+- `getActiveContracts(state)` — returns active contract records with `bonus`, `commitment`, and `collectCardId` status.
+- `generatePreRunWarning(state)` — returns the localized pre-run warning text shown before the first card/forecast.
+- `resolveChoice` order: card outcome → goal update + reward → impact narrative → crisis items → `lastOutcomeText`.
+- Overload cards are tagged with `overload` and rendered with a high-risk warning in `CyklusClient`.
+
+## C2.1 — Mechanic Integrity Patch
+
+- `applyModifierScore(state, score, card)` — run modifiers now influence card selection scoring. Bonus/penalty values are small enough to keep determinism and balance intact.
+- `CyklusChoiceRecord` carries `statsAfter` so goal evaluation can measure actual post-choice stat values (used by `memory_high_5`).
+- `no_crisis_item` goal only completes when `state.status === 'completed'` and no crisis item was used.
+- `updateDiscoveryFromRun(state, { variantId, findingIds })` persists stabilization variants and diagnostic findings into the discovery archive.
+- `generatePreRunWarning` uses the real `last.deathStat` from run history; the seed only varies the wording.
+- `cyklusStorage.migrateState` fills missing `modifier`, `goals`, `lastItemActivationCycle`, `itemActivationCount`, `activeContracts`, `preRunWarning`, `preRunChoice` and `statsAfter` on old saves.
+- Goal `rewardPool` reachability is verified by a dedicated content test.
+
+## UI / CSS vylepšení
+
+- `StatDock` highlights chips whose values changed after a choice (`cyklus-stat-chip--changed`) and accepts `highlight` for tutorial focus (`cyklus-stat-chip--highlight`).
+- Tutorial cards (`tutorial_stats`, `tutorial_balance`, `tutorial_choice`, `tutorial_consequences`) pulse the corresponding UI element (stats, action buttons, pocket).
+- Pocket shows mood-based ambient glow via `cyklus-pocket--mood-{mood}`; `unstable` and `angry` items pulse subtly.
+- Mobile-first responsive tweaks keep the stat dock sticky and readable down to 360 px.
+- `focus-visible` rings and `prefers-reduced-motion` guards improve accessibility.
+
 ## Testy
 
 ```bash
 npx jest src/game/cyklus --no-coverage
 ```
 
-Pokrytí (29 testů):
+Pokrytí (82+ testů):
 
 - Vytvoření běhu, restart sekvence.
 - Smrt při statu 0/100, krizové itemy, rubber stamp.
@@ -243,6 +277,8 @@ Pokrytí (29 testů):
 - Anti-repetition.
 - Shrnutí běhu, analýza smrti, stabilizační pokrok.
 - **Content reachability** — každý odkazovaný item, imprint, pool, karta a flag existuje.
+- C2 helpers: `updateRunGoals`, `checkItemCombos`, `getComboHint`, `getActiveContracts`, `generatePreRunWarning`, goal reward application, overload risk tags.
+- Simulace: balance assertions (death 40–70%, completion ≤ 65%) a campaign progression.
 
 ## Rozšiřitelnost
 

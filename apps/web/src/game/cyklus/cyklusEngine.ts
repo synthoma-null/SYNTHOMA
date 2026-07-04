@@ -44,7 +44,10 @@ export function updateRunGoals(state: CyklusRunState, previousState: CyklusRunSt
         progress = Math.min(g.target, state.itemActivationCount ?? 0);
         break;
       case 'memory_high_5':
-        progress = Math.min(g.target, state.history.filter((r) => r.statDelta.memory && r.statDelta.memory > 0 && state.stats.memory > 75).length);
+        progress = Math.min(
+          g.target,
+          state.history.filter((r) => (r.statsAfter?.memory ?? 0) > 75).length,
+        );
         break;
       case 'reject_entity_help':
         if (card.category === 'entity' && state.history.length > previousState.history.length) {
@@ -55,7 +58,9 @@ export function updateRunGoals(state: CyklusRunState, previousState: CyklusRunSt
         }
         break;
       case 'no_crisis_item':
-        progress = state.flags.includes('crisis_item_used') ? 0 : 1;
+        if (state.status === 'completed' && !state.flags.includes('crisis_item_used')) {
+          progress = 1;
+        }
         break;
     }
     return { ...g, progress, completed: progress >= g.target };
@@ -95,10 +100,36 @@ export function generatePreRunWarning(seed: string): string | null {
   const history = loadCyklusRunHistory();
   if (history.length === 0) return null;
   const last = history[history.length - 1];
-  if (!last || last.status !== 'dead') return null;
-  const endings = ['Paměť', 'Energie', 'Vazba', 'Kontrola'];
-  const chosen = endings[Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % endings.length];
-  return `Poslední subjekt zemřel kvůli ${chosen}. Systém to zaznamenal. Možná to tentokrát nebudeš ty.`;
+  if (!last || last.status !== 'dead' || !last.deathStat) return null;
+  const label = STAT_LABELS[last.deathStat];
+  const variants = [
+    `Poslední subjekt zemřel kvůli ${label}. Systém to zaznamenal. Možná to tentokrát nebudeš ty.`,
+    `Předchozí subjekt ukončil běh v ${label}. Varování zůstává v logu.`,
+    `Záznam: selhání ${label}. Cyklus se restartuje s jiným seedem.`,
+  ];
+  const index = Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % variants.length;
+  return variants[index] ?? null;
+}
+
+function computeBaselineProfileFromHistory(history: CyklusRunSummary[]): Partial<Record<ProfileKey, number>> {
+  if (history.length === 0) return {};
+  const weights = history.slice(-5).map((h, i, arr) => (i + 1) / arr.length); // newer runs weigh more
+  const weightedSum: Partial<Record<ProfileKey, number>> = {};
+  let totalWeight = 0;
+  history.slice(-5).forEach((summary, i) => {
+    const weight = weights[i] ?? 1;
+    totalWeight += weight;
+    for (const [key, value] of Object.entries(summary.profile)) {
+      const k = key as ProfileKey;
+      weightedSum[k] = (weightedSum[k] ?? 0) + value * weight;
+    }
+  });
+  const result: Partial<Record<ProfileKey, number>> = {};
+  for (const [key, value] of Object.entries(weightedSum)) {
+    const k = key as ProfileKey;
+    result[k] = value / totalWeight;
+  }
+  return result;
 }
 
 export function createCyklusRun(tutorialSeen = false): CyklusRunState {
@@ -107,6 +138,8 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
   const startStats = { energy: 50, memory: 50, bond: 50, control: 50 };
   const { pools: unlockedPools, cards: unlockedCards } = loadMetaUnlockPools();
   const modifier = pickRunModifier(seed);
+  const history = loadCyklusRunHistory();
+  const baselineProfile = computeBaselineProfileFromHistory(history);
   const state: CyklusRunState = {
     id: `cyklus_${now}_${seed.slice(-6)}`,
     status: 'playing',
@@ -117,7 +150,7 @@ export function createCyklusRun(tutorialSeen = false): CyklusRunState {
     sector: 'void',
     visitedSectors: ['void'],
     stats: { ...startStats },
-    profile: {},
+    profile: { ...baselineProfile },
     inventory: [],
     flags: [],
     imprints: [],
@@ -766,6 +799,7 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     poolsUnlocked,
     scheduledAdded,
     entityDelta,
+    statsAfter: { ...s.stats },
     sectorBefore,
     sectorAfter: s.sector,
     ts: Date.now(),
@@ -1351,6 +1385,11 @@ export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardSc
     else { score -= 200; reasons.push('recent -200'); }
   }
 
+  const modifierScore = applyModifierScore(state, score, card);
+  const modifierDelta = modifierScore - score;
+  if (modifierDelta !== 0) reasons.push(`modifier ${modifierDelta > 0 ? '+' : ''}${modifierDelta}`);
+  score = modifierScore;
+
   const tensionScore = applyTensionScore(state, score, card);
   const tensionDelta = tensionScore - score;
   if (tensionDelta !== 0) reasons.push(`tension ${tensionDelta > 0 ? '+' : ''}${tensionDelta}`);
@@ -1452,6 +1491,7 @@ export function summarizeRun(state: CyklusRunState): CyklusRunSummary {
     totalChoices: state.totalChoices,
     dominantProfile: profile.dominantLabel,
     archetype: profile.archetype,
+    profile: { ...state.profile },
     imprints: [...state.imprints],
     visitedSectors: [...state.visitedSectors],
     deathStat,
@@ -1511,6 +1551,31 @@ export function updateTension(state: CyklusRunState, card: SwipeCard): CyklusTen
     lastRewardAt: hasReward ? state.totalChoices : t.lastRewardAt,
     lastEntityAt: hasEntity || hasEntityEffect ? state.totalChoices : t.lastEntityAt,
   };
+}
+
+function applyModifierScore(state: CyklusRunState, score: number, card: SwipeCard): number {
+  let s = score;
+  switch (state.modifier.id) {
+    case 'archive_rain':
+      if (card.tags.includes('archive') || card.tags.includes('memory')) s += 60;
+      break;
+    case 'silent_shift':
+      if (card.category === 'silent' || card.tags.includes('silent')) s += 70;
+      if (card.category === 'entity') s -= 40;
+      break;
+    case 'acid_shift':
+      if (card.tags.includes('energy') || card.tags.includes('acid')) s += 60;
+      if (card.category === 'path' || card.tags.includes('path')) s += 40;
+      break;
+    case 'form_day':
+      if (card.tags.includes('form') || card.tags.includes('office')) s += 70;
+      break;
+    case 'glitch_weather':
+      if (card.tags.includes('glitch') || card.tags.includes('noise')) s += 70;
+      if (card.tags.includes('control') && (card.rarity === 'rare' || card.rarity === 'critical')) s += 30;
+      break;
+  }
+  return s;
 }
 
 function applyTensionScore(state: CyklusRunState, score: number, card: SwipeCard): number {

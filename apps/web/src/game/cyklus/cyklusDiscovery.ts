@@ -32,7 +32,22 @@ export function saveDiscovery(discovery: CyklusDiscovery): void {
   } catch { /* ignore */ }
 }
 
-export function updateDiscoveryFromRun(state: CyklusRunState): CyklusDiscovery {
+export async function saveDiscoveryWithSync(discovery: CyklusDiscovery): Promise<void> {
+  saveDiscovery(discovery);
+  if (typeof window === 'undefined') return;
+  try {
+    await fetch('/api/me/cyklus', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ discovery }),
+    });
+  } catch { /* ignore */ }
+}
+
+export function updateDiscoveryFromRun(
+  state: CyklusRunState,
+  extras?: { variantId?: string | undefined; findingIds?: string[] | undefined },
+): CyklusDiscovery {
   const d = loadDiscovery();
   const add = <T>(arr: T[], values: T[]): T[] => [...new Set([...arr, ...values])];
 
@@ -46,6 +61,13 @@ export function updateDiscoveryFromRun(state: CyklusRunState): CyklusDiscovery {
   } else if (state.status === 'dead') {
     const ending = computeEndingStat(state);
     if (ending) d.endings = add(d.endings, [`death_${ending}`]);
+  }
+
+  if (extras?.variantId) {
+    d.variants = add(d.variants, [extras.variantId]);
+  }
+  if (extras?.findingIds) {
+    d.findings = add(d.findings, extras.findingIds);
   }
 
   saveDiscovery(d);

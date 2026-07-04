@@ -132,4 +132,24 @@ app/cyklus/page.tsx
 npx jest src/game/cyklus --no-coverage
 ```
 
-Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami.
+Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozohraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami.
+
+## Content overview
+
+| Asset               | Count |
+|---------------------|-------|
+| Cards               | 205   |
+| Items               | 24    |
+| Imprints            | 11    |
+| Unlock conditions   | 21    |
+| Diagnostic findings | 12    |
+
+## C2 visibility pass (completed)
+
+- **Build panel** shows top 3 stabilization variants with expand/collapse.
+- **Goals** use thematic SYNTHOMA-style text, flash completion log, and apply reward pools only when completed.
+- **Contracts** are visible in a dedicated panel (bonus, commitment, pending collect status).
+- **Item combo hints** appear subtly in the pocket panel when one combo item is held.
+- **Overload cards** display a clear high-risk warning in the card UI.
+- **Pre-run warning** is shown as a separate overlay before the first card.
+- **Simulation report** tracks goals, contracts, combos, and overload accept/refuse rates.

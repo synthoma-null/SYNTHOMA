@@ -26,6 +26,7 @@ model User {
   entitlements Entitlement[]
   mnemLedger   MnemLedger[]
   accessCodes  AccessCode[]
+  cyklusRun    CyklusRun?
 }
 
 model UserProfile {
@@ -337,6 +338,19 @@ model WhisperPurchase {
 
   @@index([userId])
   @@index([whisperId])
+}
+
+model CyklusRun {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stateJson   Json
+  historyJson Json     @default("[]")
+  discoveryJson Json @default("{}")
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
 }
 
 model GameRoom {

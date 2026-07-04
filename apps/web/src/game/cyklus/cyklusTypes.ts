@@ -180,6 +180,7 @@ export interface CyklusChoiceRecord {
   poolsUnlocked: string[];
   scheduledAdded: string[];
   entityDelta: Partial<Record<EntityId, number>>;
+  statsAfter: Record<StatKey, number>;
   sectorBefore: SectorId;
   sectorAfter: SectorId;
   ts: number;
@@ -278,6 +279,7 @@ export interface CyklusRunSummary {
   totalChoices: number;
   dominantProfile: string;
   archetype: string;
+  profile: Partial<Record<ProfileKey, number>>;
   imprints: string[];
   visitedSectors: SectorId[];
   deathStat?: StatKey | undefined;

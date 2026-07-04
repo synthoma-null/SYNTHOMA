@@ -1,8 +1,91 @@
 import type { CyklusRunState, CyklusRunSummary, CyklusTension } from './cyklusTypes';
+import type { CyklusDiscovery } from './cyklusDiscovery';
+import { loadDiscovery, saveDiscovery } from './cyklusDiscovery';
 
 const STORAGE_KEY = 'synthoma_cyklus_run_v1';
 const HISTORY_KEY = 'synthoma_cyklus_history_v1';
 const MAX_HISTORY = 50;
+
+let serverSyncEnabled = true;
+
+export function setServerSyncEnabled(enabled: boolean): void {
+  serverSyncEnabled = enabled;
+}
+
+function migrateState(parsed: Partial<CyklusRunState>): CyklusRunState {
+  if (!parsed.tension) {
+    parsed.tension = { ...DEFAULT_TENSION };
+  } else {
+    parsed.tension = { ...DEFAULT_TENSION, ...parsed.tension };
+  }
+  if (!parsed.seed) parsed.seed = `migrated-${Date.now().toString(36)}`;
+  if (parsed.rngStep === undefined) parsed.rngStep = 0;
+  if (!parsed.unlockedCards) parsed.unlockedCards = [];
+  if (!parsed.cycleSummaries) parsed.cycleSummaries = [];
+  if (!parsed.freshMetaPools) parsed.freshMetaPools = [];
+  if (!parsed.modifier) {
+    parsed.modifier = {
+      id: 'none',
+      title: 'Standardní cyklus',
+      description: 'Žádná anomálie nebyla zaznamenána.',
+      tags: [],
+    };
+  }
+  if (!parsed.goals) parsed.goals = [];
+  if (parsed.lastItemActivationCycle === undefined) parsed.lastItemActivationCycle = 0;
+  if (parsed.itemActivationCount === undefined) parsed.itemActivationCount = 0;
+  if (!parsed.activeContracts) parsed.activeContracts = [];
+  if (parsed.preRunWarning === undefined) parsed.preRunWarning = null;
+  if (parsed.preRunChoice === undefined) parsed.preRunChoice = null;
+  if (parsed.history) {
+    parsed.history = parsed.history.map((r) => ({
+      ...r,
+      itemsLost: r.itemsLost ?? [],
+      imprintsGained: r.imprintsGained ?? [],
+      poolsUnlocked: r.poolsUnlocked ?? [],
+      scheduledAdded: r.scheduledAdded ?? [],
+      entityDelta: r.entityDelta ?? {},
+    }));
+  }
+  return parsed as CyklusRunState;
+}
+
+async function serverSave(
+  state: CyklusRunState | null,
+  history: CyklusRunSummary[],
+  discovery: CyklusDiscovery,
+): Promise<void> {
+  if (!serverSyncEnabled || typeof window === 'undefined') return;
+  try {
+    await fetch('/api/me/cyklus', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state, history, discovery }),
+    });
+  } catch {
+    // ignore network errors; localStorage remains as fallback
+  }
+}
+
+export async function loadServerCyklusRun(): Promise<{
+  state: CyklusRunState | null;
+  history: CyklusRunSummary[];
+  discovery: CyklusDiscovery | null;
+} | null> {
+  if (!serverSyncEnabled || typeof window === 'undefined') return null;
+  try {
+    const res = await fetch('/api/me/cyklus', { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return {
+      state: data.state ? migrateState(data.state as Partial<CyklusRunState>) : null,
+      history: Array.isArray(data.history) ? data.history : [],
+      discovery: data.discovery ?? null,
+    };
+  } catch {
+    return null;
+  }
+}
 
 const DEFAULT_TENSION: CyklusTension = {
   calmStreak: 0,
@@ -15,13 +98,16 @@ const DEFAULT_TENSION: CyklusTension = {
   lastEntityAt: 0,
 };
 
-export function saveCyklusRun(state: CyklusRunState): void {
+export async function saveCyklusRun(state: CyklusRunState): Promise<void> {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch {
     // ignore storage errors
   }
+  const history = loadCyklusRunHistory();
+  const discovery = loadDiscovery();
+  await serverSave(state, history, discovery);
 }
 
 export function loadCyklusRun(): CyklusRunState | null {
@@ -30,40 +116,25 @@ export function loadCyklusRun(): CyklusRunState | null {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<CyklusRunState>;
-    if (!parsed.tension) {
-      parsed.tension = { ...DEFAULT_TENSION };
-    } else {
-      parsed.tension = { ...DEFAULT_TENSION, ...parsed.tension };
-    }
-    // Migration: new fields added in refactor
-    if (!parsed.seed) parsed.seed = `migrated-${Date.now().toString(36)}`;
-    if (parsed.rngStep === undefined) parsed.rngStep = 0;
-    if (!parsed.unlockedCards) parsed.unlockedCards = [];
-    if (!parsed.cycleSummaries) parsed.cycleSummaries = [];
-    if (!parsed.freshMetaPools) parsed.freshMetaPools = [];
-    // Migration: history records missing new diff fields
-    if (parsed.history) {
-      parsed.history = parsed.history.map((r) => ({
-        ...r,
-        itemsLost: r.itemsLost ?? [],
-        imprintsGained: r.imprintsGained ?? [],
-        poolsUnlocked: r.poolsUnlocked ?? [],
-        scheduledAdded: r.scheduledAdded ?? [],
-        entityDelta: r.entityDelta ?? {},
-      }));
-    }
-    return parsed as CyklusRunState;
+    return migrateState(parsed);
   } catch {
     return null;
   }
 }
 
-export function clearCyklusRun(): void {
+export async function clearCyklusRun(): Promise<void> {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(STORAGE_KEY);
   } catch {
     // ignore
+  }
+  if (serverSyncEnabled) {
+    try {
+      await fetch('/api/me/cyklus', { method: 'DELETE' });
+    } catch {
+      // ignore
+    }
   }
 }
 
@@ -84,7 +155,7 @@ export function loadCyklusRunHistory(): CyklusRunSummary[] {
   }
 }
 
-export function saveCyklusRunHistory(history: CyklusRunSummary[]): void {
+export async function saveCyklusRunHistory(history: CyklusRunSummary[]): Promise<void> {
   if (typeof window === 'undefined') return;
   try {
     const trimmed = history.slice(-MAX_HISTORY);
@@ -92,13 +163,16 @@ export function saveCyklusRunHistory(history: CyklusRunSummary[]): void {
   } catch {
     // ignore storage errors
   }
+  const state = loadCyklusRun();
+  const discovery = loadDiscovery();
+  await serverSave(state, history, discovery);
 }
 
-export function appendCyklusRunSummary(summary: CyklusRunSummary): void {
+export async function appendCyklusRunSummary(summary: CyklusRunSummary): Promise<void> {
   if (typeof window === 'undefined') return;
   const history = loadCyklusRunHistory();
   history.push(summary);
-  saveCyklusRunHistory(history);
+  await saveCyklusRunHistory(history);
 }
 
 const TUTORIAL_KEY = 'synthoma_cyklus_tutorial_seen';
