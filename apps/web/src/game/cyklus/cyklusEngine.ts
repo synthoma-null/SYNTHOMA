@@ -119,11 +119,12 @@ function computeBaselineProfileFromHistory(history: CyklusRunSummary[]): Partial
   history.slice(-5).forEach((summary, i) => {
     const weight = weights[i] ?? 1;
     totalWeight += weight;
-    for (const [key, value] of Object.entries(summary.profile)) {
+    for (const [key, value] of Object.entries(summary.profile ?? {})) {
       const k = key as ProfileKey;
       weightedSum[k] = (weightedSum[k] ?? 0) + value * weight;
     }
   });
+  if (totalWeight === 0) return {};
   const result: Partial<Record<ProfileKey, number>> = {};
   for (const [key, value] of Object.entries(weightedSum)) {
     const k = key as ProfileKey;
