@@ -324,7 +324,7 @@ export default function CyklusClient() {
         <div className="cyklus-menu">
           <div className="cyklus-menu__title">SYNTHOMA: CYKLUS</div>
           <div className="cyklus-menu__subtitle">
-            {savedRun ? `Rozohraný cyklus: cyklus ${savedRun.cycle}, sektor ${SECTOR_LABELS[savedRun.sector]}` : 'Žádná rozohraná hra'}
+            {savedRun ? `Rozehraný cyklus: cyklus ${savedRun.cycle}, sektor ${SECTOR_LABELS[savedRun.sector]}` : 'Žádná rozehraná hra'}
           </div>
           <div className="cyklus-menu__tagline">
             Udrž čtyři reaktory subjektu v rovnováze. Maximum není výhra. Extrém je konec.

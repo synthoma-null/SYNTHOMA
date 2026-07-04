@@ -136,7 +136,7 @@ npx jest src/components/cyklus --no-coverage
 npx tsc --noEmit
 ```
 
-Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozohraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami. Meta-progression se ukládá pod klíčem `synthoma_cyklus_progression_v1`, discovery pod `synthoma_cyklus_discovery`.
+Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozehraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami. Meta-progression se ukládá pod klíčem `synthoma_cyklus_progression_v1`, discovery pod `synthoma_cyklus_discovery`.
 
 ## Content overview
 
