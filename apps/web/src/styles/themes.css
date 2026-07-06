@@ -34,7 +34,7 @@
   --bg-secondary: rgba(0, 0, 0, 0.7);
   --bg-tertiary: rgba(0, 15, 30, 0.9);
   --bg-glass: rgba(0, 255, 255, 0.05);
-  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(0, 0, 0, 0.97);
   --text-primary: #0ff;
   --text-secondary: #f0f;
   --text-tertiary: rgba(0, 255, 255, 0.5);
@@ -65,7 +65,7 @@
   --bg-secondary: rgba(0, 12, 0, 0.85);
   --bg-tertiary: rgba(0, 20, 0, 0.92);
   --bg-glass: rgba(0, 180, 0, 0.04);
-  --bg-overlay: rgba(0, 8, 0, 0.88);
+  --bg-overlay: rgba(0, 8, 0, 0.97);
   --text-primary: #33ff33;
   --text-secondary: rgba(50, 220, 50, 0.75);
   --text-tertiary: rgba(40, 180, 40, 0.55);
@@ -99,7 +99,7 @@
   --bg-secondary: rgba(30, 4, 0, 0.88);
   --bg-tertiary: rgba(50, 8, 4, 0.92);
   --bg-glass: rgba(255, 80, 20, 0.06);
-  --bg-overlay: rgba(20, 2, 0, 0.9);
+  --bg-overlay: rgba(20, 2, 0, 0.97);
   --text-primary: #ff5522;
   --text-secondary: rgba(255, 120, 40, 0.8);
   --text-tertiary: rgba(255, 100, 30, 0.5);
@@ -130,7 +130,7 @@
   --bg-secondary: rgba(18, 20, 30, 0.9);
   --bg-tertiary: rgba(28, 32, 44, 0.92);
   --bg-glass: rgba(0, 200, 255, 0.04);
-  --bg-overlay: rgba(10, 12, 18, 0.92);
+  --bg-overlay: rgba(10, 12, 18, 0.97);
   --text-primary: #00ddff;
   --text-secondary: rgba(0, 200, 255, 0.75);
   --text-tertiary: rgba(0, 180, 230, 0.5);
@@ -161,7 +161,7 @@
   --bg-secondary: rgba(12, 0, 24, 0.88);
   --bg-tertiary: rgba(20, 0, 40, 0.92);
   --bg-glass: rgba(200, 0, 255, 0.05);
-  --bg-overlay: rgba(8, 0, 16, 0.92);
+  --bg-overlay: rgba(8, 0, 16, 0.97);
   --text-primary: #ee44ff;
   --text-secondary: rgba(230, 60, 255, 0.75);
   --text-tertiary: rgba(200, 50, 230, 0.5);
@@ -192,7 +192,7 @@
   --bg-secondary: rgba(0, 17, 0, 0.9);
   --bg-tertiary: rgba(0, 34, 0, 0.8);
   --bg-glass: rgba(0, 255, 0, 0.05);
-  --bg-overlay: rgba(0, 17, 0, 0.8);
+  --bg-overlay: rgba(0, 17, 0, 0.97);
   --text-primary: #0ff;
   --text-secondary: rgba(255, 0, 255, 0.95);
   --text-tertiary: rgba(255, 0, 255, 0.6);
@@ -246,7 +246,7 @@
   --bg-secondary: rgba(12,12,12,0.94);
   --bg-tertiary: rgba(20,20,20,0.95);
   --bg-glass: rgba(255,255,255,0.04);
-  --bg-overlay: rgba(5,5,5,0.92);
+  --bg-overlay: rgba(5,5,5,0.97);
 
   --text-primary: #e8e8e8;
   --text-secondary: rgba(220,220,220,0.78);
@@ -302,7 +302,7 @@
   --bg-secondary: rgba(235,235,235,0.95);
   --bg-tertiary: rgba(225,225,225,0.95);
   --bg-glass: rgba(0,0,0,0.04);
-  --bg-overlay: rgba(245,245,245,0.96);
+  --bg-overlay: rgba(245,245,245,0.98);
 
   --text-primary: #1a1a1a;
   --text-secondary: rgba(30,30,30,0.75);

@@ -12,7 +12,7 @@
 }
 
 .cyklus-root {
-  flex: 1;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   max-width: 640px;
@@ -4045,6 +4045,166 @@
   flex: 1;
   -webkit-overflow-scrolling: touch;
 }
+
+/* ── THEME OVERRIDES ─────────────────────────────────────────────────────────── */
+
+/* ── MONO LIGHT: dark text on white background ── */
+[data-theme=mono-light] .cyklus-root {
+  color: #1a1a1a;
+}
+
+/* Card category border-top colors — darker for light bg */
+[data-theme=mono-light] .cyklus-card--category-system   { border-top-color: #2980b9; }
+[data-theme=mono-light] .cyklus-card--category-memory   { border-top-color: #6c5ce7; }
+[data-theme=mono-light] .cyklus-card--category-bond     { border-top-color: #27ae60; }
+[data-theme=mono-light] .cyklus-card--category-control  { border-top-color: #2471a3; }
+[data-theme=mono-light] .cyklus-card--category-energy   { border-top-color: #d4a017; }
+[data-theme=mono-light] .cyklus-card--category-crisis   { border-top-color: #c0392b; }
+[data-theme=mono-light] .cyklus-card--category-path     { border-top-color: #7d3c98; }
+[data-theme=mono-light] .cyklus-card--category-object   { border-top-color: #7f8c8d; }
+[data-theme=mono-light] .cyklus-card--category-entity   { border-top-color: #c0392b; }
+[data-theme=mono-light] .cyklus-card--category-restart  { border-top-color: #c0392b; }
+[data-theme=mono-light] .cyklus-card--category-item_trigger { border-top-color: #d4a017; }
+[data-theme=mono-light] .cyklus-card--category-followup { border-top-color: #2980b9; }
+[data-theme=mono-light] .cyklus-card--category-silent   { border-top-color: #566573; }
+[data-theme=mono-light] .cyklus-card--category-trap     { border-top-color: #cb4335; }
+[data-theme=mono-light] .cyklus-card--category-unlock   { border-top-color: #27ae60; }
+[data-theme=mono-light] .cyklus-card--category-imprint  { border-top-color: #6c3483; }
+
+/* Stat chips — dark readable colors */
+[data-theme=mono-light] .cyklus-stat-chip--energy   { color: #9a7d0a; border-top-color: rgba(154, 125, 10, 0.6); }
+[data-theme=mono-light] .cyklus-stat-chip--memory   { color: #5b2c6f; border-top-color: rgba(91, 44, 111, 0.6); }
+[data-theme=mono-light] .cyklus-stat-chip--bond     { color: #1e8449; border-top-color: rgba(30, 132, 73, 0.6); }
+[data-theme=mono-light] .cyklus-stat-chip--control  { color: #1a5276; border-top-color: rgba(26, 82, 118, 0.6); }
+[data-theme=mono-light] .cyklus-stat-chip--low-danger  { color: #922b21; border-color: rgba(146, 43, 33, 0.4); }
+[data-theme=mono-light] .cyklus-stat-chip--high-danger { color: #935116; border-color: rgba(147, 81, 22, 0.4); }
+
+/* Stat fills */
+[data-theme=mono-light] .cyklus-stat-chip--energy .cyklus-stat-chip__fill--stable { background: rgba(154, 125, 10, 0.7); }
+[data-theme=mono-light] .cyklus-stat-chip--memory .cyklus-stat-chip__fill--stable { background: rgba(91, 44, 111, 0.7); }
+[data-theme=mono-light] .cyklus-stat-chip--bond   .cyklus-stat-chip__fill--stable { background: rgba(30, 132, 73, 0.7); }
+[data-theme=mono-light] .cyklus-stat-chip--control .cyklus-stat-chip__fill--stable { background: rgba(26, 82, 118, 0.7); }
+
+/* Risk labels */
+[data-theme=mono-light] .cyklus-preview__risk--low     { color: #1e8449; }
+[data-theme=mono-light] .cyklus-preview__risk--medium   { color: #9a7d0a; }
+[data-theme=mono-light] .cyklus-preview__risk--high     { color: #922b21; }
+[data-theme=mono-light] .cyklus-preview__risk--unknown  { color: #566573; }
+
+/* Outcome stat deltas */
+[data-theme=mono-light] .cyklus-outcome__stat--up   { color: #1e8449; border-color: rgba(30, 132, 73, 0.3); background: rgba(30, 132, 73, 0.08); }
+[data-theme=mono-light] .cyklus-outcome__stat--down { color: #922b21; border-color: rgba(146, 43, 33, 0.3); background: rgba(146, 43, 33, 0.08); }
+
+/* Story nodes */
+[data-theme=mono-light] .cyklus-story__node--yes { color: #1e8449; border-color: rgba(30, 132, 73, 0.3); }
+[data-theme=mono-light] .cyklus-story__node--no  { color: #935116; border-color: rgba(147, 81, 22, 0.3); }
+
+/* Entity relations */
+[data-theme=mono-light] .cyklus-entity--positive { color: #1e8449; border-color: rgba(30, 132, 73, 0.3); }
+[data-theme=mono-light] .cyklus-entity--negative { color: #922b21; border-color: rgba(146, 43, 33, 0.3); }
+
+/* Nav panel route */
+[data-theme=mono-light] .cyklus-nav-panel__route-node--current { color: #1e8449; border-color: rgba(30, 132, 73, 0.3); background: rgba(30, 132, 73, 0.08); }
+
+/* Stabilization */
+[data-theme=mono-light] .cyklus-stabilization__item--ok { color: #1e8449; }
+
+/* Pocket activate */
+[data-theme=mono-light] .cyklus-pocket__activate { color: #1e8449; background: rgba(30, 132, 73, 0.1); border-color: rgba(30, 132, 73, 0.3); }
+[data-theme=mono-light] .cyklus-pocket__activate--cancel { color: #922b21; background: rgba(146, 43, 33, 0.1); border-color: rgba(146, 43, 33, 0.3); }
+
+/* Death analysis */
+[data-theme=mono-light] .cyklus-death-analysis__delta--up   { color: #922b21; }
+[data-theme=mono-light] .cyklus-death-analysis__delta--down { color: #1e8449; }
+
+/* Reward types */
+[data-theme=mono-light] .reward--item    { color: #1e8449; background: rgba(30, 132, 73, 0.1); border-color: rgba(30, 132, 73, 0.25); }
+[data-theme=mono-light] .reward--sector  { color: #1a5276; background: rgba(26, 82, 118, 0.1); border-color: rgba(26, 82, 118, 0.25); }
+[data-theme=mono-light] .reward--flag    { color: #935116; background: rgba(147, 81, 22, 0.1); border-color: rgba(147, 81, 22, 0.25); }
+[data-theme=mono-light] .reward--big     { color: #922b21; background: rgba(146, 43, 33, 0.1); border-color: rgba(146, 43, 33, 0.25); }
+[data-theme=mono-light] .reward--medium  { color: #6c3483; background: rgba(108, 52, 131, 0.1); border-color: rgba(108, 52, 131, 0.25); }
+[data-theme=mono-light] .reward--profile { color: #1a5276; background: rgba(26, 82, 118, 0.1); border-color: rgba(26, 82, 118, 0.25); }
+[data-theme=mono-light] .reward--silent  { color: #566573; background: rgba(86, 101, 115, 0.1); border-color: rgba(86, 101, 115, 0.25); }
+
+/* Overlay summary */
+[data-theme=mono-light] .cyklus-overlay__summary-text { color: #2e4a30; }
+
+/* Solo banner */
+[data-theme=mono-light] .game-solo-banner--cyklus .game-solo-banner__title { color: #6c3483; }
+
+/* Rarity badge */
+[data-theme=mono-light] .cyklus-card__rarity { color: #922b21; border-color: rgba(146, 43, 33, 0.4); }
+
+/* Stat popup extremes */
+[data-theme=mono-light] .cyklus-stat-popup__extreme--low  .cyklus-stat-popup__extreme-death { color: #922b21; }
+[data-theme=mono-light] .cyklus-stat-popup__extreme--high .cyklus-stat-popup__extreme-death { color: #935116; }
+
+/* Buttons — ensure readable on light bg */
+[data-theme=mono-light] .cyklus-menu__button,
+[data-theme=mono-light] .cyklus-footer__button {
+  color: #1a1a1a;
+  border-color: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.06);
+}
+[data-theme=mono-light] .cyklus-menu__button:hover,
+[data-theme=mono-light] .cyklus-footer__button:hover {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.35);
+}
+[data-theme=mono-light] .cyklus-menu__button--primary {
+  color: #1e8449;
+  background: rgba(30, 132, 73, 0.1);
+  border-color: rgba(30, 132, 73, 0.35);
+}
+
+/* Stat dock climate */
+[data-theme=mono-light] .cyklus-stat-dock__climate {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Card background */
+[data-theme=mono-light] .cyklus-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-secondary);
+}
+
+/* Tutorial progress */
+[data-theme=mono-light] .cyklus-tutorial-progress {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Footer */
+[data-theme=mono-light] .cyklus-footer {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Stat flash animation — dark flash for light bg */
+[data-theme=mono-light] .cyklus-stat-chip--changed .cyklus-stat-chip__value {
+  animation-name: cyklus-stat-flash-light;
+}
+@keyframes cyklus-stat-flash-light {
+  0% { color: #000; text-shadow: 0 0 12px rgba(0, 0, 0, 0.4); transform: scale(1.25); }
+  40% { color: #000; text-shadow: 0 0 8px rgba(0, 0, 0, 0.2); transform: scale(1.1); }
+  100% { color: inherit; text-shadow: none; transform: scale(1); }
+}
+
+/* ── MONO BW: ensure decent contrast ── */
+[data-theme=mono] .cyklus-stat-chip--energy   { color: #d4c8a0; }
+[data-theme=mono] .cyklus-stat-chip--memory   { color: #c8c0e0; }
+[data-theme=mono] .cyklus-stat-chip--bond     { color: #b0d8b8; }
+[data-theme=mono] .cyklus-stat-chip--control  { color: #a8c8e0; }
+[data-theme=mono] .cyklus-story__node--yes    { color: #b8d8c0; }
+[data-theme=mono] .cyklus-story__node--no     { color: #d8c8a8; }
+[data-theme=mono] .cyklus-entity--positive    { color: #b8d8c0; }
+[data-theme=mono] .cyklus-entity--negative    { color: #d8a8a8; }
+[data-theme=mono] .cyklus-preview__risk--low  { color: #b0d8b8; }
+[data-theme=mono] .cyklus-preview__risk--medium { color: #d8c8a0; }
+[data-theme=mono] .cyklus-preview__risk--high { color: #d8a8a8; }
+[data-theme=mono] .cyklus-outcome__stat--up   { color: #b0d8b8; }
+[data-theme=mono] .cyklus-outcome__stat--down { color: #d8a8a8; }
 
 /* ── DESKTOP LAYOUT ─────────────────────────────────────────────────────────── */
 

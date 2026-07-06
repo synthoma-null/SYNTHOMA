@@ -54,7 +54,7 @@ export const CYKLUS_ITEMS: Record<string, CyklusItem> = {
   },
   childhood_spade: {
     id: 'childhood_spade',
-    title: 'Dětské rýčko',
+    title: 'Lopatka',
     description: 'Odemyká Pískoviště paměti. Malé, zapomenuté a důležité.',
     tags: ['memory', 'childhood', 'sandbox'],
     passiveEffects: [{ type: 'flag', flag: 'childhood_spade_active' }],
