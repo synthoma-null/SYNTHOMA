@@ -764,7 +764,7 @@ function composeImpactNarrative(record: CyklusChoiceRecord, card: SwipeCard): st
     parts.push(pickFromPool([
       'Systém otevřel novou sadu možností. Netváří se, že by to bylo bezpečné.',
       'Někde se odkryly dveře, které předtím neexistovaly.',
-      'Nový přístup. Nový problém. Klasický pořadí.',
+      'Nový přístup. Nový problém. Klasické pořadí.',
     ], `${card.id}-pool-${turn}`));
   }
   if (record.scheduledAdded.length > 0) {

@@ -7,7 +7,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     title: 'První boot',
     logLabel: 'SYSTEM_BOOT',
     scene: 'Systém nabízí rychlé spuštění bez kontroly integrity.',
-    yesLabel: 'SPOUSTIT',
+    yesLabel: 'SPUSTIT',
     noLabel: 'KALIBROVAT',
     category: 'system',
     rarity: 'common',
