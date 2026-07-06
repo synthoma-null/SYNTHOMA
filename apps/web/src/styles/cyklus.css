@@ -357,6 +357,11 @@
   touch-action: pan-y;
   position: relative;
   overflow: hidden;
+  cursor: grab;
+}
+
+.cyklus-card:active {
+  cursor: grabbing;
 }
 
 .cyklus-card::before {
@@ -509,6 +514,13 @@
   border-radius: 0.75rem;
   background: rgba(255, 255, 255, 0.02);
   text-align: left;
+  flex: 1;
+}
+
+.cyklus-preview .cyklus-btn {
+  margin-top: auto;
+  flex: none;
+  width: 100%;
 }
 
 .cyklus-preview--no {
@@ -558,10 +570,7 @@
 .cyklus-preview__risk--unknown { color: #a0a0b0; }
 
 .cyklus-actions {
-  display: flex;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 420px;
+  display: none;
 }
 
 .cyklus-btn {
@@ -575,7 +584,8 @@
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  color: var(--text-primary, #fff);
+  font-family: var(--font-family-primary, 'Text03', 'VT323', monospace);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -610,16 +620,16 @@
   background: rgba(255, 107, 107, 0.15);
 }
 
-.cyklus-actions--highlight .cyklus-btn {
+.cyklus-card__preview--highlight .cyklus-btn {
   animation: cyklus-actions-highlight 1.4s ease-in-out infinite;
 }
 
-.cyklus-actions--highlight .cyklus-btn--yes {
+.cyklus-card__preview--highlight .cyklus-btn--yes {
   border-color: rgba(123, 237, 159, 0.55);
   box-shadow: 0 0 14px rgba(123, 237, 159, 0.15);
 }
 
-.cyklus-actions--highlight .cyklus-btn--no {
+.cyklus-card__preview--highlight .cyklus-btn--no {
   border-color: rgba(255, 107, 107, 0.55);
   box-shadow: 0 0 14px rgba(255, 107, 107, 0.15);
 }
@@ -642,6 +652,7 @@
 .cyklus-btn__label {
   font-size: 1rem;
   letter-spacing: 0.02em;
+  font-family: inherit;
 }
 
 .cyklus-btn__hint {
@@ -650,27 +661,27 @@
 
 .cyklus-outcome {
   position: absolute;
-  bottom: 5.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-  max-width: 420px;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background: rgba(12, 12, 22, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-left: 3px solid rgba(123, 237, 159, 0.5);
-  border-radius: 1rem;
-  padding: 1.1rem 1.35rem;
+  border-radius: inherit;
+  padding: 1.5rem 1.5rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
-  animation: cyklus-fade-up 0.28s ease;
+  animation: cyklus-fade-in 0.28s ease;
   z-index: 10;
   cursor: pointer;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  overflow-y: auto;
 }
 
-@keyframes cyklus-fade-up {
-  from { opacity: 0; transform: translateX(-50%) translateY(14px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+@keyframes cyklus-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .cyklus-outcome__label {
@@ -1538,6 +1549,7 @@
   position: relative;
   display: grid;
   grid-template-rows: auto auto auto auto;
+  font-family: var(--font-family-primary, 'Text03', 'VT323', monospace);
   gap: 0.2rem;
   min-width: 0;
   padding: 0.5rem 0.55rem;
@@ -1571,6 +1583,7 @@
   font-size: 1rem;
   font-weight: 700;
   line-height: 1;
+  font-family: inherit;
 }
 
 .cyklus-stat-chip__bar {
@@ -1676,8 +1689,12 @@
   font-weight: 700;
 }
 
+.cyklus-stat-chip--changed {
+  animation: cyklus-chip-flash 0.7s ease;
+}
+
 .cyklus-stat-chip--changed .cyklus-stat-chip__value {
-  animation: cyklus-stat-flash 0.65s ease;
+  animation: cyklus-stat-flash 0.7s ease;
 }
 
 .cyklus-stat-chip--highlight {
@@ -1692,8 +1709,14 @@
 }
 
 @keyframes cyklus-stat-flash {
-  0% { color: #fff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
-  100% { color: inherit; text-shadow: none; }
+  0% { color: #fff; text-shadow: 0 0 12px rgba(255, 255, 255, 0.7); transform: scale(1.25); }
+  40% { color: #fff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); transform: scale(1.1); }
+  100% { color: inherit; text-shadow: none; transform: scale(1); }
+}
+
+@keyframes cyklus-chip-flash {
+  0% { border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 0 16px rgba(255, 255, 255, 0.2); }
+  100% { border-color: rgba(255, 255, 255, 0.12); box-shadow: none; }
 }
 
 @keyframes cyklus-stat-highlight {
@@ -2887,9 +2910,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cyklus-stat-chip--changed,
   .cyklus-stat-chip--changed .cyklus-stat-chip__value,
   .cyklus-stat-chip--highlight,
-  .cyklus-actions--highlight .cyklus-btn,
+  .cyklus-card__preview--highlight .cyklus-btn,
   .cyklus-pocket--highlight .cyklus-pocket__toggle,
   .cyklus-pocket--highlight .cyklus-pocket__count,
   .cyklus-pocket__item--unstable,

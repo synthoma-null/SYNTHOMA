@@ -83,6 +83,7 @@ export default function CyklusClient() {
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
+  const isDragging = useRef(false);
   const outcomeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -331,22 +332,47 @@ export default function CyklusClient() {
   }, [state]);
 
   const onTouchStart = (e: React.TouchEvent) => {
-    if (flyDirection) return;
+    if (flyDirection || outcomeVisible) return;
     const touch = e.touches[0];
     if (touch) startX.current = touch.clientX;
   };
   const onTouchMove = (e: React.TouchEvent) => {
-    if (flyDirection) return;
+    if (flyDirection || outcomeVisible) return;
     const touch = e.touches[0];
     if (!touch) return;
     const x = touch.clientX - startX.current;
     setDragX(Math.max(-160, Math.min(160, x)));
   };
   const onTouchEnd = () => {
-    if (flyDirection) return;
+    if (flyDirection || outcomeVisible) return;
     if (dragX > 80) handleChoice('yes');
     else if (dragX < -80) handleChoice('no');
     else setDragX(0);
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (flyDirection || outcomeVisible) return;
+    isDragging.current = true;
+    startX.current = e.clientX;
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || flyDirection || outcomeVisible) return;
+    const x = e.clientX - startX.current;
+    setDragX(Math.max(-160, Math.min(160, x)));
+  };
+  const onMouseUp = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    if (flyDirection || outcomeVisible) return;
+    if (dragX > 80) handleChoice('yes');
+    else if (dragX < -80) handleChoice('no');
+    else setDragX(0);
+  };
+  const onMouseLeave = () => {
+    if (isDragging.current) {
+      isDragging.current = false;
+      if (!flyDirection && !outcomeVisible) setDragX(0);
+    }
   };
 
   useEffect(() => {
@@ -686,6 +712,10 @@ export default function CyklusClient() {
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
+              onMouseDown={onMouseDown}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseUp}
+              onMouseLeave={onMouseLeave}
             >
               {state.modifier.id !== 'none' && (
               <div className="cyklus-modifier">
@@ -705,26 +735,14 @@ export default function CyklusClient() {
               {card.category === 'restart' && (
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
-              <div className="cyklus-card__preview">
-                {directionPreview(state, card, card.no.preview, 'no', shouldLimitPreview(card))}
-                {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card))}
+              <div className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
+                {directionPreview(state, card, card.no.preview, 'no', shouldLimitPreview(card), card.noLabel, () => handleChoice('no'), outcomeVisible)}
+                {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card), card.yesLabel, () => handleChoice('yes'), outcomeVisible)}
               </div>
+              {outcomeVisible && state.lastOutcomeText && (
+                <OutcomePanel state={state} onDismiss={dismissOutcome} />
+              )}
             </div>
-
-            <div className={`cyklus-actions ${tutorialHighlight?.actions ? 'cyklus-actions--highlight' : ''}`}>
-              <button className="cyklus-btn cyklus-btn--no" onClick={() => handleChoice('no')} disabled={outcomeVisible}>
-                <span className="cyklus-btn__label">{card.noLabel}</span>
-                {card.no.preview && state && <span className="cyklus-btn__hint">{applyMetaProgressionPreviewHint(state, card, shouldLimitPreview(card) ? limitedPreviewHint(card.no.preview.hint) : card.no.preview.hint)}</span>}
-              </button>
-              <button className="cyklus-btn cyklus-btn--yes" onClick={() => handleChoice('yes')} disabled={outcomeVisible}>
-                <span className="cyklus-btn__label">{card.yesLabel}</span>
-                {card.yes.preview && state && <span className="cyklus-btn__hint">{applyMetaProgressionPreviewHint(state, card, shouldLimitPreview(card) ? limitedPreviewHint(card.yes.preview.hint) : card.yes.preview.hint)}</span>}
-              </button>
-            </div>
-
-            {outcomeVisible && state.lastOutcomeText && (
-              <OutcomePanel state={state} onDismiss={dismissOutcome} />
-            )}
             <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} />
           </>
         ) : (
@@ -1325,14 +1343,15 @@ function limitedPreviewHint(hint: string): string {
   return 'Následek není plně jasný';
 }
 
-function directionPreview(state: CyklusRunState, card: SwipeCard, preview: { hint: string; risk?: 'low' | 'medium' | 'high' | 'unknown'; statHints?: Partial<Record<StatKey, 'up' | 'down' | 'danger'>> } | undefined, dir: 'yes' | 'no', limited: boolean) {
-  if (!preview) return null;
-  const baseHint = limited ? limitedPreviewHint(preview.hint) : preview.hint;
-  const hint = applyMetaProgressionPreviewHint(state, card, baseHint);
+function directionPreview(state: CyklusRunState, card: SwipeCard, preview: { hint: string; risk?: 'low' | 'medium' | 'high' | 'unknown'; statHints?: Partial<Record<StatKey, 'up' | 'down' | 'danger'>> } | undefined, dir: 'yes' | 'no', limited: boolean, label: string, onChoice: () => void, disabled: boolean) {
+  const hint = preview ? applyMetaProgressionPreviewHint(state, card, limited ? limitedPreviewHint(preview.hint) : preview.hint) : null;
   return (
     <div className={`cyklus-preview cyklus-preview--${dir}`}>
-      <span className="cyklus-preview__hint">{hint}</span>
-      {preview.risk && <span className={`cyklus-preview__risk cyklus-preview__risk--${preview.risk}`}>{preview.risk}</span>}
+      {hint && <span className="cyklus-preview__hint">{hint}</span>}
+      {preview?.risk && <span className={`cyklus-preview__risk cyklus-preview__risk--${preview.risk}`}>{preview.risk}</span>}
+      <button className={`cyklus-btn cyklus-btn--${dir}`} onClick={onChoice} disabled={disabled}>
+        <span className="cyklus-btn__label">{label}</span>
+      </button>
     </div>
   );
 }
