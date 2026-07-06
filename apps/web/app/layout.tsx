@@ -36,7 +36,6 @@ import MBTIHudClient from "./components/MBTIHudClient";
 
 import { LangProvider } from "../src/lib/LangContext";
 
-import LangSwitcher from "../src/components/LangSwitcher";
 
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 
@@ -251,7 +250,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           {/* Global Control Panel trigger and container */}
 
-          <LangSwitcher />
 
           <div className="top-bar-actions">
 
