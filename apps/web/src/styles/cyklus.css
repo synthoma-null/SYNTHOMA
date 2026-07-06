@@ -4257,12 +4257,6 @@
     align-content: start;
   }
 
-  .cyklus-stat-dock .cyklus-tutorial-progress {
-    grid-column: 1 / -1;
-    max-width: none;
-    margin: 0 0 0.25rem;
-  }
-
   .cyklus-desktop-top .cyklus-nav-panel {
     max-width: none;
     margin: 0;
@@ -4351,6 +4345,10 @@
     display: none;
   }
 
+  .cyklus-stat-dock .cyklus-tutorial-progress {
+    display: none;
+  }
+
   .cyklus-stat-chip {
     padding: 0.3rem 0.35rem;
     border-radius: 0.5rem;
@@ -4371,7 +4369,7 @@
   .cyklus-stage {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
     padding: 0.5rem;
     padding-bottom: 0;

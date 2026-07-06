@@ -483,6 +483,7 @@ export default function CyklusClient() {
   const tutorialHighlight = getTutorialHighlight(card?.id);
 
   return (
+    <>
     <div className="cyklus-root">
       {sectorIntro && (
         <div className="cyklus-overlay cyklus-overlay--sector" onClick={() => setSectorIntro(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSectorIntro(null); }}>
@@ -528,7 +529,13 @@ export default function CyklusClient() {
         </div>
       )}
       {!ending && (
-        <CyklusMobileHud state={state} onToggleDiag={() => setShowDiag((v) => !v)} diagOpen={showDiag} />
+        <CyklusMobileHud state={state} onToggleDiag={() => setShowDiag((v) => !v)} diagOpen={showDiag} tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (
+          <div className="cyklus-tutorial-progress">
+            <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
+            <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
+            <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
+          </div>
+        ) : undefined} />
       )}
 
       <header className="cyklus-header">
@@ -906,6 +913,8 @@ export default function CyklusClient() {
         />
       )}
 
+    </div>
+
       <CyklusBottomSheet open={showPocketSheet} onClose={() => setShowPocketSheet(false)} title={`KAPSA ${state.inventory.length}`}>
         {state.inventory.length === 0 ? (
           <div className="cyklus-pocket__empty">Kapsa je prázdná. Nic tu nečeká.</div>
@@ -1021,7 +1030,7 @@ export default function CyklusClient() {
           }}
         />
       )}
-    </div>
+    </>
   );
 }
 

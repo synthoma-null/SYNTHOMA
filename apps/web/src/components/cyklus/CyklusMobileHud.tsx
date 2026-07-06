@@ -7,9 +7,10 @@ interface CyklusMobileHudProps {
   state: CyklusRunState;
   onToggleDiag: () => void;
   diagOpen: boolean;
+  tutorialProgress?: React.ReactNode;
 }
 
-export default function CyklusMobileHud({ state, onToggleDiag, diagOpen }: CyklusMobileHudProps) {
+export default function CyklusMobileHud({ state, onToggleDiag, diagOpen, tutorialProgress }: CyklusMobileHudProps) {
   const chapter = getCycleChapterName(state.cycle);
   const near = getNearestExtreme(state.stats);
   const stab = computeStabilizationProgress(state);
@@ -35,13 +36,13 @@ export default function CyklusMobileHud({ state, onToggleDiag, diagOpen }: Cyklu
         </button>
       </div>
       {diagOpen && (
-        <CyklusDiagDrawer state={state} stabDone={stabDone} />
+        <CyklusDiagDrawer state={state} stabDone={stabDone} tutorialProgress={tutorialProgress} />
       )}
     </div>
   );
 }
 
-function CyklusDiagDrawer({ state, stabDone }: { state: CyklusRunState; stabDone: number }) {
+function CyklusDiagDrawer({ state, stabDone, tutorialProgress }: { state: CyklusRunState; stabDone: number; tutorialProgress?: React.ReactNode }) {
   const stab = computeStabilizationProgress(state);
   const items = [
     { label: 'Přežít restart', ok: stab.survivedRestart },
@@ -51,6 +52,7 @@ function CyklusDiagDrawer({ state, stabDone }: { state: CyklusRunState; stabDone
   ];
   return (
     <div className="cyklus-diag-drawer">
+      {tutorialProgress}
       {state.visitedSectors.length > 0 && (
         <div className="cyklus-diag-drawer__route">
           <span className="cyklus-diag-drawer__label">Trasa:</span>
