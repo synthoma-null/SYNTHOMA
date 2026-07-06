@@ -521,7 +521,7 @@ export const PROFILE_PROTOCOLS: Record<ProtocolId, ProfileProtocol> = {
   te_cost_preview: {
     id: 'te_cost_preview',
     title: 'Te: Cena před podpisem',
-    description: 'U smluv, mýtnic a Form Office ukáže pozdější cenu přesněji.',
+    description: 'U smluv, mýtnic a Formulářovny ukáže pozdější cenu přesněji.',
     requiresProfile: { Te: 20 },
     cost: { residuum: 30, controlShard: 1 },
     drawback: 'Méně náhodných měkkých rewardů.',
@@ -582,7 +582,7 @@ export const CRAFTED_ARTIFACTS: Record<CraftedArtifactId, CraftedArtifact> = {
     tags: ['blackbox', 'name', 'protection'],
     equipCost: 1,
     effects: { startFlags: ['named_shell_active'], startImprints: ['named_error'] },
-    drawback: 'Form Office karty tě častěji rozpoznají.',
+    drawback: 'Formulářové karty tě častěji rozpoznají.',
   },
   refund_stamp: {
     id: 'refund_stamp',
@@ -647,7 +647,7 @@ export const CRAFT_RECIPES: Record<RecipeId, CraftRecipe> = {
     materialCosts: { broken_log_splinter: 1 },
     currencyCosts: { residuum: 35, controlShard: 1, memoryResidue: 1 },
     result: { type: 'artifact', artifactId: 'named_shell' },
-    drawback: 'Form Office karty tě častěji rozpoznají.',
+    drawback: 'Formulářové karty tě častěji rozpoznají.',
     hiddenUntil: { imprintIds: ['blackbox_scar', 'named_error'] },
   },
   toll_refund_stamp: {

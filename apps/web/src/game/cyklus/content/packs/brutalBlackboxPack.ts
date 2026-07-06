@@ -407,7 +407,7 @@ export const brutalBlackboxPack: CyklusContentPack = {
       title: 'Formulář ne-osoby',
       logLabel: 'UNPERSON_FORM',
       scene:
-        'Form Office poslalo formulář. Kolonka JMÉNO je předvyplněná slovem NEVYŽADOVÁNO. Kolonka SOUHLAS je už zaškrtnutá. Demokracie administrativního násilí, krásný vynález, civilizace se musí plácat po zádech.',
+        'Formulářovna poslala formulář. Kolonka JMÉNO je předvyplněná slovem NEVYŽADOVÁNO. Kolonka SOUHLAS je už zaškrtnutá. Demokracie administrativního násilí, krásný vynález, civilizace se musí plácat po zádech.',
       yesLabel: 'PODEPSAT',
       noLabel: 'PŘEPSAT KOLONKU JMÉNO',
       category: 'trap',

@@ -400,7 +400,7 @@ export const SECTOR_LABELS: Record<SectorId, string> = {
   market: 'Tržiště',
   mirror: 'Zrcadlo',
   residuum: 'Reziduum',
-  form_office: 'Form Office',
+  form_office: 'Formulářovna',
 };
 
 export const ENTITY_LABELS: Record<EntityId, string> = {
@@ -409,7 +409,7 @@ export const ENTITY_LABELS: Record<EntityId, string> = {
   glitchena: 'Glitchena',
   tai: 'T-AI',
   archive: 'Archiv',
-  form: 'Form Office',
+  form: 'Formulářovna',
   selma: 'Selma',
   cult: 'Acidová žluť',
   residuum: 'Reziduum',

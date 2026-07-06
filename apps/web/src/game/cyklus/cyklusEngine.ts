@@ -24,7 +24,7 @@ export const CYKLUS_RUN_MODIFIERS: CyklusRunModifier[] = [
   { id: 'archive_rain', title: 'Archivní déšť', description: 'Paměťové karty častější, ale Paměť se po cyklu víc snižuje.', tags: ['memory', 'archive'] },
   { id: 'silent_shift', title: 'Němý sektor', description: 'Méně entity karet, více silent karet.', tags: ['silent', 'entity'] },
   { id: 'acid_shift', title: 'Acidová směna', description: 'Energie roste rychleji, path karty mají vyšší šanci.', tags: ['energy', 'acid', 'path'] },
-  { id: 'form_day', title: 'Úřední den', description: 'Form Office karty častější, rubber_stamp je silnější.', tags: ['form', 'office'] },
+  { id: 'form_day', title: 'Úřední den', description: 'Formulářové karty častější, razítko je silnější.', tags: ['form', 'office'] },
   { id: 'glitch_weather', title: 'Glitch počasí', description: 'Více glitch/noise karet, Kontrola je křehčí.', tags: ['glitch', 'noise', 'control'] },
 ];
 
@@ -1171,7 +1171,7 @@ const SECTOR_INTROS: Record<SectorId, string[]> = {
   ],
   form_office: [
     'Formuláře se dívají. Ne oči — pozornost. Úřad tě zaevidoval.',
-    'Form Office tě přijal jako případ. Číslo jednací ještě nezná. Brzy bude znát.',
+    'Formulářovna tě přijala jako případ. Číslo jednací ještě nezná. Brzy bude znát.',
     'Vzduch tady váží víc. Je to tíha papíru, který čeká na podpis.',
   ],
 };

@@ -19,7 +19,7 @@ export const CYKLUS_IMPRINTS: Record<string, CyklusImprint> = {
   rubber_stamp: {
     id: 'rubber_stamp',
     title: 'Gumové razítko',
-    description: 'Jednou za run zruší Form Office past.',
+    description: 'Jednou za run zruší formulářovou past.',
     tags: ['form', 'office', 'save'],
     passiveEffects: [{ type: 'flag', flag: 'rubber_stamp_ready' }],
   },

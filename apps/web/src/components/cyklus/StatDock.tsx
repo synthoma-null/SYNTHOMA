@@ -2,7 +2,8 @@
 
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import { STAT_LABELS, STAT_DETAIL, type StatKey } from '../../game/cyklus/cyklusTypes';
+import { STAT_LABELS, STAT_DETAIL, type StatKey, type CyklusChoiceRecord, type CyklusRunModifier } from '../../game/cyklus/cyklusTypes';
+import { CYKLUS_CARDS } from '../../game/cyklus/content';
 
 const STAT_ORDER: StatKey[] = ['energy', 'memory', 'bond', 'control'];
 
@@ -30,15 +31,64 @@ function statStateLabel(state: StatState, value: number): string {
   return 'stabilní';
 }
 
+const TREND_WINDOW = 8;
+
+function getTrend(history: CyklusChoiceRecord[], statKey: StatKey): { total: number; count: number } {
+  const recent = history.slice(-TREND_WINDOW);
+  let total = 0;
+  let count = 0;
+  for (const r of recent) {
+    const d = r.statDelta[statKey];
+    if (d && d !== 0) { total += d; count++; }
+  }
+  return { total, count };
+}
+
+function getRecentChanges(history: CyklusChoiceRecord[], statKey: StatKey): { cardId: string; title: string; delta: number; turn: number }[] {
+  const result: { cardId: string; title: string; delta: number; turn: number }[] = [];
+  for (let i = history.length - 1; i >= 0 && result.length < 5; i--) {
+    const r = history[i];
+    if (!r) continue;
+    const d = r.statDelta[statKey];
+    if (d && d !== 0) {
+      const card = CYKLUS_CARDS[r.cardId];
+      result.push({ cardId: r.cardId, title: card?.title ?? r.cardId, delta: d, turn: r.turn });
+    }
+  }
+  return result;
+}
+
+function getDangerProximity(value: number): { label: string; cls: string } | null {
+  if (value <= 10) return { label: `Do konce zbývá ${value} bodů`, cls: 'critical-low' };
+  if (value <= 20) return { label: `${value} bodů od krize`, cls: 'warn-low' };
+  if (value >= 90) return { label: `Do konce zbývá ${100 - value} bodů`, cls: 'critical-high' };
+  if (value >= 80) return { label: `${100 - value} bodů od přetlaku`, cls: 'warn-high' };
+  return null;
+}
+
+function getTrendLabel(total: number): string {
+  if (total > 6) return 'Prudký nárůst';
+  if (total > 2) return 'Mírný nárůst';
+  if (total > 0) return 'Lehký nárůst';
+  if (total < -6) return 'Prudký pokles';
+  if (total < -2) return 'Mírný pokles';
+  if (total < 0) return 'Lehký pokles';
+  return 'Stabilní';
+}
+
 interface StatPopupProps {
   statKey: StatKey;
   value: number;
+  history: CyklusChoiceRecord[];
   onClose: () => void;
 }
 
-function StatPopup({ statKey, value, onClose }: StatPopupProps) {
+function StatPopup({ statKey, value, history, onClose }: StatPopupProps) {
   const detail = STAT_DETAIL[statKey];
   const state = getStatState(value);
+  const trend = getTrend(history, statKey);
+  const changes = getRecentChanges(history, statKey);
+  const danger = getDangerProximity(value);
   return (
     <div
       className="cyklus-stat-popup-overlay"
@@ -53,6 +103,22 @@ function StatPopup({ statKey, value, onClose }: StatPopupProps) {
         </div>
         <div className="cyklus-stat-popup__body">
           <p className="cyklus-stat-popup__description">{detail.description}</p>
+
+          {danger && (
+            <div className={`cyklus-stat-popup__danger cyklus-stat-popup__danger--${danger.cls}`}>
+              {danger.label}
+            </div>
+          )}
+
+          {trend.count > 0 && (
+            <div className="cyklus-stat-popup__trend">
+              <span className="cyklus-stat-popup__trend-label">Trend ({TREND_WINDOW} tahů):</span>
+              <span className={`cyklus-stat-popup__trend-value ${trend.total > 0 ? 'cyklus-stat-popup__trend-value--up' : trend.total < 0 ? 'cyklus-stat-popup__trend-value--down' : ''}`}>
+                {getTrendLabel(trend.total)} ({trend.total > 0 ? '+' : ''}{trend.total})
+              </span>
+            </div>
+          )}
+
           <div className="cyklus-stat-popup__extremes">
             <div className="cyklus-stat-popup__extreme cyklus-stat-popup__extreme--low">
               <span className="cyklus-stat-popup__extreme-label">0</span>
@@ -63,6 +129,21 @@ function StatPopup({ statKey, value, onClose }: StatPopupProps) {
               <span className="cyklus-stat-popup__extreme-death">{detail.high}</span>
             </div>
           </div>
+
+          {changes.length > 0 && (
+            <div className="cyklus-stat-popup__history">
+              <span className="cyklus-stat-popup__history-title">Poslední změny</span>
+              {changes.map((c, i) => (
+                <div key={`${c.cardId}-${c.turn}-${i}`} className="cyklus-stat-popup__history-row">
+                  <span className="cyklus-stat-popup__history-card">{c.title}</span>
+                  <span className={`cyklus-stat-popup__history-delta ${c.delta > 0 ? 'cyklus-stat-popup__history-delta--up' : 'cyklus-stat-popup__history-delta--down'}`}>
+                    {c.delta > 0 ? '+' : ''}{c.delta}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="cyklus-stat-popup__rule">
             Bezpečné pásmo: 20–80
           </div>
@@ -80,9 +161,11 @@ interface StatDockProps {
   openStat: StatKey | null;
   onOpenStat: (key: StatKey | null) => void;
   highlight?: StatKey | 'all' | null | undefined;
+  history: CyklusChoiceRecord[];
+  climate?: CyklusRunModifier | null;
 }
 
-export default function StatDock({ stats, openStat, onOpenStat, highlight }: StatDockProps) {
+export default function StatDock({ stats, openStat, onOpenStat, highlight, history, climate }: StatDockProps) {
   const previousStats = usePrevious(stats);
   const [changedKeys, setChangedKeys] = useState<Set<StatKey>>(new Set());
 
@@ -101,6 +184,13 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight }: Sta
   return (
     <>
       <aside className={`cyklus-stat-dock ${highlight ? 'cyklus-stat-dock--highlighted' : ''}`} aria-label="Stav subjektu">
+        {climate && (
+          <div className="cyklus-stat-dock__climate">
+            <span className="cyklus-stat-dock__climate-label">KLIMA</span>
+            <span className="cyklus-stat-dock__climate-title">{climate.title}</span>
+            <span className="cyklus-stat-dock__climate-desc">{climate.description}</span>
+          </div>
+        )}
         {STAT_ORDER.map((key) => {
           const value = stats[key];
           const state = getStatState(value);
@@ -140,6 +230,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight }: Sta
         <StatPopup
           statKey={openStat}
           value={stats[openStat]}
+          history={history}
           onClose={() => onOpenStat(null)}
         />
       )}

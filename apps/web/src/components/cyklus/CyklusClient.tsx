@@ -490,8 +490,6 @@ export default function CyklusClient() {
           <span className="cyklus-chapter__subtitle">{chapter.subtitle}</span>
         </div>
         <div className="cyklus-meta">
-          <span className="cyklus-sector">{SECTOR_LABELS[state.sector]}</span>
-          <span className="cyklus-progress">{state.choiceInCycle}/{12}</span>
           {card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') && (
             <button
               className="cyklus-header__skip"
@@ -502,14 +500,6 @@ export default function CyklusClient() {
               Přeskočit
             </button>
           )}
-          <button
-            className="cyklus-header__reset"
-            onClick={handleRestart}
-            type="button"
-            title="Ukončit aktuální cyklus a začít znovu"
-          >
-            ↺
-          </button>
         </div>
       </header>
 
@@ -521,21 +511,32 @@ export default function CyklusClient() {
         </div>
       )}
 
-      {state.visitedSectors.length > 0 && (
-        <div className="cyklus-route">
-          <span className="cyklus-route__label">Trasa cyklu:</span>
-          <div className="cyklus-route__chain">
-            {state.visitedSectors.map((sector, idx) => (
-              <span key={`${sector}-${idx}`} className={`cyklus-route__node ${sector === state.sector ? 'cyklus-route__node--current' : ''}`}>
-                {SECTOR_LABELS[sector]}
-              </span>
-            ))}
+      {!ending && (
+        <div className="cyklus-nav-panel">
+          <div className="cyklus-nav-panel__row">
+            <span className="cyklus-nav-panel__sector">{SECTOR_LABELS[state.sector]}</span>
+            <span className="cyklus-nav-panel__progress">{state.choiceInCycle}/{12}</span>
           </div>
+          {state.visitedSectors.length > 0 && (
+            <div className="cyklus-nav-panel__route">
+              <span className="cyklus-nav-panel__label">Trasa cyklu:</span>
+              <div className="cyklus-nav-panel__route-chain">
+                {state.visitedSectors.map((sector, idx) => (
+                  <span key={`${sector}-${idx}`} className={`cyklus-nav-panel__route-node ${sector === state.sector ? 'cyklus-nav-panel__route-node--current' : ''}`}>
+                    {SECTOR_LABELS[sector]}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {state.status === 'playing' && (state.usedCardIds.includes('restart_5') || runHistory.length > 0) && (
+            <StabilizationPanel state={state} />
+          )}
         </div>
       )}
 
-      {state.status === 'playing' && (state.usedCardIds.includes('restart_5') || runHistory.length > 0) && (
-        <StabilizationPanel state={state} />
+      {!ending && (
+        <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} history={state.history} climate={state.modifier.id !== 'none' ? state.modifier : null} />
       )}
 
       <main className="cyklus-stage">
@@ -695,7 +696,6 @@ export default function CyklusClient() {
             {showHistory && <RunHistoryList history={runHistory} />}
           </div>
         ) : card ? (
-          <>
             <div
               ref={cardRef}
               className={[
@@ -717,19 +717,13 @@ export default function CyklusClient() {
               onMouseUp={onMouseUp}
               onMouseLeave={onMouseLeave}
             >
-              {state.modifier.id !== 'none' && (
-              <div className="cyklus-modifier">
-                <span className="cyklus-modifier__title">{state.modifier.title}</span>
-                <span className="cyklus-modifier__desc">{state.modifier.description}</span>
-              </div>
-            )}
-            {card.tags.includes('overload') && (
-              <div className="cyklus-card__overload">
-                <span className="cyklus-card__overload-label">⚠ PŘETLAKOVÉ POKUŠENÍ</span>
-                <span className="cyklus-card__overload-risk">Vysoké riziko · extrémní reward</span>
-              </div>
-            )}
-            <div className="cyklus-card__category">{card.logLabel}</div>
+              {card.tags.includes('overload') && (
+                <div className="cyklus-card__overload">
+                  <span className="cyklus-card__overload-label">⚠ PŘETLAKOVÉ POKUŠENÍ</span>
+                  <span className="cyklus-card__overload-risk">Vysoké riziko · extrémní reward</span>
+                </div>
+              )}
+              <div className="cyklus-card__category">{card.logLabel}</div>
               <h2 className="cyklus-card__title">{card.title}</h2>
               <p className="cyklus-card__scene">{card.scene}</p>
               {card.category === 'restart' && (
@@ -743,25 +737,12 @@ export default function CyklusClient() {
                 <OutcomePanel state={state} onDismiss={dismissOutcome} />
               )}
             </div>
-            <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} />
-          </>
         ) : (
           <div className="cyklus-empty">Karta nenalezena.</div>
         )}
       </main>
 
       <footer className="cyklus-footer">
-        {state.history.length > 0 && (
-          <div className="cyklus-story">
-            <span className="cyklus-footer__label">Příběh:</span>
-            <div className="cyklus-story__chain">
-              {state.history.slice(-3).map((record) => {
-                const card = getCardById(record.cardId);
-                return <span key={`${record.cardId}-${record.ts}`} className="cyklus-story__node">{card?.title ?? record.cardId}</span>;
-              })}
-            </div>
-          </div>
-        )}
         <div className={`cyklus-pocket ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
           <button
             className="cyklus-pocket__toggle"
@@ -828,12 +809,32 @@ export default function CyklusClient() {
             })}
           </div>
         )}
+        {state.history.length > 0 && (
+          <div className="cyklus-story">
+            <span className="cyklus-footer__label">Příběh:</span>
+            <div className="cyklus-story__chain">
+              {state.history.slice(-3).map((record) => {
+                const c = getCardById(record.cardId);
+                return <span key={`${record.cardId}-${record.ts}`} className="cyklus-story__node">{c?.title ?? record.cardId}</span>;
+              })}
+            </div>
+          </div>
+        )}
         <div className="cyklus-footer-actions">
           <button type="button" className="cyklus-footer__button" onClick={() => setShowBuild((v) => !v)}>
             Build
           </button>
           <button type="button" className="cyklus-footer__button" onClick={() => setShowDiscovery((v) => !v)}>
             Archiv
+          </button>
+        </div>
+        <div className="cyklus-footer-restart">
+          <button
+            className="cyklus-footer__button cyklus-footer__button--restart"
+            onClick={handleRestart}
+            type="button"
+          >
+            ↺ Restart cyklu
           </button>
         </div>
       </footer>

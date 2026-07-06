@@ -34,7 +34,7 @@ export const CYKLUS_ITEMS: Record<string, CyklusItem> = {
   blank_form: {
     id: 'blank_form',
     title: 'Prázdný formulář',
-    description: 'Přitahuje Form Office karty. Administrativně nebezpečný.',
+    description: 'Přitahuje formulářové karty. Administrativně nebezpečný.',
     tags: ['form', 'office', 'paper'],
     passiveEffects: [{ type: 'flag', flag: 'blank_form_active' }],
   },
@@ -98,7 +98,7 @@ export const CYKLUS_ITEMS: Record<string, CyklusItem> = {
   rubber_stamp: {
     id: 'rubber_stamp',
     title: 'Gumové razítko',
-    description: 'Jednou zruší negativní dopad Form Office karty.',
+    description: 'Jednou zruší negativní dopad formulářové karty.',
     tags: ['form', 'office', 'relic'],
     passiveEffects: [{ type: 'flag', flag: 'rubber_stamp_ready' }],
   },
