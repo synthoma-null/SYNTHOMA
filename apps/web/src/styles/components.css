@@ -1178,22 +1178,14 @@
      CONTROL PANEL (toggle + panel + inputs) – sjednoceno.
      ========================= */
   #toggle-panel-btn {
-    position: fixed;
-    right: calc(16px + env(safe-area-inset-right));
-    bottom: calc(16px + env(safe-area-inset-bottom));
-    z-index: 4000;
-    width: 44px; height: 44px;
-    display: inline-flex; align-items: center; justify-content: center;
-    border-radius: 10px;
-    background: color-mix(in oklab, var(--bg-secondary) 85%, transparent);
-    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-    border: 1px solid var(--border-secondary);
-    box-shadow: 0 6px 20px rgba(0,0,0,.35), 0 0 12px var(--glow-secondary);
-    color: var(--text-primary); cursor: pointer;
-    transition: transform .12s ease, box-shadow .12s ease, background .2s ease, opacity .2s ease;
-    -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none;
+    position: static;
+    z-index: auto;
   }
-  #toggle-panel-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.45), 0 0 14px var(--glow-primary); }
+  #toggle-panel-btn:hover {
+    color: var(--text-primary, #cfcfe3);
+    border-color: rgba(255,255,255,.2);
+    background: color-mix(in oklab, var(--accent-primary, #7c5cff) 10%, var(--bg-surface, #0b0b0c));
+  }
   #toggle-panel-btn:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
   
   #control-panel {

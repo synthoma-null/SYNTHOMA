@@ -393,14 +393,20 @@ export default function CyklusClient() {
 
   if (showMenu) {
     return (
-      <div className="cyklus-root">
+      <div className="cyklus-root cyklus-root--menu">
+        <video className="cyklus-menu__video" autoPlay muted loop playsInline>
+          <source src="/video/SYNTHOMA5.webm" type="video/webm" />
+        </video>
         <div className="cyklus-menu">
           <div className="cyklus-menu__title">SYNTHOMA: CYKLUS</div>
-          <div className="cyklus-menu__subtitle">
-            {savedRun ? `Rozehraný cyklus: cyklus ${savedRun.cycle}, sektor ${SECTOR_LABELS[savedRun.sector]}` : 'Žádná rozehraná hra'}
+          <div className="cyklus-menu__intro">
+            <p className="cyklus-menu__intro-line">Jsi subjekt v diagnostickém cyklu.</p>
+            <p className="cyklus-menu__intro-line">Každá karta je rozhodnutí. Každé rozhodnutí posouvá čtyři vnitřní reaktory — energii, paměť, vazbu a kontrolu.</p>
+            <p className="cyklus-menu__intro-line">Cílem není maximum. Cílem je rovnováha. Extrém znamená konec.</p>
+            <p className="cyklus-menu__intro-line cyklus-menu__intro-line--dim">Swipuj. Přežij. Zjisti, kým jsi uvnitř systému.</p>
           </div>
-          <div className="cyklus-menu__tagline">
-            Udrž čtyři reaktory subjektu v rovnováze. Maximum není výhra. Extrém je konec.
+          <div className="cyklus-menu__subtitle">
+            {savedRun ? `Rozehraný cyklus ${savedRun.cycle} · ${SECTOR_LABELS[savedRun.sector]}` : 'Žádná rozehraná hra'}
           </div>
           <div className="cyklus-menu__actions">
             {savedRun && (

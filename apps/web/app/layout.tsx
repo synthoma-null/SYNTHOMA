@@ -250,13 +250,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           {/* Global Control Panel trigger and container */}
 
-
-          <div className="top-bar-actions">
-
-            <button id="toggle-panel-btn" aria-expanded="false" aria-controls="control-panel">🎛️</button>
-
-          </div>
-
           <div id="control-panel" className="control-panel" role="region" aria-label="Ovládací panel" aria-hidden="true">
 
             {/* Panel header */}
