@@ -10,6 +10,9 @@ import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPG
 import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from '../../game/cyklus/cyklusStory';
 import StatDock from './StatDock';
 import CyklusVoidHub from './CyklusVoidHub';
+import CyklusMobileHud from './CyklusMobileHud';
+import CyklusBottomNav from './CyklusBottomNav';
+import CyklusBottomSheet from './CyklusBottomSheet';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
@@ -79,6 +82,8 @@ export default function CyklusClient() {
   const [showReward, setShowReward] = useState(false);
   const [showVoidHub, setShowVoidHub] = useState(false);
   const [showSkipConfirm, setShowSkipConfirm] = useState(false);
+  const [showDiag, setShowDiag] = useState(false);
+  const [showPocketSheet, setShowPocketSheet] = useState(false);
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -482,6 +487,10 @@ export default function CyklusClient() {
           </div>
         </div>
       )}
+      {!ending && (
+        <CyklusMobileHud state={state} onToggleDiag={() => setShowDiag((v) => !v)} diagOpen={showDiag} />
+      )}
+
       <header className="cyklus-header">
         <div className="cyklus-title">SYNTHOMA: CYKLUS</div>
         <div className="cyklus-chapter">
@@ -805,7 +814,9 @@ export default function CyklusClient() {
             {Object.entries(state.entityRelations ?? {}).map(([id, value]) => {
               const entityId = id as EntityId;
               const label = ENTITY_LABELS[entityId] ?? entityId;
-              return <span key={id} className={`cyklus-entity cyklus-entity--${value && value > 0 ? 'positive' : value && value < 0 ? 'negative' : 'neutral'}`}>{label}: {value}</span>;
+              const v = value ?? 0;
+              const desc = v >= 3 ? 'důvěra' : v >= 1 ? 'zájem' : v <= -3 ? 'odpor' : v <= -1 ? 'podezření' : 'neutrální';
+              return <span key={id} className={`cyklus-entity cyklus-entity--${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}`} title={`${label}: ${v}`}>{label} · {desc}</span>;
             })}
           </div>
         )}
@@ -815,7 +826,7 @@ export default function CyklusClient() {
             <div className="cyklus-story__chain">
               {state.history.slice(-3).map((record) => {
                 const c = getCardById(record.cardId);
-                return <span key={`${record.cardId}-${record.ts}`} className="cyklus-story__node">{c?.title ?? record.cardId}</span>;
+                return <span key={`${record.cardId}-${record.ts}`} className={`cyklus-story__node cyklus-story__node--${record.direction}`}>{c?.title ?? record.cardId}</span>;
               })}
             </div>
           </div>
@@ -838,6 +849,84 @@ export default function CyklusClient() {
           </button>
         </div>
       </footer>
+
+      {!ending && (
+        <CyklusBottomNav
+          pocketCount={state.inventory.length}
+          onPocket={() => setShowPocketSheet((v) => !v)}
+          onBuild={() => setShowBuild((v) => !v)}
+          onArchive={() => setShowDiscovery((v) => !v)}
+          onVoid={() => setShowVoidHub(true)}
+          dimmed={outcomeVisible}
+        />
+      )}
+
+      <CyklusBottomSheet open={showPocketSheet} onClose={() => setShowPocketSheet(false)} title={`KAPSA ${state.inventory.length}`}>
+        {state.inventory.length === 0 ? (
+          <div className="cyklus-pocket__empty">Kapsa je prázdná. Nic tu nečeká.</div>
+        ) : (
+          <>
+            {getPocketAmbientText(state) && (
+              <div className="cyklus-pocket__ambient">{getPocketAmbientText(state)}</div>
+            )}
+            {getComboHint(state) && (
+              <div className="cyklus-pocket__combo-hint">{getComboHint(state)}</div>
+            )}
+            <div className="cyklus-pocket__items">
+              {getPocketItems(state).map((item: ItemWithMood) => {
+                const activatable = ['rubber_seal', 'mirror_shard', 'archive_key', 'soft_bug', 'warm_token'].includes(item.id);
+                const canActivate = activatable && state.lastItemActivationCycle < state.cycle;
+                return (
+                  <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
+                    <span className="cyklus-pocket__item-name">{item.title}</span>
+                    <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
+                    <span className="cyklus-pocket__item-text">{item.moodText}</span>
+                    {activatable && (
+                      <button
+                        type="button"
+                        className="cyklus-pocket__activate"
+                        disabled={!canActivate}
+                        onClick={() => handleActivateItem(item.id)}
+                      >
+                        {canActivate ? 'Aktivovat' : 'Aktivováno'}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+        {state.imprints.length > 0 && (
+          <div className="cyklus-imprints cyklus-imprints--sheet">
+            <span className="cyklus-footer__label">Imprinty:</span>
+            {state.imprints.map((id: string) => <span key={id} className="cyklus-imprint" title={CYKLUS_IMPRINTS[id]?.description}>{CYKLUS_IMPRINTS[id]?.title ?? id}</span>)}
+          </div>
+        )}
+        {Object.keys(state.entityRelations ?? {}).length > 0 && (
+          <div className="cyklus-entities cyklus-entities--sheet">
+            <span className="cyklus-footer__label">Vztahy:</span>
+            {Object.entries(state.entityRelations ?? {}).map(([id, value]) => {
+              const entityId = id as EntityId;
+              const label = ENTITY_LABELS[entityId] ?? entityId;
+              const v = value ?? 0;
+              const desc = v >= 3 ? 'důvěra' : v >= 1 ? 'zájem' : v <= -3 ? 'odpor' : v <= -1 ? 'podezření' : 'neutrální';
+              return <span key={id} className={`cyklus-entity cyklus-entity--${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}`} title={`${label}: ${v}`}>{label} · {desc}</span>;
+            })}
+          </div>
+        )}
+        {state.history.length > 0 && (
+          <div className="cyklus-story cyklus-story--sheet">
+            <span className="cyklus-footer__label">Příběh:</span>
+            <div className="cyklus-story__chain">
+              {state.history.slice(-5).map((record) => {
+                const c = getCardById(record.cardId);
+                return <span key={`${record.cardId}-${record.ts}`} className={`cyklus-story__node cyklus-story__node--${record.direction}`}>{c?.title ?? record.cardId}</span>;
+              })}
+            </div>
+          </div>
+        )}
+      </CyklusBottomSheet>
 
       {showBuild && state && (
         <div className="cyklus-overlay cyklus-overlay--build" onClick={() => setShowBuild(false)}>

@@ -14,7 +14,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     once: true,
     tags: ['system', 'start'],
     yes: { resultText: 'Systém se rozběhl. Některé procesy zůstaly ležet, ale hezky.', effects: [{ type: 'stat', key: 'energy', amount: 8 }, { type: 'stat', key: 'control', amount: -6 }, { type: 'profile', key: 'P', amount: 1 }, { type: 'profile', key: 'Se', amount: 1 }, { type: 'flag', flag: 'booted_without_integrity_check' }, { type: 'schedule', cardId: 'integrity_check_returns', inTurns: 6 }], preview: { hint: 'Energie ↑ · Kontrola ↓', statHints: { energy: 'up', control: 'down' }, risk: 'medium' } },
-    no: { resultText: 'Kalibrace trvala dýl, ale všechno sedělo na správném místě.', effects: [{ type: 'stat', key: 'control', amount: 6 }, { type: 'stat', key: 'energy', amount: -4 }, { type: 'profile', key: 'J', amount: 1 }, { type: 'profile', key: 'Si', amount: 1 }, { type: 'flag', flag: 'calibrated_safely' }], preview: { hint: 'Kontrola ↑ · Energie ↓', statHints: { control: 'up', energy: 'down' }, risk: 'low' } },
+    no: { resultText: 'Kalibrace trvala déle, ale všechno sedělo na správném místě.', effects: [{ type: 'stat', key: 'control', amount: 6 }, { type: 'stat', key: 'energy', amount: -4 }, { type: 'profile', key: 'J', amount: 1 }, { type: 'profile', key: 'Si', amount: 1 }, { type: 'flag', flag: 'calibrated_safely' }], preview: { hint: 'Kontrola ↑ · Energie ↓', statHints: { control: 'up', energy: 'down' }, risk: 'low' } },
   },
   emergency_calibration: {
     id: 'emergency_calibration',
