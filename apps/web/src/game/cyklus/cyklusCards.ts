@@ -4287,7 +4287,7 @@ export const CYKLUS_CARDS: Record<string, SwipeCard> = {
     id: 'tutorial_09_sectors',
     title: 'Sektory nejsou pozadí',
     logLabel: 'TUTORIAL_SECTORS',
-    scene: 'Prázdnota, Archiv, Pískoviště, Hnízdo Glitchky, Reziduum, Zrcadlo, Formulářovna, T-AI. Systém říká, že sektor ovlivňuje výběr karet. Sarkasma říká, že sektor je jen místnost, která se tváří, že má osobnost.',
+    scene: 'Prázdnota, Archiv, Pískoviště, Pelech Glitchky, Reziduum, Zrcadlo, Formulářovna, T-AI. Systém říká, že sektor ovlivňuje výběr karet. Sarkasma říká, že sektor je jen místnost, která se tváří, že má osobnost.',
     yesLabel: 'PROJÍT ARCHIVNÍ CHODBOU',
     noLabel: 'ZŮSTAT V PRÁZDNOTĚ',
     category: 'tutorial',

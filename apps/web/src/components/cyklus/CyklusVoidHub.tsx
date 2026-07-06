@@ -38,6 +38,7 @@ import {
 } from '../../game/cyklus/cyklusProgression';
 import type { ProfileKey } from '../../game/cyklus/cyklusTypes';
 import { loadDiscovery } from '../../game/cyklus/cyklusDiscovery';
+import { UI_THEMES } from '../../lib/themes';
 import {
   loadStoryProgression,
   saveStoryProgression,
@@ -49,7 +50,7 @@ import {
   type StoryProgression,
 } from '../../game/cyklus/cyklusStory';
 
-type Tab = 'overview' | 'rooms' | 'protocols' | 'upgrades' | 'pocket' | 'crafting' | 'scars' | 'story';
+type Tab = 'overview' | 'rooms' | 'protocols' | 'upgrades' | 'pocket' | 'crafting' | 'scars' | 'story' | 'settings';
 
 interface Props {
   onClose?: () => void;
@@ -61,6 +62,9 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [message, setMessage] = useState<string | null>(null);
   const [story, setStory] = useState<StoryProgression>(loadStoryProgression);
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    try { return localStorage.getItem('theme') || 'synthoma'; } catch { return 'synthoma'; }
+  });
 
   const refresh = useCallback(() => {
     setProgression(loadSubjectProgression());
@@ -532,6 +536,35 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
     );
   }
 
+  function applyThemeFromHub(themeId: string) {
+    try { document.body.setAttribute('data-theme', themeId); } catch {}
+    try { document.documentElement.setAttribute('data-theme', themeId); } catch {}
+    try { localStorage.setItem('theme', themeId); } catch {}
+    setCurrentTheme(themeId);
+    showMessage(`Motiv změněn: ${UI_THEMES.find((t) => t.id === themeId)?.label ?? themeId}`);
+  }
+
+  function renderSettings() {
+    return (
+      <div className="cyklus-void-panel">
+        <div className="cyklus-void-section">
+          <div className="cyklus-void-section__title">Barevný motiv</div>
+          <div className="cyklus-void-grid">
+            {UI_THEMES.map((theme) => (
+              <button
+                key={theme.id}
+                className={`cyklus-void-button ${currentTheme === theme.id ? 'cyklus-void-button--primary' : ''}`}
+                onClick={() => applyThemeFromHub(theme.id)}
+              >
+                {theme.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const tabs: { id: Tab; label: string }[] = [
     { id: 'overview', label: 'Přehled' },
     { id: 'story', label: 'Příběh' },
@@ -541,6 +574,7 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
     { id: 'pocket', label: 'Kapsa' },
     { id: 'crafting', label: 'Crafting' },
     { id: 'scars', label: 'Jizvy' },
+    { id: 'settings', label: 'Nastavení' },
   ];
 
   return (
@@ -580,6 +614,7 @@ export default function CyklusVoidHub({ onClose, onStartRun }: Props) {
           {activeTab === 'pocket' && renderPocket()}
           {activeTab === 'crafting' && renderCrafting()}
           {activeTab === 'scars' && renderScars()}
+          {activeTab === 'settings' && renderSettings()}
         </div>
       </div>
     </div>

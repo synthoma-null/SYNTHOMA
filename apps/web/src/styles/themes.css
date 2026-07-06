@@ -43,7 +43,7 @@
   --accent-primary: #f0f;
   --accent-secondary: #0ff;
   --accent-tertiary: #f0f;
-  --accent-success: rgb(255, 0, 0);
+  --accent-success: #7bed9f;
   --accent-warning: #0ff;
   --accent-error: #f0a;
   --border-primary: #0ff;
@@ -60,60 +60,63 @@
 /* ============ GREEN MATRIX ============ */
 [data-theme=green-matrix] {
   --theme-name: "green-matrix";
-  --bg-secondary-rgb: 0, 10, 0;
-  --bg-primary: #000;
-  --bg-secondary: rgba(0, 15, 0, 0.8);
-  --bg-tertiary: rgba(0, 30, 0, 0.9);
-  --bg-glass: rgba(0, 204, 0, 0.05);
-  --bg-overlay: rgba(0, 15, 0, 0.7);
-  --text-primary: #0c0;
-  --text-secondary: rgba(0, 204, 0, 0.7);
-  --text-tertiary: rgba(0, 204, 0, 0.5);
-  --text-accent: #0f8;
-  --text-muted: rgba(0, 255, 0, 0.3);
-  --accent-primary: #0f8;
-  --accent-secondary: #0f0;
-  --accent-tertiary: #8f0;
-  --accent-success: #0f0;
-  --accent-warning: #ff0;
-  --accent-error: #f40;
-  --border-primary: #0c0;
-  --border-secondary: rgba(0, 204, 0, 0.3);
-  --border-tertiary: rgba(0, 204, 0, 0.1);
+  --bg-secondary-rgb: 0, 8, 0;
+  --bg-primary: #020802;
+  --bg-secondary: rgba(0, 12, 0, 0.85);
+  --bg-tertiary: rgba(0, 20, 0, 0.92);
+  --bg-glass: rgba(0, 180, 0, 0.04);
+  --bg-overlay: rgba(0, 8, 0, 0.88);
+  --text-primary: #33ff33;
+  --text-secondary: rgba(50, 220, 50, 0.75);
+  --text-tertiary: rgba(40, 180, 40, 0.55);
+  --text-accent: #00ff88;
+  --text-muted: rgba(30, 160, 30, 0.35);
+  --accent-primary: #00ff88;
+  --accent-secondary: #33ff33;
+  --accent-tertiary: #88ff00;
+  --accent-success: #33ff33;
+  --accent-warning: #ddff00;
+  --accent-error: #ff4422;
+  --border-primary: rgba(50, 220, 50, 0.7);
+  --border-secondary: rgba(30, 180, 30, 0.3);
+  --border-tertiary: rgba(20, 140, 20, 0.12);
   --glow-primary: rgba(0, 255, 136, var(--glow-intensity));
-  --glow-secondary: rgba(0, 204, 0, var(--glow-intensity));
+  --glow-secondary: rgba(50, 220, 50, var(--glow-intensity));
   --glow-tertiary: rgba(136, 255, 0, var(--glow-intensity));
   --shadow-primary: #0a0;
   --shadow-secondary: rgba(0, 15, 0, 0.5);
   --filter-primary: hue-rotate(180deg);
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 2px, rgba(0, 255, 0, .015) 0, rgba(0, 255, 0, .015) 4px
+  );
 }
 
 /* ============ NEON HELLFIRE ============ */
 [data-theme=neon-hellfire] {
   --theme-name: "neon-hellfire";
-  --bg-secondary-rgb: 40, 0, 0;
-  --bg-primary: #0d0000;
-  --bg-secondary: rgba(40, 0, 0, 0.8);
-  --bg-tertiary: rgba(80, 10, 10, 0.9);
-  --bg-glass: rgba(255, 69, 0, 0.05);
-  --bg-overlay: rgba(40, 0, 0, 0.7);
-  --text-primary: #ff4500;
-  --text-secondary: rgba(255, 69, 0, 0.7);
-  --text-tertiary: rgba(255, 69, 0, 0.5);
-  --text-accent: #ff1a1a;
-  --text-muted: rgba(255, 100, 100, 0.3);
-  --accent-primary: #ff1a1a;
-  --accent-secondary: #ff8c00;
-  --accent-tertiary: #ff0;
-  --accent-success: #f80;
-  --accent-warning: #fa0;
-  --accent-error: red;
-  --border-primary: #ff4500;
-  --border-secondary: rgba(255, 69, 0, 0.3);
-  --border-tertiary: rgba(255, 69, 0, 0.1);
-  --glow-primary: rgba(255, 0, 0, var(--glow-intensity));
-  --glow-secondary: rgba(255, 140, 0, var(--glow-intensity));
-  --glow-tertiary: rgba(255, 255, 0, var(--glow-intensity));
+  --bg-secondary-rgb: 25, 2, 0;
+  --bg-primary: #0a0100;
+  --bg-secondary: rgba(30, 4, 0, 0.88);
+  --bg-tertiary: rgba(50, 8, 4, 0.92);
+  --bg-glass: rgba(255, 80, 20, 0.06);
+  --bg-overlay: rgba(20, 2, 0, 0.9);
+  --text-primary: #ff5522;
+  --text-secondary: rgba(255, 120, 40, 0.8);
+  --text-tertiary: rgba(255, 100, 30, 0.5);
+  --text-accent: #ff2200;
+  --text-muted: rgba(255, 80, 40, 0.3);
+  --accent-primary: #ff2200;
+  --accent-secondary: #ff8800;
+  --accent-tertiary: #ffcc00;
+  --accent-success: #ffaa00;
+  --accent-warning: #ffcc00;
+  --accent-error: #ff0000;
+  --border-primary: rgba(255, 85, 34, 0.7);
+  --border-secondary: rgba(255, 70, 20, 0.3);
+  --border-tertiary: rgba(255, 60, 10, 0.1);
+  --glow-primary: rgba(255, 30, 0, var(--glow-intensity));
+  --glow-secondary: rgba(255, 120, 0, var(--glow-intensity));
+  --glow-tertiary: rgba(255, 200, 0, var(--glow-intensity));
   --shadow-primary: #b22222;
   --shadow-secondary: rgba(40, 0, 0, 0.5);
   --filter-primary: hue-rotate(135deg);
@@ -122,62 +125,61 @@
 /* ============ CYBER DYSTOPIA ============ */
 [data-theme=cyber-dystopia] {
   --theme-name: "cyber-dystopia";
-  --bg-secondary-rgb: 30, 30, 30;
-  --bg-primary: #111;
-  --bg-secondary: rgba(30, 30, 30, 0.8);
-  --bg-tertiary: rgba(50, 50, 60, 0.9);
-  --bg-glass: rgba(0, 234, 255, 0.05);
-  --bg-overlay: rgba(30, 30, 30, 0.7);
-  --text-primary: #00eaff;
-  --text-secondary: rgba(0, 234, 255, 0.7);
-  --text-tertiary: rgba(0, 234, 255, 0.5);
-  --text-accent: #ff007a;
-  --text-muted: hsla(0, 0%, 78.4%, 0.3);
-  --accent-primary: #ff007a;
-  --accent-secondary: #00b7eb;
-  --accent-tertiary: #00eaff;
+  --bg-secondary-rgb: 14, 16, 22;
+  --bg-primary: #0c0e14;
+  --bg-secondary: rgba(18, 20, 30, 0.9);
+  --bg-tertiary: rgba(28, 32, 44, 0.92);
+  --bg-glass: rgba(0, 200, 255, 0.04);
+  --bg-overlay: rgba(10, 12, 18, 0.92);
+  --text-primary: #00ddff;
+  --text-secondary: rgba(0, 200, 255, 0.75);
+  --text-tertiary: rgba(0, 180, 230, 0.5);
+  --text-accent: #ff0066;
+  --text-muted: rgba(120, 140, 170, 0.4);
+  --accent-primary: #ff0066;
+  --accent-secondary: #00bbee;
+  --accent-tertiary: #00ddff;
   --accent-success: #00ff80;
-  --accent-warning: #fa0;
-  --accent-error: #ff0040;
-  --border-primary: #00b7eb;
-  --border-secondary: rgba(0, 183, 235, 0.3);
-  /* FIX: odstraněn překlep "Owner" */
-  --border-tertiary: rgba(0, 183, 235, 0.1);
-  --glow-primary: rgba(255, 0, 122, var(--glow-intensity));
-  --glow-secondary: rgba(0, 183, 235, var(--glow-intensity));
-  --glow-tertiary: rgba(0, 234, 255, var(--glow-intensity));
-  --shadow-primary: #004d66;
-  --shadow-secondary: rgba(30, 30, 30, 0.5);
+  --accent-warning: #ffaa00;
+  --accent-error: #ff0044;
+  --border-primary: rgba(0, 187, 238, 0.6);
+  --border-secondary: rgba(0, 170, 220, 0.25);
+  --border-tertiary: rgba(0, 150, 200, 0.1);
+  --glow-primary: rgba(255, 0, 102, var(--glow-intensity));
+  --glow-secondary: rgba(0, 187, 238, var(--glow-intensity));
+  --glow-tertiary: rgba(0, 221, 255, var(--glow-intensity));
+  --shadow-primary: #004466;
+  --shadow-secondary: rgba(14, 16, 22, 0.6);
   --filter-primary: hue-rotate(-310deg);
 }
 
 /* ============ ACID GLITCH ============ */
 [data-theme=acid-glitch] {
   --theme-name: "acid-glitch";
-  --bg-secondary-rgb: 10, 0, 20;
-  --bg-primary: #000;
-  --bg-secondary: rgba(10, 0, 20, 0.8);
-  --bg-tertiary: rgba(20, 0, 40, 0.9);
-  --bg-glass: rgba(255, 0, 255, 0.05);
-  --bg-overlay: rgba(10, 0, 20, 0.7);
-  --text-primary: #f0f;
-  --text-secondary: rgba(255, 0, 255, 0.7);
-  --text-tertiary: rgba(255, 0, 255, 0.5);
-  --text-accent: #0f0;
-  --text-muted: rgba(255, 255, 0, 0.3);
-  --accent-primary: #0f0;
-  --accent-secondary: #f0f;
-  --accent-tertiary: #ff0;
-  --accent-success: #0f0;
-  --accent-warning: #ff0;
-  --accent-error: #f0a;
-  --border-primary: #0f0;
-  --border-secondary: rgba(0, 255, 0, 0.3);
-  --border-tertiary: rgba(0, 255, 0, 0.1);
-  --glow-primary: rgba(0, 255, 0, var(--glow-intensity));
-  --glow-secondary: rgba(255, 0, 255, var(--glow-intensity));
-  --glow-tertiary: rgba(255, 255, 0, var(--glow-intensity));
-  --shadow-primary: indigo;
+  --bg-secondary-rgb: 8, 0, 16;
+  --bg-primary: #050010;
+  --bg-secondary: rgba(12, 0, 24, 0.88);
+  --bg-tertiary: rgba(20, 0, 40, 0.92);
+  --bg-glass: rgba(200, 0, 255, 0.05);
+  --bg-overlay: rgba(8, 0, 16, 0.92);
+  --text-primary: #ee44ff;
+  --text-secondary: rgba(230, 60, 255, 0.75);
+  --text-tertiary: rgba(200, 50, 230, 0.5);
+  --text-accent: #44ff44;
+  --text-muted: rgba(220, 220, 0, 0.3);
+  --accent-primary: #44ff44;
+  --accent-secondary: #cc33ff;
+  --accent-tertiary: #eeff00;
+  --accent-success: #44ff44;
+  --accent-warning: #eeff00;
+  --accent-error: #ff33aa;
+  --border-primary: rgba(68, 255, 68, 0.6);
+  --border-secondary: rgba(200, 50, 255, 0.3);
+  --border-tertiary: rgba(200, 50, 255, 0.1);
+  --glow-primary: rgba(68, 255, 68, var(--glow-intensity));
+  --glow-secondary: rgba(204, 51, 255, var(--glow-intensity));
+  --glow-tertiary: rgba(238, 255, 0, var(--glow-intensity));
+  --shadow-primary: #4b0082;
   --shadow-secondary: rgba(10, 0, 20, 0.5);
   --filter-primary: hue-rotate(-45deg);
 }
@@ -236,48 +238,46 @@
   /* Disable body flicker for retro: steady CRT, no blinking */
 }
 
-/* ============ MONO (BLACK & WHITE) ============ */
+/* ============ MONO BW (white on black) ============ */
 [data-theme=mono] {
   --theme-name: "mono";
-  /* Neutral grayscale palette */
-  --bg-primary: #000;
-  --bg-secondary: rgba(0,0,0,0.92);
-  --bg-tertiary: rgba(255,255,255,0.06);
-  --bg-glass: rgba(255,255,255,0.06);
-  --bg-overlay: rgba(0,0,0,0.8);
+  --bg-secondary-rgb: 8, 8, 8;
+  --bg-primary: #0a0a0a;
+  --bg-secondary: rgba(12,12,12,0.94);
+  --bg-tertiary: rgba(20,20,20,0.95);
+  --bg-glass: rgba(255,255,255,0.04);
+  --bg-overlay: rgba(5,5,5,0.92);
 
-  --text-primary: #f5f5f5;
-  --text-secondary: rgba(245,245,245,0.78);
-  --text-tertiary: rgba(245,245,245,0.55);
+  --text-primary: #e8e8e8;
+  --text-secondary: rgba(220,220,220,0.78);
+  --text-tertiary: rgba(180,180,180,0.55);
   --text-accent: #ffffff;
-  --text-muted: rgba(245,245,245,0.4);
+  --text-muted: rgba(160,160,160,0.4);
 
   --accent-primary: #ffffff;
-  --accent-secondary: rgba(255,255,255,0.55);
-  --accent-tertiary: #bdbdbd;
-  --accent-success: #d9d9d9;
-  --accent-warning: #cfcfcf;
-  --accent-error: #b5b5b5;
+  --accent-secondary: rgba(220,220,220,0.7);
+  --accent-tertiary: #aaaaaa;
+  --accent-success: #cccccc;
+  --accent-warning: #bbbbbb;
+  --accent-error: #999999;
 
-  --border-primary: rgba(255,255,255,0.85);
-  --border-secondary: rgba(255,255,255,0.45);
-  --border-tertiary: rgba(255,255,255,0.18);
+  --border-primary: rgba(255,255,255,0.6);
+  --border-secondary: rgba(255,255,255,0.25);
+  --border-tertiary: rgba(255,255,255,0.1);
 
-  --glow-intensity: 0.55; /* jemnější glow v mono režimu */
+  --glow-intensity: 0.15;
   --glow-primary: rgba(255,255,255,var(--glow-intensity));
   --glow-secondary: rgba(255,255,255,var(--glow-intensity));
   --glow-tertiary: rgba(255,255,255,var(--glow-intensity));
-  --shadow-primary: #ffffff;
-  --shadow-secondary: rgba(255,255,255,0.65);
-  --shadow-glow: 0 0 15px rgba(255,255,255,0.55);
+  --shadow-primary: #aaaaaa;
+  --shadow-secondary: rgba(200,200,200,0.3);
+  --shadow-glow: 0 0 8px rgba(255,255,255,0.2);
 
-  --gradient-primary: linear-gradient(135deg, #fff, #777);
-  --gradient-secondary: linear-gradient(45deg, #111, #222);
+  --gradient-primary: linear-gradient(135deg, #ddd, #666);
+  --gradient-secondary: linear-gradient(45deg, #111, #1a1a1a);
 
-  /* Kritické: globální filtr, který se aplikuje přes var(--filter-primary) na video, obrázky a některé prvky */
   --filter-primary: grayscale(1) brightness(1) contrast(1.06) saturate(0);
 
-  /* Písmo držíme neutral – necháme zdědit z base nebo theme.ts */
   --font-family-primary: "Text03", Inter, system-ui, sans-serif;
   --font-family-heading: "Synthoma", "Text03", Inter, system-ui, sans-serif;
   --font-family-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -286,14 +286,67 @@
   --font-size-base: 1rem;
   --font-size-multiplier: 1;
   --line-height-base: 1.5;
-
-  /* Video/overlay konzistence v mono režimu */
   --video-opacity: 1;
   --retro-canvas-opacity: 1;
 
-  /* Jemná zrnitost místo barevného patternu */
   background-image: repeating-linear-gradient(
-    0deg, transparent, transparent 3px, rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 6px
+    0deg, transparent, transparent 3px, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 6px
+  );
+}
+
+/* ============ MONO LIGHT (black on white) ============ */
+[data-theme=mono-light] {
+  --theme-name: "mono-light";
+  --bg-secondary-rgb: 240, 240, 240;
+  --bg-primary: #f5f5f5;
+  --bg-secondary: rgba(235,235,235,0.95);
+  --bg-tertiary: rgba(225,225,225,0.95);
+  --bg-glass: rgba(0,0,0,0.04);
+  --bg-overlay: rgba(245,245,245,0.96);
+
+  --text-primary: #1a1a1a;
+  --text-secondary: rgba(30,30,30,0.75);
+  --text-tertiary: rgba(60,60,60,0.55);
+  --text-accent: #000000;
+  --text-muted: rgba(80,80,80,0.4);
+
+  --accent-primary: #000000;
+  --accent-secondary: rgba(40,40,40,0.7);
+  --accent-tertiary: #555555;
+  --accent-success: #333333;
+  --accent-warning: #444444;
+  --accent-error: #666666;
+
+  --border-primary: rgba(0,0,0,0.5);
+  --border-secondary: rgba(0,0,0,0.2);
+  --border-tertiary: rgba(0,0,0,0.08);
+
+  --glow-intensity: 0;
+  --glow-primary: rgba(0,0,0,0);
+  --glow-secondary: rgba(0,0,0,0);
+  --glow-tertiary: rgba(0,0,0,0);
+  --shadow-primary: #333333;
+  --shadow-secondary: rgba(0,0,0,0.15);
+  --shadow-glow: none;
+
+  --gradient-primary: linear-gradient(135deg, #333, #999);
+  --gradient-secondary: linear-gradient(45deg, #eee, #ddd);
+
+  --filter-primary: grayscale(1) brightness(1) contrast(1.1) saturate(0);
+
+  --font-family-primary: "Text03", Inter, system-ui, sans-serif;
+  --font-family-heading: "Synthoma", "Text03", Inter, system-ui, sans-serif;
+  --font-family-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-family-ui: "Text03", Inter, system-ui, sans-serif;
+
+  --font-size-base: 1rem;
+  --font-size-multiplier: 1;
+  --line-height-base: 1.5;
+  --video-opacity: 1;
+  --retro-canvas-opacity: 1;
+
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 3px, rgba(0,0,0,.015) 0, rgba(0,0,0,.015) 6px
   );
 }
 
@@ -316,63 +369,63 @@
 }
 
 [data-theme=green-matrix] {
-  --game-bg: #000;
-  --game-bg-surface: rgba(0,204,0,0.04);
-  --game-bg-card: rgba(0,15,0,0.8);
-  --game-border: rgba(0,204,0,0.15);
-  --game-border-active: #0c0;
-  --game-text: #0c0;
-  --game-text-muted: rgba(0,204,0,0.45);
-  --game-accent: #0f8;
-  --game-accent-alt: #8f0;
-  --game-danger: #f40;
-  --game-warn: #ff0;
-  --game-input-bg: rgba(0,204,0,0.04);
+  --game-bg: #020802;
+  --game-bg-surface: rgba(50,220,50,0.04);
+  --game-bg-card: rgba(0,12,0,0.85);
+  --game-border: rgba(50,220,50,0.15);
+  --game-border-active: #33ff33;
+  --game-text: #33ff33;
+  --game-text-muted: rgba(50,220,50,0.45);
+  --game-accent: #00ff88;
+  --game-accent-alt: #88ff00;
+  --game-danger: #ff4422;
+  --game-warn: #ddff00;
+  --game-input-bg: rgba(50,220,50,0.04);
 }
 
 [data-theme=neon-hellfire] {
-  --game-bg: #0d0000;
-  --game-bg-surface: rgba(255,69,0,0.04);
-  --game-bg-card: rgba(40,0,0,0.8);
-  --game-border: rgba(255,69,0,0.15);
-  --game-border-active: #ff4500;
-  --game-text: #ff4500;
-  --game-text-muted: rgba(255,69,0,0.45);
-  --game-accent: #ff8c00;
-  --game-accent-alt: #ff1a1a;
-  --game-danger: #f00;
-  --game-warn: #fa0;
-  --game-input-bg: rgba(255,69,0,0.04);
+  --game-bg: #0a0100;
+  --game-bg-surface: rgba(255,85,34,0.04);
+  --game-bg-card: rgba(30,4,0,0.88);
+  --game-border: rgba(255,85,34,0.15);
+  --game-border-active: #ff5522;
+  --game-text: #ff5522;
+  --game-text-muted: rgba(255,120,40,0.45);
+  --game-accent: #ff8800;
+  --game-accent-alt: #ff2200;
+  --game-danger: #ff0000;
+  --game-warn: #ffcc00;
+  --game-input-bg: rgba(255,85,34,0.04);
 }
 
 [data-theme=cyber-dystopia] {
-  --game-bg: #111;
-  --game-bg-surface: rgba(0,234,255,0.04);
-  --game-bg-card: rgba(30,30,30,0.8);
-  --game-border: rgba(0,183,235,0.15);
-  --game-border-active: #00eaff;
-  --game-text: #00eaff;
-  --game-text-muted: rgba(0,234,255,0.45);
-  --game-accent: #00eaff;
-  --game-accent-alt: #ff007a;
-  --game-danger: #ff0040;
-  --game-warn: #fa0;
-  --game-input-bg: rgba(0,234,255,0.04);
+  --game-bg: #0c0e14;
+  --game-bg-surface: rgba(0,221,255,0.04);
+  --game-bg-card: rgba(18,20,30,0.9);
+  --game-border: rgba(0,187,238,0.15);
+  --game-border-active: #00ddff;
+  --game-text: #00ddff;
+  --game-text-muted: rgba(0,200,255,0.45);
+  --game-accent: #00ddff;
+  --game-accent-alt: #ff0066;
+  --game-danger: #ff0044;
+  --game-warn: #ffaa00;
+  --game-input-bg: rgba(0,221,255,0.04);
 }
 
 [data-theme=acid-glitch] {
-  --game-bg: #000;
-  --game-bg-surface: rgba(255,0,255,0.04);
-  --game-bg-card: rgba(10,0,20,0.8);
-  --game-border: rgba(0,255,0,0.15);
-  --game-border-active: #0f0;
-  --game-text: #f0f;
-  --game-text-muted: rgba(255,0,255,0.45);
-  --game-accent: #0f0;
-  --game-accent-alt: #ff0;
-  --game-danger: #f0a;
-  --game-warn: #ff0;
-  --game-input-bg: rgba(255,0,255,0.04);
+  --game-bg: #050010;
+  --game-bg-surface: rgba(204,51,255,0.04);
+  --game-bg-card: rgba(12,0,24,0.88);
+  --game-border: rgba(68,255,68,0.15);
+  --game-border-active: #44ff44;
+  --game-text: #ee44ff;
+  --game-text-muted: rgba(230,60,255,0.45);
+  --game-accent: #44ff44;
+  --game-accent-alt: #eeff00;
+  --game-danger: #ff33aa;
+  --game-warn: #eeff00;
+  --game-input-bg: rgba(204,51,255,0.04);
 }
 
 [data-theme=retro-arcade] {
@@ -391,18 +444,33 @@
 }
 
 [data-theme=mono] {
-  --game-bg: #000;
+  --game-bg: #0a0a0a;
   --game-bg-surface: rgba(255,255,255,0.04);
-  --game-bg-card: rgba(0,0,0,0.85);
-  --game-border: rgba(255,255,255,0.15);
-  --game-border-active: #f5f5f5;
-  --game-text: #f5f5f5;
-  --game-text-muted: rgba(245,245,245,0.4);
+  --game-bg-card: rgba(12,12,12,0.94);
+  --game-border: rgba(255,255,255,0.12);
+  --game-border-active: #e8e8e8;
+  --game-text: #e8e8e8;
+  --game-text-muted: rgba(200,200,200,0.4);
   --game-accent: #fff;
-  --game-accent-alt: #bdbdbd;
-  --game-danger: #b5b5b5;
-  --game-warn: #cfcfcf;
+  --game-accent-alt: #aaa;
+  --game-danger: #999;
+  --game-warn: #bbb;
   --game-input-bg: rgba(255,255,255,0.04);
+}
+
+[data-theme=mono-light] {
+  --game-bg: #f5f5f5;
+  --game-bg-surface: rgba(0,0,0,0.04);
+  --game-bg-card: rgba(235,235,235,0.95);
+  --game-border: rgba(0,0,0,0.12);
+  --game-border-active: #1a1a1a;
+  --game-text: #1a1a1a;
+  --game-text-muted: rgba(60,60,60,0.4);
+  --game-accent: #000;
+  --game-accent-alt: #555;
+  --game-danger: #666;
+  --game-warn: #444;
+  --game-input-bg: rgba(0,0,0,0.04);
 }
 
 /* Fallback (no theme set yet) */

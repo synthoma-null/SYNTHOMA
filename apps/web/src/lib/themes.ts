@@ -6,4 +6,5 @@ export const UI_THEMES: Array<{ id: string; label: string; cost: number }> = [
   { id: 'acid-glitch', label: 'Acid Glitch', cost: 128 },
   { id: 'retro-arcade', label: 'Retro Arcade', cost: 256 },
   { id: 'mono', label: 'Mono BW', cost: 128 },
+  { id: 'mono-light', label: 'Mono Light', cost: 128 },
 ];

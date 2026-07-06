@@ -65,7 +65,7 @@ export default function SettingsPanel({ settings: initial }: Props) {
             value={settings.theme}
             onChange={(e) => set('theme', e.target.value)}
           >
-            {['synthoma', 'green-matrix', 'neon-hellfire', 'cyber-dystopia', 'acid-glitch', 'retro-arcade', 'mono'].map((t) => (
+            {['synthoma', 'green-matrix', 'neon-hellfire', 'cyber-dystopia', 'acid-glitch', 'retro-arcade', 'mono', 'mono-light'].map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>

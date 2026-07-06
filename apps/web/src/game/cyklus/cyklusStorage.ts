@@ -55,16 +55,34 @@ async function serverSave(
   state: CyklusRunState | null,
   history: CyklusRunSummary[],
   discovery: CyklusDiscovery,
+  progression?: unknown,
 ): Promise<void> {
+  if (!serverSyncEnabled || typeof window === 'undefined') return;
+  try {
+    const payload: Record<string, unknown> = { state, history, discovery };
+    if (progression !== undefined) {
+      payload.progression = progression;
+    }
+    await fetch('/api/me/cyklus', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    // ignore network errors; localStorage remains as fallback
+  }
+}
+
+export async function serverSaveProgression(progression: unknown): Promise<void> {
   if (!serverSyncEnabled || typeof window === 'undefined') return;
   try {
     await fetch('/api/me/cyklus', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ state, history, discovery }),
+      body: JSON.stringify({ progression }),
     });
   } catch {
-    // ignore network errors; localStorage remains as fallback
+    // ignore
   }
 }
 
@@ -72,6 +90,7 @@ export async function loadServerCyklusRun(): Promise<{
   state: CyklusRunState | null;
   history: CyklusRunSummary[];
   discovery: CyklusDiscovery | null;
+  progression: unknown;
 } | null> {
   if (!serverSyncEnabled || typeof window === 'undefined') return null;
   try {
@@ -82,6 +101,7 @@ export async function loadServerCyklusRun(): Promise<{
       state: data.state ? migrateState(data.state as Partial<CyklusRunState>) : null,
       history: Array.isArray(data.history) ? data.history : [],
       discovery: data.discovery ?? null,
+      progression: data.progression ?? null,
     };
   } catch {
     return null;

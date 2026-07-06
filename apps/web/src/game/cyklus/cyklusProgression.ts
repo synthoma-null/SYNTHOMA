@@ -1,6 +1,7 @@
 import type { CyklusRunState, StatKey, EntityId, ProfileKey } from './cyklusTypes';
 import type { CyklusDiscovery } from './cyklusDiscovery';
 import { getEmptyDiscovery, loadDiscovery, saveDiscovery } from './cyklusDiscovery';
+import { serverSaveProgression } from './cyklusStorage';
 import { CYKLUS_CARDS } from './content';
 
 export type MetaCurrencyId =
@@ -720,6 +721,7 @@ export function saveSubjectProgression(progression: SubjectProgression): void {
   } catch {
     // ignore storage errors
   }
+  serverSaveProgression(progression).catch(() => {});
 }
 
 export function computeRunRewards(

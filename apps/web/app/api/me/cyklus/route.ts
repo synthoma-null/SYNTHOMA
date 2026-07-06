@@ -20,6 +20,7 @@ export async function GET() {
     state: row.stateJson,
     history: row.historyJson,
     discovery: row.discoveryJson,
+    progression: (row as any).progressionJson ?? {},
   });
 }
 
@@ -30,7 +31,16 @@ export async function PATCH(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { state, history, discovery } = body;
+  const { state, history, discovery, progression } = body;
+
+  const update: Record<string, unknown> = {
+    stateJson: state ?? {},
+    historyJson: history ?? [],
+    discoveryJson: discovery ?? {},
+  };
+  if (progression !== undefined) {
+    update.progressionJson = progression;
+  }
 
   await prisma.cyklusRun.upsert({
     where: { userId: session.user.id },
@@ -39,12 +49,8 @@ export async function PATCH(req: NextRequest) {
       stateJson: state ?? {},
       historyJson: history ?? [],
       discoveryJson: discovery ?? {},
-    },
-    update: {
-      stateJson: state ?? {},
-      historyJson: history ?? [],
-      discoveryJson: discovery ?? {},
-    },
+    } as any,
+    update: update as any,
   });
 
   return NextResponse.json({ ok: true });

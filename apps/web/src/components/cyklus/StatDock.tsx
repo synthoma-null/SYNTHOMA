@@ -163,9 +163,10 @@ interface StatDockProps {
   highlight?: StatKey | 'all' | null | undefined;
   history: CyklusChoiceRecord[];
   climate?: CyklusRunModifier | null;
+  tutorialProgress?: React.ReactNode;
 }
 
-export default function StatDock({ stats, openStat, onOpenStat, highlight, history, climate }: StatDockProps) {
+export default function StatDock({ stats, openStat, onOpenStat, highlight, history, climate, tutorialProgress }: StatDockProps) {
   const previousStats = usePrevious(stats);
   const [changedKeys, setChangedKeys] = useState<Set<StatKey>>(new Set());
 
@@ -184,6 +185,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
   return (
     <>
       <aside className={`cyklus-stat-dock ${highlight ? 'cyklus-stat-dock--highlighted' : ''}`} aria-label="Stav subjektu">
+        {tutorialProgress}
         {climate && (
           <div className="cyklus-stat-dock__climate">
             <span className="cyklus-stat-dock__climate-label">KLIMA</span>

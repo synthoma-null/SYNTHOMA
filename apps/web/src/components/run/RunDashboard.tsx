@@ -38,6 +38,27 @@ interface UserMissionRow {
   mnemCost?: number;
 }
 
+interface CyklusProgressionData {
+  totalRuns?: number;
+  stabilizedRuns?: number;
+  totalResiduumEarned?: number;
+  currencies?: Record<string, number>;
+  purchasedUpgrades?: string[];
+  equippedUpgrades?: string[];
+  unlockedScars?: string[];
+  activeScar?: string;
+  deathsByStat?: Record<string, number>;
+  profileMastery?: Record<string, number>;
+}
+
+interface CyklusHistoryEntry {
+  id: string;
+  cycle: number;
+  endingTitle: string;
+  status: string;
+  finishedAt: number;
+}
+
 interface RunData {
   run: UserRun | null;
   psyche: Psyche | null;
@@ -45,6 +66,8 @@ interface RunData {
   artifacts: UserArtifactRow[];
   nameFragments: UserNameFragmentRow[];
   missions: UserMissionRow[];
+  cyklusProgression?: CyklusProgressionData | null;
+  cyklusHistory?: CyklusHistoryEntry[] | null;
 }
 
 const PRESSURE_CLS = [
@@ -73,7 +96,7 @@ export default function RunDashboard() {
   const { t } = useLang();
   const [data, setData] = useState<RunData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [section, setSection] = useState<'run' | 'psyche' | 'entities' | 'artifacts' | 'missions'>('run');
+  const [section, setSection] = useState<'run' | 'psyche' | 'entities' | 'artifacts' | 'missions' | 'cyklus'>('run');
 
   useEffect(() => {
     if (!session?.user) return;
@@ -132,7 +155,7 @@ export default function RunDashboard() {
       </div>
 
       <nav className="run-nav">
-        {(['run', 'psyche', 'entities', 'artifacts', 'missions'] as const).map((s) => (
+        {(['run', 'psyche', 'entities', 'artifacts', 'missions', 'cyklus'] as const).map((s) => (
           <button
             key={s}
             className={`run-nav-btn${section === s ? ' run-nav-btn--active' : ''}`}
@@ -141,7 +164,8 @@ export default function RunDashboard() {
             {s === 'run' ? t('run.nav.run') :
              s === 'psyche' ? t('run.nav.psyche') :
              s === 'entities' ? t('run.nav.entities') :
-             s === 'artifacts' ? t('run.nav.artifacts') : t('run.nav.missions')}
+             s === 'artifacts' ? t('run.nav.artifacts') :
+             s === 'missions' ? t('run.nav.missions') : 'CYKLUS'}
           </button>
         ))}
       </nav>
@@ -286,6 +310,101 @@ export default function RunDashboard() {
               {m.status !== 'locked' && (
                 <p className="run-mission-card-reward">{m.rewardText}</p>
               )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {section === 'cyklus' && (
+        <CyklusSection
+          progression={data?.cyklusProgression ?? null}
+          history={data?.cyklusHistory ?? null}
+        />
+      )}
+    </div>
+  );
+}
+
+function CyklusSection({ progression, history }: { progression: CyklusProgressionData | null; history: CyklusHistoryEntry[] | null }) {
+  if (!progression || !progression.totalRuns) {
+    return (
+      <div className="run-section">
+        <p className="run-empty">Žádná herní data z Cyklusu. Zahraj si hru a vrať se.</p>
+      </div>
+    );
+  }
+
+  const deathEntries = Object.entries(progression.deathsByStat ?? {}).filter(([, v]) => v > 0);
+  const STAT_NAMES: Record<string, string> = { energy: 'Energie', memory: 'Paměť', bond: 'Vazba', control: 'Kontrola' };
+  const CURRENCY_NAMES: Record<string, string> = {
+    residuum: 'Reziduum', memoryResidue: 'Paměťový rezid.', energySpark: 'Jiskra energie',
+    bondThread: 'Nitka vazby', controlShard: 'Střep kontroly', stabilizationCore: 'Stabilizační jádro',
+  };
+  const currencies = Object.entries(progression.currencies ?? {}).filter(([, v]) => (v ?? 0) > 0);
+  const historyList = Array.isArray(history) ? history.slice(-10).reverse() : [];
+
+  return (
+    <div className="run-section">
+      <div className="run-cyklus-stats">
+        <div className="run-identity">
+          <span className="run-label">Celkem runů</span>
+          <span className="run-value">{progression.totalRuns}</span>
+          <span className="run-label">Stabilizací</span>
+          <span className="run-value">{progression.stabilizedRuns ?? 0}</span>
+          <span className="run-label">Reziduum celkem</span>
+          <span className="run-value">{progression.totalResiduumEarned ?? 0}</span>
+        </div>
+
+        {currencies.length > 0 && (
+          <div className="run-cyklus-currencies">
+            <span className="run-label">Měny</span>
+            <div className="run-cyklus-currency-grid">
+              {currencies.map(([k, v]) => (
+                <div key={k} className="run-cyklus-currency">
+                  <span className="run-cyklus-currency-label">{CURRENCY_NAMES[k] ?? k}</span>
+                  <span className="run-cyklus-currency-value">{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {(progression.purchasedUpgrades?.length ?? 0) > 0 && (
+          <div className="run-cyklus-upgrades">
+            <span className="run-label">Upgrady ({progression.equippedUpgrades?.length ?? 0} nasazeno / {progression.purchasedUpgrades?.length ?? 0} celkem)</span>
+          </div>
+        )}
+
+        {(progression.unlockedScars?.length ?? 0) > 0 && (
+          <div className="run-cyklus-scars">
+            <span className="run-label">Jizvy: {progression.unlockedScars?.length ?? 0}</span>
+            {progression.activeScar && <span className="run-value"> (aktivní: {progression.activeScar})</span>}
+          </div>
+        )}
+
+        {deathEntries.length > 0 && (
+          <div className="run-cyklus-deaths">
+            <span className="run-label">Příčiny konce</span>
+            <div className="run-cyklus-death-grid">
+              {deathEntries.map(([stat, count]) => (
+                <div key={stat} className="run-cyklus-death">
+                  <span className="run-cyklus-death-stat">{STAT_NAMES[stat] ?? stat}</span>
+                  <span className="run-cyklus-death-count">×{count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {historyList.length > 0 && (
+        <div className="run-cyklus-history">
+          <span className="run-label">Poslední runy</span>
+          {historyList.map((h) => (
+            <div key={h.id} className={`run-cyklus-history-entry run-cyklus-history-entry--${h.status}`}>
+              <span className="run-cyklus-history-cycle">Cyklus {h.cycle}</span>
+              <span className="run-cyklus-history-ending">{h.endingTitle}</span>
+              <span className={`run-cyklus-history-status run-cyklus-history-status--${h.status}`}>{h.status === 'completed' ? 'Stabilizace' : 'Konec'}</span>
             </div>
           ))}
         </div>

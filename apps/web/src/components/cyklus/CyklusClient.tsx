@@ -50,6 +50,13 @@ const TUTORIAL_PROGRESS_MAP: Record<string, { index: number; label: string; flav
   tutorial_14_packs: { index: 15, label: 'Příběhové linky', flavour: 'Packy tě naučí, že ses myslel, že víš, kdo jsi.' },
   tutorial_15_ready: { index: 16, label: 'Start', flavour: 'Konec návodu. Začátek poškození.' },
 };
+const ITEM_ACTIVATION_HINTS: Record<string, string> = {
+  rubber_seal: 'Vazba +8, připraví krizovou ochranu vazby.',
+  mirror_shard: 'Aktivuje zrcadlový efekt, za 3 tahy přijde zrcadlová karta.',
+  archive_key: 'Paměť −12, přesune subjekt do sektoru Archiv.',
+  soft_bug: 'Vazba +8, Kontrola −6, za 4 tahy přijde následná karta.',
+  warm_token: 'Za 3 tahy otevře přístup k tržišti žetonů.',
+};
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../../game/cyklus/content';
 import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
 
@@ -84,6 +91,7 @@ export default function CyklusClient() {
   const [showSkipConfirm, setShowSkipConfirm] = useState(false);
   const [showDiag, setShowDiag] = useState(false);
   const [showPocketSheet, setShowPocketSheet] = useState(false);
+  const [confirmActivateId, setConfirmActivateId] = useState<string | null>(null);
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -114,6 +122,14 @@ export default function CyklusClient() {
           if (server.discovery) {
             discovery = server.discovery;
             setDiscovery(discovery);
+          }
+          if (server.progression && typeof server.progression === 'object') {
+            const local = loadSubjectProgression();
+            const serverProg = server.progression as Partial<SubjectProgression>;
+            if ((serverProg.totalRuns ?? 0) > (local.totalRuns ?? 0)) {
+              const { saveSubjectProgression } = await import('../../game/cyklus/cyklusProgression');
+              saveSubjectProgression({ ...local, ...serverProg } as SubjectProgression);
+            }
           }
         }
       }
@@ -222,6 +238,24 @@ export default function CyklusClient() {
       const updatedStory = updateStoryAfterRun(story, current);
       saveStoryProgression(updatedStory);
       await saveCyklusRun(current);
+      // Sync game profile to web identity
+      try {
+        await fetch('/api/me/cyklus/sync-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            profile: current.profile,
+            entityRelations: current.entityRelations,
+            stats: current.stats,
+            status: current.status,
+            cycle: current.cycle,
+            deathStat: reward.deathStat,
+            profileMastery: reward.profileMastery,
+          }),
+        });
+      } catch {
+        // ignore — web identity sync is best-effort
+      }
     }
     finalize().catch(() => { /* ignore */ });
   }, [state?.status]);
@@ -518,42 +552,6 @@ export default function CyklusClient() {
         </div>
       </header>
 
-      {card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') && (
-        <div className="cyklus-tutorial-progress">
-          <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
-          <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
-          <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
-        </div>
-      )}
-
-      {!ending && (
-        <div className="cyklus-nav-panel">
-          <div className="cyklus-nav-panel__row">
-            <span className="cyklus-nav-panel__sector">{SECTOR_LABELS[state.sector]}</span>
-            <span className="cyklus-nav-panel__progress">{state.choiceInCycle}/{12}</span>
-          </div>
-          {state.visitedSectors.length > 0 && (
-            <div className="cyklus-nav-panel__route">
-              <span className="cyklus-nav-panel__label">Trasa cyklu:</span>
-              <div className="cyklus-nav-panel__route-chain">
-                {state.visitedSectors.map((sector, idx) => (
-                  <span key={`${sector}-${idx}`} className={`cyklus-nav-panel__route-node ${sector === state.sector ? 'cyklus-nav-panel__route-node--current' : ''}`}>
-                    {SECTOR_LABELS[sector]}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          {state.status === 'playing' && (state.usedCardIds.includes('restart_5') || runHistory.length > 0) && (
-            <StabilizationPanel state={state} />
-          )}
-        </div>
-      )}
-
-      {!ending && (
-        <StatDock stats={state.stats} openStat={activeStat} onOpenStat={setActiveStat} highlight={tutorialHighlight?.stat} history={state.history} climate={state.modifier.id !== 'none' ? state.modifier : null} />
-      )}
-
       <main className="cyklus-stage">
         {ending ? (
           <div className="cyklus-end">
@@ -757,8 +755,8 @@ export default function CyklusClient() {
         )}
       </main>
 
-      <footer className="cyklus-footer">
-        <div className={`cyklus-pocket ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
+      {!ending && (
+        <div className={`cyklus-pocket cyklus-pocket--standalone ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
           <button
             className="cyklus-pocket__toggle"
             type="button"
@@ -784,20 +782,31 @@ export default function CyklusClient() {
                     {getPocketItems(state).map((item: ItemWithMood) => {
                       const activatable = ['rubber_seal', 'mirror_shard', 'archive_key', 'soft_bug', 'warm_token'].includes(item.id);
                       const canActivate = activatable && state.lastItemActivationCycle < state.cycle;
+                      const isConfirming = confirmActivateId === item.id;
                       return (
                         <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
                           <span className="cyklus-pocket__item-name">{item.title}</span>
                           <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
                           <span className="cyklus-pocket__item-text">{item.moodText}</span>
+                          {activatable && ITEM_ACTIVATION_HINTS[item.id] && (
+                            <span className="cyklus-pocket__item-hint">{ITEM_ACTIVATION_HINTS[item.id]}</span>
+                          )}
                           {activatable && (
-                            <button
-                              type="button"
-                              className="cyklus-pocket__activate"
-                              disabled={!canActivate}
-                              onClick={() => handleActivateItem(item.id)}
-                            >
-                              {canActivate ? 'Aktivovat' : 'Aktivováno'}
-                            </button>
+                            isConfirming ? (
+                              <div className="cyklus-pocket__confirm">
+                                <button type="button" className="cyklus-pocket__activate" onClick={() => { handleActivateItem(item.id); setConfirmActivateId(null); }}>Potvrdit</button>
+                                <button type="button" className="cyklus-pocket__activate cyklus-pocket__activate--cancel" onClick={() => setConfirmActivateId(null)}>Zrušit</button>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                className="cyklus-pocket__activate"
+                                disabled={!canActivate}
+                                onClick={() => canActivate && setConfirmActivateId(item.id)}
+                              >
+                                {canActivate ? 'Aktivovat' : 'Aktivováno'}
+                              </button>
+                            )
                           )}
                         </div>
                       );
@@ -808,53 +817,83 @@ export default function CyklusClient() {
             </div>
           )}
         </div>
-        {state.imprints.length > 0 && (
-          <div className="cyklus-imprints">
-            <span className="cyklus-footer__label">Imprinty:</span>
-            {state.imprints.map((id: string) => <span key={id} className="cyklus-imprint" title={CYKLUS_IMPRINTS[id]?.description}>{CYKLUS_IMPRINTS[id]?.title ?? id}</span>)}
-          </div>
-        )}
-        {Object.keys(state.entityRelations ?? {}).length > 0 && (
-          <div className="cyklus-entities">
-            <span className="cyklus-footer__label">Vztahy:</span>
-            {Object.entries(state.entityRelations ?? {}).map(([id, value]) => {
-              const entityId = id as EntityId;
-              const label = ENTITY_LABELS[entityId] ?? entityId;
-              const v = value ?? 0;
-              const desc = v >= 3 ? 'důvěra' : v >= 1 ? 'zájem' : v <= -3 ? 'odpor' : v <= -1 ? 'podezření' : 'neutrální';
-              return <span key={id} className={`cyklus-entity cyklus-entity--${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}`} title={`${label}: ${v}`}>{label} · {desc}</span>;
-            })}
-          </div>
-        )}
-        {state.history.length > 0 && (
-          <div className="cyklus-story">
-            <span className="cyklus-footer__label">Příběh:</span>
-            <div className="cyklus-story__chain">
-              {state.history.slice(-3).map((record) => {
-                const c = getCardById(record.cardId);
-                return <span key={`${record.cardId}-${record.ts}`} className={`cyklus-story__node cyklus-story__node--${record.direction}`}>{c?.title ?? record.cardId}</span>;
-              })}
+      )}
+
+      {!ending && (
+        <div className="cyklus-desktop-top">
+          <StatDock
+            stats={state.stats}
+            openStat={activeStat}
+            onOpenStat={setActiveStat}
+            highlight={tutorialHighlight?.stat}
+            history={state.history}
+            climate={state.modifier.id !== 'none' ? state.modifier : null}
+            tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (
+              <div className="cyklus-tutorial-progress">
+                <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
+                <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
+                <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
+              </div>
+            ) : undefined}
+          />
+          <div className="cyklus-desktop-top__right">
+            <div className="cyklus-nav-panel">
+              <div className="cyklus-nav-panel__row">
+                <span className="cyklus-nav-panel__sector">{SECTOR_LABELS[state.sector]}</span>
+                <span className="cyklus-nav-panel__progress">{state.choiceInCycle}/{12}</span>
+              </div>
+              {state.history.length > 0 && (
+                <div className="cyklus-story">
+                  <span className="cyklus-footer__label">Příběh:</span>
+                  <div className="cyklus-story__chain">
+                    {state.history.slice(-3).map((record) => {
+                      const c = getCardById(record.cardId);
+                      return <span key={`${record.cardId}-${record.ts}`} className={`cyklus-story__node cyklus-story__node--${record.direction}`}>{c?.title ?? record.cardId}</span>;
+                    })}
+                  </div>
+                </div>
+              )}
+              {state.visitedSectors.length > 0 && (
+                <div className="cyklus-nav-panel__route">
+                  <span className="cyklus-nav-panel__label">Trasa cyklu:</span>
+                  <div className="cyklus-nav-panel__route-chain">
+                    {state.visitedSectors.map((sector, idx) => (
+                      <span key={`${sector}-${idx}`} className={`cyklus-nav-panel__route-node ${sector === state.sector ? 'cyklus-nav-panel__route-node--current' : ''}`}>
+                        {SECTOR_LABELS[sector]}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {state.status === 'playing' && (state.usedCardIds.includes('restart_5') || runHistory.length > 0) && (
+                <StabilizationPanel state={state} />
+              )}
             </div>
+            {(state.imprints.length > 0 || Object.keys(state.entityRelations ?? {}).length > 0) && (
+              <div className="cyklus-footer">
+                {state.imprints.length > 0 && (
+                  <div className="cyklus-imprints">
+                    <span className="cyklus-footer__label">Imprinty:</span>
+                    {state.imprints.map((id: string) => <span key={id} className="cyklus-imprint" title={CYKLUS_IMPRINTS[id]?.description}>{CYKLUS_IMPRINTS[id]?.title ?? id}</span>)}
+                  </div>
+                )}
+                {Object.keys(state.entityRelations ?? {}).length > 0 && (
+                  <div className="cyklus-entities">
+                    <span className="cyklus-footer__label">Vztahy:</span>
+                    {Object.entries(state.entityRelations ?? {}).map(([id, value]) => {
+                      const entityId = id as EntityId;
+                      const label = ENTITY_LABELS[entityId] ?? entityId;
+                      const v = value ?? 0;
+                      const desc = v >= 3 ? 'důvěra' : v >= 1 ? 'zájem' : v <= -3 ? 'odpor' : v <= -1 ? 'podezření' : 'neutrální';
+                      return <span key={id} className={`cyklus-entity cyklus-entity--${v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral'}`} title={`${label}: ${v}`}>{label} · {desc}</span>;
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        )}
-        <div className="cyklus-footer-actions">
-          <button type="button" className="cyklus-footer__button" onClick={() => setShowBuild((v) => !v)}>
-            Build
-          </button>
-          <button type="button" className="cyklus-footer__button" onClick={() => setShowDiscovery((v) => !v)}>
-            Archiv
-          </button>
         </div>
-        <div className="cyklus-footer-restart">
-          <button
-            className="cyklus-footer__button cyklus-footer__button--restart"
-            onClick={handleRestart}
-            type="button"
-          >
-            ↺ Restart cyklu
-          </button>
-        </div>
-      </footer>
+      )}
 
       {!ending && (
         <CyklusBottomNav
@@ -882,20 +921,31 @@ export default function CyklusClient() {
               {getPocketItems(state).map((item: ItemWithMood) => {
                 const activatable = ['rubber_seal', 'mirror_shard', 'archive_key', 'soft_bug', 'warm_token'].includes(item.id);
                 const canActivate = activatable && state.lastItemActivationCycle < state.cycle;
+                const isConfirming = confirmActivateId === item.id;
                 return (
                   <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
                     <span className="cyklus-pocket__item-name">{item.title}</span>
                     <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
                     <span className="cyklus-pocket__item-text">{item.moodText}</span>
+                    {activatable && ITEM_ACTIVATION_HINTS[item.id] && (
+                      <span className="cyklus-pocket__item-hint">{ITEM_ACTIVATION_HINTS[item.id]}</span>
+                    )}
                     {activatable && (
-                      <button
-                        type="button"
-                        className="cyklus-pocket__activate"
-                        disabled={!canActivate}
-                        onClick={() => handleActivateItem(item.id)}
-                      >
-                        {canActivate ? 'Aktivovat' : 'Aktivováno'}
-                      </button>
+                      isConfirming ? (
+                        <div className="cyklus-pocket__confirm">
+                          <button type="button" className="cyklus-pocket__activate" onClick={() => { handleActivateItem(item.id); setConfirmActivateId(null); }}>Potvrdit</button>
+                          <button type="button" className="cyklus-pocket__activate cyklus-pocket__activate--cancel" onClick={() => setConfirmActivateId(null)}>Zrušit</button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="cyklus-pocket__activate"
+                          disabled={!canActivate}
+                          onClick={() => canActivate && setConfirmActivateId(item.id)}
+                        >
+                          {canActivate ? 'Aktivovat' : 'Aktivováno'}
+                        </button>
+                      )
                     )}
                   </div>
                 );
@@ -942,6 +992,15 @@ export default function CyklusClient() {
             <div className="cyklus-build__title cyklus-build__title--goals">Dnešní cíle</div>
             <GoalsPanel state={state} onReroll={handleRerollGoals} />
             <ContractPanel state={state} />
+            <div className="cyklus-build__restart">
+              <button
+                className="cyklus-footer__button cyklus-footer__button--restart"
+                onClick={handleRestart}
+                type="button"
+              >
+                ↺ Restart cyklu
+              </button>
+            </div>
           </div>
         </div>
       )}

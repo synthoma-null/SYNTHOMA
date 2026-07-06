@@ -8,16 +8,21 @@ export async function GET() {
   if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const userId = session.user.id;
 
-  const [run, psyche, entities, artifacts, nameFragments, missions] = await Promise.all([
+  const [run, psyche, entities, artifacts, nameFragments, missions, cyklusRun] = await Promise.all([
     prisma.userRun.findUnique({ where: { userId } }),
     prisma.psycheStats.findUnique({ where: { userId } }),
     prisma.entityRelation.findMany({ where: { userId } }),
     prisma.userArtifact.findMany({ where: { userId }, orderBy: { unlockedAt: 'desc' } }),
     prisma.userNameFragment.findMany({ where: { userId }, orderBy: { unlockedAt: 'asc' } }),
     prisma.userMission.findMany({ where: { userId } }),
+    prisma.cyklusRun.findUnique({ where: { userId }, select: { progressionJson: true, historyJson: true } as any }).catch(() => null),
   ]);
 
-  return NextResponse.json({ run, psyche, entities, artifacts, nameFragments, missions });
+  return NextResponse.json({
+    run, psyche, entities, artifacts, nameFragments, missions,
+    cyklusProgression: (cyklusRun as any)?.progressionJson ?? null,
+    cyklusHistory: cyklusRun?.historyJson ?? null,
+  });
 }
 
 export async function PATCH(req: NextRequest) {
