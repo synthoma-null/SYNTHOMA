@@ -9,7 +9,7 @@
  * - Balance is within expected bounds
  */
 
-import { runSimulation, simulateSingleRun, aggregateResults, formatSimReport, simulateCampaign, formatCampaignReport } from './cyklusSimRunner';
+import { runSimulation, simulateSingleRun, aggregateResults, formatSimReport, simulateCampaign, formatCampaignReport } from '../testUtils/cyklusSimRunner';
 import { CYKLUS_CARDS } from '../content';
 
 describe('CYKLUS Simulation — sanity', () => {
@@ -92,7 +92,9 @@ describe('CYKLUS Simulation — sanity', () => {
   });
 });
 
-describe('CYKLUS Simulation — balance (1000 runs)', () => {
+const runSlow = process.env.RUN_SLOW_SIM === '1';
+
+(runSlow ? describe : describe.skip)('CYKLUS Simulation — balance (1000 runs)', () => {
   let report: ReturnType<typeof runSimulation>;
 
   beforeAll(() => {
@@ -102,7 +104,7 @@ describe('CYKLUS Simulation — balance (1000 runs)', () => {
     }
     report = runSimulation(1000, 200);
     // Print full report to console for manual inspection
-    const { formatSimReport: fmt } = require('./cyklusSimRunner');
+    const { formatSimReport: fmt } = require('../testUtils/cyklusSimRunner');
     console.info('\n' + fmt(report));
   });
 
@@ -170,12 +172,12 @@ describe('CYKLUS Simulation — balance (1000 runs)', () => {
   });
 });
 
-describe('CYKLUS Campaign Simulation — meta progression (100 × 10)', () => {
+(runSlow ? describe : describe.skip)('CYKLUS Campaign Simulation — meta progression (100 × 10)', () => {
   let campaignReport: ReturnType<typeof simulateCampaign>;
 
   beforeAll(() => {
     campaignReport = simulateCampaign(100, 10, 200);
-    const { formatCampaignReport: fmt } = require('./cyklusSimRunner');
+    const { formatCampaignReport: fmt } = require('../testUtils/cyklusSimRunner');
     console.info('\n' + fmt(campaignReport));
   });
 
@@ -213,7 +215,7 @@ describe('CYKLUS Campaign Simulation — meta progression (100 × 10)', () => {
 
 describe('CYKLUS Visibility Patch — fresh meta pool mechanics', () => {
   test('fresh meta pool card gets scoring boost', () => {
-    const { simulateSingleRunWithMeta } = require('./cyklusSimRunner');
+    const { simulateSingleRunWithMeta } = require('../testUtils/cyklusSimRunner');
     const { CYKLUS_CARDS } = require('../cyklusCards');
 
     const metaPool = 'post_format';

@@ -32,9 +32,14 @@ describe('cyklusRandom', () => {
 
   it('weightedPickBase respects weights', () => {
     const candidates = [{ item: 'a', weight: 1 }, { item: 'b', weight: 3 }];
-    // roll 0.25 -> remaining = 1.0, after a: 0.75, after b: -2.25 -> b
-    expect(weightedPickBase(candidates, 0.25)).toBe('b');
-    // roll 0.1 -> remaining = 0.4, after a: -0.6 -> a
-    expect(weightedPickBase(candidates, 0.1)).toBe('a');
+    // total = 4; remaining = roll * 4
+    // roll 0.24 -> remaining = 0.96; after a: -0.04 -> a
+    expect(weightedPickBase(candidates, 0.24)).toBe('a');
+    // roll 0.25 -> remaining = 1.0; after a: 0.0 -> a (inclusive boundary)
+    expect(weightedPickBase(candidates, 0.25)).toBe('a');
+    // roll 0.26 -> remaining = 1.04; after a: 0.04, after b: -2.96 -> b
+    expect(weightedPickBase(candidates, 0.26)).toBe('b');
+    // roll 0.99 -> remaining = 3.96; after a: 2.96, after b: -0.04 -> b
+    expect(weightedPickBase(candidates, 0.99)).toBe('b');
   });
 });
