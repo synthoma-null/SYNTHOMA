@@ -34,6 +34,7 @@ import type { CyklusRunState, SectorId, SwipeCard } from '../cyklusTypes';
 import type { RunReward } from '../cyklusProgression';
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../content';
 import { CYKLUS_UNLOCKS } from '../cyklusUnlocks';
+import { getKnownPoolIds } from '../cyklusPoolCatalog';
 import { getDeathUnlocks, saveMetaUnlocks, loadMetaUnlocks, loadMetaUnlockPools } from '../cyklusFindings';
 import { updateDiscoveryFromRun } from '../cyklusDiscovery';
 import { loadCyklusRun } from '../cyklusStorage';
@@ -424,10 +425,12 @@ describe('Cyklus engine', () => {
     });
 
     it('every pool referenced by cards or unlocks exists', () => {
-      const referencedPoolIds = new Set<string>(poolIds);
+      const knownPoolIds = new Set(getKnownPoolIds());
+      const referencedPoolIds = new Set<string>();
       allPoolEffects.forEach((e) => referencedPoolIds.add(e.poolId));
       CYKLUS_UNLOCKS.forEach((u) => referencedPoolIds.add(u.poolId));
-      referencedPoolIds.forEach((id) => expect(poolIds.has(id)).toBe(true));
+      const missing = [...referencedPoolIds].filter((id) => !knownPoolIds.has(id));
+      expect(missing).toEqual([]);
     });
 
     it('every card referenced by schedules, unlockCards, triggers, or conditions exists', () => {

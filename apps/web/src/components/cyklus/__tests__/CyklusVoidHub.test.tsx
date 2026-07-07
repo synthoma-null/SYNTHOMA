@@ -65,9 +65,8 @@ describe('CyklusVoidHub', () => {
     });
     const progression = loadSubjectProgression();
     render(<CyklusVoidHub progression={progression} state={null} />);
-    expect(screen.getByText(/Reziduum/)).toBeInTheDocument();
-    expect(screen.getByText('42')).toBeInTheDocument();
-    expect(screen.getByText(/Upgrady: 1 \/ 3/)).toBeInTheDocument();
+    expect(screen.getByText('Reziduum: 42')).toBeInTheDocument();
+    expect(screen.getByText(/upgrady 1\/3/)).toBeInTheDocument();
   });
 
   it('renders void rooms', () => {
@@ -77,32 +76,12 @@ describe('CyklusVoidHub', () => {
       return originalGetItem.call(localStorage, key);
     });
     const progression = mockProgression();
-    render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Místnosti'));
-    expect(screen.getByText(/Liščí hnízdo/)).toBeInTheDocument();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{}} />);
+    fireEvent.click(screen.getAllByText('Místnosti')[0]!);
+    expect(screen.getByText('Liščí hnízdo')).toBeInTheDocument();
   });
 
-  it('clicking upgrade button refreshes progression', () => {
-    const originalGetItem = Storage.prototype.getItem;
-    const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
-      if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
-      return originalGetItem.call(localStorage, key);
-    });
-    const progression = mockProgression({
-      currencies: { residuum: 100 },
-    });
-    render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Místnosti'));
-    const buttons = screen.getAllByText('VYLEPŠIT');
-    const foxButton = buttons.find((b) => b.closest('[class*="cyklus-void-card"]')?.textContent?.includes('Liščí'));
-    if (foxButton) {
-      fireEvent.click(foxButton);
-      expect(screen.getByText(/Prázdnota změnila tvar/)).toBeInTheDocument();
-    }
-    spy.mockRestore();
-  });
-
-  it('allows buying and equipping a protocol', () => {
+  it('clicking upgrade button calls onUpgradeRoom callback', () => {
     const originalGetItem = Storage.prototype.getItem;
     const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
@@ -110,17 +89,40 @@ describe('CyklusVoidHub', () => {
     });
     const progression = mockProgression({
       currencies: { residuum: 100, bondThread: 1 },
-      profileMastery: { Fi: 20 },
     });
-    render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Protokoly'));
-    const buy = screen.getAllByText('KOUPIT')[0]!;
-    fireEvent.click(buy);
-    expect(screen.getByText(/Protokol zakoupen/)).toBeInTheDocument();
+    const onUpgradeRoom = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onUpgradeRoom }} />);
+    fireEvent.click(screen.getAllByText('Místnosti')[0]!);
+    const foxRow = screen.getByText('Liščí hnízdo').closest('[class*="void-room-row"]');
+    expect(foxRow).toBeTruthy();
+    const foxButton = foxRow?.querySelector('button');
+    expect(foxButton).toBeTruthy();
+    if (foxButton) {
+      fireEvent.click(foxButton);
+      expect(onUpgradeRoom).toHaveBeenCalledWith('fox_nest');
+    }
     spy.mockRestore();
   });
 
-  it('allows equipping and unequipping an artifact', () => {
+  it('allows equipping a protocol', () => {
+    const originalGetItem = Storage.prototype.getItem;
+    const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
+      if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
+      return originalGetItem.call(localStorage, key);
+    });
+    const progression = mockProgression({
+      unlockedProtocols: ['fi_authentic_no'],
+    });
+    const onEquipLoadout = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onEquipLoadout }} />);
+    fireEvent.click(screen.getAllByText('Protokoly')[0]!);
+    const equip = screen.getByText('Vybavit');
+    fireEvent.click(equip);
+    expect(onEquipLoadout).toHaveBeenCalledWith({ id: 'fi_authentic_no', kind: 'protocol' });
+    spy.mockRestore();
+  });
+
+  it('allows equipping an artifact', () => {
     const originalGetItem = Storage.prototype.getItem;
     const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
@@ -129,11 +131,12 @@ describe('CyklusVoidHub', () => {
     const progression = mockProgression({
       craftedArtifacts: ['soft_pause_protocol'],
     });
-    render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Kapsa'));
-    const equip = screen.getByText('NASADIT');
+    const onEquipLoadout = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onEquipLoadout }} />);
+    fireEvent.click(screen.getAllByText('Loadout')[0]!);
+    const equip = screen.getByText('Vybavit');
     fireEvent.click(equip);
-    expect(screen.getByText(/Loadout upraven/)).toBeInTheDocument();
+    expect(onEquipLoadout).toHaveBeenCalledWith({ id: 'soft_pause_protocol', kind: 'artifact' });
     spy.mockRestore();
   });
 
@@ -152,13 +155,13 @@ describe('CyklusVoidHub', () => {
         crafting_table: { id: 'crafting_table', level: 1, unlocked: true, installedUpgrades: [] },
       },
     });
-    render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Crafting'));
-    expect(screen.getByText('VYROBIT')).toBeInTheDocument();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{}} />);
+    fireEvent.click(screen.getAllByText('Crafting')[0]!);
+    expect(screen.getByText('Vyrobit')).toBeInTheDocument();
     spy.mockRestore();
   });
 
-  it('allows equipping and unequipping a scar', () => {
+  it('allows equipping a scar', () => {
     const originalGetItem = Storage.prototype.getItem;
     const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
@@ -167,11 +170,12 @@ describe('CyklusVoidHub', () => {
     const progression = mockProgression({
       unlockedScars: ['memory_scar'],
     });
-    render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Jizvy'));
-    const equip = screen.getByText('NASADIT');
+    const onEquipLoadout = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onEquipLoadout }} />);
+    fireEvent.click(screen.getAllByText('Protokoly')[0]!);
+    const equip = screen.getByText('Vybavit');
     fireEvent.click(equip);
-    expect(screen.getByText(/Jizva nasazena/)).toBeInTheDocument();
+    expect(onEquipLoadout).toHaveBeenCalledWith({ id: 'memory_scar', kind: 'scar' });
     spy.mockRestore();
   });
 
@@ -187,22 +191,20 @@ describe('CyklusVoidHub', () => {
       },
     });
     render(<CyklusVoidHub progression={progression} state={null} />);
-    expect(screen.getByText(/Upgrady: 0 \/ 4/)).toBeInTheDocument();
+    expect(screen.getByText(/upgrady 0\/4/)).toBeInTheDocument();
     spy.mockRestore();
   });
 
-  it('renders story tab with act and threads', () => {
+  it('renders overview summary with run count', () => {
     const originalGetItem = Storage.prototype.getItem;
     const spy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
-      if (key === 'synthoma_cyklus_story_v1') return JSON.stringify({ currentAct: 'act1_sandbox_glitchka', completedEpisodes: [], seenStoryEvents: [], restartPrologueSeen: true, restartFatigue: 0, packProgress: {} });
       return originalGetItem.call(localStorage, key);
     });
-    const progression = mockProgression();
+    const progression = mockProgression({ totalRuns: 5, stabilizedRuns: 1, totalResiduumEarned: 120 });
     render(<CyklusVoidHub progression={progression} state={null} />);
-    fireEvent.click(screen.getByText('Příběh'));
-    expect(screen.getByText(/Akt:/)).toBeInTheDocument();
-    expect(screen.getByText(/Pískoviště a Glitchka/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Běhů: 5/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Reziduum celkem: 120/).length).toBeGreaterThan(0);
     spy.mockRestore();
   });
 });

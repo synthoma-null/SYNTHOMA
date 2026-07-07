@@ -3,14 +3,20 @@ import { CYKLUS_FINDINGS } from '../cyklusFindings';
 import { createCyklusRun, getCardPool } from '../cyklusEngine';
 
 describe('Cyklus content packs', () => {
-  it('every card has packId and role', () => {
+  it('every card has packId, role and tone', () => {
     const packCards = CYKLUS_CONTENT_PACKS.flatMap((pack) => Object.values(pack.cards ?? {}));
-    for (const card of packCards) {
-      expect(card.packId).toBeTruthy();
-      expect(card.role).toBeTruthy();
-      expect(card.tone).toBeTruthy();
-      expect(card.tone!.length).toBeGreaterThan(0);
-    }
+    const missingTone = packCards
+      .filter((card) => !card.tone || card.tone.length === 0)
+      .map((card) => card.id);
+    const missingRole = packCards
+      .filter((card) => !card.role)
+      .map((card) => card.id);
+    const missingPackId = packCards
+      .filter((card) => !card.packId)
+      .map((card) => card.id);
+    expect(missingPackId).toEqual([]);
+    expect(missingRole).toEqual([]);
+    expect(missingTone).toEqual([]);
   });
 
   it('every pack has an entry card', () => {
