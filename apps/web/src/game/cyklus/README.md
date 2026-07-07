@@ -114,6 +114,10 @@ Každá volba uloží diff před/po aplikaci efektů:
 
 Diff zachytí i efekty z krizových itemů, rubber stampu a pasivních unlocků — ne jen efekty konkrétní karty.
 
+## Tone karet
+
+Každá karta může nést pole `tone` — emocionální zabarvení, které ovlivňuje, jak se karta zařazuje do příběhových sekvencí a interludí. Validní hodnoty: `tender`, `comic`, `romantic`, `tragic`. Karta může mít jeden nebo více tónů. Interlude karty a důležité scény musí mít `tone` explicitně definované.
+
 ## Imprinty
 
 Imprinty jsou hluboké značky na subjektu. Většina odemyká další obsah nebo pool karet. Příklady: `unfinished_conversation`, `rubber_stamp`, `mirror_crack`, `sarkasma_debt`, `noise_resident`, `childhood_anchor`.
@@ -128,13 +132,18 @@ Ukončené běhy se ukládají do `localStorage` jako `CyklusRunSummary`. Aktivn
 # Hra
 app/cyklus/page.tsx
 
-# Testy (engine + UI)
-npx jest src/game/cyklus --no-coverage
-npx jest src/components/cyklus --no-coverage
-
 # Type check
 npx tsc --noEmit
+
+# Testy — všechny Cyklus testy kromě těžkých simulací
+node node_modules/jest/bin/jest.js --config jest.config.js --testPathPatterns=cyklus --testPathIgnorePatterns=cyklusSimulation --runInBand --no-coverage --testTimeout=30000
+
+# Samostatné engine/UI testy
+npx jest src/game/cyklus --no-coverage
+npx jest src/components/cyklus --no-coverage
 ```
+
+**Test baseline** je aktuálně čistý: všechny cyklus testy kromě `cyklusSimulation.test.ts` procházejí (207+ testů). Simulační testy jsou vyřazeny z běžného CI kvůli délce trvání.
 
 Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozehraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami. Meta-progression se ukládá pod klíčem `synthoma_cyklus_progression_v1`, discovery pod `synthoma_cyklus_discovery`.
 
@@ -142,7 +151,7 @@ Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihl�
 
 | Asset               | Count |
 |---------------------|-------|
-| Cards               | 315+  |
+| Cards               | 328+  |
 | Items               | 24+   |
 | Imprints            | 11+   |
 | Unlock conditions   | 21+   |
@@ -194,7 +203,8 @@ Po každém běhu subjekt neodejde s prázdnou. Reziduum a další měny se ukl�
 
 ### C4.2 — UI Prázdnoty
 
-- Nová komponenta `CyklusVoidHub` (soubor + testy) zobrazuje meziběhový hub s taby: Přehled, Místnosti, Protokoly, Upgrady, Kapsa, Crafting, Jizvy.
+- Komponenta `CyklusVoidHub` zobrazuje meziběhový hub s taby: **Přehled**, **Kapsa**, **Crafting**, **Místnosti**, **Loadout**, **Protokoly**.
+- Akce (vylepšení místnosti, craft, equip/unequip loadoutu) se předávají přes `CyklusVoidHubActions` jako callbacks; komponenta sama neprovádí persistenci.
 - Hub je dostupný z hlavního menu (`PRÁZDN0TA`) a z end screenu (`VRÁTIT SE DO PRÁZDNOTY`).
 - CSS v `cyklus.css` přidává styly pro taby, karty, loadout sloty, craft stavy a zprávy.
 
