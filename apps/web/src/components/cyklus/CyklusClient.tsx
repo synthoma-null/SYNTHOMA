@@ -6,13 +6,15 @@ import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnd
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
-import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression } from '../../game/cyklus/cyklusProgression';
+import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression, type CyklusVoidHubActions } from '../../game/cyklus/cyklusProgression';
 import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from '../../game/cyklus/cyklusStory';
 import StatDock from './StatDock';
-import CyklusVoidHub from './CyklusVoidHub';
+import { CyklusVoidHub } from './CyklusVoidHub';
+import CyklusVoidHubClient from './CyklusVoidHubClient';
 import CyklusMobileHud from './CyklusMobileHud';
 import CyklusBottomNav from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
+import { CyklusCardScene } from './CyklusCardScene';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
@@ -462,13 +464,14 @@ export default function CyklusClient() {
           </div>
         </div>
         {showVoidHub && (
-          <CyklusVoidHub
-            onClose={() => setShowVoidHub(false)}
-            onStartRun={() => {
-              setShowVoidHub(false);
-              handleNewGame();
-            }}
-          />
+          <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub" onClick={() => setShowVoidHub(false)}>
+            <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+              <CyklusVoidHubClient
+                playHref="/cyklus"
+                compact={false}
+              />
+            </div>
+          </div>
         )}
       </div>
     );
@@ -745,7 +748,7 @@ export default function CyklusClient() {
               )}
               <div className="cyklus-card__category">{card.logLabel}</div>
               <h2 className="cyklus-card__title">{card.title}</h2>
-              <p className="cyklus-card__scene">{card.scene}</p>
+              <CyklusCardScene card={card} />
               {card.category === 'restart' && (
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
@@ -1022,13 +1025,14 @@ export default function CyklusClient() {
         </div>
       )}
       {showVoidHub && (
-        <CyklusVoidHub
-          onClose={() => setShowVoidHub(false)}
-          onStartRun={() => {
-            setShowVoidHub(false);
-            handleRestart();
-          }}
-        />
+        <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub" onClick={() => setShowVoidHub(false)}>
+          <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+            <CyklusVoidHubClient
+              playHref="/cyklus"
+              compact={false}
+            />
+          </div>
+        </div>
       )}
     </>
   );

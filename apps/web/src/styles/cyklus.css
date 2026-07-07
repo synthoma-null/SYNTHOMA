@@ -939,6 +939,18 @@
   overflow-y: auto;
 }
 
+/* Void Hub overlay needs larger width */
+.cyklus-overlay--void-hub .cyklus-overlay__panel {
+  max-width: min(1180px, 95vw);
+  max-height: 90vh;
+  padding: 2rem;
+  background: var(--bg-primary, #000);
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  border-radius: 1rem;
+  box-shadow: 0 0 32px rgba(0, 255, 255, 0.12);
+  overflow-y: auto;
+}
+
 .cyklus-build__title,
 .cyklus-discovery__title,
 .cyklus-goal__title {
@@ -4443,4 +4455,705 @@
   .cyklus-void-button:hover:not(:disabled) {
     transform: none;
   }
+}
+
+
+.cyklus-card-scene {
+  display: grid;
+  gap: 0.65rem;
+  line-height: 1.55;
+}
+
+.cyklus-card-scene p {
+  margin: 0;
+}
+
+.cyklus-card-scene .log {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.cyklus-card-scene.scene-void {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-system,
+.cyklus-card-scene.scene-tai {
+  --scene-accent: #00ffff;
+}
+
+.cyklus-card-scene.scene-warning,
+.cyklus-card-scene.scene-restart {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-memory,
+.cyklus-card-scene.scene-glitch,
+.cyklus-card-scene.scene-forbidden {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-bond,
+.cyklus-card-scene.scene-heart,
+.cyklus-card-scene.scene-message {
+  --scene-accent: #ff7abf;
+}
+
+.cyklus-card-scene.scene-control {
+  --scene-accent: #ffffff;
+}
+
+.cyklus-card-scene {
+  border-left: 1px solid color-mix(in srgb, var(--scene-accent, #00ffff), transparent 54%);
+  padding-left: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene .fx-flicker,
+  .cyklus-card-scene .fx-wave,
+  .cyklus-card-scene .fx-glitch,
+  .cyklus-card-scene .fx-noise,
+  .cyklus-card-scene .fx-rainbow,
+  .cyklus-card-scene .fx-scanline {
+    animation: none !important;
+  }
+}
+
+
+/* Patch v2: object and follow-up scene accents */
+.cyklus-card-scene.scene-object {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-followup {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-token,
+.cyklus-card-scene.scene-market {
+  --scene-accent: #d8b46a;
+}
+
+.cyklus-card-scene.scene-archive,
+.cyklus-card-scene.scene-danger,
+.cyklus-card-scene.scene-debt {
+  --scene-accent: #ff4f7b;
+}
+
+.cyklus-card-scene.scene-glitchka,
+.cyklus-card-scene.scene-sandbox,
+.cyklus-card-scene.scene-tender {
+  --scene-accent: #ff9fe6;
+}
+
+.cyklus-card-scene.scene-mirror {
+  --scene-accent: #b8f7ff;
+}
+
+.cyklus-card-scene.scene-form {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-noise,
+.cyklus-card-scene.scene-acid,
+.cyklus-card-scene.scene-energy {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-comic {
+  filter: saturate(1.08);
+}
+
+.cyklus-card-scene.scene-danger,
+.cyklus-card-scene.scene-debt {
+  border-left-width: 2px;
+}
+
+/* Patch v17: Void route client shell */
+.cyklus-void-page {
+  min-height: 100vh;
+  padding: clamp(1rem, 2vw, 2rem);
+}
+
+.cyklus-void-client-shell {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* Void Hub overlay context */
+.cyklus-overlay--void-hub .cyklus-void-client-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+/* Override old fixed positioning for Void Hub in overlay context */
+.cyklus-overlay--void-hub .cyklus-void-hub {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  z-index: auto;
+  display: block;
+  padding: 0;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  animation: none;
+}
+
+/* Ensure proper grid layout in overlay context */
+.cyklus-overlay--void-hub .progression-resource-grid,
+.cyklus-overlay--void-hub .progression-section-grid,
+.cyklus-overlay--void-hub .cyklus-pocket-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+/* Responsive layout for overlay */
+@media (max-width: 768px) {
+  .cyklus-overlay--void-hub .progression-resource-grid,
+  .cyklus-overlay--void-hub .progression-section-grid,
+  .cyklus-overlay--void-hub .cyklus-pocket-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cyklus-void-client-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(0, 13, 26, 0.88), rgba(255, 0, 255, 0.08));
+  box-shadow: 0 0 24px rgba(0, 255, 255, 0.08);
+}
+
+.cyklus-void-client-status {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: rgba(192, 250, 255, 0.82);
+  text-align: right;
+}
+
+.cyklus-void-client-loading {
+  padding: 2rem;
+  text-align: center;
+}
+
+.cyklus-void-client-loading h1 {
+  margin: 0 0 0.5rem;
+  color: #c0faff;
+}
+
+.cyklus-void-client-loading p {
+  margin: 0;
+  color: rgba(235, 252, 255, 0.78);
+}
+
+.cyklus-void-client-status.is-success {
+  color: rgba(246, 255, 0, 0.86);
+}
+
+.cyklus-void-client-status.is-error {
+  color: rgba(255, 0, 255, 0.86);
+}
+
+.cyklus-void-client-status.is-info {
+  color: rgba(192, 250, 255, 0.86);
+}
+
+.cyklus-void-client-status.is-idle {
+  color: rgba(235, 252, 255, 0.72);
+}
+
+/* Patch v17: Void Hub UI styles */
+.void-hub-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-pulse {
+  color: rgba(246, 255, 0, 0.78) !important;
+  font-size: 0.92rem;
+}
+
+.void-hub-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.void-hub-action-button {
+  border: 1px solid rgba(0, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.42rem 0.82rem;
+  background: rgba(0, 13, 26, 0.78);
+  color: #c0faff;
+  cursor: pointer;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.08);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.void-hub-action-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(246, 255, 0, 0.55);
+  box-shadow: 0 0 18px rgba(246, 255, 0, 0.13);
+}
+
+.void-hub-action-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.void-hub-alerts {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-alerts p {
+  margin: 0;
+  border-left: 2px solid rgba(246, 255, 0, 0.38);
+  border-radius: 0.7rem;
+  padding: 0.62rem 0.75rem;
+  background: linear-gradient(90deg, rgba(246, 255, 0, 0.05), rgba(255, 0, 255, 0.035));
+  color: rgba(235, 252, 255, 0.84);
+}
+
+.void-hub-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-tab {
+  border: 1px solid rgba(192, 250, 255, 0.14);
+  border-radius: 0.9rem;
+  padding: 0.72rem 0.64rem;
+  background: rgba(0, 13, 26, 0.58);
+  color: rgba(235, 252, 255, 0.78);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.void-hub-tab span,
+.void-hub-tab small {
+  display: block;
+}
+
+.void-hub-tab span {
+  color: #c0faff;
+  font-weight: 700;
+}
+
+.void-hub-tab small {
+  margin-top: 0.2rem;
+  color: rgba(246, 255, 0, 0.72);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.void-hub-tab:hover,
+.void-hub-tab.is-active {
+  transform: translateY(-1px);
+  border-color: rgba(0, 255, 255, 0.38);
+  background: rgba(0, 255, 255, 0.06);
+}
+
+.void-hub-tab.is-attention {
+  border-color: rgba(246, 255, 0, 0.28);
+}
+
+.void-hub-tab.is-danger {
+  border-color: rgba(255, 0, 255, 0.38);
+  box-shadow: inset 0 0 16px rgba(255, 0, 255, 0.06);
+}
+
+.void-hub-tab-panel {
+  border: 1px solid rgba(192, 250, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(0, 13, 26, 0.38);
+}
+
+.void-hub-list {
+  margin-top: 1rem;
+}
+
+.craft-recipe-row.is-pocket-relevant {
+  border-left-color: rgba(246, 255, 0, 0.36);
+}
+
+.void-hub-loadout-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.loadout-entry.is-equipped {
+  border-left-color: rgba(246, 255, 0, 0.38);
+  background: linear-gradient(90deg, rgba(246, 255, 0, 0.045), transparent 72%);
+}
+
+@media (max-width: 980px) {
+  .void-hub-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .void-hub-hero,
+  .void-hub-loadout-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .void-hub-hero-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .cyklus-void-hub {
+    padding: 0.78rem;
+  }
+
+  .void-hub-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .void-hub-action-button,
+  .void-hub-tab {
+    transition: none;
+  }
+}
+
+/* Patch v17: Progression Dashboard & Pocket Panel styles */
+.cyklus-panel-kicker {
+  margin: 0 0 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: rgba(0, 255, 255, 0.72);
+  text-transform: uppercase;
+}
+
+.cyklus-progression-dashboard h2,
+.cyklus-pocket-panel h2,
+.progression-card h3,
+.cyklus-pocket-column h3,
+.cyklus-suggestion-box h3 {
+  margin: 0 0 0.65rem;
+  color: #c0faff;
+  text-shadow: 0 0 14px rgba(0, 255, 255, 0.16);
+}
+
+.cyklus-progression-dashboard,
+.cyklus-pocket-panel {
+  border: 1px solid rgba(192, 250, 255, 0.14);
+  border-radius: 1.35rem;
+  padding: 1.1rem;
+  background: rgba(0, 13, 26, 0.48);
+}
+
+.cyklus-dashboard-hero,
+.cyklus-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cyklus-progression-dashboard p,
+.cyklus-pocket-panel p {
+  line-height: 1.55;
+}
+
+.void-room-badge,
+.craft-status-pill,
+.resource-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(192, 250, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.22rem 0.58rem;
+  background: rgba(0, 13, 26, 0.58);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.void-room-badge.is-available,
+.craft-recipe-row.is-craftable .craft-status-pill {
+  border-color: rgba(246, 255, 0, 0.42);
+  box-shadow: 0 0 14px rgba(246, 255, 0, 0.12);
+}
+
+.void-room-badge.is-maxed,
+.craft-recipe-row.is-crafted .craft-status-pill {
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.13);
+}
+
+.cyklus-pocket-grid,
+.progression-section-grid,
+.progression-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.progression-resource-grid {
+  margin-bottom: 1rem;
+}
+
+.cyklus-pocket-column,
+.progression-card,
+.cyklus-suggestion-box {
+  border: 1px solid rgba(192, 250, 255, 0.14);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(0, 13, 26, 0.48);
+}
+
+.progression-card {
+  margin-top: 1rem;
+}
+
+.resource-pill-list,
+.loadout-entry-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resource-pill.material {
+  border-color: rgba(255, 0, 255, 0.28);
+}
+
+.pocket-item-list,
+.craft-recipe-list,
+.void-room-list,
+.missing-reason-list,
+.cyklus-suggestion-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pocket-item-row,
+.craft-recipe-row,
+.void-room-row,
+.loadout-entry {
+  border-left: 2px solid rgba(0, 255, 255, 0.28);
+  padding: 0.75rem 0 0.75rem 0.8rem;
+  margin: 0.4rem 0;
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.045), transparent 72%);
+}
+
+.craft-recipe-row.is-locked,
+.craft-recipe-row.is-hidden,
+.void-room-row.is-locked {
+  opacity: 0.68;
+  filter: saturate(0.75);
+}
+
+.void-room-row.is-pocket-room,
+.cyklus-pocket-panel {
+  border-color: rgba(246, 255, 0, 0.18);
+  box-shadow: 0 0 28px rgba(246, 255, 0, 0.06), inset 0 0 0 1px rgba(0, 255, 255, 0.04);
+}
+
+.pocket-item-titleline {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.pocket-item-row p,
+.craft-recipe-row p,
+.void-room-row p,
+.loadout-entry p {
+  margin: 0.25rem 0 0.35rem;
+  color: rgba(235, 252, 255, 0.82);
+}
+
+.pocket-item-row small,
+.craft-recipe-row small,
+.void-room-row small {
+  display: block;
+  margin-top: 0.24rem;
+  color: rgba(192, 250, 255, 0.72);
+}
+
+.missing-reason-list {
+  margin-top: 0.45rem;
+  color: rgba(255, 230, 245, 0.78);
+  font-size: 0.83rem;
+}
+
+.missing-reason-list li + li,
+.cyklus-suggestion-box li + li {
+  margin-top: 0.35rem;
+}
+
+.cyklus-empty-note {
+  color: rgba(192, 250, 255, 0.72);
+  font-size: 0.9rem;
+}
+
+.cyklus-suggestion-box {
+  margin-top: 1rem;
+  border-color: rgba(246, 255, 0, 0.18);
+  background: linear-gradient(135deg, rgba(246, 255, 0, 0.035), rgba(255, 0, 255, 0.035));
+}
+
+.loadout-card .loadout-entry {
+  flex: 1 1 14rem;
+  border-left-color: rgba(255, 0, 255, 0.32);
+}
+
+.loadout-entry span {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(246, 255, 0, 0.76);
+}
+
+.item-mood-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+}
+
+.item-mood-pill {
+  border: 1px solid rgba(192, 250, 255, 0.18);
+  border-radius: 999px;
+  padding: 0.18rem 0.52rem;
+  background: rgba(0, 13, 26, 0.58);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.pocket-ambient-text {
+  margin: 0.75rem 0;
+  color: rgba(246, 255, 0, 0.78);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.void-hub-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 760px) {
+  .cyklus-pocket-grid,
+  .progression-section-grid,
+  .progression-resource-grid,
+  .cyklus-panel-header {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .pocket-item-titleline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-progression-dashboard,
+  .cyklus-pocket-panel,
+  .void-room-badge,
+  .craft-status-pill,
+  .resource-pill {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Patch v17: Void Hub shell styles */
+.cyklus-void-hub {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(192, 250, 255, 0.18);
+  border-radius: 1.35rem;
+  padding: 1.1rem;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 255, 255, 0.12), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(255, 0, 255, 0.1), transparent 28%),
+    linear-gradient(145deg, rgba(0, 13, 26, 0.92), rgba(0, 0, 0, 0.72));
+  box-shadow: 0 0 34px rgba(0, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.cyklus-void-hub::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 4px);
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+.void-hub-hero,
+.void-hub-section-header,
+.void-hub-tabs,
+.void-hub-alerts,
+.void-hub-tab-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.void-hub-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+  border-bottom: 1px solid rgba(192, 250, 255, 0.12);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-hero h2,
+.void-hub-section-header h3 {
+  margin: 0 0 0.55rem;
+  color: #c0faff;
+  text-shadow: 0 0 16px rgba(0, 255, 255, 0.16);
+}
+
+.void-hub-hero p,
+.void-hub-section-header p {
+  margin: 0.3rem 0;
+  color: rgba(235, 252, 255, 0.82);
+  line-height: 1.55;
 }

@@ -9,10 +9,9 @@ import type {
   VoidHubTabId,
   VoidHubUiModel,
   VoidRoomUiRow,
-  VoidHubTabUiRow,
-} from '../../game/cyklus/cyklusProgression';
-import { getVoidHubUiModel } from '../../game/cyklus/cyklusProgression';
-import type { CyklusRunState } from '../../game/cyklus/cyklusTypes';
+} from './cyklusProgression';
+import { getVoidHubUiModel } from './cyklusProgression';
+import type { CyklusRunState } from './cyklusTypes';
 import { CyklusPocketPanel } from './CyklusPocketPanel';
 import { CyklusProgressionDashboard } from './CyklusProgressionDashboard';
 
@@ -80,17 +79,11 @@ function ActionButton({
 }: {
   children: string;
   disabled?: boolean;
-  onClick?: (() => void) | undefined;
-  title?: string | undefined;
+  onClick?: () => void;
+  title?: string;
 }) {
   return (
-    <button 
-      className="void-hub-action-button" 
-      type="button" 
-      disabled={disabled || !onClick} 
-      onClick={onClick ?? undefined} 
-      title={title ?? undefined}
-    >
+    <button className="void-hub-action-button" type="button" disabled={disabled || !onClick} onClick={onClick} title={title}>
       {children}
     </button>
   );
@@ -180,7 +173,7 @@ function RoomsTab({ model, actions }: { model: VoidHubUiModel; actions?: CyklusV
   );
 }
 
-function LoadoutEntryCard({ entry, actions }: { key?: string; entry: ProgressionLoadoutEntry; actions?: CyklusVoidHubActions | undefined }) {
+function LoadoutEntryCard({ entry, actions }: { key?: string; entry: ProgressionLoadoutEntry; actions?: CyklusVoidHubActions }) {
   const action = entry.equipped ? actions?.onUnequipLoadout : actions?.onEquipLoadout;
   return (
     <li className={cx('loadout-entry', entry.equipped && 'is-equipped')}>
@@ -260,11 +253,11 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
       </header>
 
       <div className="void-hub-alerts" aria-label="Doporučení Prázdnoty">
-        {model.alerts.map((alert: string) => <p key={alert}>{alert}</p>)}
+        {model.alerts.map((alert) => <p key={alert}>{alert}</p>)}
       </div>
 
       <nav className="void-hub-tabs" aria-label="Sekce Prázdnoty">
-        {model.tabs.map((tab: VoidHubTabUiRow) => (
+        {model.tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
@@ -280,10 +273,10 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
 
       {active === 'overview' && <CyklusProgressionDashboard progression={progression} state={state} />}
       {active === 'pocket' && <CyklusPocketPanel progression={progression} state={state} />}
-      {active === 'crafting' && actions && <CraftingTab model={model} actions={actions} />}
-      {active === 'rooms' && actions && <RoomsTab model={model} actions={actions} />}
-      {active === 'loadout' && actions && <LoadoutTab model={model} actions={actions} />}
-      {active === 'protocols' && actions && <LoadoutTab model={model} actions={actions} protocolsOnly />}
+      {active === 'crafting' && <CraftingTab model={model} actions={actions} />}
+      {active === 'rooms' && <RoomsTab model={model} actions={actions} />}
+      {active === 'loadout' && <LoadoutTab model={model} actions={actions} />}
+      {active === 'protocols' && <LoadoutTab model={model} actions={actions} protocolsOnly />}
     </section>
   );
 }

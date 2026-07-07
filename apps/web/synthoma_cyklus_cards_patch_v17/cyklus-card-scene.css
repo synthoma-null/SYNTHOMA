@@ -1,0 +1,1289 @@
+.cyklus-card-scene {
+  display: grid;
+  gap: 0.65rem;
+  line-height: 1.55;
+}
+
+.cyklus-card-scene p {
+  margin: 0;
+}
+
+.cyklus-card-scene .log {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.cyklus-card-scene.scene-void {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-system,
+.cyklus-card-scene.scene-tai {
+  --scene-accent: #00ffff;
+}
+
+.cyklus-card-scene.scene-warning,
+.cyklus-card-scene.scene-restart {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-memory,
+.cyklus-card-scene.scene-glitch,
+.cyklus-card-scene.scene-forbidden {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-bond,
+.cyklus-card-scene.scene-heart,
+.cyklus-card-scene.scene-message {
+  --scene-accent: #ff7abf;
+}
+
+.cyklus-card-scene.scene-control {
+  --scene-accent: #ffffff;
+}
+
+.cyklus-card-scene {
+  border-left: 1px solid color-mix(in srgb, var(--scene-accent, #00ffff), transparent 54%);
+  padding-left: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene .fx-flicker,
+  .cyklus-card-scene .fx-wave,
+  .cyklus-card-scene .fx-glitch,
+  .cyklus-card-scene .fx-noise,
+  .cyklus-card-scene .fx-rainbow,
+  .cyklus-card-scene .fx-scanline {
+    animation: none !important;
+  }
+}
+
+
+/* Patch v2: object and follow-up scene accents */
+.cyklus-card-scene.scene-object {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-followup {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-token,
+.cyklus-card-scene.scene-market {
+  --scene-accent: #d8b46a;
+}
+
+.cyklus-card-scene.scene-archive,
+.cyklus-card-scene.scene-danger,
+.cyklus-card-scene.scene-debt {
+  --scene-accent: #ff4f7b;
+}
+
+.cyklus-card-scene.scene-glitchka,
+.cyklus-card-scene.scene-sandbox,
+.cyklus-card-scene.scene-tender {
+  --scene-accent: #ff9fe6;
+}
+
+.cyklus-card-scene.scene-mirror {
+  --scene-accent: #b8f7ff;
+}
+
+.cyklus-card-scene.scene-form {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-noise,
+.cyklus-card-scene.scene-acid,
+.cyklus-card-scene.scene-energy {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-comic {
+  filter: saturate(1.08);
+}
+
+.cyklus-card-scene.scene-danger,
+.cyklus-card-scene.scene-debt {
+  border-left-width: 2px;
+}
+
+/* Patch v3: path and crisis scene accents */
+.cyklus-card-scene.scene-path {
+  border-left-width: 2px;
+}
+
+.cyklus-card-scene.scene-crisis {
+  --scene-accent: #ff4f7b;
+  border-left-width: 3px;
+  padding-left: 1rem;
+}
+
+.cyklus-card-scene.scene-crisis .log {
+  filter: saturate(1.25);
+}
+
+.cyklus-card-scene.scene-sarkasma {
+  --scene-accent: #ff4f7b;
+}
+
+.cyklus-card-scene.scene-residuum {
+  --scene-accent: #ff7abf;
+}
+
+.cyklus-card-scene.scene-energy-low {
+  --scene-accent: #8fb7c8;
+  opacity: 0.96;
+}
+
+.cyklus-card-scene.scene-memory-low {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-bond-low {
+  --scene-accent: #8fb7c8;
+}
+
+.cyklus-card-scene.scene-bond-high {
+  --scene-accent: #ff7abf;
+}
+
+.cyklus-card-scene.scene-control-low {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-control-high {
+  --scene-accent: #ffffff;
+}
+
+.cyklus-card-scene.scene-crisis::before {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 38%;
+  background: linear-gradient(90deg, var(--scene-accent, #ff4f7b), transparent);
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-crisis::before {
+    opacity: 0.45;
+  }
+}
+
+/* Patch v4: restart prologue and entity scene accents */
+.cyklus-card-scene.scene-prologue {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-restart-fatigue {
+  border-left-width: 3px;
+  filter: saturate(1.08) contrast(1.02);
+}
+
+.cyklus-card-scene.scene-identity {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-entity {
+  border-left-width: 2px;
+  padding-left: 0.95rem;
+}
+
+.cyklus-card-scene.scene-entity .dialogS,
+.cyklus-card-scene.scene-entity .dialogG,
+.cyklus-card-scene.scene-entity .dialog {
+  margin-top: 0.12rem;
+}
+
+.cyklus-card-scene.scene-beast {
+  --scene-accent: #ff4f7b;
+  border-left-width: 3px;
+}
+
+.cyklus-card-scene.scene-beast::before {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 52%;
+  background: linear-gradient(90deg, var(--scene-accent, #ff4f7b), transparent);
+  opacity: 0.78;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-restart-fatigue,
+  .cyklus-card-scene.scene-beast {
+    filter: none;
+  }
+}
+
+/* Patch v5: silent, scheduled, item-trigger and imprint scene accents */
+.cyklus-card-scene.scene-silent {
+  opacity: 0.98;
+}
+
+.cyklus-card-scene.scene-pocket,
+.cyklus-card-scene.scene-inventory {
+  --scene-accent: #c0faff;
+  border-left-style: dashed;
+}
+
+.cyklus-card-scene.scene-item-trigger {
+  border-left-width: 2px;
+  filter: saturate(1.06);
+}
+
+.cyklus-card-scene.scene-item-trigger .log,
+.cyklus-card-scene.scene-followup .log {
+  letter-spacing: 0.02em;
+}
+
+.cyklus-card-scene.scene-conversation {
+  --scene-accent: #ff7abf;
+}
+
+.cyklus-card-scene.scene-loss {
+  --scene-accent: #8fb7c8;
+}
+
+.cyklus-card-scene.scene-relic,
+.cyklus-card-scene.scene-seal {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-key {
+  --scene-accent: #d8b46a;
+}
+
+.cyklus-card-scene.scene-pebble,
+.cyklus-card-scene.scene-map {
+  --scene-accent: #ff9fe6;
+}
+
+.cyklus-card-scene.scene-shadow,
+.cyklus-card-scene.scene-bookmark {
+  --scene-accent: #b8f7ff;
+}
+
+.cyklus-card-scene.scene-scent {
+  filter: contrast(1.03) saturate(0.96);
+}
+
+.cyklus-card-scene.scene-critical {
+  border-left-width: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-item-trigger,
+  .cyklus-card-scene.scene-scent {
+    filter: none;
+  }
+}
+
+/* Patch v6: deferred consequences, portals, identity paperwork and delayed invoices */
+.cyklus-card-scene.scene-trap,
+.cyklus-card-scene.scene-boundary {
+  --scene-accent: #ff4f7b;
+  border-left-width: 3px;
+}
+
+.cyklus-card-scene.scene-toll,
+.cyklus-card-scene.scene-portal {
+  --scene-accent: #d8b46a;
+}
+
+.cyklus-card-scene.scene-portal {
+  border-left-style: double;
+}
+
+.cyklus-card-scene.scene-clean {
+  --scene-accent: #ffffff;
+  filter: contrast(1.04) saturate(0.9);
+}
+
+.cyklus-card-scene.scene-rest,
+.cyklus-card-scene.scene-poetry,
+.cyklus-card-scene.scene-diagnostic {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-folder,
+.cyklus-card-scene.scene-integrity {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-overheat {
+  --scene-accent: #f6ff00;
+  filter: saturate(1.18) contrast(1.04);
+}
+
+.cyklus-card-scene.scene-leak {
+  --scene-accent: #ff00ff;
+  border-left-style: dashed;
+}
+
+.cyklus-card-scene.scene-pain {
+  --scene-accent: #ff4f7b;
+}
+
+.cyklus-card-scene.scene-boundary .fx-outline.hollow,
+.cyklus-card-scene.scene-identity .fx-outline,
+.cyklus-card-scene.scene-portal .fx-outline {
+  letter-spacing: 0.04em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-clean,
+  .cyklus-card-scene.scene-overheat {
+    filter: none;
+  }
+}
+
+/* Patch v7: named objects, boundary economy, living paperwork and soft glitches */
+.cyklus-card-scene.scene-token,
+.cyklus-card-scene.scene-receipt {
+  --scene-accent: #d8b46a;
+}
+
+.cyklus-card-scene.scene-name,
+.cyklus-card-scene.scene-wrong-name,
+.cyklus-card-scene.scene-apology,
+.cyklus-card-scene.scene-signature {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-debt,
+.cyklus-card-scene.scene-boundary,
+.cyklus-card-scene.scene-trade,
+.cyklus-card-scene.scene-problem {
+  --scene-accent: #ff4f7b;
+  border-left-width: 3px;
+}
+
+.cyklus-card-scene.scene-corridor,
+.cyklus-card-scene.scene-door,
+.cyklus-card-scene.scene-room,
+.cyklus-card-scene.scene-wall,
+.cyklus-card-scene.scene-coat {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-door {
+  border-left-style: double;
+}
+
+.cyklus-card-scene.scene-wall {
+  border-left-style: dashed;
+}
+
+.cyklus-card-scene.scene-watching,
+.cyklus-card-scene.scene-voice {
+  filter: contrast(1.04) saturate(1.04);
+}
+
+.cyklus-card-scene.scene-audit,
+.cyklus-card-scene.scene-energy-high,
+.cyklus-card-scene.scene-speed {
+  --scene-accent: #f6ff00;
+  border-left-width: 3px;
+  filter: saturate(1.2) contrast(1.04);
+}
+
+.cyklus-card-scene.scene-energy-low,
+.cyklus-card-scene.scene-dim,
+.cyklus-card-scene.scene-light {
+  --scene-accent: #8fb7c8;
+  filter: saturate(0.82) contrast(0.98);
+}
+
+.cyklus-card-scene.scene-soft-bug,
+.cyklus-card-scene.scene-bug,
+.cyklus-card-scene.scene-growth {
+  --scene-accent: #ff9fe6;
+  border-left-style: dashed;
+}
+
+.cyklus-card-scene.scene-tender {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-laugh .dialogG,
+.cyklus-card-scene.scene-soft-bug .dialogG {
+  text-shadow: 0 0 10px rgba(192, 250, 255, 0.32);
+}
+
+.cyklus-card-scene.scene-form.scene-trap,
+.cyklus-card-scene.scene-office.scene-trap {
+  background: linear-gradient(180deg, rgba(246, 255, 0, 0.035), rgba(255, 0, 255, 0.025));
+}
+
+.cyklus-card-scene.scene-name .fx-outline,
+.cyklus-card-scene.scene-wrong-name .fx-outline,
+.cyklus-card-scene.scene-boundary .fx-outline,
+.cyklus-card-scene.scene-signature .fx-outline {
+  letter-spacing: 0.05em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-watching,
+  .cyklus-card-scene.scene-voice,
+  .cyklus-card-scene.scene-audit,
+  .cyklus-card-scene.scene-energy-high,
+  .cyklus-card-scene.scene-speed,
+  .cyklus-card-scene.scene-energy-low,
+  .cyklus-card-scene.scene-dim,
+  .cyklus-card-scene.scene-light {
+    filter: none;
+  }
+}
+
+
+/* Patch v8: stat crises, stabilization aftermath and tutorial scenes */
+.cyklus-card-scene.scene-memory-low,
+.cyklus-card-scene.scene-empty-page,
+.cyklus-card-scene.scene-post-format {
+  --scene-accent: #8fb7c8;
+  border-left-style: dashed;
+}
+
+.cyklus-card-scene.scene-memory-high,
+.cyklus-card-scene.scene-flood,
+.cyklus-card-scene.scene-drowned {
+  --scene-accent: #00ffff;
+  border-left-width: 3px;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.cyklus-card-scene.scene-bond-low,
+.cyklus-card-scene.scene-thread,
+.cyklus-card-scene.scene-contact,
+.cyklus-card-scene.scene-isolation {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-bond-high,
+.cyklus-card-scene.scene-overflow,
+.cyklus-card-scene.scene-dissolution {
+  --scene-accent: #ff7abf;
+  border-left-width: 3px;
+}
+
+.cyklus-card-scene.scene-control-low,
+.cyklus-card-scene.scene-unravel,
+.cyklus-card-scene.scene-chaos,
+.cyklus-card-scene.scene-residuum {
+  --scene-accent: #ff00ff;
+}
+
+.cyklus-card-scene.scene-control-high,
+.cyklus-card-scene.scene-crystal,
+.cyklus-card-scene.scene-perfect-room,
+.cyklus-card-scene.scene-stillness {
+  --scene-accent: #ffffff;
+  filter: contrast(1.06) saturate(0.88);
+}
+
+.cyklus-card-scene.scene-stabilization,
+.cyklus-card-scene.scene-balance,
+.cyklus-card-scene.scene-soft-win,
+.cyklus-card-scene.scene-compromise,
+.cyklus-card-scene.scene-not-dying {
+  --scene-accent: #c0faff;
+  border-left-width: 2px;
+}
+
+.cyklus-card-scene.scene-reactors::before,
+.cyklus-card-scene.scene-four-reactors::before {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 64%;
+  margin-bottom: 0.35rem;
+  background: linear-gradient(90deg, #00ffff, #ff00ff, #f6ff00, transparent);
+  opacity: 0.72;
+}
+
+.cyklus-card-scene.scene-pattern,
+.cyklus-card-scene.scene-death-history,
+.cyklus-card-scene.scene-recursion,
+.cyklus-card-scene.scene-finding,
+.cyklus-card-scene.scene-shutdown,
+.cyklus-card-scene.scene-dormant,
+.cyklus-card-scene.scene-survivor {
+  border-left-style: double;
+}
+
+.cyklus-card-scene.scene-tutorial {
+  --scene-accent: #f6ff00;
+  background: linear-gradient(180deg, rgba(246, 255, 0, 0.035), rgba(0, 255, 255, 0.025));
+}
+
+.cyklus-card-scene.scene-tutorial .log {
+  letter-spacing: 0.03em;
+}
+
+.cyklus-card-scene.scene-label .fx-outline,
+.cyklus-card-scene.scene-balance .fx-outline,
+.cyklus-card-scene.scene-boundary .fx-outline,
+.cyklus-card-scene.scene-survivor .fx-outline {
+  letter-spacing: 0.05em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-memory-high,
+  .cyklus-card-scene.scene-flood,
+  .cyklus-card-scene.scene-drowned,
+  .cyklus-card-scene.scene-control-high,
+  .cyklus-card-scene.scene-crystal,
+  .cyklus-card-scene.scene-perfect-room,
+  .cyklus-card-scene.scene-stillness {
+    filter: none;
+  }
+}
+
+/* Patch v9: full tutorial, contracts, combo overload endings */
+.cyklus-card-scene.scene-preview,
+.cyklus-card-scene.scene-hint,
+.cyklus-card-scene.scene-profile,
+.cyklus-card-scene.scene-diagnostic,
+.cyklus-card-scene.scene-summary,
+.cyklus-card-scene.scene-meta,
+.cyklus-card-scene.scene-progression,
+.cyklus-card-scene.scene-directive {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-item,
+.cyklus-card-scene.scene-pocket,
+.cyklus-card-scene.scene-inventory,
+.cyklus-card-scene.scene-imprint,
+.cyklus-card-scene.scene-checkpoint,
+.cyklus-card-scene.scene-void-room {
+  --scene-accent: #c0faff;
+}
+
+.cyklus-card-scene.scene-scheduled,
+.cyklus-card-scene.scene-consequence,
+.cyklus-card-scene.scene-cycle,
+.cyklus-card-scene.scene-restart,
+.cyklus-card-scene.scene-warning,
+.cyklus-card-scene.scene-complete,
+.cyklus-card-scene.scene-ready {
+  --scene-accent: #ff00ff;
+  border-left-style: dashed;
+}
+
+.cyklus-card-scene.scene-contract,
+.cyklus-card-scene.scene-contract-debt,
+.cyklus-card-scene.scene-collect {
+  --scene-accent: #ff4f7b;
+  border-left-width: 3px;
+  background: linear-gradient(180deg, rgba(255, 79, 123, 0.04), rgba(255, 0, 255, 0.025));
+}
+
+.cyklus-card-scene.scene-overload,
+.cyklus-card-scene.scene-risk-reward {
+  border-left-width: 3px;
+  filter: saturate(1.12) contrast(1.04);
+}
+
+.cyklus-card-scene.scene-combo {
+  --scene-accent: #d8b46a;
+  border-left-style: double;
+  background: linear-gradient(180deg, rgba(216, 180, 106, 0.035), rgba(0, 255, 255, 0.02));
+}
+
+.cyklus-card-scene.scene-rule {
+  --scene-accent: #ffffff;
+  filter: contrast(1.08) saturate(0.9);
+}
+
+.cyklus-card-scene.scene-pack,
+.cyklus-card-scene.scene-story-thread {
+  --scene-accent: #00ffff;
+}
+
+.cyklus-card-scene.scene-stamp {
+  --scene-accent: #f6ff00;
+}
+
+.cyklus-card-scene.scene-pebble {
+  --scene-accent: #ff9fe6;
+}
+
+.cyklus-card-scene.scene-tutorial .fx-neon,
+.cyklus-card-scene.scene-contract .fx-neon,
+.cyklus-card-scene.scene-overload .fx-neon {
+  text-shadow: 0 0 8px currentColor, 0 0 18px rgba(255, 255, 255, 0.18);
+}
+
+.cyklus-card-scene.scene-contract .dialogS,
+.cyklus-card-scene.scene-contract-debt .dialogS {
+  filter: contrast(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-overload,
+  .cyklus-card-scene.scene-risk-reward,
+  .cyklus-card-scene.scene-rule,
+  .cyklus-card-scene.scene-contract .dialogS,
+  .cyklus-card-scene.scene-contract-debt .dialogS {
+    filter: none;
+  }
+}
+
+/* Patch v10: missing death-meta pools, aftermath cards and unlock ecology */
+.cyklus-card-scene.scene-afterimage,
+.cyklus-card-scene.scene-acid-afterimage {
+  --scene-accent: #f6ff00;
+  background: linear-gradient(180deg, rgba(246, 255, 0, 0.045), rgba(0, 255, 255, 0.015));
+}
+
+.cyklus-card-scene.scene-overburn,
+.cyklus-card-scene.scene-overclock,
+.cyklus-card-scene.scene-memorial {
+  --scene-accent: #ff9a3d;
+  border-left-style: double;
+}
+
+.cyklus-card-scene.scene-empty-contacts,
+.cyklus-card-scene.scene-thread,
+.cyklus-card-scene.scene-isolation {
+  --scene-accent: #9fc7ff;
+  background: linear-gradient(180deg, rgba(159, 199, 255, 0.035), rgba(0, 13, 26, 0.14));
+}
+
+.cyklus-card-scene.scene-merge,
+.cyklus-card-scene.scene-dissolution {
+  --scene-accent: #ff7bd5;
+  filter: saturate(1.08);
+}
+
+.cyklus-card-scene.scene-statue,
+.cyklus-card-scene.scene-audit,
+.cyklus-card-scene.scene-stillness {
+  --scene-accent: #ffffff;
+  border-left-width: 3px;
+}
+
+.cyklus-card-scene.scene-post-collapse,
+.cyklus-card-scene.scene-collapse {
+  --scene-accent: #ff00ff;
+  background: linear-gradient(180deg, rgba(255, 0, 255, 0.04), rgba(246, 255, 0, 0.02));
+}
+
+.cyklus-card-scene.scene-meta .dialogD,
+.cyklus-card-scene.scene-memorial .dialogS,
+.cyklus-card-scene.scene-post-collapse .dialogS {
+  letter-spacing: 0.01em;
+}
+
+.cyklus-card-scene.scene-audit .log,
+.cyklus-card-scene.scene-post-collapse .log,
+.cyklus-card-scene.scene-afterimage .log {
+  border-bottom: 1px solid color-mix(in srgb, var(--scene-accent), transparent 72%);
+  padding-bottom: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-scene.scene-merge,
+  .cyklus-card-scene.scene-dissolution,
+  .cyklus-card-scene.scene-overburn,
+  .cyklus-card-scene.scene-overclock {
+    filter: none;
+  }
+}
+
+/* Patch v12: pool bridges and orphan-pool rescue, protože i osamělý pool si zaslouží terapii */
+.cyklus-card-scene.scene-blackbox {
+  border-color: rgba(255, 0, 255, 0.32);
+  background: linear-gradient(135deg, rgba(0, 13, 26, 0.78), rgba(28, 0, 38, 0.44));
+}
+
+.cyklus-card-scene.scene-desire,
+.cyklus-card-scene.scene-orgie {
+  border-color: rgba(255, 0, 96, 0.34);
+  background: radial-gradient(circle at 20% 10%, rgba(255, 0, 96, 0.16), transparent 36%), rgba(12, 0, 12, 0.72);
+}
+
+.cyklus-card-scene.scene-boundary {
+  box-shadow: inset 0 0 0 1px rgba(246, 255, 0, 0.16), 0 0 24px rgba(255, 0, 96, 0.12);
+}
+
+.cyklus-card-scene.scene-detective,
+.cyklus-card-scene.scene-cold-case {
+  border-color: rgba(192, 250, 255, 0.28);
+  background: linear-gradient(135deg, rgba(0, 13, 26, 0.86), rgba(6, 24, 34, 0.62));
+}
+
+/* Patch v13: pocket ecology and item mood UI hooks */
+.item-mood-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.item-mood-pill {
+  border: 1px solid rgba(192, 250, 255, 0.22);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  background: rgba(0, 13, 26, 0.52);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
+}
+
+.item-mood-quiet { opacity: 0.72; }
+.item-mood-asleep { opacity: 0.62; filter: saturate(0.65); }
+.item-mood-warm { text-shadow: 0 0 10px rgba(192, 250, 255, 0.32); }
+.item-mood-watching { border-color: rgba(0, 255, 255, 0.38); box-shadow: 0 0 14px rgba(0, 255, 255, 0.16); }
+.item-mood-ready { border-color: rgba(246, 255, 0, 0.42); box-shadow: 0 0 15px rgba(246, 255, 0, 0.16); }
+.item-mood-angry { border-color: rgba(255, 0, 255, 0.42); box-shadow: 0 0 16px rgba(255, 0, 255, 0.18); }
+.item-mood-unstable { border-color: rgba(246, 255, 0, 0.5); animation: synthoma-soft-flicker 1.9s infinite steps(2, end); }
+
+.pocket-ambient-text {
+  margin-top: 0.65rem;
+  font-size: 0.86rem;
+  color: rgba(192, 250, 255, 0.86);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.16);
+}
+
+/* Patch v15: progression dashboard, pocket shrine UI and craft overview */
+.cyklus-progression-dashboard,
+.cyklus-pocket-panel {
+  border: 1px solid rgba(192, 250, 255, 0.18);
+  border-radius: 1.2rem;
+  padding: clamp(1rem, 2.2vw, 1.6rem);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 255, 255, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(0, 13, 26, 0.88), rgba(5, 0, 18, 0.78));
+  box-shadow: 0 0 32px rgba(0, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 0, 255, 0.05);
+  color: rgba(235, 252, 255, 0.92);
+}
+
+.cyklus-pocket-panel.is-compact {
+  padding: 1rem;
+}
+
+.cyklus-panel-header,
+.cyklus-dashboard-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.cyklus-dashboard-hero {
+  display: block;
+  border-bottom: 1px solid rgba(192, 250, 255, 0.14);
+  padding-bottom: 1rem;
+}
+
+.cyklus-panel-kicker {
+  margin: 0 0 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: rgba(0, 255, 255, 0.72);
+  text-transform: uppercase;
+}
+
+.cyklus-progression-dashboard h2,
+.cyklus-pocket-panel h2,
+.progression-card h3,
+.cyklus-pocket-column h3,
+.cyklus-suggestion-box h3 {
+  margin: 0 0 0.65rem;
+  color: #c0faff;
+  text-shadow: 0 0 14px rgba(0, 255, 255, 0.16);
+}
+
+.cyklus-progression-dashboard p,
+.cyklus-pocket-panel p {
+  line-height: 1.55;
+}
+
+.void-room-badge,
+.craft-status-pill,
+.resource-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(192, 250, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.22rem 0.58rem;
+  background: rgba(0, 13, 26, 0.58);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.void-room-badge.is-available,
+.craft-recipe-row.is-craftable .craft-status-pill {
+  border-color: rgba(246, 255, 0, 0.42);
+  box-shadow: 0 0 14px rgba(246, 255, 0, 0.12);
+}
+
+.void-room-badge.is-maxed,
+.craft-recipe-row.is-crafted .craft-status-pill {
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.13);
+}
+
+.cyklus-pocket-grid,
+.progression-section-grid,
+.progression-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.progression-resource-grid {
+  margin-bottom: 1rem;
+}
+
+.cyklus-pocket-column,
+.progression-card,
+.cyklus-suggestion-box {
+  border: 1px solid rgba(192, 250, 255, 0.14);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(0, 13, 26, 0.48);
+}
+
+.progression-card {
+  margin-top: 1rem;
+}
+
+.resource-pill-list,
+.loadout-entry-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resource-pill.material {
+  border-color: rgba(255, 0, 255, 0.28);
+}
+
+.pocket-item-list,
+.craft-recipe-list,
+.void-room-list,
+.missing-reason-list,
+.cyklus-suggestion-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pocket-item-row,
+.craft-recipe-row,
+.void-room-row,
+.loadout-entry {
+  border-left: 2px solid rgba(0, 255, 255, 0.28);
+  padding: 0.75rem 0 0.75rem 0.8rem;
+  margin: 0.4rem 0;
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.045), transparent 72%);
+}
+
+.craft-recipe-row.is-locked,
+.craft-recipe-row.is-hidden,
+.void-room-row.is-locked {
+  opacity: 0.68;
+  filter: saturate(0.75);
+}
+
+.void-room-row.is-pocket-room,
+.cyklus-pocket-panel {
+  border-color: rgba(246, 255, 0, 0.18);
+  box-shadow: 0 0 28px rgba(246, 255, 0, 0.06), inset 0 0 0 1px rgba(0, 255, 255, 0.04);
+}
+
+.pocket-item-titleline {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.pocket-item-row p,
+.craft-recipe-row p,
+.void-room-row p,
+.loadout-entry p {
+  margin: 0.25rem 0 0.35rem;
+  color: rgba(235, 252, 255, 0.82);
+}
+
+.pocket-item-row small,
+.craft-recipe-row small,
+.void-room-row small {
+  display: block;
+  margin-top: 0.24rem;
+  color: rgba(192, 250, 255, 0.72);
+}
+
+.missing-reason-list {
+  margin-top: 0.45rem;
+  color: rgba(255, 230, 245, 0.78);
+  font-size: 0.83rem;
+}
+
+.missing-reason-list li + li,
+.cyklus-suggestion-box li + li {
+  margin-top: 0.35rem;
+}
+
+.cyklus-empty-note {
+  color: rgba(192, 250, 255, 0.72);
+  font-size: 0.9rem;
+}
+
+.cyklus-suggestion-box {
+  margin-top: 1rem;
+  border-color: rgba(246, 255, 0, 0.18);
+  background: linear-gradient(135deg, rgba(246, 255, 0, 0.035), rgba(255, 0, 255, 0.035));
+}
+
+.loadout-card .loadout-entry {
+  flex: 1 1 14rem;
+  border-left-color: rgba(255, 0, 255, 0.32);
+}
+
+.loadout-entry span {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(246, 255, 0, 0.76);
+}
+
+@media (max-width: 760px) {
+  .cyklus-pocket-grid,
+  .progression-section-grid,
+  .progression-resource-grid,
+  .cyklus-panel-header {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .pocket-item-titleline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-progression-dashboard,
+  .cyklus-pocket-panel,
+  .void-room-badge,
+  .craft-status-pill,
+  .resource-pill {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Patch v16: Void Hub / Prázdnota UI shell */
+.cyklus-void-hub {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(192, 250, 255, 0.18);
+  border-radius: 1.35rem;
+  padding: 1.1rem;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 255, 255, 0.12), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(255, 0, 255, 0.1), transparent 28%),
+    linear-gradient(145deg, rgba(0, 13, 26, 0.92), rgba(0, 0, 0, 0.72));
+  box-shadow: 0 0 34px rgba(0, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.cyklus-void-hub::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 4px);
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+.void-hub-hero,
+.void-hub-section-header,
+.void-hub-tabs,
+.void-hub-alerts,
+.void-hub-tab-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.void-hub-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+  border-bottom: 1px solid rgba(192, 250, 255, 0.12);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-hero h2,
+.void-hub-section-header h3 {
+  margin: 0 0 0.55rem;
+  color: #c0faff;
+  text-shadow: 0 0 16px rgba(0, 255, 255, 0.16);
+}
+
+.void-hub-hero p,
+.void-hub-section-header p {
+  margin: 0.3rem 0;
+  color: rgba(235, 252, 255, 0.82);
+  line-height: 1.55;
+}
+
+.void-hub-pulse {
+  color: rgba(246, 255, 0, 0.78) !important;
+  font-size: 0.92rem;
+}
+
+.void-hub-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.void-hub-action-button {
+  border: 1px solid rgba(0, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.42rem 0.82rem;
+  background: rgba(0, 13, 26, 0.78);
+  color: #c0faff;
+  cursor: pointer;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.08);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.void-hub-action-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(246, 255, 0, 0.55);
+  box-shadow: 0 0 18px rgba(246, 255, 0, 0.13);
+}
+
+.void-hub-action-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.void-hub-alerts {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-alerts p {
+  margin: 0;
+  border-left: 2px solid rgba(246, 255, 0, 0.38);
+  border-radius: 0.7rem;
+  padding: 0.62rem 0.75rem;
+  background: linear-gradient(90deg, rgba(246, 255, 0, 0.05), rgba(255, 0, 255, 0.035));
+  color: rgba(235, 252, 255, 0.84);
+}
+
+.void-hub-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.void-hub-tab {
+  border: 1px solid rgba(192, 250, 255, 0.14);
+  border-radius: 0.9rem;
+  padding: 0.72rem 0.64rem;
+  background: rgba(0, 13, 26, 0.58);
+  color: rgba(235, 252, 255, 0.78);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.void-hub-tab span,
+.void-hub-tab small {
+  display: block;
+}
+
+.void-hub-tab span {
+  color: #c0faff;
+  font-weight: 700;
+}
+
+.void-hub-tab small {
+  margin-top: 0.2rem;
+  color: rgba(246, 255, 0, 0.72);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.void-hub-tab:hover,
+.void-hub-tab.is-active {
+  transform: translateY(-1px);
+  border-color: rgba(0, 255, 255, 0.38);
+  background: rgba(0, 255, 255, 0.06);
+}
+
+.void-hub-tab.is-attention {
+  border-color: rgba(246, 255, 0, 0.28);
+}
+
+.void-hub-tab.is-danger {
+  border-color: rgba(255, 0, 255, 0.38);
+  box-shadow: inset 0 0 16px rgba(255, 0, 255, 0.06);
+}
+
+.void-hub-tab-panel {
+  border: 1px solid rgba(192, 250, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(0, 13, 26, 0.38);
+}
+
+.void-hub-list {
+  margin-top: 1rem;
+}
+
+.craft-recipe-row.is-pocket-relevant {
+  border-left-color: rgba(246, 255, 0, 0.36);
+}
+
+.void-hub-loadout-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.loadout-entry.is-equipped {
+  border-left-color: rgba(246, 255, 0, 0.38);
+  background: linear-gradient(90deg, rgba(246, 255, 0, 0.045), transparent 72%);
+}
+
+@media (max-width: 980px) {
+  .void-hub-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .void-hub-hero,
+  .void-hub-loadout-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .void-hub-hero-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .cyklus-void-hub {
+    padding: 0.78rem;
+  }
+
+  .void-hub-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .void-hub-action-button,
+  .void-hub-tab {
+    transition: none;
+  }
+}
+
+/* Patch v17: Void route client shell */
+.cyklus-void-page {
+  min-height: 100vh;
+  padding: clamp(1rem, 2vw, 2rem);
+}
+
+.cyklus-void-client-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.cyklus-void-client-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(0, 13, 26, 0.88), rgba(255, 0, 255, 0.08));
+  box-shadow: 0 0 24px rgba(0, 255, 255, 0.08);
+}
+
+.cyklus-void-client-status {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: rgba(192, 250, 255, 0.82);
+  text-align: right;
+}
+
+.cyklus-void-client-status.is-success {
+  color: rgba(173, 255, 214, 0.92);
+}
+
+.cyklus-void-client-status.is-error {
+  color: rgba(255, 160, 190, 0.95);
+}
+
+.cyklus-void-client-status.is-info {
+  color: rgba(246, 255, 0, 0.86);
+}
+
+.cyklus-void-client-loading {
+  min-height: 42vh;
+  display: grid;
+  place-content: center;
+  gap: 0.65rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 0, 255, 0.18);
+  border-radius: 1.25rem;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 0, 255, 0.12), transparent 34%), rgba(0, 13, 26, 0.82);
+  box-shadow: 0 0 42px rgba(255, 0, 255, 0.09);
+  text-align: center;
+}
+
+.cyklus-void-client-loading h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cyklus-void-client-shell[aria-busy="true"] .cyklus-void-hub {
+  opacity: 0.72;
+  filter: saturate(0.85);
+}
+
+@media (max-width: 720px) {
+  .cyklus-void-client-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cyklus-void-client-status {
+    text-align: left;
+  }
+}

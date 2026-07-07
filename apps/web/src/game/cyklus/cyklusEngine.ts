@@ -3,6 +3,8 @@ import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
 import { CYKLUS_CARDS, CYKLUS_IMPRINTS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
 import { CYKLUS_UNLOCKS } from './cyklusUnlocks';
+import { cardMatchesUnlockedPool } from './cyklusPoolCatalog';
+import { explainItemMoodScore, getPocketMoodProfile } from './cyklusItemMood';
 import { loadCyklusRunHistory, isTutorialV2Seen } from './cyklusStorage';
 import { applyProgressionToNewRun, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, PROFILE_PROTOCOLS, CRAFTED_ARTIFACTS, type RunReward } from './cyklusProgression';
 import {
@@ -140,6 +142,12 @@ export function generatePreRunWarning(state: CyklusRunState): string | null {
       const manual = `Neúplný návod: ${STAT_LABELS[mostDangerous]} je na začátku nejblíž hranici.`;
       warning = warning ? `${warning}\n${manual}` : manual;
     }
+  }
+
+  const story = loadStoryProgression();
+  const storyDirective = getStoryDirective(state, story);
+  if (storyDirective.interludeText) {
+    warning = warning ? `${warning}\n${storyDirective.interludeText}` : storyDirective.interludeText;
   }
 
   return warning;
@@ -1451,8 +1459,13 @@ export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardSc
   if (isItemTrigger(card)) { score += 400; reasons.push('item_trigger +400'); }
   if (isFollowup(card) && card.conditions) { score += 300; reasons.push('followup +300'); }
   if (cardMatchesCurrentSector(state, card)) { score += 250; reasons.push('sector match +250'); }
-  if (state.unlockedPools.some((poolId) => card.tags.includes(poolId) || card.tags.includes(poolId.replace('_pool', '')))) {
-    score += 200; reasons.push('unlocked pool tag +200');
+  if (state.unlockedPools.some((poolId) => cardMatchesUnlockedPool(card, poolId))) {
+    score += 200; reasons.push('unlocked pool alias +200');
+  }
+  const itemMoodScore = explainItemMoodScore(state, card);
+  if (itemMoodScore.score !== 0) {
+    score += itemMoodScore.score;
+    reasons.push(...itemMoodScore.reasons);
   }
   const rarityBonus = card.rarity === 'common' ? 20 : card.rarity === 'uncommon' ? 35 : card.rarity === 'rare' ? 50 : 60;
   score += rarityBonus; reasons.push(`rarity ${card.rarity} +${rarityBonus}`);
@@ -1728,6 +1741,19 @@ function applyUpgradeScore(state: CyklusRunState, score: number, card: SwipeCard
     if (isItemTrigger(card)) s += 80;
   }
 
+  if (flags.includes('pocket_listener_active')) {
+    if (card.tags.includes('pocket') || card.tags.includes('object') || isItemTrigger(card)) s += 35;
+  }
+
+  if (flags.includes('pocket_resonance_tuner_active')) {
+    if (card.category === 'followup' || isItemTrigger(card) || card.tags.includes('item_trigger')) s += 55;
+  }
+
+  if (flags.includes('pocket_mediator_active')) {
+    if (card.tags.includes('stabilize') || card.tags.includes('boundary') || card.tags.includes('care')) s += 45;
+    if (isCrisisCard(card) && state.inventory.length >= 3) s -= 35;
+  }
+
   return s;
 }
 
@@ -1751,6 +1777,14 @@ function applyMetaProgressionCardScoring(state: CyklusRunState, score: number, c
     archive_drawer_recycle_active: { tags: ['archive'], bonus: 40 },
     tai_terminal_preview_active: { tags: ['contract', 'tai'], bonus: 40 },
     toll_shelf_active: { tags: ['toll', 'contract'], bonus: 40 },
+    pocket_shrine_mood_reader_active: { tags: ['pocket', 'object', 'item_trigger'], bonus: 35 },
+    pocket_shrine_resonance_tuning_active: { tags: ['item_trigger', 'followup', 'glitch'], bonus: 45 },
+    pocket_shrine_argument_mediator_active: { tags: ['stabilize', 'boundary', 'care'], bonus: 55 },
+    seal_stamp_charm_active: { tags: ['seal', 'form', 'crisis', 'bond'], bonus: 45 },
+    pocket_weather_vane_active: { tags: ['path', 'glitch', 'noise'], bonus: 45 },
+    named_resonance_thread_active: { tags: ['name', 'identity', 'soft_bug', 'token'], bonus: 45 },
+    boundary_clip_active: { tags: ['boundary', 'shadow', 'market'], bonus: 45 },
+    archive_pocket_index_active: { tags: ['archive', 'memory', 'index'], bonus: 45 },
   };
 
   for (const [flag, config] of Object.entries(voidRoomBonuses)) {
@@ -1820,6 +1854,19 @@ export function applyMetaProgressionPreviewHint(
   }
   if (flags.includes('archive_drawer_recycle_active') && card.tags.includes('archive')) {
     extras.push('Archiv: stopu jde recyklovat.');
+  }
+  if (flags.includes('pocket_listener_active') && state.inventory.length > 0 && (card.tags.includes('pocket') || card.tags.includes('object') || card.tags.includes('item_trigger'))) {
+    const ambient = getPocketMoodProfile(state).ambientText;
+    if (ambient) extras.push(`Kapsa: ${ambient}`);
+  }
+  if (flags.includes('pocket_resonance_tuner_active') && (card.category === 'followup' || card.tags.includes('item_trigger'))) {
+    extras.push('Ladička kapsy: předmět si přitahuje vlastní následky.');
+  }
+  if (flags.includes('pocket_mediator_active') && (card.tags.includes('stabilize') || card.tags.includes('boundary'))) {
+    extras.push('Mediátor kapsy: hádka předmětů má méně ostré hrany.');
+  }
+  if (flags.includes('pocket_shrine_mood_reader_active') && state.inventory.length > 0) {
+    extras.push('Kapesní oltář: nálady předmětů jsou čitelnější.');
   }
   if (flags.includes('noise_lens_active') && (card.tags.includes('noise') || card.tags.includes('mirror'))) {
     extras.push('Šumová čočka: neuvěř hned.');

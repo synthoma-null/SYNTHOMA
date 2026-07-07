@@ -19,7 +19,7 @@ import {
   type VoidRoomId,
 } from '../../../game/cyklus/cyklusProgression';
 import { loadDiscovery } from '../../../game/cyklus/cyklusDiscovery';
-import CyklusVoidHub from '../CyklusVoidHub';
+import { CyklusVoidHub } from '../CyklusVoidHub';
 
 const mockDiscovery = () => ({
   cards: [],
@@ -63,7 +63,8 @@ describe('CyklusVoidHub', () => {
       totalRuns: 3,
       equippedUpgrades: ['black_box'],
     });
-    render(<CyklusVoidHub />);
+    const progression = loadSubjectProgression();
+    render(<CyklusVoidHub progression={progression} state={null} />);
     expect(screen.getByText(/Reziduum/)).toBeInTheDocument();
     expect(screen.getByText('42')).toBeInTheDocument();
     expect(screen.getByText(/Upgrady: 1 \/ 3/)).toBeInTheDocument();
@@ -75,8 +76,8 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression();
-    render(<CyklusVoidHub />);
+    const progression = mockProgression();
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Místnosti'));
     expect(screen.getByText(/Liščí hnízdo/)).toBeInTheDocument();
   });
@@ -87,10 +88,10 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression({
+    const progression = mockProgression({
       currencies: { residuum: 100 },
     });
-    render(<CyklusVoidHub />);
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Místnosti'));
     const buttons = screen.getAllByText('VYLEPŠIT');
     const foxButton = buttons.find((b) => b.closest('[class*="cyklus-void-card"]')?.textContent?.includes('Liščí'));
@@ -107,11 +108,11 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression({
+    const progression = mockProgression({
       currencies: { residuum: 100, bondThread: 1 },
       profileMastery: { Fi: 20 },
     });
-    render(<CyklusVoidHub />);
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Protokoly'));
     const buy = screen.getAllByText('KOUPIT')[0]!;
     fireEvent.click(buy);
@@ -125,10 +126,10 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression({
+    const progression = mockProgression({
       craftedArtifacts: ['soft_pause_protocol'],
     });
-    render(<CyklusVoidHub />);
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Kapsa'));
     const equip = screen.getByText('NASADIT');
     fireEvent.click(equip);
@@ -142,7 +143,7 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression({
+    const progression = mockProgression({
       currencies: { residuum: 100, bondThread: 5 },
       craftingInventory: { fox_warmth: 2 },
       knownRecipes: ['fox_blanket_protocol'],
@@ -151,7 +152,7 @@ describe('CyklusVoidHub', () => {
         crafting_table: { id: 'crafting_table', level: 1, unlocked: true, installedUpgrades: [] },
       },
     });
-    render(<CyklusVoidHub />);
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Crafting'));
     expect(screen.getByText('VYROBIT')).toBeInTheDocument();
     spy.mockRestore();
@@ -163,10 +164,10 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression({
+    const progression = mockProgression({
       unlockedScars: ['memory_scar'],
     });
-    render(<CyklusVoidHub />);
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Jizvy'));
     const equip = screen.getByText('NASADIT');
     fireEvent.click(equip);
@@ -180,12 +181,12 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_discovery') return JSON.stringify(mockDiscovery());
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression({
+    const progression = mockProgression({
       voidRooms: {
         stabilization_core: { id: 'stabilization_core', level: 1, unlocked: true, installedUpgrades: [] },
       },
     });
-    render(<CyklusVoidHub />);
+    render(<CyklusVoidHub progression={progression} state={null} />);
     expect(screen.getByText(/Upgrady: 0 \/ 4/)).toBeInTheDocument();
     spy.mockRestore();
   });
@@ -197,8 +198,8 @@ describe('CyklusVoidHub', () => {
       if (key === 'synthoma_cyklus_story_v1') return JSON.stringify({ currentAct: 'act1_sandbox_glitchka', completedEpisodes: [], seenStoryEvents: [], restartPrologueSeen: true, restartFatigue: 0, packProgress: {} });
       return originalGetItem.call(localStorage, key);
     });
-    mockProgression();
-    render(<CyklusVoidHub />);
+    const progression = mockProgression();
+    render(<CyklusVoidHub progression={progression} state={null} />);
     fireEvent.click(screen.getByText('Příběh'));
     expect(screen.getByText(/Akt:/)).toBeInTheDocument();
     expect(screen.getByText(/Pískoviště a Glitchka/)).toBeInTheDocument();

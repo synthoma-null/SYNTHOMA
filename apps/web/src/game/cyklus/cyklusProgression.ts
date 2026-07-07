@@ -2,7 +2,8 @@ import type { CyklusRunState, StatKey, EntityId, ProfileKey } from './cyklusType
 import type { CyklusDiscovery } from './cyklusDiscovery';
 import { getEmptyDiscovery, loadDiscovery, saveDiscovery } from './cyklusDiscovery';
 import { serverSaveProgression } from './cyklusStorage';
-import { CYKLUS_CARDS } from './content';
+import { CYKLUS_CARDS, CYKLUS_ITEMS } from './content';
+import { getItemMood, type ItemMood } from './cyklusItemMood';
 
 export type MetaCurrencyId =
   | 'residuum'
@@ -53,7 +54,8 @@ export type VoidRoomId =
   | 'tai_terminal'
   | 'crafting_table'
   | 'toll_shelf'
-  | 'stabilization_core';
+  | 'stabilization_core'
+  | 'pocket_shrine';
 
 export type ProtocolId = string;
 export type RecipeId = string;
@@ -469,6 +471,17 @@ export const VOID_ROOMS: Record<VoidRoomId, {
     costByLevel: [
       { residuum: 80, stabilizationCore: 2 },
       { residuum: 150, stabilizationCore: 5 },
+    ],
+  },
+  pocket_shrine: {
+    id: 'pocket_shrine',
+    title: 'Kapesní oltář',
+    description: 'Místo, kde kapsa může vyjádřit své názory. Někdy to chce, někdy to jen hrozí.',
+    maxLevel: 3,
+    costByLevel: [
+      { residuum: 20 },
+      { residuum: 40, memoryResidue: 2 },
+      { residuum: 80, energySpark: 3 },
     ],
   },
 };
@@ -1560,4 +1573,538 @@ export function getRecommendedNextProgressionActions(
     actions.push('Systém tě znovu pustil do Prázdnoty. Tvrdí, že je stejná. Lže.');
   }
   return actions;
+}
+
+
+// ── UI MODEL HELPERS ──────────────────────────────────────────────────────────
+
+export type ProgressionCostKind = 'currency' | 'material';
+
+export interface ProgressionCostRow {
+  id: string;
+  label: string;
+  amount: number;
+  owned: number;
+  enough: boolean;
+  kind: ProgressionCostKind;
+}
+
+export interface ProgressionInventoryRow {
+  id: string;
+  label: string;
+  amount: number;
+  kind: ProgressionCostKind;
+}
+
+export interface ProgressionLoadoutEntry {
+  id: string;
+  title: string;
+  description: string;
+  kind: 'upgrade' | 'artifact' | 'protocol' | 'scar';
+  equipped: boolean;
+  tags: string[];
+  drawback?: string | undefined;
+}
+
+export interface VoidRoomUiRow {
+  id: VoidRoomId;
+  title: string;
+  description: string;
+  level: number;
+  maxLevel: number;
+  status: 'locked' | 'available' | 'maxed';
+  nextCost: ProgressionCostRow[];
+  effectPreview: string;
+  isPocketRoom: boolean;
+}
+
+export interface CraftRecipeUiRow {
+  id: RecipeId;
+  title: string;
+  description: string;
+  status: 'hidden' | 'locked' | 'craftable' | 'crafted';
+  resultKind: CraftRecipe['result']['type'];
+  resultId: string;
+  resultTitle: string;
+  requiresRoom?: VoidRoomId | undefined;
+  requiresRoomLevel?: number | undefined;
+  cost: ProgressionCostRow[];
+  missingReasons: string[];
+  drawback?: string | undefined;
+  tags: string[];
+  pocketRelevant: boolean;
+}
+
+export interface PocketUiItemRow {
+  id: string;
+  title: string;
+  description: string;
+  mood?: string | undefined;
+  moodLabel?: string | undefined;
+  moodClassName?: string | undefined;
+  tags: string[];
+  resonancePools: string[];
+  favoriteSectors: string[];
+}
+
+export interface PocketProgressionUiModel {
+  room: VoidRoomUiRow | undefined;
+  ambientNote: string;
+  knownItems: PocketUiItemRow[];
+  carriedItems: PocketUiItemRow[];
+  moodSummary: Array<{ mood: string; label: string; count: number; className: string }>;
+  ambientText: string | null | undefined;
+  resonanceTags: string[];
+  pocketRecipes: CraftRecipeUiRow[];
+  equippedPocketArtifacts: ProgressionLoadoutEntry[];
+  suggestions: string[];
+}
+
+export interface ProgressionDashboardUiModel {
+  currencies: ProgressionInventoryRow[];
+  materials: ProgressionInventoryRow[];
+  rooms: VoidRoomUiRow[];
+  availableRooms: VoidRoomUiRow[];
+  crafts: CraftRecipeUiRow[];
+  availableCrafts: CraftRecipeUiRow[];
+  loadout: {
+    limits: ReturnType<typeof getLoadoutLimits>;
+    equipped: ProgressionLoadoutEntry[];
+    available: ProgressionLoadoutEntry[];
+  };
+  pocket: PocketProgressionUiModel;
+  recommendedActions: string[];
+  summary: string;
+}
+
+function getCurrencyOwned(progression: SubjectProgression, id: MetaCurrencyId): number {
+  return progression.currencies[id] ?? 0;
+}
+
+function getMaterialOwned(progression: SubjectProgression, id: CraftMaterialId): number {
+  return progression.craftingInventory[id] ?? 0;
+}
+
+export function getCurrencyUiRows(progression: SubjectProgression): ProgressionInventoryRow[] {
+  return (Object.keys(CURRENCY_LABELS) as MetaCurrencyId[])
+    .map((id) => ({ id, label: CURRENCY_LABELS[id], amount: getCurrencyOwned(progression, id), kind: 'currency' as const }))
+    .filter((row) => row.amount > 0 || row.id === 'residuum');
+}
+
+export function getMaterialUiRows(progression: SubjectProgression): ProgressionInventoryRow[] {
+  return (Object.keys(MATERIAL_LABELS) as CraftMaterialId[])
+    .map((id) => ({ id, label: MATERIAL_LABELS[id], amount: getMaterialOwned(progression, id), kind: 'material' as const }))
+    .filter((row) => row.amount > 0);
+}
+
+function currencyCostRows(progression: SubjectProgression, cost: Partial<Record<MetaCurrencyId, number>> = {}): ProgressionCostRow[] {
+  return Object.entries(cost)
+    .filter(([, amount]) => !!amount)
+    .map(([id, amount]) => {
+      const key = id as MetaCurrencyId;
+      const owned = getCurrencyOwned(progression, key);
+      const value = amount ?? 0;
+      return { id, label: CURRENCY_LABELS[key] ?? id, amount: value, owned, enough: owned >= value, kind: 'currency' as const };
+    });
+}
+
+function materialCostRows(progression: SubjectProgression, cost: Partial<Record<CraftMaterialId, number>> = {}): ProgressionCostRow[] {
+  return Object.entries(cost)
+    .filter(([, amount]) => !!amount)
+    .map(([id, amount]) => {
+      const key = id as CraftMaterialId;
+      const owned = getMaterialOwned(progression, key);
+      const value = amount ?? 0;
+      return { id, label: MATERIAL_LABELS[key] ?? id, amount: value, owned, enough: owned >= value, kind: 'material' as const };
+    });
+}
+
+export function getVoidRoomUiRows(progression: SubjectProgression): VoidRoomUiRow[] {
+  return Object.values(VOID_ROOMS).map((room) => {
+    const state = getVoidRoomState(progression, room.id);
+    const status = getVoidRoomStatus(progression, room.id);
+    const nextCost = status === 'maxed' ? [] : currencyCostRows(progression, room.costByLevel[state.level] ?? {});
+    const nextEffect = room.description;
+    return {
+      id: room.id,
+      title: room.title,
+      description: room.description,
+      level: state.level,
+      maxLevel: room.maxLevel,
+      status,
+      nextCost,
+      effectPreview: status === 'maxed' ? 'Místnost už dosáhla maxima. Systém je zklamaný, že nemá další účet.' : nextEffect,
+      isPocketRoom: room.id === 'pocket_shrine',
+    };
+  });
+}
+
+function getCraftResultTitle(recipe: CraftRecipe): string {
+  switch (recipe.result.type) {
+    case 'artifact': return CRAFTED_ARTIFACTS[recipe.result.artifactId]?.title ?? recipe.result.artifactId;
+    case 'upgrade': return SUBJECT_UPGRADES[recipe.result.upgradeId]?.title ?? recipe.result.upgradeId;
+    case 'voidUpgrade': return VOID_ROOMS[recipe.result.voidUpgradeId as VoidRoomId]?.title ?? recipe.result.voidUpgradeId;
+    case 'protocol': return PROFILE_PROTOCOLS[recipe.result.protocolId]?.title ?? recipe.result.protocolId;
+    default: return 'Neznámý výsledek';
+  }
+}
+
+function getCraftResultId(recipe: CraftRecipe): string {
+  switch (recipe.result.type) {
+    case 'artifact': return recipe.result.artifactId;
+    case 'upgrade': return recipe.result.upgradeId;
+    case 'voidUpgrade': return recipe.result.voidUpgradeId;
+    case 'protocol': return recipe.result.protocolId;
+    default: return 'unknown';
+  }
+}
+
+function getRecipeTags(recipe: CraftRecipe): string[] {
+  if (recipe.result.type === 'artifact') return CRAFTED_ARTIFACTS[recipe.result.artifactId]?.tags ?? [];
+  if (recipe.result.type === 'upgrade') return [SUBJECT_UPGRADES[recipe.result.upgradeId]?.category ?? 'upgrade'];
+  if (recipe.result.type === 'protocol') return ['protocol'];
+  if (recipe.result.type === 'voidUpgrade') return ['void', recipe.result.voidUpgradeId];
+  return [];
+}
+
+function isRecipeResultCrafted(progression: SubjectProgression, recipe: CraftRecipe): boolean {
+  switch (recipe.result.type) {
+    case 'artifact': return progression.craftedArtifacts.includes(recipe.result.artifactId);
+    case 'upgrade': return progression.purchasedUpgrades.includes(recipe.result.upgradeId);
+    case 'protocol': return progression.unlockedProtocols.includes(recipe.result.protocolId);
+    case 'voidUpgrade': return progression.unlockedVoidUpgrades.includes(recipe.result.voidUpgradeId);
+    default: return false;
+  }
+}
+
+function getCraftMissingReasons(progression: SubjectProgression, recipe: CraftRecipe): string[] {
+  const reasons: string[] = [];
+  const discovery = loadDiscovery();
+  const hasKnownRecipe = progression.knownRecipes.includes(recipe.id);
+  if (!hasKnownRecipe) reasons.push('Recept zatím nebyl odhalený. Systém tomu říká tajemství, normální lidé tomu říkají UX problém.');
+  if (recipe.requiresRoom && (progression.voidRooms[recipe.requiresRoom]?.level ?? 0) < (recipe.requiresRoomLevel ?? 1)) {
+    reasons.push(`Vyžaduje místnost: ${VOID_ROOMS[recipe.requiresRoom]?.title ?? recipe.requiresRoom} úroveň ${recipe.requiresRoomLevel ?? 1}.`);
+  }
+  const requiredItems = recipe.hiddenUntil?.itemIds ?? recipe.itemIds ?? [];
+  const missingItems = requiredItems.filter((id) => !discovery.items.includes(id));
+  if (missingItems.length > 0) reasons.push(`Chybí objevené předměty: ${missingItems.join(', ')}.`);
+  const requiredImprints = recipe.hiddenUntil?.imprintIds ?? recipe.imprintIds ?? [];
+  const missingImprints = requiredImprints.filter((id) => !discovery.imprints.includes(id));
+  if (missingImprints.length > 0) reasons.push(`Chybí otisky: ${missingImprints.join(', ')}.`);
+  const requiredFindings = recipe.hiddenUntil?.findingIds ?? [];
+  const missingFindings = requiredFindings.filter((id) => !discovery.findings.includes(id));
+  if (missingFindings.length > 0) reasons.push(`Chybí findingy: ${missingFindings.join(', ')}.`);
+  for (const row of materialCostRows(progression, recipe.materialCosts ?? {})) {
+    if (!row.enough) reasons.push(`Málo materiálu: ${row.label} ${row.owned}/${row.amount}.`);
+  }
+  for (const row of currencyCostRows(progression, recipe.currencyCosts ?? {})) {
+    if (!row.enough) reasons.push(`Málo měny: ${row.label} ${row.owned}/${row.amount}.`);
+  }
+  return reasons;
+}
+
+export function getCraftRecipeUiRows(progression: SubjectProgression): CraftRecipeUiRow[] {
+  return Object.values(CRAFT_RECIPES).map((recipe) => {
+    const crafted = isRecipeResultCrafted(progression, recipe);
+    const known = progression.knownRecipes.includes(recipe.id);
+    const craftable = canCraftRecipe(progression, recipe.id);
+    const missingReasons = getCraftMissingReasons(progression, recipe);
+    const tags = getRecipeTags(recipe);
+    const status: CraftRecipeUiRow['status'] = crafted ? 'crafted' : craftable ? 'craftable' : known ? 'locked' : 'hidden';
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      description: recipe.description,
+      status,
+      resultKind: recipe.result.type,
+      resultId: getCraftResultId(recipe),
+      resultTitle: getCraftResultTitle(recipe),
+      requiresRoom: recipe.requiresRoom,
+      requiresRoomLevel: recipe.requiresRoomLevel,
+      cost: [...materialCostRows(progression, recipe.materialCosts ?? {}), ...currencyCostRows(progression, recipe.currencyCosts ?? {})],
+      missingReasons,
+      drawback: recipe.drawback,
+      tags,
+      pocketRelevant: recipe.requiresRoom === 'pocket_shrine' || tags.some((tag) => ['pocket', 'seal', 'boundary', 'token', 'soft_bug', 'archive'].includes(tag)),
+    };
+  });
+}
+
+function loadoutEntryFromUpgrade(id: string, equipped: boolean): ProgressionLoadoutEntry | null {
+  const upgrade = SUBJECT_UPGRADES[id];
+  if (!upgrade) return null;
+  return { id, title: upgrade.title, description: upgrade.description, kind: 'upgrade', equipped, tags: [upgrade.category], drawback: upgrade.drawback };
+}
+
+function loadoutEntryFromArtifact(id: string, equipped: boolean): ProgressionLoadoutEntry | null {
+  const artifact = CRAFTED_ARTIFACTS[id];
+  if (!artifact) return null;
+  return { id, title: artifact.title, description: artifact.description, kind: 'artifact', equipped, tags: artifact.tags, drawback: artifact.drawback };
+}
+
+function loadoutEntryFromProtocol(id: string, equipped: boolean): ProgressionLoadoutEntry | null {
+  const protocol = PROFILE_PROTOCOLS[id];
+  if (!protocol) return null;
+  return { id, title: protocol.title, description: protocol.description, kind: 'protocol', equipped, tags: ['protocol'], drawback: protocol.drawback };
+}
+
+function loadoutEntryFromScar(id: string, equipped: boolean): ProgressionLoadoutEntry | null {
+  const scar = SUBJECT_SCARS[id];
+  if (!scar) return null;
+  return { id, title: scar.title, description: scar.description, kind: 'scar', equipped, tags: ['scar', scar.stat], drawback: scar.effectDescription };
+}
+
+export function getLoadoutUiModel(progression: SubjectProgression): ProgressionDashboardUiModel['loadout'] {
+  const equipped = [
+    ...progression.equippedUpgrades.map((id) => loadoutEntryFromUpgrade(id, true)),
+    ...progression.equippedArtifacts.map((id) => loadoutEntryFromArtifact(id, true)),
+    ...progression.equippedProtocols.map((id) => loadoutEntryFromProtocol(id, true)),
+    ...(progression.activeScar ? [loadoutEntryFromScar(progression.activeScar, true)] : []),
+  ].filter((row): row is ProgressionLoadoutEntry => !!row);
+
+  const available = [
+    ...progression.purchasedUpgrades.filter((id) => !progression.equippedUpgrades.includes(id)).map((id) => loadoutEntryFromUpgrade(id, false)),
+    ...progression.craftedArtifacts.filter((id) => !progression.equippedArtifacts.includes(id)).map((id) => loadoutEntryFromArtifact(id, false)),
+    ...progression.unlockedProtocols.filter((id) => !progression.equippedProtocols.includes(id)).map((id) => loadoutEntryFromProtocol(id, false)),
+    ...progression.unlockedScars.filter((id) => id !== progression.activeScar).map((id) => loadoutEntryFromScar(id, false)),
+  ].filter((row): row is ProgressionLoadoutEntry => !!row);
+
+  return { limits: getLoadoutLimits(progression), equipped, available };
+}
+
+function pocketItemRowFromId(id: string, state: CyklusRunState | null): PocketUiItemRow | null {
+  const item = CYKLUS_ITEMS[id];
+  if (!item) return null;
+  const mood = state?.inventory.includes(id) ? getItemMood(state, id) : undefined;
+  return {
+    id,
+    title: item.title,
+    description: item.description,
+    mood,
+    moodLabel: mood ? getPocketMoodLabel(mood) : undefined,
+    moodClassName: mood ? `item-mood-${mood}` : undefined,
+    tags: item.tags,
+    resonancePools: [],
+    favoriteSectors: [],
+  };
+}
+
+function getPocketMoodLabel(mood: string): string {
+  const labels: Record<string, string> = {
+    quiet: 'tiché',
+    warm: 'teplé',
+    watching: 'sleduje',
+    ready: 'připraveno',
+    angry: 'nesouhlasí',
+    asleep: 'spí',
+    unstable: 'nestabilní',
+  };
+  return labels[mood] ?? mood;
+}
+
+function getPocketMoodProfile(state: CyklusRunState): { counts: Record<string, number>; unstableCount: number; readyCount: number; ambientText: string | null; resonanceTags: string[] } | null {
+  const counts: Record<string, number> = {};
+  let unstableCount = 0;
+  let readyCount = 0;
+  const resonanceTags: string[] = [];
+  
+  for (const id of state.inventory) {
+    const mood = getItemMood(state, id);
+    counts[mood] = (counts[mood] ?? 0) + 1;
+    if (mood === 'unstable') unstableCount++;
+    if (mood === 'ready') readyCount++;
+  }
+  
+  const ambientText = Object.entries(counts)
+    .filter(([mood, count]) => count > 0)
+    .map(([mood, count]) => `${getPocketMoodLabel(mood)}: ${count}`)
+    .join(' · ') || null;
+    
+  return { counts, unstableCount, readyCount, ambientText, resonanceTags };
+}
+
+export function getPocketProgressionUiModel(
+  progression: SubjectProgression,
+  state: CyklusRunState | null = null,
+): PocketProgressionUiModel {
+  const discovery = loadDiscovery();
+  const room = getVoidRoomUiRows(progression).find((r) => r.id === 'pocket_shrine') ?? getVoidRoomUiRows(progression)[0];
+  const knownItems = discovery.items
+    .map((id) => pocketItemRowFromId(id, state))
+    .filter((row): row is PocketUiItemRow => !!row);
+  const carriedItems = (state?.inventory ?? [])
+    .map((id) => pocketItemRowFromId(id, state))
+    .filter((row): row is PocketUiItemRow => !!row);
+  const moodProfile = state ? getPocketMoodProfile(state) : null;
+  const pocketRecipes = getCraftRecipeUiRows(progression).filter((row) => row.pocketRelevant);
+  const equippedPocketArtifacts = progression.equippedArtifacts
+    .map((id) => loadoutEntryFromArtifact(id, true))
+    .filter((row): row is ProgressionLoadoutEntry => !!row);
+  const moodSummary = moodProfile
+    ? Object.entries(moodProfile.counts)
+        .filter(([, count]) => count > 0)
+        .map(([mood, count]) => ({ mood, label: getPocketMoodLabel(mood), count, className: `item-mood-${mood}` }))
+    : [];
+  const suggestions: string[] = [];
+  if (room && room.level === 0) suggestions.push('Odemkni Kapesní oltář. Kapsa už má názory, jen zatím nemá kam psát stížnosti.');
+  if (room && room.level < 2 && knownItems.length >= 4) suggestions.push('Zvedni Kapesní oltář na úroveň 2. Rezonance už začíná být slyšet i přes zip.');
+  if (moodProfile && moodProfile.unstableCount >= 2) suggestions.push('Nestabilní předměty tlačí na item-trigger karty. Zvaž craft nebo stabilizační run, protože kapsa si právě hraje na počasí.');
+  if (moodProfile && moodProfile.readyCount >= 2) suggestions.push('Připravené předměty chtějí být použité. Ignorovat je můžeš, ale pak se budou tvářit jako rodina u nedělního oběda.');
+  if (pocketRecipes.some((r) => r.status === 'craftable')) suggestions.push('Máš craftovatelný kapesní recept. Ano, systém ti právě doporučuje ruční práci po traumatu.');
+  if (suggestions.length === 0) suggestions.push('Kapsa je klidná. Podezřele klidná.');
+
+  return {
+    room,
+    ambientNote: 'Kapsa čeká. Kapesní oltář je připraven.',
+    knownItems,
+    carriedItems,
+    moodSummary,
+    ambientText: moodProfile?.ambientText ?? null,
+    resonanceTags: moodProfile?.resonanceTags ?? [],
+    pocketRecipes,
+    equippedPocketArtifacts,
+    suggestions,
+  };
+}
+
+export function getProgressionDashboardUiModel(
+  progression: SubjectProgression,
+  state: CyklusRunState | null = null,
+): ProgressionDashboardUiModel {
+  const rooms = getVoidRoomUiRows(progression);
+  const crafts = getCraftRecipeUiRows(progression);
+  const loadout = getLoadoutUiModel(progression);
+  const pocket = getPocketProgressionUiModel(progression, state);
+  const recommendedActions = getRecommendedNextProgressionActions(state, progression);
+  return {
+    currencies: getCurrencyUiRows(progression),
+    materials: getMaterialUiRows(progression),
+    rooms,
+    availableRooms: rooms.filter((room) => room.status === 'available'),
+    crafts,
+    availableCrafts: crafts.filter((recipe) => recipe.status === 'craftable'),
+    loadout,
+    pocket,
+    recommendedActions,
+    summary:
+      progression.totalRuns === 0
+        ? 'Subjekt ještě nemá historii. Systém se tváří trpělivě, což je vždycky špatné znamení.'
+        : `Běhů: ${progression.totalRuns}. Stabilizací: ${progression.stabilizedRuns}. Reziduum celkem: ${progression.totalResiduumEarned}. Pokrok existuje, jen se za něj účtuje.`,
+  };
+}
+
+// ── VOID HUB UI MODEL ────────────────────────────────────────────────────────
+
+export type VoidHubTabId = 'overview' | 'pocket' | 'crafting' | 'rooms' | 'loadout' | 'protocols';
+
+export interface VoidHubTabUiRow {
+  id: VoidHubTabId;
+  title: string;
+  description: string;
+  badge?: string;
+  priority: 'quiet' | 'normal' | 'attention' | 'danger';
+}
+
+export interface VoidHubUiModel {
+  summary: string;
+  pulseText: string;
+  tabs: VoidHubTabUiRow[];
+  alerts: string[];
+  dashboard: ProgressionDashboardUiModel;
+}
+
+export type CyklusVoidHubActionPayload = {
+  id: string;
+  kind?: ProgressionLoadoutEntry['kind'] | 'room' | 'recipe';
+};
+
+export type CyklusVoidHubActions = {
+  onStartRun?: () => void;
+  onUpgradeRoom?: (roomId: string) => void;
+  onCraftRecipe?: (recipeId: string) => void;
+  onEquipLoadout?: (payload: CyklusVoidHubActionPayload) => void;
+  onUnequipLoadout?: (payload: CyklusVoidHubActionPayload) => void;
+  onRefresh?: () => void;
+};
+
+function priorityFromCount(count: number, dangerAt = 3): VoidHubTabUiRow['priority'] {
+  if (count >= dangerAt) return 'danger';
+  if (count > 0) return 'attention';
+  return 'quiet';
+}
+
+export function getVoidHubUiModel(
+  progression: SubjectProgression,
+  state: CyklusRunState | null = null,
+): VoidHubUiModel {
+  const dashboard = getProgressionDashboardUiModel(progression, state);
+  const craftableCount = dashboard.availableCrafts.length;
+  const availableRoomCount = dashboard.availableRooms.length;
+  const equippedCount = dashboard.loadout.equipped.length;
+  const availableLoadoutCount = dashboard.loadout.available.length;
+  const pocketMoodPressure = dashboard.pocket.moodSummary.reduce((sum, row) => {
+    if (row.mood === 'angry' || row.mood === 'unstable') return sum + row.count * 2;
+    if (row.mood === 'ready' || row.mood === 'watching') return sum + row.count;
+    return sum;
+  }, 0);
+  const protocolCount = dashboard.loadout.equipped.filter((row) => row.kind === 'protocol').length +
+    dashboard.loadout.available.filter((row) => row.kind === 'protocol').length;
+
+  const alerts: string[] = [];
+  if (craftableCount > 0) alerts.push(`Crafting čeká: ${craftableCount} receptů lze vyrobit. Systém tomu říká produktivita, kapsa tomu říká konečně.`);
+  if (availableRoomCount > 0) alerts.push(`Prázdnota má ${availableRoomCount} místností připravených k vylepšení. Zdi už si připravily fakturu.`);
+  if (pocketMoodPressure >= 3) alerts.push('Kapsa vykazuje náladový přetlak. Některé předměty už nejsou inventář, ale malý poradní sbor s problémem autority.');
+  if (availableLoadoutCount > 0) alerts.push(`Loadout má ${availableLoadoutCount} nevybavených možností. Nechat je ležet může být strategie. Nebo jen elegantní zanedbání.`);
+  if (alerts.length === 0) alerts.push('Prázdnota je klidná. Což v SYNTHOMĚ neznamená bezpečí, jen méně hlučný účetní záznam.');
+
+  const tabs: VoidHubTabUiRow[] = [
+    {
+      id: 'overview',
+      title: 'Přehled',
+      description: 'Rychlý stav Prázdnoty, zdrojů a doporučených kroků.',
+      badge: progression.totalRuns > 0 ? `${progression.totalRuns} běhů` : 'nový subjekt',
+      priority: 'normal',
+    },
+    {
+      id: 'pocket',
+      title: 'Kapsa',
+      description: 'Nálady itemů, Kapesní oltář a rezonance předmětů.',
+      badge: state ? `${state.inventory.length} neseno` : `${dashboard.pocket.knownItems.length} známo`,
+      priority: priorityFromCount(pocketMoodPressure, 4),
+    },
+    {
+      id: 'crafting',
+      title: 'Crafting',
+      description: 'Recepty, materiály a ruční výroba dalších komplikací.',
+      badge: craftableCount > 0 ? `${craftableCount} lze` : 'ticho',
+      priority: priorityFromCount(craftableCount, 3),
+    },
+    {
+      id: 'rooms',
+      title: 'Místnosti',
+      description: 'Prázdnota jako základna, která si pamatuje investice.',
+      badge: availableRoomCount > 0 ? `${availableRoomCount} upgrade` : 'stabilní',
+      priority: priorityFromCount(availableRoomCount, 3),
+    },
+    {
+      id: 'loadout',
+      title: 'Loadout',
+      description: 'Upgrady, artefakty a jizvy vybavené před dalším během.',
+      badge: `${equippedCount}/${dashboard.loadout.limits.upgradeSlots + dashboard.loadout.limits.artifactSlots + dashboard.loadout.limits.protocolSlots + dashboard.loadout.limits.scarSlots}`,
+      priority: availableLoadoutCount > 0 ? 'attention' : 'quiet',
+    },
+    {
+      id: 'protocols',
+      title: 'Protokoly',
+      description: 'Profilové protokoly a aktivní jizvy, tedy řízená osobnostní šikana.',
+      badge: protocolCount > 0 ? `${protocolCount} záznamů` : 'žádné',
+      priority: protocolCount > 0 ? 'normal' : 'quiet',
+    },
+  ];
+
+  const pulseText = state
+    ? `Aktivní běh: cyklus ${state.cycle}, tah ${state.choiceInCycle}. Kapsa ${state.inventory.length ? 'má co říct' : 'zatím mlčí podezřele slušně'}.`
+    : 'Mimo běh. Prázdnota přepočítává ztráty a tváří se jako domov, což je od ní drzost.';
+
+  return { summary: dashboard.summary, pulseText, tabs, alerts, dashboard };
 }
