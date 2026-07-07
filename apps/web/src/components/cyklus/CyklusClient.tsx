@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { loadRecentCyklusComments, saveRecentCyklusComment } from '../../game/cyklus/cyklusCommentPool';
 import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression, type CyklusVoidHubActions } from '../../game/cyklus/cyklusProgression';
+import { formatDelta, formatAbsDelta } from '../../game/cyklus/cyklusFormat';
 import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from '../../game/cyklus/cyklusStory';
 import StatDock from './StatDock';
 import { CyklusVoidHub } from './CyklusVoidHub';
@@ -167,6 +169,12 @@ export default function CyklusClient() {
   }, [state]);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && state?.currentCardId) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [state?.currentCardId]);
+
+  useEffect(() => {
     if (!state || state.status !== 'playing') return;
     const forecast = composeCycleForecast(state);
     if (state.choiceInCycle === 1 && state.cycle === 1 && state.preRunWarning) {
@@ -189,8 +197,13 @@ export default function CyklusClient() {
     }
 
     if (prevCycle !== state.cycle) {
-      const summary = composeCycleSummary(state);
-      if (summary) setCycleSummary(summary);
+      const recentComments = loadRecentCyklusComments();
+      const summary = composeCycleSummary(state, recentComments, (comment) => {
+        if (comment) saveRecentCyklusComment(comment);
+      });
+      if (summary) {
+        setCycleSummary(summary);
+      }
     }
 
     prevSectorRef.current = state.sector;
@@ -597,7 +610,7 @@ export default function CyklusClient() {
                 </div>
               ))}
             </div>
-            {state.status === 'dead' && <DeathAnalysis state={state} />}
+            {state.status === 'dead' && <DeathAnalysis state={state} recentComments={loadRecentCyklusComments()} />}
             <BehavioralAnalysis state={state} />
             <div className="cyklus-end__profile">
               <div className="cyklus-end__section-label">Profilový otisk</div>
@@ -1291,7 +1304,7 @@ function RewardSection({ reward, progression }: { reward: RunReward; progression
           {Object.entries(reward.profileMastery).map(([key, value]) => (
             <div key={key} className="cyklus-reward__unlock">
               <div className="cyklus-reward__unlock-title">{key}</div>
-              <div className="cyklus-reward__unlock-desc">+{value} zkušenosti</div>
+              <div className="cyklus-reward__unlock-desc">{formatDelta(value)} zkušenosti</div>
             </div>
           ))}
         </div>
@@ -1364,8 +1377,11 @@ function RewardSection({ reward, progression }: { reward: RunReward; progression
   );
 }
 
-function DeathAnalysis({ state }: { state: CyklusRunState }) {
-  const analysis = analyzeDeath(state);
+function DeathAnalysis({ state, recentComments = [] }: { state: CyklusRunState; recentComments?: string[] }) {
+  const analysis = useMemo(() => analyzeDeath(state, recentComments), [state, recentComments]);
+  useEffect(() => {
+    if (analysis?.systemComment) saveRecentCyklusComment(analysis.systemComment);
+  }, [analysis?.systemComment]);
   if (!analysis) return null;
   const card = getCardById(analysis.topContributors[0]?.cardId ?? '');
   const blackBox = state.flags.includes('black_box_active');
@@ -1390,7 +1406,7 @@ function DeathAnalysis({ state }: { state: CyklusRunState }) {
               <div key={c.cardId} className="cyklus-death-analysis__contributor">
                 <span>{card?.title ?? c.cardId}</span>
                 <span className={`cyklus-death-analysis__delta ${c.delta > 0 ? 'cyklus-death-analysis__delta--up' : 'cyklus-death-analysis__delta--down'}`}>
-                  {c.delta > 0 ? '+' : ''}{c.delta}
+                  {formatDelta(c.delta)}
                 </span>
               </div>
             );
@@ -1477,7 +1493,7 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
         <div className="cyklus-outcome__stats">
           {deltas.map(([key, value]) => (
             <span key={key} className={`cyklus-outcome__stat ${value > 0 ? 'cyklus-outcome__stat--up' : 'cyklus-outcome__stat--down'}`}>
-              {STAT_LABELS[key]} {value > 0 ? '↑' : '↓'} {Math.abs(value)}
+              {STAT_LABELS[key]} {value > 0 ? '↑' : '↓'} {formatAbsDelta(value)}
             </span>
           ))}
         </div>

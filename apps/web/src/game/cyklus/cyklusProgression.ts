@@ -904,8 +904,8 @@ export function computeRunRewards(
     craftingMaterials,
     unlockedRecipes,
     profileMastery,
-    voidRoomHints,
-    recommendedActions,
+    voidRoomHints: [...new Set(voidRoomHints)],
+    recommendedActions: [...new Set(recommendedActions)],
     deathStat,
   };
 }
@@ -1572,7 +1572,7 @@ export function getRecommendedNextProgressionActions(
   if (state && state.status === 'dead') {
     actions.push('Systém tě znovu pustil do Prázdnoty. Tvrdí, že je stejná. Lže.');
   }
-  return actions;
+  return [...new Set(actions)];
 }
 
 

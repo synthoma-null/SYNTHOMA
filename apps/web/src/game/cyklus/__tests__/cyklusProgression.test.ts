@@ -509,4 +509,27 @@ describe('cyklus progression', () => {
     expect(log).toContain('Prázdnota doporučuje:');
     expect(log).toContain('fox_nest');
   });
+
+  it('computeRunRewards deduplicates voidRoomHints', () => {
+    const state = createCyklusRun(true);
+    state.usedCardIds = [
+      'detective_crime_scene_in_memory',
+      'detective_witness_with_no_face',
+      'detective_magnifier_finds_you',
+    ];
+    const discovery: CyklusDiscovery = { cards: [], sectors: [], items: [], imprints: [], endings: [], variants: [], findings: [] };
+    const reward = computeRunRewards(state, discovery);
+    const unique = [...new Set(reward.voidRoomHints)];
+    expect(reward.voidRoomHints).toContain('archive_drawer');
+    expect(reward.voidRoomHints.length).toBe(unique.length);
+  });
+
+  it('getRecommendedNextProgressionActions contains no duplicates', () => {
+    const { getRecommendedNextProgressionActions } = require('../cyklusProgression');
+    const state = createCyklusRun(true);
+    const progression = mockProgression({ residuum: 100 });
+    const actions = getRecommendedNextProgressionActions(state, progression);
+    const unique = [...new Set(actions)];
+    expect(actions.length).toBe(unique.length);
+  });
 });

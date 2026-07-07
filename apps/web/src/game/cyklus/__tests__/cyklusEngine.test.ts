@@ -37,6 +37,8 @@ import { CYKLUS_UNLOCKS } from '../cyklusUnlocks';
 import { getDeathUnlocks, saveMetaUnlocks, loadMetaUnlocks, loadMetaUnlockPools } from '../cyklusFindings';
 import { updateDiscoveryFromRun } from '../cyklusDiscovery';
 import { loadCyklusRun } from '../cyklusStorage';
+import { formatDelta, formatAbsDelta, roundVisibleNumber } from '../cyklusFormat';
+import { pickAvoidingRecent, loadRecentCyklusComments, saveRecentCyklusComment } from '../cyklusCommentPool';
 
 describe('Cyklus engine', () => {
   beforeEach(() => {
@@ -794,7 +796,7 @@ describe('Cyklus engine', () => {
       state.flags = ['ni_premonition_active'];
       const withMeta = explainCardScore(state, patternCard);
       expect(withMeta.score).toBeGreaterThan(without.score);
-      expect(withMeta.reasons.some((r) => r.includes('meta'))).toBe(true);
+      expect(withMeta.reasons.some((r: string) => r.includes('meta'))).toBe(true);
     });
 
     it('getActiveContracts returns visible contract data', () => {
@@ -971,6 +973,151 @@ describe('Cyklus engine', () => {
         state = resolveChoice(state, 'yes');
       }
       expect(state.currentCardId).toBe('restart_0');
+    });
+  });
+
+  describe('trust patch — formatting', () => {
+    it('roundVisibleNumber clamps non-finite values to 0', () => {
+      expect(roundVisibleNumber(NaN)).toBe(0);
+      expect(roundVisibleNumber(Infinity)).toBe(0);
+      expect(roundVisibleNumber(13.9999999999)).toBe(14);
+      expect(roundVisibleNumber(-7.2)).toBe(-7);
+    });
+
+    it('formatDelta handles positive, negative and zero values', () => {
+      expect(formatDelta(13.9999999999)).toBe('+14');
+      expect(formatDelta(-7.2)).toBe('-7');
+      expect(formatDelta(0)).toBe('0');
+      expect(formatDelta(-0.4)).toBe('0');
+    });
+
+    it('formatAbsDelta returns absolute rounded value', () => {
+      expect(formatAbsDelta(13.9999999999)).toBe('14');
+      expect(formatAbsDelta(-7.2)).toBe('7');
+      expect(formatAbsDelta(0)).toBe('0');
+    });
+  });
+
+  describe('trust patch — death analysis', () => {
+    it('analyzeDeath returns rounded contributor deltas', () => {
+      const state = createCyklusRun(true);
+      state.status = 'dead';
+      state.stats = { energy: 100, memory: 50, bond: 50, control: 50 };
+      state.history = [
+        { turn: 1, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 13.9999999999 }, statsAfter: { energy: 64, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+        { turn: 2, cycle: 1, cardId: 'black_folder', direction: 'yes', statDelta: { energy: -3.1 }, statsAfter: { energy: 61, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 2 },
+      ];
+      const analysis = analyzeDeath(state);
+      expect(analysis).not.toBeNull();
+      expect(analysis!.stat).toBe('energy');
+      expect(analysis!.topContributors.map((c: { delta: number }) => c.delta)).toEqual([14]);
+    });
+
+    it('analyzeDeath sorts contributors by absolute rounded delta', () => {
+      const state = createCyklusRun(true);
+      state.status = 'dead';
+      state.stats = { energy: 100, memory: 50, bond: 50, control: 50 };
+      state.history = [
+        { turn: 1, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 5.4 }, statsAfter: { energy: 55, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+        { turn: 2, cycle: 1, cardId: 'black_folder', direction: 'yes', statDelta: { energy: -12.1 }, statsAfter: { energy: 43, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 2 },
+        { turn: 3, cycle: 1, cardId: 'archive_key', direction: 'yes', statDelta: { energy: 7.9 }, statsAfter: { energy: 51, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 3 },
+      ];
+      const analysis = analyzeDeath(state);
+      const deltas = analysis!.topContributors.map((c: { delta: number }) => c.delta);
+      expect(deltas).toEqual([8, 5]);
+      expect(Math.abs(deltas[0]!)).toBeGreaterThanOrEqual(Math.abs(deltas[1]!));
+    });
+  });
+
+  describe('trust patch — cycle summary and export', () => {
+    it('composeCycleSummary contains no float artifacts', () => {
+      const state = createCyklusRun(true);
+      state.cycle = 2;
+      state.history = [
+        { turn: 1, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 13.9999999999 }, statsAfter: { energy: 64, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+      ];
+      const summary = composeCycleSummary(state);
+      expect(summary).not.toContain('13.9999999999');
+      expect(summary).toContain('14');
+    });
+
+    it('full export contains no float artifacts', () => {
+      const state = createCyklusRun(true);
+      state.status = 'dead';
+      state.stats = { energy: 100, memory: 50, bond: 50, control: 50 };
+      state.history = [
+        { turn: 1, cycle: 1, cardId: 'first_boot', direction: 'yes', statDelta: { energy: 13.9999999999 }, statsAfter: { energy: 64, memory: 50, bond: 50, control: 50 }, profileDelta: {}, flagsGained: [], itemsGained: [], itemsLost: [], imprintsGained: [], poolsUnlocked: [], scheduledAdded: [], entityDelta: {}, sectorBefore: 'void', sectorAfter: 'void', ts: 1 },
+      ];
+      const log = exportRunLog(state, 'full');
+      expect(log).not.toContain('13.9999999999');
+      expect(log).toContain('+14');
+    });
+  });
+
+  describe('trust patch — fallback archetypes', () => {
+    it('computeProfile returns a meaningful fallback for high memory + archive sector', () => {
+      const state = createCyklusRun(true);
+      state.stats = { energy: 50, memory: 90, bond: 50, control: 50 };
+      state.profile = { E: 1, I: 2, S: 0, N: 3, T: 1, F: 0, J: 1, P: 0 };
+      state.visitedSectors = ['void', 'archive'];
+      const profile = computeProfile(state);
+      expect(profile.archetype).not.toBe('Neklasifikovatelný subjekt');
+      expect(profile.archetype).toBe('Archivní potápěč');
+    });
+
+    it('computeProfile returns a meaningful fallback for control + form_office', () => {
+      const state = createCyklusRun(true);
+      state.stats = { energy: 45, memory: 50, bond: 35, control: 92 };
+      state.profile = { E: 3, I: 0, S: 1, N: 0, T: 10, F: 0, J: 12, P: 0, Te: 8 };
+      state.visitedSectors = ['void', 'form_office', 'form_office'];
+      state.inventory = [];
+      const profile = computeProfile(state);
+      expect(profile.archetype).not.toBe('Neklasifikovatelný subjekt');
+      expect(profile.archetype).toBe('Kontrolní mučedník');
+    });
+
+    it('computeProfile returns rare generic fallback only when nothing matches', () => {
+      const state = createCyklusRun(true);
+      state.stats = { energy: 50, memory: 50, bond: 50, control: 50 };
+      state.profile = { E: 2, I: 2, S: 2, N: 2, T: 2, F: 2, J: 2, P: 2 };
+      state.visitedSectors = ['void'];
+      state.inventory = [];
+      state.imprints = [];
+      const profile = computeProfile(state);
+      expect(profile.archetype).toBe('Neklasifikovatelný subjekt');
+    });
+  });
+
+  describe('trust patch — comment pools', () => {
+    it('pickAvoidingRecent is deterministic for same seed and recentComments', () => {
+      const pool = ['a', 'b', 'c', 'd'];
+      const recent = ['a'];
+      const r1 = pickAvoidingRecent(pool, 'seed', recent);
+      const r2 = pickAvoidingRecent(pool, 'seed', recent);
+      expect(r1).toBe(r2);
+    });
+
+    it('pickAvoidingRecent avoids recent comments when pool is larger than 3', () => {
+      const pool = ['a', 'b', 'c', 'd', 'e'];
+      const recent = ['a', 'b', 'c'];
+      const result = pickAvoidingRecent(pool, 'seed', recent);
+      expect(recent).not.toContain(result);
+    });
+
+    it('loadRecentCyklusComments does not crash when window is undefined', () => {
+      const comments = loadRecentCyklusComments();
+      expect(Array.isArray(comments)).toBe(true);
+    });
+
+    it('saveRecentCyklusComment keeps only the last 3 comments', () => {
+      if (typeof localStorage === 'undefined') return;
+      localStorage.removeItem('synthoma_cyklus_recent_comments');
+      saveRecentCyklusComment('one');
+      saveRecentCyklusComment('two');
+      saveRecentCyklusComment('three');
+      saveRecentCyklusComment('four');
+      const comments = loadRecentCyklusComments();
+      expect(comments).toEqual(['four', 'three', 'two']);
     });
   });
 });
