@@ -15,6 +15,7 @@ export default function CyklusMobileHud({ state, onToggleDiag, diagOpen, tutoria
   const near = getNearestExtreme(state.stats);
   const stab = computeStabilizationProgress(state);
   const stabDone = [stab.survivedRestart, stab.imprints >= stab.imprintsNeeded, stab.sectors >= stab.sectorsNeeded, stab.statsStable].filter(Boolean).length;
+  const diagDrawerId = 'cyklus-mobile-diag-drawer';
 
   return (
     <div className="cyklus-mobile-hud">
@@ -31,18 +32,25 @@ export default function CyklusMobileHud({ state, onToggleDiag, diagOpen, tutoria
             {STAT_LABELS[near.stat]} {near.value}
           </span>
         )}
-        <button type="button" className="cyklus-mobile-hud__diag-toggle" onClick={onToggleDiag} aria-expanded={diagOpen ? 'true' : 'false'}>
+        <button
+          type="button"
+          className="cyklus-mobile-hud__diag-toggle"
+          onClick={onToggleDiag}
+          aria-expanded={diagOpen}
+          aria-controls={diagOpen ? diagDrawerId : undefined}
+          aria-label="Diagnostika cyklu"
+        >
           {diagOpen ? '▲' : '▼'}
         </button>
       </div>
       {diagOpen && (
-        <CyklusDiagDrawer state={state} stabDone={stabDone} tutorialProgress={tutorialProgress} />
+        <CyklusDiagDrawer id={diagDrawerId} state={state} stabDone={stabDone} tutorialProgress={tutorialProgress} />
       )}
     </div>
   );
 }
 
-function CyklusDiagDrawer({ state, stabDone, tutorialProgress }: { state: CyklusRunState; stabDone: number; tutorialProgress?: React.ReactNode }) {
+function CyklusDiagDrawer({ id, state, stabDone, tutorialProgress }: { id: string; state: CyklusRunState; stabDone: number; tutorialProgress?: React.ReactNode }) {
   const stab = computeStabilizationProgress(state);
   const items = [
     { label: 'Přežít restart', ok: stab.survivedRestart },
@@ -51,7 +59,7 @@ function CyklusDiagDrawer({ state, stabDone, tutorialProgress }: { state: Cyklus
     { label: 'Rovnováha', ok: stab.statsStable },
   ];
   return (
-    <div className="cyklus-diag-drawer">
+    <div id={id} className="cyklus-diag-drawer">
       {tutorialProgress}
       {state.visitedSectors.length > 0 && (
         <div className="cyklus-diag-drawer__route">

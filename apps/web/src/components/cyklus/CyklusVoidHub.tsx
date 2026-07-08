@@ -243,6 +243,7 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
   const [activeTab, setActiveTab] = useState<VoidHubTabId>(initialTab);
   const model = useMemo(() => getVoidHubUiModel(progression, state), [progression, state]);
   const active = TAB_ORDER.includes(activeTab) ? activeTab : 'overview';
+  const activePanelId = `void-hub-panel-${active}`;
 
   return (
     <section className={cx('cyklus-void-hub', compact && 'is-compact')} aria-label="Prázdnota SYNTHOMA">
@@ -263,14 +264,17 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
         {model.alerts.map((alert: string) => <p key={alert}>{alert}</p>)}
       </div>
 
-      <nav className="void-hub-tabs" aria-label="Sekce Prázdnoty">
+      <nav className="void-hub-tabs" aria-label="Sekce Prázdnoty" role="tablist">
         {model.tabs.map((tab: VoidHubTabUiRow) => (
           <button
             key={tab.id}
+            id={`void-hub-tab-${tab.id}`}
             type="button"
+            role="tab"
             className={cx('void-hub-tab', active === tab.id && 'is-active', `is-${tab.priority}`)}
             onClick={() => setActiveTab(tab.id)}
-            aria-pressed={active === tab.id}
+            aria-selected={active === tab.id}
+            aria-controls={active === tab.id ? activePanelId : undefined}
           >
             <span>{tab.title}</span>
             {tab.badge && <small>{tab.badge}</small>}
@@ -278,12 +282,14 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
         ))}
       </nav>
 
-      {active === 'overview' && <CyklusProgressionDashboard progression={progression} state={state} />}
-      {active === 'pocket' && <CyklusPocketPanel progression={progression} state={state} />}
-      {active === 'crafting' && actions && <CraftingTab model={model} actions={actions} />}
-      {active === 'rooms' && actions && <RoomsTab model={model} actions={actions} />}
-      {active === 'loadout' && actions && <LoadoutTab model={model} actions={actions} />}
-      {active === 'protocols' && actions && <LoadoutTab model={model} actions={actions} protocolsOnly />}
+      <div id={activePanelId} role="tabpanel" aria-labelledby={`void-hub-tab-${active}`}>
+        {active === 'overview' && <CyklusProgressionDashboard progression={progression} state={state} />}
+        {active === 'pocket' && <CyklusPocketPanel progression={progression} state={state} />}
+        {active === 'crafting' && actions && <CraftingTab model={model} actions={actions} />}
+        {active === 'rooms' && actions && <RoomsTab model={model} actions={actions} />}
+        {active === 'loadout' && actions && <LoadoutTab model={model} actions={actions} />}
+        {active === 'protocols' && actions && <LoadoutTab model={model} actions={actions} protocolsOnly />}
+      </div>
     </section>
   );
 }

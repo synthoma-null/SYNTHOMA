@@ -599,7 +599,7 @@ export function formatSimReport(report: SimReport): string {
 
 export function runSimulationAndPrint(count = SIM_DEFAULTS.runs): SimReport {
   const report = runSimulation(count);
-  console.log(formatSimReport(report));
+  console.warn(formatSimReport(report));
   return report;
 }
 

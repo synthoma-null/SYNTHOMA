@@ -56,7 +56,7 @@ describe('Card quality lint', () => {
     const thinCards = allCards.filter((c) => classifyCardDepth(c) === 'thin');
     const thinIds = thinCards.map((c) => `${c.id} (${c.category})`);
     if (thinIds.length > 0) {
-      console.info(`[CARD QUALITY] Thin cards (${thinIds.length}/${allCards.length}):`, thinIds.join(', '));
+      console.warn(`[CARD QUALITY] Thin cards (${thinIds.length}/${allCards.length}):`, thinIds.join(', '));
     }
     expect(thinIds.length).toBeLessThan(allCards.length * 0.4);
   });

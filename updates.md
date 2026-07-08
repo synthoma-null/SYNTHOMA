@@ -1,5 +1,7 @@
 ﻿﻿Teď bych to celé posunul ještě o úroveň výš. Aktuálně už máš podle výpisu hotový solo roguelite základ: RunHUD, EnemyCard, ActionBar, RunMapView, EncounterPanel, RunEndReport, solo route, localStorage run loop a CSS vrstvu, navíc TypeScript kompiluje bez chyb. To je dobré. Ale dobré technicky neznamená dobré herně, protože software má ten odporný zvyk fungovat a přesto nebavit.
 
+> Poznámka: Tento soubor je širší designová vize / budoucí evoluce. Nejde o aktuální technický popis implementace Cyklusu ani o závazné zadání pro běžný refaktor.
+
 Teď je potřeba udělat z toho zážitek.
 
 Nová hlavní vize

@@ -105,7 +105,7 @@ const runSlow = process.env.RUN_SLOW_SIM === '1';
     report = runSimulation(1000, 200);
     // Print full report to console for manual inspection
     const { formatSimReport: fmt } = require('../testUtils/cyklusSimRunner');
-    console.info('\n' + fmt(report));
+    console.warn('\n' + fmt(report));
   });
 
   // B1.1 target: 35-70% death rate with random yes/no player.
@@ -178,7 +178,7 @@ const runSlow = process.env.RUN_SLOW_SIM === '1';
   beforeAll(() => {
     campaignReport = simulateCampaign(100, 10, 200);
     const { formatCampaignReport: fmt } = require('../testUtils/cyklusSimRunner');
-    console.info('\n' + fmt(campaignReport));
+    console.warn('\n' + fmt(campaignReport));
   });
 
   test('campaign simulation runs without exception', () => {

@@ -184,7 +184,7 @@ export default function CyklusClient() {
       setPreRunWarning(null);
       setCycleForecast(forecast);
     }
-  }, [state?.cycle]);
+  }, [state]);
 
   useEffect(() => {
     if (!state || state.status !== 'playing') return;
@@ -208,14 +208,14 @@ export default function CyklusClient() {
 
     prevSectorRef.current = state.sector;
     prevCycleRef.current = state.cycle;
-  }, [state?.sector, state?.cycle, state?.totalChoices]);
+  }, [state, outcomeVisible]);
 
   useEffect(() => {
     if (state?.status === 'playing' && state.flags.includes('tutorial_v2_done') && !isTutorialSeen()) {
       setTutorialV2Seen();
       setTutorialSeenState(true);
     }
-  }, [state?.flags]);
+  }, [state]);
 
   useEffect(() => {
     if (!state || state.status === 'playing') return;
@@ -273,7 +273,7 @@ export default function CyklusClient() {
       }
     }
     finalize().catch(() => { /* ignore */ });
-  }, [state?.status]);
+  }, [state]);
 
   const handleChoice = useCallback((direction: 'yes' | 'no') => {
     if (!state || state.status !== 'playing') return;

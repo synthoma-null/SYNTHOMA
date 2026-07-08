@@ -368,10 +368,11 @@ Výsledkem receptu je `CraftedArtifact`, který lze vybavit do slotu a který p�
 
 ### C4.2 — UI Prázdnoty
 
-- `CyklusVoidHub` je samostatný overlay s 7 taby: Přehled, Místnosti, Protokoly, Upgrady, Kapsa, Crafting, Jizvy.
-- Komponenta používá `useState(loadSubjectProgression)` a refresh po každé interakci (nákup, vybavení, crafting, upgrade místnosti).
-- Hub je integrován v `CyklusClient` jako tlačítko v menu a end screenu, předává `onStartRun` pro plynulý přechod do nového běhu.
-- Testy pro `CyklusVoidHub` pokrývají render, interakce a dynamické sloty.
+- `CyklusVoidHub` je řízená komponenta pro meziběhový hub s 6 taby: Přehled, Kapsa, Crafting, Místnosti, Loadout, Protokoly.
+- Komponenta přijímá `progression`, volitelný `state` a callbacks přes `CyklusVoidHubActions`; sama neprovádí persistenci ani nenačítání z `localStorage`.
+- Persistenci, refresh po interakcích a spuštění nového běhu řeší rodičovská vrstva (`CyklusClient` / `CyklusVoidHubClient`) přes akce jako `onUpgradeRoom`, `onCraftRecipe`, `onEquipLoadout`, `onUnequipLoadout`, `onRefresh` a `onStartRun`.
+- Hub je integrován v `CyklusClient` jako tlačítko v menu a end screenu; samostatná routa Prázdnoty používá klientskou wrapper komponentu se stejným action kontraktem.
+- Testy pro `CyklusVoidHub` pokrývají render, callback interakce, crafting, místnosti a dynamické loadout sloty.
 
 ## C5 — Story Director
 
@@ -381,7 +382,7 @@ Výsledkem receptu je `CraftedArtifact`, který lze vybavit do slotu a který p�
 - **Act progression** — akt se posouvá podle počtu navštívených sektorů, celkových smrtí, nebo použitých pack karet.
 - **Threads** — `StoryEpisodeId` (glitchka, sarkasma, tai, desire, toll, archive) odemykají packy a epizody; `selectStoryThread` zapíše akt.
 - **Interlude** — `scheduleInterludeIfDue` přidá interlude kartu každý sudý cyklus, ale **ne během tutorialu**.
-- **Story tab** — `CyklusVoidHub` zobrazuje akt, dokončené epizody, thread selector a pack progress.
+- Story progress se ukládá mimo VoidHub pod `synthoma_cyklus_story_v1`; aktuální VoidHub nemá samostatný Story tab.
 - `updateStoryAfterChoice` a `updateStoryAfterRun` se volají v `CyklusClient` a přepisují localStorage key `synthoma_cyklus_story_v1`.
 
 ## C5.1 — Tutorial V2
@@ -413,7 +414,7 @@ Pokrytí (138+ testů):
 - C2 helpers: `updateRunGoals`, `checkItemCombos`, `getComboHint`, `getActiveContracts`, `generatePreRunWarning`, goal reward application, overload risk tags.
 - Simulace: sanity (100 runs bez výjimky), balance assertions (death 40–70%, completion ≤ 65%) a campaign progression.
 - C4.1 meta-progression: migrace starého save, void room upgrade, profilové mastery, nákup/vybavení protokolů, crafting, vybavení artefaktů, loadout limity, absence čistých stat boostů bez drawbacku.
-- C4.2 UI: `CyklusVoidHub` render, interakce místností/protokolů/upgradů/artefaktů/jizev, craft tlačítko, dynamické sloty.
+- C4.2 UI: `CyklusVoidHub` render, callback interakce místností/craftingu/loadoutu/protokolů, dynamické sloty.
 - C5 Story Director: `getStoryDirective`, `updateStoryAfterChoice`, `updateStoryAfterRun`, interlude scheduling, restart prologue forcing.
 - C5.1 Tutorial V2: 16 karet, linked scheduling, `tutorial_v2_done` flag, skip button, UI progress panel, restart blocking.
 

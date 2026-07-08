@@ -7,6 +7,10 @@ jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
 const { useSession } = require('next-auth/react');
 
 describe('CyklusClient', () => {
+  beforeAll(() => {
+    window.scrollTo = jest.fn();
+  });
+
   beforeEach(() => {
     const store: Record<string, string> = {};
     jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => store[key] ?? null);
