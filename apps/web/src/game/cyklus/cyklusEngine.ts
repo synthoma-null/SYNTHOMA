@@ -1,8 +1,7 @@
-import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, ScheduledCardEntry, CyklusRunModifier, CyklusRunGoal } from './cyklusTypes';
+import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, CyklusRunModifier, CyklusRunGoal } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
-import { CYKLUS_CARDS, CYKLUS_IMPRINTS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
-import { CYKLUS_UNLOCKS } from './cyklusUnlocks';
+import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
 import { cardMatchesUnlockedPool } from './cyklusPoolCatalog';
 import { explainItemMoodScore, getPocketMoodProfile } from './cyklusItemMood';
 import { loadCyklusRunHistory, isTutorialV2Seen } from './cyklusStorage';
@@ -10,6 +9,8 @@ import { applyProgressionToNewRun, loadSubjectProgression, SUBJECT_UPGRADES, SUB
 import { formatDelta, formatAbsDelta } from './cyklusFormat';
 import { pickAvoidingRecent } from './cyklusCommentPool';
 import { seededRandom, pickFromPool } from './cyklusRandom';
+import { addFlag, addImprint, applyEffects, moveSector, scheduleCard, unlockPool } from './cyklusEffects';
+export { applyEffects, applySingleEffect } from './cyklusEffects';
 import { computeProfile, computeBaselineProfileFromHistory } from './cyklusProfile';
 export { computeProfile, computeBaselineProfileFromHistory } from './cyklusProfile';
 import {
@@ -324,110 +325,6 @@ export function clampStat(value: number): number {
 
 export function getCardById(id: string): SwipeCard | undefined {
   return CYKLUS_CARDS[id];
-}
-
-
-function addFlag(state: CyklusRunState, flag: string): CyklusRunState {
-  if (state.flags.includes(flag)) return state;
-  return { ...state, flags: [...state.flags, flag] };
-}
-
-function removeFlag(state: CyklusRunState, flag: string): CyklusRunState {
-  return { ...state, flags: state.flags.filter((f) => f !== flag) };
-}
-
-function addItem(state: CyklusRunState, itemId: string): CyklusRunState {
-  if (state.inventory.includes(itemId)) return state;
-  const item = CYKLUS_ITEMS[itemId];
-  let s = { ...state, inventory: [...state.inventory, itemId] };
-  if (item?.passiveEffects) {
-    for (const effect of item.passiveEffects) {
-      s = applySingleEffect(s, effect);
-    }
-  }
-  return s;
-}
-
-function addImprint(state: CyklusRunState, imprintId: string): CyklusRunState {
-  if (state.imprints.includes(imprintId)) return state;
-  const imprint = CYKLUS_IMPRINTS[imprintId];
-  let s = { ...state, imprints: [...state.imprints, imprintId] };
-  if (imprint?.unlockPool) {
-    s = unlockPool(s, imprint.unlockPool);
-  }
-  if (imprint?.passiveEffects) {
-    for (const effect of imprint.passiveEffects) {
-      s = applySingleEffect(s, effect);
-    }
-  }
-  return s;
-}
-
-function unlockPool(state: CyklusRunState, poolId: string): CyklusRunState {
-  if (state.unlockedPools.includes(poolId)) return state;
-  return { ...state, unlockedPools: [...state.unlockedPools, poolId] };
-}
-
-function moveSector(state: CyklusRunState, sectorId: SectorId): CyklusRunState {
-  const visited = state.visitedSectors.includes(sectorId) ? state.visitedSectors : [...state.visitedSectors, sectorId];
-  return { ...state, sector: sectorId, visitedSectors: visited };
-}
-
-function clampRelation(value: number): number {
-  return Math.max(-10, Math.min(10, value));
-}
-
-function scheduleCard(state: CyklusRunState, cardId: string, inTurns: number, entry?: Partial<ScheduledCardEntry>): CyklusRunState {
-  const newEntry: ScheduledCardEntry = { cardId, turnsRemaining: inTurns, cycle: state.cycle, ...entry };
-  return { ...state, scheduledCards: [...state.scheduledCards, newEntry] };
-}
-
-function applySingleEffect(state: CyklusRunState, effect: CyklusEffect): CyklusRunState {
-  switch (effect.type) {
-    case 'stat': {
-      const stats = { ...state.stats, [effect.key]: clampStat(state.stats[effect.key] + effect.amount) };
-      return { ...state, stats };
-    }
-    case 'profile': {
-      const profile = { ...state.profile, [effect.key]: (state.profile[effect.key] ?? 0) + effect.amount };
-      return { ...state, profile };
-    }
-    case 'flag': return addFlag(state, effect.flag);
-    case 'removeFlag': return removeFlag(state, effect.flag);
-    case 'item': return addItem(state, effect.itemId);
-    case 'removeItem': return { ...state, inventory: state.inventory.filter((i) => i !== effect.itemId) };
-    case 'schedule': return scheduleCard(state, effect.cardId, effect.inTurns);
-    case 'scheduleNextCycle': return scheduleCard(state, effect.cardId, Math.max(1, CHOICES_PER_CYCLE - state.choiceInCycle + 1));
-    case 'unlockPool': return unlockPool(state, effect.poolId);
-    case 'unlockCard': {
-      if (state.unlockedCards.includes(effect.cardId)) return state;
-      return { ...state, unlockedCards: [...state.unlockedCards, effect.cardId] };
-    }
-    case 'moveSector': return moveSector(state, effect.sectorId);
-    case 'entityRelation': {
-      const relations = state.entityRelations ?? {};
-      const entityRelations = { ...relations, [effect.entity]: clampRelation((relations[effect.entity] ?? 0) + effect.delta) };
-      return { ...state, entityRelations };
-    }
-    case 'imprint': return addImprint(state, effect.imprintId);
-    case 'noImmediateEffect': return state;
-    default: return state;
-  }
-}
-
-function evaluateUnlocks(state: CyklusRunState): CyklusRunState {
-  let s = state;
-  for (const unlock of CYKLUS_UNLOCKS) {
-    if (s.unlockedPools.includes(unlock.poolId)) continue;
-    if (checkCondition(s, unlock.condition)) {
-      s = unlockPool(s, unlock.poolId);
-    }
-  }
-  return s;
-}
-
-export function applyEffects(state: CyklusRunState, effects: CyklusEffect[]): CyklusRunState {
-  return evaluateUnlocks(effects.reduce((s, effect) => applySingleEffect(s, effect), state));
 }
 
 const COMBO_CARDS: { cardId: string; items: [string, string]; flag: string }[] = [
@@ -1032,4 +929,3 @@ export function getCycleProgress(state: CyklusRunState): number {
 export function getCompletionStatus(state: CyklusRunState): 'playing' | 'dead' | 'completed' {
   return state.status;
 }
-
