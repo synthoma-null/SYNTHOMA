@@ -94,12 +94,22 @@ describe('CyklusClient', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders tutorial progress panel for new players', async () => {
+  it('renders tutorial progress panel for new players (ZÁKLAD tier)', async () => {
     render(<CyklusClient />);
     await waitFor(() => {
-      expect(screen.getByText(/TUTORIAL 1 \/ 16/)).toBeInTheDocument();
+      expect(screen.getByText(/ZÁKLAD 1 \/ 5/)).toBeInTheDocument();
     });
     expect(screen.getByText(/Úvod/)).toBeInTheDocument();
+  });
+
+  it('skip tutorial button is a <button> element', async () => {
+    render(<CyklusClient />);
+    await waitFor(() => {
+      expect(screen.getByText(/ZÁKLAD 1 \/ 5/)).toBeInTheDocument();
+    });
+    const skipBtn = screen.queryByRole('button', { name: /Přeskočit/ });
+    expect(skipBtn).not.toBeNull();
+    expect(skipBtn?.tagName).toBe('BUTTON');
   });
 
   it('shows an active objective panel for a new player', async () => {

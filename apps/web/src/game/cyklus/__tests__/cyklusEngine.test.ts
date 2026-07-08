@@ -901,10 +901,10 @@ describe('Cyklus engine', () => {
     });
   });
 
-  describe('tutorial V2', () => {
-    it('tutorial cards are unique, scheduledOnly, category tutorial', () => {
+  describe('tutorial V2 — two-tier structure', () => {
+    it('tutorial cards are unique, scheduledOnly, category tutorial (≥ 17 with junction)', () => {
       const tutorialIds = Object.keys(CYKLUS_CARDS).filter((id) => id.startsWith('tutorial_'));
-      expect(tutorialIds.length).toBeGreaterThanOrEqual(16);
+      expect(tutorialIds.length).toBeGreaterThanOrEqual(17);
       for (const id of tutorialIds) {
         const card = CYKLUS_CARDS[id]!;
         expect(card.category).toBe('tutorial');
@@ -926,10 +926,24 @@ describe('Cyklus engine', () => {
       expect(noSchedule?.type === 'schedule' ? noSchedule.cardId : '').toBe('tutorial_01_swipe');
     });
 
-    it('tutorial sequence is a linked chain', () => {
+    it('minimum tutorial chain is 00→01→02→03→04→04b_junction', () => {
       const ids = [
-        'tutorial_00_welcome', 'tutorial_01_swipe', 'tutorial_02_stats', 'tutorial_03_balance',
-        'tutorial_04_preview', 'tutorial_05_profile', 'tutorial_06_items', 'tutorial_07_imprints',
+        'tutorial_00_welcome', 'tutorial_01_swipe', 'tutorial_02_stats',
+        'tutorial_03_balance', 'tutorial_04_preview', 'tutorial_04b_junction',
+      ];
+      for (let i = 0; i < ids.length - 1; i++) {
+        const card = CYKLUS_CARDS[ids[i]!]!;
+        const next = ids[i + 1]!;
+        const yesNext = card.yes.effects.find((e) => e.type === 'schedule');
+        const noNext = card.no.effects.find((e) => e.type === 'schedule');
+        expect(yesNext?.type === 'schedule' ? yesNext.cardId : '').toBe(next);
+        expect(noNext?.type === 'schedule' ? noNext.cardId : '').toBe(next);
+      }
+    });
+
+    it('extended tutorial chain is 05→…→15_ready', () => {
+      const ids = [
+        'tutorial_05_profile', 'tutorial_06_items', 'tutorial_07_imprints',
         'tutorial_08_consequences', 'tutorial_09_sectors', 'tutorial_10_cycle', 'tutorial_11_restart',
         'tutorial_12_void', 'tutorial_13_progression', 'tutorial_14_packs', 'tutorial_15_ready',
       ];
@@ -941,6 +955,24 @@ describe('Cyklus engine', () => {
         expect(yesNext?.type === 'schedule' ? yesNext.cardId : '').toBe(next);
         expect(noNext?.type === 'schedule' ? noNext.cardId : '').toBe(next);
       }
+    });
+
+    it('tutorial_04b_junction YES sets tutorial_min_done + tutorial_v2_done and schedules restart_0', () => {
+      const card = CYKLUS_CARDS['tutorial_04b_junction']!;
+      const yesFlags = card.yes.effects.filter((e) => e.type === 'flag').map((e) => e.flag);
+      expect(yesFlags).toContain('tutorial_min_done');
+      expect(yesFlags).toContain('tutorial_v2_done');
+      const yesSchedule = card.yes.effects.find((e) => e.type === 'schedule');
+      expect(yesSchedule?.type === 'schedule' ? yesSchedule.cardId : '').toBe('restart_0');
+    });
+
+    it('tutorial_04b_junction NO sets tutorial_min_done and schedules tutorial_05_profile', () => {
+      const card = CYKLUS_CARDS['tutorial_04b_junction']!;
+      const noFlags = card.no.effects.filter((e) => e.type === 'flag').map((e) => e.flag);
+      expect(noFlags).toContain('tutorial_min_done');
+      expect(noFlags).not.toContain('tutorial_v2_done');
+      const noSchedule = card.no.effects.find((e) => e.type === 'schedule');
+      expect(noSchedule?.type === 'schedule' ? noSchedule.cardId : '').toBe('tutorial_05_profile');
     });
 
     it('tutorial_15_ready sets tutorial_v2_done and schedules restart_0', () => {
@@ -955,24 +987,49 @@ describe('Cyklus engine', () => {
       expect(noSchedule?.type === 'schedule' ? noSchedule.cardId : '').toBe('restart_0');
     });
 
-    it('pickNextCard does not force restart before tutorial_v2_done', () => {
+    it('minimum path (YES at junction) reaches restart_0 after 6 cards', () => {
       let state = createCyklusRun(false);
       expect(state.currentCardId).toBe('tutorial_00_welcome');
-      for (let i = 0; i < 20; i++) {
-        if (state.currentCardId === 'tutorial_15_ready') {
+      for (let i = 0; i < 10; i++) {
+        if (state.currentCardId === 'tutorial_04b_junction') {
           state = resolveChoice(state, 'yes');
           break;
         }
         state = resolveChoice(state, 'yes');
         expect(state.currentCardId.startsWith('tutorial_') || state.currentCardId === 'restart_0').toBe(true);
       }
+      expect(state.flags).toContain('tutorial_min_done');
       expect(state.flags).toContain('tutorial_v2_done');
       expect(state.currentCardId).toBe('restart_0');
     });
 
-    it('pickNextCard allows restart after tutorial_v2_done', () => {
+    it('extended path (NO at junction) continues to tutorial_05_profile', () => {
       let state = createCyklusRun(false);
-      while (state.currentCardId !== 'restart_0' && state.totalChoices < 30) {
+      while (state.currentCardId !== 'tutorial_04b_junction' && state.totalChoices < 10) {
+        state = resolveChoice(state, 'yes');
+      }
+      expect(state.currentCardId).toBe('tutorial_04b_junction');
+      state = resolveChoice(state, 'no');
+      expect(state.flags).toContain('tutorial_min_done');
+      expect(state.flags).not.toContain('tutorial_v2_done');
+      expect(state.currentCardId).toBe('tutorial_05_profile');
+    });
+
+    it('skipTutorial still works — tutorial_v2_done blocks tutorial from restarting', () => {
+      const seen = createCyklusRun(true);
+      expect(seen.currentCardId).not.toBe('tutorial_00_welcome');
+      expect(seen.flags).not.toContain('tutorial_v2_done');
+    });
+
+    it('old tutorial_v2_done flag still prevents tutorial on new run', () => {
+      const state = createCyklusRun(false);
+      const withFlag = { ...state, flags: [...state.flags, 'tutorial_v2_done'] };
+      expect(withFlag.flags).toContain('tutorial_v2_done');
+    });
+
+    it('pickNextCard allows restart after tutorial_min_done', () => {
+      let state = createCyklusRun(false);
+      while (state.currentCardId !== 'restart_0' && state.totalChoices < 15) {
         state = resolveChoice(state, 'yes');
       }
       expect(state.currentCardId).toBe('restart_0');

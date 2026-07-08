@@ -76,23 +76,24 @@ function ActiveObjectivePanel({
   );
 }
 
-const TUTORIAL_PROGRESS_MAP: Record<string, { index: number; label: string; flavour: string }> = {
-  tutorial_00_welcome: { index: 1, label: 'Úvod', flavour: 'Profesionalita je jen lépe formátovaná panika.' },
-  tutorial_01_swipe: { index: 2, label: 'Volby', flavour: 'Pravá/levá není dobro/zlo. Obě změní subjekt.' },
-  tutorial_02_stats: { index: 3, label: 'Staty', flavour: 'Čtyři čudlíky, kterými se dá subjekt elegantně poslat do háje.' },
-  tutorial_03_balance: { index: 4, label: 'Rovnováha', flavour: 'Stabilita není nuda. Je to méně dramatická smrt.' },
-  tutorial_04_preview: { index: 5, label: 'Preview', flavour: 'Číst náznaky není slabost. Je to méně estetická smrt.' },
-  tutorial_05_profile: { index: 6, label: 'Profil', flavour: 'Profil není diagnóza. Systémy jen milují krabičky.' },
-  tutorial_06_items: { index: 7, label: 'Itemy', flavour: 'Kapsa není dekorace. Kapse se nedá věřit.' },
-  tutorial_07_imprints: { index: 8, label: 'Otisky', flavour: 'Otisk není item. Drží on tebe.' },
-  tutorial_08_consequences: { index: 9, label: 'Následky', flavour: 'Následky mají kalendář. Systém je objednává později.' },
-  tutorial_09_sectors: { index: 10, label: 'Sektory', flavour: 'Sektor je místnost, která se tváří, že má osobnost.' },
-  tutorial_10_cycle: { index: 11, label: 'Cyklus', flavour: 'Dvanáct chyb, pak pětiminutová přestávka na sebemrzenčí.' },
-  tutorial_11_restart: { index: 12, label: 'Restart', flavour: 'Restart není undo. Je to diagnostika s mezinápravou.' },
-  tutorial_12_void: { index: 13, label: 'Prázdnota', flavour: 'Prázdnota není menu. Je to místnost, co si pamatuje tvůj rozpad.' },
-  tutorial_13_progression: { index: 14, label: 'Progrese', flavour: 'Utrácení zbytků sebe za protokoly je zdravý rozvoj.' },
-  tutorial_14_packs: { index: 15, label: 'Příběhové linky', flavour: 'Packy tě naučí, že ses myslel, že víš, kdo jsi.' },
-  tutorial_15_ready: { index: 16, label: 'Start', flavour: 'Konec návodu. Začátek poškození.' },
+const TUTORIAL_PROGRESS_MAP: Record<string, { index: number; total: number; tier: 'min' | 'ext'; label: string; flavour: string }> = {
+  tutorial_00_welcome:   { index: 1, total: 5, tier: 'min', label: 'Úvod',     flavour: 'Profesionalita je jen lépe formátovaná panika.' },
+  tutorial_01_swipe:     { index: 2, total: 5, tier: 'min', label: 'Volby',    flavour: 'Pravá/levá není dobro/zlo. Obě změní subjekt.' },
+  tutorial_02_stats:     { index: 3, total: 5, tier: 'min', label: 'Staty',    flavour: 'Čtyři čudlíky, kterými se dá subjekt elegantně poslat do háje.' },
+  tutorial_03_balance:   { index: 4, total: 5, tier: 'min', label: 'Rovnováha', flavour: 'Stabilita není nuda. Je to méně dramatická smrt.' },
+  tutorial_04_preview:   { index: 5, total: 5, tier: 'min', label: 'Preview',  flavour: 'Číst náznaky není slabost. Je to méně estetická smrt.' },
+  tutorial_04b_junction: { index: 5, total: 5, tier: 'min', label: 'Rozcestník', flavour: 'Základ zvládnutý. Teď si vyber tempo.' },
+  tutorial_05_profile:   { index: 1, total: 10, tier: 'ext', label: 'Profil',  flavour: 'Profil není diagnóza. Systémy jen milují krabičky.' },
+  tutorial_06_items:     { index: 2, total: 10, tier: 'ext', label: 'Itemy',   flavour: 'Kapsa není dekorace. Kapse se nedá věřit.' },
+  tutorial_07_imprints:  { index: 3, total: 10, tier: 'ext', label: 'Otisky',  flavour: 'Otisk není item. Drží on tebe.' },
+  tutorial_08_consequences: { index: 4, total: 10, tier: 'ext', label: 'Následky', flavour: 'Následky mají kalendář. Systém je objednává později.' },
+  tutorial_09_sectors:   { index: 5, total: 10, tier: 'ext', label: 'Sektory', flavour: 'Sektor je místnost, která se tváří, že má osobnost.' },
+  tutorial_10_cycle:     { index: 6, total: 10, tier: 'ext', label: 'Cyklus',  flavour: 'Dvanáct chyb, pak pětiminutová přestávka na sebemrzenčí.' },
+  tutorial_11_restart:   { index: 7, total: 10, tier: 'ext', label: 'Restart', flavour: 'Restart není undo. Je to diagnostika s mezinápravou.' },
+  tutorial_12_void:      { index: 8, total: 10, tier: 'ext', label: 'Prázdnota', flavour: 'Prázdnota není menu. Je to místnost, co si pamatuje tvůj rozpad.' },
+  tutorial_13_progression: { index: 9, total: 10, tier: 'ext', label: 'Progrese', flavour: 'Utrácení zbytků sebe za protokoly je zdravý rozvoj.' },
+  tutorial_14_packs:     { index: 10, total: 10, tier: 'ext', label: 'Příběhové linky', flavour: 'Packy tě naučí, že ses myslel, že víš, kdo jsi.' },
+  tutorial_15_ready:     { index: 10, total: 10, tier: 'ext', label: 'Start',  flavour: 'Konec návodu. Začátek poškození.' },
 };
 const ITEM_ACTIVATION_HINTS: Record<string, string> = {
   rubber_seal: 'Vazba +8, připraví krizovou ochranu vazby.',
@@ -251,7 +252,7 @@ export default function CyklusClient() {
   }, [state, outcomeVisible]);
 
   useEffect(() => {
-    if (state?.status === 'playing' && state.flags.includes('tutorial_v2_done') && !isTutorialSeen()) {
+    if (state?.status === 'playing' && (state.flags.includes('tutorial_v2_done') || state.flags.includes('tutorial_min_done')) && !isTutorialSeen()) {
       setTutorialV2Seen();
       setTutorialSeenState(true);
     }
@@ -416,8 +417,8 @@ export default function CyklusClient() {
     setTutorialSeenState(true);
     const skipped = {
       ...state,
-      flags: [...state.flags, 'tutorial_done', 'tutorial_v2_done'],
-      usedCardIds: [...state.usedCardIds, 'tutorial_15_ready'],
+      flags: [...state.flags, 'tutorial_min_done', 'tutorial_done', 'tutorial_v2_done'],
+      usedCardIds: [...state.usedCardIds, 'tutorial_04b_junction', 'tutorial_15_ready'],
       currentCardId: 'restart_0' as const,
     };
     setState(skipped);
@@ -586,13 +587,17 @@ export default function CyklusClient() {
         </div>
       )}
       {!ending && (
-        <CyklusMobileHud state={state} onToggleDiag={() => setShowDiag((v) => !v)} diagOpen={showDiag} tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (
-          <div className="cyklus-tutorial-progress">
-            <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
-            <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
-            <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
-          </div>
-        ) : undefined} />
+        <CyklusMobileHud state={state} onToggleDiag={() => setShowDiag((v) => !v)} diagOpen={showDiag} tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (() => {
+          const tp = TUTORIAL_PROGRESS_MAP[card.id];
+          const tierLabel = tp?.tier === 'ext' ? 'ROZŠÍŘENÍ' : 'ZÁKLAD';
+          return (
+            <div className="cyklus-tutorial-progress">
+              <span className="cyklus-tutorial-progress__label">{tierLabel} {tp?.index ?? 1} / {tp?.total ?? 5}</span>
+              <span className="cyklus-tutorial-progress__mechanic">{tp?.label ?? 'Onboarding'}</span>
+              <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{tp?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
+            </div>
+          );
+        })() : undefined} />
       )}
 
       <header className="cyklus-header">
@@ -900,13 +905,17 @@ export default function CyklusClient() {
             highlight={tutorialHighlight?.stat}
             history={state.history}
             climate={state.modifier.id !== 'none' ? state.modifier : null}
-            tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (
-              <div className="cyklus-tutorial-progress">
-                <span className="cyklus-tutorial-progress__label">TUTORIAL {TUTORIAL_PROGRESS_MAP[card.id]?.index ?? 1} / 16</span>
-                <span className="cyklus-tutorial-progress__mechanic">{TUTORIAL_PROGRESS_MAP[card.id]?.label ?? 'Onboarding'}</span>
-                <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{TUTORIAL_PROGRESS_MAP[card.id]?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
-              </div>
-            ) : undefined}
+            tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (() => {
+              const tp = TUTORIAL_PROGRESS_MAP[card.id];
+              const tierLabel = tp?.tier === 'ext' ? 'ROZŠÍŘENÍ' : 'ZÁKLAD';
+              return (
+                <div className="cyklus-tutorial-progress">
+                  <span className="cyklus-tutorial-progress__label">{tierLabel} {tp?.index ?? 1} / {tp?.total ?? 5}</span>
+                  <span className="cyklus-tutorial-progress__mechanic">{tp?.label ?? 'Onboarding'}</span>
+                  <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{tp?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
+                </div>
+              );
+            })() : undefined}
           />
           <div className="cyklus-desktop-top__right">
             <div className="cyklus-nav-panel">
