@@ -17,7 +17,7 @@ import CyklusMobileHud from './CyklusMobileHud';
 import CyklusBottomNav from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
-import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition } from '../../game/cyklus/cyklusTypes';
+import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
   switch (cardId) {
@@ -584,6 +584,13 @@ export default function CyklusClient() {
               <div className="cyklus-end__title">{state.status === 'completed' ? computeStabilizationVariant(state).title : ending.title}</div>
               <div className="cyklus-end__subtitle">{state.status === 'completed' ? 'Konec: Stabilizace' : `Konec: ${ending.title}`}</div>
             </div>
+            <RunEndSummary
+              state={state}
+              ending={ending}
+              reward={runReward}
+              onOpenVoidHub={() => setShowVoidHub(true)}
+              onRestart={handleRestart}
+            />
             {runReward && <RewardSection reward={runReward} progression={progression} />}
             {(() => {
               const variant = state.status === 'completed' ? computeStabilizationVariant(state) : null;
@@ -689,12 +696,9 @@ export default function CyklusClient() {
               </div>
             )}
             <div className="cyklus-end__actions">
-              <button className="cyklus-btn cyklus-btn--primary" onClick={() => setShowVoidHub(true)}>
-                VRÁTIT SE DO PRÁZDNOTY
-              </button>
-              <button className="cyklus-btn cyklus-btn--primary" onClick={handleRestart}>DALŠÍ CYKLUS</button>
               <button
                 className="cyklus-btn cyklus-btn--secondary"
+                type="button"
                 onClick={() => {
                   const log = exportRunLog(state, 'short', runReward ?? undefined);
                   const blob = new Blob([log], { type: 'text/plain' });
@@ -710,6 +714,7 @@ export default function CyklusClient() {
               </button>
               <button
                 className="cyklus-btn cyklus-btn--secondary"
+                type="button"
                 onClick={() => {
                   const log = exportRunLog(state, 'full', runReward ?? undefined);
                   const blob = new Blob([log], { type: 'text/plain' });
@@ -724,7 +729,7 @@ export default function CyklusClient() {
                 EXPORT PLNÝ
               </button>
               {runHistory.length > 0 && (
-                <button className="cyklus-btn cyklus-btn--secondary" onClick={() => setShowHistory(!showHistory)}>
+                <button className="cyklus-btn cyklus-btn--secondary" type="button" onClick={() => setShowHistory(!showHistory)}>
                   {showHistory ? 'Skrýt archiv' : 'Archiv cyklů'}
                 </button>
               )}
@@ -1200,6 +1205,204 @@ function StabilizationPanel({ state }: { state: CyklusRunState }) {
   );
 }
 
+function getFirstSentence(text: string): string {
+  const trimmed = text.trim();
+  const match = trimmed.match(/^(.+?[.!?])(\s|$)/);
+  return match?.[1] ?? trimmed;
+}
+
+function getOutcomeExplanation(
+  state: CyklusRunState,
+  ending: RunEnding,
+  stabilizationVariant: ReturnType<typeof computeStabilizationVariant> | null,
+): string {
+  if (state.status === 'completed' && stabilizationVariant) {
+    return `Cyklus tě nerozložil. ${getFirstSentence(stabilizationVariant.text)}`;
+  }
+  if (ending.type === 'death') {
+    const boundary = ending.extreme === 'high' ? '100' : '0';
+    return `${STAT_LABELS[ending.stat]} dosáhla ${boundary}. ${getFirstSentence(ending.text)}`;
+  }
+  return getFirstSentence(ending.text);
+}
+
+function getQuickRewardItems(reward: RunReward | null): { id: string; title: string; detail: string }[] {
+  if (!reward) return [];
+
+  const items: { id: string; title: string; detail: string }[] = [];
+  const residuum = reward.currencies.residuum ?? 0;
+  if (residuum > 0) {
+    items.push({ id: 'residuum', title: CURRENCY_LABELS.residuum, detail: `+${residuum}` });
+  }
+
+  const material = (Object.entries(reward.craftingMaterials) as [keyof typeof MATERIAL_LABELS, number | undefined][])
+    .filter(([, value]) => (value ?? 0) > 0)
+    .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))[0];
+  if (material) {
+    const [id, value] = material;
+    items.push({ id: `material-${id}`, title: MATERIAL_LABELS[id], detail: `+${value ?? 0}` });
+  }
+
+  const stabilizationCore = reward.currencies.stabilizationCore ?? 0;
+  if (stabilizationCore > 0) {
+    items.push({ id: 'stabilization-core', title: CURRENCY_LABELS.stabilizationCore, detail: `+${stabilizationCore}` });
+  } else if (reward.unlockedScars[0]) {
+    const scarId = reward.unlockedScars[0];
+    items.push({ id: `scar-${scarId}`, title: 'Nová jizva', detail: SUBJECT_SCARS[scarId]?.title ?? scarId });
+  }
+
+  const upgradeId = reward.unlockedUpgrades[0];
+  const recipeId = reward.unlockedRecipes[0];
+  if (upgradeId) {
+    items.push({ id: `upgrade-${upgradeId}`, title: 'Nový protokol', detail: SUBJECT_UPGRADES[upgradeId]?.title ?? upgradeId });
+  } else if (recipeId) {
+    items.push({ id: `recipe-${recipeId}`, title: 'Nový recept', detail: CRAFT_RECIPES[recipeId]?.title ?? recipeId });
+  }
+
+  return items.slice(0, 4);
+}
+
+function getRecommendedNextSteps(reward: RunReward | null): string[] {
+  const steps: string[] = [];
+  if (reward) {
+    steps.push(...reward.recommendedActions);
+    steps.push(...reward.voidRoomHints.map((id) => `V Prázdnotě zkontroluj ${VOID_ROOMS[id]?.title ?? id}.`));
+  }
+  steps.push('Otevři Prázdnotu a rozhodni, co si vzít do dalšího běhu.');
+  return [...new Set(steps)].slice(0, 3);
+}
+
+export function RunEndSummary({
+  state,
+  ending,
+  reward,
+  onOpenVoidHub,
+  onRestart,
+}: {
+  state: CyklusRunState;
+  ending: RunEnding;
+  reward: RunReward | null;
+  onOpenVoidHub: () => void;
+  onRestart: () => void;
+}) {
+  const [showFullLog, setShowFullLog] = useState(false);
+  const stabilizationVariant = state.status === 'completed' ? computeStabilizationVariant(state) : null;
+  const deathAnalysis = state.status === 'dead' ? analyzeDeath(state) : null;
+  const contributors = deathAnalysis?.topContributors.slice(0, 3) ?? [];
+  const nearestExtreme = state.status === 'completed' ? getNearestExtreme(state.stats) : null;
+  const quickRewards = getQuickRewardItems(reward);
+  const nextSteps = getRecommendedNextSteps(reward);
+  const outcomeTitle = stabilizationVariant?.title ?? ending.title;
+  const fullLogId = `cyklus-full-run-log-${state.id}`;
+  const fullLog = useMemo(
+    () => showFullLog ? exportRunLog(state, 'full', reward ?? undefined) : '',
+    [reward, showFullLog, state],
+  );
+
+  return (
+    <section className="cyklus-end-summary" aria-labelledby="cyklus-end-summary-title">
+      <div className="cyklus-end-summary__intro">
+        <div className="cyklus-end-summary__eyebrow">KONEC</div>
+        <h2 className="cyklus-end-summary__title" id="cyklus-end-summary-title">KONEC: {outcomeTitle}</h2>
+        <p className="cyklus-end-summary__text">{getOutcomeExplanation(state, ending, stabilizationVariant)}</p>
+      </div>
+
+      {state.status === 'dead' ? (
+        <div className="cyklus-end-summary__section">
+          <div className="cyklus-end-summary__label">HLAVNÍ PŘÍČINY</div>
+          {contributors.length > 0 ? (
+            <div className="cyklus-end-summary__list">
+              {contributors.map((contributor) => {
+                const card = getCardById(contributor.cardId);
+                return (
+                  <div key={contributor.cardId} className="cyklus-end-summary__row" data-testid="cyklus-outcome-contributor">
+                    <span>{card?.title ?? contributor.cardId}</span>
+                    <span className={`cyklus-end-summary__delta ${contributor.delta > 0 ? 'cyklus-end-summary__delta--up' : 'cyklus-end-summary__delta--down'}`}>
+                      {formatDelta(contributor.delta)}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="cyklus-end-summary__muted">Systém nenašel dominantní kartu. Kolaps byl rozložený.</div>
+          )}
+        </div>
+      ) : (
+        <div className="cyklus-end-summary__section">
+          <div className="cyklus-end-summary__label">STABILIZACE</div>
+          {stabilizationVariant && (
+            <div className="cyklus-end-summary__list">
+              <div className="cyklus-end-summary__row">
+                <span>Varianta</span>
+                <span>{stabilizationVariant.title}</span>
+              </div>
+              {nearestExtreme && (
+                <div className="cyklus-end-summary__row">
+                  <span>Udržená hrozba</span>
+                  <span>{STAT_LABELS[nearestExtreme.stat]} {nearestExtreme.value}</span>
+                </div>
+              )}
+              {stabilizationVariant.reasons?.slice(0, 2).map((reason) => (
+                <div key={reason} className="cyklus-end-summary__muted">{reason}</div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="cyklus-end-summary__section">
+        <div className="cyklus-end-summary__label">KRÁTKÉ ODMĚNY</div>
+        {quickRewards.length > 0 ? (
+          <div className="cyklus-end-summary__reward-grid">
+            {quickRewards.map((item) => (
+              <div key={item.id} className="cyklus-end-summary__reward">
+                <span className="cyklus-end-summary__reward-title">{item.title}</span>
+                <span className="cyklus-end-summary__reward-detail">{item.detail}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="cyklus-end-summary__muted">Žádná trvalá odměna nebyla zapsána.</div>
+        )}
+      </div>
+
+      <div className="cyklus-end-summary__section">
+        <div className="cyklus-end-summary__label">DALŠÍ KROK</div>
+        <ul className="cyklus-end-summary__steps">
+          {nextSteps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="cyklus-end-summary__actions">
+        <button className="cyklus-btn cyklus-btn--primary" type="button" onClick={onOpenVoidHub}>
+          Otevřít Prázdnotu
+        </button>
+        <button className="cyklus-btn cyklus-btn--secondary" type="button" onClick={onRestart}>
+          Nový běh
+        </button>
+        <button
+          className="cyklus-btn cyklus-btn--secondary"
+          type="button"
+          aria-expanded={showFullLog}
+          aria-controls={showFullLog ? fullLogId : undefined}
+          onClick={() => setShowFullLog((value) => !value)}
+        >
+          {showFullLog ? 'Skrýt plný log' : 'Zobrazit plný log'}
+        </button>
+      </div>
+
+      {showFullLog && (
+        <pre className="cyklus-end-summary__full-log" id={fullLogId} data-testid="cyklus-full-run-log">
+          {fullLog}
+        </pre>
+      )}
+    </section>
+  );
+}
+
 function RewardSection({ reward, progression }: { reward: RunReward; progression: SubjectProgression }) {
   const totalResiduum = reward.currencies.residuum ?? 0;
   const limits = getLoadoutLimits(progression);
@@ -1400,7 +1603,7 @@ function DeathAnalysis({ state, recentComments = [] }: { state: CyklusRunState; 
       {analysis.topContributors.length > 0 && (
         <div className="cyklus-death-analysis__contributors">
           <div className="cyklus-death-analysis__subtitle">Nejvíc ji ovlivnily:</div>
-          {analysis.topContributors.map((c) => {
+          {analysis.topContributors.slice(0, 3).map((c) => {
             const card = getCardById(c.cardId);
             return (
               <div key={c.cardId} className="cyklus-death-analysis__contributor">
