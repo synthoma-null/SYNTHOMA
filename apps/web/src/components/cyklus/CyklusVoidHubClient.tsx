@@ -20,6 +20,7 @@ import {
   type CraftedArtifactId,
   type ProtocolId,
   type RecipeId,
+  type RunReward,
   type SubjectProgression,
   type VoidRoomId,
   type CyklusVoidHubActionPayload,
@@ -44,6 +45,7 @@ type Props = {
   initialNotice?: string;
   preferServerSync?: boolean;
   compact?: boolean;
+  recentReward?: RunReward | null;
 };
 
 function noticeClass(kind: NoticeKind): string {
@@ -70,6 +72,7 @@ export function CyklusVoidHubClient({
   initialNotice = 'Prázdnota se načítá. Tvůj prohlížeč právě předstírá, že localStorage je duchovní zážitek.',
   preferServerSync = true,
   compact = false,
+  recentReward = null,
 }: Props) {
   const router = useRouter();
   const [progression, setProgression] = useState<SubjectProgression>(() => getEmptyProgression());
@@ -222,7 +225,7 @@ export function CyklusVoidHubClient({
         <p className="cyklus-panel-kicker">VOID_ROUTE</p>
         <span className={['cyklus-void-client-status', noticeClass(notice.kind)].join(' ')}>{notice.text}</span>
       </div>
-      <CyklusVoidHub progression={progression} state={run} actions={actions} compact={compact} />
+      <CyklusVoidHub progression={progression} state={run} actions={actions} compact={compact} recentReward={recentReward} />
     </section>
   );
 }

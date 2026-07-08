@@ -5,13 +5,14 @@ import type {
   CraftRecipeUiRow,
   ProgressionCostRow,
   ProgressionLoadoutEntry,
+  RunReward,
   SubjectProgression,
   VoidHubTabId,
   VoidHubUiModel,
   VoidRoomUiRow,
   VoidHubTabUiRow,
 } from '../../game/cyklus/cyklusProgression';
-import { getVoidHubUiModel } from '../../game/cyklus/cyklusProgression';
+import { CURRENCY_LABELS, MATERIAL_LABELS, SUBJECT_SCARS, VOID_ROOMS, getVoidHubUiModel } from '../../game/cyklus/cyklusProgression';
 import type { CyklusRunState } from '../../game/cyklus/cyklusTypes';
 import { CyklusPocketPanel } from './CyklusPocketPanel';
 import { CyklusProgressionDashboard } from './CyklusProgressionDashboard';
@@ -36,6 +37,7 @@ type Props = {
   initialTab?: VoidHubTabId;
   actions?: CyklusVoidHubActions;
   compact?: boolean;
+  recentReward?: RunReward | null;
 };
 
 const TAB_ORDER: VoidHubTabId[] = ['overview', 'pocket', 'crafting', 'rooms', 'loadout', 'protocols'];
@@ -93,6 +95,135 @@ function ActionButton({
     >
       {children}
     </button>
+  );
+}
+
+function preferredTabForRecommendation(action: string): VoidHubTabId {
+  const lower = action.toLocaleLowerCase('cs');
+  if (lower.includes('místnost') || lower.includes('prázdnot')) return 'rooms';
+  if (lower.includes('craft') || lower.includes('vyrob')) return 'crafting';
+  if (lower.includes('loadout') || lower.includes('vybav') || lower.includes('upgrade')) return 'loadout';
+  if (lower.includes('protokol') || lower.includes('jizv')) return 'protocols';
+  if (lower.includes('kaps')) return 'pocket';
+  return 'overview';
+}
+
+function getRewardReturnChanges(reward: RunReward | null | undefined): string[] {
+  if (!reward) return [];
+  const changes: string[] = [];
+  const residuum = reward.currencies.residuum ?? 0;
+  if (residuum > 0) changes.push(`${CURRENCY_LABELS.residuum}: +${residuum}`);
+
+  const material = (Object.entries(reward.craftingMaterials) as [keyof typeof MATERIAL_LABELS, number | undefined][])
+    .filter(([, amount]) => (amount ?? 0) > 0)
+    .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))[0];
+  if (material) {
+    const [id, amount] = material;
+    changes.push(`${MATERIAL_LABELS[id]}: +${amount ?? 0}`);
+  }
+
+  const stabilizationCore = reward.currencies.stabilizationCore ?? 0;
+  if (stabilizationCore > 0) {
+    changes.push(`${CURRENCY_LABELS.stabilizationCore}: +${stabilizationCore}`);
+  } else if (reward.unlockedScars[0]) {
+    const scarId = reward.unlockedScars[0];
+    changes.push(`Nová jizva: ${SUBJECT_SCARS[scarId]?.title ?? scarId}`);
+  }
+
+  if (reward.voidRoomHints[0]) {
+    const roomId = reward.voidRoomHints[0];
+    changes.push(`Doporučená místnost: ${VOID_ROOMS[roomId]?.title ?? roomId}`);
+  } else if (reward.recommendedActions[0]) {
+    changes.push(reward.recommendedActions[0]);
+  }
+
+  return [...new Set(changes)].slice(0, 3);
+}
+
+function getProgressionReturnChanges(progression: SubjectProgression, model: VoidHubUiModel): string[] {
+  const changes: string[] = [];
+  const currency = model.dashboard.currencies.find((row) => row.amount > 0);
+  if (currency) changes.push(`${currency.label}: ${currency.amount}`);
+  const material = model.dashboard.materials.find((row) => row.amount > 0);
+  if (material) changes.push(`${material.label}: ${material.amount}`);
+  const loadout = model.dashboard.loadout.available[0];
+  if (loadout) changes.push(`Nová možnost loadoutu: ${loadout.title}`);
+  const room = model.dashboard.availableRooms[0];
+  if (room) changes.push(`Místnost připravená k vylepšení: ${room.title}`);
+  if (progression.activeScar) changes.push(`Aktivní jizva: ${SUBJECT_SCARS[progression.activeScar]?.title ?? progression.activeScar}`);
+  return [...new Set(changes)].slice(0, 3);
+}
+
+function VoidReturnSummary({
+  progression,
+  model,
+  recentReward,
+  state,
+}: {
+  progression: SubjectProgression;
+  model: VoidHubUiModel;
+  recentReward?: RunReward | null;
+  state: CyklusRunState | null;
+}) {
+  const shouldShow = Boolean(recentReward) || ((!state || state.status !== 'playing') && progression.totalRuns === 1);
+  if (!shouldShow) return null;
+  const changes = recentReward ? getRewardReturnChanges(recentReward) : getProgressionReturnChanges(progression, model);
+  const visibleChanges = changes.length > 0 ? changes : ['Prázdnota eviduje nový záznam. Zní to suše, ale něco se opravdu změnilo.'];
+  return (
+    <section className="void-hub-return-summary" aria-labelledby="void-hub-return-summary-title">
+      <p className="cyklus-panel-kicker">PRÁZDNOTA SE ZMĚNILA</p>
+      <h3 id="void-hub-return-summary-title">Prázdnota se změnila</h3>
+      <p>Systém tvrdí, že se nic nestalo. Lže. Zůstalo reziduum, otisk a pár možností, jak příště neumřít stejně elegantně.</p>
+      <ul>
+        {visibleChanges.map((change) => <li key={change}>{change}</li>)}
+      </ul>
+    </section>
+  );
+}
+
+function VoidHubNextAction({
+  model,
+  state,
+  actions,
+  onSelectTab,
+}: {
+  model: VoidHubUiModel;
+  state: CyklusRunState | null;
+  actions: CyklusVoidHubActions | undefined;
+  onSelectTab: (tab: VoidHubTabId) => void;
+}) {
+  const activeRun = state?.status === 'playing';
+  const recommendation = model.dashboard.recommendedActions[0];
+  const room = model.dashboard.availableRooms[0];
+  const targetTab = recommendation ? preferredTabForRecommendation(recommendation) : 'overview';
+
+  return (
+    <section className="void-hub-next-action" aria-labelledby="void-hub-next-action-title">
+      <div>
+        <p className="cyklus-panel-kicker">DALŠÍ KROK</p>
+        <h3 id="void-hub-next-action-title">Co teď</h3>
+        <p>{recommendation ?? 'Prázdnota zatím nemá chytrý plán. Má jen ticho a velmi podezřelou židli.'}</p>
+      </div>
+      <div className="void-hub-next-action__actions">
+        {!activeRun && (
+          <ActionButton onClick={actions?.onStartRun} title={actions?.onStartRun ? undefined : 'Napoj onStartRun pro spuštění běhu.'}>
+            Spustit další běh
+          </ActionButton>
+        )}
+        {recommendation && (
+          <ActionButton onClick={() => onSelectTab(targetTab)}>
+            Otevřít doporučení
+          </ActionButton>
+        )}
+        {room ? (
+          <ActionButton onClick={() => onSelectTab('rooms')}>
+            Vylepšit doporučenou místnost
+          </ActionButton>
+        ) : (
+          <p className="void-hub-next-action__empty">Zatím nemáš dost materiálu. Tragédie malého rozsahu. Další běh to spraví nebo zhorší.</p>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -239,7 +370,7 @@ function LoadoutTab({ model, actions, protocolsOnly = false }: { model: VoidHubU
   );
 }
 
-export function CyklusVoidHub({ progression, state = null, initialTab = 'overview', actions, compact = false }: Props) {
+export function CyklusVoidHub({ progression, state = null, initialTab = 'overview', actions, compact = false, recentReward = null }: Props) {
   const [activeTab, setActiveTab] = useState<VoidHubTabId>(initialTab);
   const model = useMemo(() => getVoidHubUiModel(progression, state), [progression, state]);
   const active = TAB_ORDER.includes(activeTab) ? activeTab : 'overview';
@@ -255,10 +386,12 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
           <p className="void-hub-pulse">{model.pulseText}</p>
         </div>
         <div className="void-hub-hero-actions">
-          <ActionButton onClick={actions?.onStartRun} title={actions?.onStartRun ? undefined : 'Napoj onStartRun pro spuštění běhu.'}>Spustit běh</ActionButton>
           <ActionButton onClick={actions?.onRefresh} title={actions?.onRefresh ? undefined : 'Napoj onRefresh pro obnovu dat.'}>Obnovit</ActionButton>
         </div>
       </header>
+
+      <VoidReturnSummary progression={progression} model={model} state={state} recentReward={recentReward} />
+      <VoidHubNextAction model={model} state={state} actions={actions} onSelectTab={setActiveTab} />
 
       <div className="void-hub-alerts" aria-label="Doporučení Prázdnoty">
         {model.alerts.map((alert: string) => <p key={alert}>{alert}</p>)}

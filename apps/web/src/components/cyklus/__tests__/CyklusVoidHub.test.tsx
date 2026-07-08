@@ -15,6 +15,7 @@ import {
   unequipArtifact,
   craftRecipe,
   setActiveScar,
+  type RunReward,
   type SubjectProgression,
   type VoidRoomId,
 } from '../../../game/cyklus/cyklusProgression';
@@ -35,6 +36,23 @@ function mockProgression(p: Partial<SubjectProgression> = {}) {
   const progression = { ...getEmptyProgression(), ...p };
   saveSubjectProgression(progression);
   return progression;
+}
+
+function mockReward(overrides: Partial<RunReward> = {}): RunReward {
+  return {
+    currencies: { residuum: 14, stabilizationCore: 1 },
+    unlockedUpgrades: [],
+    unlockedScars: ['memory_scar'],
+    newTitles: [],
+    reasons: [],
+    craftingMaterials: { archive_dust: 2 },
+    unlockedRecipes: [],
+    profileMastery: {},
+    voidRoomHints: ['crafting_table'],
+    recommendedActions: ['Otevři Prázdnotu a uprav loadout.'],
+    deathStat: 'memory',
+    ...overrides,
+  };
 }
 
 function setup() {
@@ -67,6 +85,50 @@ describe('CyklusVoidHub', () => {
     render(<CyklusVoidHub progression={progression} state={null} />);
     expect(screen.getByText('Reziduum: 42')).toBeInTheDocument();
     expect(screen.getByText(/upgrady 1\/3/)).toBeInTheDocument();
+  });
+
+  it('shows a clear CTA for starting the next run', () => {
+    const progression = mockProgression();
+    const onStartRun = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onStartRun }} />);
+
+    const button = screen.getByRole('button', { name: 'Spustit další běh' });
+    fireEvent.click(button);
+    expect(onStartRun).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows understandable empty progression guidance', () => {
+    const progression = mockProgression();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{}} />);
+
+    expect(screen.getAllByText(/Začni první průchod/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Zatím nemáš dost materiálu/)).toBeInTheDocument();
+  });
+
+  it('shows first return changes from the recent reward', () => {
+    const progression = mockProgression({
+      totalRuns: 1,
+      currencies: { residuum: 14, stabilizationCore: 1 },
+      craftingInventory: { archive_dust: 2 },
+      unlockedScars: ['memory_scar'],
+    });
+    render(<CyklusVoidHub progression={progression} state={null} actions={{}} recentReward={mockReward()} />);
+
+    expect(screen.getByText('PRÁZDNOTA SE ZMĚNILA')).toBeInTheDocument();
+    expect(screen.getByText(/Systém tvrdí, že se nic nestalo/)).toBeInTheDocument();
+    expect(screen.getByText(/Reziduum: \+14/)).toBeInTheDocument();
+    expect(screen.getByText(/Archivní prach: \+2/)).toBeInTheDocument();
+  });
+
+  it('renders recommended actions when they exist', () => {
+    const progression = mockProgression({
+      currencies: { residuum: 100, bondThread: 1 },
+    });
+    render(<CyklusVoidHub progression={progression} state={null} actions={{}} />);
+
+    expect(screen.getAllByText(/Vylepši místnost Prázdnoty/).length).toBeGreaterThan(0);
+    expect(screen.getByRole('button', { name: 'Otevřít doporučení' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Vylepšit doporučenou místnost' })).toBeInTheDocument();
   });
 
   it('renders void rooms', () => {

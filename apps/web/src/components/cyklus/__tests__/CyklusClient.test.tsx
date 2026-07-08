@@ -101,6 +101,22 @@ describe('CyklusClient', () => {
     });
     expect(screen.getByText(/Úvod/)).toBeInTheDocument();
   });
+
+  it('shows an active objective panel for a new player', async () => {
+    render(<CyklusClient />);
+    await waitFor(() => {
+      expect(screen.getByText('AKTUÁLNÍ STOPA')).toBeInTheDocument();
+    });
+    expect(screen.getByText(/Nauč se přežít volbu/)).toBeInTheDocument();
+  });
+
+  it('shows a short stat rule hint at the start', async () => {
+    render(<CyklusClient />);
+    const hint = await screen.findByTestId('cyklus-stat-rule-hint');
+    expect(hint).toHaveTextContent('Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.');
+    expect(hint.textContent?.length ?? 0).toBeLessThan(90);
+    expect(hint).not.toHaveTextContent(/debug|localStorage|VOID_META|JSON/i);
+  });
 });
 
 describe('RunEndSummary', () => {

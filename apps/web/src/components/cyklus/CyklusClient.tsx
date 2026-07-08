@@ -36,6 +36,46 @@ function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'a
   }
 }
 
+function getActiveObjectiveText(state: CyklusRunState, runHistoryCount: number, tutorialActive: boolean): string {
+  if (tutorialActive) {
+    return 'Nauč se přežít volbu. Ano, lidstvo došlo tak daleko, že i kliknutí má následky.';
+  }
+  if (state.choiceInCycle >= 10) {
+    return 'Dokonči cyklus. Prázdnota už si rovná papíry.';
+  }
+  if (runHistoryCount === 0) {
+    return 'Udrž energii, paměť, vazbu a kontrolu mimo okraje. 0 i 100 jsou špatně. Systém miluje extrémy, což je důvod, proč ho nemáme rádi.';
+  }
+  return 'Udrž staty mimo okraje a dokonči další cyklus. Prázdnota si pak spočítá, co z tebe zbylo.';
+}
+
+function shouldShowStatRuleHint(state: CyklusRunState, runHistoryCount: number, tutorialActive: boolean): boolean {
+  return tutorialActive || (runHistoryCount === 0 && state.totalChoices <= 3);
+}
+
+function ActiveObjectivePanel({
+  state,
+  runHistoryCount,
+  tutorialActive,
+}: {
+  state: CyklusRunState;
+  runHistoryCount: number;
+  tutorialActive: boolean;
+}) {
+  const showHint = shouldShowStatRuleHint(state, runHistoryCount, tutorialActive);
+  return (
+    <section className="cyklus-active-objective" aria-labelledby="cyklus-active-objective-title">
+      <div className="cyklus-active-objective__label" id="cyklus-active-objective-title">AKTUÁLNÍ STOPA</div>
+      <p className="cyklus-active-objective__text">{getActiveObjectiveText(state, runHistoryCount, tutorialActive)}</p>
+      {showHint && (
+        <p className="cyklus-active-objective__hint" data-testid="cyklus-stat-rule-hint">
+          Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.
+        </p>
+      )}
+    </section>
+  );
+}
+
 const TUTORIAL_PROGRESS_MAP: Record<string, { index: number; label: string; flavour: string }> = {
   tutorial_00_welcome: { index: 1, label: 'Úvod', flavour: 'Profesionalita je jen lépe formátovaná panika.' },
   tutorial_01_swipe: { index: 2, label: 'Volby', flavour: 'Pravá/levá není dobro/zlo. Obě změní subjekt.' },
@@ -497,6 +537,7 @@ export default function CyklusClient() {
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
   const chapter = getCycleChapterName(state.cycle);
   const tutorialHighlight = getTutorialHighlight(card?.id);
+  const tutorialActive = card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done');
 
   return (
     <>
@@ -737,6 +778,8 @@ export default function CyklusClient() {
             {showHistory && <RunHistoryList history={runHistory} />}
           </div>
         ) : card ? (
+          <>
+            <ActiveObjectivePanel state={state} runHistoryCount={runHistory.length} tutorialActive={tutorialActive} />
             <div
               ref={cardRef}
               className={[
@@ -778,6 +821,7 @@ export default function CyklusClient() {
                 <OutcomePanel state={state} onDismiss={dismissOutcome} />
               )}
             </div>
+          </>
         ) : (
           <div className="cyklus-empty">Karta nenalezena.</div>
         )}
@@ -1048,6 +1092,7 @@ export default function CyklusClient() {
             <CyklusVoidHubClient
               playHref="/cyklus"
               compact={false}
+              recentReward={runReward}
             />
           </div>
         </div>

@@ -377,6 +377,38 @@
   line-height: 1.4;
 }
 
+.cyklus-active-objective {
+  width: 100%;
+  max-width: 420px;
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-tertiary);
+  border-radius: 0.75rem;
+  text-align: left;
+}
+
+.cyklus-active-objective__label {
+  margin-bottom: 0.35rem;
+  color: var(--accent-secondary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.cyklus-active-objective__text,
+.cyklus-active-objective__hint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.cyklus-active-objective__hint {
+  margin-top: 0.45rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .cyklus-stage {
   flex: 1;
   display: flex;
@@ -4916,6 +4948,61 @@
   gap: 0.5rem;
 }
 
+.void-hub-return-summary,
+.void-hub-next-action {
+  margin-bottom: 1rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(192, 250, 255, 0.16);
+  border-radius: 1rem;
+  background: rgba(0, 13, 26, 0.5);
+}
+
+.void-hub-return-summary {
+  border-color: rgba(246, 255, 0, 0.24);
+  background: linear-gradient(120deg, rgba(246, 255, 0, 0.055), rgba(0, 13, 26, 0.54));
+}
+
+.void-hub-return-summary h3,
+.void-hub-next-action h3 {
+  margin: 0 0 0.45rem;
+  color: #c0faff;
+}
+
+.void-hub-return-summary p,
+.void-hub-next-action p {
+  margin: 0;
+  color: rgba(235, 252, 255, 0.78);
+  line-height: 1.5;
+}
+
+.void-hub-return-summary ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.75rem 0 0;
+  padding-left: 1rem;
+  color: rgba(246, 255, 0, 0.86);
+}
+
+.void-hub-next-action {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.void-hub-next-action__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.void-hub-next-action__empty {
+  max-width: 260px;
+  color: rgba(235, 252, 255, 0.58) !important;
+  font-size: 0.78rem;
+}
+
 .void-hub-action-button {
   border: 1px solid rgba(0, 255, 255, 0.28);
   border-radius: 999px;
@@ -5040,11 +5127,13 @@
   }
 
   .void-hub-hero,
+  .void-hub-next-action,
   .void-hub-loadout-columns {
     grid-template-columns: 1fr;
   }
 
-  .void-hub-hero-actions {
+  .void-hub-hero-actions,
+  .void-hub-next-action__actions {
     justify-content: flex-start;
   }
 }
