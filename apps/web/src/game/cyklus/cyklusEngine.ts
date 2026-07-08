@@ -1,4 +1,4 @@
-import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, CyklusRunModifier, CyklusRunGoal } from './cyklusTypes';
+import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, CyklusRunModifier, CyklusRunGoal, StatDelta, ProfileDelta, EntityDelta } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
@@ -701,12 +701,12 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
   const crisisResult = applyCrisisItems(s);
   s = crisisResult.state;
 
-  const statDelta: Partial<Record<StatKey, number>> = {};
+  const statDelta: StatDelta = {};
   for (const key of Object.keys(state.stats) as StatKey[]) {
     const delta = s.stats[key] - state.stats[key];
     if (delta !== 0) statDelta[key] = delta;
   }
-  const profileDelta: Partial<Record<ProfileKey, number>> = {};
+  const profileDelta: ProfileDelta = {};
   const profileKeys = new Set([...Object.keys(state.profile), ...Object.keys(s.profile)] as ProfileKey[]);
   for (const key of profileKeys) {
     const delta = (s.profile[key] ?? 0) - (state.profile[key] ?? 0);
@@ -723,7 +723,7 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     state.scheduledCards.map((e) => e.cardId),
     s.scheduledCards.map((e) => e.cardId),
   );
-  const entityDelta: Partial<Record<EntityId, number>> = {};
+  const entityDelta: EntityDelta = {};
   for (const key of Object.keys({ ...state.entityRelations, ...s.entityRelations }) as EntityId[]) {
     const delta = (s.entityRelations[key] ?? 0) - (state.entityRelations[key] ?? 0);
     if (delta !== 0) entityDelta[key] = delta;

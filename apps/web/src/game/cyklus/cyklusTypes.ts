@@ -221,20 +221,24 @@ export interface CardUnlock {
   condition: CardCondition;
 }
 
+export type StatDelta = Partial<Record<StatKey, number>>;
+export type ProfileDelta = Partial<Record<ProfileKey, number>>;
+export type EntityDelta = Partial<Record<EntityId, number>>;
+
 export interface CyklusChoiceRecord {
   turn: number;
   cycle: number;
   cardId: string;
   direction: 'yes' | 'no';
-  statDelta: Partial<Record<StatKey, number>>;
-  profileDelta: Partial<Record<ProfileKey, number>>;
+  statDelta: StatDelta;
+  profileDelta: ProfileDelta;
   flagsGained: string[];
   itemsGained: string[];
   itemsLost: string[];
   imprintsGained: string[];
   poolsUnlocked: string[];
   scheduledAdded: string[];
-  entityDelta: Partial<Record<EntityId, number>>;
+  entityDelta: EntityDelta;
   statsAfter: Record<StatKey, number>;
   sectorBefore: SectorId;
   sectorAfter: SectorId;
