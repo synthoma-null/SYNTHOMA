@@ -716,6 +716,251 @@ export const glitchkaChatPack: CyklusContentPack = {
         },
       },
     },
+
+    glitchka_safe_static: {
+      id: 'glitchka_safe_static',
+      title: 'Bezpečný šum',
+      logLabel: 'GLITCHKA_SAFE_STATIC',
+      scene:
+        'Pelech Glitchky na chvíli ztichl tak, že bylo slyšet jen měkké praskání pixelů. Glitchka posunula misku se šumem blíž k tobě. „Nemusíš mluvit první. Šum dneska vyplní docházku za oba. 🦊✨“',
+      yesLabel: 'POSLOUCHAT ŠUM',
+      noLabel: 'ZEPTAT SE NĚČÍM MALÝM',
+      category: 'entity',
+      sector: 'glitchka_nest',
+      rarity: 'common',
+      packId: 'glitchka_chat',
+      role: 'object',
+      tone: ['tender', 'absurd'],
+      tags: ['glitchka_chat', 'glitchka', 'chat', 'safe', 'fox'],
+      conditions: [{ type: 'unlockedPool', poolId: 'glitchka_chat_pool' }],
+
+      yes: {
+        resultText:
+          'Poslouchal jsi šum. Nic nevyřešil, což bylo poctivé. Glitchka se usmála jen koutkem pixelu. „Vidíš? Někdy stačí nebýt okamžitě přeložený do problému. 🦊🌙“',
+        effects: [
+          { type: 'stat', key: 'control', amount: 4 },
+          { type: 'stat', key: 'bond', amount: 3 },
+          { type: 'entityRelation', entity: 'glitchka', delta: 1 },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Vazba ↑ · Glitchka vztah ↑',
+          statHints: { control: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Položil jsi otázku tak malou, že by se vešla pod víčko. Glitchka ji nepřifoukla do diagnózy. „Malá otázka je pořád dveřmi. Jen nemá trapný portálový rám. 🦊🔑“',
+        effects: [
+          { type: 'stat', key: 'memory', amount: 3 },
+          { type: 'stat', key: 'bond', amount: 4 },
+          { type: 'flag', flag: 'glitchka_small_question_asked' },
+        ],
+        preview: {
+          hint: 'Paměť ↑ · Vazba ↑ · malá otázka',
+          statHints: { memory: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+    },
+
+    glitchka_blanket_protocol: {
+      id: 'glitchka_blanket_protocol',
+      title: 'Protokol deky',
+      logLabel: 'GLITCHKA_BLANKET_PROTOCOL',
+      scene:
+        'Glitchka vytáhla deku, která vypadala jako patch na paniku, ale odmítala se tvářit profesionálně. „Tohle není léčba. Jen látka, která ví, kdy má držet hubu. 🦊🧶“',
+      yesLabel: 'ZALÉZT POD DEKU',
+      noLabel: 'SEDNOUT SI VEDLE',
+      category: 'memory',
+      sector: 'glitchka_nest',
+      rarity: 'common',
+      cooldownTurns: 8,
+      packId: 'glitchka_chat',
+      role: 'object',
+      tone: ['tender', 'comic'],
+      tags: ['glitchka_chat', 'glitchka', 'chat', 'safe', 'fox', 'pause'],
+      conditions: [{ type: 'unlockedPool', poolId: 'glitchka_chat_pool' }],
+
+      yes: {
+        resultText:
+          'Zalezli jste pod deku. Systém to označil za neproduktivní úkryt. Glitchka ho ignorovala s péčí odborníka. „Produktivita počká venku. Má kabát a špatné úmysly. 🦊🛡️“',
+        effects: [
+          { type: 'stat', key: 'bond', amount: 5 },
+          { type: 'stat', key: 'control', amount: -2 },
+          { type: 'item', itemId: 'blanket_of_pause' },
+          { type: 'entityRelation', entity: 'glitchka', delta: 1 },
+        ],
+        preview: {
+          hint: 'Vazba ↑ · Kontrola mírně ↓ · Item',
+          statHints: { bond: 'up', control: 'down' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Sedl sis vedle deky, ne pod ni. Glitchka to přijala, jako by hranice nebyla osobní urážka. „Dobře. Bezpečí se nesmí tvářit jako únos s měkkým potahem. 🦊🪡“',
+        effects: [
+          { type: 'stat', key: 'control', amount: 5 },
+          { type: 'stat', key: 'bond', amount: 2 },
+          { type: 'flag', flag: 'glitchka_boundary_respected' },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Vazba ↑ · hranice platí',
+          statHints: { control: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+    },
+
+    glitchka_memory_sandbox_chat: {
+      id: 'glitchka_memory_sandbox_chat',
+      title: 'Chat v pískovišti',
+      logLabel: 'GLITCHKA_SANDBOX_CHAT',
+      scene:
+        'V Pískovišti paměti Glitchka kreslila do písku věty, které se daly smazat bez trestu. „Když řekneš něco špatně tady, písek to nepoužije u soudu. 🦊🏖️“',
+      yesLabel: 'NAPSAT PRVNÍ VĚTU',
+      noLabel: 'SMAZAT STOPU',
+      category: 'memory',
+      sector: 'memory_sandbox',
+      rarity: 'uncommon',
+      packId: 'glitchka_chat',
+      role: 'escalation',
+      tone: ['tender', 'absurd'],
+      tags: ['glitchka_chat', 'glitchka', 'chat', 'safe', 'fox', 'sandbox'],
+      conditions: [{ type: 'unlockedPool', poolId: 'glitchka_chat_pool' }],
+
+      yes: {
+        resultText:
+          'Napsal jsi první větu. Byla křivá, krátká a tvoje. Glitchka kolem ní postavila malý plot z pixelů. „Tak. Teď má odvaha zahrádku. 🦊🌱“',
+        effects: [
+          { type: 'stat', key: 'memory', amount: 4 },
+          { type: 'stat', key: 'bond', amount: 4 },
+          { type: 'item', itemId: 'first_answer_bubble' },
+        ],
+        preview: {
+          hint: 'Paměť ↑ · Vazba ↑ · Item',
+          statHints: { memory: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Smazal jsi stopu. Písek ji nezradil. Glitchka ti podala prázdné místo zpátky. „Mazání není lež, když si jen bereš čas. 🦊⏳“',
+        effects: [
+          { type: 'stat', key: 'control', amount: 4 },
+          { type: 'stat', key: 'memory', amount: -2 },
+          { type: 'entityRelation', entity: 'glitchka', delta: 1 },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Paměť mírně ↓ · Glitchka vztah ↑',
+          statHints: { control: 'up', memory: 'down' },
+          risk: 'low',
+        },
+      },
+    },
+
+    glitchka_question_cushion: {
+      id: 'glitchka_question_cushion',
+      title: 'Polštář na otázky',
+      logLabel: 'GLITCHKA_QUESTION_CUSHION',
+      scene:
+        'Uprostřed pelechu ležel polštář s vyšitým otazníkem. Glitchka ho odstrčila tlapkou, aby nevypadal moc důležitě. „Otázky jsou měkčí, když na ně nikdo nesedne celou vahou. 🦊❔“',
+      yesLabel: 'POLOŽIT OTÁZKU',
+      noLabel: 'NECHAT JI LEŽET',
+      category: 'object',
+      sector: 'glitchka_nest',
+      rarity: 'uncommon',
+      cooldownTurns: 10,
+      packId: 'glitchka_chat',
+      role: 'object',
+      tone: ['tender', 'absurd'],
+      tags: ['glitchka_chat', 'glitchka', 'chat', 'safe', 'fox', 'question'],
+      conditions: [{ type: 'unlockedPool', poolId: 'glitchka_chat_pool' }],
+
+      yes: {
+        resultText:
+          'Položil jsi otázku. Polštář se trochu propadl, ale nepraskl. Glitchka zatleskala tlapkami tiše, aby otázku nevylekala. „No vidíš. Přežila. Ty taky. 🦊✨“',
+        effects: [
+          { type: 'stat', key: 'memory', amount: 5 },
+          { type: 'stat', key: 'energy', amount: -2 },
+          { type: 'entityRelation', entity: 'glitchka', delta: 1 },
+          { type: 'flag', flag: 'glitchka_question_survived' },
+        ],
+        preview: {
+          hint: 'Paměť ↑ · Energie mírně ↓ · Glitchka vztah ↑',
+          statHints: { memory: 'up', energy: 'down' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Nechal jsi otázku ležet. Nepřestala existovat. Jen přestala tlačit na hrudník. Glitchka ji přikryla rohem deky. „Odložená otázka není porážka. Je to kalendář bez tyranie. 🦊📌“',
+        effects: [
+          { type: 'stat', key: 'control', amount: 4 },
+          { type: 'stat', key: 'bond', amount: 3 },
+          { type: 'flag', flag: 'glitchka_question_waits' },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Vazba ↑ · otázka počká',
+          statHints: { control: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+    },
+
+    glitchka_tiny_alarm: {
+      id: 'glitchka_tiny_alarm',
+      title: 'Malý alarm',
+      logLabel: 'GLITCHKA_TINY_ALARM',
+      scene:
+        'Z podlahy vyjel alarm velký jako knoflík a začal pípat studem. Glitchka ho položila do misky. „To je jen signál, ne rozsudek. Signály rády dramatizují, protože nemají koníčky. 🦊🔔“',
+      yesLabel: 'ZTLUMIT ALARM',
+      noLabel: 'NECHAT HO PÍPAT',
+      category: 'entity',
+      sector: 'glitchka_nest',
+      rarity: 'uncommon',
+      packId: 'glitchka_chat',
+      role: 'escalation',
+      tone: ['tender', 'comic'],
+      tags: ['glitchka_chat', 'glitchka', 'chat', 'safe', 'fox', 'alarm'],
+      conditions: [{ type: 'unlockedPool', poolId: 'glitchka_chat_pool' }],
+
+      yes: {
+        resultText:
+          'Ztlumil jsi alarm. Nezmizel, jen přestal řídit místnost. Glitchka si ho prohlédla jako hračku, která neprošla konkurzem na katastrofu. „Lepší. Teď slyšíme i tebe. 🦊👂“',
+        effects: [
+          { type: 'stat', key: 'control', amount: 5 },
+          { type: 'stat', key: 'energy', amount: -2 },
+          { type: 'entityRelation', entity: 'glitchka', delta: 1 },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Energie mírně ↓ · Glitchka vztah ↑',
+          statHints: { control: 'up', energy: 'down' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Nechal jsi ho pípat. Po chvíli se z alarmu stal rytmus. Glitchka do něj klepla ocasem. „Vidíš? I panika může ztratit autoritu, když jí nedáš mikrofon. 🦊🎵“',
+        effects: [
+          { type: 'stat', key: 'energy', amount: 3 },
+          { type: 'stat', key: 'bond', amount: 3 },
+          { type: 'stat', key: 'control', amount: -2 },
+          { type: 'flag', flag: 'glitchka_alarm_became_rhythm' },
+        ],
+        preview: {
+          hint: 'Energie ↑ · Vazba ↑ · Kontrola mírně ↓',
+          statHints: { energy: 'up', bond: 'up', control: 'down' },
+          risk: 'low',
+        },
+      },
+    },
   },
 
   unlocks: [

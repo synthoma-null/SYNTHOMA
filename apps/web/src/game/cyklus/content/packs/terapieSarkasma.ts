@@ -712,6 +712,250 @@ export const sarkasmaTherapyPack: CyklusContentPack = {
         },
       },
     },
+
+    sarkasma_aftercare_receipt: {
+      id: 'sarkasma_aftercare_receipt',
+      title: 'Účtenka po řezu',
+      logLabel: 'SARKASMA_AFTERCARE_RECEIPT',
+      scene:
+        'Sarkasma položila na stůl účtenku, na které nebyla cena. Jen poznámka: po každém přesném řezu následuje péče, jinak je to jen dražší způsob, jak si ublížit. Tvůj podpis čeká v kolonce „tentokrát to nepřehnat“.',
+      yesLabel: 'PODEPSAT PÉČI',
+      noLabel: 'ODLOŽIT ÚČTENKU',
+      category: 'memory',
+      sector: 'sarkasma_terminal',
+      rarity: 'common',
+      packId: 'sarkasma_therapy',
+      role: 'object',
+      tone: ['tender', 'comic'],
+      tags: ['sarkasma_therapy', 'sarkasma', 'therapy', 'aftercare', 'receipt'],
+      conditions: [{ type: 'unlockedPool', poolId: 'sarkasma_therapy_pool' }],
+
+      yes: {
+        resultText:
+          'Podepsal jsi péči. Sarkasma zkontrolovala podpis a neřekla nic hnusného, což byl v jejím jazyce skoro ovace.',
+        effects: [
+          { type: 'stat', key: 'control', amount: 4 },
+          { type: 'stat', key: 'bond', amount: 3 },
+          { type: 'item', itemId: 'red_couch_receipt' },
+          { type: 'entityRelation', entity: 'sarkasma', delta: 1 },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Vazba ↑ · Item',
+          statHints: { control: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Odložil jsi účtenku. Sarkasma ji nevnutila zpátky. Jen ji nechala ležet tak nápadně, že by se za ni nestyděl ani systémový banner.',
+        effects: [
+          { type: 'stat', key: 'energy', amount: 3 },
+          { type: 'stat', key: 'control', amount: -2 },
+          { type: 'flag', flag: 'sarkasma_aftercare_deferred' },
+        ],
+        preview: {
+          hint: 'Energie ↑ · Kontrola mírně ↓ · péče počká',
+          statHints: { energy: 'up', control: 'down' },
+          risk: 'low',
+        },
+      },
+    },
+
+    sarkasma_blackbox_aftertaste: {
+      id: 'sarkasma_blackbox_aftertaste',
+      title: 'Pachuť černého boxu',
+      logLabel: 'SARKASMA_BLACKBOX_AFTERTASTE',
+      scene:
+        'Na terminálu zůstala černá šmouha po posledním záznamu. Sarkasma ji nečistila. Tvrdila, že některé stopy se nemažou hned, protože by se tím jen naučily vracet s lepším právníkem.',
+      yesLabel: 'POJMENOVAT STOPU',
+      noLabel: 'NECHAT JI BÝT',
+      category: 'memory',
+      sector: 'sarkasma_terminal',
+      rarity: 'uncommon',
+      packId: 'sarkasma_therapy',
+      role: 'escalation',
+      tone: ['tragic', 'comic'],
+      tags: ['sarkasma_therapy', 'sarkasma', 'therapy', 'aftercare', 'blackbox'],
+      conditions: [{ type: 'unlockedPool', poolId: 'sarkasma_therapy_pool' }],
+
+      yes: {
+        resultText:
+          'Pojmenoval jsi stopu. Nebyla menší. Byla méně absolutní. Sarkasma napsala do protokolu: „Subjekt rozlišil důkaz od rozsudku. Zázrak s nudným názvem.“',
+        effects: [
+          { type: 'stat', key: 'memory', amount: 4 },
+          { type: 'stat', key: 'control', amount: 3 },
+          { type: 'entityRelation', entity: 'sarkasma', delta: 1 },
+          { type: 'flag', flag: 'blackbox_trace_named' },
+        ],
+        preview: {
+          hint: 'Paměť ↑ · Kontrola ↑ · Sarkasma vztah ↑',
+          statHints: { memory: 'up', control: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Nechal jsi ji být. Šmouha nezmizela, ale přestala se tvářit jako šéf místnosti. I trauma občas potřebuje ztratit manažerskou pozici.',
+        effects: [
+          { type: 'stat', key: 'bond', amount: 4 },
+          { type: 'stat', key: 'memory', amount: -2 },
+          { type: 'flag', flag: 'blackbox_trace_left_softly' },
+        ],
+        preview: {
+          hint: 'Vazba ↑ · Paměť mírně ↓',
+          statHints: { bond: 'up', memory: 'down' },
+          risk: 'low',
+        },
+      },
+    },
+
+    sarkasma_defense_thank_you_note: {
+      id: 'sarkasma_defense_thank_you_note',
+      title: 'Poděkování obraně',
+      logLabel: 'SARKASMA_DEFENSE_THANKS',
+      scene:
+        'Sarkasma ti podala kartičku s předtištěným textem: děkuji, obrano, že jsi mě držela nad vodou; teď prosím pusť volant. Pod tím byl menší text: ano, je to trapné, ale pořád méně než celoživotní autopilot v panice.',
+      yesLabel: 'PŘEČÍST NAHLAS',
+      noLabel: 'PŘEČÍST V DUCHU',
+      category: 'entity',
+      sector: 'sarkasma_terminal',
+      rarity: 'uncommon',
+      cooldownTurns: 10,
+      packId: 'sarkasma_therapy',
+      role: 'object',
+      tone: ['tender', 'comic'],
+      tags: ['sarkasma_therapy', 'sarkasma', 'therapy', 'aftercare', 'defense'],
+      conditions: [{ type: 'unlockedPool', poolId: 'sarkasma_therapy_pool' }],
+
+      yes: {
+        resultText:
+          'Přečetl jsi to nahlas. Obrana se neurazila. Jen se posadila o kus dál, jako pracovník po směně, který poprvé slyší slovo domů.',
+        effects: [
+          { type: 'stat', key: 'bond', amount: 4 },
+          { type: 'stat', key: 'control', amount: 3 },
+          { type: 'item', itemId: 'burnt_defense' },
+          { type: 'entityRelation', entity: 'sarkasma', delta: 1 },
+        ],
+        preview: {
+          hint: 'Vazba ↑ · Kontrola ↑ · Item',
+          statHints: { bond: 'up', control: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Přečetl jsi to v duchu. Sarkasma předstírala, že to neviděla. Byla to lež, ale funkční, což je u terapie někdy luxusní výbava.',
+        effects: [
+          { type: 'stat', key: 'control', amount: 5 },
+          { type: 'stat', key: 'energy', amount: -2 },
+          { type: 'flag', flag: 'defense_thanked_silently' },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Energie mírně ↓',
+          statHints: { control: 'up', energy: 'down' },
+          risk: 'low',
+        },
+      },
+    },
+
+    sarkasma_soft_landing: {
+      id: 'sarkasma_soft_landing',
+      title: 'Měkké přistání',
+      logLabel: 'SARKASMA_SOFT_LANDING',
+      scene:
+        'Po řezu nezazněla pointa. Sarkasma jen posunula židli blíž a tvářila se, že to byl logistický úkon. V systému se rozsvítilo varování: neautorizovaná forma ohleduplnosti.',
+      yesLabel: 'PŘIJMOUT ŽIDLI',
+      noLabel: 'ZŮSTAT STÁT',
+      category: 'entity',
+      sector: 'sarkasma_terminal',
+      rarity: 'rare',
+      packId: 'sarkasma_therapy',
+      role: 'echo',
+      tone: ['tender', 'tragic'],
+      tags: ['sarkasma_therapy', 'sarkasma', 'therapy', 'aftercare', 'blackbox'],
+      conditions: [{ type: 'unlockedPool', poolId: 'sarkasma_aftercare_pool' }],
+
+      yes: {
+        resultText:
+          'Přijal jsi židli. Nebylo to vítězství. Spíš příměří s vlastním tělem. Sarkasma si odkašlala a nechala tu něhu projít bez karikatury.',
+        effects: [
+          { type: 'stat', key: 'bond', amount: 5 },
+          { type: 'stat', key: 'energy', amount: 3 },
+          { type: 'imprint', imprintId: 'kindness_without_sugar' },
+        ],
+        preview: {
+          hint: 'Vazba ↑ · Energie ↑ · Imprint',
+          statHints: { bond: 'up', energy: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Zůstal jsi stát. Sarkasma nepřesvědčovala. Jen nechala židli tam, kde byla. Některá pomoc je nejsilnější, když netlačí.',
+        effects: [
+          { type: 'stat', key: 'control', amount: 5 },
+          { type: 'stat', key: 'bond', amount: 2 },
+          { type: 'flag', flag: 'soft_landing_waits' },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Vazba ↑ · pomoc počká',
+          statHints: { control: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+    },
+
+    sarkasma_joke_with_guardrail: {
+      id: 'sarkasma_joke_with_guardrail',
+      title: 'Vtip se zábradlím',
+      logLabel: 'SARKASMA_GUARDED_JOKE',
+      scene:
+        'Sarkasma napsala vtip a pak k němu přidala zábradlí: neřež níž, než potřebuješ. Černý box zavrněl statickou elektřinou, protože i stroje poznají, když se cynismus učí brzdit.',
+      yesLabel: 'POUŽÍT ZÁBRADLÍ',
+      noLabel: 'SMAZAT POINTU',
+      category: 'memory',
+      sector: 'sarkasma_terminal',
+      rarity: 'uncommon',
+      packId: 'sarkasma_therapy',
+      role: 'escalation',
+      tone: ['comic', 'tender'],
+      tags: ['sarkasma_therapy', 'sarkasma', 'therapy', 'aftercare', 'humor'],
+      conditions: [{ type: 'unlockedPool', poolId: 'sarkasma_therapy_pool' }],
+
+      yes: {
+        resultText:
+          'Použil jsi zábradlí. Vtip pořád řízl, ale nepřepiloval podlahu pod tebou. Sarkasma vypadala spokojeně a hluboce uraženě tím, že to fungovalo.',
+        effects: [
+          { type: 'stat', key: 'control', amount: 4 },
+          { type: 'stat', key: 'bond', amount: 3 },
+          { type: 'item', itemId: 'joke_scalpel' },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Vazba ↑ · Item',
+          statHints: { control: 'up', bond: 'up' },
+          risk: 'low',
+        },
+      },
+
+      no: {
+        resultText:
+          'Smazal jsi pointu. Místnost nebyla vtipnější, ale byla bezpečnější. Sarkasma uznala, že i absence rány může být forma načasování.',
+        effects: [
+          { type: 'stat', key: 'control', amount: 5 },
+          { type: 'stat', key: 'energy', amount: -2 },
+          { type: 'entityRelation', entity: 'sarkasma', delta: 1 },
+        ],
+        preview: {
+          hint: 'Kontrola ↑ · Energie mírně ↓ · Sarkasma vztah ↑',
+          statHints: { control: 'up', energy: 'down' },
+          risk: 'low',
+        },
+      },
+    },
   },
 
   unlocks: [

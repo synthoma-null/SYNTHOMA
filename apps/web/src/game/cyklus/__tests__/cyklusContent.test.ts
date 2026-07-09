@@ -2,6 +2,46 @@ import { CYKLUS_CONTENT_PACKS, CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS, getC
 import { CYKLUS_FINDINGS } from '../cyklusFindings';
 import { createCyklusRun, getCardPool } from '../cyklusEngine';
 
+const TARGETED_FOCUS_CARD_IDS = [
+  'tai_maternal_diagnostic',
+  'tai_core_temperature',
+  'tai_diagnostic_lullaby',
+  'tai_soft_error_cradle',
+  'tai_permission_mirror',
+  'glitchka_safe_static',
+  'glitchka_blanket_protocol',
+  'glitchka_memory_sandbox_chat',
+  'glitchka_question_cushion',
+  'glitchka_tiny_alarm',
+  'sarkasma_aftercare_receipt',
+  'sarkasma_blackbox_aftertaste',
+  'sarkasma_defense_thank_you_note',
+  'sarkasma_soft_landing',
+  'sarkasma_joke_with_guardrail',
+  'archive_loose_folder',
+  'archive_record_margin',
+  'archive_form_duplicate',
+  'archive_folder_breathes',
+  'archive_index_card',
+] as const;
+
+const TARGETED_GLITCHKA_CARD_IDS = [
+  'glitchka_safe_static',
+  'glitchka_blanket_protocol',
+  'glitchka_memory_sandbox_chat',
+  'glitchka_question_cushion',
+  'glitchka_tiny_alarm',
+] as const;
+
+const TARGETED_FOCUS_TAGS: Record<string, string[]> = {
+  tai: ['tai', 'core', 'diagnostic', 'system'],
+  glitchka: ['glitchka_chat', 'glitchka', 'chat', 'safe'],
+  sarkasma: ['sarkasma_therapy', 'sarkasma', 'therapy', 'aftercare'],
+  archive: ['archive', 'record', 'folder'],
+};
+
+const SHALLOW_EFFECT_TYPES = new Set(['stat', 'profile', 'noImmediateEffect']);
+
 describe('Cyklus content packs', () => {
   it('every card has packId, role and tone', () => {
     const packCards = CYKLUS_CONTENT_PACKS.flatMap((pack) => Object.values(pack.cards ?? {}));
@@ -342,6 +382,68 @@ describe('Cyklus content packs', () => {
     for (const item of Object.values(glitchkaChatPack.items ?? {})) {
       for (const cardId of item.triggerCards ?? []) {
         expect(cards[cardId]).toBeDefined();
+      }
+    }
+  });
+
+  it('targeted focus gap cards stay small and fully tagged', () => {
+    expect(TARGETED_FOCUS_CARD_IDS.length).toBeLessThanOrEqual(25);
+
+    for (const cardId of TARGETED_FOCUS_CARD_IDS) {
+      const card = CYKLUS_CARDS[cardId];
+      if (!card) throw new Error(`Missing targeted focus card: ${cardId}`);
+      expect(card.sector).toBeTruthy();
+      expect(card.tags.length).toBeGreaterThanOrEqual(3);
+      expect(card.tone?.length).toBeGreaterThan(0);
+      expect(card.role).toBeTruthy();
+      expect(card.yes.preview?.hint).toBeTruthy();
+      expect(card.no.preview?.hint).toBeTruthy();
+
+      const effects = [...card.yes.effects, ...card.no.effects];
+      expect(effects.some((effect) => !SHALLOW_EFFECT_TYPES.has(effect.type))).toBe(true);
+    }
+  });
+
+  it('targeted focus gap cards cover the intended focus tags', () => {
+    const groups = {
+      tai: TARGETED_FOCUS_CARD_IDS.slice(0, 5),
+      glitchka: TARGETED_FOCUS_CARD_IDS.slice(5, 10),
+      sarkasma: TARGETED_FOCUS_CARD_IDS.slice(10, 15),
+      archive: TARGETED_FOCUS_CARD_IDS.slice(15, 20),
+    };
+
+    for (const [group, cardIds] of Object.entries(groups)) {
+      for (const cardId of cardIds) {
+        const card = CYKLUS_CARDS[cardId];
+        if (!card) throw new Error(`Missing targeted focus card: ${cardId}`);
+        const expectedTags = TARGETED_FOCUS_TAGS[group] ?? [];
+        for (const tag of expectedTags) {
+          expect(card.tags).toContain(tag);
+        }
+      }
+    }
+  });
+
+  it('new Glitchka spoken lines end with exactly two emoji', () => {
+    const emojiRegex = /\p{Extended_Pictographic}/gu;
+
+    for (const cardId of TARGETED_GLITCHKA_CARD_IDS) {
+      const card = glitchkaChatPack.cards?.[cardId];
+      expect(card).toBeDefined();
+
+      for (const text of [card!.scene, card!.yes.resultText, card!.no.resultText]) {
+        const quotes = [...text.matchAll(/„([^“]+)“/g)];
+        expect(quotes.length).toBeGreaterThan(0);
+
+        for (const match of quotes) {
+          const quote = match[1] ?? '';
+          const emojiTail = quote.match(/((?:\p{Extended_Pictographic}\uFE0F?)+)$/u)?.[1] ?? '';
+          const totalEmoji = [...quote.matchAll(emojiRegex)].length;
+          const tailEmoji = [...emojiTail.matchAll(emojiRegex)].length;
+
+          expect(totalEmoji).toBe(2);
+          expect(tailEmoji).toBe(2);
+        }
       }
     }
   });

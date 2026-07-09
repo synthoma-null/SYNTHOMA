@@ -165,7 +165,7 @@ export const detectiveEchoCasePack: CyklusContentPack = {
       packId: 'detective_echo_case',
       role: 'object',
       tone: ['horror', 'tragic'],
-      tags: ['detective_echo_case', 'entity', 'witness', 'archive'],
+      tags: ['detective_echo_case', 'entity', 'witness', 'archive', 'memory'],
       conditions: [
         { type: 'unlockedPool', poolId: 'detective_echo_case_pool' },
         { type: 'hasAnyFlag', flags: ['crime_scene_entered', 'case_log_read'] },
