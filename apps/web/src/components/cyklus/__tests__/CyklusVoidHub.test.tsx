@@ -90,11 +90,39 @@ describe('CyklusVoidHub', () => {
   it('shows a clear CTA for starting the next run', () => {
     const progression = mockProgression();
     const onStartRun = jest.fn();
-    render(<CyklusVoidHub progression={progression} state={null} actions={{ onStartRun }} />);
+    const onStartFocusedRun = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onStartRun, onStartFocusedRun }} />);
 
     const button = screen.getByRole('button', { name: 'Spustit další běh' });
     fireEvent.click(button);
     expect(onStartRun).toHaveBeenCalledTimes(1);
+    expect(onStartFocusedRun).not.toHaveBeenCalled();
+  });
+
+  it('shows focused area run choices and calls the focused run callback', () => {
+    const progression = mockProgression();
+    const onStartFocusedRun = jest.fn();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onStartFocusedRun }} />);
+
+    const button = screen.getByRole('button', { name: /Vstoupit ke Glitchce/ });
+    fireEvent.click(button);
+
+    expect(onStartFocusedRun).toHaveBeenCalledWith(expect.objectContaining({
+      type: 'sector',
+      id: 'glitchka_nest',
+      label: 'Glitchčino hnízdo',
+      strictness: 'soft',
+      remainingCards: 10,
+    }));
+    expect(screen.getByRole('status')).toHaveTextContent(/Glitchčino hnízdo/);
+  });
+
+  it('offers appendix focused runs without hiding the normal next-run CTA', () => {
+    const progression = mockProgression();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onStartRun: jest.fn(), onStartFocusedRun: jest.fn() }} />);
+
+    expect(screen.getByRole('button', { name: 'Spustit další běh' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Dodatek: Mýtnice Dvanáctníka/ })).toBeInTheDocument();
   });
 
   it('shows understandable empty progression guidance', () => {

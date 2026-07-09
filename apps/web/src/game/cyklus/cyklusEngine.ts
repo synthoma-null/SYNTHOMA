@@ -1,4 +1,4 @@
-import type { CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, CyklusRunModifier, CyklusRunGoal, StatDelta, ProfileDelta, EntityDelta } from './cyklusTypes';
+import type { CyklusRunFocus, CyklusRunState, CyklusRunSummary, CyklusTension, SwipeCard, CyklusEffect, CardCondition, StatKey, SectorId, ProfileKey, EntityId, RunEnding, CompletionResult, ProfileResult, CyklusChoiceRecord, CyklusRunModifier, CyklusRunGoal, StatDelta, ProfileDelta, EntityDelta } from './cyklusTypes';
 import { STAT_LABELS, SECTOR_LABELS } from './cyklusTypes';
 import { loadMetaUnlockPools, loadFreshMetaPools } from './cyklusFindings';
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_CONTENT_PACKS } from './content';
@@ -253,7 +253,7 @@ export function generatePreRunWarning(state: CyklusRunState): string | null {
   return warning;
 }
 
-export function createCyklusRun(skipTutorial = false): CyklusRunState {
+export function createCyklusRun(skipTutorial = false, runFocus?: CyklusRunFocus): CyklusRunState {
   const now = Date.now();
   const seed = `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   const startStats = { energy: 50, memory: 50, bond: 50, control: 50 };
@@ -313,6 +313,7 @@ export function createCyklusRun(skipTutorial = false): CyklusRunState {
     activeContracts: [],
     preRunWarning: null,
     preRunChoice: null,
+    ...(runFocus ? { runFocus: { ...runFocus, startedAtCycle: runFocus.startedAtCycle ?? 1 } } : {}),
   };
   const progression = loadSubjectProgression();
   const withProgression = applyProgressionToNewRun(state, progression);
@@ -790,7 +791,20 @@ export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): C
     }
   }
 
-  s = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card), freshMetaPools, activeContracts };
+  let runFocus = s.runFocus;
+  if (runFocus?.remainingCards !== undefined && card.category !== 'tutorial' && card.category !== 'restart') {
+    const remainingCards = runFocus.remainingCards - 1;
+    runFocus = remainingCards > 0 ? { ...runFocus, remainingCards } : undefined;
+  }
+
+  const advancedState = { ...s, totalChoices: s.totalChoices + 1, choiceInCycle: s.choiceInCycle + 1, rngStep: s.rngStep + 1, usedCardIds: [...s.usedCardIds, card.id], lastOutcomeText: outcomeText, history: [...s.history, record], tension: updateTension(s, card), freshMetaPools, activeContracts };
+  if (runFocus) {
+    s = { ...advancedState, runFocus };
+  } else {
+    const { runFocus: expiredFocus, ...withoutFocus } = advancedState;
+    void expiredFocus;
+    s = withoutFocus;
+  }
 
   // Persist story progression after each choice so the next card follows the narrative arc
   if (typeof window !== 'undefined') {

@@ -409,6 +409,13 @@
   font-style: italic;
 }
 
+.cyklus-active-objective__focus {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--accent-secondary);
+  font-size: 0.84rem;
+}
+
 .cyklus-stage {
   flex: 1;
   display: flex;
@@ -5001,6 +5008,63 @@
   max-width: 260px;
   color: rgba(235, 252, 255, 0.58) !important;
   font-size: 0.78rem;
+}
+
+.void-hub-focus {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(246, 255, 0, 0.2);
+  border-radius: 1rem;
+  background: rgba(0, 13, 26, 0.42);
+}
+
+.void-hub-focus h3,
+.void-hub-focus p {
+  margin: 0;
+}
+
+.void-hub-focus h3 {
+  color: #f6ff00;
+}
+
+.void-hub-focus p {
+  color: rgba(235, 252, 255, 0.78);
+  line-height: 1.5;
+}
+
+.void-hub-focus__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+}
+
+.void-hub-focus__button {
+  min-height: 42px;
+  padding: 0.52rem 0.7rem;
+  border: 1px solid rgba(246, 255, 0, 0.28);
+  border-radius: 0.65rem;
+  background: rgba(0, 13, 26, 0.7);
+  color: rgba(245, 248, 236, 0.92);
+  cursor: pointer;
+  text-align: left;
+}
+
+.void-hub-focus__button:hover:not(:disabled),
+.void-hub-focus__button:focus-visible {
+  border-color: rgba(246, 255, 0, 0.62);
+  background: rgba(246, 255, 0, 0.08);
+}
+
+.void-hub-focus__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.void-hub-focus__confirmation {
+  color: #f6ff00 !important;
+  font-weight: 700;
 }
 
 .void-hub-action-button {

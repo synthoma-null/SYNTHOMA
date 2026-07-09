@@ -13,7 +13,7 @@ import type {
   VoidHubTabUiRow,
 } from '../../game/cyklus/cyklusProgression';
 import { CURRENCY_LABELS, MATERIAL_LABELS, SUBJECT_SCARS, VOID_ROOMS, getVoidHubUiModel } from '../../game/cyklus/cyklusProgression';
-import type { CyklusRunState } from '../../game/cyklus/cyklusTypes';
+import type { CyklusRunFocus, CyklusRunState } from '../../game/cyklus/cyklusTypes';
 import { CyklusPocketPanel } from './CyklusPocketPanel';
 import { CyklusProgressionDashboard } from './CyklusProgressionDashboard';
 
@@ -24,12 +24,25 @@ export type CyklusVoidHubActionPayload = {
 
 export type CyklusVoidHubActions = {
   onStartRun?: () => void;
+  onStartFocusedRun?: (focus: CyklusRunFocus) => void;
   onUpgradeRoom?: (roomId: string) => void;
   onCraftRecipe?: (recipeId: string) => void;
   onEquipLoadout?: (payload: CyklusVoidHubActionPayload) => void;
   onUnequipLoadout?: (payload: CyklusVoidHubActionPayload) => void;
   onRefresh?: () => void;
 };
+
+export const FOCUS_RUN_OPTIONS: Array<CyklusRunFocus & { actionLabel: string }> = [
+  { type: 'sector', id: 'archive', label: 'Archiv', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit do Archivu' },
+  { type: 'sector', id: 'memory_sandbox', label: 'Pískoviště paměti', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit do Pískoviště paměti' },
+  { type: 'sector', id: 'glitchka_nest', label: 'Glitchčino hnízdo', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit ke Glitchce' },
+  { type: 'sector', id: 'sarkasma_terminal', label: 'Sarkasmin terminál', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit k Sarkasmě' },
+  { type: 'sector', id: 'tai_core', label: 'T-AI jádro', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit do T-AI jádra' },
+  { type: 'appendix', id: 'toll_dvanactnik', label: 'Mýtnice Dvanáctníka', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Mýtnice Dvanáctníka' },
+  { type: 'appendix', id: 'detective_echo_case', label: 'Případ ozvěny', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Případ ozvěny' },
+  { type: 'appendix', id: 'sarkasma_therapy', label: 'Sarkasmina terapie', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Sarkasmina terapie' },
+  { type: 'appendix', id: 'glitchka_chat', label: 'Pokec s Glitchkou', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Pokec s Glitchkou' },
+];
 
 type Props = {
   progression: SubjectProgression;
@@ -227,6 +240,44 @@ function VoidHubNextAction({
   );
 }
 
+function FocusRunPanel({ actions }: { actions: CyklusVoidHubActions | undefined }) {
+  const [selected, setSelected] = useState<CyklusRunFocus | null>(null);
+
+  const selectFocus = (focus: CyklusRunFocus) => {
+    setSelected(focus);
+    actions?.onStartFocusedRun?.(focus);
+  };
+
+  return (
+    <section className="void-hub-focus" aria-labelledby="void-hub-focus-title">
+      <div>
+        <p className="cyklus-panel-kicker">FOCUS_MODE</p>
+        <h3 id="void-hub-focus-title">Držet konkrétní stopu</h3>
+        <p>Vyber oblast nebo dodatek. Běh se jí bude držet, ale nouzové dveře zůstanou odemčené.</p>
+      </div>
+      <div className="void-hub-focus__options">
+        {FOCUS_RUN_OPTIONS.map((focus) => (
+          <button
+            key={`${focus.type}-${focus.id}`}
+            className="void-hub-focus__button"
+            type="button"
+            disabled={!actions?.onStartFocusedRun}
+            onClick={() => selectFocus(focus)}
+            aria-label={`${focus.actionLabel}. Focus ${focus.strictness === 'strong' ? 'silný' : 'měkký'}.`}
+          >
+            {focus.actionLabel}
+          </button>
+        ))}
+      </div>
+      {selected && (
+        <p className="void-hub-focus__confirmation" role="status">
+          Následující běh drží stopu: {selected.label}
+        </p>
+      )}
+    </section>
+  );
+}
+
 function CraftingTab({ model, actions }: { model: VoidHubUiModel; actions?: CyklusVoidHubActions }) {
   const visibleCrafts = model.dashboard.crafts.filter((recipe) => recipe.status !== 'hidden');
   const craftable = visibleCrafts.filter((recipe) => recipe.status === 'craftable');
@@ -392,6 +443,7 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
 
       <VoidReturnSummary progression={progression} model={model} state={state} recentReward={recentReward} />
       <VoidHubNextAction model={model} state={state} actions={actions} onSelectTab={setActiveTab} />
+      {state?.status !== 'playing' && <FocusRunPanel actions={actions} />}
 
       <div className="void-hub-alerts" aria-label="Doporučení Prázdnoty">
         {model.alerts.map((alert: string) => <p key={alert}>{alert}</p>)}

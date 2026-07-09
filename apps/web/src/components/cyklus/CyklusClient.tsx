@@ -40,6 +40,20 @@ function getActiveObjectiveText(state: CyklusRunState, runHistoryCount: number, 
   if (tutorialActive) {
     return 'Nauč se přežít volbu. Ano, lidstvo došlo tak daleko, že i kliknutí má následky.';
   }
+  if (state.runFocus) {
+    switch (state.runFocus.type) {
+      case 'sector':
+        return `Tento běh se drží oblasti: ${state.runFocus.label}.`;
+      case 'pack':
+        return `Tento běh čte balíček: ${state.runFocus.label}.`;
+      case 'story':
+        return `Tento běh sleduje příběhovou stopu: ${state.runFocus.label}.`;
+      case 'appendix':
+        return `Dodatek aktivní: ${state.runFocus.label}.`;
+      default:
+        return `Tento běh se drží stopy: ${state.runFocus.label}.`;
+    }
+  }
   if (state.choiceInCycle >= 10) {
     return 'Dokonči cyklus. Prázdnota už si rovná papíry.';
   }
@@ -53,7 +67,7 @@ function shouldShowStatRuleHint(state: CyklusRunState, runHistoryCount: number, 
   return tutorialActive || (runHistoryCount === 0 && state.totalChoices <= 3);
 }
 
-function ActiveObjectivePanel({
+export function ActiveObjectivePanel({
   state,
   runHistoryCount,
   tutorialActive,
@@ -67,6 +81,7 @@ function ActiveObjectivePanel({
     <section className="cyklus-active-objective" aria-labelledby="cyklus-active-objective-title">
       <div className="cyklus-active-objective__label" id="cyklus-active-objective-title">AKTUÁLNÍ STOPA</div>
       <p className="cyklus-active-objective__text">{getActiveObjectiveText(state, runHistoryCount, tutorialActive)}</p>
+      {state.runFocus && <strong className="cyklus-active-objective__focus">{state.runFocus.label}</strong>}
       {showHint && (
         <p className="cyklus-active-objective__hint" data-testid="cyklus-stat-rule-hint">
           Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.

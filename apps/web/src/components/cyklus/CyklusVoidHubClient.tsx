@@ -31,7 +31,7 @@ import {
   saveCyklusRun,
   serverSaveProgression,
 } from '../../game/cyklus/cyklusStorage';
-import type { CyklusRunState } from '../../game/cyklus/cyklusTypes';
+import type { CyklusRunFocus, CyklusRunState } from '../../game/cyklus/cyklusTypes';
 
 type NoticeKind = 'idle' | 'success' | 'error' | 'info';
 
@@ -174,6 +174,27 @@ export function CyklusVoidHubClient({
         router.push(playHref);
       } catch {
         setNotice({ kind: 'error', text: 'Běh se nepodařilo spustit. Systém zakopl o vlastní dramatičnost, překvapivě.' });
+      } finally {
+        setBusy(false);
+      }
+    },
+    onStartFocusedRun: async (focus: CyklusRunFocus) => {
+      setBusy(true);
+      try {
+        const existing = loadCyklusRun();
+        if (existing?.status === 'playing') {
+          setRun(existing);
+          setNotice({ kind: 'info', text: 'Běžící cyklus už existuje. Dokonči ho, než Prázdnota přepíše směrovky.' });
+          router.push(playHref);
+          return;
+        }
+        const nextRun = createCyklusRun(false, focus);
+        await saveCyklusRun(nextRun);
+        setRun(nextRun);
+        setNotice({ kind: 'success', text: `Následující běh drží stopu: ${focus.label}` });
+        router.push(playHref);
+      } catch {
+        setNotice({ kind: 'error', text: 'Stopu se nepodařilo připravit. Prázdnota zřejmě zase ztratila vlastní mapu.' });
       } finally {
         setBusy(false);
       }

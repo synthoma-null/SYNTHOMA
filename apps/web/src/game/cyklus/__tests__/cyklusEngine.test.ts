@@ -30,9 +30,10 @@ import {
   exportRunLog,
   composeCycleSummary,
 } from '../cyklusEngine';
-import type { CyklusRunState, SectorId, SwipeCard } from '../cyklusTypes';
+import type { CyklusRunFocus, CyklusRunState, SectorId, SwipeCard } from '../cyklusTypes';
 import type { RunReward } from '../cyklusProgression';
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../content';
+import { cardMatchesRunFocus } from '../cyklusCardPicker';
 import { CYKLUS_UNLOCKS } from '../cyklusUnlocks';
 import { getKnownPoolIds } from '../cyklusPoolCatalog';
 import { getDeathUnlocks, saveMetaUnlocks, loadMetaUnlocks, loadMetaUnlockPools } from '../cyklusFindings';
@@ -387,6 +388,119 @@ describe('Cyklus engine', () => {
       expect(state.currentCardId).not.toBe('first_boot');
       const next = pickNextCard(state);
       expect(next.id).not.toBe(state.usedCardIds[state.usedCardIds.length - 1]);
+    });
+  });
+
+  describe('focused area runs', () => {
+    const seenRestartIds = ['restart_0', 'restart_1', 'restart_2', 'restart_3', 'restart_4', 'restart_5'];
+
+    function focusedState(focus: CyklusRunFocus): CyklusRunState {
+      return {
+        ...createCyklusRun(true, focus),
+        currentCardId: 'first_boot',
+        flags: ['tutorial_v2_done'],
+        usedCardIds: seenRestartIds,
+        unlockedPools: getKnownPoolIds(),
+        rngStep: 31,
+      };
+    }
+
+    function findScoredCard(state: CyklusRunState, predicate: (card: SwipeCard) => boolean): SwipeCard {
+      const card = Object.values(CYKLUS_CARDS).find((candidate) =>
+        candidate.id !== state.currentCardId &&
+        candidate.category !== 'restart' &&
+        candidate.category !== 'tutorial' &&
+        predicate(candidate) &&
+        explainCardScore(state, candidate).score > 0,
+      );
+      expect(card).toBeDefined();
+      return card!;
+    }
+
+    it('stores a run focus on new runs without changing the restart entry', () => {
+      const focus: CyklusRunFocus = { type: 'sector', id: 'archive', label: 'Archiv', strictness: 'soft', remainingCards: 10 };
+      const state = createCyklusRun(true, focus);
+
+      expect(state.runFocus).toEqual({ ...focus, startedAtCycle: 1 });
+      expect(state.currentCardId).toBe('restart_0');
+    });
+
+    it('soft sector focus boosts matching cards but does not hard block other cards', () => {
+      const focus: CyklusRunFocus = { type: 'sector', id: 'archive', label: 'Archiv', strictness: 'soft', remainingCards: 10 };
+      const state = focusedState(focus);
+      const focusedCard = findScoredCard(state, (card) => cardMatchesRunFocus(card, focus));
+      const otherCard = findScoredCard(state, (card) => !cardMatchesRunFocus(card, focus));
+
+      const focusedBreakdown = explainCardScore(state, focusedCard);
+      const { runFocus: _runFocus, ...stateWithoutFocus } = state;
+      void _runFocus;
+      const baselineBreakdown = explainCardScore(stateWithoutFocus, focusedCard);
+      const otherBreakdown = explainCardScore(state, otherCard);
+
+      expect(focusedBreakdown.score).toBeGreaterThan(baselineBreakdown.score);
+      expect(focusedBreakdown.reasons).toContain('run focus soft +900');
+      expect(otherBreakdown.score).toBeGreaterThan(0);
+    });
+
+    it('pack and appendix focus matches pack ids and focus tags', () => {
+      const packFocus: CyklusRunFocus = { type: 'pack', id: 'sandbox_absurd', label: 'Pískoviště absurdna', strictness: 'soft', remainingCards: 10 };
+      const packState = focusedState(packFocus);
+      const packCard = findScoredCard(packState, (card) => cardMatchesRunFocus(card, packFocus));
+      expect(packCard.packId).toBe(packFocus.id);
+      expect(explainCardScore(packState, packCard).reasons).toContain('run focus soft +900');
+
+      const appendixFocus: CyklusRunFocus = { type: 'appendix', id: 'sarkasma_therapy', label: 'Sarkasmina terapie', strictness: 'strong', remainingCards: 8 };
+      const appendixState = focusedState(appendixFocus);
+      const appendixCard = findScoredCard(appendixState, (card) => cardMatchesRunFocus(card, appendixFocus));
+      const appendixBreakdown = explainCardScore(appendixState, appendixCard);
+
+      expect(appendixCard.packId === appendixFocus.id || appendixCard.tags.includes(appendixFocus.id)).toBe(true);
+      expect(appendixBreakdown.reasons).toContain('run focus strong +2000');
+    });
+
+    it('strong focus still allows safe bypass cards and picks a focused-compatible candidate', () => {
+      const focus: CyklusRunFocus = { type: 'sector', id: 'archive', label: 'Archiv', strictness: 'strong', remainingCards: 8 };
+      const state = focusedState(focus);
+      const next = pickNextCard(state);
+      const focusBypass =
+        next.category === 'system' ||
+        next.category === 'crisis' ||
+        next.category === 'followup' ||
+        next.category === 'item_trigger' ||
+        (!next.sector && next.packId === 'base');
+
+      expect(cardMatchesRunFocus(next, focus) || focusBypass).toBe(true);
+    });
+
+    it('scheduled cards keep priority over focus', () => {
+      const focus: CyklusRunFocus = { type: 'sector', id: 'archive', label: 'Archiv', strictness: 'strong', remainingCards: 8 };
+      const state = focusedState(focus);
+      const scheduledCard = findScoredCard(state, (card) => !cardMatchesRunFocus(card, focus));
+      const scheduledState: CyklusRunState = {
+        ...state,
+        scheduledCards: [{ cardId: scheduledCard.id, turnsRemaining: 0, ifInvalid: 'force' }],
+      };
+
+      expect(pickNextCard(scheduledState).id).toBe(scheduledCard.id);
+    });
+
+    it('falls back to the normal pool when a focus has no matching cards', () => {
+      const focus: CyklusRunFocus = { type: 'pack', id: 'missing_focus_pack', label: 'Missing focus pack', strictness: 'strong', remainingCards: 8 };
+      const state = focusedState(focus);
+
+      expect(pickNextCard(state)).toBeDefined();
+    });
+
+    it('expires remaining focus cards after regular choices', () => {
+      const focus: CyklusRunFocus = { type: 'sector', id: 'archive', label: 'Archiv', strictness: 'soft', remainingCards: 1 };
+      const state: CyklusRunState = {
+        ...focusedState(focus),
+        currentCardId: 'first_boot',
+      };
+
+      const next = resolveChoice(state, 'yes');
+
+      expect(next.runFocus).toBeUndefined();
     });
   });
 

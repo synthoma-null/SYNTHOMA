@@ -289,6 +289,15 @@ export interface ScheduledCardEntry {
   ifInvalid?: ScheduledIfInvalid;
 }
 
+export interface CyklusRunFocus {
+  type: 'sector' | 'pack' | 'story' | 'appendix';
+  id: string;
+  label: string;
+  strictness: 'soft' | 'strong';
+  remainingCards?: number;
+  startedAtCycle?: number;
+}
+
 export interface CyklusRunState {
   id: string;
   status: 'playing' | 'dead' | 'completed';
@@ -327,6 +336,7 @@ export interface CyklusRunState {
   activeContracts: string[];
   preRunWarning: string | null;
   preRunChoice: string | null;
+  runFocus?: CyklusRunFocus;
 }
 
 export interface CyklusRunSummary {

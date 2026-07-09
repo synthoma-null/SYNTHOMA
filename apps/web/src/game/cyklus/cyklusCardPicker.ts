@@ -1,4 +1,4 @@
-import type { CyklusRunState, SwipeCard, CyklusTension, StatKey, CardCondition, SectorId } from './cyklusTypes';
+import type { CyklusRunFocus, CyklusRunState, SwipeCard, CyklusTension, StatKey, CardCondition, SectorId } from './cyklusTypes';
 import { CYKLUS_CARDS } from './content';
 import { cardMatchesUnlockedPool } from './cyklusPoolCatalog';
 import { explainItemMoodScore, getPocketMoodProfile } from './cyklusItemMood';
@@ -109,11 +109,33 @@ export function isFreshMetaPoolCard(state: CyklusRunState, card: SwipeCard): boo
 }
 
 export function cardMatchesCurrentSector(state: CyklusRunState, card: SwipeCard): boolean {
-  if (card.sector === state.sector) return true;
-  if (card.conditions?.some((c) => c.type === 'sector' && c.sector === state.sector)) return true;
-  if (card.tags.includes(state.sector)) return true;
-  const sectorTags = SECTOR_TAG_MAP[state.sector] ?? [];
+  return cardMatchesSector(card, state.sector);
+}
+
+function cardMatchesSector(card: SwipeCard, sector: SectorId): boolean {
+  if (card.sector === sector) return true;
+  if (card.conditions?.some((c) => c.type === 'sector' && c.sector === sector)) return true;
+  if (card.tags.includes(sector)) return true;
+  const sectorTags = SECTOR_TAG_MAP[sector] ?? [];
   return sectorTags.some((tag) => card.tags.includes(tag));
+}
+
+export function cardMatchesRunFocus(card: SwipeCard, focus: CyklusRunFocus): boolean {
+  if (focus.type === 'sector') return cardMatchesSector(card, focus.id as SectorId);
+  if (card.packId === focus.id) return true;
+  return card.tags.some((tag) => tag === focus.id || tag === `${focus.type}:${focus.id}`);
+}
+
+function focusBypassCard(card: SwipeCard): boolean {
+  return card.category === 'tutorial' ||
+    card.category === 'system' ||
+    isCrisisCard(card) ||
+    isFollowup(card) ||
+    isItemTrigger(card);
+}
+
+function isSafeUniversalCard(card: SwipeCard): boolean {
+  return !card.sector && card.packId === 'base' && isBasicSceneCard(card);
 }
 
 export function getReadyScheduledCards(state: CyklusRunState): string[] {
@@ -203,6 +225,11 @@ export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardSc
   if (isItemTrigger(card)) { score += 400; reasons.push('item_trigger +400'); }
   if (isFollowup(card) && card.conditions) { score += 300; reasons.push('followup +300'); }
   if (cardMatchesCurrentSector(state, card)) { score += 250; reasons.push('sector match +250'); }
+  if (state.runFocus && cardMatchesRunFocus(card, state.runFocus)) {
+    const focusBonus = state.runFocus.strictness === 'strong' ? 2_000 : 900;
+    score += focusBonus;
+    reasons.push(`run focus ${state.runFocus.strictness} +${focusBonus}`);
+  }
   if (state.unlockedPools.some((poolId) => cardMatchesUnlockedPool(card, poolId))) {
     score += 200; reasons.push('unlocked pool alias +200');
   }
@@ -325,7 +352,21 @@ export function pickNextCard(state: CyklusRunState): SwipeCard {
     if (picked) return picked;
   }
 
-  const top = scored.sort((a, b) => b.score - a.score).slice(0, TOP_CANDIDATES);
+  let candidates = scored;
+  if (state.runFocus?.strictness === 'strong') {
+    const matching = scored.filter((entry) => cardMatchesRunFocus(entry.card, state.runFocus!));
+    const useBleed = seededRandom(state.seed, state.rngStep + 701) < 0.12;
+    if (matching.length >= 2 && !useBleed) {
+      const focused = scored.filter((entry) =>
+        cardMatchesRunFocus(entry.card, state.runFocus!) ||
+        focusBypassCard(entry.card) ||
+        isSafeUniversalCard(entry.card),
+      );
+      if (focused.length > 0) candidates = focused;
+    }
+  }
+
+  const top = candidates.sort((a, b) => b.score - a.score).slice(0, TOP_CANDIDATES);
   const picked = weightedPick(top.map((entry) => ({ item: entry.card, weight: entry.score })), state.seed, state.rngStep);
   return picked ?? top[0]?.card ?? CYKLUS_CARDS.first_boot!;
 }

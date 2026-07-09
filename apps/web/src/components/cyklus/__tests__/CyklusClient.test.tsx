@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import CyklusClient, { RunEndSummary } from '../CyklusClient';
+import CyklusClient, { ActiveObjectivePanel, RunEndSummary } from '../CyklusClient';
 import { createCyklusRun } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
@@ -127,6 +127,25 @@ describe('CyklusClient', () => {
     expect(hint.textContent?.length ?? 0).toBeLessThan(90);
     expect(hint).not.toHaveTextContent(/debug|localStorage|VOID_META|JSON/i);
   });
+
+  it('shows the active run focus during a focused area run', () => {
+    const state = {
+      ...createCyklusRun(true, {
+        type: 'sector',
+        id: 'glitchka_nest',
+        label: 'Glitchčino hnízdo',
+        strictness: 'soft',
+        remainingCards: 10,
+      }),
+      currentCardId: 'first_boot',
+      totalChoices: 2,
+    };
+
+    render(<ActiveObjectivePanel state={state} runHistoryCount={1} tutorialActive={false} />);
+
+    expect(screen.getByText(/Tento běh se drží oblasti: Glitchčino hnízdo/)).toBeInTheDocument();
+    expect(screen.getByText('Glitchčino hnízdo')).toBeInTheDocument();
+  });
 });
 
 describe('RunEndSummary', () => {
@@ -183,5 +202,30 @@ describe('RunEndSummary', () => {
     );
 
     expect(screen.getAllByTestId('cyklus-outcome-contributor')).toHaveLength(3);
+  });
+
+  it('does not duplicate active focus guidance on the outcome screen', () => {
+    const state = {
+      ...makeDeathState(),
+      runFocus: {
+        type: 'sector',
+        id: 'archive',
+        label: 'Archiv',
+        strictness: 'soft',
+        remainingCards: 4,
+      },
+    } as CyklusRunState;
+
+    render(
+      <RunEndSummary
+        state={state}
+        ending={deathEnding}
+        reward={makeReward()}
+        onOpenVoidHub={jest.fn()}
+        onRestart={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByText(/Tento běh se drží oblasti/)).not.toBeInTheDocument();
   });
 });

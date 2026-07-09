@@ -2020,6 +2020,7 @@ export type CyklusVoidHubActionPayload = {
 
 export type CyklusVoidHubActions = {
   onStartRun?: () => void;
+  onStartFocusedRun?: (focus: import('./cyklusTypes').CyklusRunFocus) => void;
   onUpgradeRoom?: (roomId: string) => void;
   onCraftRecipe?: (recipeId: string) => void;
   onEquipLoadout?: (payload: CyklusVoidHubActionPayload) => void;
