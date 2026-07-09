@@ -13,6 +13,7 @@ import type { CyklusEffect, CyklusRunFocus, CyklusRunState, StatKey, SwipeCard }
 
 const RESTART_IDS = ['restart_0', 'restart_1', 'restart_2', 'restart_3', 'restart_4', 'restart_5'];
 const STATS: StatKey[] = ['energy', 'memory', 'bond', 'control'];
+const RUN_STORAGE_KEY = 'synthoma_cyklus_run_v1';
 
 function statDelta(effects: CyklusEffect[]): Record<StatKey, number> {
   const delta = { energy: 0, memory: 0, bond: 0, control: 0 };
@@ -102,6 +103,13 @@ function playFocusedStretch(focus: CyklusRunFocus): { state: CyklusRunState; car
   }
 
   return { state, cards };
+}
+
+function storeLegacyRun(overrides: Partial<CyklusRunState>): CyklusRunState {
+  const base = makeReadyRun();
+  const legacy = { ...base, ...overrides };
+  localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify(legacy));
+  return legacy;
 }
 
 describe('Cyklus first-hour release candidate smoke', () => {
@@ -234,6 +242,77 @@ describe('Cyklus first-hour release candidate smoke', () => {
     const next = resolveChoice(loaded!, chooseStableDirection(loaded!, card));
     expect(next.history.length).toBe(loaded!.history.length + 1);
     expect(next.currentCardId).toBeTruthy();
+  });
+
+  it('loads old mixed saves without runFocus as playable mixed runs', () => {
+    const saved = storeLegacyRun({
+      currentCardId: 'archive_record_margin',
+      flags: ['legacy_flag', 'tutorial_v2_done'],
+    });
+
+    const loaded = loadCyklusRun();
+
+    expect(loaded).not.toBeNull();
+    expect(loaded?.currentCardId).toBe(saved.currentCardId);
+    expect(loaded?.runFocus).toBeUndefined();
+    expect(loaded?.flags).toEqual(expect.arrayContaining(['legacy_flag', 'tutorial_v2_done']));
+    expect(getCardById(loaded!.currentCardId)).toBeDefined();
+  });
+
+  it('loads old tutorial_v2_done saves without tutorial_min_done without forcing tutorial restart', () => {
+    storeLegacyRun({
+      currentCardId: 'restart_0',
+      flags: ['tutorial_v2_done'],
+    });
+
+    const loaded = loadCyklusRun();
+
+    expect(loaded).not.toBeNull();
+    expect(loaded?.flags).toContain('tutorial_v2_done');
+    expect(loaded?.flags).not.toContain('tutorial_min_done');
+    expect(loaded?.currentCardId).toBe('restart_0');
+    expect(loaded?.currentCardId.startsWith('tutorial_')).toBe(false);
+  });
+
+  it('loads saves during scheduled tutorial cards with current card and schedule intact', () => {
+    const scheduledCards = [{ cardId: 'tutorial_12_void', turnsRemaining: 1, ifInvalid: 'delay' as const }];
+    storeLegacyRun({
+      currentCardId: 'tutorial_11_restart',
+      flags: ['tutorial_min_done'],
+      scheduledCards,
+    });
+
+    const loaded = loadCyklusRun();
+
+    expect(loaded).not.toBeNull();
+    expect(loaded?.currentCardId).toBe('tutorial_11_restart');
+    expect(loaded?.scheduledCards).toEqual(scheduledCards);
+  });
+
+  it('loads focused and expired-focus saves without losing currentCardId', () => {
+    const focus: CyklusRunFocus = {
+      type: 'sector',
+      id: 'archive',
+      label: 'Archiv',
+      strictness: 'soft',
+      remainingCards: 2,
+    };
+
+    storeLegacyRun({
+      currentCardId: 'archive_record_margin',
+      runFocus: focus,
+    });
+    expect(loadCyklusRun()?.runFocus).toEqual(focus);
+    expect(loadCyklusRun()?.currentCardId).toBe('archive_record_margin');
+
+    storeLegacyRun({
+      currentCardId: 'glitchka_intro_noise',
+      flags: ['tutorial_v2_done', 'old_flag_from_before_focus'],
+    });
+    const expired = loadCyklusRun();
+    expect(expired?.runFocus).toBeUndefined();
+    expect(expired?.currentCardId).toBe('glitchka_intro_noise');
+    expect(expired?.flags).toContain('old_flag_from_before_focus');
   });
 
   it('tutorial completion flags prevent tutorial from being forced again', () => {

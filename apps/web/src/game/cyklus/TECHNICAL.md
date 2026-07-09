@@ -263,7 +263,7 @@ getTopScoredCards(state, 5)    // top N karet s rozpisem skóre
 ## UI / CSS vylepšení
 
 - `StatDock` highlights chips whose values changed after a choice (`cyklus-stat-chip--changed`) and accepts `highlight` for tutorial focus (`cyklus-stat-chip--highlight`).
-- Tutorial V2 (`tutorial_00_welcome` through `tutorial_15_ready`) replaces the old 4-card tutorial. Progress panel shows `TUTORIAL X / 16` + mechanic label + sarcastic summary. Skip button stores `tutorial_v2_done` and jumps to `restart_0`.
+- Tutorial V2 (`tutorial_00_welcome` through `tutorial_15_ready`) is split into a required basic layer and optional extension. `tutorial_04b_junction` offers `CHCI HRÁT` or `CHCI JEŠTĚ VYSVĚTLIT`; the first path stores `tutorial_min_done`, `tutorial_v2_done`, `tutorial_done` and jumps to `restart_0`, while the second continues to `tutorial_05_profile`.
 - Pocket shows mood-based ambient glow via `cyklus-pocket--mood-{mood}`; `unstable` and `angry` items pulse subtly.
 - Mobile-first responsive tweaks keep the stat dock sticky and readable down to 360 px.
 - `focus-visible` rings and `prefers-reduced-motion` guards improve accessibility.
@@ -391,7 +391,21 @@ Výsledkem receptu je `CraftedArtifact`, který lze vybavit do slotu a který p�
 - `createCyklusRun(skipTutorial)` začíná `tutorial_00_welcome` pro nové hráče; skip začíná prologem.
 - `cyklusStorage.ts` ukládá `synthoma_cyklus_tutorial_v2_seen` pro trvalé přeskočení tutorialu.
 - `CyklusClient` zobrazuje `cyklus-tutorial-progress` panel a tlačítko `Přeskočit` s potvrzovacím overlay.
+- Minimum tutorial končí na `tutorial_04b_junction`. Volba `CHCI HRÁT` nastaví `tutorial_min_done`, `tutorial_v2_done`, `tutorial_done` a skočí na `restart_0`.
+- Volba `CHCI JEŠTĚ VYSVĚTLIT` nastaví `tutorial_min_done` a pokračuje rozšířením od `tutorial_05_profile` po `tutorial_15_ready`.
 - Skip nastaví `tutorial_v2_done` + `tutorial_done` a skočí na `restart_0`.
+
+## Release candidate QA
+
+Aktuální first-hour release candidate je krytý kombinací build/test/lint kontroly a cílených smoke testů:
+
+- produkční `npm run build` pro `/cyklus` a `/cyklus/void` SSR/build safety;
+- full Jest baseline bez coverage a Cyklus baseline bez heavy simulation;
+- first-hour smoke: minimum tutorial, extended tutorial, outcome, mixed restart, archive focus, Glitchka appendix focus;
+- save/load compatibility: save bez `runFocus`, save s `tutorial_v2_done` bez `tutorial_min_done`, scheduled tutorial karta, focused run, vypršelý focus a starší flag set;
+- focus route audit a targeted focus cards.
+
+Známé neblokující mezery jsou obsahové: některé focused oblasti by snesly víc ručně mířených karet a textové labely lze později doladit bez změny mechanik.
 
 ## Testy
 
@@ -400,7 +414,7 @@ npx jest src/game/cyklus --no-coverage
 npx jest src/components/cyklus --no-coverage
 ```
 
-Pokrytí (138+ testů):
+Pokrytí (271+ testů v běžném Cyklus baseline bez heavy simulation):
 
 - Vytvoření běhu, restart sekvence.
 - Smrt při statu 0/100, krizové itemy, rubber stamp.
@@ -416,7 +430,8 @@ Pokrytí (138+ testů):
 - C4.1 meta-progression: migrace starého save, void room upgrade, profilové mastery, nákup/vybavení protokolů, crafting, vybavení artefaktů, loadout limity, absence čistých stat boostů bez drawbacku.
 - C4.2 UI: `CyklusVoidHub` render, callback interakce místností/craftingu/loadoutu/protokolů, dynamické sloty.
 - C5 Story Director: `getStoryDirective`, `updateStoryAfterChoice`, `updateStoryAfterRun`, interlude scheduling, restart prologue forcing.
-- C5.1 Tutorial V2: 16 karet, linked scheduling, `tutorial_v2_done` flag, skip button, UI progress panel, restart blocking.
+- C5.1 Tutorial V2: basic/extended split, junction CTA, `tutorial_min_done`, `tutorial_v2_done`, skip button, UI progress panel, restart blocking.
+- Release candidate smoke: first-hour flow, focused runs, save/load compatibility and route/build safety checks.
 
 ## Rozšiřitelnost
 

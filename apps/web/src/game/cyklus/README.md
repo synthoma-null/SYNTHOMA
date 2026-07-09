@@ -143,7 +143,20 @@ npx jest src/game/cyklus --no-coverage
 npx jest src/components/cyklus --no-coverage
 ```
 
-**Test baseline** je aktuálně čistý: všechny cyklus testy kromě `cyklusSimulation.test.ts` procházejí (207+ testů). Simulační testy jsou vyřazeny z běžného CI kvůli délce trvání.
+**Test baseline** je aktuálně čistý: všechny cyklus testy kromě `cyklusSimulation.test.ts` procházejí (271+ testů). Simulační testy jsou vyřazeny z běžného CI kvůli délce trvání.
+
+### Release candidate QA
+
+Aktuální first-hour release candidate pokrývá:
+
+- tutorial basic/extended flow včetně rozcestníku `CHCI HRÁT` / `CHCI JEŠTĚ VYSVĚTLIT`;
+- summary-first outcome screen s plným logem schovaným za disclosure;
+- focused runs pro čtení oblasti nebo krátké appendix stopy;
+- targeted focus cards a focus route audit;
+- save/load smoke pro mixed run, scheduled tutorial kartu, focused run i vypršelý focus;
+- produkční build, Cyklus baseline bez heavy simulation a lokální lint pro dotčené soubory.
+
+Známé content gaps zůstávají neblokující: focus oblasti by snesly víc ručně mířených karet a některé labely lze později zostřit textově, bez změny mechanik.
 
 Stav se automaticky ukládá do `localStorage` přes `cyklusStorage.ts`. Přihlášený uživatel má navíc stav, historii i discovery synchronizované na server přes `/api/me/cyklus`, takže rozehraná hra přežije přechod na jiné zařízení nebo prohlížeč. Nepřihlášený uživatel zůstává na localStorage. Načítání obsahuje **migraci** — staré uložené stavy bez `seed`, `rngStep`, `unlockedCards`, `cycleSummaries` nebo starých polí `CyklusChoiceRecord` jsou doplněny výchozími hodnotami. Meta-progression se ukládá pod klíčem `synthoma_cyklus_progression_v1`, discovery pod `synthoma_cyklus_discovery`.
 
@@ -177,13 +190,15 @@ Příběh není lineární, ale řízený stavem. `cyklusStory.ts` udržuje `Sto
 
 ## Tutorial V2
 
-Starý 4-kartový tutorial byl nahrazen sekvencí 16 diegetických karet `tutorial_00_welcome` → `tutorial_15_ready`:
+Starý 4-kartový tutorial byl nahrazen 16 diegetickými kartami `tutorial_00_welcome` až `tutorial_15_ready`, ale aktuální flow už není povinně celé:
 
-- Každá karta vysvětluje jeden mechanický koncept (staty, rovnováha, preview, profil, itemy, otisky, následky, sektory, cyklus, restart, Void Hub, progrese, packy, start).
+- **Základ** vede přes `tutorial_00_welcome` až `tutorial_04b_junction` a vysvětlí swipe, staty, riziko 0/100, důsledky voleb a první cíl hráče.
+- Rozcestník `tutorial_04b_junction` nabízí `CHCI HRÁT` nebo `CHCI JEŠTĚ VYSVĚTLIT`.
+- `CHCI HRÁT` nastaví `tutorial_min_done`, `tutorial_v2_done`, `tutorial_done` a pustí hráče na `restart_0`.
+- `CHCI JEŠTĚ VYSVĚTLIT` nastaví `tutorial_min_done` a pokračuje do rozšíření od `tutorial_05_profile`.
+- **Rozšíření** vysvětluje profil, itemy, imprinty, entity/sektory, Void Hub, progresi a packy; finále `tutorial_15_ready` nastaví `tutorial_v2_done` + `tutorial_done` a pustí `restart_0`.
 - Všechny tutorial karty mají `category: 'tutorial'`, `rarity: 'unique'`, `triggerMode: 'scheduledOnly'`, `once: true`.
-- Finální karta `tutorial_15_ready` nastaví `tutorial_v2_done` + `tutorial_done` a scheduleuje `restart_0`.
-- Pro nové hráče začíná běh `tutorial_00_welcome`; pro hráče, kteří tutorial už viděli, začíná rovnou prologem.
-- UI zobrazuje `TUTORIAL X / 16` + label mechaniky + Sarkasmin závěr. Tlačítko *Přeskočit* uloží `tutorial_v2_done` a skočí na `restart_0`.
+- Tlačítko *Přeskočit* zůstává kompatibilní se starým `tutorial_v2_done` stavem a skočí na `restart_0`.
 
 ## Meta-progression (C4 — operating table of one's own identity)
 
