@@ -868,8 +868,9 @@ const CYCLE_CENTER_DRIFT = 0.15;
 
 function scheduleInterludeIfDue(state: CyklusRunState): CyklusRunState {
   if (state.cycle % 2 !== 0) return state;
-  const tutorialDone = state.flags.includes('tutorial_v2_done') || state.flags.includes('tutorial_min_done') || state.usedCardIds.includes('tutorial_15_ready') || state.usedCardIds.includes('tutorial_04b_junction');
+  const tutorialDone = state.flags.includes('tutorial_v2_done') || state.flags.includes('tutorial_done') || state.usedCardIds.includes('tutorial_15_ready');
   if (!tutorialDone) return state;
+  if (state.scheduledCards.some((sc) => sc.cardId.startsWith('tutorial_'))) return state;
   const story = loadStoryProgression();
   const interludeMap: Record<import('./cyklusStory').StoryActId, string> = {
     act0_restart_prologue: 'interlude_glitchka_sandbox',

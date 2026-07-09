@@ -1,13 +1,14 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import CyklusClient, { ActiveObjectivePanel, RunEndSummary } from '../CyklusClient';
-import { createCyklusRun } from '../../../game/cyklus/cyklusEngine';
+import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
 
 jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
 
 const { useSession } = require('next-auth/react');
+const RUN_STORAGE_KEY = 'synthoma_cyklus_run_v1';
 
 function makeChoiceRecord(cardId: string, turn: number, memoryDelta: number): CyklusChoiceRecord {
   return {
@@ -75,6 +76,22 @@ function makeReward(overrides: Partial<RunReward> = {}): RunReward {
     deathStat: 'memory',
     ...overrides,
   };
+}
+
+function makeTutorialJunctionState(): CyklusRunState {
+  let state = createCyklusRun(false);
+  while (state.currentCardId !== 'tutorial_04b_junction' && state.totalChoices < 10) {
+    state = resolveChoice(state, 'yes');
+  }
+  return state;
+}
+
+function storeRunState(state: CyklusRunState): void {
+  localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify(state));
+}
+
+async function continueStoredRun(): Promise<void> {
+  fireEvent.click(await screen.findByRole('button', { name: 'Pokračovat' }));
 }
 
 describe('CyklusClient', () => {
@@ -146,6 +163,57 @@ describe('CyklusClient', () => {
     expect(screen.getByText(/Tento běh se drží oblasti: Glitchčino hnízdo/)).toBeInTheDocument();
     expect(screen.getByText('Glitchčino hnízdo')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matching pool|glitchka_nest/i);
+  });
+
+  it('minimum tutorial path renders the junction and then releases the player into the run', async () => {
+    storeRunState(makeTutorialJunctionState());
+    render(<CyklusClient />);
+    await continueStoredRun();
+
+    expect(await screen.findByRole('button', { name: /CHCI HRÁT/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /CHCI JEŠTĚ VYSVĚTLIT/ })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /CHCI HRÁT/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('0 [RESTART]')).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/ROZŠÍŘENÍ/)).not.toBeInTheDocument();
+  });
+
+  it('extended tutorial path continues to tutorial_05_profile', async () => {
+    storeRunState(makeTutorialJunctionState());
+    render(<CyklusClient />);
+    await continueStoredRun();
+
+    fireEvent.click(await screen.findByRole('button', { name: /CHCI JEŠTĚ VYSVĚTLIT/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Profil není diagnóza')).toBeInTheDocument();
+    });
+    expect(screen.queryByText('0 [RESTART]')).not.toBeInTheDocument();
+  });
+
+  it('renders active focus with a human label and without internal QA terms', async () => {
+    const state = {
+      ...createCyklusRun(true, {
+        type: 'sector',
+        id: 'archive',
+        label: 'Archiv',
+        strictness: 'soft',
+        remainingCards: 10,
+      }),
+      currentCardId: 'first_boot',
+      flags: ['tutorial_min_done', 'tutorial_v2_done'],
+    };
+    storeRunState(state);
+
+    render(<CyklusClient />);
+    await continueStoredRun();
+
+    expect(await screen.findByText(/Tento běh se drží oblasti: Archiv/)).toBeInTheDocument();
+    expect(screen.getByText('Archiv')).toBeInTheDocument();
+    expect(document.body).not.toHaveTextContent(/strictness|payload|matcher|fallback|archive_pool/i);
   });
 });
 
