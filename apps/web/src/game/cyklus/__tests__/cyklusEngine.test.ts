@@ -438,7 +438,7 @@ describe('Cyklus engine', () => {
       const otherBreakdown = explainCardScore(state, otherCard);
 
       expect(focusedBreakdown.score).toBeGreaterThan(baselineBreakdown.score);
-      expect(focusedBreakdown.reasons).toContain('run focus soft +900');
+      expect(focusedBreakdown.reasons).toContain('run focus soft +700');
       expect(otherBreakdown.score).toBeGreaterThan(0);
     });
 
@@ -447,15 +447,15 @@ describe('Cyklus engine', () => {
       const packState = focusedState(packFocus);
       const packCard = findScoredCard(packState, (card) => cardMatchesRunFocus(card, packFocus));
       expect(packCard.packId).toBe(packFocus.id);
-      expect(explainCardScore(packState, packCard).reasons).toContain('run focus soft +900');
+      expect(explainCardScore(packState, packCard).reasons).toContain('run focus soft +700');
 
       const appendixFocus: CyklusRunFocus = { type: 'appendix', id: 'sarkasma_therapy', label: 'Sarkasmina terapie', strictness: 'strong', remainingCards: 8 };
       const appendixState = focusedState(appendixFocus);
       const appendixCard = findScoredCard(appendixState, (card) => cardMatchesRunFocus(card, appendixFocus));
       const appendixBreakdown = explainCardScore(appendixState, appendixCard);
 
-      expect(appendixCard.packId === appendixFocus.id || appendixCard.tags.includes(appendixFocus.id)).toBe(true);
-      expect(appendixBreakdown.reasons).toContain('run focus strong +2000');
+      expect(cardMatchesRunFocus(appendixCard, appendixFocus)).toBe(true);
+      expect(appendixBreakdown.reasons).toContain('run focus strong +6000');
     });
 
     it('strong focus still allows safe bypass cards and picks a focused-compatible candidate', () => {

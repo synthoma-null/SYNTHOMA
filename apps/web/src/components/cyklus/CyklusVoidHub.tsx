@@ -37,11 +37,11 @@ export const FOCUS_RUN_OPTIONS: Array<CyklusRunFocus & { actionLabel: string }> 
   { type: 'sector', id: 'memory_sandbox', label: 'Pískoviště paměti', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit do Pískoviště paměti' },
   { type: 'sector', id: 'glitchka_nest', label: 'Glitchčino hnízdo', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit ke Glitchce' },
   { type: 'sector', id: 'sarkasma_terminal', label: 'Sarkasmin terminál', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit k Sarkasmě' },
-  { type: 'sector', id: 'tai_core', label: 'T-AI jádro', strictness: 'soft', remainingCards: 10, actionLabel: 'Vstoupit do T-AI jádra' },
-  { type: 'appendix', id: 'toll_dvanactnik', label: 'Mýtnice Dvanáctníka', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Mýtnice Dvanáctníka' },
-  { type: 'appendix', id: 'detective_echo_case', label: 'Případ ozvěny', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Případ ozvěny' },
-  { type: 'appendix', id: 'sarkasma_therapy', label: 'Sarkasmina terapie', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Sarkasmina terapie' },
-  { type: 'appendix', id: 'glitchka_chat', label: 'Pokec s Glitchkou', strictness: 'strong', remainingCards: 8, actionLabel: 'Dodatek: Pokec s Glitchkou' },
+  { type: 'sector', id: 'tai_core', label: 'T-AI jádro', strictness: 'strong', remainingCards: 5, actionLabel: 'Vstoupit do T-AI jádra' },
+  { type: 'appendix', id: 'toll_dvanactnik', label: 'Mýtnice Dvanáctníka', strictness: 'strong', remainingCards: 5, actionLabel: 'Dodatek: Mýtnice Dvanáctníka' },
+  { type: 'appendix', id: 'detective_echo_case', label: 'Případ ozvěny', strictness: 'strong', remainingCards: 4, actionLabel: 'Dodatek: Případ ozvěny' },
+  { type: 'appendix', id: 'sarkasma_therapy', label: 'Sarkasmina terapie', strictness: 'strong', remainingCards: 4, actionLabel: 'Dodatek: Sarkasmina terapie' },
+  { type: 'appendix', id: 'glitchka_chat', label: 'Pokec s Glitchkou', strictness: 'strong', remainingCards: 3, actionLabel: 'Dodatek: Pokec s Glitchkou' },
 ];
 
 type Props = {
@@ -251,7 +251,7 @@ function FocusRunPanel({ actions }: { actions: CyklusVoidHubActions | undefined 
   return (
     <section className="void-hub-focus" aria-labelledby="void-hub-focus-title">
       <div>
-        <p className="cyklus-panel-kicker">FOCUS_MODE</p>
+        <p className="cyklus-panel-kicker">SMĚR BĚHU</p>
         <h3 id="void-hub-focus-title">Držet konkrétní stopu</h3>
         <p>Vyber oblast nebo dodatek. Běh se jí bude držet, ale nouzové dveře zůstanou odemčené.</p>
       </div>
@@ -263,7 +263,7 @@ function FocusRunPanel({ actions }: { actions: CyklusVoidHubActions | undefined 
             type="button"
             disabled={!actions?.onStartFocusedRun}
             onClick={() => selectFocus(focus)}
-            aria-label={`${focus.actionLabel}. Focus ${focus.strictness === 'strong' ? 'silný' : 'měkký'}.`}
+            aria-label={`${focus.actionLabel}. ${focus.type === 'appendix' ? 'Dodatek bude mít přednost.' : 'Oblast bude mít přednost.'}`}
           >
             {focus.actionLabel}
           </button>

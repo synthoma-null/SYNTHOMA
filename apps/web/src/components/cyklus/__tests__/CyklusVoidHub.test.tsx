@@ -125,6 +125,22 @@ describe('CyklusVoidHub', () => {
     expect(screen.getByRole('button', { name: /Dodatek: Mýtnice Dvanáctníka/ })).toBeInTheDocument();
   });
 
+  it('keeps mixed run and focused run wording free of internal terms', () => {
+    const progression = mockProgression();
+    render(<CyklusVoidHub progression={progression} state={null} actions={{ onStartRun: jest.fn(), onStartFocusedRun: jest.fn() }} />);
+
+    expect(screen.getByRole('button', { name: 'Spustit další běh' })).toBeInTheDocument();
+    expect(screen.getByText('SMĚR BĚHU')).toBeInTheDocument();
+    const focusButtons = screen.getAllByRole('button').filter((button) =>
+      button.textContent?.includes('Vstoupit') || button.textContent?.includes('Dodatek:'),
+    );
+    expect(focusButtons.length).toBeGreaterThan(0);
+    for (const button of focusButtons) {
+      expect(button).not.toHaveAccessibleName(/strictness|payload|matching pool|focus/i);
+    }
+    expect(document.body).not.toHaveTextContent(/strictness|payload|matching pool|FOCUS_MODE/i);
+  });
+
   it('shows understandable empty progression guidance', () => {
     const progression = mockProgression();
     render(<CyklusVoidHub progression={progression} state={null} actions={{}} />);

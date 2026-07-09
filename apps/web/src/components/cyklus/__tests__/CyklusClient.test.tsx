@@ -145,6 +145,7 @@ describe('CyklusClient', () => {
 
     expect(screen.getByText(/Tento běh se drží oblasti: Glitchčino hnízdo/)).toBeInTheDocument();
     expect(screen.getByText('Glitchčino hnízdo')).toBeInTheDocument();
+    expect(document.body).not.toHaveTextContent(/strictness|payload|matching pool|glitchka_nest/i);
   });
 });
 

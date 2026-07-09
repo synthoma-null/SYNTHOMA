@@ -26,6 +26,13 @@ const SECTOR_TAG_MAP: Record<SectorId, string[]> = {
   form_office: ['form', 'office'],
 };
 
+const RUN_FOCUS_TAG_ALIASES: Record<string, string[]> = {
+  toll_dvanactnik: ['toll_dvanactnik', 'debt', 'toll'],
+  detective_echo_case: ['detective_echo_case', 'detective', 'clue'],
+  sarkasma_therapy: ['sarkasma_therapy', 'sarkasma', 'therapy', 'defense', 'humor'],
+  glitchka_chat: ['glitchka_chat', 'glitchka', 'question', 'safe'],
+};
+
 export function hasItem(state: CyklusRunState, itemId: string): boolean {
   return state.inventory.includes(itemId);
 }
@@ -121,9 +128,11 @@ function cardMatchesSector(card: SwipeCard, sector: SectorId): boolean {
 }
 
 export function cardMatchesRunFocus(card: SwipeCard, focus: CyklusRunFocus): boolean {
+  if (card.category === 'tutorial' || card.category === 'restart') return false;
   if (focus.type === 'sector') return cardMatchesSector(card, focus.id as SectorId);
   if (card.packId === focus.id) return true;
-  return card.tags.some((tag) => tag === focus.id || tag === `${focus.type}:${focus.id}`);
+  const aliases = RUN_FOCUS_TAG_ALIASES[focus.id] ?? [];
+  return card.tags.some((tag) => tag === focus.id || tag === `${focus.type}:${focus.id}` || aliases.includes(tag));
 }
 
 function focusBypassCard(card: SwipeCard): boolean {
@@ -226,7 +235,7 @@ export function explainCardScore(state: CyklusRunState, card: SwipeCard): CardSc
   if (isFollowup(card) && card.conditions) { score += 300; reasons.push('followup +300'); }
   if (cardMatchesCurrentSector(state, card)) { score += 250; reasons.push('sector match +250'); }
   if (state.runFocus && cardMatchesRunFocus(card, state.runFocus)) {
-    const focusBonus = state.runFocus.strictness === 'strong' ? 2_000 : 900;
+    const focusBonus = state.runFocus.strictness === 'strong' ? 6_000 : 700;
     score += focusBonus;
     reasons.push(`run focus ${state.runFocus.strictness} +${focusBonus}`);
   }
@@ -356,7 +365,7 @@ export function pickNextCard(state: CyklusRunState): SwipeCard {
   if (state.runFocus?.strictness === 'strong') {
     const matching = scored.filter((entry) => cardMatchesRunFocus(entry.card, state.runFocus!));
     const useBleed = seededRandom(state.seed, state.rngStep + 701) < 0.12;
-    if (matching.length >= 2 && !useBleed) {
+    if (matching.length >= 1 && !useBleed) {
       const focused = scored.filter((entry) =>
         cardMatchesRunFocus(entry.card, state.runFocus!) ||
         focusBypassCard(entry.card) ||
