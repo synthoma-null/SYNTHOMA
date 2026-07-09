@@ -221,7 +221,8 @@ describe('normalizeChoicesToPlainText', () => {
   it('disables anchor choice-links by removing href and adding aria-disabled', () => {
     const html = '<p class="choice"><a class="choice-link" href="/ch2">Go</a></p>';
     const result = normalizeChoicesToPlainText(html);
-    expect(result).not.toContain('href="/ch2"');
+    expect(result).not.toMatch(/<a\b[^>]*\shref="\/ch2"/);
+    expect(result).toContain('data-href="/ch2"');
     expect(result).toContain('aria-disabled="true"');
     expect(result).toContain('typing');
   });
