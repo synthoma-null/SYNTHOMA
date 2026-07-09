@@ -364,8 +364,10 @@ export function pickNextCard(state: CyklusRunState): SwipeCard {
   let candidates = scored;
   if (state.runFocus?.strictness === 'strong') {
     const matching = scored.filter((entry) => cardMatchesRunFocus(entry.card, state.runFocus!));
-    const useBleed = seededRandom(state.seed, state.rngStep + 701) < 0.12;
-    if (matching.length >= 1 && !useBleed) {
+    const useBleed = state.totalChoices > 0 && seededRandom(state.seed, state.rngStep + 701) < 0.12;
+    if (matching.length >= 1 && state.totalChoices === 0) {
+      candidates = matching;
+    } else if (matching.length >= 1 && !useBleed) {
       const focused = scored.filter((entry) =>
         cardMatchesRunFocus(entry.card, state.runFocus!) ||
         focusBypassCard(entry.card) ||

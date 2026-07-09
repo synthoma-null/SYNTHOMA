@@ -219,9 +219,12 @@ function VoidHubNextAction({
       </div>
       <div className="void-hub-next-action__actions">
         {!activeRun && (
-          <ActionButton onClick={actions?.onStartRun} title={actions?.onStartRun ? undefined : 'Napoj onStartRun pro spuštění běhu.'}>
-            Spustit další běh
-          </ActionButton>
+          <div className="void-hub-action-with-note">
+            <ActionButton onClick={actions?.onStartRun} title={actions?.onStartRun ? undefined : 'Napoj onStartRun pro spuštění běhu.'}>
+              Spustit další běh
+            </ActionButton>
+            <span>Smíšený běh</span>
+          </div>
         )}
         {recommendation && (
           <ActionButton onClick={() => onSelectTab(targetTab)}>
@@ -265,7 +268,10 @@ function FocusRunPanel({ actions }: { actions: CyklusVoidHubActions | undefined 
             onClick={() => selectFocus(focus)}
             aria-label={`${focus.actionLabel}. ${focus.type === 'appendix' ? 'Dodatek bude mít přednost.' : 'Oblast bude mít přednost.'}`}
           >
-            {focus.actionLabel}
+            <span>{focus.actionLabel}</span>
+            <small>
+              {(focus.remainingCards ?? 0) <= 5 ? 'Krátká stopa' : focus.strictness === 'strong' ? 'Uzavřenější běh' : 'Volnější oblast'}
+            </small>
           </button>
         ))}
       </div>

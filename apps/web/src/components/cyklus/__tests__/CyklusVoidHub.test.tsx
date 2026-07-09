@@ -97,6 +97,7 @@ describe('CyklusVoidHub', () => {
     fireEvent.click(button);
     expect(onStartRun).toHaveBeenCalledTimes(1);
     expect(onStartFocusedRun).not.toHaveBeenCalled();
+    expect(screen.getByText('Smíšený běh')).toBeInTheDocument();
   });
 
   it('shows focused area run choices and calls the focused run callback', () => {
@@ -123,6 +124,7 @@ describe('CyklusVoidHub', () => {
 
     expect(screen.getByRole('button', { name: 'Spustit další běh' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Dodatek: Mýtnice Dvanáctníka/ })).toBeInTheDocument();
+    expect(screen.getAllByText('Krátká stopa').length).toBeGreaterThan(0);
   });
 
   it('keeps mixed run and focused run wording free of internal terms', () => {
@@ -131,6 +133,7 @@ describe('CyklusVoidHub', () => {
 
     expect(screen.getByRole('button', { name: 'Spustit další běh' })).toBeInTheDocument();
     expect(screen.getByText('SMĚR BĚHU')).toBeInTheDocument();
+    expect(screen.getByText('Smíšený běh')).toBeInTheDocument();
     const focusButtons = screen.getAllByRole('button').filter((button) =>
       button.textContent?.includes('Vstoupit') || button.textContent?.includes('Dodatek:'),
     );

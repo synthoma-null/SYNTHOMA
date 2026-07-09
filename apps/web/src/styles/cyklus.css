@@ -5010,6 +5010,17 @@
   font-size: 0.78rem;
 }
 
+.void-hub-action-with-note {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: end;
+}
+
+.void-hub-action-with-note span {
+  color: rgba(235, 252, 255, 0.58);
+  font-size: 0.72rem;
+}
+
 .void-hub-focus {
   display: grid;
   gap: 0.75rem;
@@ -5041,6 +5052,8 @@
 }
 
 .void-hub-focus__button {
+  display: grid;
+  gap: 0.18rem;
   min-height: 42px;
   padding: 0.52rem 0.7rem;
   border: 1px solid rgba(246, 255, 0, 0.28);
@@ -5049,6 +5062,16 @@
   color: rgba(245, 248, 236, 0.92);
   cursor: pointer;
   text-align: left;
+}
+
+.void-hub-focus__button span,
+.void-hub-focus__button small {
+  display: block;
+}
+
+.void-hub-focus__button small {
+  color: rgba(235, 252, 255, 0.62);
+  font-size: 0.72rem;
 }
 
 .void-hub-focus__button:hover:not(:disabled),
