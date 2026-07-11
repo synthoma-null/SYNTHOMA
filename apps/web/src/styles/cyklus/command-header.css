@@ -4,10 +4,12 @@
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) auto;
   min-width: 0;
-  min-height: 48px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
   align-items: center;
-  gap: 6px;
-  padding: 1px 4px;
+  gap: 0;
+  padding: 0;
   border-bottom: 1px solid var(--cy-line);
   background: color-mix(in srgb, var(--cy-surface-1) 97%, transparent);
 }
@@ -23,8 +25,16 @@
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 44px;
+  grid-template-rows: 44px;
+  width: max-content;
+  height: 44px;
+  white-space: nowrap;
   justify-content: end;
-  gap: 1px;
+  gap: 0;
+}
+
+.cyklus-game-header__actions > * {
+  grid-row: 1;
 }
 
 .cyklus-game-header__status {
@@ -41,6 +51,7 @@
 }
 
 .cyklus-game-header__status .cyklus-sector {
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
   color: var(--cy-accent-secondary);
@@ -68,7 +79,8 @@
   place-items: center;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--cy-radius-sm);
+  margin: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--cy-text-soft);
   text-decoration: none;
@@ -76,8 +88,8 @@
 }
 
 .cyklus-game-header .cyklus-header__action svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
@@ -102,7 +114,7 @@
   content: "";
   position: absolute;
   right: 5px;
-  bottom: 0;
+  bottom: 1px;
   left: 5px;
   height: 2px;
   background: var(--cy-accent-primary);
@@ -153,26 +165,15 @@
 
 @media (max-width: 767px) {
   .cyklus-page > .cyklus-root--playing {
-    grid-template-rows: 48px 52px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+    grid-template-rows: 44px 52px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
   }
 
   .cyklus-page > .cyklus-root--playing > .cyklus-game-header {
     grid-row: 1;
-    min-height: 48px;
-    padding-inline: 2px;
-  }
-
-  .cyklus-game-header {
-    grid-template-columns: 44px minmax(0, 1fr) repeat(3, 44px);
-    gap: 0;
-  }
-
-  .cyklus-game-header--with-skip {
-    grid-template-columns: 44px minmax(0, 1fr) repeat(4, 44px);
-  }
-
-  .cyklus-game-header__actions {
-    display: contents;
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    padding: 0;
   }
 
   .cyklus-root--playing > .cyklus-desktop-top > .cyklus-stat-dock {
@@ -193,9 +194,6 @@
     letter-spacing: 0;
   }
 
-  .cyklus-game-header .cyklus-header__action {
-    border-radius: 0;
-  }
 }
 
 @media (max-width: 379px) {
@@ -220,7 +218,7 @@
 
 /* The global identity panel keeps its content, while Cyklus owns its trigger. */
 .id-panel-root--cyklus {
-  top: calc(52px + env(safe-area-inset-top));
+  top: calc(44px + env(safe-area-inset-top));
   right: max(4px, env(safe-area-inset-right));
 }
 
