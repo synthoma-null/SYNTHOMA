@@ -13,7 +13,6 @@ import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from 
 import StatDock from './StatDock';
 import { CyklusVoidHub } from './CyklusVoidHub';
 import CyklusVoidHubClient from './CyklusVoidHubClient';
-import CyklusMobileHud from './CyklusMobileHud';
 import CyklusBottomNav from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
@@ -204,7 +203,6 @@ export default function CyklusClient() {
   const [showReward, setShowReward] = useState(false);
   const [showVoidHub, setShowVoidHub] = useState(false);
   const [showSkipConfirm, setShowSkipConfirm] = useState(false);
-  const [showDiag, setShowDiag] = useState(false);
   const [showPocketSheet, setShowPocketSheet] = useState(false);
   const [confirmActivateId, setConfirmActivateId] = useState<string | null>(null);
   const prevSectorRef = useRef<string | null>(null);
@@ -425,6 +423,11 @@ export default function CyklusClient() {
   const dismissOutcome = useCallback(() => {
     if (outcomeTimer.current) clearTimeout(outcomeTimer.current);
     setOutcomeVisible(false);
+    setTimeout(() => cardRef.current?.focus({ preventScroll: true }), 0);
+  }, []);
+
+  const handleOpenIdentity = useCallback(() => {
+    document.querySelector<HTMLButtonElement>('.id-panel-btn')?.click();
   }, []);
 
   const handleActivateItem = useCallback((itemId: string) => {
@@ -621,12 +624,19 @@ export default function CyklusClient() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (outcomeVisible) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          dismissOutcome();
+        }
+        return;
+      }
       if (e.key === 'ArrowRight') handleChoice('yes');
       if (e.key === 'ArrowLeft') handleChoice('no');
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [handleChoice]);
+  }, [dismissOutcome, handleChoice, outcomeVisible]);
 
   if (loading) return <div className="cyklus-loading">Nahrává se cyklus…</div>;
 
@@ -745,31 +755,27 @@ export default function CyklusClient() {
           </section>
         </div>
       )}
-      {!ending && (
-        <CyklusMobileHud state={state} onToggleDiag={() => setShowDiag((v) => !v)} diagOpen={showDiag} tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (() => {
-          const tp = TUTORIAL_PROGRESS_MAP[card.id];
-          const tierLabel = tp?.tier === 'ext' ? 'ROZŠÍŘENÍ' : 'ZÁKLAD';
-          return (
-            <div className="cyklus-tutorial-progress">
-              <span className="cyklus-tutorial-progress__label">{tierLabel} {tp?.index ?? 1} / {tp?.total ?? 5}</span>
-              <span className="cyklus-tutorial-progress__mechanic">{tp?.label ?? 'Onboarding'}</span>
-              <span className="cyklus-tutorial-progress__flavour">Sarkasmin závěr: &quot;{tp?.flavour ?? 'Systém se tváří profesionálně. To je lépe formátovaná panika.'}&quot;</span>
-            </div>
-          );
-        })() : undefined} />
-      )}
-
-      <header className="cyklus-header">
+      <header className="cyklus-header" data-testid="cyklus-gameplay-header">
         <div className="cyklus-title">SYNTHOMA: CYKLUS</div>
         <div className="cyklus-chapter">
-          <span className="cyklus-chapter__number">{chapter.number}</span>
           <span className="cyklus-chapter__title">{chapter.title}</span>
           <span className="cyklus-chapter__subtitle">{chapter.subtitle}</span>
         </div>
         <div className="cyklus-meta">
+          <span className="cyklus-sector">{SECTOR_LABELS[state.sector]}</span>
+          <span className="cyklus-cycle">{chapter.number}</span>
+          <span className="cyklus-progress">{state.choiceInCycle}/{12}</span>
+        </div>
+        <nav className="cyklus-header__actions" aria-label="Ovládání hry">
+          <a className="cyklus-header__action" href="/" aria-label="Domů">
+            <span aria-hidden="true">⌂</span><span className="cyklus-header__action-label">Domů</span>
+          </a>
+          <button className="cyklus-header__action" type="button" onClick={handleOpenIdentity} aria-label="Identita">
+            <span aria-hidden="true">◉</span><span className="cyklus-header__action-label">Identita</span>
+          </button>
           {card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') && (
             <button
-              className="cyklus-header__skip"
+              className="cyklus-header__action cyklus-header__skip"
               onClick={() => setShowSkipConfirm(true)}
               type="button"
               title="Přeskočit tutorial"
@@ -777,7 +783,7 @@ export default function CyklusClient() {
               Přeskočit
             </button>
           )}
-        </div>
+        </nav>
       </header>
 
       <main className="cyklus-stage">
@@ -967,6 +973,7 @@ export default function CyklusClient() {
               onPointerUp={onPointerUp}
               onPointerCancel={onPointerCancel}
               onClickCapture={onCardClickCapture}
+              tabIndex={-1}
             >
               {card.tags.includes('overload') && (
                 <div className="cyklus-card__overload">
@@ -1899,6 +1906,7 @@ function getRewardType(record: CyklusChoiceRecord | undefined): { label: string;
 }
 
 function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: () => void }) {
+  const continueRef = useRef<HTMLButtonElement>(null);
   const record = state.history[state.history.length - 1];
   const deltas = record ? Object.entries(record.statDelta) as [StatKey, number][] : [];
   const hasSectorChange = record && record.sectorBefore !== record.sectorAfter;
@@ -1913,11 +1921,14 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
     (cond: CardCondition) => cond.type === 'unlockedPool' && freshPools.includes(cond.poolId ?? ''),
   ));
 
+  useEffect(() => {
+    continueRef.current?.focus({ preventScroll: true });
+  }, []);
+
   return (
-    <div className="cyklus-outcome" role="dialog" aria-label="Dopad volby">
-      <button className="cyklus-outcome__dismiss-surface" type="button" onClick={onDismiss} aria-label="Pokračovat po dopadu volby" />
+    <div className={`cyklus-outcome ${reward?.cls ?? 'reward--silent'}`} role="dialog" aria-modal="true" aria-label="Dopad volby">
       <div className="cyklus-outcome__content" aria-live="polite">
-      <div className="cyklus-outcome__label">
+      <div className="cyklus-outcome__label" id="cyklus-outcome-title">
         Dopad volby
         {reward && <span className={`cyklus-outcome__reward ${reward.cls}`}>{reward.label}</span>}
       </div>
@@ -1943,7 +1954,7 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
       )}
       {entityDeltas && <div className="cyklus-outcome__hint">Profil se posunul.</div>}
       {isFreshMeta && <div className="cyklus-outcome__fresh-meta">Tato karta byla odemčena předchozím koncem.</div>}
-      <div className="cyklus-outcome__continue">Klikni nebo stiskni Enter pro pokračování</div>
+      <button ref={continueRef} className="cyklus-outcome__continue" type="button" onClick={onDismiss}>POKRAČOVAT</button>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import CyklusClient, { ActiveObjectivePanel, RunEndSummary, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
 import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
@@ -262,6 +262,28 @@ describe('CyklusClient', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Odmítnout: KALIBROVAT' }));
     expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
   });
+
+  it('restores sector, cycle, progress, home and identity in one gameplay header', async () => {
+    const identityTarget = document.createElement('button');
+    identityTarget.className = 'id-panel-btn';
+    const identityClick = jest.fn();
+    identityTarget.addEventListener('click', identityClick);
+    document.body.appendChild(identityTarget);
+
+    await renderFirstBootRun();
+    const header = screen.getByTestId('cyklus-gameplay-header');
+    const headerQueries = within(header);
+
+    expect(headerQueries.getByText('Prázdnota')).toBeInTheDocument();
+    expect(headerQueries.getByText('CYKLUS 01')).toBeInTheDocument();
+    expect(headerQueries.getByText('1/12')).toBeInTheDocument();
+    expect(headerQueries.getByRole('link', { name: 'Domů' })).toHaveAttribute('href', '/');
+    fireEvent.click(headerQueries.getByRole('button', { name: 'Identita' }));
+    expect(identityClick).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('.cyklus-mobile-hud')).toBeNull();
+
+    identityTarget.remove();
+  });
 });
 
 describe('Cyklus swipe gesture helpers', () => {
@@ -349,6 +371,26 @@ describe('Cyklus pointer gestures', () => {
     fireEvent.click(accept);
 
     expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
+  });
+});
+
+describe('Cyklus choice feedback', () => {
+  it('shows a focused dialog with explicit continuation and restores card focus', async () => {
+    const card = await renderFirstBootRun();
+    fireEvent.click(screen.getByRole('button', { name: 'Přijmout: SPUSTIT' }));
+
+    const dialog = await screen.findByRole('dialog', { name: 'Dopad volby' });
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(dialog).toHaveTextContent(/Systém se rozběhl/);
+    expect(dialog).toHaveTextContent(/Energie ↑ 8/);
+    expect(dialog).not.toHaveTextContent('Klikni nebo stiskni Enter pro pokračování');
+
+    const continueButton = within(dialog).getByRole('button', { name: 'POKRAČOVAT' });
+    expect(continueButton).toHaveFocus();
+    fireEvent.click(continueButton);
+
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Dopad volby' })).not.toBeInTheDocument());
+    await waitFor(() => expect(card).toHaveFocus());
   });
 });
 

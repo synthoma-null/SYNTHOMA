@@ -1,0 +1,224 @@
+/* Gameplay identity rail and immediate choice feedback. */
+
+.cyklus-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--cy-space-3);
+  min-width: 0;
+  min-height: var(--cy-header-height);
+  padding: 0 0 var(--cy-space-2);
+}
+
+.cyklus-chapter {
+  min-width: 0;
+}
+
+.cyklus-chapter__title,
+.cyklus-chapter__subtitle {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cyklus-meta,
+.cyklus-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--cy-space-2);
+}
+
+.cyklus-meta {
+  font: 700 0.66rem/1.2 var(--cy-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cyklus-sector {
+  color: var(--cy-magenta-soft);
+}
+
+.cyklus-cycle {
+  color: var(--cy-cyan-soft);
+}
+
+.cyklus-progress {
+  color: var(--cy-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.cyklus-header__action {
+  display: inline-flex;
+  min-width: var(--cy-tap);
+  min-height: var(--cy-tap);
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--cy-line);
+  border-radius: var(--cy-radius-sm);
+  background: color-mix(in srgb, var(--cy-accent-system) 4%, transparent);
+  color: var(--cy-cyan-soft);
+  font: 700 0.64rem/1 var(--cy-font-mono);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.cyklus-header__action:hover,
+.cyklus-header__action:focus-visible {
+  border-color: var(--cy-line-strong);
+  background: color-mix(in srgb, var(--cy-accent-system) 8%, transparent);
+}
+
+.cyklus-outcome {
+  --outcome-accent: var(--cy-magenta);
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  overflow: hidden;
+  border: 0;
+  background: rgba(2, 3, 6, 0.82);
+}
+
+.cyklus-outcome.reward--item,
+.cyklus-outcome.reward--big,
+.cyklus-outcome.reward--medium {
+  --outcome-accent: var(--cy-yellow);
+}
+
+.cyklus-outcome.reward--sector,
+.cyklus-outcome.reward--profile {
+  --outcome-accent: var(--cy-cyan);
+}
+
+.cyklus-outcome::before {
+  content: none;
+}
+
+.cyklus-outcome__content {
+  width: min(100%, 520px);
+  max-width: calc(100% - 24px);
+  max-height: 76%;
+  padding: clamp(0.9rem, 3vw, 1.35rem);
+  overflow-y: auto;
+  overflow-x: clip;
+  border: 1px solid var(--cy-line-strong);
+  border-left: 3px solid var(--outcome-accent);
+  background: var(--cy-panel-solid);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.62), 0 0 22px color-mix(in srgb, var(--outcome-accent) 12%, transparent);
+  pointer-events: auto;
+}
+
+.cyklus-outcome__label,
+.cyklus-outcome__stats,
+.cyklus-outcome__sector,
+.cyklus-outcome__items,
+.cyklus-outcome__hint,
+.cyklus-outcome__fresh-meta,
+.cyklus-outcome__continue {
+  font-family: var(--cy-font-mono);
+}
+
+.cyklus-outcome__story {
+  font-family: var(--font-family-primary), system-ui, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.12rem);
+  line-height: 1.55;
+  text-transform: none;
+}
+
+.cyklus-outcome__continue {
+  width: 100%;
+  min-height: var(--cy-tap);
+  margin-top: var(--cy-space-2);
+  border: 1px solid var(--outcome-accent);
+  background: color-mix(in srgb, var(--outcome-accent) 8%, transparent);
+  color: var(--cy-text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .cyklus-page > .cyklus-root--playing {
+    grid-template-rows: 44px 44px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+  }
+
+  .cyklus-page > .cyklus-root--playing > .cyklus-header {
+    display: grid;
+    grid-row: 1;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px;
+    min-height: 44px;
+    padding: 0 4px;
+    border-bottom: 1px solid var(--cy-line);
+    background: rgba(2, 3, 6, 0.97);
+  }
+
+  .cyklus-root--playing > .cyklus-desktop-top > .cyklus-stat-dock {
+    grid-row: 2;
+  }
+
+  .cyklus-root--playing > .cyklus-stage {
+    grid-row: 3;
+  }
+
+  .cyklus-root--playing > .cyklus-bottom-nav {
+    grid-row: 4;
+  }
+
+  .cyklus-title,
+  .cyklus-chapter {
+    display: none;
+  }
+
+  .cyklus-meta {
+    min-width: 0;
+    gap: 0.45rem;
+    overflow: hidden;
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .cyklus-sector {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cyklus-header__actions {
+    gap: 2px;
+  }
+
+  .cyklus-header__action {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 1rem;
+  }
+
+  .cyklus-header__action-label,
+  .cyklus-header__skip {
+    font-size: 0;
+  }
+
+  .cyklus-header__skip::before {
+    content: "SKIP";
+    font-size: 0.55rem;
+  }
+
+  .cyklus-outcome__content {
+    width: calc(100% - 24px);
+    max-width: 520px;
+    max-height: 76%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-outcome {
+    animation: none;
+  }
+}
