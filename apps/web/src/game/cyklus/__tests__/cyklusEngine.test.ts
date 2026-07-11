@@ -868,6 +868,8 @@ describe('Cyklus engine', () => {
 
     it('rerollRunGoals changes goals once with goal_reroll_active', () => {
       const state = createCyklusRun(true);
+      state.seed = 'reroll-test-0';
+      state.goals = generateRunGoals(state.seed);
       state.flags = ['goal_reroll_active'];
       const original = state.goals.map((g) => g.id);
       const rerolled = rerollRunGoals(state);

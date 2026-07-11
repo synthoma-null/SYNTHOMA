@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import CyklusClient, { ActiveObjectivePanel, RunEndSummary, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
+import CyklusClient, { ActiveObjectivePanel, EndReportVerdict, RunEndSummary, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
 import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
@@ -396,12 +396,13 @@ describe('Cyklus choice feedback', () => {
 
 describe('RunEndSummary', () => {
   it('shows a short outcome summary and recommended next steps', () => {
+    const onOpenVoidHub = jest.fn();
     render(
       <RunEndSummary
         state={makeDeathState()}
         ending={deathEnding}
         reward={makeReward()}
-        onOpenVoidHub={jest.fn()}
+        onOpenVoidHub={onOpenVoidHub}
         onRestart={jest.fn()}
       />,
     );
@@ -409,7 +410,18 @@ describe('RunEndSummary', () => {
     expect(screen.getByText(/KONEC: Přesycení paměti/)).toBeInTheDocument();
     expect(screen.getByText(/Paměť dosáhla 100/)).toBeInTheDocument();
     expect(screen.getByText('Otevři Prázdnotu a uprav loadout.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Otevřít Prázdnotu/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Otevřít Prázdnotu/ }));
+    expect(onOpenVoidHub).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the sentence-case verdict separate from system labels', () => {
+    render(<EndReportVerdict state={makeDeathState()} ending={deathEnding} />);
+
+    const verdict = screen.getByTestId('cyklus-end-verdict');
+    expect(verdict).toHaveAttribute('data-report-region', 'verdict');
+    expect(screen.getByRole('heading', { name: 'Přesycení paměti' })).not.toHaveClass('is-uppercase');
+    expect(screen.getByText(/Paměť dosáhla 100/)).toHaveClass('cyklus-end__verdict-text');
+    expect(verdict.querySelectorAll('.cyklus-end__stat-label')).toHaveLength(4);
   });
 
   it('keeps the full log hidden until the disclosure is opened', () => {

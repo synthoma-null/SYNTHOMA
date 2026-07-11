@@ -1,0 +1,185 @@
+/* Final report hierarchy: centered verdict, readable summary, technical diagnostics. */
+
+.cyklus-end {
+  grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr);
+  align-items: start;
+}
+
+.cyklus-end__header {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid var(--cy-line-strong);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--cy-accent-system) 4%, transparent), transparent 72%);
+  text-align: center;
+}
+
+.cyklus-end__system-label,
+.cyklus-end__codename,
+.cyklus-end__section-label,
+.cyklus-end-summary__eyebrow,
+.cyklus-end-summary__label,
+.cyklus-reward__system-label,
+.cyklus-reward__section-label,
+.cyklus-end__diagnostics-summary {
+  font-family: var(--cy-font-mono);
+  text-transform: uppercase;
+}
+
+.cyklus-end__codename {
+  margin-top: var(--cy-space-2);
+}
+
+.cyklus-end__title {
+  max-width: 18ch;
+  margin: var(--cy-space-3) auto 0;
+  font-family: var(--font-family-heading), var(--cy-font-mono);
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.cyklus-end__verdict-text {
+  max-width: 62ch;
+  margin: var(--cy-space-3) auto 0;
+  color: var(--cy-text-soft);
+  font-family: var(--font-family-primary), system-ui, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  line-height: 1.55;
+  text-transform: none;
+}
+
+.cyklus-end__header .cyklus-end__stats-snapshot {
+  width: min(100%, 620px);
+  margin: var(--cy-space-4) auto 0;
+}
+
+.cyklus-end__primary,
+.cyklus-end__diagnostics {
+  align-self: stretch;
+}
+
+.cyklus-end__primary > .cyklus-end-summary {
+  margin-top: 0;
+}
+
+.cyklus-end__primary .cyklus-end-summary__intro {
+  display: none;
+}
+
+.cyklus-end-summary__text,
+.cyklus-end-summary__muted,
+.cyklus-end-summary__steps,
+.cyklus-end-summary__row > :first-child,
+.cyklus-reward__flavor,
+.cyklus-reward__reason,
+.cyklus-reward__advice,
+.cyklus-end__text,
+.cyklus-end__survival-reasons,
+.cyklus-death-analysis__text,
+.cyklus-behavioral__text,
+.cyklus-finding__desc,
+.cyklus-meta-unlock__reason,
+.cyklus-end__near-extreme-note {
+  font-family: var(--font-family-primary), system-ui, sans-serif;
+  text-transform: none;
+}
+
+.cyklus-end-summary__actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cyklus-end-summary__actions .cyklus-btn--primary {
+  grid-column: 1 / -1;
+  border-bottom: 2px solid var(--cy-magenta);
+  background: color-mix(in srgb, var(--cy-accent-memory) 9%, var(--cy-panel-solid));
+}
+
+.cyklus-end__diagnostics {
+  text-align: left;
+}
+
+.cyklus-end__diagnostics-summary {
+  min-height: var(--cy-tap);
+  align-content: center;
+  color: var(--cy-cyan-soft);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.cyklus-end__diagnostics-body > :is(
+  .cyklus-end__survival-type,
+  .cyklus-end__text,
+  .cyklus-death-analysis,
+  .cyklus-behavioral,
+  .cyklus-end__profile,
+  .cyklus-end__route,
+  .cyklus-end__imprints,
+  .cyklus-end__near-extreme,
+  .cyklus-end__findings,
+  .cyklus-end__meta-unlocks
+) {
+  margin: 0;
+  padding: var(--cy-space-3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--cy-line-dim);
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (min-width: 901px) {
+  .cyklus-end__diagnostics-summary {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .cyklus-end {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cyklus-end__header,
+  .cyklus-end__primary,
+  .cyklus-end__diagnostics,
+  .cyklus-end > .cyklus-end__actions,
+  .cyklus-end > .cyklus-history {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .cyklus-end {
+    gap: var(--cy-space-2);
+  }
+
+  .cyklus-end__header {
+    padding: var(--cy-space-4) var(--cy-space-3);
+  }
+
+  .cyklus-end__title {
+    font-size: clamp(1.75rem, 10vw, 2.6rem);
+  }
+
+  .cyklus-end__verdict-text {
+    font-size: 1rem;
+  }
+
+  .cyklus-end__header .cyklus-end__stats-snapshot {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cyklus-end__stat-row {
+    text-align: center;
+  }
+
+  .cyklus-end-summary__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .cyklus-end-summary__actions .cyklus-btn--primary {
+    grid-column: 1;
+  }
+}

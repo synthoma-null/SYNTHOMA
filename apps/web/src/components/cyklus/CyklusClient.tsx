@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo, useId } from 'react';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
@@ -767,9 +768,9 @@ export default function CyklusClient() {
           <span className="cyklus-progress">{state.choiceInCycle}/{12}</span>
         </div>
         <nav className="cyklus-header__actions" aria-label="Ovládání hry">
-          <a className="cyklus-header__action" href="/" aria-label="Domů">
+          <Link className="cyklus-header__action" href="/" aria-label="Domů">
             <span aria-hidden="true">⌂</span><span className="cyklus-header__action-label">Domů</span>
-          </a>
+          </Link>
           <button className="cyklus-header__action" type="button" onClick={handleOpenIdentity} aria-label="Identita">
             <span aria-hidden="true">◉</span><span className="cyklus-header__action-label">Identita</span>
           </button>
@@ -789,13 +790,8 @@ export default function CyklusClient() {
       <main className="cyklus-stage">
         {ending ? (
           <div className="cyklus-end">
+            <EndReportVerdict state={state} ending={ending} />
             <div className="cyklus-end__primary">
-              <div className="cyklus-end__header">
-                <div className="cyklus-end__system-label">ZÁVĚREČNÁ ZPRÁVA SUBJEKTU</div>
-                <div className="cyklus-end__codename">{generateRunCodename(state)}</div>
-                <div className="cyklus-end__title">{state.status === 'completed' ? computeStabilizationVariant(state).title : ending.title}</div>
-                <div className="cyklus-end__subtitle">{state.status === 'completed' ? 'Konec: Stabilizace' : `Konec: ${ending.title}`}</div>
-              </div>
               <RunEndSummary
                 state={state}
                 ending={ending}
@@ -805,7 +801,9 @@ export default function CyklusClient() {
               />
               {runReward && <RewardSection reward={runReward} progression={progression} />}
             </div>
-            <div className="cyklus-end__diagnostics">
+            <details className="cyklus-end__diagnostics" data-report-region="diagnostics" open>
+            <summary className="cyklus-end__diagnostics-summary">DIAGNOSTIKA BĚHU</summary>
+            <div className="cyklus-end__diagnostics-body">
             {(() => {
               const variant = state.status === 'completed' ? computeStabilizationVariant(state) : null;
               return variant ? (
@@ -823,14 +821,6 @@ export default function CyklusClient() {
                 <div className="cyklus-end__text">{ending.text}</div>
               );
             })()}
-            <div className="cyklus-end__stats-snapshot">
-              {(['energy', 'memory', 'bond', 'control'] as StatKey[]).map((k) => (
-                <div key={k} className="cyklus-end__stat-row">
-                  <span className="cyklus-end__stat-label">{STAT_LABELS[k]}</span>
-                  <span className={`cyklus-end__stat-value ${state.stats[k] <= 10 || state.stats[k] >= 90 ? 'cyklus-end__stat-value--extreme' : state.stats[k] <= 20 || state.stats[k] >= 80 ? 'cyklus-end__stat-value--danger' : ''}`}>{state.stats[k]}</span>
-                </div>
-              ))}
-            </div>
             {state.status === 'dead' && <DeathAnalysis state={state} recentComments={loadRecentCyklusComments()} />}
             <BehavioralAnalysis state={state} />
             <div className="cyklus-end__profile">
@@ -910,6 +900,7 @@ export default function CyklusClient() {
               </div>
             )}
             </div>
+            </details>
             <div className="cyklus-end__actions">
               <button
                 className="cyklus-btn cyklus-btn--secondary"
@@ -1507,6 +1498,27 @@ function getRecommendedNextSteps(reward: RunReward | null): string[] {
   return [...new Set(steps)].slice(0, 3);
 }
 
+export function EndReportVerdict({ state, ending }: { state: CyklusRunState; ending: RunEnding }) {
+  const stabilizationVariant = state.status === 'completed' ? computeStabilizationVariant(state) : null;
+  const title = stabilizationVariant?.title ?? ending.title;
+  return (
+    <header className="cyklus-end__header" data-testid="cyklus-end-verdict" data-report-region="verdict">
+      <div className="cyklus-end__system-label">ZÁVĚREČNÁ ZPRÁVA SUBJEKTU</div>
+      <div className="cyklus-end__codename">{generateRunCodename(state)}</div>
+      <h1 className="cyklus-end__title">{title}</h1>
+      <p className="cyklus-end__verdict-text">{getOutcomeExplanation(state, ending, stabilizationVariant)}</p>
+      <div className="cyklus-end__stats-snapshot" aria-label="Konečné hodnoty statů">
+        {(['energy', 'memory', 'bond', 'control'] as StatKey[]).map((key) => (
+          <div key={key} className="cyklus-end__stat-row">
+            <span className="cyklus-end__stat-label">{STAT_LABELS[key]}</span>
+            <span className={`cyklus-end__stat-value ${state.stats[key] <= 10 || state.stats[key] >= 90 ? 'cyklus-end__stat-value--extreme' : state.stats[key] <= 20 || state.stats[key] >= 80 ? 'cyklus-end__stat-value--danger' : ''}`}>{state.stats[key]}</span>
+          </div>
+        ))}
+      </div>
+    </header>
+  );
+}
+
 export function RunEndSummary({
   state,
   ending,
@@ -1535,7 +1547,7 @@ export function RunEndSummary({
   );
 
   return (
-    <section className="cyklus-end-summary" aria-labelledby="cyklus-end-summary-title">
+    <section className="cyklus-end-summary" aria-labelledby="cyklus-end-summary-title" data-report-region="summary">
       <div className="cyklus-end-summary__intro">
         <div className="cyklus-end-summary__eyebrow">KONEC</div>
         <h2 className="cyklus-end-summary__title" id="cyklus-end-summary-title">KONEC: {outcomeTitle}</h2>
