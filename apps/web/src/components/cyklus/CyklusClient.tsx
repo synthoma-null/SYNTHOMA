@@ -210,13 +210,18 @@ export default function CyklusClient() {
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
-  const startX = useRef(0);
-  const startY = useRef(0);
-  const lastPointerX = useRef(0);
-  const lastPointerAt = useRef(0);
+  const gesturePointerId = useRef<number | null>(null);
+  const gestureStartX = useRef(0);
+  const gestureStartY = useRef(0);
+  const gestureStartTime = useRef(0);
+  const gestureLastX = useRef(0);
+  const gestureLastTime = useRef(0);
+  const gestureAxis = useRef<'undecided' | 'horizontal' | 'vertical'>('undecided');
+  const gestureDidDrag = useRef(false);
+  const suppressClick = useRef(false);
+  const suppressClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dragXRef = useRef(0);
   const swipeVelocity = useRef(0);
-  const touchAxis = useRef<'x' | 'y' | null>(null);
-  const isDragging = useRef(false);
   const outcomeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -514,81 +519,104 @@ export default function CyklusClient() {
     setShowSkipConfirm(false);
   }, [state]);
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    if (flyDirection || outcomeVisible) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    const now = performance.now();
-    startX.current = touch.clientX;
-    startY.current = touch.clientY;
-    lastPointerX.current = touch.clientX;
-    lastPointerAt.current = now;
-    swipeVelocity.current = 0;
-    touchAxis.current = null;
-  };
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (flyDirection || outcomeVisible) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    const x = touch.clientX - startX.current;
-    const y = touch.clientY - startY.current;
-    if (!touchAxis.current && Math.max(Math.abs(x), Math.abs(y)) >= 6) {
-      touchAxis.current = Math.abs(x) > Math.abs(y) * 1.15 ? 'x' : 'y';
-    }
-    if (touchAxis.current !== 'x') return;
-    const now = performance.now();
-    const elapsed = Math.max(1, now - lastPointerAt.current);
-    swipeVelocity.current = (touch.clientX - lastPointerX.current) / elapsed;
-    lastPointerX.current = touch.clientX;
-    lastPointerAt.current = now;
-    const cardWidth = cardRef.current?.clientWidth ?? 420;
-    const maxDrag = Math.max(120, Math.min(180, cardWidth * 0.45));
-    setDragX(Math.max(-maxDrag, Math.min(maxDrag, x)));
-  };
-  const onTouchEnd = () => {
-    if (flyDirection || outcomeVisible) return;
-    const decision = getSwipeDecision(dragX, cardRef.current?.clientWidth ?? 420, swipeVelocity.current);
-    touchAxis.current = null;
-    swipeVelocity.current = 0;
-    if (decision) handleChoice(decision);
-    else setDragX(0);
+  const updateDragX = (value: number) => {
+    dragXRef.current = value;
+    setDragX(value);
   };
 
-  const onMouseDown = (e: React.MouseEvent) => {
-    if (flyDirection || outcomeVisible) return;
-    isDragging.current = true;
-    startX.current = e.clientX;
-    lastPointerX.current = e.clientX;
-    lastPointerAt.current = performance.now();
+  const releaseGestureCapture = (target: HTMLDivElement, pointerId: number) => {
+    if (typeof target.hasPointerCapture === 'function' && target.hasPointerCapture(pointerId)) {
+      target.releasePointerCapture(pointerId);
+    }
+  };
+
+  const clearGesture = () => {
+    gesturePointerId.current = null;
+    gestureAxis.current = 'undecided';
+    gestureDidDrag.current = false;
     swipeVelocity.current = 0;
   };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current || flyDirection || outcomeVisible) return;
-    const x = e.clientX - startX.current;
+
+  const armClickSuppression = () => {
+    suppressClick.current = true;
+    if (suppressClickTimer.current) clearTimeout(suppressClickTimer.current);
+    suppressClickTimer.current = setTimeout(() => {
+      suppressClick.current = false;
+      suppressClickTimer.current = null;
+    }, 0);
+  };
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (flyDirection || outcomeVisible || gesturePointerId.current !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
     const now = performance.now();
-    const elapsed = Math.max(1, now - lastPointerAt.current);
-    swipeVelocity.current = (e.clientX - lastPointerX.current) / elapsed;
-    lastPointerX.current = e.clientX;
-    lastPointerAt.current = now;
+    gesturePointerId.current = e.pointerId;
+    gestureStartX.current = e.clientX;
+    gestureStartY.current = e.clientY;
+    gestureStartTime.current = now;
+    gestureLastX.current = e.clientX;
+    gestureLastTime.current = now;
+    gestureAxis.current = 'undecided';
+    gestureDidDrag.current = false;
+    swipeVelocity.current = 0;
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (gesturePointerId.current !== e.pointerId || flyDirection || outcomeVisible) return;
+    const dx = e.clientX - gestureStartX.current;
+    const dy = e.clientY - gestureStartY.current;
+    if (gestureAxis.current === 'undecided') {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+      if (Math.abs(dx) > Math.abs(dy) * 1.15) {
+        gestureAxis.current = 'horizontal';
+        gestureDidDrag.current = true;
+        if (typeof e.currentTarget.setPointerCapture === 'function') e.currentTarget.setPointerCapture(e.pointerId);
+      } else if (Math.abs(dy) > Math.abs(dx) * 1.15) {
+        gestureAxis.current = 'vertical';
+        gestureDidDrag.current = true;
+        return;
+      } else {
+        return;
+      }
+    }
+    if (gestureAxis.current !== 'horizontal') return;
+    e.preventDefault();
+    const now = performance.now();
+    const elapsed = Math.max(1, now - gestureLastTime.current);
+    swipeVelocity.current = (e.clientX - gestureLastX.current) / elapsed;
+    gestureLastX.current = e.clientX;
+    gestureLastTime.current = now;
     const cardWidth = cardRef.current?.clientWidth ?? 420;
     const maxDrag = Math.max(120, Math.min(180, cardWidth * 0.45));
-    setDragX(Math.max(-maxDrag, Math.min(maxDrag, x)));
+    updateDragX(Math.max(-maxDrag, Math.min(maxDrag, dx)));
   };
-  const onMouseUp = () => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
-    if (flyDirection || outcomeVisible) return;
-    const decision = getSwipeDecision(dragX, cardRef.current?.clientWidth ?? 420, swipeVelocity.current);
-    swipeVelocity.current = 0;
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (gesturePointerId.current !== e.pointerId) return;
+    const wasHorizontal = gestureAxis.current === 'horizontal';
+    const wasDrag = gestureDidDrag.current;
+    const decision = wasHorizontal && !flyDirection && !outcomeVisible
+      ? getSwipeDecision(dragXRef.current, cardRef.current?.clientWidth ?? 420, swipeVelocity.current)
+      : null;
+    releaseGestureCapture(e.currentTarget, e.pointerId);
+    clearGesture();
+    if (wasDrag) armClickSuppression();
     if (decision) handleChoice(decision);
-    else setDragX(0);
+    else updateDragX(0);
   };
-  const onMouseLeave = () => {
-    if (isDragging.current) {
-      isDragging.current = false;
-      if (!flyDirection && !outcomeVisible) setDragX(0);
-      swipeVelocity.current = 0;
-    }
+
+  const onPointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (gesturePointerId.current !== e.pointerId) return;
+    releaseGestureCapture(e.currentTarget, e.pointerId);
+    if (gestureDidDrag.current) armClickSuppression();
+    clearGesture();
+    updateDragX(0);
+  };
+
+  const onCardClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!suppressClick.current) return;
+    e.preventDefault();
+    e.stopPropagation();
+    suppressClick.current = false;
   };
 
   useEffect(() => {
@@ -934,13 +962,11 @@ export default function CyklusClient() {
                 '--swipe-progress': Math.min(1, Math.abs(dragX) / getSwipeThreshold(cardRef.current?.clientWidth ?? 420)),
                 '--swipe-opacity': Math.max(0, (Math.min(1, Math.abs(dragX) / getSwipeThreshold(cardRef.current?.clientWidth ?? 420)) - 0.18) / 0.82),
               } as React.CSSProperties}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-              onMouseDown={onMouseDown}
-              onMouseMove={onMouseMove}
-              onMouseUp={onMouseUp}
-              onMouseLeave={onMouseLeave}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerCancel}
+              onClickCapture={onCardClickCapture}
             >
               {card.tags.includes('overload') && (
                 <div className="cyklus-card__overload">

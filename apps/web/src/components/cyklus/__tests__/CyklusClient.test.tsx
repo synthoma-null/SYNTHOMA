@@ -94,9 +94,38 @@ async function continueStoredRun(): Promise<void> {
   fireEvent.click(await screen.findByRole('button', { name: 'Pokračovat' }));
 }
 
+async function renderFirstBootRun(): Promise<HTMLElement> {
+  const state = {
+    ...createCyklusRun(true),
+    currentCardId: 'first_boot',
+    flags: ['tutorial_min_done', 'tutorial_v2_done'],
+    preRunWarning: null,
+  } as CyklusRunState;
+  storeRunState(state);
+  render(<CyklusClient />);
+  await continueStoredRun();
+  const reject = await screen.findByRole('button', { name: 'Odmítnout: KALIBROVAT' });
+  const card = reject.closest('.cyklus-card') as HTMLElement;
+  Object.defineProperty(card, 'clientWidth', { configurable: true, value: 400 });
+  return card;
+}
+
 describe('CyklusClient', () => {
   beforeAll(() => {
     window.scrollTo = jest.fn();
+    if (!window.PointerEvent) {
+      class TestPointerEvent extends MouseEvent {
+        readonly pointerId: number;
+        readonly pointerType: string;
+
+        constructor(type: string, init: PointerEventInit = {}) {
+          super(type, init);
+          this.pointerId = init.pointerId ?? 0;
+          this.pointerType = init.pointerType ?? '';
+        }
+      }
+      Object.defineProperty(window, 'PointerEvent', { configurable: true, value: TestPointerEvent });
+    }
   });
 
   beforeEach(() => {
@@ -246,6 +275,80 @@ describe('Cyklus swipe gesture helpers', () => {
     expect(getSwipeDecision(30, 390, 0.7)).toBe('yes');
     expect(getSwipeDecision(-30, 390, -0.7)).toBe('no');
     expect(getSwipeDecision(30, 390, 0.2)).toBeNull();
+  });
+});
+
+describe('Cyklus pointer gestures', () => {
+  const pointer = { pointerId: 7, pointerType: 'touch', button: 0 };
+
+  it('starts a horizontal choice from the card title', async () => {
+    const card = await renderFirstBootRun();
+    const title = screen.getByRole('heading', { name: 'První boot' });
+
+    fireEvent.pointerDown(title, { ...pointer, clientX: 120, clientY: 80 });
+    fireEvent.pointerMove(title, { ...pointer, clientX: 230, clientY: 84 });
+    fireEvent.pointerUp(title, { ...pointer, clientX: 230, clientY: 84 });
+
+    expect(card).toHaveClass('cyklus-card--fly-yes');
+    expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
+  });
+
+  it('starts a horizontal choice from the scrollable scene', async () => {
+    await renderFirstBootRun();
+    const scene = document.querySelector('.cyklus-card-scene') as HTMLElement;
+
+    fireEvent.pointerDown(scene, { ...pointer, clientX: 250, clientY: 360 });
+    fireEvent.pointerMove(scene, { ...pointer, clientX: 140, clientY: 364 });
+    fireEvent.pointerUp(scene, { ...pointer, clientX: 140, clientY: 364 });
+
+    expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
+  });
+
+  it('leaves a vertical scene drag to scrolling without choosing', async () => {
+    const card = await renderFirstBootRun();
+    const scene = document.querySelector('.cyklus-card-scene') as HTMLElement;
+
+    fireEvent.pointerDown(scene, { ...pointer, clientX: 180, clientY: 220 });
+    fireEvent.pointerMove(scene, { ...pointer, clientX: 184, clientY: 310 });
+    fireEvent.pointerUp(scene, { ...pointer, clientX: 184, clientY: 310 });
+
+    expect(screen.queryByRole('dialog', { name: 'Dopad volby' })).not.toBeInTheDocument();
+    expect(card).toHaveStyle({ transform: 'translateX(0px) rotate(0deg) scale(1)' });
+  });
+
+  it('suppresses the button click that follows a swipe from the choice area', async () => {
+    await renderFirstBootRun();
+    const reject = screen.getByRole('button', { name: 'Odmítnout: KALIBROVAT' });
+
+    fireEvent.pointerDown(reject, { ...pointer, clientX: 250, clientY: 500 });
+    fireEvent.pointerMove(reject, { ...pointer, clientX: 140, clientY: 503 });
+    fireEvent.pointerUp(reject, { ...pointer, clientX: 140, clientY: 503 });
+
+    expect(fireEvent.click(reject)).toBe(false);
+    expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
+  });
+
+  it('resets the card after pointer cancellation', async () => {
+    const card = await renderFirstBootRun();
+
+    fireEvent.pointerDown(card, { ...pointer, clientX: 120, clientY: 260 });
+    fireEvent.pointerMove(card, { ...pointer, clientX: 190, clientY: 262 });
+    expect(card).not.toHaveStyle({ transform: 'translateX(0px) rotate(0deg) scale(1)' });
+
+    fireEvent.pointerCancel(card, { ...pointer, clientX: 190, clientY: 262 });
+    expect(card).toHaveStyle({ transform: 'translateX(0px) rotate(0deg) scale(1)' });
+    expect(screen.queryByRole('dialog', { name: 'Dopad volby' })).not.toBeInTheDocument();
+  });
+
+  it('keeps a normal tap on a choice button functional', async () => {
+    await renderFirstBootRun();
+    const accept = screen.getByRole('button', { name: 'Přijmout: SPUSTIT' });
+
+    fireEvent.pointerDown(accept, { ...pointer, clientX: 280, clientY: 500 });
+    fireEvent.pointerUp(accept, { ...pointer, clientX: 280, clientY: 500 });
+    fireEvent.click(accept);
+
+    expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
   });
 });
 
