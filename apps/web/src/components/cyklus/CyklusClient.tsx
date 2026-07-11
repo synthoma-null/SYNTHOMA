@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo, useId } from 'react';
 import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
@@ -88,6 +88,44 @@ export function ActiveObjectivePanel({
         </p>
       )}
     </section>
+  );
+}
+
+function SystemNoticeOverlay({
+  variant,
+  label,
+  text,
+  onClose,
+}: {
+  variant: 'sector' | 'summary' | 'warning' | 'forecast';
+  label: string;
+  text: string;
+  onClose: () => void;
+}) {
+  const titleId = useId();
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className={`cyklus-overlay cyklus-overlay--${variant}`}>
+      <button className="cyklus-overlay__backdrop" type="button" onClick={onClose} aria-label={`Zavřít: ${label}`} />
+      <section className={`cyklus-system-modal cyklus-system-modal--${variant}`} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+        <header className="cyklus-system-modal__header">
+          <span id={titleId}>{label}</span>
+          <button className="cyklus-system-modal__close" type="button" onClick={onClose} aria-label={`Zavřít: ${label}`}>×</button>
+        </header>
+        <div className="cyklus-system-modal__body">{text}</div>
+        <footer className="cyklus-system-modal__actions">
+          <button className="cyklus-terminal-action" type="button" onClick={onClose}>Pokračovat</button>
+        </footer>
+      </section>
+    </div>
   );
 }
 
@@ -229,6 +267,19 @@ export default function CyklusClient() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [state?.currentCardId]);
+
+  useEffect(() => {
+    if (!showSkipConfirm && !showVoidHub && !showBuild && !showDiscovery) return;
+    const handleOverlayEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      if (showSkipConfirm) setShowSkipConfirm(false);
+      else if (showVoidHub) setShowVoidHub(false);
+      else if (showBuild) setShowBuild(false);
+      else if (showDiscovery) setShowDiscovery(false);
+    };
+    document.addEventListener('keydown', handleOverlayEscape);
+    return () => document.removeEventListener('keydown', handleOverlayEscape);
+  }, [showBuild, showDiscovery, showSkipConfirm, showVoidHub]);
 
   useEffect(() => {
     if (!state || state.status !== 'playing') return;
@@ -544,8 +595,10 @@ export default function CyklusClient() {
           </div>
         </div>
         {showVoidHub && (
-          <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub" onClick={() => setShowVoidHub(false)}>
-            <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+          <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
+            <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu" />
+            <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Prázdnota">
+              <button className="cyklus-overlay__close" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu">×</button>
               <CyklusVoidHubClient
                 playHref="/cyklus"
                 compact={false}
@@ -570,46 +623,37 @@ export default function CyklusClient() {
     <>
     <div className={`cyklus-root ${ending ? 'cyklus-root--ended' : ''}`}>
       {sectorIntro && (
-        <div className="cyklus-overlay cyklus-overlay--sector" onClick={() => setSectorIntro(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSectorIntro(null); }}>
-          <div className="cyklus-overlay__sector-label">{SECTOR_LABELS[state.sector]}</div>
-          <div className="cyklus-overlay__sector-text">{sectorIntro}</div>
-          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
-        </div>
+        <SystemNoticeOverlay variant="sector" label={SECTOR_LABELS[state.sector]} text={sectorIntro} onClose={() => setSectorIntro(null)} />
       )}
       {cycleSummary && (
-        <div className="cyklus-overlay cyklus-overlay--summary" onClick={() => setCycleSummary(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCycleSummary(null); }}>
-          <div className="cyklus-overlay__summary-text">{cycleSummary}</div>
-          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
-        </div>
+        <SystemNoticeOverlay variant="summary" label="SOUHRN CYKLU" text={cycleSummary} onClose={() => setCycleSummary(null)} />
       )}
       {preRunWarning && (
-        <div className="cyklus-overlay cyklus-overlay--warning" onClick={() => setPreRunWarning(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setPreRunWarning(null); }}>
-          <div className="cyklus-overlay__warning-label">ZÁZNAM PŘEDCHOZÍHO SUBJEKTU</div>
-          <div className="cyklus-overlay__warning-text">{preRunWarning}</div>
-          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
-        </div>
+        <SystemNoticeOverlay variant="warning" label="ZÁZNAM PŘEDCHOZÍHO SUBJEKTU" text={preRunWarning} onClose={() => setPreRunWarning(null)} />
       )}
       {cycleForecast && !preRunWarning && (
-        <div className="cyklus-overlay cyklus-overlay--forecast" onClick={() => setCycleForecast(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCycleForecast(null); }}>
-          <div className="cyklus-overlay__forecast-title">PREDIKCE CYKLU {String(state.cycle).padStart(2, '0')}</div>
-          <div className="cyklus-overlay__forecast-text">{cycleForecast}</div>
-          <div className="cyklus-overlay__continue">Klikni pro pokračování</div>
-        </div>
+        <SystemNoticeOverlay variant="forecast" label={`PREDIKCE CYKLU ${String(state.cycle).padStart(2, '0')}`} text={cycleForecast} onClose={() => setCycleForecast(null)} />
       )}
       {showSkipConfirm && (
         <div className="cyklus-overlay cyklus-overlay--warning">
-          <div className="cyklus-overlay__warning-label">PŘESKOČIT TUTORIÁL?</div>
-          <div className="cyklus-overlay__warning-text">
-            Systém ti nebude vysvětlovat, proč se rozpadáš. Což je tvoje právo a naše budoucí zábava.
-          </div>
-          <div className="cyklus-overlay__actions">
-            <button className="cyklus-btn cyklus-btn--secondary" type="button" onClick={() => setShowSkipConfirm(false)}>
-              Zůstat v onboarding
-            </button>
-            <button className="cyklus-btn cyklus-btn--yes" type="button" onClick={handleSkipTutorial}>
-              Přeskočit
-            </button>
-          </div>
+          <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu" />
+          <section className="cyklus-system-modal cyklus-system-modal--warning" role="dialog" aria-modal="true" aria-labelledby="cyklus-skip-tutorial-title">
+            <header className="cyklus-system-modal__header">
+              <span id="cyklus-skip-tutorial-title">PŘESKOČIT TUTORIÁL?</span>
+              <button className="cyklus-system-modal__close" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu">×</button>
+            </header>
+            <div className="cyklus-system-modal__body">
+              Systém ti nebude vysvětlovat, proč se rozpadáš. Což je tvoje právo a naše budoucí zábava.
+            </div>
+            <footer className="cyklus-system-modal__actions">
+              <button className="cyklus-terminal-action" type="button" onClick={() => setShowSkipConfirm(false)}>
+                Zůstat v onboarding
+              </button>
+              <button className="cyklus-terminal-action cyklus-terminal-action--warning" type="button" onClick={handleSkipTutorial}>
+                Přeskočit
+              </button>
+            </footer>
+          </section>
         </div>
       )}
       {!ending && (
@@ -1103,8 +1147,10 @@ export default function CyklusClient() {
       </CyklusBottomSheet>
 
       {showBuild && state && (
-        <div className="cyklus-overlay cyklus-overlay--build" onClick={() => setShowBuild(false)}>
-          <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+        <div className="cyklus-overlay cyklus-overlay--build">
+          <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowBuild(false)} aria-label="Zavřít build" />
+          <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Build a stabilizace">
+            <button className="cyklus-overlay__close" type="button" onClick={() => setShowBuild(false)} aria-label="Zavřít build">×</button>
             <div className="cyklus-build__title">Možný typ přežití</div>
             <BuildPanel state={state} />
             <div className="cyklus-build__title cyklus-build__title--goals">Dnešní cíle</div>
@@ -1124,15 +1170,19 @@ export default function CyklusClient() {
       )}
 
       {showDiscovery && (
-        <div className="cyklus-overlay cyklus-overlay--discovery" onClick={() => setShowDiscovery(false)}>
-          <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+        <div className="cyklus-overlay cyklus-overlay--discovery">
+          <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowDiscovery(false)} aria-label="Zavřít archiv" />
+          <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Archiv a objevy">
+            <button className="cyklus-overlay__close" type="button" onClick={() => setShowDiscovery(false)} aria-label="Zavřít archiv">×</button>
             <DiscoveryPanel discovery={discovery} />
           </div>
         </div>
       )}
       {showVoidHub && (
-        <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub" onClick={() => setShowVoidHub(false)}>
-          <div className="cyklus-overlay__panel" onClick={(e) => e.stopPropagation()}>
+        <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
+          <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu" />
+          <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Prázdnota">
+            <button className="cyklus-overlay__close" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu">×</button>
             <CyklusVoidHubClient
               playHref="/cyklus"
               compact={false}
@@ -1775,7 +1825,9 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
   ));
 
   return (
-    <div className="cyklus-outcome" onClick={onDismiss} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onDismiss(); }}>
+    <div className="cyklus-outcome" role="dialog" aria-label="Dopad volby">
+      <button className="cyklus-outcome__dismiss-surface" type="button" onClick={onDismiss} aria-label="Pokračovat po dopadu volby" />
+      <div className="cyklus-outcome__content" aria-live="polite">
       <div className="cyklus-outcome__label">
         Dopad volby
         {reward && <span className={`cyklus-outcome__reward ${reward.cls}`}>{reward.label}</span>}
@@ -1802,7 +1854,8 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
       )}
       {entityDeltas && <div className="cyklus-outcome__hint">Profil se posunul.</div>}
       {isFreshMeta && <div className="cyklus-outcome__fresh-meta">Tato karta byla odemčena předchozím koncem.</div>}
-      <div className="cyklus-outcome__continue">Klikni pro pokračování</div>
+      <div className="cyklus-outcome__continue">Klikni nebo stiskni Enter pro pokračování</div>
+      </div>
     </div>
   );
 }

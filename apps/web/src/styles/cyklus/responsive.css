@@ -1,0 +1,360 @@
+/* Final viewport safeguards. Mobile is the primary layout. */
+
+.cyklus-page,
+.cyklus-void-page,
+.cyklus-page > .cyklus-root,
+.cyklus-void-client-shell,
+.cyklus-void-hub,
+.cyklus-stage,
+.cyklus-card,
+.cyklus-end,
+.cyklus-overlay__panel {
+  max-width: 100%;
+}
+
+.cyklus-page :is(h1, h2, h3, p, span, strong, small, button, li),
+.cyklus-void-page :is(h1, h2, h3, p, span, strong, small, button, li) {
+  overflow-wrap: anywhere;
+}
+
+.cyklus-page :is(button, a),
+.cyklus-void-page :is(button, a) {
+  min-height: var(--cy-tap);
+}
+
+.cyklus-page video,
+.cyklus-void-page video {
+  max-width: 100%;
+}
+
+@media (max-width: 479px) {
+  .cyklus-mobile-hud__top,
+  .cyklus-mobile-hud__bottom {
+    padding-inline: var(--cy-space-2);
+  }
+
+  .cyklus-stat-dock {
+    gap: 1px;
+    padding: 0;
+  }
+
+  .cyklus-stat-chip {
+    min-height: 46px;
+  }
+
+  .cyklus-stage {
+    gap: var(--cy-space-1);
+    padding: var(--cy-space-1) var(--cy-space-2) var(--cy-space-2);
+  }
+
+  .cyklus-active-objective {
+    max-height: 72px;
+  }
+
+  .cyklus-card {
+    min-height: 0;
+  }
+
+  .cyklus-card-scene {
+    font-size: 0.875rem;
+  }
+
+  .cyklus-card__preview {
+    min-height: 74px;
+  }
+
+  .cyklus-preview {
+    min-height: 74px;
+  }
+
+  .cyklus-menu__intro-line {
+    font-size: 0.82rem;
+  }
+
+  .cyklus-menu__button {
+    font-size: 0.74rem;
+  }
+
+  .cyklus-end-summary__row,
+  .cyklus-reward__currency,
+  .cyklus-reward__purse-currency {
+    min-width: 0;
+  }
+
+  .cyklus-end-summary__delta,
+  .cyklus-end-summary__reward-detail {
+    white-space: normal;
+  }
+
+  .cyklus-overlay__panel,
+  .cyklus-system-modal__body,
+  .cyklus-bottom-sheet__body {
+    font-size: 0.875rem;
+  }
+
+  .void-hub-status-rail strong,
+  .resource-pill,
+  .craft-status-pill,
+  .void-room-badge {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 379px) {
+  .cyklus-mobile-hud__top {
+    min-height: 24px;
+  }
+
+  .cyklus-mobile-hud__bottom {
+    min-height: 28px;
+  }
+
+  .cyklus-mobile-hud__risk {
+    max-width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cyklus-stat-chip {
+    padding-inline: 0.22rem;
+  }
+
+  .cyklus-stat-chip__label {
+    font-size: 0.5rem;
+  }
+
+  .cyklus-active-objective {
+    padding-block: 0.3rem;
+  }
+
+  .cyklus-card__metadata {
+    gap: var(--cy-space-1);
+  }
+
+  .cyklus-card__context {
+    max-width: 42%;
+  }
+
+  .cyklus-preview::before {
+    font-size: 0.55rem;
+  }
+
+  .cyklus-preview__hint {
+    -webkit-line-clamp: 1;
+  }
+
+  .cyklus-bottom-nav {
+    min-height: 64px;
+  }
+
+  .cyklus-bottom-nav__btn {
+    padding-inline: 0.1rem;
+  }
+
+  .cyklus-bottom-nav__label {
+    max-width: 72px;
+  }
+}
+
+@media (max-width: 379px) and (max-height: 700px) {
+  .cyklus-active-objective__hint,
+  .cyklus-active-objective__focus {
+    display: none;
+  }
+
+  .cyklus-active-objective__text {
+    -webkit-line-clamp: 1;
+  }
+
+  .cyklus-card {
+    gap: 0.35rem;
+    padding: 0.45rem;
+  }
+
+  .cyklus-card__title {
+    font-size: 1rem;
+  }
+
+  .cyklus-card-scene {
+    padding-block: 0.35rem;
+    font-size: 0.875rem;
+    line-height: 1.42;
+  }
+
+  .cyklus-card__preview,
+  .cyklus-preview {
+    min-height: 68px;
+  }
+
+  .cyklus-preview__risk {
+    display: none;
+  }
+
+  .cyklus-bottom-nav {
+    min-height: 58px;
+  }
+
+  .cyklus-bottom-nav__icon {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .cyklus-stage {
+    padding-inline: var(--cy-space-3);
+  }
+
+  .cyklus-active-objective,
+  .cyklus-card {
+    width: min(100%, 620px);
+    justify-self: center;
+  }
+
+  .cyklus-card-scene {
+    font-size: 0.94rem;
+  }
+
+  .cyklus-bottom-nav__label {
+    font-size: 0.62rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
+    min-height: 100dvh;
+  }
+
+  .cyklus-header {
+    position: relative;
+  }
+
+  .cyklus-card {
+    width: min(100%, 720px);
+    height: clamp(520px, calc(100dvh - 170px), 700px);
+  }
+
+  .cyklus-active-objective {
+    width: min(100%, 720px);
+  }
+
+  .cyklus-stat-dock {
+    max-width: none;
+  }
+
+  .cyklus-desktop-top {
+    align-items: start;
+  }
+
+  .void-hub-status-rail {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .void-hub-focus__options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
+    min-height: 100dvh;
+  }
+
+  .cyklus-stage {
+    align-self: stretch;
+  }
+
+  .cyklus-card {
+    height: clamp(540px, calc(100dvh - 160px), 760px);
+  }
+
+  .cyklus-overlay--void-hub .cyklus-overlay__panel {
+    max-height: 92dvh;
+  }
+}
+
+@media (min-width: 1366px) {
+  .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
+    grid-template-columns: minmax(240px, 300px) minmax(520px, 760px) minmax(240px, 320px);
+    gap: var(--cy-space-5);
+  }
+
+  .cyklus-card {
+    width: min(100%, 720px);
+  }
+
+  .cyklus-void-client-shell {
+    width: min(100%, 1380px);
+  }
+}
+
+@media (min-width: 1600px) {
+  .cyklus-page > .cyklus-root:not(.cyklus-root--menu),
+  .cyklus-void-client-shell {
+    width: min(100%, 1440px);
+  }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+  }
+
+  .cyklus-mobile-hud__top {
+    display: none;
+  }
+
+  .cyklus-stat-chip {
+    min-height: 44px;
+    grid-template-areas:
+      "label value"
+      "bar bar";
+  }
+
+  .cyklus-stat-chip__status {
+    display: none;
+  }
+
+  .cyklus-active-objective {
+    max-height: 42px;
+  }
+
+  .cyklus-active-objective__hint,
+  .cyklus-active-objective__focus {
+    display: none;
+  }
+
+  .cyklus-active-objective__text {
+    -webkit-line-clamp: 1;
+  }
+
+  .cyklus-card {
+    gap: var(--cy-space-1);
+    padding: var(--cy-space-2);
+  }
+
+  .cyklus-card__title {
+    font-size: 1rem;
+  }
+
+  .cyklus-card-scene {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .cyklus-card__preview,
+  .cyklus-preview {
+    min-height: 64px;
+  }
+
+  .cyklus-bottom-nav {
+    min-height: 52px;
+  }
+
+  .cyklus-bottom-nav__btn {
+    grid-template-columns: auto auto;
+    grid-template-rows: 1fr;
+    justify-content: center;
+  }
+}

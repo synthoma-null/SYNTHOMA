@@ -1,0 +1,50 @@
+/* Low-amplitude SYNTHOMA OS motion. */
+
+.cyklus-page::after,
+.cyklus-void-page::after {
+  animation: cyklus-os-scan-drift 18s linear infinite;
+}
+
+.cyklus-menu__brand {
+  animation: cyklus-os-boot-flicker 540ms steps(2, end) 1 both;
+}
+
+.cyklus-mobile-hud__risk--critical,
+.cyklus-stat-chip--low-danger::after,
+.cyklus-stat-chip--high-danger::after {
+  animation: cyklus-os-critical-pulse 1.8s ease-in-out infinite;
+}
+
+.void-hub-status-rail strong,
+.cyklus-outcome__label,
+.cyklus-card__category {
+  text-rendering: geometricPrecision;
+}
+
+@keyframes cyklus-os-scan-drift {
+  from { transform: translateY(-4px); }
+  to { transform: translateY(4px); }
+}
+
+@keyframes cyklus-os-boot-flicker {
+  0% { opacity: 0.25; filter: blur(1px); }
+  22% { opacity: 1; filter: none; }
+  36% { opacity: 0.55; }
+  52%, 100% { opacity: 1; filter: none; }
+}
+
+@keyframes cyklus-os-critical-pulse {
+  50% { opacity: 0.62; box-shadow: 0 0 12px rgba(244, 232, 58, 0.22); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-page::after,
+  .cyklus-void-page::after,
+  .cyklus-menu__brand,
+  .cyklus-mobile-hud__risk--critical,
+  .cyklus-stat-chip--low-danger::after,
+  .cyklus-stat-chip--high-danger::after {
+    animation: none;
+    transform: none;
+  }
+}
