@@ -58,6 +58,14 @@ function getRecentChanges(history: CyklusChoiceRecord[], statKey: StatKey): { ca
   return result;
 }
 
+function getLastDelta(history: CyklusChoiceRecord[], statKey: StatKey): number {
+  for (let i = history.length - 1; i >= 0; i--) {
+    const delta = history[i]?.statDelta[statKey] ?? 0;
+    if (delta !== 0) return delta;
+  }
+  return 0;
+}
+
 function getDangerProximity(value: number): { label: string; cls: string } | null {
   if (value <= 10) return { label: `Do konce zbývá ${value} bodů`, cls: 'critical-low' };
   if (value <= 20) return { label: `${value} bodů od krize`, cls: 'warn-low' };
@@ -194,6 +202,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
           const value = stats[key];
           const state = getStatState(value);
           const label = statStateLabel(state, value);
+          const lastDelta = getLastDelta(history, key);
           const isHighlighted = highlight === 'all' || highlight === key;
           const isChanged = changedKeys.has(key);
           return (
@@ -212,16 +221,25 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
               aria-label={`${STAT_LABELS[key]}: ${value}, ${label}. Klikni pro popis.`}
             >
               <span className="cyklus-stat-chip__label">{STAT_LABELS[key]}</span>
-              <span className="cyklus-stat-chip__value">{value}</span>
-              <span className="cyklus-stat-chip__bar" role="presentation">
-                <span
-                  className={`cyklus-stat-chip__fill cyklus-stat-chip__fill--${state}`}
-                  style={{ '--stat-fill-pct': `${value}%` } as React.CSSProperties}
-                />
-                <span className="cyklus-stat-chip__safe-zone" aria-hidden="true" />
-                <span className="cyklus-stat-chip__center" aria-hidden="true" />
+              <span className="cyklus-stat-chip__value-group">
+                <span className="cyklus-stat-chip__value">{value}</span>
+                {lastDelta !== 0 && (
+                  <span className={`cyklus-stat-chip__delta ${lastDelta > 0 ? 'is-up' : 'is-down'}`} aria-label={`Poslední změna ${lastDelta > 0 ? 'nahoru' : 'dolů'} ${Math.abs(lastDelta)}`}>
+                    {lastDelta > 0 ? '↑' : '↓'}
+                  </span>
+                )}
               </span>
-              <span className={`cyklus-stat-chip__status cyklus-stat-chip__status--${state}`}>{label}</span>
+              <span className="cyklus-stat-chip__bar" role="presentation" style={{ '--stat-fill-pct': `${value}%` } as React.CSSProperties}>
+                <span className="cyklus-stat-chip__zone cyklus-stat-chip__zone--low" aria-hidden="true" />
+                <span className="cyklus-stat-chip__safe-zone" aria-hidden="true" />
+                <span className="cyklus-stat-chip__zone cyklus-stat-chip__zone--high" aria-hidden="true" />
+                <span className={`cyklus-stat-chip__fill cyklus-stat-chip__fill--${state}`} aria-hidden="true" />
+                <span className="cyklus-stat-chip__center" aria-hidden="true" />
+                <span className="cyklus-stat-chip__marker" aria-hidden="true" />
+              </span>
+              <span className={`cyklus-stat-chip__status cyklus-stat-chip__status--${state}`}>
+                <span aria-hidden="true">{state === 'stable' ? '◇' : '!'}</span> {label}
+              </span>
             </button>
           );
         })}

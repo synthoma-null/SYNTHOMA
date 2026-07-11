@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import CyklusClient, { ActiveObjectivePanel, RunEndSummary } from '../CyklusClient';
+import CyklusClient, { ActiveObjectivePanel, RunEndSummary, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
 import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
@@ -223,6 +223,20 @@ describe('CyklusClient', () => {
     expect(await screen.findByText(/Tento běh se drží oblasti: Archiv/)).toBeInTheDocument();
     expect(screen.getByText('Archiv')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matcher|fallback|archive_pool/i);
+  });
+});
+
+describe('Cyklus swipe gesture helpers', () => {
+  it('uses a card-relative threshold with safe bounds', () => {
+    expect(getSwipeThreshold(360)).toBeCloseTo(79.2);
+    expect(getSwipeThreshold(200)).toBe(56);
+    expect(getSwipeThreshold(800)).toBe(96);
+  });
+
+  it('accepts a short fast flick but rejects a short slow drag', () => {
+    expect(getSwipeDecision(30, 390, 0.7)).toBe('yes');
+    expect(getSwipeDecision(-30, 390, -0.7)).toBe('no');
+    expect(getSwipeDecision(30, 390, 0.2)).toBeNull();
   });
 });
 

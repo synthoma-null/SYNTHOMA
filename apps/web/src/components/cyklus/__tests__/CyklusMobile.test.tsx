@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import CyklusMobileHud from '../CyklusMobileHud';
 import CyklusBottomNav from '../CyklusBottomNav';
 import CyklusBottomSheet from '../CyklusBottomSheet';
+import StatDock from '../StatDock';
 import { createCyklusRun } from '../../../game/cyklus/cyklusEngine';
 
 describe('CyklusMobileHud', () => {
@@ -67,6 +68,37 @@ describe('CyklusBottomNav', () => {
     );
     fireEvent.click(screen.getByText('PRÁZDN0TA'));
     expect(onVoid).toHaveBeenCalledTimes(1);
+  });
+
+  it('exposes the active destination with aria-pressed', () => {
+    render(
+      <CyklusBottomNav
+        pocketCount={0}
+        onPocket={jest.fn()}
+        onBuild={jest.fn()}
+        onArchive={jest.fn()}
+        onVoid={jest.fn()}
+        active="archive"
+      />,
+    );
+    expect(screen.getByRole('button', { name: /ARCHIV/ })).toHaveAttribute('aria-pressed', 'true');
+  });
+});
+
+describe('StatDock diagnostic axis', () => {
+  it('renders risk zones, center and current markers for every stat', () => {
+    const { container } = render(
+      <StatDock
+        stats={{ energy: 10, memory: 50, bond: 82, control: 44 }}
+        openStat={null}
+        onOpenStat={jest.fn()}
+        history={[]}
+      />,
+    );
+    expect(container.querySelectorAll('.cyklus-stat-chip__zone--low')).toHaveLength(4);
+    expect(container.querySelectorAll('.cyklus-stat-chip__center')).toHaveLength(4);
+    expect(container.querySelectorAll('.cyklus-stat-chip__marker')).toHaveLength(4);
+    expect(screen.getByRole('button', { name: /Energie: 10, KRITICKÁ KRIZE/ })).toHaveTextContent('! KRITICKÁ KRIZE');
   });
 });
 

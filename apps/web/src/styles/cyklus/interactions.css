@@ -1,0 +1,87 @@
+/* Input behavior and shared control states. */
+
+.cyklus-root,
+.cyklus-card,
+.cyklus-mobile-hud,
+.cyklus-stat-dock,
+.cyklus-bottom-nav,
+.cyklus-page button,
+.cyklus-void-page button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.cyklus-page :is(button, .cyklus-card, .cyklus-active-objective__summary, .cyklus-bottom-nav__btn),
+.cyklus-void-page button {
+  -webkit-touch-callout: none;
+}
+
+.cyklus-page :is(
+  .cyklus-card-scene,
+  .cyklus-history,
+  .cyklus-end-summary__full-log,
+  .cyklus-stat-popup__body,
+  .cyklus-diag-drawer,
+  .cyklus-discovery,
+  .cyklus-death-analysis,
+  .cyklus-behavioral,
+  .cyklus-reward
+),
+.cyklus-void-page :is(
+  .cyklus-void-client-status,
+  .void-hub-tab-panel,
+  [role="tabpanel"],
+  .cyklus-pocket-panel,
+  .cyklus-progression-dashboard
+) {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+.cyklus-page button,
+.cyklus-void-page button {
+  transition: color var(--cy-ease), background-color var(--cy-ease), border-color var(--cy-ease), box-shadow var(--cy-ease), opacity var(--cy-ease), transform 90ms ease;
+}
+
+@media (hover: hover) {
+  .cyklus-page button:hover:not(:disabled),
+  .cyklus-void-page button:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+}
+
+.cyklus-page button:active:not(:disabled),
+.cyklus-void-page button:active:not(:disabled) {
+  filter: brightness(1.18);
+  transform: translateY(1px);
+}
+
+.cyklus-page button:disabled,
+.cyklus-void-page button:disabled,
+.cyklus-page [aria-busy="true"],
+.cyklus-void-page [aria-busy="true"] {
+  cursor: not-allowed;
+  filter: saturate(0.45);
+  opacity: 0.48;
+}
+
+.cyklus-page [aria-pressed="true"],
+.cyklus-void-page [aria-pressed="true"],
+.cyklus-page .is-confirmed,
+.cyklus-void-page .is-confirmed {
+  box-shadow: inset 0 -2px currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-page button,
+  .cyklus-void-page button,
+  .cyklus-preview::after {
+    transition: opacity var(--cy-ease), color var(--cy-ease), border-color var(--cy-ease);
+  }
+
+  .cyklus-page button:active:not(:disabled),
+  .cyklus-void-page button:active:not(:disabled) {
+    transform: none;
+  }
+}

@@ -67,6 +67,17 @@ function shouldShowStatRuleHint(state: CyklusRunState, runHistoryCount: number, 
   return tutorialActive || (runHistoryCount === 0 && state.totalChoices <= 3);
 }
 
+export function getSwipeThreshold(cardWidth: number): number {
+  return Math.max(56, Math.min(96, cardWidth * 0.22));
+}
+
+export function getSwipeDecision(distance: number, cardWidth: number, velocity = 0): 'yes' | 'no' | null {
+  const committedDistance = Math.abs(distance) >= getSwipeThreshold(cardWidth);
+  const committedFlick = Math.abs(distance) >= 24 && Math.abs(velocity) >= 0.55;
+  if (!committedDistance && !committedFlick) return null;
+  return distance > 0 ? 'yes' : 'no';
+}
+
 export function ActiveObjectivePanel({
   state,
   runHistoryCount,
@@ -206,6 +217,11 @@ export default function CyklusClient() {
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
+  const startY = useRef(0);
+  const lastPointerX = useRef(0);
+  const lastPointerAt = useRef(0);
+  const swipeVelocity = useRef(0);
+  const touchAxis = useRef<'x' | 'y' | null>(null);
   const isDragging = useRef(false);
   const outcomeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -507,19 +523,40 @@ export default function CyklusClient() {
   const onTouchStart = (e: React.TouchEvent) => {
     if (flyDirection || outcomeVisible) return;
     const touch = e.touches[0];
-    if (touch) startX.current = touch.clientX;
+    if (!touch) return;
+    const now = performance.now();
+    startX.current = touch.clientX;
+    startY.current = touch.clientY;
+    lastPointerX.current = touch.clientX;
+    lastPointerAt.current = now;
+    swipeVelocity.current = 0;
+    touchAxis.current = null;
   };
   const onTouchMove = (e: React.TouchEvent) => {
     if (flyDirection || outcomeVisible) return;
     const touch = e.touches[0];
     if (!touch) return;
     const x = touch.clientX - startX.current;
-    setDragX(Math.max(-160, Math.min(160, x)));
+    const y = touch.clientY - startY.current;
+    if (!touchAxis.current && Math.max(Math.abs(x), Math.abs(y)) >= 6) {
+      touchAxis.current = Math.abs(x) > Math.abs(y) * 1.15 ? 'x' : 'y';
+    }
+    if (touchAxis.current !== 'x') return;
+    const now = performance.now();
+    const elapsed = Math.max(1, now - lastPointerAt.current);
+    swipeVelocity.current = (touch.clientX - lastPointerX.current) / elapsed;
+    lastPointerX.current = touch.clientX;
+    lastPointerAt.current = now;
+    const cardWidth = cardRef.current?.clientWidth ?? 420;
+    const maxDrag = Math.max(120, Math.min(180, cardWidth * 0.45));
+    setDragX(Math.max(-maxDrag, Math.min(maxDrag, x)));
   };
   const onTouchEnd = () => {
     if (flyDirection || outcomeVisible) return;
-    if (dragX > 80) handleChoice('yes');
-    else if (dragX < -80) handleChoice('no');
+    const decision = getSwipeDecision(dragX, cardRef.current?.clientWidth ?? 420, swipeVelocity.current);
+    touchAxis.current = null;
+    swipeVelocity.current = 0;
+    if (decision) handleChoice(decision);
     else setDragX(0);
   };
 
@@ -527,24 +564,36 @@ export default function CyklusClient() {
     if (flyDirection || outcomeVisible) return;
     isDragging.current = true;
     startX.current = e.clientX;
+    lastPointerX.current = e.clientX;
+    lastPointerAt.current = performance.now();
+    swipeVelocity.current = 0;
   };
   const onMouseMove = (e: React.MouseEvent) => {
     if (!isDragging.current || flyDirection || outcomeVisible) return;
     const x = e.clientX - startX.current;
-    setDragX(Math.max(-160, Math.min(160, x)));
+    const now = performance.now();
+    const elapsed = Math.max(1, now - lastPointerAt.current);
+    swipeVelocity.current = (e.clientX - lastPointerX.current) / elapsed;
+    lastPointerX.current = e.clientX;
+    lastPointerAt.current = now;
+    const cardWidth = cardRef.current?.clientWidth ?? 420;
+    const maxDrag = Math.max(120, Math.min(180, cardWidth * 0.45));
+    setDragX(Math.max(-maxDrag, Math.min(maxDrag, x)));
   };
   const onMouseUp = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
     if (flyDirection || outcomeVisible) return;
-    if (dragX > 80) handleChoice('yes');
-    else if (dragX < -80) handleChoice('no');
+    const decision = getSwipeDecision(dragX, cardRef.current?.clientWidth ?? 420, swipeVelocity.current);
+    swipeVelocity.current = 0;
+    if (decision) handleChoice(decision);
     else setDragX(0);
   };
   const onMouseLeave = () => {
     if (isDragging.current) {
       isDragging.current = false;
       if (!flyDirection && !outcomeVisible) setDragX(0);
+      swipeVelocity.current = 0;
     }
   };
 
@@ -887,7 +936,8 @@ export default function CyklusClient() {
               ].filter(Boolean).join(' ')}
               style={{
                 transform: `translateX(${dragX}px) rotate(${dragX * 0.14}deg) scale(${1 - Math.abs(dragX) * 0.0004})`,
-                '--swipe-opacity': Math.abs(dragX) / 120,
+                '--swipe-progress': Math.min(1, Math.abs(dragX) / getSwipeThreshold(cardRef.current?.clientWidth ?? 420)),
+                '--swipe-opacity': Math.max(0, (Math.min(1, Math.abs(dragX) / getSwipeThreshold(cardRef.current?.clientWidth ?? 420)) - 0.18) / 0.82),
               } as React.CSSProperties}
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
@@ -1079,6 +1129,7 @@ export default function CyklusClient() {
           onBuild={() => setShowBuild((v) => !v)}
           onArchive={() => setShowDiscovery((v) => !v)}
           onVoid={() => setShowVoidHub(true)}
+          active={showPocketSheet ? 'pocket' : showBuild ? 'build' : showDiscovery ? 'archive' : showVoidHub ? 'void' : null}
           dimmed={outcomeVisible}
         />
       )}

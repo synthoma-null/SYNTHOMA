@@ -159,38 +159,100 @@
 }
 
 .cyklus-stat-chip__value {
-  grid-area: value;
   color: var(--cy-text);
   font-size: 1.2rem;
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
 
+.cyklus-stat-chip__value-group {
+  grid-area: value;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.2rem;
+}
+
+.cyklus-stat-chip__delta {
+  color: var(--cy-text-dim);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.cyklus-stat-chip__delta.is-up {
+  color: var(--cy-accent-memory);
+}
+
+.cyklus-stat-chip__delta.is-down {
+  color: var(--cy-accent-system);
+}
+
 .cyklus-stat-chip__bar {
   grid-area: bar;
   position: relative;
-  height: 4px;
+  height: 8px;
   border-radius: 0;
-  overflow: hidden;
-  background: rgba(85, 119, 129, 0.24);
+  overflow: visible;
+  background: color-mix(in srgb, var(--cy-text) 10%, transparent);
 }
 
 .cyklus-stat-chip__fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
   width: var(--stat-fill-pct);
+  height: 1px;
   border-radius: 0;
   background: var(--stat-accent) !important;
   box-shadow: 0 0 10px color-mix(in srgb, var(--stat-accent), transparent 45%);
+  opacity: 0.62;
+  transform: translateY(-50%);
+}
+
+.cyklus-stat-chip__zone {
+  position: absolute;
+  inset-block: 0;
+  pointer-events: none;
+}
+
+.cyklus-stat-chip__zone--low {
+  left: 0;
+  width: 20%;
+  background: color-mix(in srgb, var(--cy-accent-warning) 18%, transparent);
 }
 
 .cyklus-stat-chip__safe-zone {
+  position: absolute;
+  inset-block: 0;
   left: 20%;
   width: 60%;
-  border-inline: 1px solid rgba(217, 251, 255, 0.58);
-  background: rgba(217, 251, 255, 0.05);
+  border-inline: 1px solid color-mix(in srgb, var(--cy-accent-system) 46%, transparent);
+  background: color-mix(in srgb, var(--cy-accent-system) 8%, transparent);
+}
+
+.cyklus-stat-chip__zone--high {
+  right: 0;
+  width: 20%;
+  background: color-mix(in srgb, var(--cy-accent-warning) 18%, transparent);
 }
 
 .cyklus-stat-chip__center {
-  background: rgba(217, 251, 255, 0.8);
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: color-mix(in srgb, var(--cy-text) 80%, transparent);
+}
+
+.cyklus-stat-chip__marker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: clamp(1px, var(--stat-fill-pct), calc(100% - 1px));
+  z-index: 3;
+  width: 2px;
+  background: var(--stat-accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--stat-accent) 70%, transparent);
+  transform: translateX(-1px);
 }
 
 .cyklus-stat-chip__status {
@@ -383,6 +445,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   width: 100%;
   min-height: var(--cy-bottom-height);
+  max-height: calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
   padding: 1px 0 0;
   border: 0;
   border-top: 1px solid var(--cy-line-strong);
@@ -428,19 +491,21 @@
 }
 
 .cyklus-bottom-nav__btn:hover,
-.cyklus-bottom-nav__btn:focus-visible {
+.cyklus-bottom-nav__btn:focus-visible,
+.cyklus-bottom-nav__btn.is-active {
   background: color-mix(in srgb, var(--cy-accent-system) 6%, transparent);
   color: var(--cy-cyan-soft);
 }
 
 .cyklus-bottom-nav__btn:hover::after,
-.cyklus-bottom-nav__btn:focus-visible::after {
+.cyklus-bottom-nav__btn:focus-visible::after,
+.cyklus-bottom-nav__btn.is-active::after {
   background: var(--cy-cyan);
   box-shadow: var(--cy-glow-cyan);
 }
 
 .cyklus-bottom-nav__icon {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
@@ -527,6 +592,20 @@
 
   .cyklus-stat-chip__value {
     font-size: 0.98rem;
+  }
+
+  .cyklus-stat-popup-overlay {
+    place-items: end stretch;
+  }
+
+  .cyklus-stat-popup {
+    width: 100%;
+    max-width: none;
+    max-height: min(76dvh, 620px);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: var(--cy-radius) var(--cy-radius) 0 0;
   }
 
   .cyklus-stat-chip__status {
@@ -627,6 +706,26 @@
   .cyklus-bottom-nav__label {
     font-size: 0.54rem;
     letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 389px) {
+  .cyklus-bottom-nav__label {
+    display: none;
+  }
+
+  .cyklus-bottom-nav__btn.is-active .cyklus-bottom-nav__label {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    left: 0;
+    font-size: 0.55rem;
+    text-align: center;
+  }
+
+  .cyklus-bottom-nav__btn.is-active .cyklus-bottom-nav__icon {
+    transform: translateY(-5px);
   }
 }
 

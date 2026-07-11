@@ -147,7 +147,7 @@
   }
 
   .cyklus-bottom-nav {
-    min-height: 64px;
+    min-height: var(--cy-bottom-height);
   }
 
   .cyklus-bottom-nav__btn {
@@ -194,7 +194,7 @@
   }
 
   .cyklus-bottom-nav {
-    min-height: 58px;
+    min-height: var(--cy-bottom-height);
   }
 
   .cyklus-bottom-nav__icon {
@@ -350,7 +350,7 @@
   }
 
   .cyklus-bottom-nav {
-    min-height: 52px;
+    min-height: var(--cy-bottom-height);
   }
 
   .cyklus-bottom-nav__btn {
