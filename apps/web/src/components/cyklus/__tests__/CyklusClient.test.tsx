@@ -303,26 +303,25 @@ describe('CyklusClient', () => {
     expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
   });
 
-  it('restores sector, cycle, progress, home and identity in one gameplay header', async () => {
-    const identityTarget = document.createElement('button');
-    identityTarget.className = 'id-panel-btn';
-    const identityClick = jest.fn();
-    identityTarget.addEventListener('click', identityClick);
-    document.body.appendChild(identityTarget);
+  it('renders the unified command rail with real run status and accessible controls', async () => {
+    const identityToggle = jest.fn();
+    document.addEventListener('synthoma:identity-toggle', identityToggle);
 
     await renderFirstBootRun();
     const header = screen.getByTestId('cyklus-gameplay-header');
     const headerQueries = within(header);
 
     expect(headerQueries.getByText('Prázdnota')).toBeInTheDocument();
-    expect(headerQueries.getByText('CYKLUS 01')).toBeInTheDocument();
-    expect(headerQueries.getByText('1/12')).toBeInTheDocument();
+    expect(headerQueries.getByText('C01')).toBeInTheDocument();
+    expect(headerQueries.getByText('01/12')).toBeInTheDocument();
     expect(headerQueries.getByRole('link', { name: 'Domů' })).toHaveAttribute('href', '/');
     fireEvent.click(headerQueries.getByRole('button', { name: 'Identita' }));
-    expect(identityClick).toHaveBeenCalledTimes(1);
+    expect(identityToggle).toHaveBeenCalledTimes(1);
+    expect(headerQueries.getByRole('button', { name: 'Ovládací panel' })).toHaveAttribute('aria-controls', 'control-panel');
+    expect(headerQueries.getByRole('button', { name: /Hudba/ })).toHaveAttribute('aria-controls', 'synthoma-audio-panel');
     expect(document.querySelector('.cyklus-mobile-hud')).toBeNull();
 
-    identityTarget.remove();
+    document.removeEventListener('synthoma:identity-toggle', identityToggle);
   });
 });
 

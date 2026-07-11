@@ -482,13 +482,15 @@ export default function ControlPanelClient() {
 
       (window as any).__cpBooting = true;
 
-      const togglePanelBtn = document.getElementById("toggle-panel-btn");
-
       const controlPanel = document.getElementById("control-panel");
 
-      try { if (togglePanelBtn && controlPanel) togglePanelBtn.setAttribute('aria-controls', 'control-panel'); } catch {}
+      const getTogglePanelBtn = () => document.getElementById("toggle-panel-btn") as HTMLButtonElement | null;
 
-      const doTogglePanel = (force?: boolean) => {
+      try { getTogglePanelBtn()?.setAttribute('aria-controls', 'control-panel'); } catch {}
+
+      const doTogglePanel = (force?: boolean, restoreFocus = true) => {
+
+        const togglePanelBtn = getTogglePanelBtn();
 
         if (!controlPanel || !togglePanelBtn) return;
 
@@ -502,15 +504,21 @@ export default function ControlPanelClient() {
 
         togglePanelBtn.setAttribute("aria-expanded", String(next));
 
+        togglePanelBtn.setAttribute("aria-pressed", String(next));
+
         try { togglePanelBtn.setAttribute('aria-controls', 'control-panel'); } catch {}
 
         if (!wasVisible && next) {
+
+          document.dispatchEvent(new CustomEvent('synthoma:control-panel-open', { detail: { restoreFocus: false } }));
 
           controlPanel.style.opacity = "1";
 
           controlPanel.style.pointerEvents = "auto";
 
           controlPanel.style.transform = "none";
+
+          setTimeout(() => document.getElementById('cp-close-btn')?.focus(), 0);
 
         } else if (wasVisible && !next) {
 
@@ -520,13 +528,17 @@ export default function ControlPanelClient() {
 
           controlPanel.style.transform = "";
 
+          document.dispatchEvent(new CustomEvent('synthoma:control-panel-closed'));
+
+          if (restoreFocus) setTimeout(() => getTogglePanelBtn()?.focus(), 0);
+
         }
 
         try { debugLog?.("[ControlPanel] toggle", { expanded: next }); } catch {}
 
       };
 
-      if (togglePanelBtn && controlPanel) {
+      if (controlPanel) {
 
         if (!window.__cpPanelDelegationAttached) {
 
@@ -600,13 +612,18 @@ export default function ControlPanelClient() {
 
           }, { signal });
 
+          document.addEventListener('synthoma:control-panel-close', function(ev: Event) {
+            const detail = (ev as CustomEvent<{ restoreFocus?: boolean }>).detail;
+            doTogglePanel(false, detail?.restoreFocus !== false);
+          }, { signal });
+
           window.__cpPanelDelegationAttached = true;
 
         }
 
       } else {
 
-        try { console.warn("[ControlPanel] Nenalezen toggle nebo panel", { hasBtn: !!togglePanelBtn, hasPanel: !!controlPanel }); } catch {}
+        try { console.warn("[ControlPanel] Nenalezen ovládací panel"); } catch {}
 
       }
 

@@ -1,0 +1,203 @@
+/* Unified Cyklus command rail. */
+
+.cyklus-game-header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 48px;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 4px;
+  border-bottom: 1px solid var(--cy-line);
+  background: color-mix(in srgb, var(--cy-surface-1) 97%, transparent);
+}
+
+.cyklus-game-header__left,
+.cyklus-game-header__actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.cyklus-game-header__actions {
+  justify-content: flex-end;
+  gap: 1px;
+}
+
+.cyklus-game-header__status {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(4px, 1vw, 9px);
+  overflow: hidden;
+  color: var(--cy-text-dim);
+  font: 800 0.68rem/1 var(--cy-font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cyklus-game-header__status .cyklus-sector {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--cy-accent-secondary);
+  text-overflow: ellipsis;
+}
+
+.cyklus-game-header__status .cyklus-cycle {
+  flex: 0 0 auto;
+  color: var(--cy-accent-primary);
+}
+
+.cyklus-game-header__status .cyklus-progress {
+  flex: 0 0 auto;
+  color: var(--cy-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.cyklus-game-header .cyklus-header__action {
+  position: relative;
+  display: inline-grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--cy-radius-sm);
+  background: transparent;
+  color: var(--cy-text-soft);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cyklus-game-header .cyklus-header__action svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cyklus-game-header .cyklus-header__action:hover,
+.cyklus-game-header .cyklus-header__action:focus-visible {
+  border-color: var(--cy-line);
+  background: var(--cy-button-hover);
+  color: var(--cy-text);
+}
+
+.cyklus-game-header .cyklus-header__action[aria-pressed="true"] {
+  border-color: var(--cy-line-strong);
+  background: var(--cy-button-active);
+  color: var(--cy-text);
+}
+
+.cyklus-game-header .cyklus-header__action[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  left: 5px;
+  height: 2px;
+  background: var(--cy-accent-primary);
+}
+
+.cyklus-audio-state {
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+  display: none;
+  height: 8px;
+  align-items: end;
+  gap: 1px;
+}
+
+.cyklus-audio-state i {
+  display: block;
+  width: 2px;
+  height: 4px;
+  background: currentColor;
+}
+
+.cyklus-header__action--audio[data-audio-state="playing"] .cyklus-audio-state {
+  display: flex;
+}
+
+.cyklus-header__action--audio[data-audio-state="playing"] .cyklus-audio-state i:nth-child(2) {
+  height: 8px;
+  animation: cyklus-audio-meter 700ms steps(2, end) infinite alternate;
+}
+
+.cyklus-header__action--audio[data-audio-state="muted"] svg {
+  opacity: 0.42;
+}
+
+.cyklus-header__action--audio[data-audio-state="muted"]::before {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  transform: rotate(-42deg);
+}
+
+@keyframes cyklus-audio-meter {
+  to { height: 3px; }
+}
+
+@media (max-width: 767px) {
+  .cyklus-page > .cyklus-root--playing {
+    grid-template-rows: 48px 52px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+  }
+
+  .cyklus-page > .cyklus-root--playing > .cyklus-game-header {
+    grid-row: 1;
+    min-height: 48px;
+    padding-inline: 2px;
+  }
+
+  .cyklus-root--playing > .cyklus-desktop-top > .cyklus-stat-dock {
+    grid-row: 2;
+  }
+
+  .cyklus-root--playing > .cyklus-stage {
+    grid-row: 3;
+  }
+
+  .cyklus-root--playing > .cyklus-bottom-nav {
+    grid-row: 4;
+  }
+
+  .cyklus-game-header__status {
+    gap: 4px;
+    font-size: 0.6rem;
+    letter-spacing: 0;
+  }
+
+  .cyklus-game-header .cyklus-header__action {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 379px) {
+  .cyklus-game-header {
+    gap: 1px;
+  }
+
+  .cyklus-game-header__status {
+    font-size: 0.56rem;
+  }
+
+  .cyklus-game-header__status .cyklus-sector {
+    max-width: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-header__action--audio[data-audio-state="playing"] .cyklus-audio-state i {
+    animation: none;
+  }
+}

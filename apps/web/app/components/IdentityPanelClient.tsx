@@ -10,12 +10,50 @@ export default function IdentityPanelClient() {
   const { t } = useLang();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
+  const restoreFocusRef = useRef(true);
+
+  useEffect(() => {
+    const toggle = () => {
+      restoreFocusRef.current = true;
+      setOpen((value) => !value);
+    };
+    const close = (event: Event) => {
+      const detail = (event as CustomEvent<{ restoreFocus?: boolean }>).detail;
+      restoreFocusRef.current = detail?.restoreFocus !== false;
+      setOpen(false);
+    };
+    document.addEventListener('synthoma:identity-toggle', toggle);
+    document.addEventListener('synthoma:identity-close', close);
+    document.addEventListener('synthoma:control-panel-open', close);
+    document.addEventListener('synthoma:audio-open', close);
+    return () => {
+      document.removeEventListener('synthoma:identity-toggle', toggle);
+      document.removeEventListener('synthoma:identity-close', close);
+      document.removeEventListener('synthoma:control-panel-open', close);
+      document.removeEventListener('synthoma:audio-open', close);
+    };
+  }, []);
+
+  useEffect(() => {
+    const trigger = document.querySelector<HTMLButtonElement>('[data-cyklus-command="identity"]');
+    trigger?.setAttribute('aria-expanded', String(open));
+    trigger?.setAttribute('aria-pressed', String(open));
+    if (open) {
+      setTimeout(() => popupRef.current?.querySelector<HTMLElement>('button, a, [tabindex="0"]')?.focus(), 0);
+    } else if (wasOpenRef.current && restoreFocusRef.current) {
+      setTimeout(() => trigger?.focus(), 0);
+    }
+    wasOpenRef.current = open;
+  }, [open]);
 
   // Close on outside click
   useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        restoreFocusRef.current = true;
         setOpen(false);
       }
     };
@@ -26,7 +64,12 @@ export default function IdentityPanelClient() {
   // Close on Escape
   useEffect(() => {
     if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        restoreFocusRef.current = true;
+        setOpen(false);
+      }
+    };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [open]);
@@ -52,9 +95,11 @@ export default function IdentityPanelClient() {
 
       <div
         id="id-panel-popup"
+        ref={popupRef}
         className={`id-panel-popup${open ? ' visible' : ''}`}
         role="region"
         aria-label={t('id.aria.panel')}
+        aria-hidden={!open}
       >
         {session ? (
           <>

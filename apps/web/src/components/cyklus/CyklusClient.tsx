@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
+import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { getPocketItems, getPocketAmbientText, MOOD_LABELS, getPrimaryMoodItem, type ItemWithMood } from '../../game/cyklus/cyklusItemMood';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
@@ -18,6 +17,7 @@ import CyklusBottomNav from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
+import CyklusGameHeader from './CyklusGameHeader';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
@@ -428,10 +428,6 @@ export default function CyklusClient() {
     setTimeout(() => cardRef.current?.focus({ preventScroll: true }), 0);
   }, []);
 
-  const handleOpenIdentity = useCallback(() => {
-    document.querySelector<HTMLButtonElement>('.id-panel-btn')?.click();
-  }, []);
-
   const handleActivateItem = useCallback((itemId: string) => {
     if (!state || state.status !== 'playing') return;
     const result = activateItem(state, itemId);
@@ -710,7 +706,6 @@ export default function CyklusClient() {
   const card = getCardById(state.currentCardId) ?? getCardById('first_boot');
   const profile = computeProfile(state);
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
-  const chapter = getCycleChapterName(state.cycle);
   const tutorialHighlight = getTutorialHighlight(card?.id);
   const tutorialActive = card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done');
 
@@ -757,36 +752,11 @@ export default function CyklusClient() {
           </section>
         </div>
       )}
-      <header className="cyklus-header" data-testid="cyklus-gameplay-header">
-        <div className="cyklus-title">SYNTHOMA: CYKLUS</div>
-        <div className="cyklus-chapter">
-          <span className="cyklus-chapter__title">{chapter.title}</span>
-          <span className="cyklus-chapter__subtitle">{chapter.subtitle}</span>
-        </div>
-        <div className="cyklus-meta">
-          <span className="cyklus-sector">{SECTOR_LABELS[state.sector]}</span>
-          <span className="cyklus-cycle">{chapter.number}</span>
-          <span className="cyklus-progress">{state.choiceInCycle}/{12}</span>
-        </div>
-        <nav className="cyklus-header__actions" aria-label="Ovládání hry">
-          <Link className="cyklus-header__action" href="/" aria-label="Domů">
-            <span aria-hidden="true">⌂</span><span className="cyklus-header__action-label">Domů</span>
-          </Link>
-          <button className="cyklus-header__action" type="button" onClick={handleOpenIdentity} aria-label="Identita">
-            <span aria-hidden="true">◉</span><span className="cyklus-header__action-label">Identita</span>
-          </button>
-          {card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') && (
-            <button
-              className="cyklus-header__action cyklus-header__skip"
-              onClick={() => setShowSkipConfirm(true)}
-              type="button"
-              title="Přeskočit tutorial"
-            >
-              Přeskočit
-            </button>
-          )}
-        </nav>
-      </header>
+      <CyklusGameHeader
+        state={state}
+        showTutorialSkip={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done')}
+        onTutorialSkip={() => setShowSkipConfirm(true)}
+      />
 
       <main className="cyklus-stage">
         {ending ? (
