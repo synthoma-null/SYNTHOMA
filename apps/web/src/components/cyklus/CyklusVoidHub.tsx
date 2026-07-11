@@ -262,7 +262,11 @@ function FocusRunPanel({ actions }: { actions: CyklusVoidHubActions | undefined 
         {FOCUS_RUN_OPTIONS.map((focus) => (
           <button
             key={`${focus.type}-${focus.id}`}
-            className="void-hub-focus__button"
+            className={cx(
+              'void-hub-focus__button',
+              `is-${focus.type}`,
+              focus.strictness === 'strong' && 'is-strong',
+            )}
             type="button"
             disabled={!actions?.onStartFocusedRun}
             onClick={() => selectFocus(focus)}
@@ -270,7 +274,9 @@ function FocusRunPanel({ actions }: { actions: CyklusVoidHubActions | undefined 
           >
             <span>{focus.actionLabel}</span>
             <small>
-              {(focus.remainingCards ?? 0) <= 5 ? 'Krátká stopa' : focus.strictness === 'strong' ? 'Uzavřenější běh' : 'Volnější oblast'}
+              <span>{(focus.remainingCards ?? 0) <= 5 ? 'Krátká stopa' : focus.strictness === 'strong' ? 'Uzavřenější běh' : 'Volnější oblast'}</span>
+              <span aria-hidden="true"> · </span>
+              <span>{focus.remainingCards ?? 0} karet</span>
             </small>
           </button>
         ))}
@@ -436,14 +442,22 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
   return (
     <section className={cx('cyklus-void-hub', compact && 'is-compact')} aria-label="Prázdnota SYNTHOMA">
       <header className="void-hub-hero">
-        <div>
-          <p className="cyklus-panel-kicker">VOID_HUB</p>
-          <h2>Prázdnota jako operační místnost</h2>
+        <div className="void-hub-hero__identity">
+          <p className="cyklus-panel-kicker">SYNTHOMA OS / PRÁZDN0TA</p>
+          <h2>PRÁZDN0TA</h2>
+          <p className="void-hub-hero__role">Operační místnost identity</p>
           <p>{model.summary}</p>
           <p className="void-hub-pulse">{model.pulseText}</p>
         </div>
         <div className="void-hub-hero-actions">
           <ActionButton onClick={actions?.onRefresh} title={actions?.onRefresh ? undefined : 'Napoj onRefresh pro obnovu dat.'}>Obnovit</ActionButton>
+        </div>
+        <div className="void-hub-status-rail" aria-label="Stav subjektu v Prázdnotě">
+          <span><small>SUBJEKT</small><strong>NULL-1</strong></span>
+          <span><small>BĚHY</small><strong>{progression.totalRuns}</strong></span>
+          <span><small>REZIDUUM</small><strong>{progression.currencies.residuum ?? 0}</strong></span>
+          <span><small>PAMĚŤ</small><strong>{state ? `${state.history.length} záz.` : `${progression.totalRuns} archiv.`}</strong></span>
+          <span><small>POSLEDNÍ NÁVRAT</small><strong>{recentReward ? 'NOVÁ DATA' : progression.totalRuns > 0 ? 'EVIDOVÁN' : 'BEZ ZÁZNAMU'}</strong></span>
         </div>
       </header>
 
