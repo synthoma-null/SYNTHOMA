@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { UI_THEMES } from '../../src/lib/themes';
 
-type Theme = { id: string; label: string; cost: number; unlocked: boolean };
+type Theme = { id: string; label: string; cost: number; description: string; palette: readonly [string, string, string]; unlocked: boolean };
 
 const STORAGE_KEY = 'theme';
 
@@ -141,8 +141,8 @@ export default function ThemeShopClient() {
   }, [activate, startPreview]);
 
   return (
-    <fieldset id="theme-shop" className="group" role="radiogroup" aria-label="Barevný motiv">
-      <legend className="panel-section-title">Motivy</legend>
+    <fieldset id="theme-shop" className="group" aria-label="Barevný motiv">
+      <legend className="panel-section-title">MOTIV</legend>
       {balance !== null && (
         <p className="theme-balance">Dostupné mnemy: <strong>{balance}</strong></p>
       )}
@@ -165,9 +165,18 @@ export default function ThemeShopClient() {
                 onClick={() => handleClick(theme)}
                 title={cantAfford ? `${theme.label} — potřebuješ ${theme.cost} mnemů` : locked ? `${theme.label} — koupit za ${theme.cost} mnemů` : theme.label}
               >
-                <span className="theme-label">{theme.label}</span>
-                {locked && <span className="theme-cost">{theme.cost} mn</span>}
-                {!locked && theme.cost > 0 && <span className="theme-owned" aria-hidden="true">✓</span>}
+                <span className="theme-palette" aria-hidden="true">
+                  {theme.palette.map((color, index) => <span key={color} className={`theme-palette__swatch theme-palette__swatch--${index + 1}`} />)}
+                </span>
+                <span className="theme-copy">
+                  <span className="theme-label">{theme.label}</span>
+                  <span className="theme-description">{theme.description}</span>
+                </span>
+                <span className="theme-state">
+                  {isActive && <span className="theme-active">AKTIVNÍ</span>}
+                  {!isActive && locked && <span className="theme-cost">{theme.cost} mn</span>}
+                  {!isActive && !locked && theme.cost > 0 && <span className="theme-owned">ODEMČENO</span>}
+                </span>
               </button>
             );
           })}

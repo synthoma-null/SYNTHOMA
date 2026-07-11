@@ -11,6 +11,7 @@ import "../src/styles/paywall.css";
 import "../src/styles/game.css";
 import "../src/styles/game-v1.css";
 import "../src/styles/cyklus.css";
+import "../src/styles/control-panel-os.css";
 
 import { tracks } from "../src/data/playlist";
 
@@ -250,69 +251,75 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           {/* Global Control Panel trigger and container */}
 
-          <div id="control-panel" className="control-panel" role="region" aria-label="Ovládací panel" aria-hidden="true">
-
-            {/* Panel header */}
+          <div id="control-panel" className="control-panel" role="region" aria-labelledby="cp-title" aria-hidden="true">
             <div className="cp-header">
-              <span className="cp-title">OVLÁDACÍ PANEL</span>
-              <button id="cp-close-btn" className="cp-close" aria-label="Zavřít panel">✕</button>
+              <div className="cp-heading">
+                <span className="cp-kicker">SYS / CTRL</span>
+                <h2 id="cp-title" className="cp-title">OVLÁDACÍ PANEL</h2>
+                <p className="cp-status">SYNTHOMA OS // USER CHANNEL</p>
+              </div>
+              <button id="cp-close-btn" className="cp-close" type="button" aria-label="Zavřít ovládací panel">×</button>
             </div>
 
             <div className="controls-grid">
-
-              {/* Řada 1: Zobrazení + Nastavení (2 sloupce) */}
-              <div className="cp-row cp-row--half">
-
-                <fieldset className="group" aria-label="Zobrazení">
-                  <legend className="panel-section-title">Zobrazení</legend>
-                  <div className="cp-btn-col">
-                    <button id="toggle-animations" className="panel-button btn btn-sm" aria-pressed="true">Animace: Zapnuty</button>
-                    <button id="toggle-glass" className="panel-button btn btn-sm" aria-pressed="false">Sklo: Vypnuto</button>
-                  </div>
-                </fieldset>
-
-                <fieldset className="group" aria-label="Nastavení zobrazení">
-                  <legend className="panel-section-title">Nastavení</legend>
+              <section className="cp-section" aria-labelledby="cp-interface-title">
+                <header className="cp-section-header">
+                  <span aria-hidden="true">01</span>
+                  <h3 id="cp-interface-title">ROZHRANÍ</h3>
+                </header>
+                <fieldset className="group" aria-label="Nastavení rozhraní">
                   <label className="slider-label">
-                    <span className="slider-label-text">Písmo</span>
+                    <span className="slider-label-text">Velikost textu</span>
                     <input id="font-size-slider" type="range" min="0.8" max="1.4" step="0.05" defaultValue="1" />
                     <output id="font-size-value" className="slider-value">100%</output>
                   </label>
                   <label className="slider-label">
-                    <span className="slider-label-text" id="opacity-slider-label">Průhled.</span>
+                    <span className="slider-label-text" id="opacity-slider-label">Průhlednost</span>
                     <input id="opacity-slider" type="range" min="0" max="1" step="0.01" defaultValue="0.8" aria-labelledby="opacity-slider-label" />
                     <output id="opacity-slider-value" className="slider-value">80%</output>
                   </label>
                 </fieldset>
+              </section>
 
-              </div>
-
-              {/* Řada 2: Motivy (celá šířka) */}
-              <div className="cp-row cp-row--full">
+              <section className="cp-section cp-section--themes" aria-labelledby="cp-theme-title">
+                <header className="cp-section-header">
+                  <span aria-hidden="true">02</span>
+                  <h3 id="cp-theme-title">MOTIV</h3>
+                </header>
                 <ThemeShopClient />
-              </div>
+              </section>
 
-              {/* Řada 3: Audio (celá šířka) */}
-              <div className="cp-row cp-row--full">
+              <section className="cp-section" aria-labelledby="cp-effects-title">
+                <header className="cp-section-header">
+                  <span aria-hidden="true">03</span>
+                  <h3 id="cp-effects-title">VIZUÁLNÍ EFEKTY</h3>
+                </header>
+                <div className="cp-btn-col">
+                  <button id="toggle-animations" className="panel-button btn btn-sm" aria-pressed="true">Animace: Zapnuty</button>
+                  <button id="toggle-glass" className="panel-button btn btn-sm" aria-pressed="false">Sklo: Vypnuto</button>
+                </div>
+              </section>
+
+              <section className="cp-section" aria-labelledby="cp-audio-title">
+                <header className="cp-section-header">
+                  <span aria-hidden="true">04</span>
+                  <h3 id="cp-audio-title">ZVUK</h3>
+                </header>
                 <fieldset className="group" aria-label="Audio přehrávač">
-                  <legend className="panel-section-title">Audio</legend>
                   <div id="progress-bar-container" className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} aria-label="Průběh skladby"><div id="progress-bar" /></div>
                   <div className="audio-buttons">
-                    <button id="play-pause-btn" className="btn btn-sm" aria-pressed="false" aria-label="Přehrát / Pozastavit">▶️</button>
-                    <button id="stop-btn" className="btn btn-sm" aria-label="Zastavit">⏹️</button>
-                    <button id="toggle-tts" className="btn btn-sm" aria-pressed="false">TTS: Vypnuto 🔇</button>
+                    <button id="play-pause-btn" className="btn btn-sm" aria-pressed="false" aria-label="Přehrát nebo pozastavit">▶</button>
+                    <button id="stop-btn" className="btn btn-sm" aria-label="Zastavit">■</button>
+                    <button id="toggle-tts" className="btn btn-sm" aria-pressed="false">TTS: Vypnuto</button>
                   </div>
                   <div id="playlist-container" className="playlist" role="list" aria-label="Seznam skladeb">
-                    {/* Fallback obsah – bude nahrazen ControlPanelClientem po bootu */}
                     {tracks.map((track, index) => (
                       <a key={index} href="#" data-src={track.src} role="listitem">{track.title}</a>
                     ))}
                   </div>
                 </fieldset>
-              </div>
-
+              </section>
             </div>
-
           </div>
 
           <ControlPanelWrapper />

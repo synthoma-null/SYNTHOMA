@@ -25,7 +25,7 @@
     linear-gradient(90deg, var(--cy-grid-color) 1px, transparent 1px),
     repeating-linear-gradient(90deg, transparent 0 14.5%, var(--cy-grid-color) 14.6%, transparent 14.75%);
   background-size: 40px 40px, 40px 40px, 100% 100%;
-  opacity: 0.5;
+  opacity: var(--cy-grid-opacity);
 }
 
 .cyklus-page::after {

@@ -29,6 +29,7 @@
   --cy-glow-secondary: 0 0 18px var(--glow-primary, color-mix(in srgb, var(--cy-accent-secondary) 20%, transparent));
 
   --cy-grid-color: color-mix(in srgb, var(--cy-accent-primary) 4%, transparent);
+  --cy-grid-opacity: 0.5;
   --cy-scanline-color: color-mix(in srgb, var(--cy-text) 3%, transparent);
   --cy-noise-opacity: var(--noise-opacity, 0.12);
   --cy-overlay-backdrop: color-mix(in srgb, var(--cy-bg) 88%, transparent);
@@ -84,7 +85,7 @@
   --cy-space-6: 2rem;
 
   --cy-radius-sm: 2px;
-  --cy-radius: 4px;
+  --cy-radius: var(--cy-theme-radius, 4px);
   --cy-tap: 44px;
   --cy-header-height: 56px;
   --cy-bottom-height: 46px;

@@ -1,0 +1,84 @@
+import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import ThemeShopClient from '../../../../app/components/ThemeShopClient';
+import ControlPanelClient from '../../../../app/components/ControlPanelClient';
+import { UI_THEMES } from '../../../lib/themes';
+
+describe('Cyklus theme picker', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    document.body.removeAttribute('data-theme');
+    document.documentElement.removeAttribute('data-theme');
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        balance: 999,
+        themes: UI_THEMES.map((theme) => ({ ...theme, unlocked: true })),
+      }),
+    }) as jest.Mock;
+  });
+
+  it('offers every existing theme with palette and accessible active state', async () => {
+    const { container } = render(<ThemeShopClient />);
+
+    for (const theme of UI_THEMES) {
+      expect(await screen.findByRole('button', { name: new RegExp(theme.label, 'i') })).toBeInTheDocument();
+    }
+    expect(container.querySelectorAll('.theme-palette')).toHaveLength(UI_THEMES.length);
+    expect(screen.getByRole('button', { name: /Synthoma/i })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText('AKTIVNÍ')).toBeInTheDocument();
+  });
+
+  it('applies Mono Light to the document and updates the active marker', async () => {
+    render(<ThemeShopClient />);
+    const monoLight = await screen.findByRole('button', { name: /Mono Light/i });
+
+    fireEvent.click(monoLight);
+
+    expect(document.body).toHaveAttribute('data-theme', 'mono-light');
+    expect(document.documentElement).toHaveAttribute('data-theme', 'mono-light');
+    expect(monoLight).toHaveAttribute('aria-pressed', 'true');
+    expect(monoLight).toHaveTextContent('AKTIVNÍ');
+    expect(localStorage.getItem('theme')).toBe('mono-light');
+  });
+});
+
+describe('existing control panel behavior', () => {
+  let warnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    document.body.innerHTML = `
+      <button id="toggle-panel-btn" aria-expanded="false">Nastavení</button>
+      <div id="control-panel" aria-hidden="true">
+        <button id="cp-close-btn" type="button">Zavřít</button>
+      </div>
+    `;
+    window.__cpBootedOnce = false;
+    window.__cpPanelDelegationAttached = false;
+    window.__cpActionsDelegationAttached = false;
+  });
+
+  afterEach(() => warnSpy.mockRestore());
+
+  it('opens, closes and responds to Escape without a duplicate panel', async () => {
+    render(<ControlPanelClient />);
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+    const trigger = document.getElementById('toggle-panel-btn') as HTMLButtonElement;
+    const panel = document.getElementById('control-panel') as HTMLElement;
+
+    fireEvent.click(trigger);
+    await waitFor(() => expect(panel).toHaveClass('visible'));
+    expect(panel).toHaveAttribute('aria-hidden', 'false');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(panel).not.toHaveClass('visible');
+    expect(panel).toHaveAttribute('aria-hidden', 'true');
+
+    fireEvent.click(trigger);
+    fireEvent.click(document.getElementById('cp-close-btn') as HTMLButtonElement);
+    expect(panel).not.toHaveClass('visible');
+    expect(document.querySelectorAll('#control-panel')).toHaveLength(1);
+  });
+});
