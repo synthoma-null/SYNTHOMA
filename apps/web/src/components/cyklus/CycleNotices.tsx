@@ -31,12 +31,12 @@ function CycleNoticeFrame({
 }) {
   return (
     <CyklusCardOverlay label={title} variant={variant} onClose={onClose} panelClassName={`cyklus-cycle-notice cyklus-cycle-notice--${variant}`}>
-        <header className="cyklus-cycle-notice__header">
+        <header className="cyklus-card-overlay__header cyklus-cycle-notice__header">
           <h2>{title}</h2>
           <button className="cyklus-cycle-notice__close" type="button" onClick={onClose} aria-label={`Zavřít: ${title}`}>×</button>
         </header>
-        {children}
-        <footer className="cyklus-cycle-notice__actions">
+        <div className="cyklus-card-overlay__content">{children}</div>
+        <footer className="cyklus-card-overlay__footer cyklus-cycle-notice__actions">
           <button data-card-overlay-primary className="cyklus-terminal-action cyklus-cycle-notice__primary" type="button" onClick={onClose}>
             {actionLabel}
           </button>

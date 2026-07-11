@@ -105,7 +105,13 @@ describe('cycle forecast and summary notices', () => {
 
     expect(container.querySelector('.cyklus-cycle-forecast')).toBeInTheDocument();
     expect(container.querySelector('.cyklus-card-overlay')).toBeInTheDocument();
-    expect(container.querySelector('[data-card-overlay-scroll]')).toBeInTheDocument();
+    const forecastSurface = container.querySelector('[data-card-overlay-surface="fill-card"]') as HTMLElement;
+    expect(forecastSurface).toBeInTheDocument();
+    expect(forecastSurface).toHaveClass('cyklus-card-overlay__surface');
+    expect(forecastSurface.querySelector('.cyklus-card-overlay__header')).toBeInTheDocument();
+    expect(forecastSurface.querySelector('.cyklus-card-overlay__content')).toBeInTheDocument();
+    expect(forecastSurface.querySelector('.cyklus-card-overlay__footer')).toBeInTheDocument();
+    expect(forecastSurface.className).not.toMatch(/small|compact-dialog/);
     expect(container.querySelector('.cyklus-cycle-summary')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'PREDIKCE CYKLU 05' })).toBeInTheDocument();
     expect(screen.getByText('Archiv bude dnes ochotnější číst tebe.')).toBeInTheDocument();
@@ -123,6 +129,7 @@ describe('cycle forecast and summary notices', () => {
 
     expect(container.querySelector('.cyklus-cycle-summary')).toBeInTheDocument();
     expect(container.querySelector('.cyklus-card-overlay')).toBeInTheDocument();
+    expect(container.querySelector('[data-card-overlay-surface="fill-card"]')).toBeInTheDocument();
     expect(container.querySelector('.cyklus-cycle-forecast')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'CYKLUS 01 UZAVŘEN' })).toBeInTheDocument();
     expect(screen.getByText('4')).toBeInTheDocument();
@@ -466,11 +473,18 @@ describe('Cyklus choice feedback', () => {
     expect(card).toHaveAttribute('data-gameplay-surface', 'fixed');
     expect(card.querySelector('[data-card-scroll-region]')).toBeInTheDocument();
     expect(card.querySelector('[data-card-actions]')).toBeInTheDocument();
+    const surface = within(dialog).getByText(/Systém se rozběhl/).closest('[data-card-overlay-surface="fill-card"]') as HTMLElement;
+    const scrollContent = surface.querySelector('.cyklus-card-overlay__content') as HTMLElement;
+    const footer = surface.querySelector('.cyklus-card-overlay__footer') as HTMLElement;
+    const continueButton = within(dialog).getByRole('button', { name: 'POKRAČOVAT' });
+    expect(scrollContent).toBeInTheDocument();
+    expect(footer).toBeInTheDocument();
+    expect(scrollContent).not.toContainElement(continueButton);
+    expect(footer).toContainElement(continueButton);
     expect(dialog).toHaveTextContent(/Systém se rozběhl/);
     expect(dialog).toHaveTextContent(/Energie ↑ 8/);
     expect(dialog).not.toHaveTextContent('Klikni nebo stiskni Enter pro pokračování');
 
-    const continueButton = within(dialog).getByRole('button', { name: 'POKRAČOVAT' });
     expect(continueButton).toHaveFocus();
     fireEvent.click(continueButton);
 

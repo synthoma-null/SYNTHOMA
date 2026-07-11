@@ -57,11 +57,11 @@ export default function CyklusCardOverlay({ label, variant, onClose, panelClassN
       <button className="cyklus-card-overlay__backdrop" type="button" tabIndex={-1} aria-label={`Zavřít: ${label}`} onClick={onClose} />
       <section
         ref={panelRef}
-        className={`cyklus-card-overlay__panel ${panelClassName}`.trim()}
+        className={`cyklus-card-overlay__surface cyklus-card-overlay__panel ${panelClassName}`.trim()}
         role="dialog"
         aria-modal="true"
         aria-label={label}
-        data-card-overlay-scroll
+        data-card-overlay-surface="fill-card"
       >
         {children}
       </section>

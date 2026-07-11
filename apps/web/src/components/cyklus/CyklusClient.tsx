@@ -125,12 +125,12 @@ export function SystemNoticeOverlay({
 
   return (
     <CyklusCardOverlay label={label} variant={variant} onClose={onClose} panelClassName={`cyklus-system-modal cyklus-system-modal--${variant}`}>
-        <header className="cyklus-system-modal__header">
+        <header className="cyklus-card-overlay__header cyklus-system-modal__header">
           <span id={titleId}>{label}</span>
           <button className="cyklus-system-modal__close" type="button" onClick={onClose} aria-label={`Zavřít: ${label}`}>×</button>
         </header>
-        <div className="cyklus-system-modal__body">{text}</div>
-        <footer className="cyklus-system-modal__actions">
+        <div className="cyklus-card-overlay__content cyklus-system-modal__body">{text}</div>
+        <footer className="cyklus-card-overlay__footer cyklus-system-modal__actions">
           <button data-card-overlay-primary className="cyklus-terminal-action" type="button" onClick={onClose}>Pokračovat</button>
         </footer>
     </CyklusCardOverlay>
@@ -1903,11 +1903,11 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
 
   return (
     <CyklusCardOverlay label="Dopad volby" variant="outcome" onClose={onDismiss} panelClassName={`cyklus-outcome ${reward?.cls ?? 'reward--silent'}`}>
-      <div className="cyklus-outcome__content" aria-live="polite">
-      <div className="cyklus-outcome__label" id="cyklus-outcome-title">
+      <header className="cyklus-card-overlay__header cyklus-outcome__label" id="cyklus-outcome-title">
         Dopad volby
         {reward && <span className={`cyklus-outcome__reward ${reward.cls}`}>{reward.label}</span>}
-      </div>
+      </header>
+      <div className="cyklus-card-overlay__content cyklus-outcome__content" aria-live="polite">
       <div className="cyklus-outcome__story">{state.lastOutcomeText}</div>
       {deltas.length > 0 && (
         <div className="cyklus-outcome__stats">
@@ -1930,8 +1930,10 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
       )}
       {entityDeltas && <div className="cyklus-outcome__hint">Profil se posunul.</div>}
       {isFreshMeta && <div className="cyklus-outcome__fresh-meta">Tato karta byla odemčena předchozím koncem.</div>}
-      <button data-card-overlay-primary className="cyklus-outcome__continue" type="button" onClick={onDismiss}>POKRAČOVAT</button>
       </div>
+      <footer className="cyklus-card-overlay__footer cyklus-outcome__actions">
+        <button data-card-overlay-primary className="cyklus-outcome__continue" type="button" onClick={onDismiss}>POKRAČOVAT</button>
+      </footer>
     </CyklusCardOverlay>
   );
 }

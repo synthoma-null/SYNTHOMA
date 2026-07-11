@@ -36,8 +36,8 @@
   inset: 0;
   z-index: 20;
   display: grid;
-  place-items: center;
-  padding: clamp(12px, 3vw, 20px);
+  place-items: stretch;
+  padding: clamp(6px, 1.5vw, 12px);
   overflow: hidden;
   user-select: text;
 }
@@ -56,6 +56,7 @@
   backdrop-filter: blur(2px);
 }
 
+.cyklus-card-overlay__surface,
 .cyklus-card-overlay__panel,
 .cyklus-card-overlay .cyklus-system-modal,
 .cyklus-card-overlay .cyklus-cycle-notice,
@@ -63,14 +64,16 @@
   position: relative;
   inset: auto;
   z-index: 1;
-  display: block;
-  width: min(100%, 560px);
-  height: auto;
-  max-width: 100%;
-  max-height: min(78%, calc(100% - 24px));
-  margin: auto;
-  overflow-x: clip;
-  overflow-y: auto;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  margin: 0;
+  overflow: hidden;
   overscroll-behavior: contain;
   border: 1px solid var(--cy-line-strong);
   border-radius: var(--cy-radius);
@@ -81,8 +84,6 @@
   scrollbar-width: thin;
   transform: none;
 }
-
-.cyklus-card-overlay--summary .cyklus-card-overlay__panel { width: min(100%, 580px); }
 
 .cyklus-card-overlay--warning .cyklus-card-overlay__panel {
   border-color: var(--cy-line-yellow);
@@ -97,8 +98,9 @@
 
 .cyklus-card-overlay .cyklus-outcome {
   --outcome-accent: var(--cy-magenta);
-  width: min(100%, 540px);
-  padding: clamp(0.9rem, 3vw, 1.35rem);
+  width: 100%;
+  height: 100%;
+  padding: 0;
   border-left: 3px solid var(--outcome-accent);
   animation: cyklus-os-report-in 180ms ease-out;
 }
@@ -114,20 +116,61 @@
   display: flex;
   width: 100%;
   max-width: none;
+  min-height: 0;
   max-height: none;
   flex-direction: column;
   gap: var(--cy-space-2);
-  padding: 0;
-  overflow: visible;
+  padding: clamp(0.9rem, 3vw, 1.5rem);
+  overflow-x: clip;
+  overflow-y: auto;
   border: 0;
   background: transparent;
   box-shadow: none;
   pointer-events: auto;
 }
 
-.cyklus-card-overlay :is(.cyklus-system-modal__header, .cyklus-cycle-notice__header),
-.cyklus-card-overlay :is(.cyklus-system-modal__actions, .cyklus-cycle-notice__actions) {
-  position: sticky;
+.cyklus-card-overlay__header,
+.cyklus-card-overlay__footer {
+  position: relative;
+  z-index: 2;
+  flex: none;
+}
+
+.cyklus-card-overlay__content {
+  min-width: 0;
+  min-height: 0;
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.cyklus-card-overlay .cyklus-system-modal__body {
+  display: grid;
+  align-content: center;
+}
+
+.cyklus-card-overlay .cyklus-cycle-forecast,
+.cyklus-card-overlay .cyklus-cycle-summary {
+  min-height: 100%;
+}
+
+.cyklus-outcome__actions {
+  padding: 1px;
+  border-top: 1px solid var(--cy-line);
+  background: var(--cy-line-subtle);
+}
+
+.cyklus-card-overlay .cyklus-outcome__continue {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  border: 0;
+  background: var(--cy-button-active);
+}
+
+.cyklus-card-overlay .cyklus-outcome__stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
 }
 
 @media (max-width: 767px) {
@@ -145,20 +188,42 @@
     justify-self: stretch;
   }
 
-  .cyklus-card-overlay {
-    place-items: center;
-    padding: 12px;
-  }
+  .cyklus-card-overlay { place-items: stretch; padding: 6px; }
 
+  .cyklus-card-overlay__surface,
   .cyklus-card-overlay__panel,
   .cyklus-card-overlay .cyklus-system-modal,
   .cyklus-card-overlay .cyklus-cycle-notice,
   .cyklus-card-overlay .cyklus-outcome {
-    width: min(100%, 560px);
-    max-width: 100%;
-    max-height: min(78%, calc(100% - 24px));
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
     border: 1px solid var(--cy-line-strong);
     border-radius: var(--cy-radius);
+  }
+
+  .cyklus-card-overlay .cyklus-outcome__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 600px) {
+  .cyklus-card-overlay .cyklus-cycle-forecast {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: var(--cy-space-4);
+    align-items: start;
+  }
+
+  .cyklus-card-overlay .cyklus-cycle-forecast__diagnostic {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .cyklus-card-overlay .cyklus-cycle-forecast__copy {
+    margin-top: 0;
   }
 }
 
