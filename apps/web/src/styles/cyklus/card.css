@@ -376,6 +376,7 @@
     min-height: 0;
     padding: var(--cy-space-3);
     border-radius: var(--cy-radius);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.48);
   }
 
   .cyklus-card__metadata {
@@ -392,6 +393,8 @@
   }
 
   .cyklus-card-scene {
+    position: relative;
+    max-height: none;
     padding: var(--cy-space-2) var(--cy-space-2) var(--cy-space-2) var(--cy-space-3);
     font-size: 0.875rem;
     line-height: 1.5;
@@ -416,6 +419,18 @@
 
   .cyklus-btn__label {
     font-size: 0.66rem;
+  }
+
+  .cyklus-card__preview {
+    position: relative;
+    z-index: 3;
+    flex-shrink: 0;
+    background: var(--cy-line-dim);
+  }
+
+  .cyklus-root--swiping :is(.cyklus-mobile-hud, .cyklus-stat-dock, .cyklus-active-objective),
+  .cyklus-root--outcome-visible :is(.cyklus-mobile-hud, .cyklus-stat-dock, .cyklus-active-objective) {
+    opacity: 0.72;
   }
 }
 

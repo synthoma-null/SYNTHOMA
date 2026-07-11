@@ -77,16 +77,28 @@ export function ActiveObjectivePanel({
   tutorialActive: boolean;
 }) {
   const showHint = shouldShowStatRuleHint(state, runHistoryCount, tutorialActive);
+  const mobileMode = state.totalChoices <= 1 ? 'expanded' : state.runFocus ? 'compact' : 'hidden';
   return (
-    <section className="cyklus-active-objective" aria-labelledby="cyklus-active-objective-title">
-      <div className="cyklus-active-objective__label" id="cyklus-active-objective-title">AKTUÁLNÍ STOPA</div>
-      <p className="cyklus-active-objective__text">{getActiveObjectiveText(state, runHistoryCount, tutorialActive)}</p>
-      {state.runFocus && <strong className="cyklus-active-objective__focus">{state.runFocus.label}</strong>}
-      {showHint && (
-        <p className="cyklus-active-objective__hint" data-testid="cyklus-stat-rule-hint">
-          Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.
-        </p>
-      )}
+    <section
+      className={`cyklus-active-objective cyklus-active-objective--mobile-${mobileMode}`}
+      aria-labelledby="cyklus-active-objective-title"
+      data-mobile-mode={mobileMode}
+    >
+      <details className="cyklus-active-objective__details" open={mobileMode === 'expanded'}>
+        <summary className="cyklus-active-objective__summary">
+          {state.runFocus ? `STOPA // ${state.runFocus.label}` : 'STOPA // SMÍŠENÝ BĚH'}
+        </summary>
+        <div className="cyklus-active-objective__body">
+          <div className="cyklus-active-objective__label" id="cyklus-active-objective-title">AKTUÁLNÍ STOPA</div>
+          <p className="cyklus-active-objective__text">{getActiveObjectiveText(state, runHistoryCount, tutorialActive)}</p>
+          {state.runFocus && <strong className="cyklus-active-objective__focus">{state.runFocus.label}</strong>}
+          {showHint && (
+            <p className="cyklus-active-objective__hint" data-testid="cyklus-stat-rule-hint">
+              Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.
+            </p>
+          )}
+        </div>
+      </details>
     </section>
   );
 }
@@ -621,7 +633,12 @@ export default function CyklusClient() {
 
   return (
     <>
-    <div className={`cyklus-root ${ending ? 'cyklus-root--ended' : ''}`}>
+    <div className={[
+      'cyklus-root',
+      ending ? 'cyklus-root--ended' : '',
+      dragX !== 0 ? 'cyklus-root--swiping' : '',
+      outcomeVisible ? 'cyklus-root--outcome-visible' : '',
+    ].filter(Boolean).join(' ')}>
       {sectorIntro && (
         <SystemNoticeOverlay variant="sector" label={SECTOR_LABELS[state.sector]} text={sectorIntro} onClose={() => setSectorIntro(null)} />
       )}

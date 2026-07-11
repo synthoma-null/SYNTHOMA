@@ -44,15 +44,16 @@
 
   .cyklus-stage {
     gap: var(--cy-space-1);
-    padding: var(--cy-space-1) var(--cy-space-2) var(--cy-space-2);
+    padding: var(--cy-space-1) var(--cy-space-2) var(--cy-space-1);
   }
 
   .cyklus-active-objective {
-    max-height: 72px;
+    max-height: min(28dvh, 112px);
   }
 
   .cyklus-card {
     min-height: 0;
+    contain: layout paint;
   }
 
   .cyklus-card-scene {
@@ -134,7 +135,7 @@
   }
 
   .cyklus-card__context {
-    max-width: 42%;
+    display: none;
   }
 
   .cyklus-preview::before {
@@ -159,8 +160,8 @@
 }
 
 @media (max-width: 379px) and (max-height: 700px) {
-  .cyklus-active-objective__hint,
-  .cyklus-active-objective__focus {
+  .cyklus-active-objective--mobile-expanded .cyklus-active-objective__hint,
+  .cyklus-active-objective--mobile-expanded .cyklus-active-objective__focus {
     display: none;
   }
 

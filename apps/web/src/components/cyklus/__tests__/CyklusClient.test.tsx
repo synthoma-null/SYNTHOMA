@@ -160,9 +160,18 @@ describe('CyklusClient', () => {
 
     render(<ActiveObjectivePanel state={state} runHistoryCount={1} tutorialActive={false} />);
 
+    expect(screen.getByText('STOPA // Glitchčino hnízdo').tagName).toBe('SUMMARY');
+    expect(screen.getByText('STOPA // Glitchčino hnízdo').closest('section')).toHaveAttribute('data-mobile-mode', 'compact');
     expect(screen.getByText(/Tento běh se drží oblasti: Glitchčino hnízdo/)).toBeInTheDocument();
     expect(screen.getByText('Glitchčino hnízdo')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matching pool|glitchka_nest/i);
+  });
+
+  it('marks an established mixed run objective as hidden on mobile', () => {
+    const state = { ...createCyklusRun(true), totalChoices: 2, currentCardId: 'first_boot' };
+    render(<ActiveObjectivePanel state={state} runHistoryCount={1} tutorialActive={false} />);
+
+    expect(screen.getByText('AKTUÁLNÍ STOPA').closest('section')).toHaveAttribute('data-mobile-mode', 'hidden');
   });
 
   it('minimum tutorial path renders the junction and then releases the player into the run', async () => {

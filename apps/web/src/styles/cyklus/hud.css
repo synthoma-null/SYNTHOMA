@@ -12,6 +12,15 @@
   text-align: left;
 }
 
+.cyklus-active-objective__details,
+.cyklus-active-objective__body {
+  min-width: 0;
+}
+
+.cyklus-active-objective__summary {
+  display: none;
+}
+
 .cyklus-active-objective::after {
   content: "";
   position: absolute;
@@ -526,7 +535,68 @@
 
   .cyklus-active-objective {
     max-width: none;
-    padding: 0.38rem 0.55rem;
+    padding: 0;
+    border-left: 0;
+    background: transparent;
+  }
+
+  .cyklus-active-objective::after {
+    display: none;
+  }
+
+  .cyklus-active-objective__details {
+    width: 100%;
+  }
+
+  .cyklus-active-objective__summary {
+    min-height: 44px;
+    align-items: center;
+    padding: 0.55rem 0.7rem;
+    border-left: 2px solid var(--cy-accent-memory);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-memory) 6%, transparent), transparent 82%);
+    color: var(--cy-magenta-soft);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .cyklus-active-objective__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .cyklus-active-objective__summary::after {
+    content: "+";
+    margin-left: auto;
+    color: var(--cy-text-dim);
+  }
+
+  .cyklus-active-objective__details[open] > .cyklus-active-objective__summary::after {
+    content: "−";
+  }
+
+  .cyklus-active-objective__body {
+    padding: 0.45rem 0.6rem;
+    border-left: 2px solid var(--cy-accent-system);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-system) 5%, transparent), transparent 82%);
+  }
+
+  .cyklus-active-objective--mobile-expanded .cyklus-active-objective__summary {
+    display: none;
+  }
+
+  .cyklus-active-objective--mobile-expanded .cyklus-active-objective__body {
+    display: block;
+  }
+
+  .cyklus-active-objective--mobile-compact .cyklus-active-objective__summary {
+    display: flex;
+  }
+
+  .cyklus-active-objective--mobile-hidden {
+    display: none;
   }
 
   .cyklus-active-objective__text,
