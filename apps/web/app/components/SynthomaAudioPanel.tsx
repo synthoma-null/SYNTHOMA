@@ -55,6 +55,7 @@ export default function SynthomaAudioPanel() {
   const [externalTitle, setExternalTitle] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const activeTrackRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
   const restoreFocusRef = useRef(true);
 
@@ -193,6 +194,11 @@ export default function SynthomaAudioPanel() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
+  useEffect(() => {
+    if (!open || externalTitle) return;
+    activeTrackRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [externalTitle, open, trackIndex]);
+
   const currentTrack = playlist[trackIndex];
   const title = externalTitle ?? currentTrack?.title ?? 'Bez aktivní stopy';
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
@@ -263,6 +269,36 @@ export default function SynthomaAudioPanel() {
               <AudioIcon name={muted ? 'muted' : 'volume'} />
             </button>
           </div>
+        </div>
+
+        <div className="synthoma-audio-panel__library" aria-labelledby="synthoma-audio-library-title">
+          <h3 id="synthoma-audio-library-title">KNIHOVNA STOP // {playlist.length}</h3>
+          <ol>
+            {playlist.map((track, index) => {
+              const active = !externalTitle && index === trackIndex;
+              return (
+                <li key={track.src}>
+                  <button
+                    ref={active ? activeTrackRef : undefined}
+                    type="button"
+                    className={active ? 'is-active' : undefined}
+                    aria-current={active ? 'true' : undefined}
+                    aria-label={`${String(index + 1).padStart(2, '0')}. ${track.title}, ${track.mood}`}
+                    onClick={() => playTrack(index)}
+                  >
+                    <span className="synthoma-audio-panel__track-number">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="synthoma-audio-panel__track-copy">
+                      <strong>{track.title}</strong>
+                      <small>{track.mood}</small>
+                    </span>
+                    <span className="synthoma-audio-panel__track-state" aria-hidden="true">
+                      {active ? (muted ? 'MUTED' : playing ? 'PLAY' : 'PAUSE') : ''}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
     </div>

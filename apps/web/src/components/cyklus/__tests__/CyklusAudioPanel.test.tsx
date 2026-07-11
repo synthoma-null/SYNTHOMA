@@ -6,6 +6,7 @@ describe('SynthomaAudioPanel', () => {
   let playSpy: jest.SpyInstance;
   let pauseSpy: jest.SpyInstance;
   let loadSpy: jest.SpyInstance;
+  let scrollIntoViewSpy: jest.Mock;
 
   beforeEach(() => {
     document.body.innerHTML = `
@@ -22,6 +23,8 @@ describe('SynthomaAudioPanel', () => {
       this.dispatchEvent(new Event('pause'));
     });
     loadSpy = jest.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
+    scrollIntoViewSpy = jest.fn();
+    Element.prototype.scrollIntoView = scrollIntoViewSpy;
   });
 
   afterEach(() => {
@@ -89,5 +92,25 @@ describe('SynthomaAudioPanel', () => {
     expect(document.querySelectorAll('audio')).toHaveLength(1);
     expect(window.__synthomaAudio).toBe(sharedAudio);
     expect((sharedAudio as HTMLAudioElement).src).toContain('/audio/Run.mp3');
+  });
+
+  it('renders the full ordered library and selects a track on the shared player', async () => {
+    render(<SynthomaAudioPanel />);
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:audio-toggle')));
+
+    const library = await screen.findByRole('heading', { name: 'KNIHOVNA STOP // 13' });
+    const list = library.nextElementSibling as HTMLOListElement;
+    const trackButtons = within(list).getAllByRole('button');
+
+    expect(trackButtons).toHaveLength(13);
+    expect(trackButtons[0]).toHaveAccessibleName('01. Comet, ambient');
+    expect(trackButtons[12]).toHaveAccessibleName('13. Nuova, run');
+
+    fireEvent.click(within(list).getByRole('button', { name: '04. Run, action' }));
+    const sharedAudio = document.getElementById('synthoma-shared-audio') as HTMLAudioElement;
+    expect(sharedAudio.src).toContain('/audio/Run.mp3');
+    expect(within(list).getByRole('button', { name: '04. Run, action' })).toHaveAttribute('aria-current', 'true');
+    expect(document.querySelectorAll('audio')).toHaveLength(1);
+    expect(scrollIntoViewSpy).toHaveBeenCalledWith({ block: 'nearest' });
   });
 });
