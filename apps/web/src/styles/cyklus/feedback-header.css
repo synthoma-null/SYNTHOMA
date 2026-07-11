@@ -80,7 +80,7 @@
   padding: 12px;
   overflow: hidden;
   border: 0;
-  background: rgba(2, 3, 6, 0.82);
+  background: var(--cy-overlay-backdrop);
 }
 
 .cyklus-outcome.reward--item,
@@ -108,7 +108,7 @@
   border: 1px solid var(--cy-line-strong);
   border-left: 3px solid var(--outcome-accent);
   background: var(--cy-panel-solid);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.62), 0 0 22px color-mix(in srgb, var(--outcome-accent) 12%, transparent);
+  box-shadow: var(--cy-shadow), 0 0 22px color-mix(in srgb, var(--outcome-accent) 12%, transparent);
   pointer-events: auto;
 }
 
@@ -153,7 +153,7 @@
     min-height: 44px;
     padding: 0 4px;
     border-bottom: 1px solid var(--cy-line);
-    background: rgba(2, 3, 6, 0.97);
+    background: color-mix(in srgb, var(--cy-surface-1) 97%, transparent);
   }
 
   .cyklus-root--playing > .cyklus-desktop-top > .cyklus-stat-dock {

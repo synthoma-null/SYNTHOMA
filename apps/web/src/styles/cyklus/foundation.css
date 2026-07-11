@@ -15,7 +15,7 @@
 .cyklus-void-page {
   min-height: 100dvh;
   overflow-x: clip;
-  background: var(--cy-black);
+  background: var(--cy-bg);
   color: var(--cy-text);
   font-family: var(--cy-font-mono);
 }
@@ -23,7 +23,7 @@
 .cyklus-page ::selection,
 .cyklus-void-page ::selection {
   background: var(--cy-magenta);
-  color: var(--cy-black);
+  color: var(--cy-text-inverse);
 }
 
 .cy-frame {
@@ -99,7 +99,7 @@
   padding: 0.65rem 0.9rem;
   border: 1px solid var(--cy-line);
   border-radius: var(--cy-radius-sm);
-  background: color-mix(in srgb, var(--cy-accent-system) 3.5%, transparent);
+  background: var(--cy-button-bg);
   color: var(--cy-text);
   font: 700 0.78rem/1.2 var(--cy-font-mono);
   letter-spacing: 0.08em;
@@ -111,7 +111,7 @@
 
 .cy-terminal-button:hover:not(:disabled) {
   border-color: var(--cy-line-strong);
-  background: color-mix(in srgb, var(--cy-accent-system) 8%, transparent);
+  background: var(--cy-button-hover);
   color: var(--cy-cyan-soft);
   box-shadow: var(--cy-glow-cyan);
 }
@@ -153,7 +153,7 @@
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: var(--cy-line-strong) rgba(0, 0, 0, 0.35);
+  scrollbar-color: var(--cy-line-strong) var(--cy-scrollbar-track);
 }
 
 .cy-scroll-region::-webkit-scrollbar {
@@ -166,12 +166,12 @@
 }
 
 .cy-scroll-region::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--cy-scrollbar-track);
 }
 
 .cyklus-page :is(button, a, [tabindex]):focus-visible,
 .cyklus-void-page :is(button, a, [tabindex]):focus-visible {
-  outline: 2px solid var(--cy-cyan);
+  outline: 2px solid var(--cy-focus-ring);
   outline-offset: 3px;
 }
 

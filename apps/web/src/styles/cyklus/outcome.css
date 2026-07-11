@@ -14,7 +14,7 @@
   border-left: 2px solid var(--cy-magenta);
   border-radius: 0;
   background:
-    linear-gradient(180deg, rgba(2, 3, 6, 0.72), rgba(5, 9, 16, 0.985) 38%),
+    linear-gradient(180deg, color-mix(in srgb, var(--cy-surface-1) 72%, transparent), color-mix(in srgb, var(--cy-surface-1) 98.5%, transparent) 38%),
     var(--cy-panel-solid);
   box-shadow: none;
   color: var(--cy-text);
@@ -313,7 +313,7 @@
   overflow: auto;
   border: 1px solid var(--cy-line);
   border-radius: 0;
-  background: #010204;
+  background: var(--cy-bg);
   color: var(--cy-text-soft);
   font: 0.7rem/1.5 var(--cy-font-mono);
   white-space: pre-wrap;

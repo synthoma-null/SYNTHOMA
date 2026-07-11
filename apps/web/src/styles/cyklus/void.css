@@ -32,8 +32,8 @@
 }
 
 .cyklus-void-page::after {
-  background: repeating-linear-gradient(0deg, rgba(217, 251, 255, 0.02) 0 1px, transparent 1px 4px);
-  opacity: 0.24;
+  background: repeating-linear-gradient(0deg, var(--cy-scanline-color) 0 1px, transparent 1px 4px);
+  opacity: var(--cy-noise-opacity);
 }
 
 .cyklus-void-client-shell {
@@ -56,7 +56,7 @@
   padding: var(--cy-space-2) var(--cy-space-3);
   border: 1px solid var(--cy-line);
   border-radius: var(--cy-radius);
-  background: rgba(2, 3, 6, 0.94);
+  background: color-mix(in srgb, var(--cy-surface-1) 94%, transparent);
   box-shadow: none;
 }
 
@@ -106,7 +106,7 @@
   overflow: visible;
   border: 1px solid var(--cy-line);
   border-radius: var(--cy-radius);
-  background: rgba(2, 3, 6, 0.9);
+  background: color-mix(in srgb, var(--cy-surface-1) 90%, transparent);
   box-shadow: none;
 }
 
@@ -118,7 +118,7 @@
     linear-gradient(var(--cy-cyan), var(--cy-cyan)) left top / 1px 42px no-repeat,
     linear-gradient(var(--cy-magenta), var(--cy-magenta)) right top / 24px 1px no-repeat,
     linear-gradient(var(--cy-magenta), var(--cy-magenta)) right top / 1px 24px no-repeat,
-    repeating-linear-gradient(0deg, rgba(217, 251, 255, 0.018) 0 1px, transparent 1px 4px);
+    repeating-linear-gradient(0deg, var(--cy-scanline-color) 0 1px, transparent 1px 4px);
   opacity: 0.72;
 }
 
@@ -460,7 +460,7 @@
   padding: 0;
   overflow-x: auto;
   border-block: 1px solid var(--cy-line);
-  background: rgba(2, 3, 6, 0.98);
+  background: color-mix(in srgb, var(--cy-surface-1) 98%, transparent);
   scrollbar-width: thin;
   scrollbar-color: var(--cy-line-strong) transparent;
   scroll-snap-type: x proximity;
@@ -664,7 +664,7 @@
   padding: var(--cy-space-3);
   border: 1px solid var(--cy-line-dim);
   border-radius: var(--cy-radius);
-  background: rgba(5, 9, 16, 0.76);
+  background: color-mix(in srgb, var(--cy-surface-2) 76%, transparent);
   box-shadow: none;
 }
 
@@ -708,14 +708,14 @@
   border: 1px solid var(--cy-line-dim);
   border-left: 2px solid var(--cy-cyan);
   border-radius: var(--cy-radius);
-  background: rgba(2, 3, 6, 0.66);
+  background: color-mix(in srgb, var(--cy-surface-1) 66%, transparent);
 }
 
 .craft-recipe-row {
   border-left-color: var(--cy-magenta);
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-memory) 3.5%, transparent), transparent 60%),
-    rgba(2, 3, 6, 0.66);
+    color-mix(in srgb, var(--cy-surface-1) 66%, transparent);
 }
 
 .craft-recipe-row::after {
@@ -851,7 +851,7 @@
 
 .cyklus-overlay--void-hub .cyklus-void-hub {
   padding: clamp(0.75rem, 2vw, 1.25rem);
-  background: rgba(2, 3, 6, 0.98);
+  background: color-mix(in srgb, var(--cy-surface-1) 98%, transparent);
 }
 
 .cyklus-overlay--void-hub :is(.progression-resource-grid, .progression-section-grid, .cyklus-pocket-grid) {

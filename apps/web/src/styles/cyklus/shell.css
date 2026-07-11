@@ -7,7 +7,7 @@
   background:
     radial-gradient(ellipse at 8% 12%, color-mix(in srgb, var(--cy-accent-system) 7.5%, transparent), transparent 36%),
     radial-gradient(ellipse at 92% 82%, color-mix(in srgb, var(--cy-accent-memory) 6.5%, transparent), transparent 34%),
-    var(--cy-black);
+    var(--cy-bg);
 }
 
 .cyklus-page::before,
@@ -29,8 +29,8 @@
 }
 
 .cyklus-page::after {
-  background: repeating-linear-gradient(0deg, rgba(217, 251, 255, 0.025) 0 1px, transparent 1px 4px);
-  opacity: 0.22;
+  background: repeating-linear-gradient(0deg, var(--cy-scanline-color) 0 1px, transparent 1px 4px);
+  opacity: var(--cy-noise-opacity);
 }
 
 .cyklus-page > .cyklus-root {
@@ -47,7 +47,7 @@
 
 .cyklus-loading {
   min-height: 100dvh;
-  background: var(--cy-black);
+  background: var(--cy-bg);
   color: var(--cy-cyan-soft);
   font-family: var(--cy-font-mono);
   letter-spacing: 0.12em;
@@ -72,7 +72,7 @@
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(2, 3, 6, 0.97) 0, rgba(2, 3, 6, 0.76) 46%, rgba(2, 3, 6, 0.84) 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--cy-bg) 97%, transparent) 0, color-mix(in srgb, var(--cy-bg) 76%, transparent) 46%, color-mix(in srgb, var(--cy-bg) 84%, transparent) 100%),
     linear-gradient(180deg, color-mix(in srgb, var(--cy-accent-system) 4%, transparent), transparent 25%, color-mix(in srgb, var(--cy-accent-memory) 3.5%, transparent));
 }
 
@@ -249,7 +249,7 @@
   border: 0;
   border-bottom: 1px solid var(--cy-line-dim);
   border-radius: 0;
-  background: rgba(2, 3, 6, 0.72);
+  background: color-mix(in srgb, var(--cy-surface-1) 72%, transparent);
   color: var(--cy-text);
   font: 700 0.82rem/1.2 var(--cy-font-mono);
   letter-spacing: 0.1em;
@@ -280,7 +280,7 @@
 }
 
 .cyklus-menu__button--secondary {
-  background: rgba(2, 3, 6, 0.72);
+  background: color-mix(in srgb, var(--cy-surface-1) 72%, transparent);
   color: var(--cy-text-soft);
 }
 
@@ -407,7 +407,7 @@
 .cyklus-discovery__bar {
   height: 3px;
   border-radius: 0;
-  background: rgba(85, 119, 129, 0.24);
+  background: color-mix(in srgb, var(--cy-text-dim) 24%, transparent);
 }
 
 .cyklus-build__fill,

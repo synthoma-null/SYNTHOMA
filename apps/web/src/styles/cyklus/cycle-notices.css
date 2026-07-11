@@ -11,7 +11,7 @@
   border: 1px solid var(--cy-line-strong);
   border-radius: var(--cy-radius);
   background: var(--cy-panel-solid);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.72), var(--cy-glow-cyan);
+  box-shadow: var(--cy-shadow), var(--cy-glow-cyan);
   color: var(--cy-text);
   scrollbar-width: thin;
   scrollbar-color: var(--cy-line-strong) transparent;
@@ -22,7 +22,7 @@
   --modal-accent: var(--cy-magenta);
   width: min(calc(100% - 24px), 620px);
   border-color: var(--cy-line-magenta);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.72), var(--cy-glow-magenta);
+  box-shadow: var(--cy-shadow), var(--cy-glow-magenta);
 }
 
 .cyklus-cycle-notice__header {

@@ -145,7 +145,7 @@
 .cyklus-stat-chip[aria-pressed="true"] {
   z-index: 1;
   border: 0;
-  background: #08121a;
+  background: var(--cy-button-hover);
   box-shadow: inset 0 0 0 1px var(--stat-accent);
 }
 
@@ -288,7 +288,7 @@
 .cyklus-stat-popup-overlay {
   z-index: var(--cy-z-modal);
   padding: var(--cy-space-4);
-  background: rgba(0, 2, 5, 0.82);
+  background: var(--cy-overlay-backdrop);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
@@ -347,7 +347,7 @@
   z-index: var(--cy-z-hud);
   width: 100%;
   border-bottom: 1px solid var(--cy-line);
-  background: rgba(2, 3, 6, 0.97);
+  background: color-mix(in srgb, var(--cy-surface-1) 97%, transparent);
   font-family: var(--cy-font-mono);
 }
 
@@ -420,8 +420,8 @@
   padding: var(--cy-space-3);
   overflow: auto;
   border-bottom: 1px solid var(--cy-line-strong);
-  background: rgba(3, 7, 13, 0.98);
-  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.64);
+  background: color-mix(in srgb, var(--cy-surface-2) 98%, transparent);
+  box-shadow: var(--cy-shadow);
 }
 
 .cyklus-diag-drawer__route,
@@ -449,8 +449,8 @@
   padding: 1px 0 0;
   border: 0;
   border-top: 1px solid var(--cy-line-strong);
-  background: rgba(2, 3, 6, 0.985);
-  box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.38);
+  background: color-mix(in srgb, var(--cy-surface-1) 98.5%, transparent);
+  box-shadow: var(--cy-shadow-compact);
 }
 
 .cyklus-bottom-nav::before {

@@ -1,20 +1,59 @@
 /* SYNTHOMA OS visual tokens. Keep this file free of component selectors. */
 
+:root,
+[data-theme] {
+  --cy-bg: var(--bg-primary, #020306);
+  --cy-bg-elevated: var(--bg-secondary, #050810);
+  --cy-surface-1: var(--bg-tertiary, #050910);
+  --cy-surface-2: color-mix(in srgb, var(--cy-surface-1) 88%, var(--text-primary, #d9fbff) 12%);
+  --cy-surface-3: color-mix(in srgb, var(--cy-surface-1) 80%, var(--text-primary, #d9fbff) 20%);
+
+  --cy-text: var(--text-primary, #d9fbff);
+  --cy-text-soft: var(--text-secondary, color-mix(in srgb, var(--cy-text) 78%, var(--cy-bg)));
+  --cy-text-dim: var(--text-tertiary, color-mix(in srgb, var(--cy-text) 64%, var(--cy-bg)));
+  --cy-text-inverse: var(--bg-primary, #020306);
+
+  --cy-line: var(--border-secondary, color-mix(in srgb, var(--cy-text) 28%, transparent));
+  --cy-line-strong: var(--border-primary, color-mix(in srgb, var(--cy-text) 62%, transparent));
+  --cy-line-subtle: var(--border-tertiary, color-mix(in srgb, var(--cy-text) 14%, transparent));
+
+  --cy-accent-primary: var(--accent-secondary, #00eaff);
+  --cy-accent-secondary: var(--accent-primary, #ff19c7);
+  --cy-accent-warning: var(--accent-warning, #f4e83a);
+  --cy-accent-danger: var(--accent-error, #ff3d4f);
+  --cy-accent-success: var(--accent-success, #7bed9f);
+
+  --cy-shadow: 0 20px 55px color-mix(in srgb, var(--cy-bg) 82%, transparent);
+  --cy-shadow-compact: 0 8px 24px color-mix(in srgb, var(--cy-bg) 72%, transparent);
+  --cy-glow-primary: 0 0 18px var(--glow-secondary, color-mix(in srgb, var(--cy-accent-primary) 22%, transparent));
+  --cy-glow-secondary: 0 0 18px var(--glow-primary, color-mix(in srgb, var(--cy-accent-secondary) 20%, transparent));
+
+  --cy-grid-color: color-mix(in srgb, var(--cy-accent-primary) 4%, transparent);
+  --cy-scanline-color: color-mix(in srgb, var(--cy-text) 3%, transparent);
+  --cy-noise-opacity: var(--noise-opacity, 0.12);
+  --cy-overlay-backdrop: color-mix(in srgb, var(--cy-bg) 88%, transparent);
+  --cy-scrollbar-track: color-mix(in srgb, var(--cy-bg) 72%, transparent);
+
+  --cy-focus-ring: var(--cy-accent-primary);
+  --cy-button-bg: color-mix(in srgb, var(--cy-accent-primary) 4%, var(--cy-surface-1));
+  --cy-button-hover: color-mix(in srgb, var(--cy-accent-primary) 9%, var(--cy-surface-1));
+  --cy-button-active: color-mix(in srgb, var(--cy-accent-secondary) 12%, var(--cy-surface-1));
+}
+
 .cyklus-page,
 .cyklus-void-page,
 .cyklus-overlay--void-hub {
   color-scheme: dark;
 
-  --cy-black: var(--bg-primary, #020306);
-  --cy-black-soft: var(--bg-secondary, #050810);
-  --cy-panel-solid: var(--bg-tertiary, #050910);
+  --cy-black: var(--cy-bg);
+  --cy-black-soft: var(--cy-bg-elevated);
+  --cy-panel-solid: var(--cy-surface-1);
   --cy-panel: color-mix(in srgb, var(--cy-panel-solid) 92%, transparent);
-  --cy-panel-raised: color-mix(in srgb, var(--cy-panel-solid) 86%, var(--text-primary, #d9fbff) 14%);
+  --cy-panel-raised: var(--cy-surface-2);
 
-  --cy-accent-system: var(--accent-secondary, #00eaff);
-  --cy-accent-memory: var(--accent-primary, #ff19c7);
+  --cy-accent-system: var(--cy-accent-primary);
+  --cy-accent-memory: var(--cy-accent-secondary);
   --cy-accent-entity: var(--text-accent, var(--accent-primary, #ff76df));
-  --cy-accent-warning: var(--accent-warning, #f4e83a);
 
   --cy-cyan: var(--cy-accent-system);
   --cy-cyan-soft: color-mix(in srgb, var(--cy-accent-system) 68%, var(--text-primary, #d9fbff));
@@ -22,27 +61,19 @@
   --cy-magenta-soft: color-mix(in srgb, var(--cy-accent-memory) 68%, var(--text-primary, #d9fbff));
   --cy-yellow: var(--cy-accent-warning);
   --cy-violet: var(--accent-tertiary, #9b62ff);
-  --cy-red: #ff3d4f;
+  --cy-red: var(--cy-accent-danger);
 
-  --cy-text: var(--text-primary, #d9fbff);
-  --cy-text-soft: color-mix(in srgb, var(--cy-text) 78%, var(--cy-black));
-  --cy-text-dim: color-mix(in srgb, var(--cy-text) 64%, var(--cy-black));
-
-  --cy-line: color-mix(in srgb, var(--cy-accent-system) 28%, transparent);
-  --cy-line-strong: color-mix(in srgb, var(--cy-accent-system) 62%, transparent);
   --cy-line-magenta: color-mix(in srgb, var(--cy-accent-memory) 38%, transparent);
   --cy-line-yellow: color-mix(in srgb, var(--cy-accent-warning) 48%, transparent);
-  --cy-line-dim: color-mix(in srgb, var(--cy-text) 16%, transparent);
+  --cy-line-dim: var(--cy-line-subtle);
 
-  --cy-glow-system: 0 0 18px var(--glow-secondary, color-mix(in srgb, var(--cy-accent-system) 22%, transparent));
-  --cy-glow-memory: 0 0 18px var(--glow-primary, color-mix(in srgb, var(--cy-accent-memory) 20%, transparent));
+  --cy-glow-system: var(--cy-glow-primary);
+  --cy-glow-memory: var(--cy-glow-secondary);
   --cy-glow-warning: 0 0 15px var(--glow-tertiary, color-mix(in srgb, var(--cy-accent-warning) 17%, transparent));
   --cy-glow-cyan: var(--cy-glow-system);
   --cy-glow-magenta: var(--cy-glow-memory);
   --cy-glow-yellow: var(--cy-glow-warning);
 
-  --cy-grid-color: color-mix(in srgb, var(--cy-accent-system) 4%, transparent);
-  --cy-scanline-color: color-mix(in srgb, var(--cy-text) 3%, transparent);
   --cy-panel-tint: color-mix(in srgb, var(--cy-panel-solid) 92%, transparent);
 
   --cy-space-1: 0.25rem;
