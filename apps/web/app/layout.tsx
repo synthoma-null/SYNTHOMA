@@ -12,10 +12,10 @@ import "../src/styles/game.css";
 import "../src/styles/game-v1.css";
 import "../src/styles/cyklus.css";
 import "../src/styles/control-panel-os.css";
-
-import { tracks } from "../src/data/playlist";
+import "../src/styles/audio-panel.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
+import SynthomaAudioPanel from "./components/SynthomaAudioPanel";
 
 import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
 import ThemeShopClient from "./components/ThemeShopClient";
@@ -300,27 +300,17 @@ export default function RootLayout({ children }: PropsWithChildren) {
                 </div>
               </section>
 
-              <section className="cp-section" aria-labelledby="cp-audio-title">
+              <section className="cp-section" aria-labelledby="cp-accessibility-title">
                 <header className="cp-section-header">
                   <span aria-hidden="true">04</span>
-                  <h3 id="cp-audio-title">ZVUK</h3>
+                  <h3 id="cp-accessibility-title">PŘÍSTUPNOST</h3>
                 </header>
-                <fieldset className="group" aria-label="Audio přehrávač">
-                  <div id="progress-bar-container" className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} aria-label="Průběh skladby"><div id="progress-bar" /></div>
-                  <div className="audio-buttons">
-                    <button id="play-pause-btn" className="btn btn-sm" aria-pressed="false" aria-label="Přehrát nebo pozastavit">▶</button>
-                    <button id="stop-btn" className="btn btn-sm" aria-label="Zastavit">■</button>
-                    <button id="toggle-tts" className="btn btn-sm" aria-pressed="false">TTS: Vypnuto</button>
-                  </div>
-                  <div id="playlist-container" className="playlist" role="list" aria-label="Seznam skladeb">
-                    {tracks.map((track, index) => (
-                      <a key={index} href="#" data-src={track.src} role="listitem">{track.title}</a>
-                    ))}
-                  </div>
-                </fieldset>
+                <button id="toggle-tts" className="panel-button btn btn-sm" aria-pressed="false">Čtení textu: Vypnuto</button>
               </section>
             </div>
           </div>
+
+          <SynthomaAudioPanel />
 
           <ControlPanelWrapper />
 

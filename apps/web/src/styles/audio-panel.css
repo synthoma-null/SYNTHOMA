@@ -1,0 +1,238 @@
+/* Standalone music channel backed by the single shared audio element. */
+
+.synthoma-audio-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 4050;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.synthoma-audio-panel.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.synthoma-audio-panel__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.synthoma-audio-panel__surface {
+  position: absolute;
+  top: calc(60px + env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
+  width: min(340px, calc(100vw - 16px));
+  overflow: hidden;
+  border: 1px solid var(--cy-line-strong);
+  border-radius: var(--cy-theme-radius, 3px);
+  background: var(--cy-surface-1);
+  box-shadow: var(--cy-shadow), var(--cy-glow-primary);
+  color: var(--cy-text);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.synthoma-audio-panel.is-open .synthoma-audio-panel__surface {
+  opacity: 1;
+  transform: none;
+}
+
+.synthoma-audio-panel__header {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-left: 14px;
+  border-bottom: 1px solid var(--cy-line);
+  background: var(--cy-surface-1);
+}
+
+.synthoma-audio-panel__header > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.synthoma-audio-panel__kicker {
+  color: var(--cy-accent-primary);
+  font: 800 9px/1.2 var(--cy-font-mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.synthoma-audio-panel__header h2 {
+  margin: 0;
+  color: var(--cy-text-soft);
+  font: 800 12px/1.2 var(--cy-font-mono);
+  letter-spacing: 0.08em;
+}
+
+.synthoma-audio-panel__close,
+.synthoma-audio-panel__controls button {
+  display: inline-grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: var(--cy-button-bg);
+  color: var(--cy-text);
+  cursor: pointer;
+}
+
+.synthoma-audio-panel__close {
+  align-self: stretch;
+  border-left-color: var(--cy-line);
+}
+
+.synthoma-audio-panel :is(button, input):focus-visible {
+  outline: 2px solid var(--cy-focus-ring);
+  outline-offset: -3px;
+}
+
+.synthoma-audio-panel__close:hover,
+.synthoma-audio-panel__controls button:hover {
+  background: var(--cy-button-hover);
+}
+
+.synthoma-audio-panel svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.synthoma-audio-panel__body {
+  padding: 14px;
+}
+
+.synthoma-audio-panel__track {
+  min-height: 1.4em;
+  margin: 0 0 12px;
+  overflow: hidden;
+  color: var(--cy-text);
+  font: 600 15px/1.4 var(--font-family-primary), system-ui, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.synthoma-audio-panel__progress {
+  display: block;
+}
+
+.synthoma-audio-panel__progress input[type="range"] {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.synthoma-audio-panel__progress input[type="range"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.synthoma-audio-panel__progress input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  border: 0;
+  background: linear-gradient(90deg, var(--cy-accent-primary) 0 var(--audio-progress), var(--cy-surface-3) var(--audio-progress) 100%);
+  box-shadow: none;
+}
+
+.synthoma-audio-panel__progress input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  margin-top: -4.5px;
+  appearance: none;
+  border: 2px solid var(--cy-surface-1);
+  border-radius: 50%;
+  background: var(--cy-accent-primary);
+  box-shadow: 0 0 0 1px var(--cy-line-strong);
+}
+
+.synthoma-audio-panel__progress input[type="range"]::-moz-range-track {
+  height: 3px;
+  background: var(--cy-surface-3);
+}
+
+.synthoma-audio-panel__progress input[type="range"]::-moz-range-progress {
+  height: 3px;
+  background: var(--cy-accent-primary);
+}
+
+.synthoma-audio-panel__progress input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--cy-line-strong);
+  border-radius: 50%;
+  background: var(--cy-accent-primary);
+}
+
+.synthoma-audio-panel__times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1px;
+  color: var(--cy-text-dim);
+  font: 700 10px/1.2 var(--cy-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.synthoma-audio-panel__controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  gap: 1px;
+  margin-top: 12px;
+  background: var(--cy-line-subtle);
+}
+
+.synthoma-audio-panel__controls .synthoma-audio-panel__play,
+.synthoma-audio-panel__controls button[aria-pressed="true"] {
+  border-color: var(--cy-line-strong);
+  background: var(--cy-button-active);
+  color: var(--cy-accent-primary);
+}
+
+@media (max-width: 767px) {
+  .synthoma-audio-panel__surface {
+    inset: auto 0 0;
+    width: 100%;
+    max-height: min(46dvh, 360px);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    transform: translateY(100%);
+  }
+
+  .synthoma-audio-panel.is-open .synthoma-audio-panel__surface {
+    transform: translateY(0);
+  }
+
+  .synthoma-audio-panel__header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .synthoma-audio-panel__surface {
+    transition: none;
+  }
+}

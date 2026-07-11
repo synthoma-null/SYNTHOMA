@@ -1069,6 +1069,9 @@ export default function ControlPanelClient() {
 
       // audio
 
+      // The standalone panel owns music whenever it is mounted.
+      if (!document.getElementById('synthoma-audio-panel')) {
+
       const BP = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
       const playlistContainer = document.getElementById("playlist-container");
@@ -1563,6 +1566,8 @@ export default function ControlPanelClient() {
 
       audio.addEventListener("ended", function(){ if (audio.dataset.sequence) return; if (!audio.loop) playNextTrack(); });
 
+      }
+
 
 
       // =====================
@@ -1833,35 +1838,7 @@ export default function ControlPanelClient() {
 
           if (!btn) return;
 
-          if ((btn as HTMLElement).id === 'play-pause-btn'){
-
-            try { ev.preventDefault(); ev.stopPropagation(); } catch {}
-
-            try { console.warn('[Audio] play/pause click; paused=', audio.paused, 'src=', !!audio.src); } catch {}
-
-            if (audio.paused) {
-
-              try { writeText('audioAutoplayBlocked', 'false'); } catch {}
-
-              if (audio.src) { audio.play().catch(() => {}); }
-
-              else { currentTrackIndex = -1; playNextTrack(); }
-
-            } else { audio.pause(); }
-
-          } else if ((btn as HTMLElement).id === 'stop-btn'){
-
-            try { ev.preventDefault(); ev.stopPropagation(); } catch {}
-
-            try { console.warn('[Audio] stop click'); } catch {}
-
-            audio.pause();
-
-            audio.currentTime = 0;
-
-            try { writeText('audioAutoplayBlocked', 'true'); } catch {}
-
-          } else if ((btn as HTMLElement).id === 'toggle-tts') {
+          if ((btn as HTMLElement).id === 'toggle-tts') {
 
             try { ev.preventDefault(); ev.stopPropagation(); } catch {}
 

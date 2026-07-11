@@ -53,6 +53,7 @@ describe('existing control panel behavior', () => {
       <div id="control-panel" aria-hidden="true">
         <button id="cp-close-btn" type="button">Zavřít</button>
       </div>
+      <div id="synthoma-audio-panel"></div>
     `;
     window.__cpBootedOnce = false;
     window.__cpPanelDelegationAttached = false;
