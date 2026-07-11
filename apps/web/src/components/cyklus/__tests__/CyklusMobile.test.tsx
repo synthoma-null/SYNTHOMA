@@ -38,6 +38,7 @@ describe('CyklusBottomNav', () => {
     expect(screen.getByText('ARCHIV')).toBeInTheDocument();
     expect(screen.getByText('PRÁZDN0TA')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'KAPSA, 3 předmětů' }).querySelector('svg')).toBeInTheDocument();
   });
 
   it('calls onPocket when KAPSA is clicked', () => {
@@ -79,7 +80,7 @@ describe('CyklusBottomNav', () => {
     };
     render(<CyklusBottomNav pocketCount={0} {...handlers} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'KAPSA' }));
+    fireEvent.click(screen.getByRole('button', { name: 'KAPSA, 0 předmětů' }));
     fireEvent.click(screen.getByRole('button', { name: 'BUILD' }));
     fireEvent.click(screen.getByRole('button', { name: 'ARCHIV' }));
     fireEvent.click(screen.getByRole('button', { name: 'PRÁZDN0TA' }));
@@ -88,6 +89,7 @@ describe('CyklusBottomNav', () => {
     expect(handlers.onBuild).toHaveBeenCalledTimes(1);
     expect(handlers.onArchive).toHaveBeenCalledTimes(1);
     expect(handlers.onVoid).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('0')).toBeInTheDocument();
   });
 
   it('exposes the active destination with aria-pressed', () => {

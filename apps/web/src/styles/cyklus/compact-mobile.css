@@ -296,8 +296,19 @@
     font-size: 1.125rem;
   }
 
-  .cyklus-bottom-nav__label {
-    display: none !important;
+  .cyklus-bottom-nav__btn:not(.cyklus-pocket-trigger) .cyklus-bottom-nav__label {
+    display: none;
+  }
+
+  .cyklus-pocket-trigger {
+    grid-template-columns: auto minmax(0, auto) auto;
+    grid-template-rows: 44px;
+    gap: 4px;
+    padding-inline: 3px;
+  }
+
+  .cyklus-pocket-trigger .cyklus-bottom-nav__label {
+    display: inline;
   }
 
   .cyklus-bottom-nav__btn.is-active .cyklus-bottom-nav__icon {

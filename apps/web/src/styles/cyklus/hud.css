@@ -504,6 +504,60 @@
   box-shadow: var(--cy-glow-cyan);
 }
 
+.cyklus-pocket-trigger {
+  display: grid;
+  grid-template-columns: auto minmax(0, auto) auto;
+  grid-template-rows: 1fr;
+  place-content: center;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.cyklus-pocket-trigger__icon {
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  color: var(--cy-accent-primary);
+}
+
+.cyklus-pocket-trigger__icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.cyklus-pocket-trigger__label {
+  display: inline;
+  overflow: visible;
+  font: 800 0.6rem/1 var(--cy-font-mono);
+  letter-spacing: 0.06em;
+}
+
+.cyklus-pocket-trigger__count {
+  position: static;
+  display: inline-grid;
+  min-width: 20px;
+  height: 20px;
+  place-items: center;
+  padding: 0 4px;
+  border: 1px solid var(--cy-line-strong);
+  border-radius: var(--cy-theme-radius, 2px);
+  background: var(--cy-surface-2);
+  color: var(--cy-text);
+  font: 800 0.62rem/1 var(--cy-font-mono);
+}
+
+.cyklus-pocket-trigger.is-active,
+.cyklus-pocket-trigger[aria-pressed='true'] {
+  box-shadow: inset 0 -2px 0 var(--cy-accent-primary);
+}
+
 .cyklus-bottom-nav__icon {
   font-size: 1.2rem;
   line-height: 1;

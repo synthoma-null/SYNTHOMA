@@ -13,7 +13,7 @@ import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from 
 import StatDock from './StatDock';
 import { CyklusVoidHub } from './CyklusVoidHub';
 import CyklusVoidHubClient from './CyklusVoidHubClient';
-import CyklusBottomNav from './CyklusBottomNav';
+import CyklusBottomNav, { PocketIcon } from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
@@ -969,13 +969,16 @@ export default function CyklusClient() {
       {!ending && (
         <div className={`cyklus-pocket cyklus-pocket--standalone ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
           <button
-            className="cyklus-pocket__toggle"
+            className="cyklus-pocket__toggle cyklus-pocket-trigger"
             type="button"
             onClick={() => setShowPocket((v) => !v)}
             aria-expanded={showPocket ? 'true' : 'false'}
+            aria-pressed={showPocket}
+            aria-label={`KAPSA, ${state.inventory.length} předmětů`}
           >
-            <span className="cyklus-footer__label">KAPSA</span>
-            <span className="cyklus-pocket__count">{state.inventory.length}</span>
+            <span className="cyklus-pocket-trigger__icon"><PocketIcon /></span>
+            <span className="cyklus-pocket-trigger__label cyklus-footer__label">KAPSA</span>
+            <span className="cyklus-pocket-trigger__count cyklus-pocket__count">{state.inventory.length}</span>
           </button>
           {showPocket && (
             <div className="cyklus-pocket__panel">

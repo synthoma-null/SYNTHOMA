@@ -370,6 +370,19 @@ describe('CyklusClient', () => {
 
     document.removeEventListener('synthoma:identity-toggle', identityToggle);
   });
+
+  it('opens one existing pocket sheet from the labeled pocket trigger', async () => {
+    await renderFirstBootRun();
+    const trigger = within(screen.getByRole('navigation', { name: 'Navigace' })).getByRole('button', { name: 'KAPSA, 0 předmětů' });
+
+    expect(trigger.querySelector('svg')).toBeInTheDocument();
+    expect(trigger).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(trigger);
+
+    expect(await screen.findByRole('dialog', { name: 'KAPSA 0' })).toBeInTheDocument();
+    expect(screen.getAllByRole('dialog', { name: 'KAPSA 0' })).toHaveLength(1);
+    expect(trigger).toHaveAttribute('aria-pressed', 'true');
+  });
 });
 
 describe('Cyklus swipe gesture helpers', () => {
