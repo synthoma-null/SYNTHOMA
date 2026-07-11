@@ -1,66 +1,100 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import IdentityPanelClient from '../../../../app/components/IdentityPanelClient';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import SubjectProfilePanelClient from '../../../../app/components/SubjectProfilePanelClient';
 import CyklusGameHeader from '../CyklusGameHeader';
 import { createCyklusRun } from '../../../game/cyklus/cyklusEngine';
 
-jest.mock('next/navigation', () => ({ usePathname: jest.fn() }));
-jest.mock('next-auth/react', () => ({ useSession: jest.fn(), signOut: jest.fn() }));
+jest.mock('next/navigation', () => ({ usePathname: jest.fn(), useRouter: jest.fn() }));
+jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
+jest.mock('../../profile/ProfileDashboard', () => ({
+  __esModule: true,
+  default: () => <div data-testid="profile-dashboard">Profil subjektu</div>,
+}));
 jest.mock('../../../lib/LangContext', () => ({
   useLang: () => ({
     t: (key: string) => ({
       'id.default': 'SUBJEKT',
       'id.aria.btn': 'Identita',
-      'id.aria.panel': 'Panel identity',
-      'id.log.unrecognised': 'Subjekt nerozpoznán',
       'id.login': 'Přihlásit',
       'id.register': 'Registrovat',
+      'profile.panel.aria': 'Profil subjektu',
+      'profile.panel.title': 'PROFIL SUBJEKTU',
+      'profile.panel.close': 'Zavřít profil subjektu',
     }[key] ?? key),
   }),
 }));
 
-const { usePathname } = require('next/navigation');
+const { usePathname, useRouter } = require('next/navigation');
 const { useSession } = require('next-auth/react');
 
 describe('Cyklus identity ownership', () => {
   beforeEach(() => {
     usePathname.mockReturnValue('/cyklus');
+    useRouter.mockReturnValue({ replace: jest.fn() });
     useSession.mockReturnValue({ data: null, status: 'unauthenticated' });
   });
 
-  it('keeps one command trigger while opening the existing identity panel', async () => {
+  it('keeps one command trigger and opens the full logged-out subject profile directly', async () => {
     const state = createCyklusRun(true);
     render(
       <>
         <CyklusGameHeader state={state} showTutorialSkip={false} onTutorialSkip={jest.fn()} />
-        <IdentityPanelClient />
+        <SubjectProfilePanelClient />
       </>,
     );
 
-    expect(screen.getAllByRole('link', { name: 'Domů' })).toHaveLength(1);
     expect(screen.getAllByRole('button', { name: 'Identita' })).toHaveLength(1);
-    expect(screen.getAllByRole('button', { name: 'Ovládací panel' })).toHaveLength(1);
-    expect(screen.getAllByRole('button', { name: /Hudba/ })).toHaveLength(1);
-    expect(document.querySelector('.id-panel-btn')).toBeNull();
-    expect(document.querySelectorAll('#toggle-panel-btn')).toHaveLength(1);
+    expect(document.querySelector('.id-panel-popup')).toBeNull();
 
     const identityTrigger = screen.getByRole('button', { name: 'Identita' });
     fireEvent.click(identityTrigger);
-    expect(await screen.findByRole('region', { name: 'Panel identity' })).toHaveAttribute('aria-hidden', 'false');
+
+    expect(await screen.findByRole('dialog', { name: 'Profil subjektu' })).toBeVisible();
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    expect(screen.getByRole('heading', { name: 'IDENTITA NEROZPOZNÁNA' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Přihlásit' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Registrovat' })).toBeInTheDocument();
     expect(identityTrigger).toHaveAttribute('aria-pressed', 'true');
-    await waitFor(() => expect(screen.getByRole('link', { name: 'Přihlásit' })).toHaveFocus());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Zavřít profil subjektu' })).toHaveFocus());
 
-    fireEvent.click(screen.getByRole('button', { name: 'Ovládací panel' }));
-    await waitFor(() => expect(screen.queryByRole('region', { name: 'Panel identity' })).not.toBeInTheDocument());
-
-    fireEvent.click(identityTrigger);
     fireEvent.keyDown(document, { key: 'Escape' });
     await waitFor(() => expect(identityTrigger).toHaveFocus());
+    expect(identityTrigger).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  it('keeps open-profile compatibility and closes for competing panels', async () => {
+    useSession.mockReturnValue({
+      data: { user: { id: 'user-1', name: 'Mira', email: 'mira@example.test' } },
+      status: 'authenticated',
+    });
+    render(<SubjectProfilePanelClient />);
+
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:open-profile')));
+    expect(await screen.findByTestId('profile-dashboard')).toBeInTheDocument();
+
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:audio-open')));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  });
+
+  it('uses an explicit backdrop and traps focus inside the auth gate', async () => {
+    render(<SubjectProfilePanelClient />);
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
+
+    const close = await screen.findByRole('button', { name: 'Zavřít profil subjektu' });
+    const register = screen.getByRole('link', { name: 'Registrovat' });
+    close.focus();
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    expect(register).toHaveFocus();
+    fireEvent.keyDown(document, { key: 'Tab' });
+    expect(close).toHaveFocus();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Zavřít profil kliknutím mimo panel' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 
   it('preserves global controls outside the Cyklus gameplay route', () => {
     usePathname.mockReturnValue('/books');
-    render(<IdentityPanelClient />);
+    render(<SubjectProfilePanelClient />);
 
     expect(screen.getByRole('link', { name: 'Zpět na hlavní stránku' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Ovládací panel' })).toBeInTheDocument();

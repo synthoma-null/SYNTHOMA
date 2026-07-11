@@ -26,9 +26,7 @@ import MBTIProviderClient from "./components/MBTIProviderClient";
 
 import SessionProviderClient from "./components/SessionProviderClient";
 
-import IdentityPanelClient from "./components/IdentityPanelClient";
-
-import ProfilePanelClient from "./components/ProfilePanelClient";
+import SubjectProfilePanelClient from "./components/SubjectProfilePanelClient";
 import WhisperFloat from "../src/components/whispers/WhisperFloat";
 
 import CookieConsent from "../src/components/consent/CookieConsent";
@@ -326,9 +324,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           <MBTIHudClient />
 
-          <IdentityPanelClient />
-
-          <ProfilePanelClient />
+          <SubjectProfilePanelClient />
 
           <WhisperFloat />
 
