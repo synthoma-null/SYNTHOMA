@@ -8,7 +8,7 @@
   border: 0;
   border-left: 2px solid var(--cy-cyan);
   border-radius: 0;
-  background: linear-gradient(90deg, rgba(0, 234, 255, 0.06), transparent 80%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-system) 6%, transparent), transparent 80%);
   text-align: left;
 }
 
@@ -196,7 +196,7 @@
 .cyklus-stat-chip--low-danger,
 .cyklus-stat-chip--high-danger {
   --stat-accent: var(--cy-yellow);
-  background: rgba(244, 232, 58, 0.04);
+  background: color-mix(in srgb, var(--cy-accent-warning) 4%, transparent);
 }
 
 .cyklus-stat-chip--low-danger .cyklus-stat-chip__status,
@@ -319,7 +319,7 @@
   border: 0;
   border-left: 2px solid var(--cy-yellow);
   border-radius: 0;
-  background: rgba(244, 232, 58, 0.06);
+  background: color-mix(in srgb, var(--cy-accent-warning) 6%, transparent);
   color: var(--cy-yellow);
 }
 
@@ -420,7 +420,7 @@
 
 .cyklus-bottom-nav__btn:hover,
 .cyklus-bottom-nav__btn:focus-visible {
-  background: rgba(0, 234, 255, 0.06);
+  background: color-mix(in srgb, var(--cy-accent-system) 6%, transparent);
   color: var(--cy-cyan-soft);
 }
 

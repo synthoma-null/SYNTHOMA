@@ -99,7 +99,7 @@
   padding: 0.65rem 0.9rem;
   border: 1px solid var(--cy-line);
   border-radius: var(--cy-radius-sm);
-  background: rgba(0, 234, 255, 0.035);
+  background: color-mix(in srgb, var(--cy-accent-system) 3.5%, transparent);
   color: var(--cy-text);
   font: 700 0.78rem/1.2 var(--cy-font-mono);
   letter-spacing: 0.08em;
@@ -111,20 +111,20 @@
 
 .cy-terminal-button:hover:not(:disabled) {
   border-color: var(--cy-line-strong);
-  background: rgba(0, 234, 255, 0.08);
+  background: color-mix(in srgb, var(--cy-accent-system) 8%, transparent);
   color: var(--cy-cyan-soft);
   box-shadow: var(--cy-glow-cyan);
 }
 
 .cy-terminal-button--primary {
   border-color: var(--cy-line-magenta);
-  background: rgba(255, 25, 199, 0.065);
+  background: color-mix(in srgb, var(--cy-accent-memory) 6.5%, transparent);
   color: var(--cy-magenta-soft);
 }
 
 .cy-terminal-button--danger {
   border-color: var(--cy-line-yellow);
-  background: rgba(244, 232, 58, 0.055);
+  background: color-mix(in srgb, var(--cy-accent-warning) 5.5%, transparent);
   color: var(--cy-yellow);
 }
 

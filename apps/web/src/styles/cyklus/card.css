@@ -13,11 +13,11 @@
   margin: 0 auto;
   padding: clamp(1rem, 2vw, 1.4rem);
   overflow: hidden;
-  border: 1px solid rgba(0, 234, 255, 0.32);
+  border: 1px solid color-mix(in srgb, var(--cy-accent-system) 32%, transparent);
   border-top-width: 1px;
   border-radius: var(--cy-radius);
   background:
-    linear-gradient(180deg, rgba(0, 234, 255, 0.025), transparent 28%),
+    linear-gradient(180deg, color-mix(in srgb, var(--cy-accent-system) 2.5%, transparent), transparent 28%),
     var(--cy-panel-solid);
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
   color: var(--cy-text);
@@ -178,7 +178,7 @@
 .cyklus-card__restart-badge,
 .cyklus-card__overload {
   border-radius: var(--cy-radius-sm);
-  background: rgba(244, 232, 58, 0.045);
+  background: color-mix(in srgb, var(--cy-accent-warning) 4.5%, transparent);
   color: var(--cy-yellow);
 }
 
@@ -324,12 +324,12 @@
 
 .cyklus-card--swipe-yes {
   border-right-color: var(--cy-magenta);
-  box-shadow: 16px 0 34px rgba(255, 25, 199, 0.13), 0 22px 64px rgba(0, 0, 0, 0.62);
+  box-shadow: 16px 0 34px color-mix(in srgb, var(--cy-accent-memory) 13%, transparent), 0 22px 64px rgba(0, 0, 0, 0.62);
 }
 
 .cyklus-card--swipe-no {
   border-left-color: var(--cy-cyan);
-  box-shadow: -16px 0 34px rgba(0, 234, 255, 0.13), 0 22px 64px rgba(0, 0, 0, 0.62);
+  box-shadow: -16px 0 34px color-mix(in srgb, var(--cy-accent-system) 13%, transparent), 0 22px 64px rgba(0, 0, 0, 0.62);
 }
 
 .cyklus-card--swipe-yes::after,
@@ -347,14 +347,14 @@
 
 .cyklus-card--swipe-yes::after {
   content: "ANO";
-  background: linear-gradient(90deg, transparent 35%, rgba(255, 25, 199, 0.22));
+  background: linear-gradient(90deg, transparent 35%, color-mix(in srgb, var(--cy-accent-memory) 22%, transparent));
   color: var(--cy-magenta-soft);
   opacity: var(--swipe-opacity, 0);
 }
 
 .cyklus-card--swipe-no::after {
   content: "NE";
-  background: linear-gradient(270deg, transparent 35%, rgba(0, 234, 255, 0.2));
+  background: linear-gradient(270deg, transparent 35%, color-mix(in srgb, var(--cy-accent-system) 20%, transparent));
   color: var(--cy-cyan-soft);
   opacity: var(--swipe-opacity, 0);
 }

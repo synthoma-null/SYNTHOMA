@@ -7,8 +7,8 @@
   padding: calc(var(--cy-space-4) + env(safe-area-inset-top)) clamp(0.75rem, 3vw, 2.5rem) calc(var(--cy-space-5) + env(safe-area-inset-bottom));
   overflow-x: clip;
   background:
-    radial-gradient(ellipse at 15% 0%, rgba(0, 234, 255, 0.08), transparent 38%),
-    radial-gradient(ellipse at 92% 90%, rgba(255, 25, 199, 0.065), transparent 34%),
+    radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--cy-accent-system) 8%, transparent), transparent 38%),
+    radial-gradient(ellipse at 92% 90%, color-mix(in srgb, var(--cy-accent-memory) 6.5%, transparent), transparent 34%),
     var(--cy-black);
   color: var(--cy-text);
   font-family: var(--cy-font-mono);
@@ -25,9 +25,9 @@
 
 .cyklus-void-page::before {
   background:
-    linear-gradient(rgba(0, 234, 255, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 234, 255, 0.018) 1px, transparent 1px),
-    repeating-linear-gradient(90deg, transparent 0 19.8%, rgba(255, 25, 199, 0.026) 20%, transparent 20.2%);
+    linear-gradient(var(--cy-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cy-grid-color) 1px, transparent 1px),
+    repeating-linear-gradient(90deg, transparent 0 19.8%, color-mix(in srgb, var(--cy-accent-memory) 2.6%, transparent) 20%, transparent 20.2%);
   background-size: 48px 48px, 48px 48px, 100% 100%;
 }
 
@@ -149,7 +149,7 @@
   font-size: clamp(2.4rem, 7vw, 5.5rem);
   line-height: 0.92;
   letter-spacing: 0.08em;
-  text-shadow: 0 0 24px rgba(0, 234, 255, 0.14);
+  text-shadow: var(--cy-glow-system);
 }
 
 .void-hub-hero p {
@@ -219,7 +219,7 @@
   padding: 0.6rem 0.8rem;
   border: 1px solid var(--cy-line);
   border-radius: var(--cy-radius-sm);
-  background: rgba(0, 234, 255, 0.035);
+  background: color-mix(in srgb, var(--cy-accent-system) 3.5%, transparent);
   color: var(--cy-cyan-soft);
   font: 700 0.68rem/1.25 var(--cy-font-mono);
   letter-spacing: 0.07em;
@@ -229,7 +229,7 @@
 
 .void-hub-action-button:hover:not(:disabled) {
   border-color: var(--cy-line-strong);
-  background: rgba(0, 234, 255, 0.08);
+  background: color-mix(in srgb, var(--cy-accent-system) 8%, transparent);
   box-shadow: var(--cy-glow-cyan);
   transform: none;
 }
@@ -248,12 +248,12 @@
   border: 0;
   border-left: 2px solid var(--cy-cyan);
   border-radius: 0;
-  background: linear-gradient(90deg, rgba(0, 234, 255, 0.045), transparent 82%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-system) 4.5%, transparent), transparent 82%);
 }
 
 .void-hub-return-summary {
   border-left-color: var(--cy-yellow);
-  background: linear-gradient(90deg, rgba(244, 232, 58, 0.045), transparent 82%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-warning) 4.5%, transparent), transparent 82%);
 }
 
 .void-hub-return-summary h3,
@@ -295,7 +295,7 @@
   align-items: center;
   border: 1px solid var(--cy-line-magenta);
   border-left: 3px solid var(--cy-magenta);
-  background: linear-gradient(105deg, rgba(255, 25, 199, 0.08), rgba(0, 234, 255, 0.025) 74%);
+  background: linear-gradient(105deg, color-mix(in srgb, var(--cy-accent-memory) 8%, transparent), color-mix(in srgb, var(--cy-accent-system) 2.5%, transparent) 74%);
 }
 
 .void-hub-next-action__actions {
@@ -332,7 +332,7 @@
 
 .void-hub-focus {
   border-left-color: var(--cy-magenta);
-  background: linear-gradient(90deg, rgba(255, 25, 199, 0.045), transparent 82%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-memory) 4.5%, transparent), transparent 82%);
 }
 
 .void-hub-focus__options {
@@ -351,7 +351,7 @@
   padding: var(--cy-space-3);
   border: 1px solid var(--cy-line);
   border-radius: var(--cy-radius);
-  background: rgba(0, 234, 255, 0.025);
+  background: color-mix(in srgb, var(--cy-accent-system) 2.5%, transparent);
   color: var(--cy-text);
   font-family: var(--cy-font-mono);
   text-align: left;
@@ -382,7 +382,7 @@
 .void-hub-focus__button.is-appendix {
   --focus-accent: var(--cy-magenta);
   border-color: var(--cy-line-magenta);
-  background: rgba(255, 25, 199, 0.03);
+  background: color-mix(in srgb, var(--cy-accent-memory) 3%, transparent);
 }
 
 .void-hub-focus__button.is-strong {
@@ -517,7 +517,7 @@
 .void-hub-tab:hover,
 .void-hub-tab.is-active {
   border-color: transparent;
-  background: rgba(0, 234, 255, 0.055);
+  background: color-mix(in srgb, var(--cy-accent-system) 5.5%, transparent);
   color: var(--cy-cyan-soft);
   transform: none;
 }
@@ -677,7 +677,7 @@
 .cyklus-suggestion-box,
 .dashboard-actions {
   border-color: var(--cy-line-yellow);
-  background: linear-gradient(105deg, rgba(244, 232, 58, 0.045), transparent 82%);
+  background: linear-gradient(105deg, color-mix(in srgb, var(--cy-accent-warning) 4.5%, transparent), transparent 82%);
 }
 
 .dashboard-actions {
@@ -714,7 +714,7 @@
 .craft-recipe-row {
   border-left-color: var(--cy-magenta);
   background:
-    linear-gradient(90deg, rgba(255, 25, 199, 0.035), transparent 60%),
+    linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-memory) 3.5%, transparent), transparent 60%),
     rgba(2, 3, 6, 0.66);
 }
 
@@ -723,7 +723,7 @@
   position: absolute;
   right: var(--cy-space-2);
   bottom: var(--cy-space-1);
-  color: rgba(255, 25, 199, 0.3);
+  color: color-mix(in srgb, var(--cy-accent-memory) 30%, transparent);
   font-size: 0.48rem;
   letter-spacing: 0.08em;
   pointer-events: none;
@@ -760,13 +760,13 @@
 .loadout-entry {
   border-style: dashed;
   border-left-color: var(--cy-magenta);
-  background: rgba(255, 25, 199, 0.025);
+  background: color-mix(in srgb, var(--cy-accent-memory) 2.5%, transparent);
 }
 
 .loadout-entry.is-equipped {
   border-style: solid;
   border-left-color: var(--cy-yellow);
-  background: linear-gradient(90deg, rgba(244, 232, 58, 0.04), transparent 72%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--cy-accent-warning) 4%, transparent), transparent 72%);
 }
 
 .pocket-item-titleline {

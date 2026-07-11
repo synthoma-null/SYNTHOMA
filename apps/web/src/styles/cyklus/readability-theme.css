@@ -1,0 +1,175 @@
+/* Theme bridge and final readable type floor. */
+
+[data-theme="mono-light"] :is(.cyklus-page, .cyklus-void-page, .cyklus-overlay--void-hub) {
+  color-scheme: light;
+}
+
+.cyklus-page,
+.cyklus-void-page,
+.cyklus-overlay--void-hub {
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.cyklus-page :is(
+  .cyklus-card-scene,
+  .cyklus-outcome__story,
+  .cyklus-end-summary__text,
+  .cyklus-end-summary__muted,
+  .cyklus-end-summary__steps,
+  .cyklus-reward__flavor,
+  .cyklus-death-analysis__comment,
+  .cyklus-behavioral__pattern,
+  .cyklus-pocket__item-text,
+  .cyklus-pocket__item-hint,
+  .cyklus-build__next-step,
+  .cyklus-goal__desc,
+  .cyklus-contract__row,
+  .cyklus-discovery__row,
+  .cyklus-history__details,
+  .cyklus-stat-popup__body
+),
+.cyklus-void-page :is(
+  .void-hub-hero p,
+  .void-hub-return-summary p,
+  .void-hub-next-action p,
+  .void-hub-focus p,
+  .void-hub-section-header p,
+  .cyklus-dashboard-hero p,
+  .cyklus-pocket-panel p,
+  .pocket-item-row p,
+  .craft-recipe-row p,
+  .void-room-row p,
+  .loadout-entry p,
+  .cyklus-empty-note,
+  .pocket-ambient-text
+) {
+  font-size: max(0.875rem, 14px);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.cyklus-page :is(
+  .cyklus-active-objective__label,
+  .cyklus-card__category,
+  .cyklus-card__context,
+  .cyklus-outcome__label,
+  .cyklus-end__system-label,
+  .cyklus-end__section-label,
+  .cyklus-end-summary__eyebrow,
+  .cyklus-end-summary__label,
+  .cyklus-reward__system-label,
+  .cyklus-reward__section-label,
+  .cyklus-stat-chip__label,
+  .cyklus-footer__label,
+  .cyklus-build__intro-label
+),
+.cyklus-void-page :is(
+  .cyklus-panel-kicker,
+  .void-hub-status-rail small,
+  .void-hub-tab > small,
+  .void-hub-focus__button > small,
+  .cyklus-void-client-status
+) {
+  font-size: max(0.6875rem, 11px);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+}
+
+.cyklus-page :is(button, .cyklus-stat-chip__value),
+.cyklus-void-page :is(button, .void-hub-status-rail strong, .resource-pill, .craft-status-pill, .void-room-badge) {
+  font-weight: 600;
+}
+
+.cyklus-page :is(.cyklus-btn__label, .cyklus-bottom-nav__label, .cyklus-terminal-action),
+.cyklus-void-page :is(.void-hub-action-button, .void-hub-tab > span) {
+  font-size: max(0.75rem, 12px);
+  letter-spacing: 0.06em;
+}
+
+.cyklus-page :is(.cyklus-card__title, .cyklus-end__title, .cyklus-menu__brand),
+.cyklus-void-page .void-hub-hero h2 {
+  font-weight: 700;
+}
+
+.cyklus-card-scene.scene-void,
+.cyklus-card-scene.scene-system,
+.cyklus-card-scene.scene-tai,
+.cyklus-card-scene.scene-object,
+.cyklus-card-scene.scene-mirror {
+  --scene-accent: var(--cy-accent-system);
+}
+
+.cyklus-card-scene.scene-memory,
+.cyklus-card-scene.scene-glitch,
+.cyklus-card-scene.scene-forbidden,
+.cyklus-card-scene.scene-followup,
+.cyklus-card-scene.scene-archive {
+  --scene-accent: var(--cy-accent-memory);
+}
+
+.cyklus-card-scene.scene-bond,
+.cyklus-card-scene.scene-heart,
+.cyklus-card-scene.scene-message,
+.cyklus-card-scene.scene-glitchka,
+.cyklus-card-scene.scene-sandbox,
+.cyklus-card-scene.scene-tender {
+  --scene-accent: var(--cy-accent-entity);
+}
+
+.cyklus-card-scene.scene-warning,
+.cyklus-card-scene.scene-restart,
+.cyklus-card-scene.scene-form,
+.cyklus-card-scene.scene-noise,
+.cyklus-card-scene.scene-acid,
+.cyklus-card-scene.scene-energy,
+.cyklus-card-scene.scene-danger,
+.cyklus-card-scene.scene-debt,
+.cyklus-card-scene.scene-token,
+.cyklus-card-scene.scene-market {
+  --scene-accent: var(--cy-accent-warning);
+}
+
+.cyklus-page::before,
+.cyklus-void-page::before {
+  background-color: var(--cy-black);
+}
+
+.cyklus-page::after,
+.cyklus-void-page::after {
+  background: repeating-linear-gradient(0deg, var(--cy-scanline-color) 0 1px, transparent 1px 4px);
+}
+
+.cyklus-card,
+.cyklus-system-modal,
+.cyklus-overlay__panel,
+.cyklus-bottom-sheet,
+.cyklus-stat-popup,
+.cyklus-void-hub {
+  background-color: var(--cy-panel-tint);
+}
+
+@media (max-width: 767px) {
+  .cyklus-page :is(
+    .cyklus-card-scene,
+    .cyklus-outcome__story,
+    .cyklus-active-objective__text,
+    .cyklus-active-objective__hint,
+    .cyklus-stat-popup__body,
+    .cyklus-bottom-sheet__body
+  ),
+  .cyklus-void-page :is(
+    .void-hub-hero p,
+    .void-hub-return-summary p,
+    .void-hub-next-action p,
+    .void-hub-focus p,
+    .void-hub-section-header p,
+    .cyklus-pocket-panel p,
+    .progression-card p
+  ) {
+    font-size: max(0.875rem, 14px);
+    font-weight: 500;
+  }
+}

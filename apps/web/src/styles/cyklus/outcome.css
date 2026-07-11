@@ -301,7 +301,7 @@
 
 .cyklus-end .cyklus-btn:hover:not(:disabled),
 .cyklus-end-summary .cyklus-btn:hover:not(:disabled) {
-  background: rgba(0, 234, 255, 0.08);
+  background: color-mix(in srgb, var(--cy-accent-system) 8%, transparent);
   box-shadow: inset 0 -1px var(--cy-cyan);
   transform: none;
 }

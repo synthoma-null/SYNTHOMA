@@ -34,7 +34,7 @@
 }
 
 @keyframes cyklus-os-critical-pulse {
-  50% { opacity: 0.62; box-shadow: 0 0 12px rgba(244, 232, 58, 0.22); }
+  50% { opacity: 0.68; box-shadow: var(--cy-glow-warning); }
 }
 
 @media (prefers-reduced-motion: reduce) {
