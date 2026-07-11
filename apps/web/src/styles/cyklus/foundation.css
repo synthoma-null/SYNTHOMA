@@ -1,0 +1,187 @@
+/* Shared SYNTHOMA OS primitives. Screen-specific migration lives in sibling files. */
+
+.cyklus-page,
+.cyklus-page *,
+.cyklus-page *::before,
+.cyklus-page *::after,
+.cyklus-void-page,
+.cyklus-void-page *,
+.cyklus-void-page *::before,
+.cyklus-void-page *::after {
+  box-sizing: border-box;
+}
+
+.cyklus-page,
+.cyklus-void-page {
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--cy-black);
+  color: var(--cy-text);
+  font-family: var(--cy-font-mono);
+}
+
+.cyklus-page ::selection,
+.cyklus-void-page ::selection {
+  background: var(--cy-magenta);
+  color: var(--cy-black);
+}
+
+.cy-frame {
+  position: relative;
+  border: 1px solid var(--cy-line);
+  border-radius: var(--cy-radius);
+  background: var(--cy-panel);
+}
+
+.cy-frame--cyan {
+  --cy-frame-accent: var(--cy-cyan);
+  border-color: var(--cy-line);
+}
+
+.cy-frame--magenta {
+  --cy-frame-accent: var(--cy-magenta);
+  border-color: var(--cy-line-magenta);
+}
+
+.cy-frame--yellow {
+  --cy-frame-accent: var(--cy-yellow);
+  border-color: var(--cy-line-yellow);
+}
+
+.cy-frame::before,
+.cy-corner-frame::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--cy-frame-accent, var(--cy-cyan)), var(--cy-frame-accent, var(--cy-cyan))) left top / 18px 1px no-repeat,
+    linear-gradient(var(--cy-frame-accent, var(--cy-cyan)), var(--cy-frame-accent, var(--cy-cyan))) left top / 1px 18px no-repeat,
+    linear-gradient(var(--cy-frame-accent, var(--cy-cyan)), var(--cy-frame-accent, var(--cy-cyan))) right bottom / 18px 1px no-repeat,
+    linear-gradient(var(--cy-frame-accent, var(--cy-cyan)), var(--cy-frame-accent, var(--cy-cyan))) right bottom / 1px 18px no-repeat;
+  opacity: 0.88;
+}
+
+.cy-kicker,
+.cy-system-label {
+  margin: 0;
+  color: var(--cy-cyan-soft);
+  font-family: var(--cy-font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cy-system-label {
+  color: var(--cy-text-dim);
+}
+
+.cy-data-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--cy-space-3);
+  align-items: baseline;
+  min-width: 0;
+  padding-block: var(--cy-space-2);
+  border-bottom: 1px solid var(--cy-line-dim);
+}
+
+.cy-terminal-button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: var(--cy-tap);
+  align-items: center;
+  justify-content: center;
+  gap: var(--cy-space-2);
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--cy-line);
+  border-radius: var(--cy-radius-sm);
+  background: rgba(0, 234, 255, 0.035);
+  color: var(--cy-text);
+  font: 700 0.78rem/1.2 var(--cy-font-mono);
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--cy-ease), background var(--cy-ease), color var(--cy-ease), box-shadow var(--cy-ease);
+}
+
+.cy-terminal-button:hover:not(:disabled) {
+  border-color: var(--cy-line-strong);
+  background: rgba(0, 234, 255, 0.08);
+  color: var(--cy-cyan-soft);
+  box-shadow: var(--cy-glow-cyan);
+}
+
+.cy-terminal-button--primary {
+  border-color: var(--cy-line-magenta);
+  background: rgba(255, 25, 199, 0.065);
+  color: var(--cy-magenta-soft);
+}
+
+.cy-terminal-button--danger {
+  border-color: var(--cy-line-yellow);
+  background: rgba(244, 232, 58, 0.055);
+  color: var(--cy-yellow);
+}
+
+.cy-terminal-button--ghost {
+  background: transparent;
+  color: var(--cy-text-soft);
+}
+
+.cy-terminal-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.cy-status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.cy-scroll-region {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cy-line-strong) rgba(0, 0, 0, 0.35);
+}
+
+.cy-scroll-region::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.cy-scroll-region::-webkit-scrollbar-thumb {
+  background: var(--cy-line-strong);
+}
+
+.cy-scroll-region::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.cyklus-page :is(button, a, [tabindex]):focus-visible,
+.cyklus-void-page :is(button, a, [tabindex]):focus-visible {
+  outline: 2px solid var(--cy-cyan);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-page *,
+  .cyklus-page *::before,
+  .cyklus-page *::after,
+  .cyklus-void-page *,
+  .cyklus-void-page *::before,
+  .cyklus-void-page *::after {
+    scroll-behavior: auto !important;
+  }
+}

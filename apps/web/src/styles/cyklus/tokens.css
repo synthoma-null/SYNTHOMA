@@ -1,0 +1,58 @@
+/* SYNTHOMA OS visual tokens. Keep this file free of component selectors. */
+
+.cyklus-page,
+.cyklus-void-page,
+.cyklus-overlay--void-hub {
+  color-scheme: dark;
+
+  --cy-black: #020306;
+  --cy-black-soft: #050810;
+  --cy-panel: rgba(3, 7, 13, 0.92);
+  --cy-panel-solid: #050910;
+  --cy-panel-raised: #071019;
+
+  --cy-cyan: #00eaff;
+  --cy-cyan-soft: #69f5ff;
+  --cy-magenta: #ff19c7;
+  --cy-magenta-soft: #ff76df;
+  --cy-yellow: #f4e83a;
+  --cy-violet: #9b62ff;
+  --cy-red: #ff3d4f;
+
+  --cy-text: #d9fbff;
+  --cy-text-soft: #91b9c2;
+  --cy-text-dim: #557781;
+
+  --cy-line: rgba(0, 234, 255, 0.28);
+  --cy-line-strong: rgba(0, 234, 255, 0.62);
+  --cy-line-magenta: rgba(255, 25, 199, 0.38);
+  --cy-line-yellow: rgba(244, 232, 58, 0.48);
+  --cy-line-dim: rgba(145, 185, 194, 0.16);
+
+  --cy-glow-cyan: 0 0 18px rgba(0, 234, 255, 0.22);
+  --cy-glow-magenta: 0 0 18px rgba(255, 25, 199, 0.2);
+  --cy-glow-yellow: 0 0 15px rgba(244, 232, 58, 0.17);
+
+  --cy-space-1: 0.25rem;
+  --cy-space-2: 0.5rem;
+  --cy-space-3: 0.75rem;
+  --cy-space-4: 1rem;
+  --cy-space-5: 1.5rem;
+  --cy-space-6: 2rem;
+
+  --cy-radius-sm: 2px;
+  --cy-radius: 4px;
+  --cy-tap: 44px;
+  --cy-header-height: 56px;
+  --cy-bottom-height: 72px;
+
+  --cy-z-base: 1;
+  --cy-z-card: 10;
+  --cy-z-hud: 30;
+  --cy-z-sheet: 60;
+  --cy-z-modal: 90;
+  --cy-z-critical: 120;
+
+  --cy-font-mono: var(--font-mono, var(--font-family-mono)), var(--font-family-primary), "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  --cy-ease: 160ms ease;
+}

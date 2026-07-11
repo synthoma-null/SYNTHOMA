@@ -1,3 +1,6 @@
+@import "./cyklus/tokens.css";
+@import "./cyklus/foundation.css";
+
 /* SYNTHOMA: CYKLUS — UI styles
    Uses theme CSS variables from themes.css for full theme integration.
    Game-semantic colors (stat fills) remain hardcoded. */
