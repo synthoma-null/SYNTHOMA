@@ -103,14 +103,46 @@ describe('SynthomaAudioPanel', () => {
     const trackButtons = within(list).getAllByRole('button');
 
     expect(trackButtons).toHaveLength(13);
-    expect(trackButtons[0]).toHaveAccessibleName('01. Comet, ambient');
-    expect(trackButtons[12]).toHaveAccessibleName('13. Nuova, run');
+    expect(trackButtons[0]).toHaveAccessibleName('Přehrát skladbu Comet, ambient');
+    expect(trackButtons[12]).toHaveAccessibleName('Přehrát skladbu Nuova, run');
+    expect(within(trackButtons[0]!).getByText('ambient')).toBeInTheDocument();
 
-    fireEvent.click(within(list).getByRole('button', { name: '04. Run, action' }));
+    fireEvent.click(within(list).getByRole('button', { name: 'Přehrát skladbu Run, action' }));
     const sharedAudio = document.getElementById('synthoma-shared-audio') as HTMLAudioElement;
     expect(sharedAudio.src).toContain('/audio/Run.mp3');
-    expect(within(list).getByRole('button', { name: '04. Run, action' })).toHaveAttribute('aria-current', 'true');
+    expect(within(list).getByRole('button', { name: 'Aktivní skladba Run, přehrává se' })).toHaveAttribute('aria-current', 'true');
     expect(document.querySelectorAll('audio')).toHaveLength(1);
     expect(scrollIntoViewSpy).toHaveBeenCalledWith({ block: 'nearest' });
+  });
+
+  it('keeps previous, next and ended navigation in sync with the active library row', async () => {
+    render(<SynthomaAudioPanel />);
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:audio-toggle')));
+    const list = (await screen.findByRole('heading', { name: 'KNIHOVNA STOP // 13' })).nextElementSibling as HTMLOListElement;
+    const sharedAudio = document.getElementById('synthoma-shared-audio') as HTMLAudioElement;
+
+    fireEvent.click(within(list).getByRole('button', { name: 'Přehrát skladbu Run, action' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Další skladba' }));
+    expect(within(list).getByRole('button', { name: 'Aktivní skladba Searching, přehrává se' })).toHaveAttribute('aria-current', 'true');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Předchozí skladba' }));
+    expect(within(list).getByRole('button', { name: 'Aktivní skladba Run, přehrává se' })).toHaveAttribute('aria-current', 'true');
+
+    act(() => sharedAudio.dispatchEvent(new Event('ended')));
+    expect(await within(list).findByRole('button', { name: 'Aktivní skladba Searching, přehrává se' })).toHaveAttribute('aria-current', 'true');
+  });
+
+  it('shows an external source without adding it to the playlist library', async () => {
+    render(<SynthomaAudioPanel />);
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:audio-toggle')));
+    const list = (await screen.findByRole('heading', { name: 'KNIHOVNA STOP // 13' })).nextElementSibling as HTMLOListElement;
+
+    act(() => window.audioPanelPlay?.('/audio/ExternalSignal.mp3'));
+
+    expect(await screen.findByText('ExternalSignal')).toBeInTheDocument();
+    expect(within(list).getAllByRole('button')).toHaveLength(13);
+    expect(within(list).queryByText('ExternalSignal')).not.toBeInTheDocument();
+    expect(within(list).queryByRole('button', { current: true })).not.toBeInTheDocument();
+    expect(document.querySelectorAll('audio')).toHaveLength(1);
   });
 });

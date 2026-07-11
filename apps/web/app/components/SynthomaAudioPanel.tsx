@@ -283,7 +283,9 @@ export default function SynthomaAudioPanel() {
                     type="button"
                     className={active ? 'is-active' : undefined}
                     aria-current={active ? 'true' : undefined}
-                    aria-label={`${String(index + 1).padStart(2, '0')}. ${track.title}, ${track.mood}`}
+                    aria-label={active
+                      ? `Aktivní skladba ${track.title}, ${muted ? 'ztlumeno' : playing ? 'přehrává se' : 'pozastaveno'}`
+                      : `Přehrát skladbu ${track.title}, ${track.mood}`}
                     onClick={() => playTrack(index)}
                   >
                     <span className="synthoma-audio-panel__track-number">{String(index + 1).padStart(2, '0')}</span>
@@ -291,8 +293,8 @@ export default function SynthomaAudioPanel() {
                       <strong>{track.title}</strong>
                       <small>{track.mood}</small>
                     </span>
-                    <span className="synthoma-audio-panel__track-state" aria-hidden="true">
-                      {active ? (muted ? 'MUTED' : playing ? 'PLAY' : 'PAUSE') : ''}
+                    <span className={`synthoma-audio-panel__track-state${active && playing && !muted ? ' is-playing' : ''}`} aria-hidden="true">
+                      {active ? (muted ? 'MUTED' : playing ? <><i /><i /><i /></> : 'PAUSE') : ''}
                     </span>
                   </button>
                 </li>

@@ -191,6 +191,25 @@
   color: var(--cy-accent-primary);
 }
 
+.synthoma-audio-panel__track-state.is-playing {
+  display: inline-flex;
+  height: 14px;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.synthoma-audio-panel__track-state.is-playing i {
+  width: 2px;
+  height: 45%;
+  background: currentColor;
+  animation: audio-level 620ms ease-in-out infinite alternate;
+}
+
+.synthoma-audio-panel__track-state.is-playing i:nth-child(2) { height: 100%; animation-delay: 130ms; }
+.synthoma-audio-panel__track-state.is-playing i:nth-child(3) { height: 70%; animation-delay: 260ms; }
+
+@keyframes audio-level { to { height: 20%; } }
+
 .synthoma-audio-panel__track-copy {
   display: grid;
   min-width: 0;
@@ -332,5 +351,9 @@
 @media (prefers-reduced-motion: reduce) {
   .synthoma-audio-panel__surface {
     transition: none;
+  }
+
+  .synthoma-audio-panel__track-state.is-playing i {
+    animation: none;
   }
 }
