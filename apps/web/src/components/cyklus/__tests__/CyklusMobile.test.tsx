@@ -70,6 +70,26 @@ describe('CyklusBottomNav', () => {
     expect(onVoid).toHaveBeenCalledTimes(1);
   });
 
+  it('keeps every navigation action functional with icon-only mobile styling', () => {
+    const handlers = {
+      onPocket: jest.fn(),
+      onBuild: jest.fn(),
+      onArchive: jest.fn(),
+      onVoid: jest.fn(),
+    };
+    render(<CyklusBottomNav pocketCount={0} {...handlers} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'KAPSA' }));
+    fireEvent.click(screen.getByRole('button', { name: 'BUILD' }));
+    fireEvent.click(screen.getByRole('button', { name: 'ARCHIV' }));
+    fireEvent.click(screen.getByRole('button', { name: 'PRÁZDN0TA' }));
+
+    expect(handlers.onPocket).toHaveBeenCalledTimes(1);
+    expect(handlers.onBuild).toHaveBeenCalledTimes(1);
+    expect(handlers.onArchive).toHaveBeenCalledTimes(1);
+    expect(handlers.onVoid).toHaveBeenCalledTimes(1);
+  });
+
   it('exposes the active destination with aria-pressed', () => {
     render(
       <CyklusBottomNav
@@ -98,6 +118,10 @@ describe('StatDock diagnostic axis', () => {
     expect(container.querySelectorAll('.cyklus-stat-chip__zone--low')).toHaveLength(4);
     expect(container.querySelectorAll('.cyklus-stat-chip__center')).toHaveLength(4);
     expect(container.querySelectorAll('.cyklus-stat-chip__marker')).toHaveLength(4);
+    expect(screen.getByRole('button', { name: /Energie: 10/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Paměť: 50/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Vazba: 82/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Kontrola: 44/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Energie: 10, KRITICKÁ KRIZE/ })).toHaveTextContent('! KRITICKÁ KRIZE');
   });
 });

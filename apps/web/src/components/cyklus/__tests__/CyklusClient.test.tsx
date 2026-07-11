@@ -145,7 +145,7 @@ describe('CyklusClient', () => {
     expect(hint).not.toHaveTextContent(/debug|localStorage|VOID_META|JSON/i);
   });
 
-  it('shows the active run focus during a focused area run', () => {
+  it('keeps desktop focus guidance but marks the objective hidden on mobile', () => {
     const state = {
       ...createCyklusRun(true, {
         type: 'sector',
@@ -160,8 +160,10 @@ describe('CyklusClient', () => {
 
     render(<ActiveObjectivePanel state={state} runHistoryCount={1} tutorialActive={false} />);
 
-    expect(screen.getByText('STOPA // Glitchčino hnízdo').tagName).toBe('SUMMARY');
-    expect(screen.getByText('STOPA // Glitchčino hnízdo').closest('section')).toHaveAttribute('data-mobile-mode', 'compact');
+    const objective = screen.getByText('AKTUÁLNÍ STOPA').closest('section');
+    expect(objective).toHaveClass('cyklus-active-objective--mobile-hidden');
+    expect(objective).toHaveAttribute('data-mobile-mode', 'hidden');
+    expect(objective?.querySelector('summary')).toBeNull();
     expect(screen.getByText(/Tento běh se drží oblasti: Glitchčino hnízdo/)).toBeInTheDocument();
     expect(screen.getByText('Glitchčino hnízdo')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matching pool|glitchka_nest/i);
@@ -223,6 +225,13 @@ describe('CyklusClient', () => {
     expect(await screen.findByText(/Tento běh se drží oblasti: Archiv/)).toBeInTheDocument();
     expect(screen.getByText('Archiv')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matcher|fallback|archive_pool/i);
+    expect(document.querySelector('.cyklus-root--playing')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Odmítnout: KALIBROVAT' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Přijmout: SPUSTIT' })).toBeInTheDocument();
+    expect(document.body).not.toHaveTextContent(/SWIPE LEFT|SWIPE RIGHT|NE \/ LEFT|ANO \/ RIGHT/i);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Odmítnout: KALIBROVAT' }));
+    expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
   });
 });
 
