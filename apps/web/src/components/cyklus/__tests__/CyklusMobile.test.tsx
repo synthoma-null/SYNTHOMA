@@ -118,11 +118,17 @@ describe('StatDock diagnostic axis', () => {
     expect(container.querySelectorAll('.cyklus-stat-chip__zone--low')).toHaveLength(4);
     expect(container.querySelectorAll('.cyklus-stat-chip__center')).toHaveLength(4);
     expect(container.querySelectorAll('.cyklus-stat-chip__marker')).toHaveLength(4);
+    expect(container.querySelectorAll('.cyklus-stat-chip__label')).toHaveLength(4);
+    expect(container.querySelectorAll('.cyklus-stat-chip__value-group')).toHaveLength(4);
+    expect(container.querySelectorAll('.cyklus-stat-chip__bar')).toHaveLength(4);
     expect(screen.getByRole('button', { name: /Energie: 10/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Paměť: 50/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Vazba: 82/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Kontrola: 44/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Energie: 10, KRITICKÁ KRIZE/ })).toHaveTextContent('! KRITICKÁ KRIZE');
+    expect(screen.getByRole('button', { name: /Energie: 10, KRITICKÁ/ })).toHaveTextContent('! KRITICKÁ');
+    expect(screen.getByRole('button', { name: /Vazba: 82, PŘETLAK/ })).toHaveTextContent('! PŘETLAK');
+    expect(container).not.toHaveTextContent(/\b(?:ENE|PAM|VAZ|KON)\b/);
+    expect(container).not.toHaveTextContent(/stabilní/i);
   });
 });
 

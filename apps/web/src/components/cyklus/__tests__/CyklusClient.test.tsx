@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import CyklusClient, { ActiveObjectivePanel, EndReportVerdict, RunEndSummary, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
+import { CycleForecastNotice, CycleSummaryNotice } from '../CycleNotices';
 import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
@@ -89,6 +90,45 @@ function makeTutorialJunctionState(): CyklusRunState {
 function storeRunState(state: CyklusRunState): void {
   localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify(state));
 }
+
+describe('cycle forecast and summary notices', () => {
+  it('renders forecast as a diagnostic view using only available data', () => {
+    const state = {
+      ...createCyklusRun(true),
+      cycle: 5,
+      stats: { energy: 50, memory: 72, bond: 28, control: 50 },
+    };
+    const onClose = jest.fn();
+    const { container } = render(
+      <CycleForecastNotice state={state} text="Archiv bude dnes ochotnější číst tebe." onClose={onClose} />,
+    );
+
+    expect(container.querySelector('.cyklus-cycle-forecast')).toBeInTheDocument();
+    expect(container.querySelector('.cyklus-cycle-summary')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'PREDIKCE CYKLU 05' })).toBeInTheDocument();
+    expect(screen.getByText('Archiv bude dnes ochotnější číst tebe.')).toBeInTheDocument();
+    expect(screen.getByText(/Paměť/)).toBeInTheDocument();
+    expect(screen.getByText(/Vazba/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VSTOUPIT DO CYKLU' })).toHaveFocus();
+    expect(container).not.toHaveTextContent(/\d+\s*%/);
+  });
+
+  it('renders summary as a closed-cycle report with recorded metrics', () => {
+    const state = makeDeathState();
+    const { container } = render(
+      <CycleSummaryNotice state={state} text="Archiv uzavřel záznam." onClose={jest.fn()} />,
+    );
+
+    expect(container.querySelector('.cyklus-cycle-summary')).toBeInTheDocument();
+    expect(container.querySelector('.cyklus-cycle-forecast')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'CYKLUS 01 UZAVŘEN' })).toBeInTheDocument();
+    expect(screen.getByText('4')).toBeInTheDocument();
+    expect(screen.getByText('ROZHODNUTÍ')).toBeInTheDocument();
+    expect(screen.getByText('+51')).toBeInTheDocument();
+    expect(screen.getByText('Archiv uzavřel záznam.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'POKRAČOVAT' })).toHaveFocus();
+  });
+});
 
 async function continueStoredRun(): Promise<void> {
   fireEvent.click(await screen.findByRole('button', { name: 'Pokračovat' }));

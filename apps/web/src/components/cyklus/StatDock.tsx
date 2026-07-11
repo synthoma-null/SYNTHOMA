@@ -26,8 +26,8 @@ function getStatState(value: number): StatState {
 }
 
 function statStateLabel(state: StatState, value: number): string {
-  if (state === 'low-danger') return value <= 10 ? 'KRITICKÁ KRIZE' : 'KRIZE';
-  if (state === 'high-danger') return value >= 90 ? 'KRITICKÝ PŘETLAK' : 'PŘETLAK';
+  if (state === 'low-danger') return value <= 10 ? 'KRITICKÁ' : 'NÍZKÁ';
+  if (state === 'high-danger') return value >= 90 ? 'KRITICKÁ' : 'PŘETLAK';
   return 'stabilní';
 }
 
@@ -225,7 +225,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
                 <span className="cyklus-stat-chip__value">{value}</span>
                 {lastDelta !== 0 && (
                   <span className={`cyklus-stat-chip__delta ${lastDelta > 0 ? 'is-up' : 'is-down'}`} aria-label={`Poslední změna ${lastDelta > 0 ? 'nahoru' : 'dolů'} ${Math.abs(lastDelta)}`}>
-                    {lastDelta > 0 ? '↑' : '↓'}
+                    {lastDelta > 0 ? '↑' : '↓'}{Math.abs(lastDelta)}
                   </span>
                 )}
               </span>
@@ -237,9 +237,11 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
                 <span className="cyklus-stat-chip__center" aria-hidden="true" />
                 <span className="cyklus-stat-chip__marker" aria-hidden="true" />
               </span>
-              <span className={`cyklus-stat-chip__status cyklus-stat-chip__status--${state}`}>
-                <span aria-hidden="true">{state === 'stable' ? '◇' : '!'}</span> {label}
-              </span>
+              {state !== 'stable' && (
+                <span className={`cyklus-stat-chip__status cyklus-stat-chip__status--${state}`}>
+                  <span aria-hidden="true">!</span> {label}
+                </span>
+              )}
             </button>
           );
         })}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, useMemo, useId } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getCycleChapterName, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
@@ -17,6 +17,7 @@ import CyklusVoidHubClient from './CyklusVoidHubClient';
 import CyklusBottomNav from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
+import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
@@ -114,12 +115,12 @@ function SystemNoticeOverlay({
   text,
   onClose,
 }: {
-  variant: 'sector' | 'summary' | 'warning' | 'forecast';
+  variant: 'sector' | 'warning';
   label: string;
   text: string;
   onClose: () => void;
 }) {
-  const titleId = useId();
+  const titleId = `cyklus-${variant}-notice-title`;
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -726,13 +727,13 @@ export default function CyklusClient() {
         <SystemNoticeOverlay variant="sector" label={SECTOR_LABELS[state.sector]} text={sectorIntro} onClose={() => setSectorIntro(null)} />
       )}
       {cycleSummary && (
-        <SystemNoticeOverlay variant="summary" label="SOUHRN CYKLU" text={cycleSummary} onClose={() => setCycleSummary(null)} />
+        <CycleSummaryNotice state={state} text={cycleSummary} onClose={() => setCycleSummary(null)} />
       )}
       {preRunWarning && (
         <SystemNoticeOverlay variant="warning" label="ZÁZNAM PŘEDCHOZÍHO SUBJEKTU" text={preRunWarning} onClose={() => setPreRunWarning(null)} />
       )}
       {cycleForecast && !preRunWarning && (
-        <SystemNoticeOverlay variant="forecast" label={`PREDIKCE CYKLU ${String(state.cycle).padStart(2, '0')}`} text={cycleForecast} onClose={() => setCycleForecast(null)} />
+        <CycleForecastNotice state={state} text={cycleForecast} onClose={() => setCycleForecast(null)} />
       )}
       {showSkipConfirm && (
         <div className="cyklus-overlay cyklus-overlay--warning">
