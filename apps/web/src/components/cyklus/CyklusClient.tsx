@@ -503,7 +503,18 @@ export default function CyklusClient() {
           <source src="/video/SYNTHOMA5.webm" type="video/webm" />
         </video>
         <div className="cyklus-menu">
-          <div className="cyklus-menu__title">SYNTHOMA: CYKLUS</div>
+          <div className="cyklus-menu__bootbar" aria-label="SYNTHOMA OS terminal">
+            <span>SYNTHOMA OS</span>
+            <span>TERMINAL 0.9.72</span>
+          </div>
+          <div className="cyklus-menu__portal" aria-hidden="true">
+            <span className="cyklus-menu__portal-core" />
+          </div>
+          <div className="cyklus-menu__title">
+            <span className="cyklus-menu__brand">SYNTHOMA</span>
+            <span className="cyklus-menu__module">CYKLUS / NULL-1</span>
+          </div>
+          <div className="cyklus-menu__restart-line">RESTART PROTOCOL / STANDBY</div>
           <div className="cyklus-menu__intro">
             <p className="cyklus-menu__intro-line">Jsi subjekt v diagnostickém cyklu.</p>
             <p className="cyklus-menu__intro-line">Každá karta je rozhodnutí. Každé rozhodnutí posouvá čtyři vnitřní reaktory — energii, paměť, vazbu a kontrolu.</p>
@@ -516,19 +527,19 @@ export default function CyklusClient() {
           <div className="cyklus-menu__actions">
             {savedRun && (
               <button className="cyklus-menu__button cyklus-menu__button--primary" type="button" onClick={handleContinue}>
-                Pokračovat
+                <span aria-hidden="true">&gt;</span> Pokračovat
               </button>
             )}
             <button className="cyklus-menu__button" type="button" onClick={handleNewGame}>
-              Nová hra
+              <span aria-hidden="true">&gt;</span> Nová hra
             </button>
             {tutorialSeen && (
               <button className="cyklus-menu__button cyklus-menu__button--secondary" type="button" onClick={handleRepeatTutorial}>
-                Zopakovat tutorial
+                <span aria-hidden="true">&gt;</span> Zopakovat tutorial
               </button>
             )}
             <button className="cyklus-menu__button cyklus-menu__button--secondary" type="button" onClick={() => setShowVoidHub(true)}>
-              PRÁZDN0TA
+              <span aria-hidden="true">&gt;</span> PRÁZDN0TA
             </button>
           </div>
         </div>
@@ -557,7 +568,7 @@ export default function CyklusClient() {
 
   return (
     <>
-    <div className="cyklus-root">
+    <div className={`cyklus-root ${ending ? 'cyklus-root--ended' : ''}`}>
       {sectorIntro && (
         <div className="cyklus-overlay cyklus-overlay--sector" onClick={() => setSectorIntro(null)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSectorIntro(null); }}>
           <div className="cyklus-overlay__sector-label">{SECTOR_LABELS[state.sector]}</div>
@@ -639,20 +650,23 @@ export default function CyklusClient() {
       <main className="cyklus-stage">
         {ending ? (
           <div className="cyklus-end">
-            <div className="cyklus-end__header">
-              <div className="cyklus-end__system-label">ZÁVĚREČNÁ ZPRÁVA SUBJEKTU</div>
-              <div className="cyklus-end__codename">{generateRunCodename(state)}</div>
-              <div className="cyklus-end__title">{state.status === 'completed' ? computeStabilizationVariant(state).title : ending.title}</div>
-              <div className="cyklus-end__subtitle">{state.status === 'completed' ? 'Konec: Stabilizace' : `Konec: ${ending.title}`}</div>
+            <div className="cyklus-end__primary">
+              <div className="cyklus-end__header">
+                <div className="cyklus-end__system-label">ZÁVĚREČNÁ ZPRÁVA SUBJEKTU</div>
+                <div className="cyklus-end__codename">{generateRunCodename(state)}</div>
+                <div className="cyklus-end__title">{state.status === 'completed' ? computeStabilizationVariant(state).title : ending.title}</div>
+                <div className="cyklus-end__subtitle">{state.status === 'completed' ? 'Konec: Stabilizace' : `Konec: ${ending.title}`}</div>
+              </div>
+              <RunEndSummary
+                state={state}
+                ending={ending}
+                reward={runReward}
+                onOpenVoidHub={() => setShowVoidHub(true)}
+                onRestart={handleRestart}
+              />
+              {runReward && <RewardSection reward={runReward} progression={progression} />}
             </div>
-            <RunEndSummary
-              state={state}
-              ending={ending}
-              reward={runReward}
-              onOpenVoidHub={() => setShowVoidHub(true)}
-              onRestart={handleRestart}
-            />
-            {runReward && <RewardSection reward={runReward} progression={progression} />}
+            <div className="cyklus-end__diagnostics">
             {(() => {
               const variant = state.status === 'completed' ? computeStabilizationVariant(state) : null;
               return variant ? (
@@ -756,6 +770,7 @@ export default function CyklusClient() {
                 ))}
               </div>
             )}
+            </div>
             <div className="cyklus-end__actions">
               <button
                 className="cyklus-btn cyklus-btn--secondary"
@@ -827,7 +842,12 @@ export default function CyklusClient() {
                   <span className="cyklus-card__overload-risk">Vysoké riziko · extrémní reward</span>
                 </div>
               )}
-              <div className="cyklus-card__category">{card.logLabel}</div>
+              <div className="cyklus-card__metadata">
+                <div className="cyklus-card__category">{card.logLabel}</div>
+                <div className="cyklus-card__context">
+                  <span>{SECTOR_LABELS[state.sector]}</span>
+                </div>
+              </div>
               <h2 className="cyklus-card__title">{card.title}</h2>
               <CyklusCardScene card={card} />
               {card.category === 'restart' && (

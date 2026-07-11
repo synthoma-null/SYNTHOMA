@@ -211,6 +211,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
               ].filter(Boolean).join(' ')}
               onClick={() => onOpenStat(openStat === key ? null : key)}
               type="button"
+              aria-pressed={openStat === key}
               aria-label={`${STAT_LABELS[key]}: ${value}, ${label}. Klikni pro popis.`}
             >
               <span className="cyklus-stat-chip__label">{STAT_LABELS[key]}</span>
