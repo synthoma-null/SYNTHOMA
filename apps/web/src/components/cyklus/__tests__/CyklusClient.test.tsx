@@ -193,6 +193,33 @@ describe('CyklusClient', () => {
     jest.restoreAllMocks();
   });
 
+  it('keeps the polished menu hierarchy and all original actions without a save', async () => {
+    localStorage.setItem('synthoma_cyklus_tutorial_seen', 'true');
+    render(<CyklusClient />);
+
+    const brand = await screen.findByTestId('cyklus-menu-brand');
+    expect(brand).toHaveTextContent('SYNTHOMA');
+    expect(brand.childNodes).toHaveLength(1);
+    expect(brand.querySelector('br')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Pokračovat' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Nová hra' })).not.toHaveClass('cyklus-menu__button--primary');
+    expect(screen.getByRole('button', { name: 'Zopakovat tutorial' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'PRÁZDN0TA' })).toBeInTheDocument();
+    expect(document.querySelector('.cyklus-menu__video')).toHaveAttribute('aria-hidden', 'true');
+    expect(document.querySelector('.cyklus-menu__portal')).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('makes Continue the sole primary menu action when a save exists', async () => {
+    localStorage.setItem('synthoma_cyklus_tutorial_seen', 'true');
+    storeRunState(createCyklusRun(true));
+    render(<CyklusClient />);
+
+    const continueButton = await screen.findByRole('button', { name: 'Pokračovat' });
+    expect(continueButton).toHaveClass('cyklus-menu__button--primary');
+    expect(screen.getByRole('button', { name: 'Nová hra' })).not.toHaveClass('cyklus-menu__button--primary');
+    expect(screen.getByText(/Rozehraný cyklus 1/)).toBeInTheDocument();
+  });
+
   it('renders tutorial progress panel for new players (ZÁKLAD tier)', async () => {
     render(<CyklusClient />);
     await waitFor(() => {

@@ -1,0 +1,221 @@
+/* Final boot menu hierarchy. */
+
+.cyklus-root--menu .cyklus-menu {
+  display: grid;
+  height: 100dvh;
+  min-height: 0;
+  grid-template-columns: minmax(0, 560px) minmax(280px, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.cyklus-menu__content {
+  position: relative;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(0.75rem, 2dvh, 1.35rem);
+  padding-block: clamp(1rem, 3dvh, 2.5rem);
+  overflow-y: auto;
+  overflow-x: clip;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cy-line-strong) transparent;
+}
+
+.cyklus-menu__title,
+.cyklus-menu__restart-line,
+.cyklus-menu__intro,
+.cyklus-menu__subtitle,
+.cyklus-menu__actions {
+  position: relative;
+  z-index: 2;
+  grid-column: auto;
+  width: min(100%, 520px);
+  margin: 0;
+}
+
+.cyklus-menu__title {
+  display: grid;
+  min-width: 0;
+  gap: 0.4rem;
+}
+
+.cyklus-menu__brand {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: clip;
+  color: var(--cy-text);
+  font-family: var(--font-family-heading), var(--cy-font-mono);
+  font-size: clamp(2.15rem, 13.5vw, 7rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: clamp(0.02em, 0.6vw, 0.08em);
+  overflow-wrap: normal;
+  text-shadow: var(--cy-glow-system);
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.cyklus-menu__module {
+  color: var(--cy-accent-secondary);
+  font: 800 clamp(0.72rem, 1.4vw, 1rem)/1.2 var(--cy-font-mono);
+  letter-spacing: 0.16em;
+}
+
+.cyklus-menu__restart-line {
+  margin: 0;
+  padding: 0.35rem 0.55rem;
+  border-left: 14px solid var(--cy-accent-warning);
+  color: var(--cy-text-dim);
+  font: 800 0.62rem/1.2 var(--cy-font-mono);
+  letter-spacing: 0.08em;
+}
+
+.cyklus-menu__intro {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cyklus-menu__intro-line,
+.cyklus-menu__intro-line:first-child,
+.cyklus-menu__intro-line--dim {
+  margin: 0;
+  color: var(--cy-text-soft);
+  font: 600 clamp(0.84rem, 1.5vw, 0.96rem)/1.55 var(--font-family-primary), system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+.cyklus-menu__intro-line--dim { color: var(--cy-text-dim); }
+
+.cyklus-menu__subtitle {
+  display: grid;
+  gap: 4px;
+  padding: 0.65rem 0;
+  border-block: 1px solid var(--cy-line-subtle);
+  text-transform: none;
+}
+
+.cyklus-menu__subtitle span {
+  color: var(--cy-text-dim);
+  font: 800 0.58rem/1.2 var(--cy-font-mono);
+  letter-spacing: 0.1em;
+}
+
+.cyklus-menu__subtitle strong {
+  color: var(--cy-text-soft);
+  font: 700 0.72rem/1.3 var(--cy-font-mono);
+  letter-spacing: 0.04em;
+}
+
+.cyklus-menu__subtitle--saved strong { color: var(--cy-accent-primary); }
+
+.cyklus-menu__actions {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--cy-line);
+  background: var(--cy-line-subtle);
+}
+
+.cyklus-menu__utility-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--cy-line-subtle);
+}
+
+.cyklus-menu__button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: var(--cy-button-bg);
+  color: var(--cy-text-soft);
+}
+
+.cyklus-menu__button--primary {
+  min-height: 52px;
+  border-left: 3px solid var(--cy-accent-primary);
+  background: var(--cy-button-active);
+  color: var(--cy-text);
+  font-size: 0.88rem;
+}
+
+.cyklus-menu__button--new {
+  border-left: 3px solid var(--cy-line-strong);
+  color: var(--cy-text);
+}
+
+.cyklus-menu__button--tertiary {
+  color: var(--cy-text-dim);
+  font-size: 0.68rem;
+}
+
+.cyklus-menu__portal {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .cyklus-root--menu .cyklus-menu {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0;
+    padding: calc(0.75rem + env(safe-area-inset-top)) 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  }
+
+  .cyklus-menu__bootbar { grid-column: 1; grid-row: 1; }
+
+  .cyklus-menu__content {
+    grid-column: 1;
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: clamp(0.65rem, 2dvh, 1rem);
+    width: 100%;
+    padding-block: clamp(0.85rem, 2.5dvh, 1.4rem);
+  }
+
+  .cyklus-menu__title,
+  .cyklus-menu__restart-line,
+  .cyklus-menu__intro,
+  .cyklus-menu__subtitle,
+  .cyklus-menu__actions { width: 100%; }
+
+  .cyklus-menu__title { margin-top: 0; }
+
+  .cyklus-menu__brand {
+    font-size: clamp(2.15rem, 13.5vw, 4.5rem);
+    letter-spacing: clamp(0.02em, 0.6vw, 0.06em);
+  }
+
+  .cyklus-menu__portal {
+    position: absolute;
+    top: 14%;
+    right: -32%;
+    z-index: 1;
+    width: min(88vw, 390px);
+    opacity: 0.28;
+  }
+
+  .cyklus-menu__utility-actions { grid-template-columns: 1fr; }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+  .cyklus-menu__content { gap: 0.5rem; padding-block: 0.5rem; }
+  .cyklus-menu__restart-line { display: none; }
+  .cyklus-menu__intro { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cyklus-menu__intro-line { font-size: 0.78rem; line-height: 1.35; }
+  .cyklus-menu__subtitle { padding-block: 0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-menu__brand { animation: none; }
+}

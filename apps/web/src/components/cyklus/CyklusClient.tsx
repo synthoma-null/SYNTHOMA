@@ -261,6 +261,10 @@ export default function CyklusClient() {
         if (saved && saved.status === 'playing') {
           setSavedRun(saved);
           setShowMenu(true);
+        } else if (seen) {
+          setState(null);
+          setSavedRun(null);
+          setShowMenu(true);
         } else {
           const fresh = createCyklusRun(seen);
           setState(fresh);
@@ -631,50 +635,53 @@ export default function CyklusClient() {
   if (showMenu) {
     return (
       <div className="cyklus-root cyklus-root--menu">
-        <video className="cyklus-menu__video" autoPlay muted loop playsInline>
+        <video className="cyklus-menu__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1}>
           <source src="/video/SYNTHOMA5.webm" type="video/webm" />
         </video>
-        <div className="cyklus-menu">
+        <main className="cyklus-menu">
           <div className="cyklus-menu__bootbar" aria-label="SYNTHOMA OS terminal">
             <span>SYNTHOMA OS</span>
             <span>TERMINAL 0.9.72</span>
           </div>
+          <section className="cyklus-menu__content" aria-labelledby="cyklus-menu-brand">
+            <h1 className="cyklus-menu__title">
+              <span className="cyklus-menu__brand" id="cyklus-menu-brand" data-testid="cyklus-menu-brand">SYNTHOMA</span>
+              <span className="cyklus-menu__module">CYKLUS / NULL-1</span>
+            </h1>
+            <div className="cyklus-menu__restart-line">RESTART PROTOCOL / STANDBY</div>
+            <div className="cyklus-menu__intro">
+              <p className="cyklus-menu__intro-line">Jsi subjekt v diagnostickém cyklu. Každá karta je rozhodnutí, které mění energii, paměť, vazbu a kontrolu.</p>
+              <p className="cyklus-menu__intro-line cyklus-menu__intro-line--dim">Cílem není maximum, ale rovnováha. Extrém znamená konec.</p>
+            </div>
+            <div className={`cyklus-menu__subtitle${savedRun ? ' cyklus-menu__subtitle--saved' : ''}`}>
+              <span>STAV BĚHU</span>
+              <strong>{savedRun ? `Rozehraný cyklus ${savedRun.cycle} · ${SECTOR_LABELS[savedRun.sector]}` : 'Žádná rozehraná hra'}</strong>
+            </div>
+            <div className="cyklus-menu__actions">
+              {savedRun && (
+                <button className="cyklus-menu__button cyklus-menu__button--primary" type="button" onClick={handleContinue}>
+                  <span aria-hidden="true">&gt;</span> Pokračovat
+                </button>
+              )}
+              <button className="cyklus-menu__button cyklus-menu__button--new" type="button" onClick={handleNewGame}>
+                <span aria-hidden="true">&gt;</span> Nová hra
+              </button>
+              <div className="cyklus-menu__utility-actions">
+                {tutorialSeen && (
+                  <button className="cyklus-menu__button cyklus-menu__button--tertiary" type="button" onClick={handleRepeatTutorial}>
+                    <span aria-hidden="true">&gt;</span> Zopakovat tutorial
+                  </button>
+                )}
+                <button className="cyklus-menu__button cyklus-menu__button--tertiary" type="button" onClick={() => setShowVoidHub(true)}>
+                  <span aria-hidden="true">&gt;</span> PRÁZDN0TA
+                </button>
+              </div>
+            </div>
+          </section>
           <div className="cyklus-menu__portal" aria-hidden="true">
             <span className="cyklus-menu__portal-core" />
           </div>
-          <div className="cyklus-menu__title">
-            <span className="cyklus-menu__brand">SYNTHOMA</span>
-            <span className="cyklus-menu__module">CYKLUS / NULL-1</span>
-          </div>
-          <div className="cyklus-menu__restart-line">RESTART PROTOCOL / STANDBY</div>
-          <div className="cyklus-menu__intro">
-            <p className="cyklus-menu__intro-line">Jsi subjekt v diagnostickém cyklu.</p>
-            <p className="cyklus-menu__intro-line">Každá karta je rozhodnutí. Každé rozhodnutí posouvá čtyři vnitřní reaktory — energii, paměť, vazbu a kontrolu.</p>
-            <p className="cyklus-menu__intro-line">Cílem není maximum. Cílem je rovnováha. Extrém znamená konec.</p>
-            <p className="cyklus-menu__intro-line cyklus-menu__intro-line--dim">Swipuj. Přežij. Zjisti, kým jsi uvnitř systému.</p>
-          </div>
-          <div className="cyklus-menu__subtitle">
-            {savedRun ? `Rozehraný cyklus ${savedRun.cycle} · ${SECTOR_LABELS[savedRun.sector]}` : 'Žádná rozehraná hra'}
-          </div>
-          <div className="cyklus-menu__actions">
-            {savedRun && (
-              <button className="cyklus-menu__button cyklus-menu__button--primary" type="button" onClick={handleContinue}>
-                <span aria-hidden="true">&gt;</span> Pokračovat
-              </button>
-            )}
-            <button className="cyklus-menu__button" type="button" onClick={handleNewGame}>
-              <span aria-hidden="true">&gt;</span> Nová hra
-            </button>
-            {tutorialSeen && (
-              <button className="cyklus-menu__button cyklus-menu__button--secondary" type="button" onClick={handleRepeatTutorial}>
-                <span aria-hidden="true">&gt;</span> Zopakovat tutorial
-              </button>
-            )}
-            <button className="cyklus-menu__button cyklus-menu__button--secondary" type="button" onClick={() => setShowVoidHub(true)}>
-              <span aria-hidden="true">&gt;</span> PRÁZDN0TA
-            </button>
-          </div>
-        </div>
+        </main>
         {showVoidHub && (
           <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
             <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu" />
