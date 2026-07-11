@@ -617,6 +617,14 @@ export default function ControlPanelClient() {
             doTogglePanel(false, detail?.restoreFocus !== false);
           }, { signal });
 
+          document.addEventListener('synthoma:audio-open', function() {
+            doTogglePanel(false, false);
+          }, { signal });
+
+          document.addEventListener('synthoma:identity-toggle', function() {
+            doTogglePanel(false, false);
+          }, { signal });
+
           window.__cpPanelDelegationAttached = true;
 
         }

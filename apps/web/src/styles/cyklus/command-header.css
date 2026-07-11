@@ -201,3 +201,44 @@
     animation: none;
   }
 }
+
+/* The global identity panel keeps its content, while Cyklus owns its trigger. */
+.id-panel-root--cyklus {
+  top: calc(52px + env(safe-area-inset-top));
+  right: max(4px, env(safe-area-inset-right));
+}
+
+.id-panel-root--cyklus .id-panel-popup {
+  width: min(300px, calc(100vw - 16px));
+  border: 1px solid var(--cy-line-strong);
+  border-radius: var(--cy-theme-radius, 3px);
+  background: var(--cy-surface-1);
+  box-shadow: var(--cy-shadow), var(--cy-glow-primary);
+  color: var(--cy-text);
+}
+
+.id-panel-root--cyklus .id-panel-log {
+  border-left-color: var(--cy-accent-primary);
+  background: var(--cy-surface-2);
+}
+
+.id-panel-root--cyklus :is(.id-panel-log-prefix, .id-panel-name, .id-panel-email, .id-panel-log-msg) {
+  color: var(--cy-text);
+}
+
+.id-panel-root--cyklus .id-panel-link {
+  min-height: 44px;
+  border-color: var(--cy-line);
+  border-radius: var(--cy-theme-radius, 2px);
+  background: var(--cy-button-bg);
+  color: var(--cy-text);
+}
+
+.id-panel-root--cyklus .id-panel-link:hover {
+  background: var(--cy-button-hover);
+}
+
+.id-panel-root--cyklus .id-panel-link:focus-visible {
+  outline: 2px solid var(--cy-focus-ring);
+  outline-offset: 2px;
+}

@@ -49,7 +49,7 @@ describe('existing control panel behavior', () => {
   beforeEach(() => {
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     document.body.innerHTML = `
-      <button id="toggle-panel-btn" aria-expanded="false">Nastavení</button>
+      <button id="toggle-panel-btn" aria-expanded="false" aria-pressed="false">Nastavení</button>
       <div id="control-panel" aria-hidden="true">
         <button id="cp-close-btn" type="button">Zavřít</button>
       </div>
@@ -72,10 +72,14 @@ describe('existing control panel behavior', () => {
     await waitFor(() => expect(panel).toHaveClass('visible'));
     expect(panel).toHaveAttribute('aria-hidden', 'false');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(trigger).toHaveAttribute('aria-pressed', 'true');
+    await waitFor(() => expect(document.getElementById('cp-close-btn')).toHaveFocus());
 
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(panel).not.toHaveClass('visible');
     expect(panel).toHaveAttribute('aria-hidden', 'true');
+    expect(trigger).toHaveAttribute('aria-pressed', 'false');
+    await waitFor(() => expect(trigger).toHaveFocus());
 
     fireEvent.click(trigger);
     fireEvent.click(document.getElementById('cp-close-btn') as HTMLButtonElement);

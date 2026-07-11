@@ -45,9 +45,9 @@ export default function CyklusGameHeader({ state, showTutorialSkip, onTutorialSk
 
       <div className="cyklus-game-header__status" aria-label={`${SECTOR_LABELS[state.sector]}, cyklus ${state.cycle}, postup ${state.choiceInCycle} z 12`}>
         <span className="cyklus-sector" title={SECTOR_LABELS[state.sector]}>{SECTOR_LABELS[state.sector]}</span>
-        <span aria-hidden="true">//</span>
+        <span aria-hidden="true">{'//'}</span>
         <span className="cyklus-cycle">{cycle}</span>
-        <span aria-hidden="true">//</span>
+        <span aria-hidden="true">{'//'}</span>
         <span className="cyklus-progress">{progress}</span>
       </div>
 
