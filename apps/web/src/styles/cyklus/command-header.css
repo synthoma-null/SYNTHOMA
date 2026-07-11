@@ -20,7 +20,10 @@
 }
 
 .cyklus-game-header__actions {
-  justify-content: flex-end;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 44px;
+  justify-content: end;
   gap: 1px;
 }
 
@@ -111,7 +114,7 @@
   bottom: 5px;
   display: none;
   height: 8px;
-  align-items: end;
+  align-items: flex-end;
   gap: 1px;
 }
 
@@ -159,6 +162,19 @@
     padding-inline: 2px;
   }
 
+  .cyklus-game-header {
+    grid-template-columns: 44px minmax(0, 1fr) repeat(3, 44px);
+    gap: 0;
+  }
+
+  .cyklus-game-header--with-skip {
+    grid-template-columns: 44px minmax(0, 1fr) repeat(4, 44px);
+  }
+
+  .cyklus-game-header__actions {
+    display: contents;
+  }
+
   .cyklus-root--playing > .cyklus-desktop-top > .cyklus-stat-dock {
     grid-row: 2;
   }
@@ -192,7 +208,7 @@
   }
 
   .cyklus-game-header__status .cyklus-sector {
-    max-width: 72px;
+    max-width: none;
   }
 }
 
