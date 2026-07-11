@@ -17,6 +17,7 @@ import CyklusBottomNav from './CyklusBottomNav';
 import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
+import CyklusCardOverlay from './CyklusCardOverlay';
 import CyklusGameHeader from './CyklusGameHeader';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 
@@ -109,7 +110,7 @@ export function ActiveObjectivePanel({
   );
 }
 
-function SystemNoticeOverlay({
+export function SystemNoticeOverlay({
   variant,
   label,
   text,
@@ -122,28 +123,17 @@ function SystemNoticeOverlay({
 }) {
   const titleId = `cyklus-${variant}-notice-title`;
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
   return (
-    <div className={`cyklus-overlay cyklus-overlay--${variant}`}>
-      <button className="cyklus-overlay__backdrop" type="button" onClick={onClose} aria-label={`Zavřít: ${label}`} />
-      <section className={`cyklus-system-modal cyklus-system-modal--${variant}`} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+    <CyklusCardOverlay label={label} variant={variant} onClose={onClose} panelClassName={`cyklus-system-modal cyklus-system-modal--${variant}`}>
         <header className="cyklus-system-modal__header">
           <span id={titleId}>{label}</span>
           <button className="cyklus-system-modal__close" type="button" onClick={onClose} aria-label={`Zavřít: ${label}`}>×</button>
         </header>
         <div className="cyklus-system-modal__body">{text}</div>
         <footer className="cyklus-system-modal__actions">
-          <button className="cyklus-terminal-action" type="button" onClick={onClose}>Pokračovat</button>
+          <button data-card-overlay-primary className="cyklus-terminal-action" type="button" onClick={onClose}>Pokračovat</button>
         </footer>
-      </section>
-    </div>
+    </CyklusCardOverlay>
   );
 }
 
@@ -718,18 +708,6 @@ export default function CyklusClient() {
       dragX !== 0 ? 'cyklus-root--swiping' : '',
       outcomeVisible ? 'cyklus-root--outcome-visible' : '',
     ].filter(Boolean).join(' ')}>
-      {sectorIntro && (
-        <SystemNoticeOverlay variant="sector" label={SECTOR_LABELS[state.sector]} text={sectorIntro} onClose={() => setSectorIntro(null)} />
-      )}
-      {cycleSummary && (
-        <CycleSummaryNotice state={state} text={cycleSummary} onClose={() => setCycleSummary(null)} />
-      )}
-      {preRunWarning && (
-        <SystemNoticeOverlay variant="warning" label="ZÁZNAM PŘEDCHOZÍHO SUBJEKTU" text={preRunWarning} onClose={() => setPreRunWarning(null)} />
-      )}
-      {cycleForecast && !preRunWarning && (
-        <CycleForecastNotice state={state} text={cycleForecast} onClose={() => setCycleForecast(null)} />
-      )}
       {showSkipConfirm && (
         <div className="cyklus-overlay cyklus-overlay--warning">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu" />
@@ -936,6 +914,7 @@ export default function CyklusClient() {
               onPointerCancel={onPointerCancel}
               onClickCapture={onCardClickCapture}
               tabIndex={-1}
+              data-gameplay-surface="fixed"
             >
               {card.tags.includes('overload') && (
                 <div className="cyklus-card__overload">
@@ -954,12 +933,24 @@ export default function CyklusClient() {
               {card.category === 'restart' && (
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
-              <div className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
+              <div data-card-actions className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
                 {directionPreview(state, card, card.no.preview, 'no', shouldLimitPreview(card), card.noLabel, () => handleChoice('no'), outcomeVisible)}
                 {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card), card.yesLabel, () => handleChoice('yes'), outcomeVisible)}
               </div>
               {outcomeVisible && state.lastOutcomeText && (
                 <OutcomePanel state={state} onDismiss={dismissOutcome} />
+              )}
+              {sectorIntro && (
+                <SystemNoticeOverlay variant="sector" label={SECTOR_LABELS[state.sector]} text={sectorIntro} onClose={() => setSectorIntro(null)} />
+              )}
+              {cycleSummary && (
+                <CycleSummaryNotice state={state} text={cycleSummary} onClose={() => setCycleSummary(null)} />
+              )}
+              {preRunWarning && (
+                <SystemNoticeOverlay variant="warning" label="ZÁZNAM PŘEDCHOZÍHO SUBJEKTU" text={preRunWarning} onClose={() => setPreRunWarning(null)} />
+              )}
+              {cycleForecast && !preRunWarning && (
+                <CycleForecastNotice state={state} text={cycleForecast} onClose={() => setCycleForecast(null)} />
               )}
             </div>
           </>
@@ -1889,7 +1880,6 @@ function getRewardType(record: CyklusChoiceRecord | undefined): { label: string;
 }
 
 function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: () => void }) {
-  const continueRef = useRef<HTMLButtonElement>(null);
   const record = state.history[state.history.length - 1];
   const deltas = record ? Object.entries(record.statDelta) as [StatKey, number][] : [];
   const hasSectorChange = record && record.sectorBefore !== record.sectorAfter;
@@ -1904,12 +1894,8 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
     (cond: CardCondition) => cond.type === 'unlockedPool' && freshPools.includes(cond.poolId ?? ''),
   ));
 
-  useEffect(() => {
-    continueRef.current?.focus({ preventScroll: true });
-  }, []);
-
   return (
-    <div className={`cyklus-outcome ${reward?.cls ?? 'reward--silent'}`} role="dialog" aria-modal="true" aria-label="Dopad volby">
+    <CyklusCardOverlay label="Dopad volby" variant="outcome" onClose={onDismiss} panelClassName={`cyklus-outcome ${reward?.cls ?? 'reward--silent'}`}>
       <div className="cyklus-outcome__content" aria-live="polite">
       <div className="cyklus-outcome__label" id="cyklus-outcome-title">
         Dopad volby
@@ -1937,9 +1923,9 @@ function OutcomePanel({ state, onDismiss }: { state: CyklusRunState; onDismiss: 
       )}
       {entityDeltas && <div className="cyklus-outcome__hint">Profil se posunul.</div>}
       {isFreshMeta && <div className="cyklus-outcome__fresh-meta">Tato karta byla odemčena předchozím koncem.</div>}
-      <button ref={continueRef} className="cyklus-outcome__continue" type="button" onClick={onDismiss}>POKRAČOVAT</button>
+      <button data-card-overlay-primary className="cyklus-outcome__continue" type="button" onClick={onDismiss}>POKRAČOVAT</button>
       </div>
-    </div>
+    </CyklusCardOverlay>
   );
 }
 

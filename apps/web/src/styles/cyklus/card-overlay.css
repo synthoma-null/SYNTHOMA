@@ -1,0 +1,167 @@
+/* Final card geometry and the shared card-bound modal layer. */
+
+.cyklus-root--playing > .cyklus-stage {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.cyklus-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-areas:
+    "metadata"
+    "title"
+    "scene"
+    "badge"
+    "choices";
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  align-self: stretch;
+  justify-self: stretch;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.cyklus-card__metadata { grid-area: metadata; }
+.cyklus-card__title { grid-area: title; }
+.cyklus-card-scene { grid-area: scene; height: 100%; min-height: 0; overflow-y: auto; overflow-x: clip; align-content: start; }
+.cyklus-card__restart-badge,
+.cyklus-card__overload { grid-area: badge; }
+.cyklus-card__preview { grid-area: choices; }
+
+.cyklus-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 20px);
+  overflow: hidden;
+  user-select: text;
+}
+
+.cyklus-card-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: color-mix(in srgb, var(--cy-bg) 66%, transparent);
+  cursor: default;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.cyklus-card-overlay__panel,
+.cyklus-card-overlay .cyklus-system-modal,
+.cyklus-card-overlay .cyklus-cycle-notice,
+.cyklus-card-overlay .cyklus-outcome {
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  display: block;
+  width: min(100%, 560px);
+  height: auto;
+  max-width: 100%;
+  max-height: min(78%, calc(100% - 24px));
+  margin: auto;
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--cy-line-strong);
+  border-radius: var(--cy-radius);
+  background: var(--cy-panel-solid);
+  box-shadow: var(--cy-shadow), var(--cy-glow-cyan);
+  color: var(--cy-text);
+  scrollbar-color: var(--cy-line-strong) var(--cy-scrollbar-track);
+  scrollbar-width: thin;
+  transform: none;
+}
+
+.cyklus-card-overlay--summary .cyklus-card-overlay__panel { width: min(100%, 580px); }
+
+.cyklus-card-overlay--warning .cyklus-card-overlay__panel {
+  border-color: var(--cy-line-yellow);
+  box-shadow: var(--cy-shadow), var(--cy-glow-yellow);
+}
+
+.cyklus-card-overlay--summary .cyklus-card-overlay__panel,
+.cyklus-card-overlay--outcome .cyklus-card-overlay__panel {
+  border-color: var(--cy-line-magenta);
+  box-shadow: var(--cy-shadow), var(--cy-glow-magenta);
+}
+
+.cyklus-card-overlay .cyklus-outcome {
+  --outcome-accent: var(--cy-magenta);
+  width: min(100%, 540px);
+  padding: clamp(0.9rem, 3vw, 1.35rem);
+  border-left: 3px solid var(--outcome-accent);
+  animation: cyklus-os-report-in 180ms ease-out;
+}
+
+.cyklus-card-overlay .cyklus-outcome.reward--item,
+.cyklus-card-overlay .cyklus-outcome.reward--big,
+.cyklus-card-overlay .cyklus-outcome.reward--medium { --outcome-accent: var(--cy-yellow); }
+
+.cyklus-card-overlay .cyklus-outcome.reward--sector,
+.cyklus-card-overlay .cyklus-outcome.reward--profile { --outcome-accent: var(--cy-cyan); }
+
+.cyklus-card-overlay .cyklus-outcome__content {
+  display: flex;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  flex-direction: column;
+  gap: var(--cy-space-2);
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: auto;
+}
+
+.cyklus-card-overlay :is(.cyklus-system-modal__header, .cyklus-cycle-notice__header),
+.cyklus-card-overlay :is(.cyklus-system-modal__actions, .cyklus-cycle-notice__actions) {
+  position: sticky;
+}
+
+@media (max-width: 767px) {
+  .cyklus-root--playing > .cyklus-stage {
+    height: 100%;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .cyklus-card {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  .cyklus-card-overlay {
+    place-items: center;
+    padding: 12px;
+  }
+
+  .cyklus-card-overlay__panel,
+  .cyklus-card-overlay .cyklus-system-modal,
+  .cyklus-card-overlay .cyklus-cycle-notice,
+  .cyklus-card-overlay .cyklus-outcome {
+    width: min(100%, 560px);
+    max-width: 100%;
+    max-height: min(78%, calc(100% - 24px));
+    border: 1px solid var(--cy-line-strong);
+    border-radius: var(--cy-radius);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyklus-card-overlay .cyklus-outcome { animation: none; }
+}

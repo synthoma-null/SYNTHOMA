@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import CyklusClient, { ActiveObjectivePanel, EndReportVerdict, RunEndSummary, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
+import CyklusClient, { ActiveObjectivePanel, EndReportVerdict, RunEndSummary, SystemNoticeOverlay, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
 import { CycleForecastNotice, CycleSummaryNotice } from '../CycleNotices';
 import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
@@ -104,6 +104,8 @@ describe('cycle forecast and summary notices', () => {
     );
 
     expect(container.querySelector('.cyklus-cycle-forecast')).toBeInTheDocument();
+    expect(container.querySelector('.cyklus-card-overlay')).toBeInTheDocument();
+    expect(container.querySelector('[data-card-overlay-scroll]')).toBeInTheDocument();
     expect(container.querySelector('.cyklus-cycle-summary')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'PREDIKCE CYKLU 05' })).toBeInTheDocument();
     expect(screen.getByText('Archiv bude dnes ochotnější číst tebe.')).toBeInTheDocument();
@@ -120,6 +122,7 @@ describe('cycle forecast and summary notices', () => {
     );
 
     expect(container.querySelector('.cyklus-cycle-summary')).toBeInTheDocument();
+    expect(container.querySelector('.cyklus-card-overlay')).toBeInTheDocument();
     expect(container.querySelector('.cyklus-cycle-forecast')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'CYKLUS 01 UZAVŘEN' })).toBeInTheDocument();
     expect(screen.getByText('4')).toBeInTheDocument();
@@ -127,6 +130,16 @@ describe('cycle forecast and summary notices', () => {
     expect(screen.getByText('+51')).toBeInTheDocument();
     expect(screen.getByText('Archiv uzavřel záznam.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'POKRAČOVAT' })).toHaveFocus();
+  });
+
+  it('uses the shared centered card overlay for system notices', () => {
+    const { container } = render(
+      <SystemNoticeOverlay variant="warning" label="SYSTÉMOVÉ VAROVÁNÍ" text="Tlak roste." onClose={jest.fn()} />,
+    );
+
+    expect(screen.getByRole('dialog', { name: 'SYSTÉMOVÉ VAROVÁNÍ' })).toBeInTheDocument();
+    expect(container.querySelector('.cyklus-card-overlay--warning')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Pokračovat' })).toHaveFocus();
   });
 });
 
@@ -419,7 +432,13 @@ describe('Cyklus choice feedback', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Přijmout: SPUSTIT' }));
 
     const dialog = await screen.findByRole('dialog', { name: 'Dopad volby' });
+    const overlay = dialog.closest('.cyklus-card-overlay');
     expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(overlay).toBeInTheDocument();
+    expect(card).toContainElement(overlay as HTMLElement);
+    expect(card).toHaveAttribute('data-gameplay-surface', 'fixed');
+    expect(card.querySelector('[data-card-scroll-region]')).toBeInTheDocument();
+    expect(card.querySelector('[data-card-actions]')).toBeInTheDocument();
     expect(dialog).toHaveTextContent(/Systém se rozběhl/);
     expect(dialog).toHaveTextContent(/Energie ↑ 8/);
     expect(dialog).not.toHaveTextContent('Klikni nebo stiskni Enter pro pokračování');

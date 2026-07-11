@@ -20,6 +20,7 @@ export function CyklusCardScene({ card }: Props) {
   return (
     <div
       className={sceneFx}
+      data-card-scroll-region
       aria-label={card.scene}
       dangerouslySetInnerHTML={{ __html: html }}
     />

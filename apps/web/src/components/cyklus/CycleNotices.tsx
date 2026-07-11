@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import CyklusCardOverlay from './CyklusCardOverlay';
 import { formatDelta } from '../../game/cyklus/cyklusFormat';
 import {
   SECTOR_LABELS,
@@ -28,34 +29,19 @@ function CycleNoticeFrame({
   onClose: () => void;
   children: ReactNode;
 }) {
-  const titleId = useId();
-  const actionRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    actionRef.current?.focus();
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
   return (
-    <div className={`cyklus-overlay cyklus-overlay--${variant}`}>
-      <button className="cyklus-overlay__backdrop" type="button" onClick={onClose} aria-label={`Zavřít: ${title}`} />
-      <section className={`cyklus-cycle-notice cyklus-cycle-notice--${variant}`} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+    <CyklusCardOverlay label={title} variant={variant} onClose={onClose} panelClassName={`cyklus-cycle-notice cyklus-cycle-notice--${variant}`}>
         <header className="cyklus-cycle-notice__header">
-          <h2 id={titleId}>{title}</h2>
+          <h2>{title}</h2>
           <button className="cyklus-cycle-notice__close" type="button" onClick={onClose} aria-label={`Zavřít: ${title}`}>×</button>
         </header>
         {children}
         <footer className="cyklus-cycle-notice__actions">
-          <button ref={actionRef} className="cyklus-terminal-action cyklus-cycle-notice__primary" type="button" onClick={onClose}>
+          <button data-card-overlay-primary className="cyklus-terminal-action cyklus-cycle-notice__primary" type="button" onClick={onClose}>
             {actionLabel}
           </button>
         </footer>
-      </section>
-    </div>
+    </CyklusCardOverlay>
   );
 }
 
