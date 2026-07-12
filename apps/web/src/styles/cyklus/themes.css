@@ -287,7 +287,6 @@
 
 [data-theme="mono-light"] .cyklus-menu__video {
   opacity: 0.06;
-  filter: grayscale(1) contrast(0.9);
 }
 
 [data-theme="mono-light"] :is(.cyklus-page, .cyklus-void-page) :is(button, a, input, select):disabled {

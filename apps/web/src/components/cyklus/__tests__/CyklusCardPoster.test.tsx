@@ -153,6 +153,19 @@ describe('CyklusCardPoster responsive contract', () => {
     expect(screen.queryByRole('button', { name: /Přijmout|Odmítnout/ })).not.toBeInTheDocument();
   });
 
+  it('keeps the same image and transform when the document theme changes', () => {
+    const { image, viewport } = renderFullscreen();
+    const source = image.getAttribute('src');
+    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+
+    document.documentElement.setAttribute('data-theme', 'mono-light');
+    document.body.setAttribute('data-theme', 'mono-light');
+
+    expect(screen.getByRole('img', { name: 'Obrazový záznam: Cache bolesti' })).toBe(image);
+    expect(image).toHaveAttribute('src', source);
+    expect(viewport).toHaveAttribute('data-scale', '2');
+  });
+
   it('declares contain image geometry and a transform-only touch contract', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/card.css'), 'utf8');
 

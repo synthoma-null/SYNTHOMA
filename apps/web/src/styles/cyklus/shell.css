@@ -77,10 +77,11 @@
 }
 
 .cyklus-menu__video {
+  --cyklus-video-runtime-filter: brightness(0.68) contrast(1.12) saturate(0.95);
   inset: 0;
   z-index: 0;
   opacity: 0.58;
-  filter: brightness(0.68) contrast(1.12) saturate(0.95);
+  filter: var(--cyklus-media-theme-filter, none) var(--cyklus-video-runtime-filter, none);
 }
 
 .cyklus-menu {

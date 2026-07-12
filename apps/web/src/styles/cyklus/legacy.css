@@ -45,7 +45,6 @@
   object-fit: cover;
   z-index: 0;
   opacity: 0.25;
-  filter: brightness(0.6) saturate(0.7) var(--filter-primary, none);
   pointer-events: none;
 }
 

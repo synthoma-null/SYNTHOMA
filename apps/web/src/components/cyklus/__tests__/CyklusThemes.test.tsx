@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import ThemeShopClient from '../../../../app/components/ThemeShopClient';
@@ -40,6 +42,28 @@ describe('Cyklus theme picker', () => {
     expect(monoLight).toHaveAttribute('aria-pressed', 'true');
     expect(monoLight).toHaveTextContent('AKTIVNÍ');
     expect(localStorage.getItem('theme')).toBe('mono-light');
+  });
+
+  it('uses one shared theme media filter for videos and card posters', () => {
+    const tokens = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/tokens.css'), 'utf8');
+    const shell = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/shell.css'), 'utf8');
+    const cards = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/card.css'), 'utf8');
+    const themes = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/themes.css'), 'utf8');
+    const menu = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/menu-polish.css'), 'utf8');
+    const globalThemes = fs.readFileSync(path.join(process.cwd(), 'src/styles/themes.css'), 'utf8');
+
+    expect(tokens).toMatch(/--cyklus-media-theme-filter:\s*var\(--filter-primary, none\);/);
+    expect(tokens.match(/--cyklus-media-theme-filter\s*:/g)).toHaveLength(1);
+    for (const theme of UI_THEMES) {
+      expect(globalThemes).toMatch(new RegExp(`\\[data-theme=${theme.id}\\]\\s*\\{[^}]*--filter-primary\\s*:`));
+    }
+    expect(shell).toMatch(/\.cyklus-menu__video\s*\{[^}]*filter:\s*var\(--cyklus-media-theme-filter, none\) var\(--cyklus-video-runtime-filter, none\);/);
+    expect(cards).toMatch(/\.cyklus-card-art__image\s*\{[\s\S]*?filter:\s*var\(--cyklus-media-theme-filter, none\);[\s\S]*?transition:\s*filter 180ms ease;/);
+    expect(themes).not.toMatch(/\.cyklus-card-art__image/);
+    expect(themes).not.toMatch(/\.cyklus-menu__video\s*\{[^}]*(?:\r?\n)\s*filter\s*:/);
+    expect(menu).not.toMatch(/\.cyklus-menu__video\s*\{[^}]*(?:\r?\n)\s*filter\s*:/);
+    expect(cards).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.cyklus-card-art__image\s*\{[^}]*transition:\s*none;/);
+    expect(cards).not.toMatch(/\.cyklus-card-art__image\s*\{[^}]*filter:\s*none/);
   });
 });
 

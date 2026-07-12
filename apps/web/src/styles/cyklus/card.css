@@ -101,6 +101,8 @@
   max-height: none;
   object-fit: contain;
   object-position: var(--card-art-position, center);
+  filter: var(--cyklus-media-theme-filter, none);
+  transition: filter 180ms ease;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -695,6 +697,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cyklus-card-art__image {
+    transition: none;
+  }
+
   .cyklus-card,
   .cyklus-card__preview--highlight .cyklus-btn {
     animation: none;

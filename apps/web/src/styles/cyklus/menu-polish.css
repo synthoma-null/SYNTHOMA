@@ -186,7 +186,6 @@
 
 [data-theme="mono-light"] .cyklus-menu__video {
   opacity: 0.2;
-  filter: grayscale(1) brightness(0.95) contrast(1.05);
 }
 
 @media (max-width: 767px) {
@@ -241,8 +240,8 @@
   }
 
   .cyklus-menu__video {
+    --cyklus-video-runtime-filter: brightness(0.64) contrast(1.1) saturate(0.9);
     opacity: 0.46;
-    filter: brightness(0.64) contrast(1.1) saturate(0.9);
   }
 
   [data-theme="mono-light"] .cyklus-menu__video { opacity: 0.16; }
