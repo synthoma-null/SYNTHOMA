@@ -643,7 +643,7 @@ export default function CyklusClient() {
             <span>SYNTHOMA OS</span>
             <span>TERMINAL 0.9.72</span>
           </div>
-          <section className="cyklus-menu__content" aria-labelledby="cyklus-menu-brand">
+          <section className="cyklus-menu__content cyklus-menu__content--brand-safe" aria-labelledby="cyklus-menu-brand">
             <h1 className="cyklus-menu__title">
               <span className="cyklus-menu__brand" id="cyklus-menu-brand" data-testid="cyklus-menu-brand">SYNTHOMA</span>
               <span className="cyklus-menu__module">CYKLUS / NULL-1</span>
@@ -660,20 +660,20 @@ export default function CyklusClient() {
             <div className="cyklus-menu__actions">
               {savedRun && (
                 <button className="cyklus-menu__button cyklus-menu__button--primary" type="button" onClick={handleContinue}>
-                  <span aria-hidden="true">&gt;</span> Pokračovat
+                  <span className="cyklus-menu__action-index" aria-hidden="true">01</span> Pokračovat
                 </button>
               )}
               <button className="cyklus-menu__button cyklus-menu__button--new" type="button" onClick={handleNewGame}>
-                <span aria-hidden="true">&gt;</span> Nová hra
+                <span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '02' : '01'}</span> Nová hra
               </button>
               <div className="cyklus-menu__utility-actions">
                 {tutorialSeen && (
                   <button className="cyklus-menu__button cyklus-menu__button--tertiary" type="button" onClick={handleRepeatTutorial}>
-                    <span aria-hidden="true">&gt;</span> Zopakovat tutorial
+                    <span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '03' : '02'}</span> Zopakovat tutorial
                   </button>
                 )}
                 <button className="cyklus-menu__button cyklus-menu__button--tertiary" type="button" onClick={() => setShowVoidHub(true)}>
-                  <span aria-hidden="true">&gt;</span> PRÁZDN0TA
+                  <span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '04' : '03'}</span> PRÁZDN0TA
                 </button>
               </div>
             </div>

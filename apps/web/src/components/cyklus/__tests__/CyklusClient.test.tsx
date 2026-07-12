@@ -208,6 +208,8 @@ describe('CyklusClient', () => {
     expect(brand).toHaveTextContent('SYNTHOMA');
     expect(brand.childNodes).toHaveLength(1);
     expect(brand.querySelector('br')).toBeNull();
+    expect(brand.parentElement).toHaveClass('cyklus-menu__title');
+    expect(brand.closest('.cyklus-menu__content')).toHaveClass('cyklus-menu__content--brand-safe');
     expect(screen.queryByRole('button', { name: 'Pokračovat' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Nová hra' })).not.toHaveClass('cyklus-menu__button--primary');
     expect(screen.getByRole('button', { name: 'Zopakovat tutorial' })).toBeInTheDocument();

@@ -72,15 +72,15 @@
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--cy-bg) 97%, transparent) 0, color-mix(in srgb, var(--cy-bg) 76%, transparent) 46%, color-mix(in srgb, var(--cy-bg) 84%, transparent) 100%),
-    linear-gradient(180deg, color-mix(in srgb, var(--cy-accent-system) 4%, transparent), transparent 25%, color-mix(in srgb, var(--cy-accent-memory) 3.5%, transparent));
+    linear-gradient(90deg, color-mix(in srgb, var(--cy-bg) 32%, transparent), color-mix(in srgb, var(--cy-bg) 16%, transparent) 48%, transparent 78%),
+    linear-gradient(180deg, color-mix(in srgb, var(--cy-accent-system) 3%, transparent), transparent 28%, color-mix(in srgb, var(--cy-accent-memory) 2.5%, transparent));
 }
 
 .cyklus-menu__video {
   inset: 0;
   z-index: 0;
-  opacity: 0.22;
-  filter: brightness(0.32) contrast(1.18) saturate(0.72) hue-rotate(150deg);
+  opacity: 0.58;
+  filter: brightness(0.68) contrast(1.12) saturate(0.95);
 }
 
 .cyklus-menu {
