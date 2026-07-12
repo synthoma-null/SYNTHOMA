@@ -89,10 +89,13 @@
 
 .cyklus-card-art__transform-layer {
   position: absolute;
-  inset: 4px;
+  top: 50%;
+  left: 50%;
   display: grid;
+  width: var(--poster-base-width, calc(100% - 8px));
+  height: var(--poster-base-height, calc(100% - 8px));
   place-items: center;
-  transform: translate3d(var(--poster-x, 0), var(--poster-y, 0), 0) scale(var(--poster-scale, 1));
+  transform: translate3d(calc(-50% + var(--poster-x, 0px)), calc(-50% + var(--poster-y, 0px)), 0) scale(var(--poster-scale, 1));
   transform-origin: center center;
   will-change: transform;
 }
@@ -113,6 +116,10 @@
   transition: filter 180ms ease;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.cyklus-card-art__transform-layer[data-geometry-ready="true"] .cyklus-card-art__image {
+  object-fit: fill;
 }
 
 .cyklus-card-art__footer {

@@ -437,7 +437,7 @@ describe('CyklusClient', () => {
     document.documentElement.setAttribute('data-theme', 'mono-light');
     await waitFor(() => expect(portal).toHaveAttribute('data-theme', 'mono-light'));
     expect(document.querySelector('.cyklus-card-art__image')).toBe(portalImage);
-    expect(screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' })).toHaveAttribute('data-scale', '2');
+    expect(screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' })).toHaveAttribute('data-scale', '2.5');
     fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));
 
     await waitFor(() => expect(document.querySelector('.cyklus-card-art--fullscreen')).not.toBeInTheDocument());

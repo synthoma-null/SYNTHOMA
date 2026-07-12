@@ -13,18 +13,30 @@ const presentation: CardPresentation = {
 };
 
 function renderFullscreen(onReveal = jest.fn()) {
+  const viewportSize = { width: 300, height: 400 };
   const rendered = render(
     <CyklusCardPoster presentation={presentation} cardTitle="Cache bolesti" fullscreen onReveal={onReveal} />,
   );
   const viewport = screen.getByRole('region', { name: 'Obrazová strana karty Cache bolesti' });
   Object.defineProperty(viewport, 'getBoundingClientRect', {
     configurable: true,
-    value: () => ({ x: 0, y: 0, left: 0, top: 0, right: 300, bottom: 400, width: 300, height: 400, toJSON: () => ({}) }),
+    value: () => ({ x: 0, y: 0, left: 0, top: 0, right: viewportSize.width, bottom: viewportSize.height, width: viewportSize.width, height: viewportSize.height, toJSON: () => ({}) }),
   });
   const image = screen.getByRole('img', { name: 'Obrazový záznam: Cache bolesti' });
   Object.defineProperty(image, 'naturalWidth', { configurable: true, value: 300 });
   Object.defineProperty(image, 'naturalHeight', { configurable: true, value: 400 });
-  return { ...rendered, viewport, image, onReveal };
+  fireEvent.load(image);
+  return {
+    ...rendered,
+    viewport,
+    image,
+    onReveal,
+    resizeViewport(width: number, height: number) {
+      viewportSize.width = width;
+      viewportSize.height = height;
+      fireEvent(window, new Event('resize'));
+    },
+  };
 }
 
 function firePointer(
@@ -64,7 +76,7 @@ describe('CyklusCardPoster responsive contract', () => {
     const { container, viewport, image } = renderFullscreen();
 
     fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
-    expect(viewport).toHaveAttribute('data-scale', '2');
+    expect(viewport).toHaveAttribute('data-scale', '2.5');
     expect(viewport).toHaveAttribute('data-mobile-mode', 'transform-zoom');
     expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('img', { name: 'Obrazový záznam: Cache bolesti' })).toBe(image);
@@ -88,7 +100,7 @@ describe('CyklusCardPoster responsive contract', () => {
     expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toBeInTheDocument();
 
     firePointer(viewport, 'pointermove', { pointerId: 2, clientX: 900, clientY: 200 });
-    expect(viewport).toHaveAttribute('data-scale', '4');
+    expect(viewport).toHaveAttribute('data-scale', '6');
 
     firePointer(viewport, 'pointermove', { pointerId: 2, clientX: 110, clientY: 200 });
     expect(viewport).toHaveAttribute('data-scale', '1');
@@ -102,8 +114,8 @@ describe('CyklusCardPoster responsive contract', () => {
     firePointer(viewport, 'pointerdown', { pointerId: 8, clientX: 150, clientY: 200 });
     firePointer(viewport, 'pointermove', { pointerId: 8, clientX: 900, clientY: 900 });
 
-    expect(viewport).toHaveAttribute('data-translate-x', '150');
-    expect(viewport).toHaveAttribute('data-translate-y', '200');
+    expect(viewport).toHaveAttribute('data-translate-x', '225');
+    expect(viewport).toHaveAttribute('data-translate-y', '300');
   });
 
   it('clears every active pointer on pointercancel', () => {
@@ -117,6 +129,42 @@ describe('CyklusCardPoster responsive contract', () => {
     firePointer(viewport, 'pointermove', { pointerId: 4, clientX: 250, clientY: 250 });
     expect(viewport).toHaveAttribute('data-translate-x', '0');
     expect(viewport).toHaveAttribute('data-translate-y', '0');
+  });
+
+  it('makes all four image corners reachable at maximum zoom', () => {
+    const { viewport } = renderFullscreen();
+    firePointer(viewport, 'pointerdown', { pointerId: 1, clientX: 100, clientY: 200 });
+    firePointer(viewport, 'pointerdown', { pointerId: 2, clientX: 200, clientY: 200 });
+    firePointer(viewport, 'pointermove', { pointerId: 1, clientX: -150, clientY: 200 });
+    firePointer(viewport, 'pointermove', { pointerId: 2, clientX: 450, clientY: 200 });
+    expect(viewport).toHaveAttribute('data-scale', '6');
+    expect(viewport).toHaveAttribute('data-max-x', '750');
+    expect(viewport).toHaveAttribute('data-max-y', '1000');
+
+    firePointer(viewport, 'pointerup', { pointerId: 2, clientX: 450, clientY: 200 });
+    firePointer(viewport, 'pointermove', { pointerId: 1, clientX: 2000, clientY: 2200 });
+    expect(viewport).toHaveAttribute('data-translate-x', '750');
+    expect(viewport).toHaveAttribute('data-translate-y', '1000');
+
+    firePointer(viewport, 'pointermove', { pointerId: 1, clientX: -2000, clientY: -2200 });
+    expect(viewport).toHaveAttribute('data-translate-x', '-750');
+    expect(viewport).toHaveAttribute('data-translate-y', '-1000');
+  });
+
+  it('recomputes contain geometry and clamps the current view after rotation', () => {
+    const { viewport, resizeViewport } = renderFullscreen();
+    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    firePointer(viewport, 'pointerdown', { pointerId: 12, clientX: 150, clientY: 200 });
+    firePointer(viewport, 'pointermove', { pointerId: 12, clientX: 900, clientY: 900 });
+    expect(viewport).toHaveAttribute('data-translate-x', '225');
+    expect(viewport).toHaveAttribute('data-translate-y', '300');
+
+    resizeViewport(600, 300);
+
+    expect(viewport).toHaveAttribute('data-base-width', '225');
+    expect(viewport).toHaveAttribute('data-base-height', '300');
+    expect(viewport).toHaveAttribute('data-translate-x', '0');
+    expect(viewport).toHaveAttribute('data-translate-y', '225');
   });
 
   it('resets scale, translation, pointers, and scroll when the card changes', async () => {
@@ -163,15 +211,16 @@ describe('CyklusCardPoster responsive contract', () => {
 
     expect(screen.getByRole('img', { name: 'Obrazový záznam: Cache bolesti' })).toBe(image);
     expect(image).toHaveAttribute('src', source);
-    expect(viewport).toHaveAttribute('data-scale', '2');
+    expect(viewport).toHaveAttribute('data-scale', '2.5');
   });
 
   it('declares contain image geometry and a transform-only touch contract', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/card.css'), 'utf8');
 
     expect(css).toMatch(/\.cyklus-card-art__viewport\s*\{[^}]*touch-action:\s*none;[^}]*user-select:\s*none;[^}]*-webkit-user-select:\s*none;[^}]*overscroll-behavior:\s*contain;/);
-    expect(css).toMatch(/\.cyklus-card-art__transform-layer\s*\{[^}]*inset:\s*4px;[^}]*transform:\s*translate3d\(var\(--poster-x,[^)]+\), var\(--poster-y,[^)]+\), 0\) scale\(var\(--poster-scale, 1\)\);[^}]*transform-origin:\s*center center;/);
+    expect(css).toMatch(/\.cyklus-card-art__transform-layer\s*\{[^}]*top:\s*50%;[^}]*left:\s*50%;[^}]*width:\s*var\(--poster-base-width,[^;]+;[^}]*height:\s*var\(--poster-base-height,[^;]+;[^}]*transform-origin:\s*center center;/);
     expect(css).toMatch(/\.cyklus-card-art__image\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?inset:\s*0;[\s\S]*?min-width:\s*0;[\s\S]*?min-height:\s*0;[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100%;[\s\S]*?object-fit:\s*contain;/);
+    expect(css).toMatch(/\.cyklus-card-art__transform-layer\[data-geometry-ready="true"\] \.cyklus-card-art__image\s*\{[^}]*object-fit:\s*fill;/);
     expect(css).not.toMatch(/cyklus-card-art--zoomed[\s\S]*?height:\s*auto/);
   });
 });

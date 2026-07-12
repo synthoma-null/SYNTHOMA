@@ -2,8 +2,8 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { CardPresentation } from '../../game/cyklus/cyklusTypes';
 
 const MIN_SCALE = 1;
-const MAX_SCALE = 4;
-const BUTTON_ZOOM_SCALE = 2;
+const MAX_SCALE = 6;
+const BUTTON_ZOOM_SCALE = 2.5;
 
 interface PosterTransform {
   scale: number;
@@ -31,6 +31,13 @@ interface PanStart {
   y: number;
 }
 
+interface PosterGeometry {
+  baseWidth: number;
+  baseHeight: number;
+  viewportWidth: number;
+  viewportHeight: number;
+}
+
 const COMPLETE_VIEW: PosterTransform = { scale: MIN_SCALE, x: 0, y: 0 };
 
 function distanceBetween(first: PointerPosition, second: PointerPosition) {
@@ -39,6 +46,18 @@ function distanceBetween(first: PointerPosition, second: PointerPosition) {
 
 function midpoint(first: PointerPosition, second: PointerPosition) {
   return { x: (first.x + second.x) / 2, y: (first.y + second.y) / 2 };
+}
+
+function clampToGeometry(scale: number, x: number, y: number, geometry: PosterGeometry | null): PosterTransform {
+  if (scale <= MIN_SCALE) return COMPLETE_VIEW;
+  if (!geometry) return { scale, x, y };
+  const maxX = Math.max(0, (geometry.baseWidth * scale - geometry.viewportWidth) / 2);
+  const maxY = Math.max(0, (geometry.baseHeight * scale - geometry.viewportHeight) / 2);
+  return {
+    scale,
+    x: Math.max(-maxX, Math.min(maxX, x)),
+    y: Math.max(-maxY, Math.min(maxY, y)),
+  };
 }
 
 export default function CyklusCardPoster({
@@ -58,7 +77,9 @@ export default function CyklusCardPoster({
   const pinchRef = useRef<PinchStart | null>(null);
   const panRef = useRef<PanStart | null>(null);
   const transformRef = useRef<PosterTransform>(COMPLETE_VIEW);
+  const geometryRef = useRef<PosterGeometry | null>(null);
   const [transform, setTransform] = useState<PosterTransform>(COMPLETE_VIEW);
+  const [geometry, setGeometry] = useState<PosterGeometry | null>(null);
   const [activePointerCount, setActivePointerCount] = useState(0);
   const instructionId = useId();
 
@@ -67,32 +88,28 @@ export default function CyklusCardPoster({
     setTransform(next);
   }, []);
 
-  const clampTranslation = useCallback((scale: number, x: number, y: number): PosterTransform => {
-    if (scale <= MIN_SCALE) return COMPLETE_VIEW;
+  const measureGeometry = useCallback(() => {
     const viewport = viewportRef.current;
-    if (!viewport) return { scale, x, y };
-
-    const viewportRect = viewport.getBoundingClientRect();
-    const viewportWidth = viewportRect.width;
-    const viewportHeight = viewportRect.height;
     const image = imageRef.current;
-    let containedWidth = viewportWidth;
-    let containedHeight = viewportHeight;
+    if (!viewport || !image?.naturalWidth || !image.naturalHeight) return;
+    const viewportRect = viewport.getBoundingClientRect();
+    const styles = getComputedStyle(viewport);
+    const viewportWidth = Math.max(0, viewportRect.width - parseFloat(styles.paddingLeft || '0') - parseFloat(styles.paddingRight || '0'));
+    const viewportHeight = Math.max(0, viewportRect.height - parseFloat(styles.paddingTop || '0') - parseFloat(styles.paddingBottom || '0'));
+    if (viewportWidth <= 0 || viewportHeight <= 0) return;
+    const imageRatio = image.naturalWidth / image.naturalHeight;
+    const viewportRatio = viewportWidth / viewportHeight;
+    const next = imageRatio > viewportRatio
+      ? { baseWidth: viewportWidth, baseHeight: viewportWidth / imageRatio, viewportWidth, viewportHeight }
+      : { baseWidth: viewportHeight * imageRatio, baseHeight: viewportHeight, viewportWidth, viewportHeight };
+    geometryRef.current = next;
+    setGeometry(next);
+    commitTransform(clampToGeometry(transformRef.current.scale, transformRef.current.x, transformRef.current.y, next));
+  }, [commitTransform]);
 
-    if (image?.naturalWidth && image.naturalHeight && viewportWidth > 0 && viewportHeight > 0) {
-      const containRatio = Math.min(viewportWidth / image.naturalWidth, viewportHeight / image.naturalHeight);
-      containedWidth = image.naturalWidth * containRatio;
-      containedHeight = image.naturalHeight * containRatio;
-    }
-
-    const maxX = Math.max(0, (containedWidth * scale - viewportWidth) / 2);
-    const maxY = Math.max(0, (containedHeight * scale - viewportHeight) / 2);
-    return {
-      scale,
-      x: Math.max(-maxX, Math.min(maxX, x)),
-      y: Math.max(-maxY, Math.min(maxY, y)),
-    };
-  }, []);
+  const clampTranslation = useCallback((scale: number, x: number, y: number) => (
+    clampToGeometry(scale, x, y, geometryRef.current)
+  ), []);
 
   const clearPointers = useCallback(() => {
     pointersRef.current.clear();
@@ -108,8 +125,24 @@ export default function CyklusCardPoster({
   }, [clearPointers, commitTransform]);
 
   useEffect(() => {
+    geometryRef.current = null;
+    setGeometry(null);
     resetView();
   }, [cardTitle, presentation.artSrc, resetView]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const handleResize = () => measureGeometry();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(handleResize);
+    observer?.observe(viewport);
+    window.addEventListener('resize', handleResize);
+    measureGeometry();
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [measureGeometry, presentation.artSrc]);
 
   useEffect(() => () => {
     pointersRef.current.clear();
@@ -233,6 +266,10 @@ export default function CyklusCardPoster({
         data-translate-x={transform.x}
         data-translate-y={transform.y}
         data-active-pointers={activePointerCount}
+        data-base-width={geometry?.baseWidth ?? ''}
+        data-base-height={geometry?.baseHeight ?? ''}
+        data-max-x={geometry ? Math.max(0, (geometry.baseWidth * transform.scale - geometry.viewportWidth) / 2) : ''}
+        data-max-y={geometry ? Math.max(0, (geometry.baseHeight * transform.scale - geometry.viewportHeight) / 2) : ''}
         onPointerDown={fullscreen ? handlePointerDown : undefined}
         onPointerMove={fullscreen ? handlePointerMove : undefined}
         onPointerUp={fullscreen ? handlePointerUp : undefined}
@@ -241,7 +278,10 @@ export default function CyklusCardPoster({
         <span id={instructionId} className="sr-only">Obraz lze přiblížit dvěma prsty nebo tlačítkem Zvětšit.</span>
         <div
           className="cyklus-card-art__transform-layer"
+          data-geometry-ready={Boolean(geometry)}
           style={{
+            '--poster-base-width': geometry ? `${geometry.baseWidth}px` : undefined,
+            '--poster-base-height': geometry ? `${geometry.baseHeight}px` : undefined,
             '--poster-scale': transform.scale,
             '--poster-x': `${transform.x}px`,
             '--poster-y': `${transform.y}px`,
@@ -255,7 +295,7 @@ export default function CyklusCardPoster({
             loading="eager"
             decoding="async"
             draggable={false}
-            onLoad={() => commitTransform(clampTranslation(transformRef.current.scale, transformRef.current.x, transformRef.current.y))}
+            onLoad={measureGeometry}
             style={{ '--card-art-position': presentation.focalPoint ?? 'center' } as React.CSSProperties}
           />
         </div>
