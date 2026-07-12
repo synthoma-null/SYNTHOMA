@@ -1,9 +1,8 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SubjectProfilePanelClient from '../../../../app/components/SubjectProfilePanelClient';
-import CyklusGameHeader from '../CyklusGameHeader';
 import SynthomaShell from '../../synthoma-os/SynthomaShell';
-import { createCyklusRun } from '../../../game/cyklus/cyklusEngine';
+import { HeaderProvider } from '../../synthoma-os/HeaderContext';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn(), useRouter: jest.fn() }));
 jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
@@ -36,12 +35,12 @@ describe('Cyklus identity ownership', () => {
   });
 
   it('keeps one command trigger and opens the full logged-out subject profile directly', async () => {
-    const state = createCyklusRun(true);
     render(
-      <>
-        <CyklusGameHeader state={state} showTutorialSkip={false} onTutorialSkip={jest.fn()} />
-        <SubjectProfilePanelClient />
-      </>,
+      <HeaderProvider>
+        <SynthomaShell>
+          <SubjectProfilePanelClient />
+        </SynthomaShell>
+      </HeaderProvider>,
     );
 
     expect(screen.getAllByRole('button', { name: 'Identita' })).toHaveLength(1);

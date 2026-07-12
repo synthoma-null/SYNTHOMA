@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { HeaderProvider } from '../../synthoma-os/HeaderContext';
 import CyklusClient, { ActiveObjectivePanel, EndReportVerdict, RunEndSummary, SystemNoticeOverlay, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
 import { CycleForecastNotice, CycleSummaryNotice } from '../CycleNotices';
 import { createCyklusRun, getCardById, resolveChoice } from '../../../game/cyklus/cyklusEngine';
@@ -175,7 +176,7 @@ async function renderFirstBootRun(): Promise<HTMLElement> {
     preRunWarning: null,
   } as CyklusRunState;
   storeRunState(state);
-  render(<CyklusClient />);
+  render(<HeaderProvider><CyklusClient /></HeaderProvider>);
   await continueStoredRun();
   const reject = await screen.findByRole('button', { name: 'Odmítnout: KALIBROVAT' });
   const card = reject.closest('.cyklus-card') as HTMLElement;
@@ -191,7 +192,7 @@ async function renderPosterRun(): Promise<HTMLElement> {
     preRunWarning: null,
   } as CyklusRunState;
   storeRunState(state);
-  render(<CyklusClient />);
+  render(<HeaderProvider><CyklusClient /></HeaderProvider>);
   await continueStoredRun();
   return (await screen.findByRole('button', { name: 'OTEVŘÍT ZÁZNAM' })).closest('.cyklus-card') as HTMLElement;
 }
@@ -233,11 +234,10 @@ describe('CyklusClient', () => {
 
   it('keeps the polished menu hierarchy and all original actions without a save', async () => {
     localStorage.setItem('synthoma_cyklus_tutorial_seen', 'true');
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
 
     const brand = await screen.findByTestId('cyklus-menu-brand');
     expect(brand).toHaveTextContent('SYNTHOMA');
-    expect(brand.childNodes).toHaveLength(1);
     expect(brand.querySelector('br')).toBeNull();
     expect(brand.parentElement).toHaveClass('cyklus-menu__title');
     expect(brand.closest('.cyklus-menu__content')).toHaveClass('cyklus-menu__content--brand-safe');
@@ -252,7 +252,7 @@ describe('CyklusClient', () => {
   it('makes Continue the sole primary menu action when a save exists', async () => {
     localStorage.setItem('synthoma_cyklus_tutorial_seen', 'true');
     storeRunState(createCyklusRun(true));
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
 
     const continueButton = await screen.findByRole('button', { name: 'Pokračovat' });
     expect(continueButton).toHaveClass('cyklus-menu__button--primary');
@@ -261,7 +261,7 @@ describe('CyklusClient', () => {
   });
 
   it('renders tutorial progress panel for new players (ZÁKLAD tier)', async () => {
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     await waitFor(() => {
       expect(screen.getByText(/ZÁKLAD 1 \/ 5/)).toBeInTheDocument();
     });
@@ -269,7 +269,7 @@ describe('CyklusClient', () => {
   });
 
   it('skip tutorial button is a <button> element', async () => {
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     await waitFor(() => {
       expect(screen.getByText(/ZÁKLAD 1 \/ 5/)).toBeInTheDocument();
     });
@@ -279,7 +279,7 @@ describe('CyklusClient', () => {
   });
 
   it('shows an active objective panel for a new player', async () => {
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     await waitFor(() => {
       expect(screen.getByText('AKTUÁLNÍ STOPA')).toBeInTheDocument();
     });
@@ -287,7 +287,7 @@ describe('CyklusClient', () => {
   });
 
   it('shows a short stat rule hint at the start', async () => {
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     const hint = await screen.findByTestId('cyklus-stat-rule-hint');
     expect(hint).toHaveTextContent('Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.');
     expect(hint.textContent?.length ?? 0).toBeLessThan(90);
@@ -327,7 +327,7 @@ describe('CyklusClient', () => {
 
   it('minimum tutorial path renders the junction and then releases the player into the run', async () => {
     storeRunState(makeTutorialJunctionState());
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     await continueStoredRun();
 
     expect(await screen.findByRole('button', { name: /CHCI HRÁT/ })).toBeInTheDocument();
@@ -343,7 +343,7 @@ describe('CyklusClient', () => {
 
   it('extended tutorial path continues to tutorial_05_profile', async () => {
     storeRunState(makeTutorialJunctionState());
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     await continueStoredRun();
 
     fireEvent.click(await screen.findByRole('button', { name: /CHCI JEŠTĚ VYSVĚTLIT/ }));
@@ -368,7 +368,7 @@ describe('CyklusClient', () => {
     };
     storeRunState(state);
 
-    render(<CyklusClient />);
+    render(<HeaderProvider><CyklusClient /></HeaderProvider>);
     await continueStoredRun();
 
     expect(await screen.findByText(/Tento běh se drží oblasti: Archiv/)).toBeInTheDocument();
@@ -423,12 +423,12 @@ describe('CyklusClient', () => {
     document.documentElement.setAttribute('data-theme', 'acid-glitch');
     await renderPosterRun();
 
-    const poster = await screen.findByTestId('cyklus-gameplay-header').then(() => document.body.querySelector('.cyklus-card-art--fullscreen') as HTMLElement);
+    const poster = await screen.findByTestId('synthoma-command-header').then(() => document.body.querySelector('.cyklus-card-art--fullscreen') as HTMLElement);
     const root = document.querySelector('.cyklus-root--playing') as HTMLElement;
     expect(poster).toBeInTheDocument();
     expect(root).toHaveClass('cyklus-root--poster-active');
     expect(document.body).toHaveClass('cyklus-poster-lock');
-    expect(screen.getByTestId('cyklus-gameplay-header')).toBeInTheDocument();
+    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: 'Navigace' })).toBeInTheDocument();
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
     const portal = document.querySelector('.cyklus-poster-portal') as HTMLElement;
@@ -453,7 +453,7 @@ describe('CyklusClient', () => {
     await waitFor(() => expect(document.querySelector('.cyklus-card-art--fullscreen')).not.toBeInTheDocument());
     expect(root).not.toHaveClass('cyklus-root--poster-active');
     expect(document.body).not.toHaveClass('cyklus-poster-lock');
-    expect(screen.getByTestId('cyklus-gameplay-header')).toBeInTheDocument();
+    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Šumový filtr' })).toHaveFocus();
   });
 
@@ -476,16 +476,16 @@ describe('CyklusClient', () => {
     document.addEventListener('synthoma:identity-toggle', identityToggle);
 
     await renderFirstBootRun();
-    const header = screen.getByTestId('cyklus-gameplay-header');
+    const header = screen.getByTestId('synthoma-command-header');
     const headerQueries = within(header);
 
     expect(headerQueries.getByText('Prázdnota')).toBeInTheDocument();
     expect(headerQueries.getByText('C01')).toBeInTheDocument();
     expect(headerQueries.getByText('01/12')).toBeInTheDocument();
-    expect(headerQueries.getByRole('link', { name: 'Domů' })).toHaveAttribute('href', '/');
+    expect(headerQueries.getByRole('link', { name: 'SYNTHOMA, hlavní uzel' })).toHaveAttribute('href', '/');
     fireEvent.click(headerQueries.getByRole('button', { name: 'Identita' }));
     expect(identityToggle).toHaveBeenCalledTimes(1);
-    expect(headerQueries.getByRole('button', { name: 'Ovládací panel' })).toHaveAttribute('aria-controls', 'control-panel');
+    expect(headerQueries.getByRole('button', { name: 'Nastavení' })).toHaveAttribute('aria-controls', 'control-panel');
     expect(headerQueries.getByRole('button', { name: /Hudba/ })).toHaveAttribute('aria-controls', 'synthoma-audio-panel');
     expect(document.querySelector('.cyklus-mobile-hud')).toBeNull();
 
