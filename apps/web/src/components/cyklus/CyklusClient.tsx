@@ -19,7 +19,9 @@ import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import CyklusCardOverlay from './CyklusCardOverlay';
 import CyklusGameHeader from './CyklusGameHeader';
+import CyklusCardPoster from './CyklusCardPoster';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
+import { getCardChoiceOrder, getChoiceForPhysicalSide, type PhysicalCardSide } from '../../game/cyklus/cyklusCardPresentation';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
   switch (cardId) {
@@ -173,6 +175,7 @@ export default function CyklusClient() {
   const [outcomeVisible, setOutcomeVisible] = useState(false);
   const [dragX, setDragX] = useState(0);
   const [flyDirection, setFlyDirection] = useState<'yes' | 'no' | null>(null);
+  const [cardArtRevealed, setCardArtRevealed] = useState(false);
   const [runHistory, setRunHistory] = useState<CyklusRunSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
@@ -200,6 +203,7 @@ export default function CyklusClient() {
   const prevSectorRef = useRef<string | null>(null);
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
+  const cardTitleRef = useRef<HTMLHeadingElement>(null);
   const gesturePointerId = useRef<number | null>(null);
   const gestureStartX = useRef(0);
   const gestureStartY = useRef(0);
@@ -287,6 +291,7 @@ export default function CyklusClient() {
     if (typeof window !== 'undefined' && state?.currentCardId) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    setCardArtRevealed(false);
   }, [state?.currentCardId]);
 
   useEffect(() => {
@@ -403,9 +408,9 @@ export default function CyklusClient() {
     finalize().catch(() => { /* ignore */ });
   }, [state]);
 
-  const handleChoice = useCallback((direction: 'yes' | 'no') => {
+  const handleChoice = useCallback((direction: 'yes' | 'no', physicalDirection: 'yes' | 'no' = direction) => {
     if (!state || state.status !== 'playing') return;
-    setFlyDirection(direction);
+    setFlyDirection(physicalDirection);
     if (outcomeTimer.current) clearTimeout(outcomeTimer.current);
     outcomeTimer.current = setTimeout(() => {
       const next = resolveChoice(state, direction);
@@ -415,6 +420,11 @@ export default function CyklusClient() {
       setFlyDirection(null);
     }, 280);
   }, [state]);
+
+  const revealCardRecord = useCallback(() => {
+    setCardArtRevealed(true);
+    setTimeout(() => cardTitleRef.current?.focus({ preventScroll: true }), 0);
+  }, []);
 
   const dismissOutcome = useCallback(() => {
     if (outcomeTimer.current) clearTimeout(outcomeTimer.current);
@@ -542,7 +552,9 @@ export default function CyklusClient() {
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (flyDirection || outcomeVisible || gesturePointerId.current !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    const activeCard = state ? getCardById(state.currentCardId) : undefined;
+    const posterVisible = activeCard?.presentation?.mode === 'poster-then-text' && !cardArtRevealed;
+    if (posterVisible || flyDirection || outcomeVisible || gesturePointerId.current !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
     const now = performance.now();
     gesturePointerId.current = e.pointerId;
     gestureStartX.current = e.clientX;
@@ -595,8 +607,13 @@ export default function CyklusClient() {
     releaseGestureCapture(e.currentTarget, e.pointerId);
     clearGesture();
     if (wasDrag) armClickSuppression();
-    if (decision) handleChoice(decision);
-    else updateDragX(0);
+    if (decision && state) {
+      const activeCard = getCardById(state.currentCardId);
+      if (activeCard) {
+        const side: PhysicalCardSide = decision === 'yes' ? 'right' : 'left';
+        handleChoice(getChoiceForPhysicalSide(activeCard, side), decision);
+      }
+    } else updateDragX(0);
   };
 
   const onPointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -623,12 +640,15 @@ export default function CyklusClient() {
         }
         return;
       }
-      if (e.key === 'ArrowRight') handleChoice('yes');
-      if (e.key === 'ArrowLeft') handleChoice('no');
+      if (!state) return;
+      const activeCard = getCardById(state.currentCardId);
+      if (!activeCard || (activeCard.presentation?.mode === 'poster-then-text' && !cardArtRevealed)) return;
+      if (e.key === 'ArrowRight') handleChoice(getChoiceForPhysicalSide(activeCard, 'right'), 'yes');
+      if (e.key === 'ArrowLeft') handleChoice(getChoiceForPhysicalSide(activeCard, 'left'), 'no');
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [dismissOutcome, handleChoice, outcomeVisible]);
+  }, [cardArtRevealed, dismissOutcome, handleChoice, outcomeVisible, state]);
 
   if (loading) return <div className="cyklus-loading">Nahrává se cyklus…</div>;
 
@@ -705,6 +725,7 @@ export default function CyklusClient() {
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
   const tutorialHighlight = getTutorialHighlight(card?.id);
   const tutorialActive = card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done');
+  const showCardPoster = card?.presentation?.mode === 'poster-then-text' && !cardArtRevealed && !outcomeVisible;
 
   return (
     <>
@@ -907,6 +928,7 @@ export default function CyklusClient() {
                 'cyklus-card',
                 `cyklus-card--category-${card.category}`,
                 outcomeVisible ? 'cyklus-card--outcome' : '',
+                showCardPoster ? 'cyklus-card--poster' : '',
                 dragX > 0 ? 'cyklus-card--swipe-yes' : dragX < 0 ? 'cyklus-card--swipe-no' : '',
                 flyDirection === 'yes' ? 'cyklus-card--fly-yes' : flyDirection === 'no' ? 'cyklus-card--fly-no' : '',
               ].filter(Boolean).join(' ')}
@@ -923,6 +945,10 @@ export default function CyklusClient() {
               tabIndex={-1}
               data-gameplay-surface="fixed"
             >
+              {showCardPoster && card.presentation ? (
+                <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} onReveal={revealCardRecord} />
+              ) : (
+              <>
               {card.tags.includes('overload') && (
                 <div className="cyklus-card__overload">
                   <span className="cyklus-card__overload-label">⚠ PŘETLAKOVÉ POKUŠENÍ</span>
@@ -933,16 +959,26 @@ export default function CyklusClient() {
                 <div className="cyklus-card__category">{card.logLabel}</div>
                 <div className="cyklus-card__context">
                   <span>{SECTOR_LABELS[state.sector]}</span>
+                  {card.presentation?.artSrc && (
+                    <button className="cyklus-card__art-toggle" type="button" onClick={() => setCardArtRevealed(false)}>
+                      OBRAZ
+                    </button>
+                  )}
                 </div>
               </div>
-              <h2 className="cyklus-card__title">{card.title}</h2>
+              <h2 ref={cardTitleRef} className="cyklus-card__title" tabIndex={-1}>{card.title}</h2>
               <CyklusCardScene card={card} />
               {card.category === 'restart' && (
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
               <div data-card-actions className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
-                {directionPreview(state, card, card.no.preview, 'no', shouldLimitPreview(card), card.noLabel, () => handleChoice('no'), outcomeVisible)}
-                {directionPreview(state, card, card.yes.preview, 'yes', shouldLimitPreview(card), card.yesLabel, () => handleChoice('yes'), outcomeVisible)}
+                {getCardChoiceOrder(card).map((choice, index) => {
+                  const side: PhysicalCardSide = index === 0 ? 'left' : 'right';
+                  const outcome = card[choice];
+                  const label = choice === 'yes' ? card.yesLabel : card.noLabel;
+                  const fly = side === 'right' ? 'yes' : 'no';
+                  return directionPreview(state, card, outcome.preview, choice, side, shouldLimitPreview(card), label, () => handleChoice(choice, fly), outcomeVisible, side);
+                })}
               </div>
               {outcomeVisible && state.lastOutcomeText && (
                 <OutcomePanel state={state} onDismiss={dismissOutcome} />
@@ -958,6 +994,8 @@ export default function CyklusClient() {
               )}
               {cycleForecast && !preRunWarning && (
                 <CycleForecastNotice state={state} text={cycleForecast} onClose={() => setCycleForecast(null)} />
+              )}
+              </>
               )}
             </div>
           </>
@@ -1953,10 +1991,10 @@ function limitedPreviewHint(hint: string): string {
   return 'Následek není plně jasný';
 }
 
-function directionPreview(state: CyklusRunState, card: SwipeCard, preview: { hint: string; risk?: 'low' | 'medium' | 'high' | 'unknown'; statHints?: Partial<Record<StatKey, 'up' | 'down' | 'danger'>> } | undefined, dir: 'yes' | 'no', limited: boolean, label: string, onChoice: () => void, disabled: boolean) {
+function directionPreview(state: CyklusRunState, card: SwipeCard, preview: { hint: string; risk?: 'low' | 'medium' | 'high' | 'unknown'; statHints?: Partial<Record<StatKey, 'up' | 'down' | 'danger'>> } | undefined, dir: 'yes' | 'no', side: PhysicalCardSide, limited: boolean, label: string, onChoice: () => void, disabled: boolean, key?: React.Key) {
   const hint = preview ? applyMetaProgressionPreviewHint(state, card, limited ? limitedPreviewHint(preview.hint) : preview.hint) : null;
   return (
-    <div className={`cyklus-preview cyklus-preview--${dir}`}>
+    <div key={key} className={`cyklus-preview cyklus-preview--${side} cyklus-preview--choice-${dir}`}>
       {hint && <span className="cyklus-preview__hint">{hint}</span>}
       {preview?.risk && <span className={`cyklus-preview__risk cyklus-preview__risk--${preview.risk}`}>{preview.risk}</span>}
       <button

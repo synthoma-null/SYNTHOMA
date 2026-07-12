@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import CyklusClient, { ActiveObjectivePanel, EndReportVerdict, RunEndSummary, SystemNoticeOverlay, getSwipeDecision, getSwipeThreshold } from '../CyklusClient';
 import { CycleForecastNotice, CycleSummaryNotice } from '../CycleNotices';
-import { createCyklusRun, resolveChoice } from '../../../game/cyklus/cyklusEngine';
+import { createCyklusRun, getCardById, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
 
@@ -168,6 +168,19 @@ async function renderFirstBootRun(): Promise<HTMLElement> {
   const card = reject.closest('.cyklus-card') as HTMLElement;
   Object.defineProperty(card, 'clientWidth', { configurable: true, value: 400 });
   return card;
+}
+
+async function renderPosterRun(): Promise<HTMLElement> {
+  const state = {
+    ...createCyklusRun(true),
+    currentCardId: 'noise_filter',
+    flags: ['tutorial_min_done', 'tutorial_v2_done'],
+    preRunWarning: null,
+  } as CyklusRunState;
+  storeRunState(state);
+  render(<CyklusClient />);
+  await continueStoredRun();
+  return (await screen.findByRole('button', { name: 'OTEVŘÍT ZÁZNAM' })).closest('.cyklus-card') as HTMLElement;
 }
 
 describe('CyklusClient', () => {
@@ -350,6 +363,55 @@ describe('CyklusClient', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Odmítnout: KALIBROVAT' }));
     expect(await screen.findByRole('dialog', { name: 'Dopad volby' })).toBeInTheDocument();
+  });
+
+  it('reveals an available poster before the text record and can return to the image', async () => {
+    const card = await renderPosterRun();
+
+    expect(card).toHaveClass('cyklus-card--poster');
+    const viewport = screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' });
+    const footer = card.querySelector('.cyklus-card-art__footer') as HTMLElement;
+    const reveal = screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' });
+    expect(viewport).not.toContainElement(reveal);
+    expect(footer).toContainElement(reveal);
+    expect(card.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
+    expect(screen.getByRole('img', { name: 'Obrazový záznam: Šumový filtr' })).toHaveAttribute('src', '/cards/cyklus/noise_filter.webp');
+    expect(screen.queryByRole('button', { name: 'Přijmout: FILTROVAT' })).not.toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: 'ArrowRight' });
+    expect(screen.queryByRole('dialog', { name: 'Dopad volby' })).not.toBeInTheDocument();
+    fireEvent.click(reveal);
+
+    const actions = document.querySelector('[data-card-actions]') as HTMLElement;
+    const choiceButtons = within(actions).getAllByRole('button');
+    expect(choiceButtons[0]).toHaveAccessibleName('Přijmout: FILTROVAT');
+    expect(choiceButtons[1]).toHaveAccessibleName('Odmítnout: PŘEHRÁT');
+    expect(screen.getByRole('button', { name: 'OBRAZ' })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Šumový filtr' })).toHaveFocus());
+
+    fireEvent.click(screen.getByRole('button', { name: 'OBRAZ' }));
+    expect(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' }).scrollTop).toBe(0);
+  });
+
+  it('does not create poster DOM for a text-only card', async () => {
+    await renderFirstBootRun();
+    expect(document.querySelector('.cyklus-card-art')).not.toBeInTheDocument();
+    expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(0);
+  });
+
+  it('maps a right swipe on a reversed poster card to its semantic no choice', async () => {
+    const card = await renderPosterRun();
+    fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));
+    Object.defineProperty(card, 'clientWidth', { configurable: true, value: 400 });
+
+    fireEvent.pointerDown(card, { pointerId: 12, pointerType: 'touch', button: 0, clientX: 120, clientY: 180 });
+    fireEvent.pointerMove(card, { pointerId: 12, pointerType: 'touch', button: 0, clientX: 235, clientY: 184 });
+    fireEvent.pointerUp(card, { pointerId: 12, pointerType: 'touch', button: 0, clientX: 235, clientY: 184 });
+
+    expect(card).toHaveClass('cyklus-card--fly-yes');
+    const dialog = await screen.findByRole('dialog', { name: 'Dopad volby' });
+    expect(dialog).toHaveTextContent(getCardById('noise_filter')!.no.resultText);
   });
 
   it('renders the unified command rail with real run status and accessible controls', async () => {
