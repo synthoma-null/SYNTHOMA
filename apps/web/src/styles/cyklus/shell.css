@@ -284,32 +284,8 @@
   color: var(--cy-text-soft);
 }
 
-/* Run header and structural panels */
+/* Run structural panels */
 
-.cyklus-header {
-  min-height: var(--cy-header-height);
-  margin: 0;
-  padding: 0 0 var(--cy-space-3);
-  border-bottom: 1px solid var(--cy-line);
-  background: transparent;
-}
-
-.cyklus-title {
-  color: var(--cy-cyan-soft);
-  font-size: 0.84rem;
-  letter-spacing: 0.2em;
-  text-align: left;
-}
-
-.cyklus-chapter {
-  color: var(--cy-text-soft);
-}
-
-.cyklus-meta {
-  color: var(--cy-text-dim);
-}
-
-.cyklus-header__skip,
 .cyklus-footer__button,
 .cyklus-build__toggle,
 .cyklus-goals__reroll,
@@ -450,7 +426,7 @@
     padding-inline: clamp(1rem, 3vw, 2.5rem);
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-header {
+  .cyklus-root:not(.cyklus-root--menu) > .cyklus-game-header {
     grid-column: 1 / -1;
     grid-row: 1;
   }
@@ -530,7 +506,6 @@
     grid-row: 4;
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-header,
   .cyklus-pocket--standalone,
   .cyklus-desktop-top__right {
     display: none;

@@ -227,10 +227,6 @@
     min-height: 100dvh;
   }
 
-  .cyklus-header {
-    position: relative;
-  }
-
   .cyklus-card {
     width: min(100%, 720px);
     height: clamp(520px, calc(100dvh - 170px), 700px);

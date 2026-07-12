@@ -36,12 +36,10 @@ export default function CyklusGameHeader({ state, showTutorialSkip, onTutorialSk
   const progress = `${String(state.choiceInCycle).padStart(2, '0')}/12`;
 
   return (
-    <header className={`cyklus-header cyklus-game-header${showTutorialSkip ? ' cyklus-game-header--with-skip' : ''}`} data-testid="cyklus-gameplay-header">
-      <div className="cyklus-game-header__left">
-        <Link className="cyklus-header__action" href="/" aria-label="Domů" title="Domů">
-          <CommandIcon name="home" />
-        </Link>
-      </div>
+    <header className={`cyklus-game-header${showTutorialSkip ? ' cyklus-game-header--with-skip' : ''}`} data-testid="cyklus-gameplay-header">
+      <Link className="cyklus-header__action cyklus-game-header__home" href="/" aria-label="Domů" title="Domů">
+        <CommandIcon name="home" />
+      </Link>
 
       <div className="cyklus-game-header__status" aria-label={`${SECTOR_LABELS[state.sector]}, cyklus ${state.cycle}, postup ${state.choiceInCycle} z 12`}>
         <span className="cyklus-sector" title={SECTOR_LABELS[state.sector]}>{SECTOR_LABELS[state.sector]}</span>

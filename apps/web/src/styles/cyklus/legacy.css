@@ -151,65 +151,6 @@
   border-color: rgba(100, 160, 220, 0.4);
 }
 
-.cyklus-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border-tertiary);
-}
-
-.cyklus-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.cyklus-meta {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.cyklus-cycle {
-  color: var(--accent-primary);
-  font-weight: 600;
-}
-
-.cyklus-sector {
-  color: var(--accent-secondary);
-}
-
-.cyklus-progress {
-  margin-left: auto;
-  color: var(--text-muted);
-}
-
-.cyklus-header__skip {
-  margin-left: 0.5rem;
-  padding: 0.25rem 0.55rem;
-  background: var(--bg-glass);
-  border: 1px solid var(--border-tertiary);
-  border-radius: 0.4rem;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-.cyklus-header__skip:hover {
-  background: rgba(255, 200, 100, 0.12);
-  border-color: rgba(255, 200, 100, 0.3);
-  color: var(--accent-warning, #f0d0a0);
-}
-
 .cyklus-tutorial-progress {
   display: flex;
   flex-direction: column;
@@ -2900,10 +2841,6 @@
     padding: 0.65rem;
   }
 
-  .cyklus-header {
-    padding: 0.5rem 0;
-  }
-
   .cyklus-title {
     font-size: 0.9rem;
     letter-spacing: 0.08em;
@@ -4289,18 +4226,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-  }
-
-  .cyklus-header {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    margin: 0;
-    padding: 0.5rem 0.75rem;
-    background: var(--bg-primary);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    display: none;
   }
 
   .cyklus-tutorial-progress {
