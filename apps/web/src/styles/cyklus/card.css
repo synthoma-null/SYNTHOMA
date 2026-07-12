@@ -70,6 +70,10 @@
   background: #020207;
   scrollbar-color: var(--cy-line-strong) transparent;
   scrollbar-width: thin;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: contain;
 }
 
 .cyklus-card-art__viewport:focus-visible {
@@ -77,9 +81,19 @@
   outline-offset: -2px;
 }
 
-.cyklus-card-art__image {
+.cyklus-card-art__transform-layer {
   position: absolute;
   inset: 0;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  transform: translate3d(var(--poster-x, 0), var(--poster-y, 0), 0) scale(var(--poster-scale, 1));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.cyklus-card-art__image {
   display: block;
   width: 100%;
   height: 100%;
@@ -532,12 +546,10 @@
     overflow: hidden;
     place-items: center;
     background: #000;
-    touch-action: pinch-zoom;
   }
 
+  .cyklus-card-art--fullscreen .cyklus-card-art__transform-layer,
   .cyklus-card-art--fullscreen .cyklus-card-art__image {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     max-width: none;
@@ -631,25 +643,6 @@
     background: transparent;
     color: var(--cy-text-soft);
     font: 800 0.62rem/1 var(--cy-font-mono);
-  }
-
-  .cyklus-card-art--fullscreen.cyklus-card-art--zoomed .cyklus-card-art__viewport {
-    display: block;
-    padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    touch-action: pan-y pinch-zoom;
-  }
-
-  .cyklus-card-art--fullscreen.cyklus-card-art--zoomed .cyklus-card-art__image {
-    position: static;
-    inset: auto;
-    width: 100%;
-    height: auto;
-    max-width: none;
-    max-height: none;
-    object-fit: initial;
   }
 
   .cyklus-root--swiping :is(.cyklus-mobile-hud, .cyklus-stat-dock, .cyklus-active-objective),
