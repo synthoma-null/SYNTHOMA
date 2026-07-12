@@ -170,8 +170,8 @@ describe('CyklusCardPoster responsive contract', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/card.css'), 'utf8');
 
     expect(css).toMatch(/\.cyklus-card-art__viewport\s*\{[^}]*touch-action:\s*none;[^}]*user-select:\s*none;[^}]*-webkit-user-select:\s*none;[^}]*overscroll-behavior:\s*contain;/);
-    expect(css).toMatch(/\.cyklus-card-art__transform-layer\s*\{[^}]*transform:\s*translate3d\(var\(--poster-x,[^)]+\), var\(--poster-y,[^)]+\), 0\) scale\(var\(--poster-scale, 1\)\);[^}]*transform-origin:\s*center center;/);
-    expect(css).toMatch(/\.cyklus-card-art__image\s*\{[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100%;[\s\S]*?object-fit:\s*contain;/);
+    expect(css).toMatch(/\.cyklus-card-art__transform-layer\s*\{[^}]*inset:\s*4px;[^}]*transform:\s*translate3d\(var\(--poster-x,[^)]+\), var\(--poster-y,[^)]+\), 0\) scale\(var\(--poster-scale, 1\)\);[^}]*transform-origin:\s*center center;/);
+    expect(css).toMatch(/\.cyklus-card-art__image\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?inset:\s*0;[\s\S]*?min-width:\s*0;[\s\S]*?min-height:\s*0;[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100%;[\s\S]*?object-fit:\s*contain;/);
     expect(css).not.toMatch(/cyklus-card-art--zoomed[\s\S]*?height:\s*auto/);
   });
 });
