@@ -1,11 +1,12 @@
 import FirstVisitRedirectClient from "./components/FirstVisitRedirectClient";
-import HomeClient from "./HomeClient";
+import SynthomaHome from "../src/components/home/SynthomaHome";
+import "../src/styles/synthoma-os/home.css";
 
 export default function HomePage() {
   return (
     <>
       <FirstVisitRedirectClient />
-      <HomeClient />
+      <SynthomaHome />
     </>
   );
 }
