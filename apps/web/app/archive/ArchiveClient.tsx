@@ -19,6 +19,7 @@ export type ArchiveCardAccess = {
   mnemCost: number;
   label: string;
   lockedText?: string;
+  reason?: string;
 };
 
 export type ArchiveCardData = {

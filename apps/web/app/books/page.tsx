@@ -1,10 +1,9 @@
-﻿import { promises as fs } from 'fs';
-import path from 'path';
-import type { Metadata } from 'next';
-import BooksClient, { type Manifest } from './BooksClient';
-import { CHAPTERS } from '../../src/content/booksManifest';
+﻿import type { Metadata } from 'next';
+import { getLibraryCatalog } from '../../src/lib/synthoma/library/getLibraryCatalog';
+import SynthomaLibrary from '../../src/components/library/SynthomaLibrary';
+import '../../src/styles/library-archive.css';
 
-export const revalidate = 3600; // ISR: 1 hodina
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Knihovna | SYNTHOMA',
@@ -18,52 +17,30 @@ export const metadata: Metadata = {
   },
 };
 
-function buildBookJsonLd(manifest: Manifest) {
-  const collections = manifest?.collections || [];
-  return collections.map((col) => ({
-    "@context": "https://schema.org",
-    "@type": "Book",
-    "name": col.title || col.slug,
-    "url": "https://www.synthoma.cz/books",
-    "inLanguage": "cs",
-    "author": { "@type": "Person", "name": "Tomáš Valíček" },
-    "publisher": { "@type": "Organization", "name": "SYNTHOMA", "url": "https://www.synthoma.cz" },
-    "hasPart": (col.chapters || []).map((ch: any, idx: number) => ({
-      "@type": "Chapter",
-      "name": ch.title,
-      "position": idx + 1,
-      "url": ch.id
+function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>) {
+  return catalog.collections.map((col) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    'name': col.title || col.slug,
+    'url': 'https://www.synthoma.cz/books',
+    'inLanguage': 'cs',
+    'author': { '@type': 'Person', 'name': 'Tomáš Valíček' },
+    'publisher': { '@type': 'Organization', 'name': 'SYNTHOMA', 'url': 'https://www.synthoma.cz' },
+    'hasPart': col.chapters.map((ch, idx) => ({
+      '@type': 'Chapter',
+      'name': ch.title,
+      'position': idx + 1,
+      'url': ch.id
         ? `https://www.synthoma.cz/chapter/${ch.id}`
         : `https://www.synthoma.cz/reader?u=${encodeURIComponent(ch.path)}`,
-      "isAccessibleForFree": ch.free !== false,
+      'isAccessibleForFree': ch.access === 'free',
     })),
   }));
 }
 
 export default async function BooksPage() {
-  const manifestPath = path.join(process.cwd(), 'public', 'books', 'manifest.json');
-  let manifest: Manifest = { collections: [] };
-  try {
-    const raw = await fs.readFile(manifestPath, 'utf8');
-    manifest = JSON.parse(raw) as Manifest;
-  } catch (e) {
-    manifest = { collections: [] };
-  }
-
-  manifest = {
-    ...manifest,
-    collections: manifest.collections.map((col) => ({
-      ...col,
-      chapters: col.chapters.map((ch) => {
-        const found = CHAPTERS.find(
-          (c) => c.filename === decodeURIComponent(ch.path).split('/').pop()
-        );
-        return { ...ch, id: found?.id ?? '', free: found ? found.access === 'free' : (ch.free ?? true) };
-      }),
-    })),
-  };
-
-  const jsonLd = buildBookJsonLd(manifest);
+  const catalog = await getLibraryCatalog();
+  const jsonLd = buildBookJsonLd(catalog);
 
   return (
     <>
@@ -71,11 +48,10 @@ export default async function BooksPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Server-side fallback for crawlers and no-JS */}
       <noscript>
         <div className="books-fallback">
           <h1>Knihovna SYNTHOMA</h1>
-          {manifest.collections.map((col) => (
+          {catalog.collections.map((col) => (
             <section key={col.slug}>
               <h2>{col.title}</h2>
               <ul>
@@ -91,7 +67,7 @@ export default async function BooksPage() {
           ))}
         </div>
       </noscript>
-      <BooksClient manifest={manifest} />
+      <SynthomaLibrary catalog={catalog} />
     </>
   );
 }

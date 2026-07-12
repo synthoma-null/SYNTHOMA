@@ -1,9 +1,12 @@
 ﻿import { promises as fs } from 'fs';
 import path from 'path';
 import type { Metadata } from 'next';
-import ArchiveClient, { type ArchiveCardData } from './ArchiveClient';
+import { type ArchiveCardData } from './ArchiveClient';
+import SynthomaArchive from '../../src/components/archive/SynthomaArchive';
+import { normalizeArchiveCards } from '../../src/lib/synthoma/archive/normalizeArchiveEntries';
+import '../../src/styles/library-archive.css';
 
-export const revalidate = 3600; // ISR: 1 hodina
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Archiv | SYNTHOMA',
@@ -24,10 +27,26 @@ export default async function ArchivePage() {
     const raw = await fs.readFile(dataPath, 'utf8');
     const json = JSON.parse(raw);
     cards = Array.isArray(json?.cards) ? (json.cards as ArchiveCardData[]) : [];
-  } catch (e) {
-    // eslint: nechceme padat na serveru; prĂˇzdnĂ˝ archiv je pĹ™ijatelnĂ˝
+  } catch {
     cards = [];
   }
 
-  return <ArchiveClient cards={cards} />;
+  const normalized = normalizeArchiveCards(cards);
+
+  return (
+    <>
+      <noscript>
+        <div className="archive-fallback">
+          <h1>Archiv SYNTHOMA</h1>
+          {normalized.slice(0, 20).map((c) => (
+            <article key={c.id}>
+              <h2>{c.title}</h2>
+              <p>{c.teaser}</p>
+            </article>
+          ))}
+        </div>
+      </noscript>
+      <SynthomaArchive initialCards={normalized} />
+    </>
+  );
 }
