@@ -30,6 +30,8 @@ describe('CyklusCardPoster responsive contract', () => {
     expect(viewport).toHaveAttribute('tabindex', '0');
     expect(viewport).not.toContainElement(cta);
     expect(footer).toContainElement(cta);
+    expect(within(shell).getAllByRole('button')).toHaveLength(2);
+    expect(within(shell).queryByRole('button', { name: /Zrušit/i })).not.toBeInTheDocument();
     expect(within(shell).getAllByRole('img')).toHaveLength(1);
     expect(screen.getByRole('img', { name: 'Obrazový záznam: Cache bolesti' })).toHaveAttribute('loading', 'eager');
   });

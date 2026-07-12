@@ -1071,7 +1071,6 @@ export default function CyklusClient() {
                             isConfirming ? (
                               <div className="cyklus-pocket__confirm">
                                 <button type="button" className="cyklus-pocket__activate" onClick={() => { handleActivateItem(item.id); setConfirmActivateId(null); }}>Potvrdit</button>
-                                <button type="button" className="cyklus-pocket__activate cyklus-pocket__activate--cancel" onClick={() => setConfirmActivateId(null)}>Zrušit</button>
                               </div>
                             ) : (
                               <button
@@ -1222,7 +1221,6 @@ export default function CyklusClient() {
                       isConfirming ? (
                         <div className="cyklus-pocket__confirm">
                           <button type="button" className="cyklus-pocket__activate" onClick={() => { handleActivateItem(item.id); setConfirmActivateId(null); }}>Potvrdit</button>
-                          <button type="button" className="cyklus-pocket__activate cyklus-pocket__activate--cancel" onClick={() => setConfirmActivateId(null)}>Zrušit</button>
                         </div>
                       ) : (
                         <button
