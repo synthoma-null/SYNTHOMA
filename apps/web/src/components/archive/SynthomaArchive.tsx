@@ -8,6 +8,7 @@ import { useArchiveSnapshot } from '../../lib/synthoma/archive/useArchiveSnapsho
 import { resolveArchiveCardVisibility } from '../../lib/synthoma/archive/resolveArchiveLock';
 import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
 import type { WhisperData } from '../whispers/WhisperCard';
+import ArchiveDetailDialog from './ArchiveDetailDialog';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -73,6 +74,14 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
   const completedChapters = snapshot.progress.filter((p) => p.completed);
   const currentChapter = snapshot.progress.find((p) => !p.completed && p.progressPercent && p.progressPercent > 0);
 
+  const dialogEntry = useMemo(() => visibleCards.find((entry) => entry.card.id === openCardId), [visibleCards, openCardId]);
+  const relatedCards = useMemo(() => {
+    if (!dialogEntry?.card.related) return [];
+    return dialogEntry.card.related
+      .map((id) => cards.find((c) => c.id === id))
+      .filter((c): c is ArchiveCard => !!c);
+  }, [dialogEntry, cards]);
+
   return (
     <main className="synthoma-archive" id="main-content">
       <SynthomaMediaLayer src="/video/SYNTHOMA10.webm" className="synthoma-archive__media" />
@@ -128,7 +137,6 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           <div className="synthoma-archive__records" role="list">
             {visibleCards.map((entry) => {
               const { card, visibility } = entry;
-              const isOpen = openCardId === card.id;
               const isLocked = visibility === 'teaser';
               return (
                 <article
@@ -136,7 +144,6 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
                   className={[
                     'archive-record-card',
                     'os-surface',
-                    isOpen ? 'archive-record-card--open' : '',
                     isLocked ? 'archive-record-card--locked' : '',
                   ].join(' ').trim()}
                   role="listitem"
@@ -145,8 +152,8 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
                   <button
                     className="archive-record-card__toggle"
                     type="button"
-                    aria-expanded={isOpen}
-                    onClick={() => !isLocked && setOpenCardId(isOpen ? null : card.id)}
+                    aria-expanded={openCardId === card.id}
+                    onClick={() => !isLocked && setOpenCardId(card.id)}
                     aria-disabled={isLocked}
                   >
                     {card.display?.icon && <span className="archive-record-card__icon">{isLocked ? '⬡' : card.display.icon}</span>}
@@ -154,21 +161,6 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
                     {isLocked && <span className="archive-record-card__lock">⬡</span>}
                   </button>
                   <p className="archive-record-card__teaser">{card.teaser}</p>
-                  {!isLocked && isOpen && (
-                    <div className="archive-record-card__body">
-                      {card.quote && <blockquote className="archive-record-card__quote">{card.quote}</blockquote>}
-                      {card.body.map((p, idx) => (
-                        <p key={idx} className="text">{p}</p>
-                      ))}
-                      {Array.isArray(card.tags) && card.tags.length > 0 && (
-                        <div className="archive-record-card__tags">
-                          {card.tags.map((tag) => (
-                            <span key={tag} className="archive-record-card__tag">{tag}</span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </article>
               );
             })}
@@ -241,6 +233,15 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           <WhisperSubmitPanel placement="archive" compact />
         </section>
       </div>
+
+      {dialogEntry && (
+        <ArchiveDetailDialog
+          card={dialogEntry.card}
+          isLocked={dialogEntry.visibility === 'teaser'}
+          relatedCards={relatedCards}
+          onClose={() => setOpenCardId(null)}
+        />
+      )}
     </main>
   );
 }
