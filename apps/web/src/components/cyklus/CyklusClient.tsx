@@ -21,6 +21,7 @@ import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import CyklusCardOverlay from './CyklusCardOverlay';
 import CyklusCardPoster from './CyklusCardPoster';
 import { useHeader } from '../synthoma-os/HeaderContext';
+import { Button } from '../synthoma-os/ui';
 import SynthomaWordmark from '../synthoma/SynthomaWordmark';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 import { getCardChoiceOrder, getChoiceForPhysicalSide, type PhysicalCardSide } from '../../game/cyklus/cyklusCardPresentation';
@@ -738,22 +739,22 @@ export default function CyklusClient() {
             </div>
             <div className="cyklus-menu__actions">
               {savedRun && (
-                <button className="cyklus-menu__button cyklus-menu__button--primary" type="button" onClick={handleContinue}>
-                  <span className="cyklus-menu__action-index" aria-hidden="true">01</span> Pokračovat
-                </button>
+                <Button className="cyklus-menu__button cyklus-menu__button--primary" variant="primary" onClick={handleContinue} before={<span className="cyklus-menu__action-index" aria-hidden="true">01</span>}>
+                  Pokračovat
+                </Button>
               )}
-              <button className="cyklus-menu__button cyklus-menu__button--new" type="button" onClick={handleNewGame}>
-                <span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '02' : '01'}</span> Nová hra
-              </button>
+              <Button className="cyklus-menu__button cyklus-menu__button--new" variant="secondary" onClick={handleNewGame} before={<span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '02' : '01'}</span>}>
+                Nová hra
+              </Button>
               <div className="cyklus-menu__utility-actions">
                 {tutorialSeen && (
-                  <button className="cyklus-menu__button cyklus-menu__button--tertiary" type="button" onClick={handleRepeatTutorial}>
-                    <span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '03' : '02'}</span> Zopakovat tutorial
-                  </button>
+                  <Button className="cyklus-menu__button cyklus-menu__button--tertiary" variant="tertiary" onClick={handleRepeatTutorial} before={<span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '03' : '02'}</span>}>
+                    Zopakovat tutorial
+                  </Button>
                 )}
-                <button className="cyklus-menu__button cyklus-menu__button--tertiary" type="button" onClick={() => setShowVoidHub(true)}>
-                  <span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '04' : '03'}</span> PRÁZDN0TA
-                </button>
+                <Button className="cyklus-menu__button cyklus-menu__button--tertiary" variant="tertiary" onClick={() => setShowVoidHub(true)} before={<span className="cyklus-menu__action-index" aria-hidden="true">{savedRun ? '04' : '03'}</span>}>
+                  PRÁZDN0TA
+                </Button>
               </div>
             </div>
           </section>
