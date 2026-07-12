@@ -444,6 +444,252 @@
   color: var(--os-text-muted);
 }
 
+/* Detail dialog shared overlay */
+.synthoma-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--os-z-modal, 90);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--os-space-4);
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.library-cover-overlay {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)), var(--cover-image);
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+/* Archive detail dialog */
+.archive-detail-dialog {
+  width: min(100%, 640px);
+}
+
+.archive-detail-dialog__body {
+  padding: var(--os-space-5);
+  display: grid;
+  gap: var(--os-space-4);
+}
+
+.archive-detail-dialog__header {
+  display: grid;
+  gap: var(--os-space-1);
+  padding-left: var(--os-space-3);
+  border-left: 3px solid var(--card-accent, var(--os-border));
+}
+
+.archive-detail-dialog__icon {
+  font-size: var(--os-font-size-2xl);
+}
+
+.archive-detail-dialog__title {
+  margin: 0;
+  font-size: var(--os-font-size-xl);
+}
+
+.archive-detail-dialog__category {
+  color: var(--os-text-muted);
+  font-family: var(--font-mono, monospace);
+  font-size: var(--os-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.archive-detail-dialog__teaser {
+  margin: 0;
+  color: var(--os-text-muted);
+  font-style: italic;
+}
+
+.archive-detail-dialog__locked {
+  padding: var(--os-space-3);
+  border: 1px dashed var(--os-accent-primary);
+  border-radius: var(--os-corner);
+  background: color-mix(in srgb, var(--os-accent-primary) 8%, transparent);
+}
+
+.archive-detail-dialog__reason {
+  color: var(--os-accent-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: var(--os-font-size-sm);
+}
+
+.archive-detail-dialog__quote {
+  margin: 0;
+  padding-left: var(--os-space-3);
+  border-left: 2px solid var(--os-accent-primary);
+  font-style: italic;
+  color: var(--os-text-muted);
+}
+
+.archive-detail-dialog__content .text {
+  margin: 0.5em 0;
+}
+
+.archive-detail-dialog__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--os-space-1);
+}
+
+.archive-detail-dialog__tag {
+  font-size: var(--os-font-size-xs);
+  font-family: var(--font-mono, monospace);
+  padding: 0.15em 0.5em;
+  border: var(--os-border-width) solid var(--os-border);
+  border-radius: var(--os-corner);
+}
+
+.archive-detail-dialog__related {
+  border-top: 1px solid var(--os-border);
+  padding-top: var(--os-space-4);
+}
+
+.archive-detail-dialog__related-title {
+  margin: 0 0 var(--os-space-2);
+  color: var(--os-text-muted);
+  font-size: var(--os-font-size-sm);
+  letter-spacing: 0.08em;
+}
+
+.archive-detail-dialog__related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--os-space-2);
+}
+
+.archive-detail-dialog__related-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem var(--os-space-2);
+  padding: var(--os-space-2);
+  border: var(--os-border-width) solid var(--os-border);
+  border-radius: var(--os-corner);
+  background: var(--os-surface-raised);
+}
+
+.archive-detail-dialog__related-icon {
+  grid-row: span 2;
+  align-self: center;
+}
+
+.archive-detail-dialog__related-title-text {
+  font-weight: 600;
+}
+
+.archive-detail-dialog__related-teaser {
+  color: var(--os-text-muted);
+  font-size: var(--os-font-size-sm);
+}
+
+.synthoma-detail-dialog {
+  position: relative;
+  width: min(100%, 720px);
+  max-height: calc(100dvh - var(--os-space-8));
+  overflow-y: auto;
+  border: 1px solid var(--os-border);
+  border-radius: var(--os-corner);
+  background: var(--os-surface);
+  color: var(--os-text);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.synthoma-detail-dialog__close {
+  position: absolute;
+  top: var(--os-space-3);
+  right: var(--os-space-3);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--os-surface-raised);
+  border: 1px solid var(--os-border);
+  color: var(--os-text);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.synthoma-detail-dialog__close:hover {
+  border-color: var(--os-accent-primary);
+  color: var(--os-accent-primary);
+}
+
+.library-cover-dialog__body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--os-space-5);
+  padding: var(--os-space-5);
+}
+
+.library-cover-dialog__cover {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--os-corner);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--os-accent-primary) 35%, transparent);
+}
+
+.library-cover-dialog__cover--placeholder {
+  background: var(--os-surface-raised);
+}
+
+.library-cover-dialog__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--os-space-3);
+}
+
+.library-cover-dialog__title {
+  margin: 0;
+  font-size: var(--os-font-size-2xl);
+  line-height: 1.1;
+}
+
+.library-cover-dialog__status {
+  margin: 0;
+  color: var(--os-accent-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: var(--os-font-size-sm);
+}
+
+.library-cover-dialog__chapters {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--os-space-2);
+}
+
+.library-cover-dialog__chapter {
+  display: grid;
+  gap: 0.15rem;
+  padding: var(--os-space-2) 0;
+  border-bottom: 1px solid var(--os-border);
+}
+
+.library-cover-dialog__chapter-index {
+  font-family: var(--font-mono, monospace);
+  color: var(--os-text-muted);
+  font-size: var(--os-font-size-xs);
+}
+
+.library-cover-dialog__chapter-title {
+  font-weight: 600;
+}
+
+.library-cover-dialog__chapter-summary {
+  color: var(--os-text-muted);
+  font-size: var(--os-font-size-sm);
+}
+
 @media (max-width: 640px) {
   .synthoma-library,
   .synthoma-archive {
@@ -461,5 +707,27 @@
 
   .synthoma-archive__overview {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .library-cover-dialog__body {
+    grid-template-columns: 1fr;
+  }
+
+  .library-cover-dialog__cover {
+    max-width: 160px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .synthoma-detail-dialog {
+    width: 100%;
+    min-height: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+
+  .synthoma-detail-overlay {
+    padding: 0;
   }
 }
