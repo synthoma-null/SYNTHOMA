@@ -1,0 +1,30 @@
+.synthoma-media-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--os-z-media);
+  overflow: hidden;
+  background: var(--os-bg-deep);
+  pointer-events: none;
+}
+
+.synthoma-media-layer__video,
+.synthoma-media-layer__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.synthoma-media-layer__video {
+  object-fit: cover;
+  opacity: var(--os-media-opacity);
+  filter: var(--synthoma-media-theme-filter, none) var(--synthoma-video-runtime-filter, none);
+}
+
+.synthoma-media-layer__fallback {
+  background: var(--os-bg-deep);
+}
+
+.synthoma-local-scrim {
+  background: linear-gradient(90deg, var(--os-scrim-strong) 0 58%, var(--os-scrim-soft) 76%, transparent 100%);
+}

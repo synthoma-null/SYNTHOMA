@@ -1,0 +1,14 @@
+:root,
+[data-theme] {
+  --synthoma-media-theme-filter: var(--filter-primary, none);
+  --synthoma-video-runtime-filter: none;
+  --os-media-opacity: 0.62;
+  --os-scrim-strong: color-mix(in srgb, var(--os-bg) 92%, transparent);
+  --os-scrim-soft: color-mix(in srgb, var(--os-bg) 68%, transparent);
+  color-scheme: dark;
+}
+
+[data-theme="mono-light"] {
+  --os-media-opacity: 0.24;
+  color-scheme: light;
+}

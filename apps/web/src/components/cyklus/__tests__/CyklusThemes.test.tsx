@@ -52,7 +52,7 @@ describe('Cyklus theme picker', () => {
     const menu = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/menu-polish.css'), 'utf8');
     const globalThemes = fs.readFileSync(path.join(process.cwd(), 'src/styles/themes.css'), 'utf8');
 
-    expect(tokens).toMatch(/--cyklus-media-theme-filter:\s*var\(--filter-primary, none\);/);
+    expect(tokens).toMatch(/--cyklus-media-theme-filter:\s*var\(--synthoma-media-theme-filter, var\(--filter-primary, none\)\);/);
     expect(tokens.match(/--cyklus-media-theme-filter\s*:/g)).toHaveLength(1);
     for (const theme of UI_THEMES) {
       expect(globalThemes).toMatch(new RegExp(`\\[data-theme=${theme.id}\\]\\s*\\{[^}]*--filter-primary\\s*:`));

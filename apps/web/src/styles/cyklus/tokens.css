@@ -39,7 +39,7 @@
   --cy-button-bg: color-mix(in srgb, var(--cy-accent-primary) 4%, var(--cy-surface-1));
   --cy-button-hover: color-mix(in srgb, var(--cy-accent-primary) 9%, var(--cy-surface-1));
   --cy-button-active: color-mix(in srgb, var(--cy-accent-secondary) 12%, var(--cy-surface-1));
-  --cyklus-media-theme-filter: var(--filter-primary, none);
+  --cyklus-media-theme-filter: var(--synthoma-media-theme-filter, var(--filter-primary, none));
 
   /* rem values follow the existing root --font-size-multiplier setting. */
   --cy-font-micro: 0.75rem;

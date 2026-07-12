@@ -1,0 +1,22 @@
+.synthoma-system-state {
+  display: grid;
+  min-height: calc(100dvh - var(--os-command-height));
+  place-items: center;
+  padding: var(--os-space-6) var(--os-space-4);
+  background: var(--os-bg-deep);
+  color: var(--os-text);
+}
+
+.synthoma-system-state__panel {
+  width: min(100%, 680px);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-block: 1px solid var(--os-border-strong);
+}
+
+.synthoma-system-state__code { margin: 0 0 var(--os-space-3); color: var(--os-warning); font: 700 var(--os-text-micro)/1.4 var(--os-font-mono); }
+.synthoma-system-state h1 { margin: 0; font: 800 var(--os-text-heading)/1.15 var(--os-font-heading); }
+.synthoma-system-state p { color: var(--os-text-secondary); font: 500 var(--os-text-body)/1.55 var(--os-font-body); }
+.synthoma-system-state__actions { display: flex; flex-wrap: wrap; gap: var(--os-space-2); margin-top: var(--os-space-5); }
+.synthoma-system-state__actions :is(a, button) { display: inline-grid; place-items: center; padding-inline: var(--os-space-4); }
+.synthoma-system-state__loader { width: min(100%, 360px); height: 2px; margin-top: var(--os-space-5); overflow: hidden; background: var(--os-axis); }
+.synthoma-system-state__loader::after { content: ""; display: block; width: 38%; height: 100%; background: var(--os-accent-primary); animation: os-signal-pulse 1.2s ease-in-out infinite; }

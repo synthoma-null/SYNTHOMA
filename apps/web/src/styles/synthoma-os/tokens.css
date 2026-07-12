@@ -1,0 +1,46 @@
+:root,
+[data-theme] {
+  --os-bg: var(--bg-primary, #020306);
+  --os-bg-deep: color-mix(in srgb, var(--os-bg) 94%, #00131a);
+  --os-surface: var(--bg-secondary, #050810);
+  --os-surface-raised: var(--bg-tertiary, #081018);
+  --os-border: var(--border-secondary, color-mix(in srgb, var(--text-primary, #c0faff) 28%, transparent));
+  --os-border-strong: var(--border-primary, color-mix(in srgb, var(--text-primary, #c0faff) 62%, transparent));
+  --os-axis: var(--border-tertiary, color-mix(in srgb, var(--text-primary, #c0faff) 14%, transparent));
+  --os-accent-primary: var(--accent-secondary, #00ffff);
+  --os-accent-secondary: var(--accent-primary, #ff00ff);
+  --os-warning: var(--accent-warning, #f6ff00);
+  --os-danger: var(--accent-error, #ff3d4f);
+  --os-success: var(--accent-success, #7bed9f);
+  --os-text: var(--text-primary, #c0faff);
+  --os-text-secondary: var(--text-secondary, color-mix(in srgb, var(--os-text) 78%, var(--os-bg)));
+  --os-text-muted: var(--text-tertiary, color-mix(in srgb, var(--os-text) 60%, var(--os-bg)));
+
+  --os-space-1: 0.25rem;
+  --os-space-2: 0.5rem;
+  --os-space-3: 0.75rem;
+  --os-space-4: 1rem;
+  --os-space-5: 1.5rem;
+  --os-space-6: 2rem;
+  --os-space-7: 3rem;
+  --os-space-8: 4rem;
+
+  --os-command-height: 56px;
+  --os-mobile-nav-height: 58px;
+  --os-tap: 44px;
+  --os-content-width: 88rem;
+  --os-reader-width: 46rem;
+  --os-panel-width: 27.5rem;
+  --os-border-width: 1px;
+  --os-corner: 3px;
+  --os-focus-ring: var(--accent-secondary, #00ffff);
+
+  --os-z-base: 1;
+  --os-z-media: 0;
+  --os-z-shell: 40;
+  --os-z-dropdown: 50;
+  --os-z-sheet: 60;
+  --os-z-modal: 90;
+  --os-z-portal: 110;
+  --os-z-critical: 120;
+}

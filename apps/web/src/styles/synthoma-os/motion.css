@@ -1,0 +1,10 @@
+:root { --os-motion-fast: 120ms; --os-motion-normal: 180ms; --os-motion-slow: 360ms; --os-ease-standard: ease; }
+
+@keyframes os-signal-pulse { 50% { opacity: 0.48; } }
+@keyframes os-boot-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --os-motion-fast: 0ms; --os-motion-normal: 0ms; --os-motion-slow: 0ms; }
+  .synthoma-media-layer__video { animation: none; }
+  .os-motion { animation: none !important; transition-duration: 0ms !important; }
+}

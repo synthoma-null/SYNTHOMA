@@ -1,0 +1,18 @@
+.os-surface {
+  position: relative;
+  border: var(--os-border-width) solid var(--os-border);
+  border-radius: var(--os-corner);
+  background: color-mix(in srgb, var(--os-surface) 94%, transparent);
+  color: var(--os-text);
+}
+
+.os-surface::before {
+  content: "";
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 18px;
+  border-top: 2px solid var(--os-accent-primary);
+  pointer-events: none;
+}
+
+.os-axis { border-color: var(--os-axis); }
