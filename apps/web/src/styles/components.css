@@ -1322,16 +1322,13 @@
     transition: backdrop-filter 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* Freeze any var-based font multipliers inside panel */
-  #control-panel { --font-size-multiplier: 1 !important; }
-  /* Normalize common UI atoms inside panel to px so rem outside won't affect it */
   #control-panel label,
   #control-panel input,
   #control-panel select,
   #control-panel button,
   #control-panel .btn,
   #control-panel .panel-button,
-  #control-panel .theme-button { font-size: 14px; line-height: 1.2; }
+  #control-panel .theme-button { line-height: 1.3; }
 
   #control-panel .choice-link { font-size: 14px; line-height: 1.2; padding: 6px 10px; border-radius: 8px; }
   #control-panel .chip { font-size: 12px; padding: 4px 8px; border-radius: 12px; }
@@ -1355,8 +1352,6 @@
     color: var(--text-primary);
     text-decoration: none;
     font-family: var(--font-family-mono);
-    /* Fix size in px so it is NOT affected by global font-size slider */
-    font-size: 14px;
     line-height: 1.35;
     padding: 6px 8px;
     border: 1px solid var(--border-secondary);
@@ -1369,11 +1364,9 @@
   #control-panel #playlist-container.playlist a:hover { background: rgba(var(--bg-secondary-rgb), 0.5); transform: translateY(-1px); }
   #control-panel #playlist-container.playlist a.active { background: rgba(0,255,255,0.12); box-shadow: 0 0 8px var(--glow-primary); }
 
-  /* Audio transport buttons – keep text size stable regardless of slider */
   #control-panel .audio-buttons .btn,
   #control-panel .audio-buttons button {
-    font-size: 14px; /* fixed px size, not impacted by --font-size-multiplier */
-    line-height: 1.2;
+    line-height: 1.3;
   }
 
   /* === Control panel layout === */

@@ -226,6 +226,19 @@
 .id-panel-root--cyklus .id-panel-log {
   border-left-color: var(--cy-accent-primary);
   background: var(--cy-surface-2);
+  font-size: var(--cy-font-micro);
+  line-height: 1.35;
+}
+
+.id-panel-root--cyklus .id-panel-name {
+  font-size: var(--cy-font-body);
+  line-height: 1.35;
+}
+
+.id-panel-root--cyklus .id-panel-email {
+  font-size: var(--cy-font-small);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .id-panel-root--cyklus :is(.id-panel-log-prefix, .id-panel-name, .id-panel-email, .id-panel-log-msg) {
@@ -238,6 +251,8 @@
   border-radius: var(--cy-theme-radius, 2px);
   background: var(--cy-button-bg);
   color: var(--cy-text);
+  font-size: var(--cy-font-control) !important;
+  line-height: 1.3;
 }
 
 .id-panel-root--cyklus .id-panel-link:hover {

@@ -249,7 +249,8 @@
 
 .cyklus-bottom-sheet__title {
   color: var(--cy-cyan-soft);
-  font-size: 0.72rem;
+  font-size: var(--cy-font-small);
+  line-height: 1.3;
   letter-spacing: 0.12em;
 }
 
@@ -269,6 +270,8 @@
   overflow: auto;
   overscroll-behavior: contain;
   background: var(--cy-panel-solid);
+  font-size: var(--cy-font-body);
+  line-height: 1.4;
 }
 
 @keyframes cyklus-os-sheet-in {

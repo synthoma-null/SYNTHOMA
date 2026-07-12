@@ -224,6 +224,10 @@ describe('CyklusClient', () => {
   });
 
   afterEach(() => {
+    document.documentElement.style.removeProperty('--font-size-multiplier');
+    document.body.style.removeProperty('--font-size-multiplier');
+    document.documentElement.removeAttribute('data-theme');
+    document.body.removeAttribute('data-theme');
     jest.restoreAllMocks();
   });
 
@@ -431,11 +435,17 @@ describe('CyklusClient', () => {
     const portalImage = document.querySelector('.cyklus-card-art__image') as HTMLImageElement;
     expect(portal).toHaveAttribute('data-theme', 'acid-glitch');
     expect(portal).toHaveAttribute('data-cyklus-theme', 'acid-glitch');
+    expect(portal).toHaveAttribute('data-cyklus-text-scale', '1');
 
     fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
     expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toBeInTheDocument();
     document.documentElement.setAttribute('data-theme', 'mono-light');
-    await waitFor(() => expect(portal).toHaveAttribute('data-theme', 'mono-light'));
+    document.documentElement.style.setProperty('--font-size-multiplier', '1.4');
+    await waitFor(() => {
+      expect(portal).toHaveAttribute('data-theme', 'mono-light');
+      expect(portal).toHaveAttribute('data-cyklus-text-scale', '1.4');
+      expect(portal).toHaveStyle({ '--font-size-multiplier': '1.4' });
+    });
     expect(document.querySelector('.cyklus-card-art__image')).toBe(portalImage);
     expect(screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' })).toHaveAttribute('data-scale', '2.5');
     fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));

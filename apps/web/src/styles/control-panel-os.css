@@ -15,7 +15,7 @@
   box-shadow: var(--cy-shadow), var(--cy-glow-primary);
   color: var(--cy-text);
   font-family: var(--font-family-primary), system-ui, sans-serif;
-  font-size: 14px;
+  font-size: var(--cy-font-body);
   opacity: 0;
   pointer-events: none;
   transform: translateX(100%);
@@ -69,7 +69,7 @@
 
 #control-panel .cp-kicker {
   color: var(--cy-accent-primary);
-  font-size: 10px;
+  font-size: var(--cy-font-micro);
   font-weight: 800;
   letter-spacing: 0.12em;
 }
@@ -77,14 +77,14 @@
 #control-panel .cp-title {
   margin: 0;
   color: var(--cy-text);
-  font: 800 18px/1.15 var(--cy-font-mono);
+  font: 800 1.125rem/1.3 var(--cy-font-mono);
   letter-spacing: 0.06em;
 }
 
 #control-panel .cp-status {
   margin: 0;
   color: var(--cy-text-dim);
-  font-size: 10px;
+  font-size: var(--cy-font-micro);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
@@ -131,7 +131,7 @@
   align-items: baseline;
   margin-bottom: 10px;
   color: var(--cy-text-dim);
-  font-size: 10px;
+  font-size: var(--cy-font-micro);
   font-weight: 800;
   letter-spacing: 0.1em;
 }
@@ -154,7 +154,7 @@
   margin: 0 0 8px;
   padding: 0;
   color: var(--cy-text-dim);
-  font-size: 10px;
+  font-size: var(--cy-font-micro);
   font-weight: 800;
   letter-spacing: 0.08em;
 }
@@ -176,7 +176,8 @@
 #control-panel .slider-label-text {
   min-width: 0;
   color: var(--cy-text);
-  font-size: 14px;
+  font-size: var(--cy-font-body);
+  line-height: 1.3;
   font-weight: 600;
 }
 
@@ -190,7 +191,7 @@
 #control-panel .slider-value {
   min-width: 0;
   color: var(--cy-text-soft);
-  font-size: 11px;
+  font-size: var(--cy-font-value);
   font-weight: 700;
   text-align: right;
   opacity: 1;
@@ -212,7 +213,7 @@
   border-radius: 0;
   background: var(--cy-button-bg);
   color: var(--cy-text);
-  font: 700 13px/1.25 var(--font-family-primary), system-ui, sans-serif;
+  font: 700 var(--cy-font-control)/1.3 var(--font-family-primary), system-ui, sans-serif;
   cursor: pointer;
 }
 
@@ -231,7 +232,7 @@
 #control-panel .theme-error {
   margin: 0 0 8px;
   color: var(--cy-text-soft);
-  font: 500 13px/1.4 var(--font-family-primary), system-ui, sans-serif;
+  font: 500 var(--cy-font-small)/1.4 var(--font-family-primary), system-ui, sans-serif;
 }
 
 #control-panel .theme-grid {
@@ -255,7 +256,7 @@
   outline: 0;
   background: transparent;
   color: inherit;
-  font-size: 14px;
+  font-size: var(--cy-font-body);
   text-align: left;
   white-space: normal;
   cursor: pointer;
@@ -308,20 +309,20 @@
 
 #control-panel .theme-label {
   color: inherit;
-  font: 800 12px/1.2 var(--cy-font-mono);
+  font: 800 var(--cy-font-small)/1.3 var(--cy-font-mono);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 #control-panel .theme-description {
   color: inherit;
-  font: 500 12px/1.35 var(--font-family-primary), system-ui, sans-serif;
+  font: 500 var(--cy-font-small)/1.4 var(--font-family-primary), system-ui, sans-serif;
   opacity: 0.72;
 }
 
 #control-panel .theme-state {
   color: inherit;
-  font-size: 9px;
+  font-size: var(--cy-font-micro);
   font-weight: 800;
   letter-spacing: 0.06em;
   text-align: right;
@@ -375,7 +376,7 @@
   border-radius: 0;
   background: transparent;
   color: var(--cy-text-soft);
-  font: 500 13px/1.3 var(--font-family-primary), system-ui, sans-serif;
+  font: 500 var(--cy-font-control)/1.3 var(--font-family-primary), system-ui, sans-serif;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -422,6 +423,8 @@
 #control-panel .theme-dialog-body,
 #control-panel .theme-dialog-balance {
   color: var(--cy-text-soft);
+  font-size: var(--cy-font-body);
+  line-height: 1.4;
   font-family: var(--font-family-primary), system-ui, sans-serif;
 }
 
@@ -438,6 +441,8 @@
   border-radius: 0;
   background: var(--cy-button-bg);
   color: var(--cy-text);
+  font-size: var(--cy-font-control);
+  line-height: 1.3;
 }
 
 @media (max-width: 767px) {
@@ -472,9 +477,6 @@
     width: 44px;
   }
 
-  #control-panel .theme-description {
-    font-size: 11px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
