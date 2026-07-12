@@ -4,15 +4,16 @@ import { useEffect, useRef } from 'react';
 import { attachGlitchHeading } from '../../lib/glitchHeading';
 
 export interface SynthomaWordmarkProps {
-  context: 'intro' | 'home' | 'compact';
+  context: 'intro' | 'home' | 'compact' | 'cyklus';
   animated?: boolean;
   className?: string;
   id?: string;
+  'data-testid'?: string;
 }
 
 const TITLE = 'SYNTHOMA';
 
-export default function SynthomaWordmark({ context, animated = true, className, id }: SynthomaWordmarkProps) {
+export default function SynthomaWordmark({ context, animated = true, className, id, 'data-testid': dataTestId }: SynthomaWordmarkProps) {
   const rootRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function SynthomaWordmark({ context, animated = true, className, 
     <h1
       id={id}
       ref={rootRef}
+      data-testid={dataTestId}
       className={`synthoma-wordmark synthoma-wordmark--${context}${className ? ` ${className}` : ''}`}
     >
       <span className="synthoma-wordmark__layer synthoma-wordmark__layer--magenta" aria-hidden="true">{TITLE}</span>

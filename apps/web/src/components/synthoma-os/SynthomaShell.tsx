@@ -1,19 +1,42 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import type { PropsWithChildren } from 'react';
+import { useEffect, type PropsWithChildren } from 'react';
 import SynthomaCommandHeader from './SynthomaCommandHeader';
 import SynthomaMobileNavigation from './SynthomaMobileNavigation';
+import { useHeader, type HeaderMode } from './HeaderContext';
+
+function getHeaderMode(pathname: string): HeaderMode {
+  if (pathname === '/landing-intro') return 'site';
+  if (pathname === '/reader' || pathname.startsWith('/chapter/')) return 'reader';
+  if (pathname.startsWith('/cyklus')) return 'cyklus';
+  if (pathname.startsWith('/admin') || pathname === '/game' || pathname.startsWith('/game/')) return 'utility';
+  return 'site';
+}
 
 export default function SynthomaShell({ children }: PropsWithChildren) {
   const pathname = usePathname() ?? '/';
-  if (pathname === '/landing-intro' || pathname === '/cyklus' || pathname.startsWith('/cyklus/')) return children;
+  const { setMode, reset } = useHeader();
+
+  useEffect(() => {
+    if (pathname === '/landing-intro') {
+      reset();
+      return;
+    }
+    setMode(getHeaderMode(pathname));
+    return () => {
+      // reset();
+    };
+  }, [pathname, setMode, reset]);
+
+  if (pathname === '/landing-intro') return children;
+
   const quiet = pathname === '/reader' || pathname.startsWith('/chapter/');
   const utility = pathname.startsWith('/admin') || pathname === '/game' || pathname.startsWith('/game/');
 
   return (
     <div className={`synthoma-shell${quiet ? ' synthoma-shell--quiet' : ''}${utility ? ' synthoma-shell--utility' : ''}`}>
-      <SynthomaCommandHeader quiet={quiet} />
+      <SynthomaCommandHeader />
       <div className="synthoma-shell__content">{children}</div>
       {!quiet && !utility && <SynthomaMobileNavigation />}
     </div>

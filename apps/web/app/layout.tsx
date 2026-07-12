@@ -34,6 +34,7 @@ import WhisperFloat from "../src/components/whispers/WhisperFloat";
 import CookieConsent from "../src/components/consent/CookieConsent";
 import SynthomaShell from "../src/components/synthoma-os/SynthomaShell";
 import SynthomaPortalRoot from "../src/components/synthoma-os/SynthomaPortalRoot";
+import { HeaderProvider } from "../src/components/synthoma-os/HeaderContext";
 
 import MBTIHudClient from "./components/MBTIHudClient";
 
@@ -249,9 +250,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           <RetroPixelCanvasClient />
 
-          <SynthomaShell>
-            <div id="main-content">{children}</div>
-          </SynthomaShell>
+          <HeaderProvider>
+            <SynthomaShell>
+              <div id="main-content">{children}</div>
+            </SynthomaShell>
+          </HeaderProvider>
 
           {/* Global Control Panel trigger and container */}
 

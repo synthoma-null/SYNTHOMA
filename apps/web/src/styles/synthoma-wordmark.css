@@ -40,8 +40,15 @@
   letter-spacing: 0.06em;
 }
 
+.synthoma-wordmark--cyklus {
+  font-size: clamp(3.25rem, 8vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: 0.08em;
+}
+
 @media (max-width: 767px) {
   .synthoma-wordmark--home { font-size: clamp(3rem, 17vw, 5rem); }
+  .synthoma-wordmark--cyklus { font-size: clamp(2.75rem, 15vw, 4.5rem); }
 }
 
 @media (max-width: 480px) {

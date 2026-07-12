@@ -19,8 +19,9 @@ import CyklusBottomSheet from './CyklusBottomSheet';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import CyklusCardOverlay from './CyklusCardOverlay';
-import CyklusGameHeader from './CyklusGameHeader';
 import CyklusCardPoster from './CyklusCardPoster';
+import { useHeader } from '../synthoma-os/HeaderContext';
+import SynthomaWordmark from '../synthoma/SynthomaWordmark';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 import { getCardChoiceOrder, getChoiceForPhysicalSide, type PhysicalCardSide } from '../../game/cyklus/cyklusCardPresentation';
 
@@ -171,6 +172,7 @@ import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../
 import CyklusPortalScope from './CyklusPortalScope';
 
 export default function CyklusClient() {
+  const { setStatus, setActions } = useHeader();
   const { data: session } = useSession();
   const [state, setState] = useState<CyklusRunState | null>(null);
   const [loading, setLoading] = useState(true);
@@ -225,6 +227,41 @@ export default function CyklusClient() {
     && activeCard?.presentation?.mode === 'poster-then-text'
     && !cardArtRevealed
     && !outcomeVisible;
+
+  const showTutorialSkip = activeCard?.category === 'tutorial' && !state?.flags.includes('tutorial_v2_done') && !showMenu;
+
+  useEffect(() => {
+    if (showMenu || !state) {
+      setStatus(null);
+      setActions(null);
+      return;
+    }
+    const cycle = `C${String(state.cycle).padStart(2, '0')}`;
+    const progress = `${String(state.choiceInCycle).padStart(2, '0')}/12`;
+    setStatus(
+      <div className="cyklus-game-status" aria-label={`${SECTOR_LABELS[state.sector]}, cyklus ${state.cycle}, postup ${state.choiceInCycle} z 12`}>
+        <span className="cyklus-game-status__sector" title={SECTOR_LABELS[state.sector]}>{SECTOR_LABELS[state.sector]}</span>
+        <span aria-hidden="true">·</span>
+        <span className="cyklus-game-status__cycle">{cycle}</span>
+        <span aria-hidden="true">·</span>
+        <span className="cyklus-game-status__progress">{progress}</span>
+      </div>
+    );
+    setActions(
+      showTutorialSkip ? (
+        <button
+          className="os-command os-command--skip"
+          type="button"
+          data-cyklus-command="skip"
+          aria-label="Přeskočit tutorial"
+          title="Přeskočit tutorial"
+          onClick={() => setShowSkipConfirm(true)}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5v14M8 7l7 5-7 5Z"/></svg>
+        </button>
+      ) : null
+    );
+  }, [state, showMenu, activeCard, showTutorialSkip, setStatus, setActions]);
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 767px)');
@@ -686,10 +723,10 @@ export default function CyklusClient() {
             <span>TERMINAL 0.9.72</span>
           </div>
           <section className="cyklus-menu__content cyklus-menu__content--brand-safe" aria-labelledby="cyklus-menu-brand">
-            <h1 className="cyklus-menu__title">
-              <span className="cyklus-menu__brand" id="cyklus-menu-brand" data-testid="cyklus-menu-brand">SYNTHOMA</span>
+            <div className="cyklus-menu__title">
+              <SynthomaWordmark context="cyklus" className="cyklus-menu__brand" id="cyklus-menu-brand" data-testid="cyklus-menu-brand" />
               <span className="cyklus-menu__module">CYKLUS / NULL-1</span>
-            </h1>
+            </div>
             <div className="cyklus-menu__restart-line">RESTART PROTOCOL / STANDBY</div>
             <div className="cyklus-menu__intro">
               <p className="cyklus-menu__intro-line">Jsi subjekt v diagnostickém cyklu. Každá karta je rozhodnutí, které mění energii, paměť, vazbu a kontrolu.</p>
@@ -781,12 +818,6 @@ export default function CyklusClient() {
           </section>
         </div>
       )}
-      <CyklusGameHeader
-        state={state}
-        showTutorialSkip={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done')}
-        onTutorialSkip={() => setShowSkipConfirm(true)}
-      />
-
       <main className="cyklus-stage">
         {ending ? (
           <div className="cyklus-end">

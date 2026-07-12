@@ -7,6 +7,7 @@ import { readBooleanStorage, readStorage, writeStorage } from '../../src/lib/bro
 import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { saveLastChapterPath, saveReadingProgress } from '../../src/lib/readerState';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useHeader } from '../../src/components/synthoma-os/HeaderContext';
 import PaywallModal from '../../src/components/PaywallModal';
 import ChapterLockModal from '../components/ChapterLockModal';
 import { getChapterById } from '../../src/content/booksManifest';
@@ -17,6 +18,7 @@ import { useLang } from '../../src/lib/LangContext';
 
 export default function ReaderContent() {
   const router = useRouter();
+  const { setStatus, setActions } = useHeader();
   const { t, lang } = useLang();
   const searchParams = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-\u221e [RESTART].html";
@@ -60,6 +62,31 @@ export default function ReaderContent() {
     completionFiredRef.current = false;
     readStartRef.current = Date.now();
   }, [chapterId]);
+
+  useEffect(() => {
+    setStatus(
+      chapterMeta?.title ? (
+        <span className="reader-header-status" aria-label="Aktuální kapitola">
+          {chapterMeta.title}
+        </span>
+      ) : null
+    );
+    setActions(
+      <button
+        className="os-command"
+        type="button"
+        aria-label="Nápověda ke čtečce"
+        title="Nápověda (Shift+/)"
+        onClick={() => setShowHelp((v) => !v)}
+      >
+        <span aria-hidden="true">?</span>
+      </button>
+    );
+    return () => {
+      setStatus(null);
+      setActions(null);
+    };
+  }, [chapterMeta?.title, setStatus, setActions]);
 
   // Keyboard shortcuts: Shift+/ ("?") toggles help, Esc closes, Arrow keys nav
   useEffect(() => {
