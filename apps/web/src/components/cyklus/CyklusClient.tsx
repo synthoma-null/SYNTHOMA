@@ -168,6 +168,7 @@ const ITEM_ACTIVATION_HINTS: Record<string, string> = {
 };
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../../game/cyklus/content';
 import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
+import CyklusPortalScope from './CyklusPortalScope';
 
 export default function CyklusClient() {
   const { data: session } = useSession();
@@ -1189,7 +1190,9 @@ export default function CyklusClient() {
     </div>
 
     {showCardPoster && mobilePosterPortal && card?.presentation && createPortal(
-      <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} fullscreen onReveal={revealCardRecord} />,
+      <CyklusPortalScope>
+        <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} fullscreen onReveal={revealCardRecord} />
+      </CyklusPortalScope>,
       document.body,
     )}
 

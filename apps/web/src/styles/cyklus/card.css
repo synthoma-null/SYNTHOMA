@@ -60,6 +60,10 @@
   background: #020207;
 }
 
+.cyklus-poster-portal {
+  display: contents;
+}
+
 .cyklus-card-art__viewport {
   position: relative;
   display: grid;

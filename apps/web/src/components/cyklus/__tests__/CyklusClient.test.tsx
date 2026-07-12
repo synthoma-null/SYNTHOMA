@@ -416,6 +416,7 @@ describe('CyklusClient', () => {
 
   it('moves the mobile poster into a fullscreen portal and restores gameplay chrome', async () => {
     mockMobileViewport(true);
+    document.documentElement.setAttribute('data-theme', 'acid-glitch');
     await renderPosterRun();
 
     const poster = await screen.findByTestId('cyklus-gameplay-header').then(() => document.body.querySelector('.cyklus-card-art--fullscreen') as HTMLElement);
@@ -426,9 +427,17 @@ describe('CyklusClient', () => {
     expect(screen.getByTestId('cyklus-gameplay-header')).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: 'Navigace' })).toBeInTheDocument();
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
+    const portal = document.querySelector('.cyklus-poster-portal') as HTMLElement;
+    const portalImage = document.querySelector('.cyklus-card-art__image') as HTMLImageElement;
+    expect(portal).toHaveAttribute('data-theme', 'acid-glitch');
+    expect(portal).toHaveAttribute('data-cyklus-theme', 'acid-glitch');
 
     fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
     expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toBeInTheDocument();
+    document.documentElement.setAttribute('data-theme', 'mono-light');
+    await waitFor(() => expect(portal).toHaveAttribute('data-theme', 'mono-light'));
+    expect(document.querySelector('.cyklus-card-art__image')).toBe(portalImage);
+    expect(screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' })).toHaveAttribute('data-scale', '2');
     fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));
 
     await waitFor(() => expect(document.querySelector('.cyklus-card-art--fullscreen')).not.toBeInTheDocument());
