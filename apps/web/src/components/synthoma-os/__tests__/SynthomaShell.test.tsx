@@ -40,6 +40,49 @@ describe('SynthomaShell', () => {
     expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
   });
 
+  it.each([
+    { route: '/', variant: 'full' },
+    { route: '/books', variant: 'full' },
+    { route: '/archive', variant: 'full' },
+    { route: '/login', variant: 'full' },
+    { route: '/register', variant: 'full' },
+    { route: '/privacy', variant: 'full' },
+    { route: '/terms', variant: 'full' },
+    { route: '/admin', variant: 'utility' },
+    { route: '/game', variant: 'utility' },
+    { route: '/reader', variant: 'quiet' },
+    { route: '/chapter/0-0-null', variant: 'quiet' },
+  ])('renders correct shell variant for $route ($variant)', ({ route, variant }) => {
+    usePathname.mockReturnValue(route);
+    const { container } = render(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
+    const shell = container.firstChild as HTMLElement;
+    if (variant === 'quiet') {
+      expect(shell).toHaveClass('synthoma-shell--quiet');
+      expect(screen.queryByRole('navigation', { name: 'Hlavní sektory' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('navigation', { name: 'Mobilní sektory' })).not.toBeInTheDocument();
+    } else if (variant === 'utility') {
+      expect(shell).toHaveClass('synthoma-shell--utility');
+      expect(screen.queryByRole('navigation', { name: 'Mobilní sektory' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Identita' })).toBeInTheDocument();
+    } else {
+      expect(shell).not.toHaveClass('synthoma-shell--quiet');
+      expect(screen.getByRole('navigation', { name: 'Hlavní sektory' })).toBeInTheDocument();
+      expect(screen.getByRole('navigation', { name: 'Mobilní sektory' })).toBeInTheDocument();
+    }
+  });
+
+  it('hides the global shell for the intro sequence and Cyklus', () => {
+    usePathname.mockReturnValue('/landing-intro');
+    const { container: introContainer } = render(<SynthomaShell><p>INTRO</p></SynthomaShell>);
+    expect(introContainer.firstChild).toHaveTextContent('INTRO');
+    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+
+    usePathname.mockReturnValue('/cyklus/void');
+    const { container: cyklusContainer } = render(<SynthomaShell><p>CYKLUS</p></SynthomaShell>);
+    expect(cyklusContainer.firstChild).toHaveTextContent('CYKLUS');
+    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+  });
+
   it('keeps mobile controls bounded and reserves safe-area content space', () => {
     const layout = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/layout.css'), 'utf8');
     const responsive = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/responsive.css'), 'utf8');

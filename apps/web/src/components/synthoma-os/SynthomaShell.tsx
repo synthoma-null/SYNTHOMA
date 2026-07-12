@@ -6,8 +6,8 @@ import SynthomaCommandHeader from './SynthomaCommandHeader';
 import SynthomaMobileNavigation from './SynthomaMobileNavigation';
 
 export default function SynthomaShell({ children }: PropsWithChildren) {
-  const pathname = usePathname();
-  if (pathname === '/landing-intro' || pathname === '/cyklus') return children;
+  const pathname = usePathname() ?? '/';
+  if (pathname === '/landing-intro' || pathname === '/cyklus' || pathname.startsWith('/cyklus/')) return children;
   const quiet = pathname === '/reader' || pathname.startsWith('/chapter/');
   const utility = pathname.startsWith('/admin') || pathname === '/game' || pathname.startsWith('/game/');
 

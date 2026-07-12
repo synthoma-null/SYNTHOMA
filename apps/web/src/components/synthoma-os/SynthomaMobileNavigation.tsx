@@ -12,7 +12,7 @@ const ITEMS = [
 ];
 
 export default function SynthomaMobileNavigation() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '/';
   return (
     <nav className="synthoma-mobile-nav" aria-label="Mobilní sektory">
       {ITEMS.map((item) => {

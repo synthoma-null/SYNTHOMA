@@ -22,7 +22,7 @@ function closeCompetingPanels(panel: 'identity' | 'settings' | 'audio') {
 }
 
 export default function SynthomaCommandHeader({ quiet = false }: { quiet?: boolean }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '/';
   const active = SECTORS.find((sector) => isActive(pathname, sector.href));
 
   return (
