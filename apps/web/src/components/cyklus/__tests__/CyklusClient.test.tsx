@@ -91,6 +91,19 @@ function storeRunState(state: CyklusRunState): void {
   localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify(state));
 }
 
+function mockMobileViewport(matches: boolean): void {
+  (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
+    matches: query === '(max-width: 767px)' ? matches : false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }));
+}
+
 describe('cycle forecast and summary notices', () => {
   it('renders forecast as a diagnostic view using only available data', () => {
     const state = {
@@ -207,6 +220,7 @@ describe('CyklusClient', () => {
     jest.spyOn(Storage.prototype, 'setItem').mockImplementation((key, value) => { store[key] = value; });
     jest.spyOn(Storage.prototype, 'removeItem').mockImplementation((key) => { delete store[key]; });
     useSession.mockReturnValue({ data: null, status: 'unauthenticated' });
+    mockMobileViewport(false);
   });
 
   afterEach(() => {
@@ -398,6 +412,30 @@ describe('CyklusClient', () => {
     await renderFirstBootRun();
     expect(document.querySelector('.cyklus-card-art')).not.toBeInTheDocument();
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(0);
+  });
+
+  it('moves the mobile poster into a fullscreen portal and restores gameplay chrome', async () => {
+    mockMobileViewport(true);
+    await renderPosterRun();
+
+    const poster = await screen.findByTestId('cyklus-gameplay-header').then(() => document.body.querySelector('.cyklus-card-art--fullscreen') as HTMLElement);
+    const root = document.querySelector('.cyklus-root--playing') as HTMLElement;
+    expect(poster).toBeInTheDocument();
+    expect(root).toHaveClass('cyklus-root--poster-active');
+    expect(document.body).toHaveClass('cyklus-poster-lock');
+    expect(screen.getByTestId('cyklus-gameplay-header')).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Navigace' })).toBeInTheDocument();
+    expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
+
+    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));
+
+    await waitFor(() => expect(document.querySelector('.cyklus-card-art--fullscreen')).not.toBeInTheDocument());
+    expect(root).not.toHaveClass('cyklus-root--poster-active');
+    expect(document.body).not.toHaveClass('cyklus-poster-lock');
+    expect(screen.getByTestId('cyklus-gameplay-header')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Šumový filtr' })).toHaveFocus();
   });
 
   it('maps a right swipe on a reversed poster card to its semantic no choice', async () => {

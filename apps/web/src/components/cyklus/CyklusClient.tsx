@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
@@ -176,6 +177,7 @@ export default function CyklusClient() {
   const [dragX, setDragX] = useState(0);
   const [flyDirection, setFlyDirection] = useState<'yes' | 'no' | null>(null);
   const [cardArtRevealed, setCardArtRevealed] = useState(false);
+  const [mobilePosterPortal, setMobilePosterPortal] = useState(false);
   const [runHistory, setRunHistory] = useState<CyklusRunSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
@@ -217,6 +219,25 @@ export default function CyklusClient() {
   const dragXRef = useRef(0);
   const swipeVelocity = useRef(0);
   const outcomeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const activeCard = state ? getCardById(state.currentCardId) ?? getCardById('first_boot') : undefined;
+  const posterActive = state?.status === 'playing'
+    && activeCard?.presentation?.mode === 'poster-then-text'
+    && !cardArtRevealed
+    && !outcomeVisible;
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const update = () => setMobilePosterPortal(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!posterActive || !mobilePosterPortal) return;
+    document.body.classList.add('cyklus-poster-lock');
+    return () => document.body.classList.remove('cyklus-poster-lock');
+  }, [mobilePosterPortal, posterActive]);
 
   useEffect(() => {
     let cancelled = false;
@@ -720,12 +741,12 @@ export default function CyklusClient() {
 
   if (!state) return <div className="cyklus-loading">Nahrává se cyklus…</div>;
 
-  const card = getCardById(state.currentCardId) ?? getCardById('first_boot');
+  const card = activeCard;
   const profile = computeProfile(state);
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
   const tutorialHighlight = getTutorialHighlight(card?.id);
   const tutorialActive = card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done');
-  const showCardPoster = card?.presentation?.mode === 'poster-then-text' && !cardArtRevealed && !outcomeVisible;
+  const showCardPoster = posterActive;
 
   return (
     <>
@@ -735,6 +756,7 @@ export default function CyklusClient() {
       !ending ? 'cyklus-root--playing' : '',
       dragX !== 0 ? 'cyklus-root--swiping' : '',
       outcomeVisible ? 'cyklus-root--outcome-visible' : '',
+      showCardPoster ? 'cyklus-root--poster-active' : '',
     ].filter(Boolean).join(' ')}>
       {showSkipConfirm && (
         <div className="cyklus-overlay cyklus-overlay--warning">
@@ -944,10 +966,12 @@ export default function CyklusClient() {
               onClickCapture={onCardClickCapture}
               tabIndex={-1}
               data-gameplay-surface="fixed"
+              aria-hidden={showCardPoster && mobilePosterPortal ? true : undefined}
             >
-              {showCardPoster && card.presentation ? (
+              {showCardPoster && !mobilePosterPortal && card.presentation && (
                 <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} onReveal={revealCardRecord} />
-              ) : (
+              )}
+              {(!showCardPoster || mobilePosterPortal) && (
               <>
               {card.tags.includes('overload') && (
                 <div className="cyklus-card__overload">
@@ -1059,8 +1083,8 @@ export default function CyklusClient() {
                                 {canActivate ? 'Aktivovat' : 'Aktivováno'}
                               </button>
                             )
-                          )}
-                        </div>
+      )}
+    </div>
                       );
                     })}
                   </div>
@@ -1164,6 +1188,11 @@ export default function CyklusClient() {
       )}
 
     </div>
+
+    {showCardPoster && mobilePosterPortal && card?.presentation && createPortal(
+      <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} fullscreen onReveal={revealCardRecord} />,
+      document.body,
+    )}
 
       <CyklusBottomSheet open={showPocketSheet} onClose={() => setShowPocketSheet(false)} title={`KAPSA ${state.inventory.length}`}>
         {state.inventory.length === 0 ? (
