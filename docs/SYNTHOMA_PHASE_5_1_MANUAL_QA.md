@@ -6,9 +6,11 @@ Automated functional tests do not replace this visual pass. Record each row as `
 
 - Test production build when available.
 - Clear `synthoma:intro-version` for first-visit mode.
+- Intro version is `5.1` and the storage key is `synthoma:intro-version`.
 - Preserve separate fixtures for no saved state, reading resume and active Cyklus run.
 - Test signed-out and signed-in subject states.
 - Do not commit screenshots or temporary QA routes.
+- Automated visual verification was blocked by browser preview; this checklist is the manual pass.
 
 ## Viewports
 
@@ -26,7 +28,15 @@ Automated functional tests do not replace this visual pass. Record each row as `
 
 ## Themes and preferences
 
-Run the complete core flow in Synthoma and Mono Light. Spot-check Green Matrix, Neon Hellfire, Cyber Dystopia, Acid Glitch, Retro Arcade and Mono BW. Repeat representative mobile and desktop checks with reduced motion and 140% text size.
+Run the complete core flow in at least:
+
+- SYNTHOMA
+- Mono Light
+- Nejtmavší
+- Cyan/Magenta
+- Acid
+
+Repeat representative mobile and desktop checks with reduced motion and 140% text size.
 
 ## Global shell
 
@@ -81,6 +91,15 @@ Run the complete core flow in Synthoma and Mono Light. Spot-check Green Matrix, 
 - There is no horizontal overflow at 140% text size.
 - The bottom navigation and device gesture area do not cover the final sector.
 
+## Home states
+
+- No save: primary CTA is `VSTOUPIT DO SYNTHOMY`.
+- Rozečtená kapitola: primary CTA is `POKRAČOVAT VE ČTENÍ`.
+- Aktivní Cyklus without reading: primary CTA is `POKRAČOVAT V CYKLU`.
+- Signed-in and signed-out subjects both see the shell.
+- Text scale 140% does not break the dominant CTA or sector rail.
+- Reduced effects disables non-essential motion.
+
 ## Theme contract
 
 - The same selected theme affects Home, Intro, shell, settings, audio and profile.
@@ -111,8 +130,9 @@ Run the complete core flow in Synthoma and Mono Light. Spot-check Green Matrix, 
 ## Known non-blockers
 
 - Existing hook dependency warnings in `BooksClient`, `GameShell` and `TypewriterReader` are outside Phase 5.1 unless touched.
-- Full Library, Archive and Reader visual migrations are Phase 5.2+.
+- Full Library, Archive and Reader visual migrations are Phase 5.2+; do not redesign them in Phase 5.1.
 - Physical-device media smoothness and safe-area behavior require manual confirmation.
+- Visual QA of Intro and Home was not automated in this phase; run this checklist manually.
 
 ## Decision
 
