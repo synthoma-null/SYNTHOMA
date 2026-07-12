@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SynthomaMediaLayer from '../../src/components/synthoma-os/SynthomaMediaLayer';
+import SynthomaWordmark from '../../src/components/synthoma/SynthomaWordmark';
+import { runTypewriter } from '../../src/lib/typewriter';
 import { readStorage, writeStorage } from '../../src/lib/browser';
 import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../src/lib/intro';
 
@@ -16,9 +18,12 @@ const BOOT_LINES = [
   'SYNTHOMA OS: READY',
 ] as const;
 
+const MANIFEST = 'Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.';
+
 export default function LandingIntroPage() {
   const router = useRouter();
   const skipRef = useRef<HTMLButtonElement>(null);
+  const mottoRef = useRef<HTMLParagraphElement>(null);
   const [step, setStep] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
   const repeatVisit = useMemo(() => readStorage(SYNTHOMA_INTRO_STORAGE_KEY, null) === SYNTHOMA_INTRO_VERSION, []);
@@ -46,6 +51,18 @@ export default function LandingIntroPage() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const host = mottoRef.current;
+    if (!host) return;
+    const cancel = runTypewriter({
+      text: MANIFEST,
+      host,
+      getDurationMs: () => (repeatVisit ? 1600 : 2600),
+    });
+    return () => { try { cancel(); } catch {} };
+  }, [repeatVisit]);
+
+  useEffect(() => {
     if (reducedMotion) return;
     const delay = repeatVisit ? 240 : 720;
     const timer = window.setTimeout(step >= BOOT_LINES.length - 1 ? complete : advance, step >= BOOT_LINES.length - 1 ? delay + 280 : delay);
@@ -70,8 +87,12 @@ export default function LandingIntroPage() {
       <div className="synthoma-intro__scrim" aria-hidden="true" />
       <section className="synthoma-intro__terminal" aria-labelledby="synthoma-intro-title">
         <header>
-          <h1 id="synthoma-intro-title" className="synthoma-intro__brand">SYNTHOMA</h1>
+          <SynthomaWordmark id="synthoma-intro-title" context="intro" className="synthoma-intro__brand" />
           <p className="synthoma-intro__channel">OS // BLACK MEMORY INTERFACE</p>
+          <p ref={mottoRef} className="synthoma-intro__motto" aria-live="polite" aria-atomic="true">
+            <span className="noising-text" aria-hidden="true" />
+            <span className="sr-only">{MANIFEST}</span>
+          </p>
         </header>
         <div className="synthoma-intro__lines" role="status" aria-live="polite" aria-atomic="true">
           {visibleLines.map((line, index) => (

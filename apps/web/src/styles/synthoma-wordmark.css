@@ -1,0 +1,177 @@
+/* Shared SYNTHOMA wordmark — used by Intro and Home */
+
+.synthoma-wordmark {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  font-family: 'Synthoma', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--os-text, #c0faff);
+  text-align: center;
+  z-index: 10;
+  -webkit-user-select: none;
+  user-select: none;
+  text-shadow:
+    0 0 6px var(--os-accent-primary, #0ff),
+    0 0 16px var(--os-accent-secondary, #ff00c8),
+    0 0 36px var(--os-accent-primary, #0ff),
+    2px 2px 12px var(--os-accent-secondary, #ff00c8);
+  animation: synthoma-wordmark-breathe 2.4s ease-in-out infinite alternate;
+  will-change: transform, text-shadow;
+}
+
+.synthoma-wordmark--intro {
+  font-size: clamp(2.5rem, 10vw, 6rem);
+  line-height: 1.05;
+}
+
+.synthoma-wordmark--home {
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.92;
+}
+
+.synthoma-wordmark--compact {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 767px) {
+  .synthoma-wordmark--home { font-size: clamp(3rem, 17vw, 5rem); }
+}
+
+@media (max-width: 480px) {
+  .synthoma-wordmark--intro { font-size: clamp(2.4rem, 15vw, 4.5rem); }
+}
+
+@media (max-width: 359px) {
+  .synthoma-wordmark--home { font-size: clamp(2.7rem, 16.5vw, 4rem); }
+  .synthoma-wordmark--intro { font-size: clamp(2rem, 12vw, 3rem); }
+  .synthoma-wordmark--compact { font-size: 1.1rem; }
+}
+
+.synthoma-wordmark__layer,
+.synthoma-wordmark__layer--magenta,
+.synthoma-wordmark__layer--cyan {
+  position: absolute;
+  left: -10%;
+  top: 0;
+  margin: 0;
+  width: 120%;
+  height: 100%;
+  pointer-events: none;
+  letter-spacing: inherit;
+  font-family: inherit;
+}
+
+.synthoma-wordmark__layer--magenta {
+  color: var(--os-accent-secondary, #ff00c8);
+  opacity: 0.58;
+  text-shadow: 2px 0 var(--os-accent-secondary, #ff00c8), 0 0 10px var(--os-accent-secondary, #ff00c8), 0 0 28px rgba(255, 0, 200, 0.6);
+  z-index: 1;
+  animation: synthoma-wordmark-glitch-1 2.2s infinite linear alternate;
+}
+
+.synthoma-wordmark__layer--cyan {
+  color: var(--os-accent-primary, #0ff);
+  opacity: 0.44;
+  text-shadow: -2px 0 var(--os-accent-primary, #0ff), 0 0 8px var(--os-accent-primary, #0ff), 0 0 28px rgba(0, 255, 255, 0.5);
+  z-index: 2;
+  animation: synthoma-wordmark-glitch-2 1.7s infinite linear alternate;
+}
+
+.synthoma-wordmark__text,
+.synthoma-wordmark__text.glitch-real {
+  position: relative;
+  display: inline;
+  z-index: 20;
+  color: var(--os-accent-primary, #0ff);
+  text-shadow: 0 0 6px var(--os-accent-primary, #0ff), 0 0 12px var(--os-accent-primary, #0ff), 2px 2px 10px rgba(255, 0, 200, 0.35);
+}
+
+.synthoma-wordmark__char,
+.synthoma-wordmark__char.glitch-char {
+  display: inline-block;
+  width: 1ch;
+  position: relative;
+  z-index: 20;
+  transition: color 0.06s, filter 0.12s, transform 0.10s;
+  will-change: color, filter, transform;
+  letter-spacing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.synthoma-wordmark__char.glitchy {
+  color: var(--os-accent-secondary, #f0f);
+  filter: blur(1.5px) brightness(2.2);
+  text-shadow: 0 0 15px var(--os-accent-secondary, #f0f), 0 0 8px var(--os-accent-secondary, #f0f), 0 0 2px var(--os-accent-secondary, #f0f);
+  animation: synthoma-wordmark-glitch-jump 0.10s linear 3;
+  transform: translateY(-2px) scale(1.07) skewX(3deg);
+}
+
+.synthoma-wordmark__base {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@keyframes synthoma-wordmark-breathe {
+  0% { transform: translate(-1px, 0); opacity: 0.96; }
+  25% { transform: translate(1px, 0); opacity: 1; }
+  50% { transform: translate(-1px, 1px); opacity: 0.97; }
+  75% { transform: translate(1px, -1px); opacity: 0.99; }
+  100% { transform: translate(0); opacity: 1; }
+}
+
+@keyframes synthoma-wordmark-glitch-1 {
+  0% { transform: translate(0, 0) skewX(0deg); }
+  50% { transform: translate(-3px, 1px) skewX(2deg); }
+  100% { transform: translate(0, 0) skewX(0deg); }
+}
+
+@keyframes synthoma-wordmark-glitch-2 {
+  0% { transform: translate(0, 0) skewY(0deg); }
+  60% { transform: translate(-2px, 1px) skewY(-1deg); }
+  100% { transform: translate(0, 0) skewY(0deg); }
+}
+
+@keyframes synthoma-wordmark-glitch-jump {
+  0% { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
+  20% { transform: translate(-1px, -2px) scale(1.08) skewX(4deg); opacity: 0.95; }
+  40% { transform: translate(1px, -1px) scale(1.05) skewX(-2deg); opacity: 0.9; }
+  70% { transform: translate(-1px, 2px) scale(0.98) skewX(2deg); opacity: 0.95; }
+  85% { transform: translate(1px, 1px) scale(1.02) skewX(-1deg); opacity: 0.98; }
+  100% { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .synthoma-wordmark,
+  .synthoma-wordmark__layer--magenta,
+  .synthoma-wordmark__layer--cyan,
+  .synthoma-wordmark__char.glitchy {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .synthoma-wordmark__char.glitchy {
+    filter: blur(0.5px) brightness(1.35);
+    transform: translateY(0) scale(1) skewX(0deg);
+  }
+}
+
+@media (max-width: 359px) {
+  .synthoma-wordmark--intro { font-size: clamp(1.8rem, 10vw, 2.4rem); }
+  .synthoma-wordmark--home { font-size: clamp(2.6rem, 16.5vw, 4rem); }
+  .synthoma-wordmark--compact { font-size: 1.1rem; }
+}

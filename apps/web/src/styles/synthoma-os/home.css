@@ -35,7 +35,7 @@
 .synthoma-home__system { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: var(--os-space-4); padding: 0 0 var(--os-space-3) var(--os-space-3); border-bottom: 1px solid var(--os-border); color: var(--os-text-muted); font: 700 var(--os-text-micro)/1.35 var(--os-font-mono); }
 .synthoma-home__system strong { color: var(--os-accent-primary); }
 .synthoma-home__primary { grid-column: 1; align-self: center; padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem); }
-.synthoma-home__brand { margin: 0; color: var(--os-text); font: 800 clamp(3.5rem, 9vw, 8rem)/0.82 var(--os-font-display); letter-spacing: 0; white-space: nowrap; }
+.synthoma-home__brand { margin: 0; display: inline-block; }
 .synthoma-home__designation { margin: var(--os-space-4) 0 0; color: var(--os-accent-primary); font: 700 var(--os-text-small)/1.4 var(--os-font-mono); }
 .synthoma-home__statement { max-width: 42rem; margin: var(--os-space-5) 0 0; color: var(--os-text-secondary); font: 500 clamp(0.95rem, 1.5vw, 1.1rem)/1.6 var(--os-font-body); }
 
@@ -63,7 +63,6 @@
   .synthoma-home__system { padding-left: var(--os-space-3); }
   .synthoma-home__system span:last-child { display: none; }
   .synthoma-home__primary { padding: var(--os-space-4) var(--os-space-3); }
-  .synthoma-home__brand { font-size: clamp(3rem, 17vw, 5rem); }
   .synthoma-home__statement { font-size: var(--os-text-body); }
   .home-primary-action { margin-top: var(--os-space-5); padding: var(--os-space-4); }
   .synthoma-home__sectors { width: 100%; }
@@ -72,6 +71,5 @@
 }
 
 @media (max-width: 359px) {
-  .synthoma-home__brand { font-size: clamp(2.7rem, 16.5vw, 4rem); }
   .home-sector-link { grid-template-columns: 34px minmax(0, 1fr) auto; gap: var(--os-space-2); }
 }

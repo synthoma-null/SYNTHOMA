@@ -30,8 +30,16 @@
   background: linear-gradient(90deg, transparent, var(--os-scrim-strong) 12% 88%, transparent);
 }
 
-.synthoma-intro__brand { margin: 0; color: var(--os-text); font: 800 clamp(2.5rem, 10vw, 6rem)/0.9 var(--os-font-display); letter-spacing: 0; white-space: nowrap; }
+.synthoma-intro__brand { margin: 0; display: inline-block; }
 .synthoma-intro__channel { margin: var(--os-space-3) 0 0; color: var(--os-accent-primary); font: 700 var(--os-text-micro)/1.4 var(--os-font-mono); }
+.synthoma-intro__motto {
+  margin: var(--os-space-4) auto 0;
+  max-width: 720px;
+  color: var(--os-accent-primary, #0ff);
+  font: 500 clamp(0.95rem, 1.5vw, 1.1rem)/1.6 var(--os-font-body);
+  text-align: center;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--os-accent-primary, #0ff) 40%, transparent);
+}
 .synthoma-intro__lines { align-self: center; display: grid; gap: var(--os-space-2); margin-block: var(--os-space-6); }
 .synthoma-intro__line { margin: 0; color: var(--os-text-muted); font: 700 clamp(0.8125rem, 2vw, 1rem)/1.4 var(--os-font-mono); animation: os-boot-reveal var(--os-motion-normal) var(--os-ease-standard) both; }
 .synthoma-intro__line--active { color: var(--os-text); }

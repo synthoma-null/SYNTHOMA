@@ -5,6 +5,7 @@ import "../src/styles/components-choice.css";
 import "../src/styles/effects.css";
 import "../src/styles/themes.css";
 import "../src/styles/synthoma-os/index.css";
+import "../src/styles/synthoma-wordmark.css";
 import "../src/styles/reader.css";
 import "../src/styles/auth.css";
 import "../src/styles/profile.css";
