@@ -116,6 +116,18 @@ export interface CardOutcome {
   preview?: ChoicePreview;
 }
 
+export type CardChoice = 'yes' | 'no';
+export type CardChoiceOrder = readonly [CardChoice, CardChoice];
+
+export interface CardPresentation {
+  mode: 'text' | 'poster-then-text' | 'text-with-art';
+  artSrc?: string;
+  artAlt?: string;
+  choiceOrder?: CardChoiceOrder;
+  focalPoint?: string;
+  revealLabel?: string;
+}
+
 export type TriggerMode = 'pool' | 'scheduledOnly' | 'both';
 export type ScheduledIfInvalid = 'drop' | 'delay' | 'force';
 
@@ -158,6 +170,7 @@ export interface SwipeCard {
   packId?: string;
   role?: PackCardRole;
   tone?: string[];
+  presentation?: CardPresentation;
 }
 
 export type PackCardRole =

@@ -3,6 +3,7 @@ import { CYKLUS_CARDS as rawCards } from '../../cyklusCards';
 import { CYKLUS_ITEMS as rawItems } from '../../cyklusItems';
 import { CYKLUS_IMPRINTS as rawImprints } from '../../cyklusImprints';
 import { CYKLUS_UNLOCKS } from '../../cyklusUnlocks';
+import { applyCardPresentations } from '../../cyklusCardPresentation';
 
 function inferBaseRole(card: SwipeCard): NonNullable<SwipeCard['role']> {
   if (card.id.startsWith('restart_')) return 'echo';
@@ -14,12 +15,12 @@ function inferBaseRole(card: SwipeCard): NonNullable<SwipeCard['role']> {
   return 'entry';
 }
 
-const cards = Object.fromEntries(
+const cards = applyCardPresentations(Object.fromEntries(
   Object.entries(rawCards).map(([id, card]) => [
     id,
     { ...card, packId: 'base', role: card.role ?? inferBaseRole(card), tone: card.tone ?? ['tragic'] },
   ])
-);
+));
 
 const interludeCards: Record<string, SwipeCard> = {
   interlude_glitchka_sandbox: {
