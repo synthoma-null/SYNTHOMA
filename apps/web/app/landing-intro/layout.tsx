@@ -1,46 +1,14 @@
-﻿import "./globals.css";
-
-import type { PropsWithChildren } from "react";
-
-import type { Metadata } from "next";
-
-
+import type { Metadata } from 'next';
+import type { PropsWithChildren } from 'react';
+import '../../src/styles/synthoma-os/intro.css';
 
 export const metadata: Metadata = {
-
-  title: 'Úvod | SYNTHOMA',
-
-  description: 'Úvodní stránka cyberpunkové interaktivní čtečky a knihovny SYNTHOMA.',
-
-  alternates: {
-
-    canonical: 'https://www.synthoma.cz/landing-intro',
-
-  },
-
-  robots: {
-
-    index: true,
-
-    follow: true,
-
-  },
-
+  title: 'Inicializace | SYNTHOMA',
+  description: 'Krátká inicializační sekvence systému SYNTHOMA OS.',
+  alternates: { canonical: 'https://www.synthoma.cz/landing-intro' },
+  robots: { index: false, follow: true },
 };
 
-
-
 export default function LandingIntroLayout({ children }: PropsWithChildren) {
-
-  return (
-
-    <section>
-
-      {children}
-
-    </section>
-
-  );
-
+  return children;
 }
-

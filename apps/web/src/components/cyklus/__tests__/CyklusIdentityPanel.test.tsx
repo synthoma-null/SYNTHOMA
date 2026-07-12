@@ -2,6 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SubjectProfilePanelClient from '../../../../app/components/SubjectProfilePanelClient';
 import CyklusGameHeader from '../CyklusGameHeader';
+import SynthomaShell from '../../synthoma-os/SynthomaShell';
 import { createCyklusRun } from '../../../game/cyklus/cyklusEngine';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn(), useRouter: jest.fn() }));
@@ -92,12 +93,13 @@ describe('Cyklus identity ownership', () => {
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 
-  it('preserves global controls outside the Cyklus gameplay route', () => {
+  it('delegates global controls to the shared shell outside gameplay', () => {
     usePathname.mockReturnValue('/books');
-    render(<SubjectProfilePanelClient />);
+    render(<SynthomaShell><SubjectProfilePanelClient /></SynthomaShell>);
 
-    expect(screen.getByRole('link', { name: 'Zpět na hlavní stránku' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Ovládací panel' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'SYNTHOMA, hlavní uzel' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Nastavení' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Identita' })).toBeInTheDocument();
+    expect(document.querySelectorAll('[data-synthoma-command="identity"]')).toHaveLength(1);
   });
 });

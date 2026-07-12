@@ -3,15 +3,15 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { readStorage, writeStorage } from "../../src/lib/browser";
+import { readStorage } from "../../src/lib/browser";
+import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from "../../src/lib/intro";
 
 export default function FirstVisitRedirectClient() {
   const router = useRouter();
   useEffect(() => {
     try {
-      const first = readStorage("visited_once", null);
-      if (!first) {
-        writeStorage("visited_once", "1");
+      const seenVersion = readStorage(SYNTHOMA_INTRO_STORAGE_KEY, null);
+      if (seenVersion !== SYNTHOMA_INTRO_VERSION) {
         router.replace("/landing-intro");
       }
     } catch {}

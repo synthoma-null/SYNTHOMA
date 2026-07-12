@@ -4,6 +4,7 @@ import "../src/styles/components-dialog.css";
 import "../src/styles/components-choice.css";
 import "../src/styles/effects.css";
 import "../src/styles/themes.css";
+import "../src/styles/synthoma-os/index.css";
 import "../src/styles/reader.css";
 import "../src/styles/auth.css";
 import "../src/styles/profile.css";
@@ -30,6 +31,8 @@ import SubjectProfilePanelClient from "./components/SubjectProfilePanelClient";
 import WhisperFloat from "../src/components/whispers/WhisperFloat";
 
 import CookieConsent from "../src/components/consent/CookieConsent";
+import SynthomaShell from "../src/components/synthoma-os/SynthomaShell";
+import SynthomaPortalRoot from "../src/components/synthoma-os/SynthomaPortalRoot";
 
 import MBTIHudClient from "./components/MBTIHudClient";
 
@@ -80,7 +83,7 @@ export const metadata: Metadata = {
 
   title: "SYNTHOMA",
 
-  description: "Cyberpunková interaktivní čtečka a knihovna",
+  description: "Glitch-noir psychologický horor, interaktivní literatura a diagnostická hra v rozhraní SYNTHOMA OS.",
 
   icons: {
 
@@ -130,7 +133,7 @@ export const metadata: Metadata = {
 
     title: "SYNTHOMA",
 
-    description: "Cyberpunková interaktivní čtečka a knihovna.",
+    description: "Glitch-noir interaktivní literatura a diagnostická hra v rozhraní SYNTHOMA OS.",
 
     siteName: "SYNTHOMA",
 
@@ -160,7 +163,7 @@ export const metadata: Metadata = {
 
     title: "SYNTHOMA",
 
-    description: "Cyberpunková interaktivní čtečka a knihovna.",
+    description: "Glitch-noir interaktivní literatura a diagnostická hra v rozhraní SYNTHOMA OS.",
 
     images: ["/assets/og-synthoma.jpg"],
 
@@ -245,9 +248,13 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           <RetroPixelCanvasClient />
 
-          <div id="main-content">{children}</div>
+          <SynthomaShell>
+            <div id="main-content">{children}</div>
+          </SynthomaShell>
 
           {/* Global Control Panel trigger and container */}
+
+          <SynthomaPortalRoot>
 
           <div id="control-panel" className="control-panel" role="region" aria-labelledby="cp-title" aria-hidden="true">
             <div className="cp-header">
@@ -312,6 +319,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           <ControlPanelWrapper />
 
+          <SubjectProfilePanelClient />
+
+          </SynthomaPortalRoot>
+
           <GlobalAudioClient />
 
           <ScrollGuardClient />
@@ -323,8 +334,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
           {/* MBTI HUD (fixed, non-intrusive) */}
 
           <MBTIHudClient />
-
-          <SubjectProfilePanelClient />
 
           <WhisperFloat />
 

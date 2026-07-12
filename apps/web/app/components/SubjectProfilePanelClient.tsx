@@ -24,10 +24,10 @@ export default function SubjectProfilePanelClient() {
 
   const rememberTrigger = useCallback(() => {
     const active = document.activeElement;
-    if (active instanceof HTMLElement && active.matches('[data-cyklus-command="identity"], .id-panel-btn')) {
+    if (active instanceof HTMLElement && active.matches('[data-cyklus-command="identity"], [data-synthoma-command="identity"]')) {
       returnFocusRef.current = active;
     } else {
-      returnFocusRef.current = document.querySelector<HTMLElement>('[data-cyklus-command="identity"], .id-panel-btn');
+      returnFocusRef.current = document.querySelector<HTMLElement>('[data-cyklus-command="identity"], [data-synthoma-command="identity"]');
     }
   }, []);
 
@@ -68,7 +68,7 @@ export default function SubjectProfilePanelClient() {
   }, [closePanel, open, openPanel]);
 
   useEffect(() => {
-    const triggers = document.querySelectorAll<HTMLElement>('[data-cyklus-command="identity"], .id-panel-btn');
+    const triggers = document.querySelectorAll<HTMLElement>('[data-cyklus-command="identity"], [data-synthoma-command="identity"]');
     triggers.forEach((trigger) => {
       trigger.setAttribute('aria-expanded', String(open));
       trigger.setAttribute('aria-pressed', String(open));
@@ -115,24 +115,10 @@ export default function SubjectProfilePanelClient() {
     } catch {}
   }, [openPanel, router, session, status]);
 
-  const label = status === 'loading' ? '...' : session?.user?.name ?? t('id.default');
   const userId = (session?.user as { id?: string } | undefined)?.id ?? '';
 
   return (
     <div className={`id-panel-root${isCyklusGameplay ? ' id-panel-root--cyklus' : ''}`}>
-      {!isCyklusGameplay && (
-        <>
-          <Link className="id-panel-home" href="/" aria-label="Zpět na hlavní stránku">⌂</Link>
-          <button className="id-panel-home" id="toggle-panel-btn" type="button" aria-expanded="false" aria-pressed="false" aria-controls="control-panel" aria-label="Ovládací panel">
-            <span aria-hidden="true">⚙</span>
-          </button>
-          <button className={`id-panel-btn${open ? ' active' : ''}`} type="button" aria-expanded={open} aria-pressed={open} aria-controls="id-panel-popup" aria-label={t('id.aria.btn')} onClick={() => (open ? closePanel() : openPanel())}>
-            <span className="id-panel-icon" aria-hidden="true">{session ? '◉' : '○'}</span>
-            <span className="id-panel-label">{label}</span>
-          </button>
-        </>
-      )}
-
       <div id="profile-panel-root" className={`profile-panel-root${open ? ' open' : ''}`}>
         {open && <button className="profile-panel-backdrop" type="button" tabIndex={-1} aria-label="Zavřít profil kliknutím mimo panel" onClick={() => closePanel()} />}
         <div id="id-panel-popup" ref={dialogRef} className={`profile-panel-popup${open ? ' visible' : ''}`} role="dialog" aria-modal="true" aria-label={t('profile.panel.aria')} aria-hidden={open ? undefined : true}>

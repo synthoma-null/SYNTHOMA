@@ -1,0 +1,52 @@
+.synthoma-intro {
+  position: relative;
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  background: var(--os-bg-deep);
+  color: var(--os-text);
+}
+
+.synthoma-intro .synthoma-media-layer { opacity: 0.44; }
+
+.synthoma-intro__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--os-z-base);
+  background: radial-gradient(circle at 50% 44%, transparent 0 12%, color-mix(in srgb, var(--os-bg) 52%, transparent) 42%, var(--os-bg) 100%);
+  pointer-events: none;
+}
+
+.synthoma-intro__terminal {
+  position: relative;
+  z-index: calc(var(--os-z-base) + 1);
+  display: grid;
+  width: min(92vw, 760px);
+  min-height: min(68dvh, 500px);
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(1rem, 4vw, 2rem);
+  border-block: 1px solid var(--os-border-strong);
+  background: linear-gradient(90deg, transparent, var(--os-scrim-strong) 12% 88%, transparent);
+}
+
+.synthoma-intro__brand { margin: 0; color: var(--os-text); font: 800 clamp(2.5rem, 10vw, 6rem)/0.9 var(--os-font-display); letter-spacing: 0; white-space: nowrap; }
+.synthoma-intro__channel { margin: var(--os-space-3) 0 0; color: var(--os-accent-primary); font: 700 var(--os-text-micro)/1.4 var(--os-font-mono); }
+.synthoma-intro__lines { align-self: center; display: grid; gap: var(--os-space-2); margin-block: var(--os-space-6); }
+.synthoma-intro__line { margin: 0; color: var(--os-text-muted); font: 700 clamp(0.8125rem, 2vw, 1rem)/1.4 var(--os-font-mono); animation: os-boot-reveal var(--os-motion-normal) var(--os-ease-standard) both; }
+.synthoma-intro__line--active { color: var(--os-text); }
+.synthoma-intro__line--error { color: var(--os-warning); }
+.synthoma-intro__actions { display: flex; justify-content: space-between; gap: var(--os-space-3); }
+.synthoma-intro__actions button { padding-inline: var(--os-space-4); }
+.synthoma-intro__enter { border-color: var(--os-accent-primary); }
+
+@media (max-width: 480px) {
+  .synthoma-intro__terminal { width: 100%; min-height: 72dvh; padding-inline: var(--os-space-4); }
+  .synthoma-intro__brand { font-size: clamp(2.4rem, 15vw, 4.5rem); }
+  .synthoma-intro__actions { align-items: stretch; flex-direction: column-reverse; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .synthoma-intro .synthoma-media-layer__video { display: none; }
+  .synthoma-intro__line { animation: none; }
+}
