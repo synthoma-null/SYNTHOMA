@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import LandingIntroPage from '../../../../app/landing-intro/page';
 import FirstVisitRedirectClient from '../../../../app/components/FirstVisitRedirectClient';
 import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../../lib/intro';
@@ -11,6 +11,7 @@ describe('Synthoma intro', () => {
   let store: Record<string, string>;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     store = {};
     replace.mockClear();
     useRouter.mockReturnValue({ replace });
@@ -21,7 +22,17 @@ describe('Synthoma intro', () => {
     jest.spyOn(Storage.prototype, 'setItem').mockImplementation((key, value) => { store[key] = value; });
   });
 
-  afterEach(() => jest.restoreAllMocks());
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
+  function finishAutomaticSequence() {
+    for (let index = 0; index < 8; index += 1) {
+      act(() => jest.advanceTimersByTime(1400));
+    }
+  }
 
   it('redirects only when the current intro version has not been seen', () => {
     const first = render(<FirstVisitRedirectClient />);
@@ -33,38 +44,56 @@ describe('Synthoma intro', () => {
     expect(replace).not.toHaveBeenCalled();
   });
 
-  it('requires manual enter, writes the version and never creates audio', () => {
-    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
-      matches: query.includes('reduced-motion'), media: query, addEventListener: jest.fn(), removeEventListener: jest.fn(),
-    }));
+  it('plays Czech system logs automatically but waits for manual entry', () => {
     render(<LandingIntroPage />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();
+    expect(screen.getByText('Subjekt detekován.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).not.toBeInTheDocument();
+    expect(replace).not.toHaveBeenCalled();
+
+    finishAutomaticSequence();
+
+    expect(screen.getByText('Trpělivě pouze proto, že neumí odejít.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).toBeEnabled();
+    act(() => jest.advanceTimersByTime(30000));
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it('enters only after the final manual action and never creates audio', () => {
+    render(<LandingIntroPage />);
     expect(document.querySelectorAll('audio')).toHaveLength(0);
     expect(screen.queryByRole('button', { name: 'PŘESKOČIT' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYSTÉMU' }));
+    finishAutomaticSequence();
+    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' }));
     expect(store[SYNTHOMA_INTRO_STORAGE_KEY]).toBe(SYNTHOMA_INTRO_VERSION);
     expect(replace).toHaveBeenCalledWith('/');
   });
 
-  it('supports keyboard continuation', () => {
+  it('supports keyboard entry only after the automatic sequence', () => {
     render(<LandingIntroPage />);
     fireEvent.keyDown(window, { key: 'Enter' });
-    expect(screen.getByText(/MEMORY CHANNEL: CONNECTING/)).toBeInTheDocument();
+    expect(replace).not.toHaveBeenCalled();
+    finishAutomaticSequence();
+    fireEvent.keyDown(window, { key: 'Enter' });
+    expect(replace).toHaveBeenCalledWith('/');
   });
 
-  it('shows a static complete sequence for reduced motion', () => {
+  it('shows a shortened static sequence for reduced motion', () => {
     (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
       matches: query.includes('reduced-motion'), media: query, addEventListener: jest.fn(), removeEventListener: jest.fn(),
     }));
     render(<LandingIntroPage />);
-    expect(screen.getByText(/SYNTHOMA OS: READY/)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYSTÉMU' })).toBeInTheDocument();
+    expect(screen.getByText('Subjekt detekován.')).toBeInTheDocument();
+    expect(screen.getByText('Jméno nenalezeno.')).toBeInTheDocument();
+    expect(screen.getByText('SYNTHOMA čeká.')).toBeInTheDocument();
+    expect(screen.queryByText('Obnova zahájena.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).toBeInTheDocument();
   });
 
   it('keeps the sequence usable when its decorative video fails', () => {
     render(<LandingIntroPage />);
     fireEvent.error(document.querySelector('video') as HTMLVideoElement);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'POKRAČOVAT' })).toBeEnabled();
+    expect(screen.getByText('Subjekt detekován.')).toBeInTheDocument();
   });
 });

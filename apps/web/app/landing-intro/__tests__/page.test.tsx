@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import LandingIntroPage from '../page';
 
 const replace = jest.fn();
@@ -24,60 +24,66 @@ jest.mock('../../../src/components/synthoma-os/SynthomaMediaLayer', () => ({
 const readStorage = jest.requireMock('../../../src/lib/browser').readStorage as jest.Mock;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   jest.clearAllMocks();
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation((query: string) => ({
-      matches: false,
-      media: query,
-    })),
+    value: jest.fn().mockImplementation((query: string) => ({ matches: false, media: query })),
   });
 });
 
+afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
+
+function finishAutomaticSequence() {
+  for (let index = 0; index < 8; index += 1) {
+    act(() => jest.advanceTimersByTime(1400));
+  }
+}
+
 describe('LandingIntroPage', () => {
-  it('renders the SYNTHOMA wordmark and the canonical motto', () => {
+  it('renders the shared wordmark and exact Czech motto', () => {
     render(<LandingIntroPage />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();
     expect(screen.getByText('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.')).toBeInTheDocument();
   });
 
-  it('shows all boot lines when reduced motion is preferred', () => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query: string) => ({
-        matches: query === '(prefers-reduced-motion: reduce)',
-        media: query,
-      })),
-    });
-    render(<LandingIntroPage />);
-    expect(screen.getByText('SYNTHOMA OS: READY')).toBeInTheDocument();
-  });
-
-  it('does not render a skip button', () => {
+  it('does not render skip or continuation controls during narration', () => {
     render(<LandingIntroPage />);
     expect(screen.queryByRole('button', { name: 'PŘESKOČIT' })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'POKRAČOVAT' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'POKRAČOVAT' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
-  it('renders sarcastic system boot logs', () => {
+  it('renders all nine Czech logs and the final entry after about eleven seconds', () => {
+    render(<LandingIntroPage />);
+    finishAutomaticSequence();
+    expect(screen.getAllByRole('article')).toHaveLength(9);
+    expect(screen.getByText('Bezpečí se nepodařilo načíst.')).toBeInTheDocument();
+    expect(screen.getByText('Používán převážně v propagačních materiálech.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).toBeInTheDocument();
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it('shows only the reduced static sequence when motion is limited', () => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: jest.fn().mockImplementation((query: string) => ({
-        matches: query === '(prefers-reduced-motion: reduce)',
-        media: query,
+        matches: query === '(prefers-reduced-motion: reduce)', media: query,
       })),
     });
     render(<LandingIntroPage />);
-    expect(screen.getByText('SENSE OF HOPE: NOT FOUND')).toBeInTheDocument();
-    expect(screen.getByText('SARCASM MODULE: DEPLOYED BY POPULAR DEMAND')).toBeInTheDocument();
+    expect(screen.getAllByRole('article')).toHaveLength(3);
+    expect(screen.getByText('SYNTHOMA čeká.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).toBeInTheDocument();
   });
 
-  it('navigates to home on manual enter', () => {
+  it('navigates only when the final entry is activated', () => {
     render(<LandingIntroPage />);
-    for (let i = 0; i < 8; i += 1) {
-      fireEvent.click(screen.getByRole('button', { name: 'POKRAČOVAT' }));
-    }
-    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYSTÉMU' }));
+    finishAutomaticSequence();
+    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' }));
     expect(replace).toHaveBeenCalledWith('/');
   });
 
