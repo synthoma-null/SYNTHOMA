@@ -6,6 +6,7 @@ import { grantEntitlement } from './entitlements';
 import { EconomyError } from './errors';
 import { lockMnemAccount, spendMnemsAtomic } from './ledger';
 import { executePurchaseCore } from './purchaseCore';
+import { runSerializableTransaction } from './transaction';
 
 export interface PurchaseWithMnemsInput {
   userId: string;
@@ -58,7 +59,7 @@ export async function purchaseWithMnems(
     );
   }
 
-  const transactionResult = await prisma.$transaction(
+  const transactionResult = await runSerializableTransaction(
     async (tx) => executePurchaseCore({
       lockAccount: (userId) => lockMnemAccount(tx, userId),
       findPurchaseByIdempotencyKey: (idempotencyKey) =>
@@ -67,9 +68,19 @@ export async function purchaseWithMnems(
         const snapshot = await getAccessSnapshotWithClient(tx, userId, [{ contentType, contentId }]);
         return snapshot.access[0]?.canAccess ?? false;
       },
-      createPendingPurchase: (purchaseInput) => tx.purchase.create({
+      createPendingPurchase: ({
+        userId,
+        contentType,
+        contentId,
+        mnemCost,
+        idempotencyKey,
+      }) => tx.purchase.create({
         data: {
-          ...purchaseInput,
+          userId,
+          contentType,
+          contentId,
+          mnemCost,
+          idempotencyKey,
           ...(input.metadata ? { metadata: input.metadata } : {}),
         },
       }),
@@ -101,7 +112,6 @@ export async function purchaseWithMnems(
       mnemCost,
       idempotencyKey: input.idempotencyKey,
     }),
-    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
 
   const snapshot = await getAccessSnapshot(input.userId, [

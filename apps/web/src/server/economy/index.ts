@@ -5,3 +5,4 @@ export * from './errors';
 export * from './ledger';
 export * from './purchase';
 export * from './purchaseCore';
+export * from './transaction';

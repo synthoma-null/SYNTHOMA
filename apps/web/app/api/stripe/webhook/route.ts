@@ -6,7 +6,12 @@ import Stripe from 'stripe';
 import prisma from '../../../../src/lib/prisma';
 import { getCatalogEntry, isContentType, type ContentType } from '../../../../src/content/catalog';
 import { getPackageById } from '../../../../src/content/booksManifest';
-import { grantEntitlement, grantPackage, lockMnemAccount } from '../../../../src/server/economy';
+import {
+  grantEntitlement,
+  grantPackage,
+  lockMnemAccount,
+  runSerializableTransaction,
+} from '../../../../src/server/economy';
 
 export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
@@ -83,7 +88,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const result = await prisma.$transaction(
+    const result = await runSerializableTransaction(
       async (tx) => {
         await lockMnemAccount(tx, userId);
         const existing = await tx.externalGrantEvent.findFirst({
@@ -134,7 +139,6 @@ export async function POST(req: NextRequest) {
         });
         return { duplicate: false, status: 'completed' };
       },
-      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
     );
     return NextResponse.json({ ok: true, ...result });
   } catch (error) {

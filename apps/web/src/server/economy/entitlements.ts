@@ -4,6 +4,7 @@ import type { ContentType } from '../../content/catalog';
 import prisma from '../../lib/prisma';
 import { EconomyError } from './errors';
 import { grantMnems, lockMnemAccount } from './ledger';
+import { runSerializableTransaction } from './transaction';
 
 export interface GrantEntitlementInput {
   userId: string;
@@ -97,11 +98,10 @@ export async function grantPackage(
   };
 
   if (existingTransaction) return execute(existingTransaction);
-  return prisma.$transaction(
+  return runSerializableTransaction(
     async (tx) => {
       await lockMnemAccount(tx, input.userId);
       return execute(tx);
     },
-    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
 }

@@ -2,6 +2,7 @@ import { Prisma, type MnemLedger } from '@prisma/client';
 import prisma from '../../lib/prisma';
 import type { ContentType } from '../../content/catalog';
 import { EconomyError } from './errors';
+import { runSerializableTransaction } from './transaction';
 
 export type EconomyClient = Prisma.TransactionClient | typeof prisma;
 
@@ -116,12 +117,11 @@ export async function grantMnems(
   if (tx) {
     return recordMnemDeltaLocked(tx, { ...input, transactionType: 'grant' });
   }
-  return prisma.$transaction(
+  return runSerializableTransaction(
     async (transaction) => {
       await lockMnemAccount(transaction, input.userId);
       return recordMnemDeltaLocked(transaction, { ...input, transactionType: 'grant' });
     },
-    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
 }
 
@@ -138,12 +138,11 @@ export async function spendMnemsAtomic(
     transactionType: 'spend',
   };
   if (tx) return recordMnemDeltaLocked(tx, mutation);
-  return prisma.$transaction(
+  return runSerializableTransaction(
     async (transaction) => {
       await lockMnemAccount(transaction, input.userId);
       return recordMnemDeltaLocked(transaction, mutation);
     },
-    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
 }
 
@@ -156,11 +155,10 @@ export async function adjustMnems(
   }
   const mutation: LedgerMutation = { ...input, transactionType: 'adjustment' };
   if (tx) return recordMnemDeltaLocked(tx, mutation);
-  return prisma.$transaction(
+  return runSerializableTransaction(
     async (transaction) => {
       await lockMnemAccount(transaction, input.userId);
       return recordMnemDeltaLocked(transaction, mutation);
     },
-    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
 }
