@@ -604,9 +604,6 @@
   width: min(100%, 720px);
   max-height: calc(100dvh - var(--os-space-8));
   overflow-y: auto;
-  border: 1px solid var(--os-border);
-  border-radius: var(--os-corner);
-  background: var(--os-surface);
   color: var(--os-text);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
 }

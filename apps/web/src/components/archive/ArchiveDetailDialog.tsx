@@ -27,7 +27,7 @@ export default function ArchiveDetailDialog({ card, isLocked, relatedCards, onCl
       aria-label={`Záznam: ${card.title}`}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="synthoma-detail-dialog archive-detail-dialog">
+      <div className="synthoma-detail-dialog os-surface archive-detail-dialog">
         <button className="synthoma-detail-dialog__close" onClick={onClose} aria-label="Zavřít záznam" type="button">✕</button>
         <div className="archive-detail-dialog__body">
           <header className="archive-detail-dialog__header" style={card.display?.accent ? ({ '--card-accent': card.display.accent } as React.CSSProperties) : undefined}>

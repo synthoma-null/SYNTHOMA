@@ -27,7 +27,7 @@ export default function LibraryCoverDialog({ collection, onClose, onEnter }: Lib
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       style={collection.cover ? { '--cover-image': `url(${collection.cover})` } as React.CSSProperties : undefined}
     >
-      <div className="synthoma-detail-dialog library-cover-dialog">
+      <div className="synthoma-detail-dialog os-surface library-cover-dialog">
         <button className="synthoma-detail-dialog__close" onClick={onClose} aria-label="Zavřít přebal" type="button">✕</button>
         <div className="library-cover-dialog__body">
           {collection.cover ? (
