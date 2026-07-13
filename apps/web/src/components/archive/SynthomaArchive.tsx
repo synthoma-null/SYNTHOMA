@@ -10,6 +10,8 @@ import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
 import type { WhisperData } from '../whispers/WhisperCard';
 import ArchiveDetailDialog from './ArchiveDetailDialog';
 import ArchiveRecordCard from './ArchiveRecordCard';
+import { useAccess } from '../access/AccessProvider';
+import ContentPurchaseDialog from '../access/ContentPurchaseDialog';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -28,9 +30,16 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
   const [whisperSort, setWhisperSort] = useState<string>('random');
   const [showWhisperForm, setShowWhisperForm] = useState(false);
   const [enCards, setEnCards] = useState<ArchiveCard[] | null>(null);
+  const [purchaseCardId, setPurchaseCardId] = useState<string | null>(null);
+  const { resolve: resolveAccess, getCachedAccess } = useAccess();
 
   const snapshot = useArchiveSnapshot(enCards ?? initialCards, whisperFilter, whisperSort);
   const cards = useMemo(() => enCards ?? initialCards, [enCards, initialCards]);
+
+  useEffect(() => {
+    if (!cards.length) return;
+    void resolveAccess(cards.map((card) => ({ contentType: 'archive_record', contentId: card.id })));
+  }, [cards, resolveAccess]);
 
   const whisperData = useMemo<WhisperData[]>(() => {
     return snapshot.whispers.map((w) => ({
@@ -58,18 +67,18 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
       .catch(() => {});
   }, []);
 
-  const completedChapterIds = useMemo(() => {
-    return new Set(snapshot.progress.filter((p) => p.completed).map((p) => p.chapterId));
-  }, [snapshot.progress]);
-
   const displayCards = useMemo(() => {
     return cards
-      .map((card) => ({
-        card,
-        visibility: resolveArchiveCardVisibility(card, completedChapterIds, snapshot.profile.mnemBalance, !snapshot.loading),
-      }))
+      .map((card) => {
+        const access = getCachedAccess('archive_record', card.id);
+        return {
+          card,
+          access,
+          visibility: resolveArchiveCardVisibility(card, access, Boolean(access)),
+        };
+      })
       .sort((a, b) => (a.card.order ?? 999) - (b.card.order ?? 999));
-  }, [cards, completedChapterIds, snapshot.profile.mnemBalance, snapshot.loading]);
+  }, [cards, getCachedAccess]);
 
   const completedChapters = snapshot.progress.filter((p) => p.completed);
   const currentChapter = snapshot.progress.find((p) => !p.completed && p.progressPercent && p.progressPercent > 0);
@@ -221,8 +230,22 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           mode={dialogEntry.visibility}
           relatedCards={relatedCards}
           onClose={() => setOpenCardId(null)}
+          access={dialogEntry.access}
+          onPurchase={() => setPurchaseCardId(dialogEntry.card.id)}
         />
       )}
+      {purchaseCardId ? (() => {
+        const card = cards.find((candidate) => candidate.id === purchaseCardId);
+        return card ? (
+          <ContentPurchaseDialog
+            contentType="archive_record"
+            contentId={card.id}
+            title={card.title}
+            onClose={() => setPurchaseCardId(null)}
+            onPurchased={() => setPurchaseCardId(null)}
+          />
+        ) : null;
+      })() : null}
     </main>
   );
 }

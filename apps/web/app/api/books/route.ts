@@ -2,14 +2,13 @@ export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server';
 import { auth } from '../../../auth';
 import { CHAPTERS, PACKAGES } from '../../../src/content/booksManifest';
-import { getUserEntitlements } from '../../../src/lib/access';
 import prisma from '../../../src/lib/prisma';
+import { getAccessSnapshot } from '../../../src/server/economy';
 
 export async function GET() {
   const session = await auth();
   const userId = session?.user?.id ?? null;
 
-  let entitlements: { chapterId: string | null; packageId: string | null }[] = [];
   let readingProgress: {
     chapterId: string;
     progressPercent: number;
@@ -18,37 +17,28 @@ export async function GET() {
   }[] = [];
 
   if (userId) {
-    const raw = await getUserEntitlements(userId);
-    entitlements = raw.map((e: { chapterId: string | null; packageId: string | null }) => ({ chapterId: e.chapterId, packageId: e.packageId }));
-
     const progress = await prisma.readingProgress.findMany({
       where: { userId },
       select: { chapterId: true, progressPercent: true, completed: true, updatedAt: true },
     });
     readingProgress = progress;
   }
-
-  const ownedPackageIds = new Set(entitlements.flatMap((e) => (e.packageId ? [e.packageId] : [])));
-  const ownedChapterIds = new Set(entitlements.flatMap((e) => (e.chapterId ? [e.chapterId] : [])));
-
-  const isSupporter = [...ownedPackageIds].some((pid) => {
-    const pkg = PACKAGES.find((p) => p.id === pid);
-    return pkg?.supporter ?? false;
-  });
+  const snapshot = await getAccessSnapshot(userId, [
+    ...CHAPTERS.map((chapter) => ({ contentType: 'chapter' as const, contentId: chapter.id })),
+    ...PACKAGES.map((item) => ({ contentType: 'package' as const, contentId: item.id })),
+  ]);
+  const accessByKey = new Map(snapshot.access.map((access) => [`${access.contentType}:${access.contentId}`, access]));
+  const isSupporter = PACKAGES.some(
+    (item) => item.supporter && accessByKey.get(`package:${item.id}`)?.canAccess,
+  );
 
   const chapters = CHAPTERS.map((ch) => {
-    const unlocked =
-      ch.access === 'free' ||
-      isSupporter ||
-      ownedChapterIds.has(ch.id) ||
-      [...ownedPackageIds].some((pid) => {
-        const pkg = PACKAGES.find((p) => p.id === pid);
-        return pkg?.chapterIds.includes(ch.id) ?? false;
-      });
+    const access = accessByKey.get(`chapter:${ch.id}`);
     const progress = readingProgress.find((p) => p.chapterId === ch.id);
     return {
       ...ch,
-      unlocked,
+      unlocked: access?.canAccess ?? false,
+      access,
       progress: progress
         ? {
             progressPercent: progress.progressPercent,
@@ -66,7 +56,8 @@ export async function GET() {
       currentUser: userId
         ? { id: userId, nickname: session?.user?.name }
         : null,
-      entitlements,
+      access: snapshot.access,
+      mnemBalance: snapshot.balance,
       isSupporter,
     },
     {

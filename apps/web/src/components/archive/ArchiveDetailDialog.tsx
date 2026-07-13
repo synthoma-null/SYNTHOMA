@@ -2,15 +2,18 @@
 
 import { useEffect } from 'react';
 import type { ArchiveCard, ArchiveCardVisibility } from '../../lib/synthoma/archive/archiveTypes';
+import type { ContentAccess } from '../../content/catalog';
 
 export interface ArchiveDetailDialogProps {
   card: ArchiveCard;
   mode: ArchiveCardVisibility;
   relatedCards: ArchiveCard[];
   onClose: () => void;
+  access?: ContentAccess | undefined;
+  onPurchase?: (() => void) | undefined;
 }
 
-export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose }: ArchiveDetailDialogProps) {
+export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose, access, onPurchase }: ArchiveDetailDialogProps) {
   const isLocked = mode === 'teaser';
   const isFull = mode === 'full';
 
@@ -45,8 +48,13 @@ export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose 
 
           {isLocked ? (
             <div className="archive-detail-dialog__locked">
-              <p>Záznam je uzamčen. Dokonči požadovanou kapitolu nebo získej dostatek mnem, aby Archiv pustil další vrstvu.</p>
+              <p>Záznam je uzamčen. Dokonči požadovanou kapitolu nebo získej samostatný přístupový otisk.</p>
               {card.access?.reason && <p className="archive-detail-dialog__reason">{card.access.reason}</p>}
+              {access?.canPurchase && onPurchase ? (
+                <button className="btn" type="button" onClick={onPurchase}>
+                  ODEMKNOUT ZA {access.mnemCost} MNEM
+                </button>
+              ) : null}
             </div>
           ) : (
             <>

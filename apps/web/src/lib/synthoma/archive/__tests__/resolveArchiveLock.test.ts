@@ -1,5 +1,6 @@
 import { resolveArchiveCardVisibility } from '../resolveArchiveLock';
 import type { ArchiveCard } from '../archiveTypes';
+import type { ContentAccess } from '../../../../content/catalog';
 
 describe('resolveArchiveCardVisibility', () => {
   const base: ArchiveCard = {
@@ -9,13 +10,21 @@ describe('resolveArchiveCardVisibility', () => {
     teaser: 'teaser',
     body: [],
   };
+  const owned: ContentAccess = {
+    contentType: 'archive_record', contentId: 'test-1', state: 'owned', reason: 'direct_entitlement',
+    canAccess: true, canPurchase: false, mnemCost: 32, title: 'Test Entity',
+    purchasePackageIds: [], prerequisiteChapterId: null,
+  };
+  const locked: ContentAccess = {
+    ...owned, state: 'locked', reason: 'purchase_required', canAccess: false, canPurchase: true,
+  };
 
   it('returns full for free mode', () => {
     const card: ArchiveCard = {
       ...base,
       access: { mode: 'free', visibility: 'teaser', requiredChapterId: null, requiredChapterTitle: null, mnemCost: 0, label: 'free' },
     };
-    expect(resolveArchiveCardVisibility(card, new Set(), 0, true)).toBe('full');
+    expect(resolveArchiveCardVisibility(card, undefined, true)).toBe('full');
   });
 
   it('returns teaser for chapter mode when required chapter not completed', () => {
@@ -23,7 +32,7 @@ describe('resolveArchiveCardVisibility', () => {
       ...base,
       access: { mode: 'chapter', visibility: 'teaser', requiredChapterId: 'null', requiredChapterTitle: '0-0', mnemCost: 0, label: 'locked' },
     };
-    expect(resolveArchiveCardVisibility(card, new Set(), 0, true)).toBe('teaser');
+    expect(resolveArchiveCardVisibility(card, locked, true)).toBe('teaser');
   });
 
   it('returns full for chapter mode when required chapter completed', () => {
@@ -31,15 +40,15 @@ describe('resolveArchiveCardVisibility', () => {
       ...base,
       access: { mode: 'chapter', visibility: 'teaser', requiredChapterId: 'null', requiredChapterTitle: '0-0', mnemCost: 0, label: 'locked' },
     };
-    expect(resolveArchiveCardVisibility(card, new Set(['0-0-null']), 0, true)).toBe('full');
+    expect(resolveArchiveCardVisibility(card, owned, true)).toBe('full');
   });
 
-  it('returns full for mnems mode when user can afford', () => {
+  it('does not confuse an MNEM balance with ownership', () => {
     const card: ArchiveCard = {
       ...base,
       access: { mode: 'mnems', visibility: 'teaser', requiredChapterId: null, requiredChapterTitle: null, mnemCost: 32, label: 'locked' },
     };
-    expect(resolveArchiveCardVisibility(card, new Set(), 64, true)).toBe('full');
+    expect(resolveArchiveCardVisibility(card, locked, true)).toBe('teaser');
   });
 
   it('returns visibility when access not loaded', () => {
@@ -47,6 +56,6 @@ describe('resolveArchiveCardVisibility', () => {
       ...base,
       access: { mode: 'chapter', visibility: 'hidden', requiredChapterId: 'null', requiredChapterTitle: '0-0', mnemCost: 0, label: 'locked' },
     };
-    expect(resolveArchiveCardVisibility(card, new Set(['0-0-null']), 0, false)).toBe('hidden');
+    expect(resolveArchiveCardVisibility(card, owned, false)).toBe('hidden');
   });
 });
