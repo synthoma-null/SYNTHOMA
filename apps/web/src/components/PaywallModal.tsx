@@ -57,7 +57,7 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
 
   return (
     <div className="paywall-overlay" role="dialog" aria-modal="true" aria-label={t('paywall.aria')}>
-      <div className="paywall-modal">
+      <div className="paywall-modal os-surface">
         <button className="paywall-close" onClick={onClose} aria-label={t('paywall.close')}>✕</button>
 
         <div className="paywall-log">
@@ -79,7 +79,7 @@ export default function PaywallModal({ chapterId, chapterTitle, mnemCost, onClos
 
         <div className="paywall-packages">
           {PACKAGES.map((pkg) => (
-            <div key={pkg.id} className="paywall-package">
+            <div key={pkg.id} className="paywall-package os-surface">
               <div className="paywall-package-info">
                 <span className="paywall-package-name">{pkg.name}</span>
                 <span className="paywall-package-price">{pkg.priceCzk} Kč</span>
