@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../../auth';
-import { grantChapter, canReadChapter } from '../../../../../src/lib/access';
-import { getChapterById } from '../../../../../src/content/booksManifest';
-import prisma from '../../../../../src/lib/prisma';
+import {
+  getContentAccess,
+  getMnemBalance,
+  isEconomyError,
+  purchaseWithMnems,
+} from '../../../../../src/server/economy';
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -23,42 +26,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Chybí chapterId.' }, { status: 400 });
   }
 
-  const chapter = getChapterById(chapterId);
-  if (!chapter) {
-    return NextResponse.json({ error: 'Kapitola nenalezena.' }, { status: 404 });
+  const idempotencyKey = req.headers.get('idempotency-key')?.trim();
+  if (!idempotencyKey) {
+    return NextResponse.json({ error: 'Idempotency-Key je povinný.' }, { status: 400 });
   }
-
-  const alreadyOwned = await canReadChapter(userId, chapterId);
-  if (alreadyOwned) {
-    return NextResponse.json({ ok: true, alreadyOwned: true });
-  }
-
-  const balanceAgg = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const balance = balanceAgg._sum.amount ?? 0;
-
-  if (balance < chapter.mnemCost) {
-    return NextResponse.json(
-      { error: `Nedostatek mnemů. Potřebuješ ${chapter.mnemCost}, máš ${balance}.`, balance, required: chapter.mnemCost },
-      { status: 402 },
-    );
-  }
-
   try {
-    await grantChapter(userId, chapterId, 'mnem');
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message ?? 'Odemčení selhalo.' }, { status: 500 });
+    const current = await getContentAccess(userId, 'chapter', chapterId);
+    if (current.canAccess) {
+      return NextResponse.json({ ok: true, alreadyOwned: true, access: current }, {
+        headers: { Deprecation: 'true', Link: '</api/me/purchases>; rel="successor-version"' },
+      });
+    }
+    const result = await purchaseWithMnems({
+      userId,
+      contentType: 'chapter',
+      contentId: chapterId,
+      idempotencyKey,
+    });
+    return NextResponse.json({ ok: true, ...result }, {
+      headers: { Deprecation: 'true', Link: '</api/me/purchases>; rel="successor-version"' },
+    });
+  } catch (error) {
+    if (isEconomyError(error)) {
+      return NextResponse.json(
+        { error: error.message, code: error.code, details: error.details },
+        { status: error.status },
+      );
+    }
+    return NextResponse.json({ error: 'Odemčení selhalo.' }, { status: 500 });
   }
-
-  const newBalanceAgg = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const newBalance = newBalanceAgg._sum.amount ?? 0;
-
-  return NextResponse.json({ ok: true, balance: newBalance });
 }
 
 export async function GET(req: NextRequest) {
@@ -68,11 +64,9 @@ export async function GET(req: NextRequest) {
   }
   const userId = session.user.id;
 
-  const balanceAgg = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const balance = balanceAgg._sum.amount ?? 0;
+  const balance = await getMnemBalance(userId);
 
-  return NextResponse.json({ balance });
+  return NextResponse.json({ balance }, {
+    headers: { Deprecation: 'true', Link: '</api/me/access/resolve>; rel="successor-version"' },
+  });
 }

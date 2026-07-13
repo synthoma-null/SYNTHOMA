@@ -39,6 +39,7 @@ import { HeaderProvider } from "../src/components/synthoma-os/HeaderContext";
 import MBTIHudClient from "./components/MBTIHudClient";
 
 import { LangProvider } from "../src/lib/LangContext";
+import { AccessProvider } from "../src/components/access/AccessProvider";
 
 
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
@@ -244,6 +245,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
         <LangProvider>
 
+        <AccessProvider>
+
         <MBTIProviderClient>
 
           {/* Retro Arcade pixelation canvas overlay (controlled by CSS vars in themes.css) */}
@@ -344,6 +347,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <CookieConsent />
 
         </MBTIProviderClient>
+
+        </AccessProvider>
 
         </LangProvider>
 
