@@ -108,7 +108,7 @@ export default function RunDashboard() {
 
   if (!session?.user) {
     return (
-      <div className="run-dashboard run-dashboard--guest">
+      <div className="run-dashboard os-surface os-surface--glass run-dashboard--guest">
         <p className="run-log-prefix">LOG [AUTH_REQUIRED]:</p>
         <p className="run-guest-msg">{t('run.guest.msg')}</p>
         <a href="/login" className="btn">{t('run.guest.login')}</a>
@@ -118,7 +118,7 @@ export default function RunDashboard() {
 
   if (loading) {
     return (
-      <div className="run-dashboard run-dashboard--loading">
+      <div className="run-dashboard os-surface os-surface--glass run-dashboard--loading">
         <p className="run-log-prefix">LOG [LOADING]:</p>
         <p className="run-loading-msg">{t('run.loading.msg')}</p>
       </div>
@@ -141,7 +141,7 @@ export default function RunDashboard() {
   const activeMissions = missions.filter((m) => m.status === 'active');
 
   return (
-    <div className="run-dashboard">
+    <div className="run-dashboard os-surface os-surface--glass">
       <div className="run-dashboard-header">
         <p className="run-log-prefix">LOG [SUBJECT_PROFILE]:</p>
         <p className="run-header-desc">{t('run.header.desc')}</p>
