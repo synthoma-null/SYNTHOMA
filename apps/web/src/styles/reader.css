@@ -643,5 +643,14 @@
   
   /* Media – img/video. */
   #reader-body img, #reader-extra img, #reader-body video, #reader-extra video { max-width: 100%; height: auto; display: block; }
-  
+
+  /* Autor page navigation panel migrated to shared os-surface--glass. */
+  .autor-panel.os-surface--glass {
+    background: rgba(var(--bg-secondary-rgb), 0.6);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border-radius: 0;
+    box-shadow: var(--shadow-glow, 0 0 12px rgba(0,255,255,.25));
+  }
+
   /* Konec revize. Testuj to na mobilu, ať ti to nerozbije scroll jako moje trpělivost při auditu! 😜 Pokud chceš víc, piš – jsem tu na záchranu tvých stylů před kolapsem. 🚀 */

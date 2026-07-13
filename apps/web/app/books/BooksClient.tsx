@@ -133,13 +133,13 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
         </h1>
 
         {!manifest.collections.length ? (
-          <article className="panel glass">
+          <article className="library-article os-surface os-surface--glass">
             <p className="library-empty">{t('books.empty')}</p>
           </article>
         ) : (
           <>
             {!selected ? (
-              <article className="panel glass">
+              <article className="library-article os-surface os-surface--glass">
                 <div className="lib-grid">
                   {manifest.collections.map((col, idx) => (
                     <article key={idx} className="lib-section">
@@ -174,7 +174,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                 </div>
               </article>
             ) : (
-              <article className="panel glass">
+              <article className="library-article os-surface os-surface--glass">
                 <div className="lib-grid">
                   <section className={`lib-section ${styles.fullWidthSection}`}>
                     <div className={`lib-cover ${styles.coverHero} ${!selected.cover ? styles.noCover : ''}`} aria-hidden>

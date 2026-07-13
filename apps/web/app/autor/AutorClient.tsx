@@ -75,7 +75,7 @@ export default function AutorClient() {
           />
         </section>
 
-        <article className="panel glass" aria-label="Navigace zpět">
+        <article className="autor-panel os-surface os-surface--glass" aria-label="Navigace zpět">
           <section className="story-block">
             <div className="hero-cta">
               <Link className="btn btn-lg" href="/">⟵ Hlavní stránka</Link>

@@ -514,10 +514,12 @@ button.lib-link {
 .library-page #glitch-library .glitch-fake2 { animation: none !important; }
 
 /* Library panels – no backdrop-filter (expensive with many children) */
-.library-page .panel.glass {
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  background: rgba(var(--bg-secondary-rgb, 10,10,12), 0.72) !important;
+.library-page .library-article.os-surface--glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(var(--bg-secondary-rgb, 10,10,12), 0.72);
+  border-radius: 0;
+  box-shadow: var(--shadow-glow, 0 0 12px rgba(0,255,255,.25));
 }
 
 /* Layout + bg pro library – fixed bg. */
