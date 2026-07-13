@@ -33,13 +33,15 @@ describe('Synthoma intro', () => {
     expect(replace).not.toHaveBeenCalled();
   });
 
-  it('is skippable, writes the version and never creates audio', () => {
+  it('requires manual enter, writes the version and never creates audio', () => {
+    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
+      matches: query.includes('reduced-motion'), media: query, addEventListener: jest.fn(), removeEventListener: jest.fn(),
+    }));
     render(<LandingIntroPage />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();
     expect(document.querySelectorAll('audio')).toHaveLength(0);
-    const skip = screen.getByRole('button', { name: 'PŘESKOČIT' });
-    expect(skip).toHaveFocus();
-    fireEvent.click(skip);
+    expect(screen.queryByRole('button', { name: 'PŘESKOČIT' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYSTÉMU' }));
     expect(store[SYNTHOMA_INTRO_STORAGE_KEY]).toBe(SYNTHOMA_INTRO_VERSION);
     expect(replace).toHaveBeenCalledWith('/');
   });
@@ -63,6 +65,6 @@ describe('Synthoma intro', () => {
     render(<LandingIntroPage />);
     fireEvent.error(document.querySelector('video') as HTMLVideoElement);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'PŘESKOČIT' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'POKRAČOVAT' })).toBeEnabled();
   });
 });

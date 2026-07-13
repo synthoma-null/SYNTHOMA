@@ -28,7 +28,7 @@ beforeEach(() => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation((query: string) => ({
-      matches: query === '(prefers-reduced-motion: reduce)',
+      matches: false,
       media: query,
     })),
   });
@@ -42,6 +42,13 @@ describe('LandingIntroPage', () => {
   });
 
   it('shows all boot lines when reduced motion is preferred', () => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query: string) => ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        media: query,
+      })),
+    });
     render(<LandingIntroPage />);
     expect(screen.getByText('SYNTHOMA OS: READY')).toBeInTheDocument();
   });
@@ -53,6 +60,13 @@ describe('LandingIntroPage', () => {
   });
 
   it('renders sarcastic system boot logs', () => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query: string) => ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        media: query,
+      })),
+    });
     render(<LandingIntroPage />);
     expect(screen.getByText('SENSE OF HOPE: NOT FOUND')).toBeInTheDocument();
     expect(screen.getByText('SARCASM MODULE: DEPLOYED BY POPULAR DEMAND')).toBeInTheDocument();
@@ -61,8 +75,9 @@ describe('LandingIntroPage', () => {
   it('navigates to home on manual enter', () => {
     render(<LandingIntroPage />);
     for (let i = 0; i < 8; i += 1) {
-      fireEvent.click(screen.getByRole('button', { name: i === 7 ? 'VSTOUPIT DO SYSTÉMU' : 'POKRAČOVAT' }));
+      fireEvent.click(screen.getByRole('button', { name: 'POKRAČOVAT' }));
     }
+    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYSTÉMU' }));
     expect(replace).toHaveBeenCalledWith('/');
   });
 
