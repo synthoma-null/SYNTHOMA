@@ -131,13 +131,11 @@
   grid-template-columns: 80px 1fr;
   gap: var(--os-space-3);
   text-align: left;
-  background: var(--os-surface);
-  border: var(--os-border-width) solid var(--os-border);
-  border-radius: var(--os-corner);
   padding: var(--os-space-3);
   cursor: pointer;
   transition: border-color 0.15s, transform 0.15s;
 }
+.library-collection-card.os-surface { background: var(--os-surface); }
 
 .library-collection-card:hover {
   border-color: var(--os-accent-primary);
@@ -350,16 +348,16 @@
   display: grid;
   gap: var(--os-space-2);
   text-align: left;
-  border-left: 3px solid var(--os-border);
   padding: var(--os-space-3);
   transition: border-color 0.15s, background 0.15s;
 }
+.archive-record-card.os-surface { border: 0; border-left: 3px solid var(--os-border); }
 
 .archive-record-card[style*="--card-accent"] {
   border-left-color: var(--card-accent);
 }
 
-.archive-record-card--open {
+.archive-record-card.archive-record-card--open {
   background: var(--os-surface-raised);
 }
 
