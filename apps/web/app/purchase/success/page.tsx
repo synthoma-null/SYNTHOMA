@@ -7,7 +7,7 @@ export default function PurchaseSuccessPage() {
   const { t } = useLang();
   return (
     <main className="auth-page">
-      <div className="auth-container glitch-bg">
+      <div className="auth-container os-surface os-surface--glass glitch-bg">
         <h1 className="auth-title glitch" data-text={t('purchase.success.title')}>{t('purchase.success.title')}</h1>
         <div className="auth-log">
           <span className="auth-log-prefix">LOG [PAYMENT_RECEIVED]:</span>

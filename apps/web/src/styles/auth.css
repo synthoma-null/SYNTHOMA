@@ -13,11 +13,9 @@
 .auth-container {
   width: 100%;
   max-width: 440px;
-  background: var(--bg-glass);
-  border: 1px solid var(--border-primary);
   padding: 2.5rem 2rem;
-  border-radius: 2px;
 }
+.auth-container.os-surface--glass { border-color: var(--border-primary); border-radius: 2px; }
 .auth-title {
   font-family: var(--font-display, monospace);
   font-size: 1.6rem;
