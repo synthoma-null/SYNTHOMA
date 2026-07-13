@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
   const session = await auth();
   const guard = adminGuard((session?.user as { role?: string } | undefined)?.role);
   if (guard) return guard;
+  const actorUserId = session?.user?.id;
+  if (!actorUserId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   let body: unknown;
   try { body = await req.json(); } catch {
@@ -47,6 +49,7 @@ export async function POST(req: NextRequest) {
   expiresAt.setDate(expiresAt.getDate() + expiresDays);
 
   const plaintexts: string[] = [];
+  const hashes: string[] = [];
 
   for (let i = 0; i < count; i++) {
     let plaintext: string;
@@ -61,11 +64,28 @@ export async function POST(req: NextRequest) {
       if (attempts > 20) throw new Error('Nepodařilo se vygenerovat unikátní kód.');
     } while (false);
 
-    await prisma.accessCode.create({
-      data: { codeHash, packageId: trimmedPackageId, expiresAt },
-    });
     plaintexts.push(plaintext);
+    hashes.push(codeHash);
   }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.accessCode.createMany({
+      data: hashes.map((codeHash) => ({
+        codeHash,
+        packageId: trimmedPackageId,
+        grantType: 'package',
+        expiresAt,
+      })),
+    });
+    await tx.adminAuditLog.create({
+      data: {
+        actorUserId,
+        targetUserId: actorUserId,
+        action: 'access_codes_generated',
+        metadata: { packageId: trimmedPackageId, count, expiresAt: expiresAt.toISOString() },
+      },
+    });
+  });
 
   return NextResponse.json({
     ok: true,

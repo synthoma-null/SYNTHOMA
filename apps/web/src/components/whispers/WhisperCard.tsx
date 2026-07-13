@@ -81,7 +81,10 @@ export default function WhisperCard({ whisper, showBoost = false, onResonanceCha
     try {
       const res = await fetch(`/api/whispers/${whisper.id}/boost`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `whisper:${whisper.id}:${type}:${crypto.randomUUID()}`,
+        },
         body: JSON.stringify({ type }),
       });
       const data = await res.json();

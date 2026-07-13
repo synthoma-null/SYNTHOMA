@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { UI_THEMES } from '../../src/lib/themes';
+import { useAccess, type ClientAccessSnapshot } from '../../src/components/access/AccessProvider';
 
 type Theme = { id: string; label: string; cost: number; description: string; palette: readonly [string, string, string]; unlocked: boolean };
 
@@ -41,6 +42,7 @@ function applyTheme(theme: string) {
 }
 
 export default function ThemeShopClient() {
+  const { applySnapshot } = useAccess();
   const [themes, setThemes] = useState<Theme[]>([]);
   const [balance, setBalance] = useState<number | null>(null);
   const [currentTheme, setCurrentTheme] = useState<string>('synthoma');
@@ -89,13 +91,17 @@ export default function ThemeShopClient() {
     try {
       const res = await fetch('/api/me/themes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `theme:${theme.id}:${crypto.randomUUID()}`,
+        },
         body: JSON.stringify({ themeId: theme.id }),
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || 'Nákup se nezdařil.');
       }
+      if (data.snapshot) applySnapshot(data.snapshot as ClientAccessSnapshot, true);
       setThemes((prev) =>
         prev.map((t) => (t.id === theme.id ? { ...t, unlocked: true } : t))
       );
@@ -106,7 +112,7 @@ export default function ThemeShopClient() {
     } finally {
       setBuying(null);
     }
-  }, [buying, activate]);
+  }, [buying, activate, applySnapshot]);
 
   const startPreview = useCallback((theme: Theme) => {
     if (previewTimeoutRef.current) {

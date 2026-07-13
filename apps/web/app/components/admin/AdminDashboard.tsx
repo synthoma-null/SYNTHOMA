@@ -346,7 +346,10 @@ function MnemsTab({ onGrantSuccess }: { onGrantSuccess: () => void }) {
     try {
       const r = await fetch('/api/admin/mnems/grant', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `admin:mnem:${crypto.randomUUID()}`,
+        },
         body: JSON.stringify({
           identifier: grantId.trim(),
           amount: parseInt(grantAmount, 10),

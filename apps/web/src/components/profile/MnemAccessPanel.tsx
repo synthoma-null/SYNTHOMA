@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PACKAGES } from '../../content/booksManifest';
 import { useLang } from '../../lib/LangContext';
+import { useAccess } from '../access/AccessProvider';
 
 interface Props {
   mnemBalance: number;
@@ -10,9 +11,14 @@ interface Props {
 
 export default function MnemAccessPanel({ mnemBalance }: Props) {
   const { t, lang } = useLang();
+  const { balance, version, resolve } = useAccess();
   const [code, setCode] = useState('');
   const [redeemStatus, setRedeemStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
   const [redeemMsg, setRedeemMsg] = useState('');
+
+  useEffect(() => {
+    void resolve(PACKAGES.map((item) => ({ contentType: 'package', contentId: item.id })));
+  }, [resolve]);
 
   const handleRedeem = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +34,10 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
         setRedeemStatus('ok');
         setRedeemMsg(`${t('mnems.redeemed')} ${data.packageId}`);
         setCode('');
+        await resolve(
+          PACKAGES.map((item) => ({ contentType: 'package', contentId: item.id })),
+          true,
+        );
       } else {
         setRedeemStatus('error');
         setRedeemMsg(data.error ?? t('mnems.error'));
@@ -42,7 +52,10 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
     try {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `stripe:profile:${packageId}:${crypto.randomUUID()}`,
+        },
         body: JSON.stringify({ packageId }),
       });
       const data = await res.json();
@@ -61,7 +74,7 @@ export default function MnemAccessPanel({ mnemBalance }: Props) {
 
       <div className="mnem-balance">
         <span className="mnem-balance-label">{t('mnems.balance.label')}</span>
-        <span className="mnem-balance-value">{mnemBalance} mnems</span>
+        <span className="mnem-balance-value">{version ? balance : mnemBalance} mnems</span>
       </div>
 
       <div className="mnem-packages">

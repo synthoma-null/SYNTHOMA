@@ -2,7 +2,8 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { auth } from '../../../../auth';
-import { getPackageById, getChapterById } from '../../../../src/content/booksManifest';
+import { getPackageById } from '../../../../src/content/booksManifest';
+import { getChapterCatalogEntry } from '../../../../src/content/catalog';
 
 export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
@@ -14,6 +15,10 @@ export async function POST(req: NextRequest) {
 
   if (!userId) {
     return NextResponse.json({ error: 'Pro zakoupení mnemů je nutné přihlášení.' }, { status: 401 });
+  }
+  const idempotencyKey = req.headers.get('idempotency-key')?.trim();
+  if (!idempotencyKey || !/^[A-Za-z0-9:_-]{12,200}$/.test(idempotencyKey)) {
+    return NextResponse.json({ error: 'Platný Idempotency-Key je povinný.' }, { status: 400 });
   }
 
   let packageId: string | null = null;
@@ -33,27 +38,40 @@ export async function POST(req: NextRequest) {
 
   let name: string;
   let priceCents: number;
-  let finalPackageId: string;
+  let grantType: 'package' | 'content';
+  let finalPackageId: string | null = null;
+  let finalChapterId: string | null = null;
 
-  if (packageId) {
+  if (packageId && !(packageId === 'single-fragment' && chapterId)) {
     const pkg = getPackageById(packageId);
     if (!pkg) return NextResponse.json({ error: 'Balíček nenalezen' }, { status: 404 });
     name = pkg.name;
     priceCents = pkg.priceCzk * 100;
     finalPackageId = pkg.id;
+    grantType = 'package';
   } else {
-    const ch = getChapterById(chapterId!);
+    const ch = chapterId ? getChapterCatalogEntry(chapterId) : undefined;
     if (!ch) return NextResponse.json({ error: 'Fragment nenalezen' }, { status: 404 });
-    finalPackageId = 'single-fragment';
+    if (ch.availability !== 'published' || ch.accessPolicy === 'free') {
+      return NextResponse.json({ error: 'Tento fragment nelze koupit.' }, { status: 409 });
+    }
+    const single = getPackageById('single-fragment');
+    if (!single) return NextResponse.json({ error: 'Produkt není nakonfigurován.' }, { status: 503 });
     name = `PAMĚŤOVÝ FRAGMENT: ${ch.title}`;
-    priceCents = 2900;
+    priceCents = single.priceCzk * 100;
+    finalChapterId = ch.id;
+    grantType = 'content';
   }
 
   const metadata: Record<string, string> = {
-    packageId: finalPackageId,
+    grantType,
+    userId,
   };
-  if (chapterId) metadata.chapterId = chapterId;
-  if (userId) metadata.userId = userId;
+  if (finalPackageId) metadata.packageId = finalPackageId;
+  if (finalChapterId) {
+    metadata.contentType = 'chapter';
+    metadata.contentId = finalChapterId;
+  }
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: 'payment',
@@ -71,7 +89,7 @@ export async function POST(req: NextRequest) {
     metadata,
     success_url: `${ORIGIN}/purchase/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${ORIGIN}/books`,
-  });
+  }, { idempotencyKey: `checkout:${userId}:${idempotencyKey}` });
 
   return NextResponse.json({ url: checkoutSession.url });
 }

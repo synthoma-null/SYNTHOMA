@@ -225,6 +225,28 @@ model AdminAuditLog {
   @@index([targetUserId, createdAt])
 }
 
+model ExternalGrantEvent {
+  id                String    @id @default(cuid())
+  provider          String
+  eventId           String
+  eventType         String
+  externalReference String
+  userId            String?
+  contentType       String?
+  contentId         String?
+  packageId         String?
+  status            String    @default("processing")
+  errorCode         String?
+  metadata          Json?
+  createdAt         DateTime  @default(now())
+  processedAt       DateTime?
+
+  @@unique([provider, eventId])
+  @@unique([provider, externalReference])
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
 model UserCosmeticUnlock {
   id         String   @id @default(cuid())
   userId     String
