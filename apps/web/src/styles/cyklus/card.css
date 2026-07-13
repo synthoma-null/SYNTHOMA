@@ -130,6 +130,8 @@
   display: grid;
   min-width: 0;
   min-height: 60px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
   padding: 8px 12px max(8px, env(safe-area-inset-bottom));
   place-items: center;
   border-top: 1px solid color-mix(in srgb, var(--cy-cyan), transparent 65%);
@@ -138,8 +140,43 @@
     var(--cy-panel-solid);
 }
 
-.cyklus-card-art__zoom {
-  display: none;
+.cyklus-card-art__open-viewer,
+.cyklus-card-art__zoom,
+.cyklus-card-art__reset {
+  display: inline-grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border: 1px solid var(--cy-line-strong);
+  border-radius: var(--cy-radius-sm);
+  background: var(--cy-button-bg);
+  color: var(--cy-cyan-soft);
+  font: 800 0.7rem/1 var(--cy-font-mono);
+}
+
+.cyklus-card-art__open-viewer {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+}
+
+.cyklus-card-art__open-viewer svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: square;
+  stroke-width: 1.7;
+}
+
+.cyklus-card-art__zoom-controls {
+  display: grid;
+  grid-template-columns: 44px minmax(68px, auto) 44px;
+  gap: 1px;
+}
+
+.cyklus-card-art__reset {
+  padding-inline: 8px;
 }
 
 .cyklus-card-art__reveal {
@@ -333,6 +370,75 @@
   padding-top: var(--cy-space-2);
   border-top: 1px solid var(--cy-line);
   background: var(--cy-line-dim);
+}
+
+body.cyklus-poster-lock {
+  overflow: hidden;
+}
+
+.cyklus-poster-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--cy-z-sheet) + 10);
+  display: grid;
+  width: 100vw;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overflow: hidden;
+  place-items: stretch;
+  background: #000;
+}
+
+.cyklus-poster-viewer__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgba(0, 0, 0, 0.96);
+}
+
+.cyklus-poster-viewer__surface {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cyklus-poster-viewer__close {
+  position: absolute;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
+  z-index: 12;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--cy-cyan);
+  border-radius: var(--cy-radius-sm);
+  background: rgba(0, 0, 0, 0.82);
+  color: var(--cy-text);
+  font: 1.5rem/1 var(--cy-font-mono);
+}
+
+.cyklus-poster-viewer .cyklus-card-art--fullscreen {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: 100%;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.cyklus-poster-viewer .cyklus-card-art__viewport {
+  padding: clamp(4px, 1vw, 12px);
+}
+
+.cyklus-poster-viewer .cyklus-card-art__footer {
+  padding-right: max(12px, env(safe-area-inset-right));
+  padding-left: max(12px, env(safe-area-inset-left));
 }
 
 .cyklus-choice-dock {
@@ -546,10 +652,6 @@
 }
 
 @media (max-width: 767px) {
-  body.cyklus-poster-lock {
-    overflow: hidden;
-  }
-
   .cyklus-root--poster-active {
     visibility: hidden;
     pointer-events: none;
@@ -558,9 +660,9 @@
   }
 
   .cyklus-card-art--fullscreen {
-    position: fixed;
-    inset: 0;
-    z-index: var(--cy-z-sheet);
+    position: relative;
+    inset: auto;
+    z-index: 1;
     width: 100vw;
     height: 100dvh;
     min-width: 0;
@@ -663,19 +765,8 @@
     width: 100%;
   }
 
-  .cyklus-card-art__zoom {
-    display: grid;
-    width: auto;
-    min-width: 82px;
-    min-height: 48px;
-    margin: 0;
-    padding: 0 10px;
-    place-items: center;
-    border: 1px solid var(--cy-line-strong);
-    border-radius: var(--cy-radius-sm);
-    background: transparent;
-    color: var(--cy-text-soft);
-    font: 800 0.62rem/1 var(--cy-font-mono);
+  .cyklus-card-art__zoom-controls {
+    grid-template-columns: 44px minmax(60px, auto) 44px;
   }
 
   .cyklus-root--swiping :is(.cyklus-mobile-hud, .cyklus-stat-dock, .cyklus-active-objective),

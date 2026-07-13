@@ -12,10 +12,10 @@ const presentation: CardPresentation = {
   revealLabel: 'OTEVŘÍT ZÁZNAM',
 };
 
-function renderFullscreen(onReveal = jest.fn()) {
+function renderFullscreen(onReveal = jest.fn(), onClose = jest.fn()) {
   const viewportSize = { width: 300, height: 400 };
   const rendered = render(
-    <CyklusCardPoster presentation={presentation} cardTitle="Cache bolesti" fullscreen onReveal={onReveal} />,
+    <CyklusCardPoster presentation={presentation} cardTitle="Cache bolesti" fullscreen onReveal={onReveal} onClose={onClose} />,
   );
   const viewport = screen.getByRole('region', { name: 'Obrazová strana karty Cache bolesti' });
   Object.defineProperty(viewport, 'getBoundingClientRect', {
@@ -31,12 +31,19 @@ function renderFullscreen(onReveal = jest.fn()) {
     viewport,
     image,
     onReveal,
+    onClose,
     resizeViewport(width: number, height: number) {
       viewportSize.width = width;
       viewportSize.height = height;
       fireEvent(window, new Event('resize'));
     },
   };
+}
+
+function zoomWithButtons(times = 3) {
+  for (let index = 0; index < times; index += 1) {
+    fireEvent.click(screen.getByRole('button', { name: 'Přiblížit obrázek' }));
+  }
 }
 
 function firePointer(
@@ -49,6 +56,7 @@ function firePointer(
     pointerId: { value: values.pointerId },
     clientX: { value: values.clientX },
     clientY: { value: values.clientY },
+    pointerType: { value: 'touch' },
   });
   fireEvent(target, event);
 }
@@ -60,32 +68,74 @@ describe('CyklusCardPoster responsive contract', () => {
     const footer = container.querySelector('.cyklus-card-art__footer') as HTMLElement;
     const reveal = screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' });
 
-    expect(shell).toHaveAttribute('data-poster-mode', 'mobile-fullscreen');
+    expect(shell).toHaveAttribute('data-poster-mode', 'fullscreen-viewer');
     expect(shell).toHaveAttribute('data-zoom-mode', 'complete');
     expect(viewport).toHaveAttribute('data-scale', '1');
     expect(viewport).toHaveAttribute('data-active-pointers', '0');
-    expect(viewport).toHaveAccessibleDescription('Obraz lze přiblížit dvěma prsty nebo tlačítkem Zvětšit.');
+    expect(viewport).toHaveAccessibleDescription('Obraz lze přiblížit kolečkem, tlačítky, dvojklikem nebo dvěma prsty a posouvat tažením.');
     expect(viewport).not.toContainElement(reveal);
     expect(footer).toContainElement(reveal);
-    expect(within(shell).getAllByRole('button')).toHaveLength(2);
-    expect(within(shell).queryByRole('button', { name: /Zrušit/i })).not.toBeInTheDocument();
+    expect(within(shell).getAllByRole('button')).toHaveLength(4);
+    expect(screen.getAllByRole('button', { name: 'Zavřít zvětšený obrázek' })).toHaveLength(2);
     expect(within(shell).getAllByRole('img')).toHaveLength(1);
   });
 
   it('uses the same transform state for the accessible zoom and complete-card buttons', () => {
     const { container, viewport, image } = renderFullscreen();
 
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
     expect(viewport).toHaveAttribute('data-scale', '2.5');
     expect(viewport).toHaveAttribute('data-mobile-mode', 'transform-zoom');
-    expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Obnovit 100 %' })).toHaveTextContent('250 %');
     expect(screen.getByRole('img', { name: 'Obrazový záznam: Cache bolesti' })).toBe(image);
     expect(container.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
 
-    fireEvent.click(screen.getByRole('button', { name: 'CELÁ KARTA' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Obnovit 100 %' }));
     expect(viewport).toHaveAttribute('data-scale', '1');
     expect(viewport).toHaveAttribute('data-translate-x', '0');
     expect(viewport).toHaveAttribute('data-translate-y', '0');
+  });
+
+  it('offers one explicit 44px fullscreen trigger on the contained poster', () => {
+    const onOpenViewer = jest.fn();
+    const { container } = render(
+      <CyklusCardPoster presentation={presentation} cardTitle="Cache bolesti" onReveal={jest.fn()} onOpenViewer={onOpenViewer} />,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Zvětšit obrázek' });
+    expect(trigger).toHaveAttribute('title', 'Zvětšit obrázek');
+    expect(trigger.querySelector('svg')).toBeInTheDocument();
+    expect(container.querySelectorAll('.cyklus-card-art__open-viewer')).toHaveLength(1);
+    expect(screen.getByRole('img')).toHaveAttribute('draggable', 'false');
+    fireEvent.click(trigger);
+    expect(onOpenViewer).toHaveBeenCalledTimes(1);
+  });
+
+  it('zooms with the mouse wheel, double click and mobile double tap', () => {
+    const { viewport } = renderFullscreen();
+
+    fireEvent.wheel(viewport, { deltaY: -100 });
+    expect(viewport).toHaveAttribute('data-scale', '1.5');
+    fireEvent.doubleClick(viewport);
+    expect(viewport).toHaveAttribute('data-scale', '1');
+
+    firePointer(viewport, 'pointerdown', { pointerId: 20, clientX: 140, clientY: 180 });
+    firePointer(viewport, 'pointerup', { pointerId: 20, clientX: 140, clientY: 180 });
+    firePointer(viewport, 'pointerdown', { pointerId: 21, clientX: 140, clientY: 180 });
+    firePointer(viewport, 'pointerup', { pointerId: 21, clientX: 140, clientY: 180 });
+    expect(viewport).toHaveAttribute('data-scale', '2.5');
+  });
+
+  it('closes from Escape and backdrop without revealing the card', () => {
+    const onClose = jest.fn();
+    const onReveal = jest.fn();
+    const { container } = renderFullscreen(onReveal, onClose);
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(onClose).toHaveBeenCalledTimes(1);
+    fireEvent.click(container.querySelector('.cyklus-poster-viewer__backdrop') as HTMLButtonElement);
+    expect(onClose).toHaveBeenCalledTimes(2);
+    expect(onReveal).not.toHaveBeenCalled();
   });
 
   it('zooms around the two-pointer midpoint and clamps scale to 1 through 4', () => {
@@ -97,10 +147,10 @@ describe('CyklusCardPoster responsive contract', () => {
 
     expect(viewport).toHaveAttribute('data-scale', '2');
     expect(viewport).toHaveAttribute('data-translate-x', '50');
-    expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Obnovit 100 %' })).toBeInTheDocument();
 
     firePointer(viewport, 'pointermove', { pointerId: 2, clientX: 900, clientY: 200 });
-    expect(viewport).toHaveAttribute('data-scale', '6');
+    expect(viewport).toHaveAttribute('data-scale', '4');
 
     firePointer(viewport, 'pointermove', { pointerId: 2, clientX: 110, clientY: 200 });
     expect(viewport).toHaveAttribute('data-scale', '1');
@@ -109,7 +159,7 @@ describe('CyklusCardPoster responsive contract', () => {
 
   it('pans a zoomed image in both axes without letting it leave the viewport', () => {
     const { viewport } = renderFullscreen();
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
 
     firePointer(viewport, 'pointerdown', { pointerId: 8, clientX: 150, clientY: 200 });
     firePointer(viewport, 'pointermove', { pointerId: 8, clientX: 900, clientY: 900 });
@@ -120,7 +170,7 @@ describe('CyklusCardPoster responsive contract', () => {
 
   it('clears every active pointer on pointercancel', () => {
     const { viewport } = renderFullscreen();
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
     firePointer(viewport, 'pointerdown', { pointerId: 4, clientX: 100, clientY: 100 });
     expect(viewport).toHaveAttribute('data-active-pointers', '1');
 
@@ -137,23 +187,23 @@ describe('CyklusCardPoster responsive contract', () => {
     firePointer(viewport, 'pointerdown', { pointerId: 2, clientX: 200, clientY: 200 });
     firePointer(viewport, 'pointermove', { pointerId: 1, clientX: -150, clientY: 200 });
     firePointer(viewport, 'pointermove', { pointerId: 2, clientX: 450, clientY: 200 });
-    expect(viewport).toHaveAttribute('data-scale', '6');
-    expect(viewport).toHaveAttribute('data-max-x', '750');
-    expect(viewport).toHaveAttribute('data-max-y', '1000');
+    expect(viewport).toHaveAttribute('data-scale', '4');
+    expect(viewport).toHaveAttribute('data-max-x', '450');
+    expect(viewport).toHaveAttribute('data-max-y', '600');
 
     firePointer(viewport, 'pointerup', { pointerId: 2, clientX: 450, clientY: 200 });
     firePointer(viewport, 'pointermove', { pointerId: 1, clientX: 2000, clientY: 2200 });
-    expect(viewport).toHaveAttribute('data-translate-x', '750');
-    expect(viewport).toHaveAttribute('data-translate-y', '1000');
+    expect(viewport).toHaveAttribute('data-translate-x', '450');
+    expect(viewport).toHaveAttribute('data-translate-y', '600');
 
     firePointer(viewport, 'pointermove', { pointerId: 1, clientX: -2000, clientY: -2200 });
-    expect(viewport).toHaveAttribute('data-translate-x', '-750');
-    expect(viewport).toHaveAttribute('data-translate-y', '-1000');
+    expect(viewport).toHaveAttribute('data-translate-x', '-450');
+    expect(viewport).toHaveAttribute('data-translate-y', '-600');
   });
 
   it('recomputes contain geometry and clamps the current view after rotation', () => {
     const { viewport, resizeViewport } = renderFullscreen();
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
     firePointer(viewport, 'pointerdown', { pointerId: 12, clientX: 150, clientY: 200 });
     firePointer(viewport, 'pointermove', { pointerId: 12, clientX: 900, clientY: 900 });
     expect(viewport).toHaveAttribute('data-translate-x', '225');
@@ -169,7 +219,7 @@ describe('CyklusCardPoster responsive contract', () => {
 
   it('resets scale, translation, pointers, and scroll when the card changes', async () => {
     const { rerender, viewport } = renderFullscreen();
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
     firePointer(viewport, 'pointerdown', { pointerId: 7, clientX: 100, clientY: 100 });
     viewport.scrollTop = 140;
 
@@ -179,6 +229,7 @@ describe('CyklusCardPoster responsive contract', () => {
         cardTitle="Gumový tuleň"
         fullscreen
         onReveal={jest.fn()}
+        onClose={jest.fn()}
       />,
     );
 
@@ -193,7 +244,7 @@ describe('CyklusCardPoster responsive contract', () => {
   it('resets gesture state before revealing without invoking a game choice', () => {
     const onReveal = jest.fn();
     const { viewport } = renderFullscreen(onReveal);
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
     fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));
 
     expect(onReveal).toHaveBeenCalledTimes(1);
@@ -204,7 +255,7 @@ describe('CyklusCardPoster responsive contract', () => {
   it('keeps the same image and transform when the document theme changes', () => {
     const { image, viewport } = renderFullscreen();
     const source = image.getAttribute('src');
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
+    zoomWithButtons();
 
     document.documentElement.setAttribute('data-theme', 'mono-light');
     document.body.setAttribute('data-theme', 'mono-light');

@@ -173,7 +173,7 @@ export default function CyklusClient() {
   const [dragX, setDragX] = useState(0);
   const [flyDirection, setFlyDirection] = useState<'yes' | 'no' | null>(null);
   const [cardArtRevealed, setCardArtRevealed] = useState(false);
-  const [mobilePosterPortal, setMobilePosterPortal] = useState(false);
+  const [posterViewerOpen, setPosterViewerOpen] = useState(false);
   const [runHistory, setRunHistory] = useState<CyklusRunSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
@@ -201,6 +201,7 @@ export default function CyklusClient() {
   const prevCycleRef = useRef<number>(1);
   const cardRef = useRef<HTMLDivElement>(null);
   const cardTitleRef = useRef<HTMLHeadingElement>(null);
+  const posterViewerTriggerRef = useRef<HTMLButtonElement>(null);
   const gesturePointerId = useRef<number | null>(null);
   const gestureStartX = useRef(0);
   const gestureStartY = useRef(0);
@@ -256,18 +257,19 @@ export default function CyklusClient() {
   }, [state, showMenu, activeCard, showTutorialSkip, setStatus, setActions]);
 
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 767px)');
-    const update = () => setMobilePosterPortal(media.matches);
-    update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
-
-  useEffect(() => {
-    if (!posterActive || !mobilePosterPortal) return;
+    if (!posterViewerOpen) return;
     document.body.classList.add('cyklus-poster-lock');
     return () => document.body.classList.remove('cyklus-poster-lock');
-  }, [mobilePosterPortal, posterActive]);
+  }, [posterViewerOpen]);
+
+  useEffect(() => {
+    setPosterViewerOpen(false);
+  }, [activeCard?.id, posterActive]);
+
+  const closePosterViewer = useCallback(() => {
+    setPosterViewerOpen(false);
+    window.setTimeout(() => posterViewerTriggerRef.current?.focus(), 0);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -787,7 +789,7 @@ export default function CyklusClient() {
       !ending ? 'cyklus-root--playing' : '',
       dragX !== 0 ? 'cyklus-root--swiping' : '',
       outcomeVisible ? 'cyklus-root--outcome-visible' : '',
-      showCardPoster ? 'cyklus-root--poster-active' : '',
+      posterViewerOpen ? 'cyklus-root--poster-active' : '',
     ].filter(Boolean).join(' ')}>
       {showSkipConfirm && (
         <div className="cyklus-no-select cyklus-overlay cyklus-overlay--warning">
@@ -1024,12 +1026,18 @@ export default function CyklusClient() {
               onClickCapture={onCardClickCapture}
               tabIndex={-1}
               data-gameplay-surface="fixed"
-              aria-hidden={showCardPoster && mobilePosterPortal ? true : undefined}
+              aria-hidden={posterViewerOpen ? true : undefined}
             >
-              {showCardPoster && !mobilePosterPortal && card.presentation && (
-                <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} onReveal={revealCardRecord} />
+              {showCardPoster && !posterViewerOpen && card.presentation && (
+                <CyklusCardPoster
+                  presentation={card.presentation}
+                  cardTitle={card.title}
+                  onReveal={revealCardRecord}
+                  onOpenViewer={() => setPosterViewerOpen(true)}
+                  zoomTriggerRef={posterViewerTriggerRef}
+                />
               )}
-              {(!showCardPoster || mobilePosterPortal) && (
+              {!showCardPoster && (
               <>
               {card.tags.includes('overload') && (
                 <div className="cyklus-card__overload">
@@ -1077,7 +1085,7 @@ export default function CyklusClient() {
         )}
       </main>
 
-      {!ending && card && (!showCardPoster || mobilePosterPortal) && (
+      {!ending && card && !showCardPoster && (
         <div
           className="cyklus-choice-dock"
           data-cyklus-choice-dock
@@ -1170,9 +1178,15 @@ export default function CyklusClient() {
 
     </div>
 
-    {showCardPoster && mobilePosterPortal && card?.presentation && createPortal(
+    {showCardPoster && posterViewerOpen && card?.presentation && createPortal(
       <CyklusPortalScope>
-        <CyklusCardPoster presentation={card.presentation} cardTitle={card.title} fullscreen onReveal={revealCardRecord} />
+        <CyklusCardPoster
+          presentation={card.presentation}
+          cardTitle={card.title}
+          fullscreen
+          onReveal={revealCardRecord}
+          onClose={closePosterViewer}
+        />
       </CyklusPortalScope>,
       document.body,
     )}

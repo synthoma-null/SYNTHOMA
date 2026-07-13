@@ -463,12 +463,15 @@ describe('CyklusClient', () => {
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(0);
   });
 
-  it('moves the mobile poster into a fullscreen portal and restores gameplay chrome', async () => {
-    mockMobileViewport(true);
+  it('opens one fullscreen poster viewer and restores gameplay chrome and focus', async () => {
     document.documentElement.setAttribute('data-theme', 'acid-glitch');
     await renderPosterRun();
 
-    const poster = await screen.findByTestId('synthoma-command-header').then(() => document.body.querySelector('.cyklus-card-art--fullscreen') as HTMLElement);
+    const trigger = screen.getByRole('button', { name: 'Zvětšit obrázek' });
+    expect(document.querySelector('.cyklus-card-art--fullscreen')).not.toBeInTheDocument();
+    fireEvent.click(trigger);
+
+    const poster = await screen.findByRole('dialog', { name: 'Zvětšený obrázek karty Šumový filtr' });
     const root = document.querySelector('.cyklus-root--playing') as HTMLElement;
     expect(poster).toBeInTheDocument();
     expect(root).toHaveClass('cyklus-root--poster-active');
@@ -483,8 +486,8 @@ describe('CyklusClient', () => {
     expect(portal).toHaveAttribute('data-cyklus-theme', 'acid-glitch');
     expect(portal).toHaveAttribute('data-cyklus-text-scale', '1');
 
-    fireEvent.click(screen.getByRole('button', { name: 'ZVĚTŠIT' }));
-    expect(screen.getByRole('button', { name: 'CELÁ KARTA' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Přiblížit obrázek' }));
+    expect(screen.getByRole('button', { name: 'Obnovit 100 %' })).toHaveTextContent('150 %');
     document.documentElement.setAttribute('data-theme', 'mono-light');
     document.documentElement.style.setProperty('--font-size-multiplier', '1.4');
     await waitFor(() => {
@@ -493,14 +496,14 @@ describe('CyklusClient', () => {
       expect(portal).toHaveStyle({ '--font-size-multiplier': '1.4' });
     });
     expect(document.querySelector('.cyklus-card-art__image')).toBe(portalImage);
-    expect(screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' })).toHaveAttribute('data-scale', '2.5');
-    fireEvent.click(screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' }));
+    expect(within(poster).getByRole('region', { name: 'Obrazová strana karty Šumový filtr' })).toHaveAttribute('data-scale', '1.5');
+    fireEvent.click(poster.querySelector('.cyklus-poster-viewer__close') as HTMLButtonElement);
 
-    await waitFor(() => expect(document.querySelector('.cyklus-card-art--fullscreen')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Zvětšený obrázek karty Šumový filtr' })).not.toBeInTheDocument());
     expect(root).not.toHaveClass('cyklus-root--poster-active');
     expect(document.body).not.toHaveClass('cyklus-poster-lock');
     expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Šumový filtr' })).toHaveFocus();
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Zvětšit obrázek' })).toHaveFocus());
   });
 
   it('maps a right swipe on a reversed poster card to its semantic no choice', async () => {
