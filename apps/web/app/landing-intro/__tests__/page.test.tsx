@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import LandingIntroPage from '../page';
+import { LangProvider } from '../../../src/lib/LangContext';
 
 const replace = jest.fn();
 
@@ -26,6 +27,7 @@ const readStorage = jest.requireMock('../../../src/lib/browser').readStorage as 
 beforeEach(() => {
   jest.useFakeTimers();
   jest.clearAllMocks();
+  localStorage.clear();
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation((query: string) => ({ matches: false, media: query })),
@@ -90,5 +92,14 @@ describe('LandingIntroPage', () => {
   it('reads the intro storage version once', () => {
     render(<LandingIntroPage />);
     expect(readStorage).toHaveBeenCalledTimes(1);
+  });
+
+  it('restores the saved English intro without rendering a locale control', async () => {
+    localStorage.setItem('synthoma_lang', 'en');
+    render(<LangProvider><LandingIntroPage /></LangProvider>);
+
+    expect(await screen.findByText('Subject detected.')).toBeInTheDocument();
+    expect(screen.getByText('Darkness is never real. It is only light that has surrendered its meaning.')).toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 });
