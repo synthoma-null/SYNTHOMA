@@ -443,6 +443,36 @@
 .profile-error p,
 .subject-auth-gate p { margin: 0; color: var(--cy-text-soft); font: 600 14px/1.5 var(--font-family-primary), system-ui, sans-serif; }
 
+.profile-error .profile-error__code,
+.profile-error .profile-error__reference {
+  color: var(--cy-accent-primary);
+  font: 800 10px/1.3 var(--cy-font-mono);
+}
+
+.profile-error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-data-notice {
+  display: flex;
+  min-height: 42px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px;
+  border-bottom: 1px solid var(--cy-line);
+  background: var(--cy-surface-2);
+  color: var(--cy-text-soft);
+  font: 600 12px/1.4 var(--font-family-primary), system-ui, sans-serif;
+}
+
+.profile-data-notice strong {
+  color: var(--cy-accent-primary);
+  font: 800 10px/1.2 var(--cy-font-mono);
+}
+
 .subject-auth-gate h2 {
   margin: 0;
   color: var(--cy-text);

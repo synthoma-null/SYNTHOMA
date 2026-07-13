@@ -16,6 +16,9 @@ import MnemHistoryPanel, {
 } from './MnemHistoryPanel';
 
 export interface ProfileData {
+  dataState?: 'empty' | 'partial' | 'ready';
+  correlationId?: string | null;
+  warnings?: string[];
   user: {
     id: string;
     nickname: string;
@@ -79,7 +82,7 @@ function formatDate(value: string | null): string {
 
 function LoadingSkeleton() {
   return (
-    <div className="profile-skeleton" aria-label="Načítání profilu" aria-busy="true">
+    <div className="profile-skeleton" data-profile-state="loading" aria-label="Načítání profilu" aria-busy="true">
       <span /><span /><span /><span />
     </div>
   );
@@ -88,7 +91,7 @@ function LoadingSkeleton() {
 export default function ProfileDashboard({ userId, nickname, mode = 'standalone', onClose }: Props) {
   const [data, setData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<{ correlationId?: string } | null>(null);
   const [retry, setRetry] = useState(0);
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -96,11 +99,12 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
-    setError(false);
+    setError(null);
     fetch('/api/me/profile', { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error('Profile request failed');
-        return response.json();
+      .then(async (response) => {
+        const payload = await response.json() as ProfileData & { correlationId?: string };
+        if (!response.ok) throw { profileRequest: true, correlationId: payload.correlationId };
+        return payload;
       })
       .then((profile: ProfileData) => {
         setData(profile);
@@ -109,7 +113,10 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
       .catch((requestError: unknown) => {
         if (requestError instanceof DOMException && requestError.name === 'AbortError') return;
         setLoading(false);
-        setError(true);
+        const correlationId = typeof requestError === 'object' && requestError !== null && 'correlationId' in requestError
+          ? String((requestError as { correlationId?: unknown }).correlationId ?? '')
+          : undefined;
+        setError(correlationId ? { correlationId } : {});
       });
     return () => controller.abort();
   }, [retry, userId]);
@@ -140,9 +147,15 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
   if (loading) return <LoadingSkeleton />;
   if (error || !data) {
     return (
-      <div className="profile-error" role="alert">
+      <div className="profile-error" data-profile-state="database-error" role="alert">
+        <p className="profile-error__code">LOG [PROFILE_SYNC]</p>
         <p>Profil subjektu se nepodařilo načíst.</p>
-        <button className="btn" type="button" onClick={() => setRetry((value) => value + 1)}>ZKUSIT ZNOVU</button>
+        <p>Databáze zřejmě opět předstírá, že neví, kdo jste.</p>
+        {error?.correlationId ? <p className="profile-error__reference">REF {error.correlationId}</p> : null}
+        <div className="profile-error__actions">
+          <button className="btn" type="button" onClick={() => setRetry((value) => value + 1)}>ZKUSIT ZNOVU</button>
+          {onClose ? <button className="btn btn-outline" type="button" onClick={onClose}>ZAVŘÍT</button> : null}
+        </div>
       </div>
     );
   }
@@ -151,8 +164,9 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
   const cognitive = psyche ? ([['NI', psyche.ni], ['FE', psyche.fe], ['TI', psyche.ti], ['SE', psyche.se]] as const) : [];
   const strongest = cognitive.reduce<(typeof cognitive)[number] | null>((best, item) => (!best || item[1] > best[1] ? item : best), null);
 
+  const profileState = data.dataState ?? 'ready';
   const content = (
-    <div className="subject-dossier">
+    <div className="subject-dossier" data-profile-state={profileState}>
       <SubjectHeader
         nickname={nickname || data.user.nickname}
         title={data.user.profile?.title ?? 'Subjekt bez klasifikace'}
@@ -163,6 +177,18 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
       />
 
       <div className="subject-dossier__main">
+        {profileState === 'partial' ? (
+          <div className="profile-data-notice" role="status">
+            <strong>ČÁSTEČNÝ ZÁZNAM</strong>
+            <span>Některé vrstvy profilu nejsou dostupné. Zbytek spisu zůstal čitelný.</span>
+          </div>
+        ) : null}
+        {profileState === 'empty' ? (
+          <div className="profile-data-notice" role="status">
+            <strong>PRÁZDNÝ PROFIL</strong>
+            <span>Subjekt existuje. Data zatím jen sbírají odvahu.</span>
+          </div>
+        ) : null}
         <div className="subject-dossier__topbar">
           <div>
             <span>SUBJECT DOSSIER // VERIFIED</span>

@@ -127,10 +127,12 @@ export default function SubjectProfilePanelClient() {
             <button ref={closeRef} className="profile-panel-close btn btn-sm" type="button" aria-label={t('profile.panel.close')} onClick={() => closePanel()}>×</button>
           </div>
           <div className="profile-panel-body">
-            {open && status === 'authenticated' && session?.user ? (
+            {open && status === 'loading' ? (
+              <div className="profile-skeleton" data-profile-state="loading" aria-busy="true" aria-label="Načítání identity"><span /><span /><span /></div>
+            ) : open && status === 'authenticated' && session?.user ? (
               <ProfileDashboard userId={userId} nickname={session.user.name ?? ''} mode="popup" onClose={() => closePanel()} />
             ) : open && status !== 'loading' ? (
-              <section className="subject-auth-gate" aria-labelledby="subject-auth-title">
+              <section className="subject-auth-gate" data-profile-state="signed-out" aria-labelledby="subject-auth-title">
                 <span className="subject-auth-gate__code">AUTH_GATE // 401</span>
                 <h2 id="subject-auth-title">IDENTITA NEROZPOZNÁNA</h2>
                 <p>Systém neví, kdo jsi. Tentokrát to není metafora.</p>
