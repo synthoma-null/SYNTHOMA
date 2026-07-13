@@ -72,7 +72,7 @@ export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose
 
   return (
     <div className={`sync-overlay${visible ? ' sync-overlay--visible' : ''}`} onClick={handleClose}>
-      <div className="sync-panel" onClick={(e) => e.stopPropagation()}>
+      <div className="sync-panel os-surface" onClick={(e) => e.stopPropagation()}>
         <div className="sync-header">
           <span className="sync-log-prefix">LOG [CHAPTER_SYNC]:</span>
           <span className="sync-chapter-title">{chapterTitle}</span>

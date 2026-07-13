@@ -3844,9 +3844,6 @@
 .sync-overlay--visible { opacity: 1; }
 
 .sync-panel {
-  background: var(--bg-panel, #0f0f1a);
-  border: 1px solid var(--accent-primary, #7c5cff);
-  border-radius: 12px;
   padding: 24px;
   max-width: 480px;
   width: 100%;
@@ -3855,6 +3852,7 @@
   gap: 14px;
   box-shadow: 0 0 40px rgba(124,92,255,.15);
 }
+.sync-panel.os-surface { border-color: var(--accent-primary, #7c5cff); border-radius: 12px; }
 
 .sync-header { display: flex; flex-direction: column; gap: 3px; }
 .sync-log-prefix { font-family: 'Text02', monospace; font-size: .66rem; letter-spacing: .12em; color: var(--accent-primary, #7c5cff); }
