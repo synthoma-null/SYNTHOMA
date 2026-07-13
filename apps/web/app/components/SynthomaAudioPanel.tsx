@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { usePathname } from 'next/navigation';
 import { tracks, type Track } from '../../src/data/playlist';
 import { getSharedAudio } from '../../src/lib/audio';
 
@@ -45,6 +46,8 @@ function AudioIcon({ name }: { name: 'previous' | 'play' | 'pause' | 'next' | 'v
 }
 
 export default function SynthomaAudioPanel() {
+  const pathname = usePathname();
+  const isCyklusGameplay = pathname === '/cyklus';
   const playlist = useMemo(orderedTracks, []);
   const [open, setOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -204,7 +207,7 @@ export default function SynthomaAudioPanel() {
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   return (
-    <div id="synthoma-audio-panel" className={`synthoma-audio-panel${open ? ' is-open' : ''}`} aria-hidden={!open}>
+    <div id="synthoma-audio-panel" className={`synthoma-audio-panel${open ? ' is-open' : ''}${isCyklusGameplay ? ' cyklus-no-select' : ''}`} aria-hidden={!open}>
       <button className="synthoma-audio-panel__backdrop" type="button" aria-label="Zavřít hudební přehrávač" onClick={() => setOpen(false)} />
       <section className="synthoma-audio-panel__surface" role="dialog" aria-modal="true" aria-labelledby="synthoma-audio-title">
         <header className="synthoma-audio-panel__header">

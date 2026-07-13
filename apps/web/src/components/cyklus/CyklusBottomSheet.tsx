@@ -25,7 +25,7 @@ export default function CyklusBottomSheet({ open, onClose, title, children }: Cy
   if (!open) return null;
 
   return (
-    <div className="cyklus-bottom-sheet__backdrop">
+    <div className="cyklus-no-select cyklus-bottom-sheet__backdrop">
       <button className="cyklus-bottom-sheet__dismiss" type="button" onClick={onClose} aria-label={`Zavřít ${title}`} />
       <div
         className="cyklus-bottom-sheet"

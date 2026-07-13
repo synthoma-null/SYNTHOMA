@@ -118,7 +118,7 @@ export default function SubjectProfilePanelClient() {
   const userId = (session?.user as { id?: string } | undefined)?.id ?? '';
 
   return (
-    <div className={`id-panel-root${isCyklusGameplay ? ' id-panel-root--cyklus' : ''}`}>
+    <div className={`id-panel-root${isCyklusGameplay ? ' id-panel-root--cyklus cyklus-no-select' : ''}`}>
       <div id="profile-panel-root" className={`profile-panel-root${open ? ' open' : ''}`}>
         {open && <button className="profile-panel-backdrop" type="button" tabIndex={-1} aria-label="Zavřít profil kliknutím mimo panel" onClick={() => closePanel()} />}
         <div id="id-panel-popup" ref={dialogRef} className={`profile-panel-popup${open ? ' visible' : ''}`} role="dialog" aria-modal="true" aria-label={t('profile.panel.aria')} aria-hidden={open ? undefined : true}>

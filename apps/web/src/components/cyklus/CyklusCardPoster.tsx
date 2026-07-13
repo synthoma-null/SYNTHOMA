@@ -295,6 +295,7 @@ export default function CyklusCardPoster({
             loading="eager"
             decoding="async"
             draggable={false}
+            onDragStart={(event) => event.preventDefault()}
             onLoad={measureGeometry}
             style={{ '--card-art-position': presentation.focalPoint ?? 'center' } as React.CSSProperties}
           />

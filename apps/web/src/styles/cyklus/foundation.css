@@ -26,6 +26,25 @@
   color: var(--cy-text-inverse);
 }
 
+.cyklus-no-select,
+.cyklus-no-select * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.cyklus-no-select img {
+  -webkit-user-drag: none;
+}
+
+.cyklus-no-select input,
+.cyklus-no-select textarea,
+.cyklus-no-select select,
+.cyklus-no-select [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 .cy-frame {
   position: relative;
   border: 1px solid var(--cy-line);

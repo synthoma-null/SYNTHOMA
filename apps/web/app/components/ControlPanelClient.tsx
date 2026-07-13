@@ -3,6 +3,7 @@
 
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import { getSharedAudio } from "../../src/lib/audio";
 
@@ -55,6 +56,13 @@ declare global {
 
 
 export default function ControlPanelClient() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const panel = document.getElementById('control-panel');
+    panel?.classList.toggle('cyklus-no-select', pathname === '/cyklus');
+    return () => panel?.classList.remove('cyklus-no-select');
+  }, [pathname]);
 
   useEffect(() => {
 

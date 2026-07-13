@@ -8,7 +8,7 @@ export default function CyklusPortalScope({ children }: PropsWithChildren) {
 
   return (
     <div
-      className="cyklus-poster-portal"
+      className="cyklus-no-select cyklus-poster-portal"
       data-theme={context.theme}
       data-cyklus-theme={context.theme}
       data-cyklus-text-scale={context.textScale}

@@ -714,7 +714,7 @@ export default function CyklusClient() {
 
   if (showMenu) {
     return (
-      <div className="cyklus-root cyklus-root--menu">
+      <div className="cyklus-no-select cyklus-root cyklus-root--menu">
         <video className="cyklus-menu__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1}>
           <source src="/video/SYNTHOMA5.webm" type="video/webm" />
         </video>
@@ -763,7 +763,7 @@ export default function CyklusClient() {
           </div>
         </main>
         {showVoidHub && (
-          <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
+          <div className="cyklus-no-select cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
             <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu" />
             <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Prázdnota">
               <button className="cyklus-overlay__close" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu">×</button>
@@ -790,6 +790,7 @@ export default function CyklusClient() {
   return (
     <>
     <div className={[
+      'cyklus-no-select',
       'cyklus-root',
       ending ? 'cyklus-root--ended' : '',
       !ending ? 'cyklus-root--playing' : '',
@@ -798,7 +799,7 @@ export default function CyklusClient() {
       showCardPoster ? 'cyklus-root--poster-active' : '',
     ].filter(Boolean).join(' ')}>
       {showSkipConfirm && (
-        <div className="cyklus-overlay cyklus-overlay--warning">
+        <div className="cyklus-no-select cyklus-overlay cyklus-overlay--warning">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu" />
           <section className="cyklus-system-modal cyklus-system-modal--warning" role="dialog" aria-modal="true" aria-labelledby="cyklus-skip-tutorial-title">
             <header className="cyklus-system-modal__header">
@@ -980,6 +981,7 @@ export default function CyklusClient() {
             <div
               ref={cardRef}
               className={[
+                'cyklus-no-select',
                 'cyklus-card',
                 `cyklus-card--category-${card.category}`,
                 outcomeVisible ? 'cyklus-card--outcome' : '',
@@ -1306,7 +1308,7 @@ export default function CyklusClient() {
       </CyklusBottomSheet>
 
       {showBuild && state && (
-        <div className="cyklus-overlay cyklus-overlay--build">
+        <div className="cyklus-no-select cyklus-overlay cyklus-overlay--build">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowBuild(false)} aria-label="Zavřít build" />
           <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Build a stabilizace">
             <button className="cyklus-overlay__close" type="button" onClick={() => setShowBuild(false)} aria-label="Zavřít build">×</button>
@@ -1329,7 +1331,7 @@ export default function CyklusClient() {
       )}
 
       {showDiscovery && (
-        <div className="cyklus-overlay cyklus-overlay--discovery">
+        <div className="cyklus-no-select cyklus-overlay cyklus-overlay--discovery">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowDiscovery(false)} aria-label="Zavřít archiv" />
           <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Archiv a objevy">
             <button className="cyklus-overlay__close" type="button" onClick={() => setShowDiscovery(false)} aria-label="Zavřít archiv">×</button>
@@ -1338,7 +1340,7 @@ export default function CyklusClient() {
         </div>
       )}
       {showVoidHub && (
-        <div className="cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
+        <div className="cyklus-no-select cyklus-overlay cyklus-overlay--build cyklus-overlay--void-hub">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu" />
           <div className="cyklus-overlay__panel" role="dialog" aria-modal="true" aria-label="Prázdnota">
             <button className="cyklus-overlay__close" type="button" onClick={() => setShowVoidHub(false)} aria-label="Zavřít Prázdnotu">×</button>

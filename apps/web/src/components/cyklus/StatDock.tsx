@@ -98,7 +98,7 @@ function StatPopup({ statKey, value, history, onClose }: StatPopupProps) {
   const changes = getRecentChanges(history, statKey);
   const danger = getDangerProximity(value);
   return (
-    <div className="cyklus-stat-popup-overlay" onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}>
+    <div className="cyklus-no-select cyklus-stat-popup-overlay" onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}>
       <button className="cyklus-stat-popup-backdrop" type="button" onClick={onClose} aria-label={`Zavřít popis statu ${STAT_LABELS[statKey]}`} />
       <div className="cyklus-stat-popup" role="dialog" aria-modal="true" aria-label={`Popis statu ${STAT_LABELS[statKey]}`}>
         <div className={`cyklus-stat-popup__header cyklus-stat-popup__header--${state}`}>

@@ -53,7 +53,7 @@ export default function CyklusCardOverlay({ label, variant, onClose, panelClassN
   }, [onClose]);
 
   return (
-    <div className={`cyklus-card-overlay cyklus-card-overlay--${variant}`} data-testid={`cyklus-card-overlay-${variant}`}>
+    <div className={`cyklus-no-select cyklus-card-overlay cyklus-card-overlay--${variant}`} data-testid={`cyklus-card-overlay-${variant}`}>
       <button className="cyklus-card-overlay__backdrop" type="button" tabIndex={-1} aria-label={`Zavřít: ${label}`} onClick={onClose} />
       <section
         ref={panelRef}

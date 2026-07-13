@@ -230,7 +230,7 @@ export function CyklusVoidHubClient({
 
   if (loading) {
     return (
-      <section className="cyklus-void-client-shell" aria-live="polite">
+      <section className="cyklus-no-select cyklus-void-client-shell" aria-live="polite">
         <div className="cyklus-void-client-loading">
           <p className="cyklus-panel-kicker">VOID_BOOT</p>
           <h1>Prázdnota nabíhá</h1>
@@ -241,7 +241,7 @@ export function CyklusVoidHubClient({
   }
 
   return (
-    <section className="cyklus-void-client-shell" aria-busy={busy}>
+    <section className="cyklus-no-select cyklus-void-client-shell" aria-busy={busy}>
       <div className="cyklus-void-client-toolbar">
         <p className="cyklus-panel-kicker">VOID_ROUTE</p>
         <span className={['cyklus-void-client-status', noticeClass(notice.kind)].join(' ')}>{notice.text}</span>

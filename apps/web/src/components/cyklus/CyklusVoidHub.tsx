@@ -440,7 +440,7 @@ export function CyklusVoidHub({ progression, state = null, initialTab = 'overvie
   const activePanelId = `void-hub-panel-${active}`;
 
   return (
-    <section className={cx('cyklus-void-hub', compact && 'is-compact')} aria-label="Prázdnota SYNTHOMA">
+    <section className={cx('cyklus-no-select', 'cyklus-void-hub', compact && 'is-compact')} aria-label="Prázdnota SYNTHOMA">
       <header className="void-hub-hero">
         <div className="void-hub-hero__identity">
           <p className="cyklus-panel-kicker">SYNTHOMA OS / PRÁZDN0TA</p>
