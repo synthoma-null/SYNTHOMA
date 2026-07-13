@@ -2,16 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { auth } from '../../../../auth';
-import { canReadChapter } from '../../../../src/lib/access';
-import { getChapterById } from '../../../../src/content/booksManifest';
+import { getChapterCatalogEntry } from '../../../../src/content/catalog';
+import { getContentAccess } from '../../../../src/server/economy';
 
 const FREE_DIR = path.join(process.cwd(), 'public', 'books', 'SYNTHOMA-NULL');
 const PROTECTED_DIR = path.join(process.cwd(), 'src', 'content', 'protected', 'SYNTHOMA-NULL');
 
 function safeFilename(filename: string): string | null {
   const base = path.basename(filename);
-  if (base !== filename) return null;
-  if (base.includes('..') || base.includes('/') || base.includes('\\')) return null;
+  if (base !== filename || base.includes('..') || base.includes('/') || base.includes('\\')) return null;
   return base;
 }
 
@@ -20,56 +19,52 @@ export async function GET(
   { params }: { params: Promise<{ chapterId: string }> },
 ) {
   const { chapterId } = await params;
-  const chapter = getChapterById(chapterId);
-
+  const chapter = getChapterCatalogEntry(chapterId);
   if (!chapter) {
     return NextResponse.json(
       { error: 'CHAPTER_NOT_FOUND', message: 'Fragment neexistuje.' },
       { status: 404 },
     );
   }
+  if (chapter.availability !== 'published') {
+    return NextResponse.json(
+      { error: 'CONTENT_UNAVAILABLE', message: 'Fragment zatím nebyl publikován.' },
+      { status: 409 },
+    );
+  }
+
+  const session = await auth();
+  const access = await getContentAccess(session?.user?.id ?? null, 'chapter', chapter.id);
+  if (!access.canAccess) {
+    return NextResponse.json(
+      { error: 'CONTENT_LOCKED', message: 'Fragment je uzamčen.', access },
+      { status: 403, headers: { 'Cache-Control': 'private, no-store' } },
+    );
+  }
 
   const lang = req.nextUrl.searchParams.get('lang');
-  const rawFilename = (lang === 'en' && chapter.filename_en) ? chapter.filename_en : chapter.filename;
+  const rawFilename = lang === 'en' && chapter.filenameEn ? chapter.filenameEn : chapter.filename;
   const safeFile = safeFilename(rawFilename);
   if (!safeFile) {
-    return NextResponse.json({ error: 'INVALID_PATH' }, { status: 400 });
+    return NextResponse.json({ error: 'INVALID_PATH' }, { status: 500 });
   }
 
-  if (chapter.access === 'paid') {
-    const session = await auth();
-    const userId = session?.user?.id;
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'ACCESS_DENIED', message: 'Nedostatek mnemů. Paměťový fragment zůstává uzamčen.' },
-        { status: 402 },
-      );
-    }
-    const allowed = await canReadChapter(userId, chapterId);
-    if (!allowed) {
-      return NextResponse.json(
-        { error: 'ACCESS_DENIED', message: 'Nedostatek mnemů. Paměťový fragment zůstává uzamčen.' },
-        { status: 402 },
-      );
-    }
-  }
-
-  const dir = chapter.access === 'free' ? FREE_DIR : PROTECTED_DIR;
-  const filePath = path.join(dir, safeFile);
-
+  const dir = chapter.accessPolicy === 'free' ? FREE_DIR : PROTECTED_DIR;
   try {
-    const html = await readFile(filePath, 'utf-8');
+    const html = await readFile(path.join(dir, safeFile), 'utf-8');
     return new NextResponse(html, {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
         'Cache-Control': 'private, no-store',
+        Vary: 'Cookie',
       },
     });
-  } catch {
+  } catch (error) {
+    console.error('[chapter/file-missing]', { chapterId: chapter.id, filename: safeFile, error });
     return NextResponse.json(
-      { error: 'CHAPTER_NOT_FOUND', message: 'Fragment nenalezen na disku.' },
-      { status: 404 },
+      { error: 'CONTENT_FILE_MISSING', message: 'Publikovaný fragment nelze bezpečně načíst.' },
+      { status: 500 },
     );
   }
 }

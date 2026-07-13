@@ -14,6 +14,8 @@ import { getChapterById } from '../../src/content/booksManifest';
 import ChapterSyncLog, { type SyncDelta } from '../../src/components/run/ChapterSyncLog';
 import { useLang } from '../../src/lib/LangContext';
 import { useAccess } from '../../src/components/access/AccessProvider';
+import NextChapterAction from '../../src/components/reader/NextChapterAction';
+import type { ContentAccess } from '../../src/content/catalog';
 
 // Duplicated transform and reveal logic removed in favor of TypewriterReader
 
@@ -47,8 +49,9 @@ export default function ReaderContent() {
   const handleFetchError = useCallback((status: number) => {
     if (status === 402 || status === 403) setPaywalled(true);
   }, []);
-  const [prevChapter, setPrevChapter] = useState<{ title: string; path: string } | null>(null);
-  const [nextChapter, setNextChapter] = useState<{ title: string; path: string } | null>(null);
+  const [prevChapter, setPrevChapter] = useState<{ id: string; title: string; route: string } | null>(null);
+  const [nextChapter, setNextChapter] = useState<{ id: string; title: string; route: string } | null>(null);
+  const [nextChapterAccess, setNextChapterAccess] = useState<ContentAccess | undefined>();
   const [instantMode, setInstantMode] = useState(() => readBooleanStorage('instantReadMode', false));
   const [scrollPercent, setScrollPercent] = useState(0);
   const [isDebug] = useState(() => true); // Vždy zapnutý debug pro PDF tlačítko
@@ -203,34 +206,32 @@ export default function ReaderContent() {
     return () => { try { detach && detach(); } catch {} };
   }, []);
 
-  // Fetch chapter neighbors (prev/next) from manifest
+  // Fetch safe navigation metadata and access from the canonical server resolver.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch('/books/manifest.json', { cache: 'no-store' });
+        if (!effectiveChapterId) return;
+        const res = await fetch(
+          `/api/content/chapters/${encodeURIComponent(effectiveChapterId)}/navigation`,
+          { cache: 'no-store' },
+        );
         if (!res.ok) return;
-        const manifest = await res.json();
-        const col = (manifest?.collections || []).find((c: any) => (c.slug || '').toLowerCase() === (bookId || '').toLowerCase());
-        if (!col?.chapters?.length) return;
-        const idx = col.chapters.findIndex((ch: any) => ch.path === chapterPath);
-        if (idx < 0) return;
+        const navigation = await res.json() as {
+          previous: { id: string; title: string; route: string } | null;
+          next: { id: string; title: string; route: string; access?: ContentAccess } | null;
+        };
         if (cancelled) return;
-        setPrevChapter(idx > 0 ? { title: col.chapters[idx - 1].title, path: col.chapters[idx - 1].path } : null);
-        const next = idx < col.chapters.length - 1 ? col.chapters[idx + 1] : null;
-        setNextChapter(next ? { title: next.title, path: next.path } : null);
-        if (next?.id) {
-          const [nextAccess] = await resolveAccess([{ contentType: 'chapter', contentId: next.id }]);
-          if (!cancelled && nextAccess && !nextAccess.canAccess && nextAccess.state !== 'unavailable') {
-            setNextLockedChapter({ id: next.id, title: next.title });
-          } else if (!cancelled) {
-            setNextLockedChapter(null);
-          }
+        setPrevChapter(navigation.previous);
+        setNextChapter(navigation.next);
+        setNextChapterAccess(navigation.next?.access);
+        if (navigation.next?.access && !navigation.next.access.canAccess && navigation.next.access.state !== 'unavailable') {
+          setNextLockedChapter({ id: navigation.next.id, title: navigation.next.title });
         } else setNextLockedChapter(null);
       } catch {}
     })();
     return () => { cancelled = true; };
-  }, [bookId, chapterPath, resolveAccess]);
+  }, [effectiveChapterId, accessVersion]);
 
   // Detect chapter completion at scroll >= 95% and show ChapterSyncLog
   useEffect(() => {
@@ -473,6 +474,12 @@ export default function ReaderContent() {
         </section>
 
       </main>
+
+      <NextChapterAction
+        nextChapter={nextChapter}
+        access={nextChapterAccess}
+        onPurchased={(chapter) => router.push(chapter.route ?? `/chapter/${encodeURIComponent(chapter.id)}`)}
+      />
 
       {/* Help Modal */}
       {showHelp && (
