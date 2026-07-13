@@ -122,7 +122,7 @@
         "restart",
         "beh",
         "glitchka",
-        "rest"
+      "casoprostor-smycky"
       ],
       "order": 3,
       "access": {
@@ -347,7 +347,7 @@
       "related": [
         "null-1",
         "sarkasma",
-        "piskoviste",
+      "fragmenty-identity",
         "glitchena"
       ],
       "order": 8,
@@ -573,7 +573,7 @@
       },
       "related": [
         "null-1",
-        "piskoviste",
+      "fragmenty-identity",
         "fyzika-ontologie",
         "t-ai"
       ],
