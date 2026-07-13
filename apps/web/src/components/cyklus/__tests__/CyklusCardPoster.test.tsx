@@ -228,6 +228,6 @@ describe('CyklusCardPoster responsive contract', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/card.css'), 'utf8');
 
     expect(css).not.toMatch(/\.cyklus-card\s*\{[^}]*height:\s*min\(100%,/);
-    expect(css).toMatch(/\.cyklus-card\s*\{[^}]*height:\s*clamp\(/);
+    expect(css).toMatch(/\.cyklus-card\s*\{[^}]*height:\s*100%/);
   });
 });

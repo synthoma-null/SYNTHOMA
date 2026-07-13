@@ -273,12 +273,12 @@
 
 @media (min-width: 1366px) {
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
-    grid-template-columns: minmax(240px, 300px) minmax(520px, 760px) minmax(240px, 320px);
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
     gap: var(--cy-space-5);
   }
 
   .cyklus-card {
-    width: min(100%, 720px);
+    width: min(100%, 1360px);
   }
 
   .cyklus-void-client-shell {
@@ -289,7 +289,7 @@
 @media (min-width: 1600px) {
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu),
   .cyklus-void-client-shell {
-    width: min(100%, 1440px);
+    width: min(100%, 1760px);
   }
 }
 

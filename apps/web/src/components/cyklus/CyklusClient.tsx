@@ -1053,15 +1053,6 @@ export default function CyklusClient() {
               {card.category === 'restart' && (
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
-              <div data-card-actions className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
-                {getCardChoiceOrder(card).map((choice, index) => {
-                  const side: PhysicalCardSide = index === 0 ? 'left' : 'right';
-                  const outcome = card[choice];
-                  const label = choice === 'yes' ? card.yesLabel : card.noLabel;
-                  const fly = side === 'right' ? 'yes' : 'no';
-                  return directionPreview(state, card, outcome.preview, choice, side, shouldLimitPreview(card), label, () => handleChoice(choice, fly), outcomeVisible, side);
-                })}
-              </div>
               {outcomeVisible && state.lastOutcomeText && (
                 <OutcomePanel state={state} onDismiss={dismissOutcome} />
               )}
@@ -1085,6 +1076,28 @@ export default function CyklusClient() {
           <div className="cyklus-empty">Karta nenalezena.</div>
         )}
       </main>
+
+      {!ending && card && (!showCardPoster || mobilePosterPortal) && (
+        <div
+          className="cyklus-choice-dock"
+          data-cyklus-choice-dock
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
+          onClickCapture={onCardClickCapture}
+        >
+          <div data-card-actions className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
+            {getCardChoiceOrder(card).map((choice, index) => {
+              const side: PhysicalCardSide = index === 0 ? 'left' : 'right';
+              const outcome = card[choice];
+              const label = choice === 'yes' ? card.yesLabel : card.noLabel;
+              const fly = side === 'right' ? 'yes' : 'no';
+              return directionPreview(state, card, outcome.preview, choice, side, shouldLimitPreview(card), label, () => handleChoice(choice, fly), outcomeVisible, side);
+            })}
+          </div>
+        </div>
+      )}
 
       {!ending && (
         <div className="cyklus-desktop-top__right">

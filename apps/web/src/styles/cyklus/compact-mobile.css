@@ -53,7 +53,7 @@
   }
 
   .cyklus-page > .cyklus-root--playing {
-    grid-template-rows: 44px 38px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+    grid-template-rows: 44px 38px minmax(0, 1fr) 58px calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
     height: 100dvh;
     min-height: 0;
     padding: env(safe-area-inset-top) 0 0;
@@ -89,7 +89,12 @@
   }
 
   .cyklus-root--playing > .cyklus-bottom-nav {
+    grid-row: 5;
+  }
+
+  .cyklus-root--playing > .cyklus-choice-dock {
     grid-row: 4;
+    height: 58px;
   }
 
   .cyklus-stat-dock {
@@ -211,7 +216,7 @@
     -webkit-touch-callout: none;
   }
 
-  .cyklus-card__preview {
+  .cyklus-choice-dock .cyklus-card__preview {
     position: relative;
     z-index: 3;
     grid-template-columns: repeat(2, minmax(0, 1fr));

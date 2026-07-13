@@ -183,8 +183,8 @@ async function renderFirstBootRun(): Promise<HTMLElement> {
   storeRunState(state);
   render(<HeaderProvider><SynthomaShell><CyklusClient /></SynthomaShell></HeaderProvider>);
   await continueStoredRun();
-  const reject = await screen.findByRole('button', { name: 'Odmítnout: KALIBROVAT' });
-  const card = reject.closest('.cyklus-card') as HTMLElement;
+  await screen.findByRole('button', { name: 'Odmítnout: KALIBROVAT' });
+  const card = document.querySelector('.cyklus-card') as HTMLElement;
   Object.defineProperty(card, 'clientWidth', { configurable: true, value: 400 });
   return card;
 }
@@ -659,7 +659,7 @@ describe('Cyklus choice feedback', () => {
     expect(card).toContainElement(overlay as HTMLElement);
     expect(card).toHaveAttribute('data-gameplay-surface', 'fixed');
     expect(card.querySelector('[data-card-scroll-region]')).toBeInTheDocument();
-    expect(card.querySelector('[data-card-actions]')).toBeInTheDocument();
+    expect(document.querySelector('[data-cyklus-choice-dock] [data-card-actions]')).toBeInTheDocument();
     const surface = within(dialog).getByText(/Systém se rozběhl/).closest('[data-card-overlay-surface="fill-card"]') as HTMLElement;
     const scrollContent = surface.querySelector('.cyklus-card-overlay__content') as HTMLElement;
     const footer = surface.querySelector('.cyklus-card-overlay__footer') as HTMLElement;

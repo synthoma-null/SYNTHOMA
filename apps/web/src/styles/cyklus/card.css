@@ -3,11 +3,11 @@
 .cyklus-card {
   --card-accent: var(--cy-cyan);
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: var(--cy-space-3);
-  width: min(100%, 680px);
-  height: clamp(420px, calc(100dvh - var(--cy-header-height) - 132px), 760px);
+  width: min(100%, 1360px);
+  height: 100%;
   min-height: 0;
   margin: 0 auto;
   padding: clamp(1rem, 2vw, 1.4rem);
@@ -262,12 +262,14 @@
 
 .cyklus-card-scene {
   position: relative;
-  flex: 1 1 auto;
   min-height: 0;
   margin: 0;
   padding: var(--cy-space-3) var(--cy-space-3) var(--cy-space-3) var(--cy-space-4);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
   border: 0;
   border-left: 1px solid var(--card-accent);
   background: color-mix(in srgb, var(--cy-surface-1) 46%, transparent);
@@ -325,13 +327,25 @@
 .cyklus-card__preview {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  flex: 0 0 auto;
   gap: 1px;
   min-width: 0;
   margin: 0;
   padding-top: var(--cy-space-2);
   border-top: 1px solid var(--cy-line);
   background: var(--cy-line-dim);
+}
+
+.cyklus-choice-dock {
+  min-width: 0;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.cyklus-choice-dock .cyklus-card__preview {
+  height: 100%;
+  padding-top: 0;
 }
 
 .cyklus-preview {
