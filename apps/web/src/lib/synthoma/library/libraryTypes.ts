@@ -1,4 +1,4 @@
-export type LibraryChapterState = 'free' | 'paid' | 'locked';
+export type LibraryChapterState = 'free' | 'owned' | 'locked' | 'unavailable';
 
 export interface LibraryChapter {
   id: string;
@@ -8,7 +8,8 @@ export interface LibraryChapter {
   collectionSlug: string;
   order: number;
   access: LibraryChapterState;
-  mnemCost: number;
+  mnemCost: number | null;
+  packageIds: string[];
   backgroundVideo?: string | undefined;
   track?: string | undefined;
   summary?: string | undefined;

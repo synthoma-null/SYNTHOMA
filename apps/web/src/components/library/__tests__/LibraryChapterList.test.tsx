@@ -6,9 +6,9 @@ const collection: LibraryCollection = {
   slug: 'SYNTHOMA-NULL',
   title: 'SYNTHOMA-NULL',
   chapters: [
-    { id: '0-inf-restart', title: '0-∞ [RESTART]', order: 0, summary: 'Smyčka začíná znovu.', access: 'free', mnemCost: 0, path: '/books/0.html', filename: '0.html', collectionSlug: 'SYNTHOMA-NULL' },
-    { id: 'ch-1', title: '0-0 [NULL]', order: 1, summary: 'Prázdnota.', access: 'free', mnemCost: 0, path: '/books/1.html', filename: '1.html', collectionSlug: 'SYNTHOMA-NULL' },
-    { id: 'ch-2', title: 'Locked chapter', order: 2, summary: 'Uzamčená.', access: 'paid', mnemCost: 64, path: '/books/2.html', filename: '2.html', collectionSlug: 'SYNTHOMA-NULL' },
+    { id: '0-inf-restart', title: '0-∞ [RESTART]', order: 0, summary: 'Smyčka začíná znovu.', access: 'free', mnemCost: 0, packageIds: [], path: '/books/0.html', filename: '0.html', collectionSlug: 'SYNTHOMA-NULL' },
+    { id: 'ch-1', title: '0-0 [NULL]', order: 1, summary: 'Prázdnota.', access: 'free', mnemCost: 0, packageIds: [], path: '/books/1.html', filename: '1.html', collectionSlug: 'SYNTHOMA-NULL' },
+    { id: 'ch-2', title: 'Locked chapter', order: 2, summary: 'Uzamčená.', access: 'locked', mnemCost: 64, packageIds: [], path: '/books/2.html', filename: '2.html', collectionSlug: 'SYNTHOMA-NULL' },
   ],
   availableCount: 2,
   totalCount: 3,

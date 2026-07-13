@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import SynthomaMediaLayer from '../synthoma-os/SynthomaMediaLayer';
 import LibraryCollectionHeader from './LibraryCollectionHeader';
 import LibraryChapterList from './LibraryChapterList';
@@ -10,6 +10,7 @@ import LibraryCollectionGrid from './LibraryCollectionGrid';
 import { getResumeChapter, useLibraryProgress } from '../../lib/synthoma/library/useLibraryProgress';
 import type { LibraryCatalog, LibraryChapter } from '../../lib/synthoma/library/libraryTypes';
 import ChapterLockModal from '../../../app/components/ChapterLockModal';
+import { useAccess } from '../access/AccessProvider';
 
 export interface SynthomaLibraryProps {
   catalog: LibraryCatalog;
@@ -20,21 +21,43 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
   const [coverSlug, setCoverSlug] = useState<string | null>(null);
   const [lockedChapter, setLockedChapter] = useState<LibraryChapter | null>(null);
   const progress = useLibraryProgress(catalog.collections);
+  const { resolve, getCachedAccess } = useAccess();
+
+  useEffect(() => {
+    const requests = catalog.collections.flatMap((collection) =>
+      collection.chapters.map((chapter) => ({ contentType: 'chapter' as const, contentId: chapter.id })),
+    );
+    if (requests.length) void resolve(requests);
+  }, [catalog.collections, resolve]);
+
+  const effectiveCatalog = useMemo<LibraryCatalog>(() => ({
+    collections: catalog.collections.map((collection) => {
+      const chapters = collection.chapters.map((chapter) => {
+        const access = getCachedAccess('chapter', chapter.id);
+        return access ? { ...chapter, access: access.state } : chapter;
+      });
+      return {
+        ...collection,
+        chapters,
+        availableCount: chapters.filter((chapter) => chapter.access === 'free' || chapter.access === 'owned').length,
+      };
+    }),
+  }), [catalog.collections, getCachedAccess]);
 
   const selected = useMemo(() => {
     if (!selectedSlug) return null;
-    return catalog.collections.find((c) => c.slug === selectedSlug) ?? null;
-  }, [selectedSlug, catalog.collections]);
+    return effectiveCatalog.collections.find((c) => c.slug === selectedSlug) ?? null;
+  }, [selectedSlug, effectiveCatalog.collections]);
 
   const cover = useMemo(() => {
     if (!coverSlug) return null;
-    return catalog.collections.find((c) => c.slug === coverSlug) ?? null;
-  }, [coverSlug, catalog.collections]);
+    return effectiveCatalog.collections.find((c) => c.slug === coverSlug) ?? null;
+  }, [coverSlug, effectiveCatalog.collections]);
 
   const resume = useMemo(() => {
-    const found = getResumeChapter(catalog.collections, progress.byCollection);
+    const found = getResumeChapter(effectiveCatalog.collections, progress.byCollection);
     return found ? { collection: found.collection, chapter: found.chapter, percent: progress.byCollection[found.collection.slug]?.percent ?? 0 } : null;
-  }, [catalog.collections, progress.byCollection]);
+  }, [effectiveCatalog.collections, progress.byCollection]);
 
   return (
     <main className="synthoma-library" id="main-content">
@@ -55,7 +78,7 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
 
         {!selected ? (
           <LibraryCollectionGrid
-            collections={catalog.collections}
+            collections={effectiveCatalog.collections}
             progress={progress}
             onSelect={setSelectedSlug}
           />
@@ -79,6 +102,7 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
           chapterId={lockedChapter.id}
           chapterTitle={lockedChapter.title}
           onClose={() => setLockedChapter(null)}
+          onPurchased={() => setLockedChapter(null)}
         />
       )}
       {cover && (

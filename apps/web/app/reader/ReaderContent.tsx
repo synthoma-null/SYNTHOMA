@@ -13,6 +13,7 @@ import ChapterLockModal from '../components/ChapterLockModal';
 import { getChapterById } from '../../src/content/booksManifest';
 import ChapterSyncLog, { type SyncDelta } from '../../src/components/run/ChapterSyncLog';
 import { useLang } from '../../src/lib/LangContext';
+import { useAccess } from '../../src/components/access/AccessProvider';
 
 // Duplicated transform and reveal logic removed in favor of TypewriterReader
 
@@ -20,6 +21,7 @@ export default function ReaderContent() {
   const router = useRouter();
   const { setStatus, setActions } = useHeader();
   const { t, lang } = useLang();
+  const { resolve: resolveAccess, getCachedAccess, version: accessVersion } = useAccess();
   const searchParams = useSearchParams();
   const defaultUrl = "/books/SYNTHOMA-NULL/0-\u221e [RESTART].html";
 
@@ -35,15 +37,15 @@ export default function ReaderContent() {
     ? `/api/chapter/${encodeURIComponent(effectiveChapterId)}${lang === 'en' ? '?lang=en' : ''}`
     : (legacyUrl ?? defaultUrl);
 
-  const chapterMeta = chapterId ? getChapterById(chapterId) : null;
+  const chapterMeta = effectiveChapterId ? getChapterById(effectiveChapterId) : null;
 
   const [paywalled, setPaywalled] = useState(false);
 
   const [showHelp, setShowHelp] = useState(false);
 
-  // Intercept 402 from chapter API — show paywall instead of broken HTML
+  // A known locked chapter is an access gate, not missing content.
   const handleFetchError = useCallback((status: number) => {
-    if (status === 402) setPaywalled(true);
+    if (status === 402 || status === 403) setPaywalled(true);
   }, []);
   const [prevChapter, setPrevChapter] = useState<{ title: string; path: string } | null>(null);
   const [nextChapter, setNextChapter] = useState<{ title: string; path: string } | null>(null);
@@ -56,6 +58,28 @@ export default function ReaderContent() {
   const readStartRef = useRef<number>(Date.now());
   const [nextLockedChapter, setNextLockedChapter] = useState<{ id: string; title: string } | null>(null);
   const [showNextLocked, setShowNextLocked] = useState(false);
+
+  useEffect(() => {
+    if (!effectiveChapterId) return;
+    let active = true;
+    void resolveAccess([{ contentType: 'chapter', contentId: effectiveChapterId }])
+      .then(([resolved]) => {
+        if (!active || !resolved) return;
+        setPaywalled(!resolved.canAccess);
+      })
+      .catch(() => {
+        if (active) setPaywalled(true);
+      });
+    return () => { active = false; };
+  }, [effectiveChapterId, resolveAccess]);
+
+  const currentAccess = effectiveChapterId
+    ? getCachedAccess('chapter', effectiveChapterId)
+    : undefined;
+
+  useEffect(() => {
+    if (currentAccess?.canAccess) setPaywalled(false);
+  }, [currentAccess]);
 
   // Reset completion tracker when chapter changes
   useEffect(() => {
@@ -195,15 +219,18 @@ export default function ReaderContent() {
         setPrevChapter(idx > 0 ? { title: col.chapters[idx - 1].title, path: col.chapters[idx - 1].path } : null);
         const next = idx < col.chapters.length - 1 ? col.chapters[idx + 1] : null;
         setNextChapter(next ? { title: next.title, path: next.path } : null);
-        if (next && !next.free && next.id) {
-          setNextLockedChapter({ id: next.id, title: next.title });
-        } else {
-          setNextLockedChapter(null);
-        }
+        if (next?.id) {
+          const [nextAccess] = await resolveAccess([{ contentType: 'chapter', contentId: next.id }]);
+          if (!cancelled && nextAccess && !nextAccess.canAccess && nextAccess.state !== 'unavailable') {
+            setNextLockedChapter({ id: next.id, title: next.title });
+          } else if (!cancelled) {
+            setNextLockedChapter(null);
+          }
+        } else setNextLockedChapter(null);
       } catch {}
     })();
     return () => { cancelled = true; };
-  }, [bookId, chapterPath]);
+  }, [bookId, chapterPath, resolveAccess]);
 
   // Detect chapter completion at scroll >= 95% and show ChapterSyncLog
   useEffect(() => {
@@ -322,6 +349,10 @@ export default function ReaderContent() {
           chapterId={nextLockedChapter.id}
           chapterTitle={nextLockedChapter.title}
           onClose={() => setShowNextLocked(false)}
+          onPurchased={() => {
+            setShowNextLocked(false);
+            router.push(`/chapter/${encodeURIComponent(nextLockedChapter.id)}`);
+          }}
         />
       )}
 
@@ -414,6 +445,7 @@ export default function ReaderContent() {
               chapterTitle={chapterMeta?.title ?? chapterId}
               mnemCost={chapterMeta?.mnemCost ?? 64}
               onClose={() => { window.location.href = '/books'; }}
+              onPurchased={() => setPaywalled(false)}
             />
           ) : paywalled ? (
             <div className="paywall-inline">
@@ -426,6 +458,7 @@ export default function ReaderContent() {
             </div>
           ) : (
             <TypewriterReader
+              key={`${effectiveUrl}:${accessVersion ?? 'initial'}`}
               id="hero-info"
               srcUrl={effectiveUrl}
               className={`readerOverlay-35 readerOverlay-blur ${styles.readerMain}`}

@@ -6,8 +6,8 @@ const collection = {
   title: 'SYNTHOMA-NULL',
   cover: '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png',
   chapters: [
-    { id: 'ch-0', title: '0 - ∞ [RESTART]', order: 0, summary: 'Smyčka začíná znovu.', access: 'free' as const, mnemCost: 0, path: '/books/.../0.html', filename: '0.html', collectionSlug: 'SYNTHOMA-NULL' },
-    { id: 'ch-1', title: '0 - 0 [NULL]', order: 1, access: 'free' as const, mnemCost: 0, path: '/books/.../1.html', filename: '1.html', collectionSlug: 'SYNTHOMA-NULL' },
+    { id: 'ch-0', title: '0 - ∞ [RESTART]', order: 0, summary: 'Smyčka začíná znovu.', access: 'free' as const, mnemCost: 0, packageIds: [], path: '/books/.../0.html', filename: '0.html', collectionSlug: 'SYNTHOMA-NULL' },
+    { id: 'ch-1', title: '0 - 0 [NULL]', order: 1, access: 'free' as const, mnemCost: 0, packageIds: [], path: '/books/.../1.html', filename: '1.html', collectionSlug: 'SYNTHOMA-NULL' },
   ],
   availableCount: 2,
   totalCount: 2,
