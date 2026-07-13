@@ -9,6 +9,7 @@ import { resolveArchiveCardVisibility } from '../../lib/synthoma/archive/resolve
 import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
 import type { WhisperData } from '../whispers/WhisperCard';
 import ArchiveDetailDialog from './ArchiveDetailDialog';
+import ArchiveRecordCard from './ArchiveRecordCard';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -61,20 +62,19 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
     return new Set(snapshot.progress.filter((p) => p.completed).map((p) => p.chapterId));
   }, [snapshot.progress]);
 
-  const visibleCards = useMemo(() => {
+  const displayCards = useMemo(() => {
     return cards
       .map((card) => ({
         card,
         visibility: resolveArchiveCardVisibility(card, completedChapterIds, snapshot.profile.mnemBalance, !snapshot.loading),
       }))
-      .filter((entry) => entry.visibility !== 'hidden')
       .sort((a, b) => (a.card.order ?? 999) - (b.card.order ?? 999));
   }, [cards, completedChapterIds, snapshot.profile.mnemBalance, snapshot.loading]);
 
   const completedChapters = snapshot.progress.filter((p) => p.completed);
   const currentChapter = snapshot.progress.find((p) => !p.completed && p.progressPercent && p.progressPercent > 0);
 
-  const dialogEntry = useMemo(() => visibleCards.find((entry) => entry.card.id === openCardId), [visibleCards, openCardId]);
+  const dialogEntry = useMemo(() => displayCards.find((entry) => entry.card.id === openCardId), [displayCards, openCardId]);
   const relatedCards = useMemo(() => {
     if (!dialogEntry?.card.related) return [];
     return dialogEntry.card.related
@@ -98,7 +98,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           </div>
           <div className="synthoma-archive__count">
             <span className="os-status__code">ZÁZNAMY ARCHIVU</span>
-            <span className="synthoma-archive__value">{visibleCards.length}</span>
+            <span className="synthoma-archive__value">{displayCards.length}</span>
           </div>
           <div className="synthoma-archive__count">
             <span className="os-status__code">NÁLEZY CYKLUS</span>
@@ -134,37 +134,18 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
 
         <section className="synthoma-archive__section" aria-label="Záznamy">
           <h2 className="synthoma-archive__section-title">RECOVERED RECORDS</h2>
-          <div className="synthoma-archive__records" role="list">
-            {visibleCards.map((entry) => {
-              const { card, visibility } = entry;
-              const isLocked = visibility === 'teaser';
-              return (
-                <article
-                  key={card.id}
-                  className={[
-                    'archive-record-card',
-                    'os-surface',
-                    isLocked ? 'archive-record-card--locked' : '',
-                  ].join(' ').trim()}
-                  role="listitem"
-                  style={card.display?.accent ? ({ '--card-accent': card.display.accent } as React.CSSProperties) : undefined}
-                >
-                  <button
-                    className="archive-record-card__toggle"
-                    type="button"
-                    aria-expanded={openCardId === card.id}
-                    onClick={() => !isLocked && setOpenCardId(card.id)}
-                    aria-disabled={isLocked}
-                  >
-                    {card.display?.icon && <span className="archive-record-card__icon">{isLocked ? '⬡' : card.display.icon}</span>}
-                    <span className="archive-record-card__title">{card.title}</span>
-                    {isLocked && <span className="archive-record-card__lock">⬡</span>}
-                  </button>
-                  <p className="archive-record-card__teaser">{card.teaser}</p>
-                </article>
-              );
-            })}
-          </div>
+          <ul className="synthoma-archive__records" role="list">
+            {displayCards.map((entry) => (
+              <li key={entry.card.id} className="archive-record-card__item">
+                <ArchiveRecordCard
+                  card={entry.card}
+                  visibility={entry.visibility}
+                  isOpen={openCardId === entry.card.id}
+                  onOpen={(id) => setOpenCardId(id)}
+                />
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="synthoma-archive__section" aria-label="Paměť Cyklus">
@@ -234,10 +215,10 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
         </section>
       </div>
 
-      {dialogEntry && (
+      {dialogEntry && dialogEntry.visibility !== 'hidden' && (
         <ArchiveDetailDialog
           card={dialogEntry.card}
-          isLocked={dialogEntry.visibility === 'teaser'}
+          mode={dialogEntry.visibility}
           relatedCards={relatedCards}
           onClose={() => setOpenCardId(null)}
         />

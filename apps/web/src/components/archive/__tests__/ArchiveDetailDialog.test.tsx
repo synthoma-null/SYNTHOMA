@@ -25,22 +25,27 @@ const related = [{
 const onClose = jest.fn();
 
 describe('ArchiveDetailDialog', () => {
-  it('renders full content for unlocked cards', () => {
-    render(<ArchiveDetailDialog card={card} isLocked={false} relatedCards={related} onClose={onClose} />);
+  it('renders full content for full mode', () => {
+    render(<ArchiveDetailDialog card={card} mode="full" relatedCards={related} onClose={onClose} />);
     expect(screen.getByRole('dialog', { name: 'Záznam: Záznam jedna' })).toBeInTheDocument();
     expect(screen.getByText('První odstavec.')).toBeInTheDocument();
     expect(screen.getByText('tagA')).toBeInTheDocument();
     expect(screen.getByText('Související náhled.')).toBeInTheDocument();
   });
 
-  it('shows locked state for locked cards', () => {
-    render(<ArchiveDetailDialog card={card} isLocked relatedCards={[]} onClose={onClose} />);
+  it('shows locked state for teaser mode and does not render body', () => {
+    render(<ArchiveDetailDialog card={card} mode="teaser" relatedCards={[]} onClose={onClose} />);
     expect(screen.getByText(/Záznam je uzamčen/)).toBeInTheDocument();
     expect(screen.queryByText('První odstavec.')).not.toBeInTheDocument();
   });
 
+  it('returns null for hidden mode', () => {
+    const { container } = render(<ArchiveDetailDialog card={card} mode="hidden" relatedCards={[]} onClose={onClose} />);
+    expect(container.firstChild).toBeNull();
+  });
+
   it('calls onClose on close and overlay click', () => {
-    const { container } = render(<ArchiveDetailDialog card={card} isLocked={false} relatedCards={[]} onClose={onClose} />);
+    const { container } = render(<ArchiveDetailDialog card={card} mode="full" relatedCards={[]} onClose={onClose} />);
     fireEvent.click(screen.getByRole('button', { name: 'Zavřít záznam' }));
     expect(onClose).toHaveBeenCalled();
     onClose.mockClear();

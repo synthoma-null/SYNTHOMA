@@ -1,16 +1,19 @@
 'use client';
 
 import { useEffect } from 'react';
-import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
+import type { ArchiveCard, ArchiveCardVisibility } from '../../lib/synthoma/archive/archiveTypes';
 
 export interface ArchiveDetailDialogProps {
   card: ArchiveCard;
-  isLocked: boolean;
+  mode: ArchiveCardVisibility;
   relatedCards: ArchiveCard[];
   onClose: () => void;
 }
 
-export default function ArchiveDetailDialog({ card, isLocked, relatedCards, onClose }: ArchiveDetailDialogProps) {
+export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose }: ArchiveDetailDialogProps) {
+  const isLocked = mode === 'teaser';
+  const isFull = mode === 'full';
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -18,6 +21,8 @@ export default function ArchiveDetailDialog({ card, isLocked, relatedCards, onCl
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
+
+  if (mode === 'hidden') return null;
 
   return (
     <div
@@ -61,7 +66,7 @@ export default function ArchiveDetailDialog({ card, isLocked, relatedCards, onCl
             </>
           )}
 
-          {relatedCards.length > 0 && (
+          {isFull && relatedCards.length > 0 && (
             <section className="archive-detail-dialog__related" aria-label="Související záznamy">
               <h3 className="archive-detail-dialog__related-title">SOUVISEJÍCÍ ZÁZNAMY</h3>
               <ul className="archive-detail-dialog__related-list">
