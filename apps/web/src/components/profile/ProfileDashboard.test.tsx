@@ -30,6 +30,9 @@ const profile: ProfileData = {
     _count: { choices: 42, reading: 7 },
   },
   mnemBalance: 19,
+  ledger: [],
+  ownership: [],
+  purchases: [],
 };
 
 describe('ProfileDashboard dossier', () => {

@@ -9,6 +9,11 @@ import ReadingProgressPanel from './ReadingProgressPanel';
 import MnemAccessPanel from './MnemAccessPanel';
 import PrivacyPanel from './PrivacyPanel';
 import RunDashboard from '../run/RunDashboard';
+import MnemHistoryPanel, {
+  type LedgerHistoryItem,
+  type OwnershipHistoryItem,
+  type PurchaseHistoryItem,
+} from './MnemHistoryPanel';
 
 export interface ProfileData {
   user: {
@@ -45,6 +50,9 @@ export interface ProfileData {
     _count: { choices: number; reading: number };
   };
   mnemBalance: number;
+  ledger: LedgerHistoryItem[];
+  ownership: OwnershipHistoryItem[];
+  purchases: PurchaseHistoryItem[];
 }
 
 interface Props {
@@ -222,6 +230,11 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
               <section aria-labelledby="profile-mnem-title">
                 <div className="profile-section-heading"><span>ARCHIV // MNEM</span><h2 id="profile-mnem-title">Přístupové stopy</h2></div>
                 <MnemAccessPanel mnemBalance={data.mnemBalance} />
+                <MnemHistoryPanel
+                  ledger={data.ledger}
+                  ownership={data.ownership}
+                  purchases={data.purchases}
+                />
               </section>
             </div>
           )}

@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '../../../../auth';
 import prisma from '../../../../src/lib/prisma';
+import { getCatalogEntry, isContentType, type ContentType } from '../../../../src/content/catalog';
+import { getMnemBalance } from '../../../../src/server/economy';
 
 const ProfilePatchSchema = z.object({
   displayName: z.string().max(64).optional(),
@@ -49,14 +51,73 @@ export async function GET() {
 
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-  const mnemTotal = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
+  const [mnemBalance, ledger, entitlements, purchases, legacyFragments, legacyArtifacts, legacyCosmetics] = await Promise.all([
+    getMnemBalance(userId),
+    prisma.mnemLedger.findMany({
+      where: { userId },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      take: 50,
+      select: {
+        id: true, amount: true, balanceAfter: true, transactionType: true, reason: true,
+        contentType: true, contentId: true, packageId: true, externalReference: true, createdAt: true,
+      },
+    }),
+    prisma.entitlement.findMany({
+      where: { userId, OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] },
+      orderBy: [{ grantedAt: 'desc' }, { id: 'desc' }],
+      take: 200,
+      select: {
+        id: true, contentType: true, contentId: true, source: true, sourceReference: true,
+        grantedAt: true, expiresAt: true,
+      },
+    }),
+    prisma.purchase.findMany({
+      where: { userId },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      take: 30,
+      select: { id: true, contentType: true, contentId: true, mnemCost: true, status: true, createdAt: true, completedAt: true },
+    }),
+    prisma.fragmentUnlock.findMany({ where: { userId }, select: { id: true, fragmentId: true, source: true, unlockedAt: true } }),
+    prisma.userArtifact.findMany({ where: { userId }, select: { id: true, artifactId: true, source: true, unlockedAt: true } }),
+    prisma.userCosmeticUnlock.findMany({ where: { userId }, select: { id: true, cosmeticId: true, source: true, unlockedAt: true } }),
+  ]);
+
+  const ownership = new Map(entitlements.map((entitlement) => [
+    `${entitlement.contentType}:${entitlement.contentId}`,
+    entitlement,
+  ]));
+  for (const legacy of [
+    ...legacyFragments.map((item) => ({ id: item.id, contentType: 'fragment', contentId: item.fragmentId, source: item.source, sourceReference: null, grantedAt: item.unlockedAt, expiresAt: null })),
+    ...legacyArtifacts.map((item) => ({ id: item.id, contentType: 'artifact', contentId: item.artifactId, source: item.source, sourceReference: null, grantedAt: item.unlockedAt, expiresAt: null })),
+    ...legacyCosmetics.map((item) => ({ id: item.id, contentType: 'cosmetic', contentId: item.cosmeticId.replace(/^theme-/, ''), source: item.source, sourceReference: null, grantedAt: item.unlockedAt, expiresAt: null })),
+  ]) {
+    const key = `${legacy.contentType}:${legacy.contentId}`;
+    if (!ownership.has(key)) ownership.set(key, legacy);
+  }
+
+  const titledOwnership = [...ownership.values()]
+    .map((item) => {
+      const contentType = isContentType(item.contentType) ? item.contentType : null;
+      return {
+        ...item,
+        title: contentType ? getCatalogEntry(contentType, item.contentId)?.title ?? item.contentId : item.contentId,
+      };
+    })
+    .sort((a, b) => b.grantedAt.getTime() - a.grantedAt.getTime());
+
+  const titledPurchases = purchases.map((purchase) => ({
+    ...purchase,
+    title: isContentType(purchase.contentType)
+      ? getCatalogEntry(purchase.contentType as ContentType, purchase.contentId)?.title ?? purchase.contentId
+      : purchase.contentId,
+  }));
 
   return NextResponse.json({
     user,
-    mnemBalance: mnemTotal._sum.amount ?? 0,
+    mnemBalance,
+    ledger,
+    ownership: titledOwnership,
+    purchases: titledPurchases,
   });
 }
 

@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../../auth';
 import prisma from '../../../../../src/lib/prisma';
+import { getMnemBalance } from '../../../../../src/server/economy';
 
 async function requireAdmin(): Promise<boolean> {
   const session = await auth();
@@ -82,14 +83,13 @@ export async function GET(
     return NextResponse.json({ error: 'Uživatel nenalezen.' }, { status: 404 });
   }
 
-  const [run, entityRelations, artifacts, badges] = await Promise.all([
+  const [run, entityRelations, artifacts, badges, mnemBalance] = await Promise.all([
     prisma.userRun.findUnique({ where: { userId } }),
     prisma.entityRelation.findMany({ where: { userId }, orderBy: { entity: 'asc' } }),
     prisma.userArtifact.findMany({ where: { userId }, select: { artifactId: true, source: true, unlockedAt: true } }),
     prisma.subjectBadge.findMany({ where: { userId }, select: { badgeId: true, earnedAt: true, source: true } }),
+    getMnemBalance(userId),
   ]);
-
-  const mnemBalance = user.mnemLedger.reduce((s, e) => s + e.amount, 0);
 
   return NextResponse.json({
     id: user.id,
