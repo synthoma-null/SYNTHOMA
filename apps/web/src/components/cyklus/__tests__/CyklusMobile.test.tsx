@@ -23,80 +23,48 @@ describe('CyklusMobileHud', () => {
 });
 
 describe('CyklusBottomNav', () => {
-  it('renders KAPSA, BUILD, ARCHIV, PRÁZDN0TA', () => {
+  const handlers = {
+    onBuild: jest.fn(),
+    onArchive: jest.fn(),
+    onVoid: jest.fn(),
+  };
+
+  beforeEach(() => jest.clearAllMocks());
+
+  it('renders BUILD, ARCHIV and PRÁZDN0TA without duplicating KAPSA', () => {
     render(
-      <CyklusBottomNav
-        pocketCount={3}
-        onPocket={jest.fn()}
-        onBuild={jest.fn()}
-        onArchive={jest.fn()}
-        onVoid={jest.fn()}
-      />,
+      <CyklusBottomNav {...handlers} />,
     );
-    expect(screen.getByText('KAPSA')).toBeInTheDocument();
+    expect(screen.queryByText('KAPSA')).not.toBeInTheDocument();
     expect(screen.getByText('BUILD')).toBeInTheDocument();
     expect(screen.getByText('ARCHIV')).toBeInTheDocument();
     expect(screen.getByText('PRÁZDN0TA')).toBeInTheDocument();
-    expect(screen.getByText('3')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'KAPSA, 3 předmětů' }).querySelector('svg')).toBeInTheDocument();
-  });
-
-  it('calls onPocket when KAPSA is clicked', () => {
-    const onPocket = jest.fn();
-    render(
-      <CyklusBottomNav
-        pocketCount={0}
-        onPocket={onPocket}
-        onBuild={jest.fn()}
-        onArchive={jest.fn()}
-        onVoid={jest.fn()}
-      />,
-    );
-    fireEvent.click(screen.getByText('KAPSA'));
-    expect(onPocket).toHaveBeenCalledTimes(1);
   });
 
   it('calls onVoid when PRÁZDN0TA is clicked', () => {
     const onVoid = jest.fn();
     render(
-      <CyklusBottomNav
-        pocketCount={0}
-        onPocket={jest.fn()}
-        onBuild={jest.fn()}
-        onArchive={jest.fn()}
-        onVoid={onVoid}
-      />,
+      <CyklusBottomNav {...handlers} onVoid={onVoid} />,
     );
     fireEvent.click(screen.getByText('PRÁZDN0TA'));
     expect(onVoid).toHaveBeenCalledTimes(1);
   });
 
   it('keeps every navigation action functional with icon-only mobile styling', () => {
-    const handlers = {
-      onPocket: jest.fn(),
-      onBuild: jest.fn(),
-      onArchive: jest.fn(),
-      onVoid: jest.fn(),
-    };
-    render(<CyklusBottomNav pocketCount={0} {...handlers} />);
+    render(<CyklusBottomNav {...handlers} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'KAPSA, 0 předmětů' }));
     fireEvent.click(screen.getByRole('button', { name: 'BUILD' }));
     fireEvent.click(screen.getByRole('button', { name: 'ARCHIV' }));
     fireEvent.click(screen.getByRole('button', { name: 'PRÁZDN0TA' }));
 
-    expect(handlers.onPocket).toHaveBeenCalledTimes(1);
     expect(handlers.onBuild).toHaveBeenCalledTimes(1);
     expect(handlers.onArchive).toHaveBeenCalledTimes(1);
     expect(handlers.onVoid).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('0')).toBeInTheDocument();
   });
 
   it('exposes the active destination with aria-pressed', () => {
     render(
       <CyklusBottomNav
-        pocketCount={0}
-        onPocket={jest.fn()}
         onBuild={jest.fn()}
         onArchive={jest.fn()}
         onVoid={jest.fn()}

@@ -344,8 +344,27 @@
 }
 
 .cyklus-pocket__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: var(--cy-z-overlay);
+  max-height: min(42dvh, 320px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border-top: 1px solid var(--cy-line);
   background: var(--cy-black-soft);
+}
+
+.cyklus-pocket--standalone {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.cyklus-bottom-nav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .cyklus-pocket__item {
@@ -439,7 +458,7 @@
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
     grid-template-columns: minmax(220px, 270px) minmax(430px, 760px) minmax(220px, 300px);
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     gap: var(--cy-space-4);
     align-items: start;
     padding-inline: clamp(1rem, 3vw, 2.5rem);
@@ -450,37 +469,31 @@
     grid-row: 1;
   }
 
+  .cyklus-root--playing > .cyklus-stat-dock {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .cyklus-root--playing > .cyklus-pocket--standalone {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
     grid-column: 2;
-    grid-row: 2 / span 2;
-  }
-
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-pocket--standalone {
-    grid-column: 1;
     grid-row: 3;
-    width: 100%;
-    margin: 0;
-  }
-
-  .cyklus-desktop-top {
-    display: contents;
-  }
-
-  .cyklus-desktop-top > .cyklus-stat-dock {
-    grid-column: 1;
-    grid-row: 2;
   }
 
   .cyklus-desktop-top__right {
     grid-column: 3;
-    grid-row: 2 / span 2;
+    grid-row: 3;
   }
 
   .cyklus-root--ended > .cyklus-stage {
     grid-column: 1 / -1 !important;
   }
 
-  .cyklus-root--ended > :is(.cyklus-pocket--standalone, .cyklus-desktop-top, .cyklus-bottom-nav) {
+  .cyklus-root--ended > :is(.cyklus-pocket--standalone, .cyklus-stat-dock, .cyklus-desktop-top__right, .cyklus-bottom-nav) {
     display: none;
   }
 }
@@ -513,8 +526,12 @@
     overflow: hidden;
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-mobile-hud {
+  .cyklus-root:not(.cyklus-root--menu) > .cyklus-stat-dock {
     grid-row: 1;
+  }
+
+  .cyklus-root:not(.cyklus-root--menu) > .cyklus-pocket--standalone {
+    grid-row: 2;
   }
 
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
@@ -525,17 +542,8 @@
     grid-row: 4;
   }
 
-  .cyklus-pocket--standalone,
   .cyklus-desktop-top__right {
     display: none;
-  }
-
-  .cyklus-desktop-top {
-    display: contents;
-  }
-
-  .cyklus-desktop-top > .cyklus-stat-dock {
-    grid-row: 2;
   }
 
   .cyklus-stage {

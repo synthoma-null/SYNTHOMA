@@ -538,18 +538,24 @@ describe('CyklusClient', () => {
     document.removeEventListener('synthoma:identity-toggle', identityToggle);
   });
 
-  it('opens one existing pocket sheet from the labeled pocket trigger', async () => {
+  it('opens one pocket dock directly below the stat dock', async () => {
     await renderFirstBootRun();
-    const trigger = within(screen.getByRole('navigation', { name: 'Navigace' })).getByRole('button', { name: 'KAPSA, 0 předmětů' });
+    const trigger = screen.getByRole('button', { name: 'KAPSA, 0 předmětů' });
+    const statDock = document.querySelector('.cyklus-stat-dock') as HTMLElement;
+    const pocketDock = document.querySelector('[data-cyklus-pocket-dock]') as HTMLElement;
+    const cardStage = document.querySelector('.cyklus-stage') as HTMLElement;
 
     expect(trigger.querySelector('svg')).toBeInTheDocument();
-    expect(trigger).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getAllByRole('button', { name: 'KAPSA, 0 předmětů' })).toHaveLength(1);
+    expect(trigger).toHaveAttribute('aria-controls', 'cyklus-pocket-panel');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(statDock.compareDocumentPosition(pocketDock) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(pocketDock.compareDocumentPosition(cardStage) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     fireEvent.click(trigger);
 
-    expect(await screen.findByRole('dialog', { name: 'KAPSA 0' })).toBeInTheDocument();
-    expect(screen.getAllByRole('dialog', { name: 'KAPSA 0' })).toHaveLength(1);
-    expect(screen.getByRole('dialog', { name: 'KAPSA 0' }).closest('.cyklus-bottom-sheet__backdrop')).toHaveClass('cyklus-no-select');
-    expect(trigger).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText('Kapsa je prázdná. Nic tu nečeká.')).toBeVisible();
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(within(screen.getByRole('navigation', { name: 'Navigace' })).queryByText('KAPSA')).not.toBeInTheDocument();
   });
 });
 

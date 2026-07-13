@@ -1,12 +1,10 @@
 'use client';
 
 interface CyklusBottomNavProps {
-  pocketCount: number;
-  onPocket: () => void;
   onBuild: () => void;
   onArchive: () => void;
   onVoid: () => void;
-  active?: 'pocket' | 'build' | 'archive' | 'void' | null;
+  active?: 'build' | 'archive' | 'void' | null;
   dimmed?: boolean;
 }
 
@@ -19,14 +17,9 @@ export function PocketIcon() {
   );
 }
 
-export default function CyklusBottomNav({ pocketCount, onPocket, onBuild, onArchive, onVoid, active = null, dimmed }: CyklusBottomNavProps) {
+export default function CyklusBottomNav({ onBuild, onArchive, onVoid, active = null, dimmed }: CyklusBottomNavProps) {
   return (
     <nav className={`cyklus-bottom-nav ${dimmed ? 'cyklus-bottom-nav--dimmed' : ''}`} aria-label="Navigace">
-      <button type="button" className={`cyklus-bottom-nav__btn cyklus-pocket-trigger ${active === 'pocket' ? 'is-active' : ''}`} onClick={onPocket} aria-label={`KAPSA, ${pocketCount} předmětů`} aria-haspopup="dialog" aria-pressed={active === 'pocket'}>
-        <span className="cyklus-pocket-trigger__icon cyklus-bottom-nav__icon"><PocketIcon /></span>
-        <span className="cyklus-pocket-trigger__label cyklus-bottom-nav__label">KAPSA</span>
-        <span className="cyklus-pocket-trigger__count cyklus-bottom-nav__badge">{pocketCount}</span>
-      </button>
       <button type="button" className={`cyklus-bottom-nav__btn ${active === 'build' ? 'is-active' : ''}`} onClick={onBuild} aria-haspopup="dialog" aria-pressed={active === 'build'}>
         <span className="cyklus-bottom-nav__icon" aria-hidden="true">◇</span>
         <span className="cyklus-bottom-nav__label">BUILD</span>
