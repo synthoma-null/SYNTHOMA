@@ -65,6 +65,7 @@ function readJson(relativePath) {
 
 function validate() {
   const catalogModule = loadTypeScriptModule(path.join(ROOT, 'src', 'content', 'catalog.ts'));
+  const { buildGeneratedOutputs } = require('./generate-content');
   const manifestModule = loadTypeScriptModule(path.join(ROOT, 'src', 'content', 'booksManifest.ts'));
   const catalog = catalogModule.CONTENT_CATALOG;
   const chapters = catalogModule.CHAPTER_CATALOG;
@@ -72,6 +73,12 @@ function validate() {
   const books = readJson('public/books/manifest.json');
   const archiveCs = readJson('public/data/archiveCards.json');
   const archiveEn = readJson('public/data/archiveCards_en.json');
+
+  for (const [relativePath, expected] of buildGeneratedOutputs(catalogModule)) {
+    const filename = path.join(ROOT, relativePath);
+    const actual = fs.existsSync(filename) ? fs.readFileSync(filename, 'utf8') : null;
+    if (actual !== expected) fail(`Generated content is stale: ${relativePath}. Run npm run content:generate.`);
+  }
 
   if (!Array.isArray(catalog) || !catalog.length) fail('Canonical catalog is empty.');
   if (!Array.isArray(chapters) || !chapters.length) fail('Chapter catalog is empty.');

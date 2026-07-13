@@ -1,0 +1,736 @@
+[
+  {
+    "key": "chapter:0-inf-restart",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NULL/0-∞ [RESTART].html"
+  },
+  {
+    "key": "chapter:0-0-null",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NULL/0-0 [NULL].html"
+  },
+  {
+    "key": "chapter:0-1-start",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NULL/0-1 [START].html"
+  },
+  {
+    "key": "chapter:0-2-run",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NULL/0-2 [RUN].html"
+  },
+  {
+    "key": "chapter:0-3-discontinuum",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html"
+  },
+  {
+    "key": "chapter:0-4-defragmentation",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html"
+  },
+  {
+    "key": "chapter:0-5-pause",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-5 [PAUSE].html"
+  },
+  {
+    "key": "chapter:0-6-searching",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-6 [SEARCHING].html"
+  },
+  {
+    "key": "chapter:0-7-ruins",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-7 [RUINS].html"
+  },
+  {
+    "key": "chapter:0-8-reziduum",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-8 [REZIDUUM].html"
+  },
+  {
+    "key": "chapter:0-9-sector",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-9 [SECTOR].html"
+  },
+  {
+    "key": "chapter:0-10-rest",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-10 [REST].html"
+  },
+  {
+    "key": "chapter:0-11-orgie",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [
+      "archiv-1024"
+    ],
+    "sourcePath": "src/content/protected/SYNTHOMA-NULL/0-11 [ORGIE].html"
+  },
+  {
+    "key": "chapter:0-12-conflict",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-13-lust",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-14-absence",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-15-rebirth",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-16-illusion",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-17-disconnect",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-18-awakening",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-19-echo",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "chapter:0-20-genesis",
+    "availability": "unavailable",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "package:single-fragment",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "package:act-1",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "package:archiv-1024",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "package:archiv-plus",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": null,
+    "packageIds": []
+  },
+  {
+    "key": "fragment:frag-tai-diagnostic-0-4",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 16,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-4-defragmentation"
+  },
+  {
+    "key": "fragment:frag-glitchka-safe-error-0-4",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-4-defragmentation"
+  },
+  {
+    "key": "fragment:frag-shadow-null1-guilt-0-4",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-4-defragmentation"
+  },
+  {
+    "key": "fragment:frag-sarkasma-log-0-5",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-5-pause"
+  },
+  {
+    "key": "fragment:frag-echo-pause-0-5",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 16,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-5-pause"
+  },
+  {
+    "key": "fragment:frag-shadow-mirror-0-5",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-5-pause"
+  },
+  {
+    "key": "fragment:frag-glitchka-sandbox-0-6",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-6-searching"
+  },
+  {
+    "key": "fragment:frag-tai-beast-0-6",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 16,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-6-searching"
+  },
+  {
+    "key": "fragment:frag-shadow-beast-truth-0-6",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-6-searching"
+  },
+  {
+    "key": "fragment:frag-unsent-self-0-7",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-7-ruins"
+  },
+  {
+    "key": "fragment:frag-sarkasma-hehe-0-7",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-7-ruins"
+  },
+  {
+    "key": "fragment:frag-shadow-city-sent-0-7",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-7-ruins"
+  },
+  {
+    "key": "fragment:log-tai-patchnote",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 16,
+    "packageIds": []
+  },
+  {
+    "key": "fragment:log-restart-corrupted",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 16,
+    "packageIds": []
+  },
+  {
+    "key": "fragment:memory-null-previous",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:glitchka-blanket",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:sarkasma-firewall",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:black-box-key",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:mnem-lens",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 32,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:archive-seal",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:first-echo",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:echo-shard",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:glitch-safe-mode",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:unsent-carrier",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "artifact:shadow-logbook",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:kanonicke-jadro",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:null-1",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-0-null"
+  },
+  {
+    "key": "archive_record:prazdnota",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:beh",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:restart",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:t-ai",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-inf-restart"
+  },
+  {
+    "key": "archive_record:sarkasma",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-1-start"
+  },
+  {
+    "key": "archive_record:glitchka",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-4-defragmentation"
+  },
+  {
+    "key": "archive_record:glitchena",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 128,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-11-orgie"
+  },
+  {
+    "key": "archive_record:logy",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 16,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-inf-restart"
+  },
+  {
+    "key": "archive_record:fyzika-ontologie",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-1-start"
+  },
+  {
+    "key": "archive_record:mechaniky-sveta",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-1-start"
+  },
+  {
+    "key": "archive_record:mnemosynteza",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-6-searching"
+  },
+  {
+    "key": "archive_record:perzistence-predmety",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-2-run"
+  },
+  {
+    "key": "archive_record:metriky",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 16,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-1-start"
+  },
+  {
+    "key": "archive_record:fragmenty-identity",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 128,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-11-orgie"
+  },
+  {
+    "key": "archive_record:sektory",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-8-reziduum"
+  },
+  {
+    "key": "archive_record:biomy",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-6-searching"
+  },
+  {
+    "key": "archive_record:casoprostor-smycky",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 32,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-3-discontinuum"
+  },
+  {
+    "key": "archive_record:frakce",
+    "availability": "published",
+    "accessPolicy": "progress_or_entitlement",
+    "mnemCost": 64,
+    "packageIds": [],
+    "prerequisiteChapterId": "0-7-ruins"
+  },
+  {
+    "key": "archive_record:velka-tajemstvi-fragmenty",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:cerny-box",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 256,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:barevny-kod",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:design-zasady",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "archive_record:ton-dramaturgie",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:synthoma",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:green-matrix",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:neon-hellfire",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:cyber-dystopia",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:acid-glitch",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:retro-arcade",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 256,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:mono",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:mono-light",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:theme-void",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:theme-acid",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:theme-sarkasma",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:theme-glitchka",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:theme-archivist",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:theme-wetland",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:frame-archiv-plus",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "cosmetic:frame-glitch",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 64,
+    "packageIds": []
+  },
+  {
+    "key": "profile_report:report-basic",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": []
+  },
+  {
+    "key": "profile_report:report-deep",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 128,
+    "packageIds": []
+  },
+  {
+    "key": "profile_report:report-shadow",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 256,
+    "packageIds": []
+  },
+  {
+    "key": "profile_report:report-archive",
+    "availability": "published",
+    "accessPolicy": "entitlement",
+    "mnemCost": 512,
+    "packageIds": []
+  }
+]

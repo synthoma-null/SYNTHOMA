@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { readLastChapterPath } from '../../src/lib/readerState';
 import { useVideoVisibility } from '../../src/lib/useVideoVisibility';
 import { useLang } from '../../src/lib/LangContext';
-import { getChapterById } from '../../src/content/booksManifest';
+import readerChapterIndex from '../../src/content/generated/readerChapterIndex.json';
 
 // Dynamic import to avoid SSR issues with useSearchParams
 const ReaderContent = dynamic(
@@ -32,7 +32,7 @@ export default function ReaderPage() {
   // Resolve chapterPath for manifest/video lookup
   const chapterPath = useMemo(() => {
     if (chapterId) {
-      const meta = getChapterById(chapterId);
+      const meta = readerChapterIndex.find((chapter) => chapter.id === chapterId);
       if (meta) return `/books/${meta.collection}/${meta.filename}`;
     }
     return legacyU || defaultUrl;
@@ -60,26 +60,9 @@ export default function ReaderPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  // Load backgroundVideo for current chapter from manifest.json
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch('/books/manifest.json', { cache: 'no-store' });
-        if (!res.ok) return;
-        const manifest = await res.json();
-        // chapterPath is always /books/<collection>/<filename> (resolved above from chapterId or legacyU)
-        const m = chapterPath.match(/^\/books\/([^\/]+)\//);
-        const bookId = m ? decodeURIComponent(String(m[1] ?? '')) : '';
-        const col = (manifest?.collections || []).find((c: any) => (c.slug || '').toLowerCase() === (bookId || '').toLowerCase());
-        const ch = col?.chapters?.find((x: any) => x.path === chapterPath);
-        const src = (ch?.backgroundVideo || '').trim();
-        if (!cancelled) setBgSrc(src);
-      } catch {
-        /* ignore */
-      }
-    })();
-    return () => { cancelled = true; };
+    const chapter = readerChapterIndex.find((candidate) => candidate.path === chapterPath);
+    setBgSrc(chapter?.backgroundVideo?.trim() ?? '');
   }, [chapterPath]);
 
   return (

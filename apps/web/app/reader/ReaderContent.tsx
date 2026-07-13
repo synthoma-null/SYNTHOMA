@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useHeader } from '../../src/components/synthoma-os/HeaderContext';
 import PaywallModal from '../../src/components/PaywallModal';
 import ChapterLockModal from '../components/ChapterLockModal';
-import { getChapterById } from '../../src/content/booksManifest';
+import readerChapterIndex from '../../src/content/generated/readerChapterIndex.json';
 import ChapterSyncLog, { type SyncDelta } from '../../src/components/run/ChapterSyncLog';
 import { useLang } from '../../src/lib/LangContext';
 import { useAccess } from '../../src/components/access/AccessProvider';
@@ -39,7 +39,9 @@ export default function ReaderContent() {
     ? `/api/chapter/${encodeURIComponent(effectiveChapterId)}${lang === 'en' ? '?lang=en' : ''}`
     : (legacyUrl ?? defaultUrl);
 
-  const chapterMeta = effectiveChapterId ? getChapterById(effectiveChapterId) : null;
+  const chapterMeta = effectiveChapterId
+    ? readerChapterIndex.find((chapter) => chapter.id === effectiveChapterId) ?? null
+    : null;
 
   const [paywalled, setPaywalled] = useState(false);
 
@@ -169,12 +171,7 @@ export default function ReaderContent() {
     let cancelled = false;
     async function maybeShowTrackPrompt(){
       try {
-        // Load manifest and find this chapter's recommended track
-        const res = await fetch('/books/manifest.json', { cache: 'no-store' });
-        if (!res.ok) return;
-        const manifest = await res.json();
-        const col = (manifest?.collections || []).find((c: any) => c.slug === bookId);
-        const ch = col?.chapters?.find((x: any) => x.path === chapterPath);
+        const ch = readerChapterIndex.find((chapter) => chapter.path === chapterPath);
         const track = ch?.track as string | undefined;
         if (!track) return;
         // Store track info for persistent mini badge
@@ -186,7 +183,7 @@ export default function ReaderContent() {
         const isPlaying = !!(audio && !audio.paused && !audio.ended && audio.currentTime > 0);
         if (cancelled) return;
         if (blocked || !isPlaying) {
-          setRecModal({ visible: true, track, title: ch?.title });
+          setRecModal({ visible: true, track, ...(ch?.title ? { title: ch.title } : {}) });
         }
       } catch {}
     }
