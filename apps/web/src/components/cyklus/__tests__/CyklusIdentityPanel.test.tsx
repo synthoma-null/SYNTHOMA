@@ -94,7 +94,11 @@ describe('Cyklus identity ownership', () => {
 
   it('delegates global controls to the shared shell outside gameplay', () => {
     usePathname.mockReturnValue('/books');
-    render(<SynthomaShell><SubjectProfilePanelClient /></SynthomaShell>);
+    render(
+      <HeaderProvider>
+        <SynthomaShell><SubjectProfilePanelClient /></SynthomaShell>
+      </HeaderProvider>,
+    );
 
     expect(screen.getByRole('link', { name: 'SYNTHOMA, hlavní uzel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Nastavení' })).toBeInTheDocument();

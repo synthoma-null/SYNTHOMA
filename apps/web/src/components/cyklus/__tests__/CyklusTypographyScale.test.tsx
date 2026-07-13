@@ -22,21 +22,28 @@ describe('Cyklus typography scale contract', () => {
     const audioPanel = readStyle('src/styles/audio-panel.css');
     const overlays = readStyle('src/styles/cyklus/overlays.css');
     const shell = readStyle('src/styles/cyklus/shell.css');
-    const header = readStyle('src/styles/cyklus/command-header.css');
+    const sharedLayout = readStyle('src/styles/synthoma-os/layout.css');
+    const sharedControls = readStyle('src/styles/synthoma-os/controls.css');
+    const sharedTypography = readStyle('src/styles/synthoma-os/typography.css');
 
     expect(legacy).not.toMatch(/#control-panel\s*\{\s*--font-size-multiplier:\s*1\s*!important/);
-    for (const css of [controlPanel, audioPanel, overlays, shell, header]) {
+    for (const css of [controlPanel, audioPanel, overlays, shell]) {
       expect(css).toMatch(/var\(--cy-font-(?:micro|small|body|control|value)\)/);
+    }
+    for (const css of [sharedLayout, sharedControls, sharedTypography]) {
+      expect(css).toMatch(/var\(--os-(?:text|font)-(?:micro|small|body|control|value|mono)\)/);
     }
     expect(controlPanel).not.toMatch(/font-size:\s*(?:9|10|11)px/);
     expect(audioPanel).not.toMatch(/font:\s*[^;]*(?:9|10|11)px/);
   });
 
   it('keeps icon controls at 44px while text remains reflowable', () => {
-    const header = readStyle('src/styles/cyklus/command-header.css');
+    const osTokens = readStyle('src/styles/synthoma-os/tokens.css');
+    const layout = readStyle('src/styles/synthoma-os/layout.css');
     const controlPanel = readStyle('src/styles/control-panel-os.css');
 
-    expect(header).toMatch(/\.cyklus-header__action\s*\{[\s\S]*?width:\s*44px;[\s\S]*?height:\s*44px;/);
+    expect(osTokens).toMatch(/--os-tap:\s*44px;/);
+    expect(layout).toMatch(/\.synthoma-command-header__commands\s*\.os-command\s*\{[\s\S]*?width:\s*var\(--os-tap\);[\s\S]*?height:\s*var\(--os-tap\);/);
     expect(controlPanel).toMatch(/\.cp-close\s*\{[\s\S]*?width:\s*44px;[\s\S]*?height:\s*44px;/);
     expect(controlPanel).toMatch(/\.slider-label-text\s*\{[\s\S]*?min-width:\s*0;/);
   });

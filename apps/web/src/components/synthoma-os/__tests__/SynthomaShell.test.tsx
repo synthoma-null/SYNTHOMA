@@ -1,16 +1,22 @@
+import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import fs from 'node:fs';
 import path from 'node:path';
 import SynthomaShell from '../SynthomaShell';
+import { HeaderProvider } from '../HeaderContext';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn() }));
 const { usePathname } = require('next/navigation');
+
+function renderWithHeader(ui: React.ReactElement) {
+  return render(<HeaderProvider>{ui}</HeaderProvider>);
+}
 
 describe('SynthomaShell', () => {
   beforeEach(() => usePathname.mockReturnValue('/books'));
 
   it('owns one set of global controls and marks the active route', () => {
-    render(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
+    renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
     expect(screen.getAllByRole('button', { name: 'Identita' })).toHaveLength(1);
     expect(screen.getAllByRole('button', { name: 'Nastavení' })).toHaveLength(1);
     expect(screen.getAllByRole('button', { name: /Hudba/ })).toHaveLength(1);
@@ -24,7 +30,7 @@ describe('SynthomaShell', () => {
     const audio = jest.fn();
     document.addEventListener('synthoma:identity-toggle', identity);
     document.addEventListener('synthoma:audio-toggle', audio);
-    render(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
+    renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
     fireEvent.click(screen.getByRole('button', { name: 'Identita' }));
     fireEvent.click(screen.getByRole('button', { name: /Hudba/ }));
     expect(identity).toHaveBeenCalledTimes(1);
@@ -35,9 +41,9 @@ describe('SynthomaShell', () => {
 
   it('does not duplicate the specialized Cyklus shell', () => {
     usePathname.mockReturnValue('/cyklus');
-    render(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
+    renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
     expect(screen.getByText('CYKLUS CONTENT')).toBeInTheDocument();
-    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
   });
 
   it.each([
@@ -54,7 +60,7 @@ describe('SynthomaShell', () => {
     { route: '/chapter/0-0-null', variant: 'quiet' },
   ])('renders correct shell variant for $route ($variant)', ({ route, variant }) => {
     usePathname.mockReturnValue(route);
-    const { container } = render(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
+    const { container } = renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
     const shell = container.firstChild as HTMLElement;
     if (variant === 'quiet') {
       expect(shell).toHaveClass('synthoma-shell--quiet');
@@ -73,14 +79,14 @@ describe('SynthomaShell', () => {
 
   it('hides the global shell for the intro sequence and Cyklus', () => {
     usePathname.mockReturnValue('/landing-intro');
-    const { container: introContainer } = render(<SynthomaShell><p>INTRO</p></SynthomaShell>);
+    const { container: introContainer } = renderWithHeader(<SynthomaShell><p>INTRO</p></SynthomaShell>);
     expect(introContainer.firstChild).toHaveTextContent('INTRO');
     expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
 
     usePathname.mockReturnValue('/cyklus/void');
-    const { container: cyklusContainer } = render(<SynthomaShell><p>CYKLUS</p></SynthomaShell>);
+    const { container: cyklusContainer } = renderWithHeader(<SynthomaShell><p>CYKLUS</p></SynthomaShell>);
     expect(cyklusContainer.firstChild).toHaveTextContent('CYKLUS');
-    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
   });
 
   it('keeps mobile controls bounded and reserves safe-area content space', () => {
