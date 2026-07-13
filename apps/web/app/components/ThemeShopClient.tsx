@@ -185,7 +185,7 @@ export default function ThemeShopClient() {
 
       {confirmTheme && (
         <div className="theme-dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-dialog-title">
-          <div className="theme-dialog">
+          <div className="theme-dialog os-surface">
             <p className="theme-dialog-log">LOG [THEME_PURCHASE]:</p>
             <h2 id="theme-dialog-title" className="theme-dialog-title">POTVRDIT NÁKUP</h2>
             <p className="theme-dialog-body">
