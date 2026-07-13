@@ -95,7 +95,7 @@ export default function WhisperFloat({
         f.visible ? (
           <div
             key={f.key}
-            className="whisper-float-item"
+            className="whisper-float-item os-surface os-surface--glass"
             style={{ '--wf-x': `${f.x}%`, '--wf-y': `${f.y}%` } as React.CSSProperties}
             onClick={() => dismiss(f.key)}
           >

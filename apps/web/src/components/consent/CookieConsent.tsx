@@ -30,7 +30,7 @@ export default function CookieConsent() {
 
   return (
     <div className="cc-overlay" role="dialog" aria-modal="true" aria-label="Paměťové stopy – souhlas">
-      <div className="cc-panel">
+      <div className="cc-panel os-surface--glass">
         <div className="cc-log">
           <span className="cc-log-prefix">LOG [CONSENT_REQUEST]:</span>
           <span className="cc-log-msg">
