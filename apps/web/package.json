@@ -19,7 +19,8 @@
     "format": "prettier --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "validate:chapters": "node scripts/validate-books.js",
-    "content:validate": "node scripts/validate-content.js"
+    "content:validate": "node scripts/validate-content.js",
+    "entitlements:backfill": "node scripts/backfill-content-entitlements.js"
   },
   "keywords": [
     "synthoma",

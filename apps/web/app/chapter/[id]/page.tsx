@@ -1,16 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '../../../auth';
-import { CHAPTER_CATALOG, getChapterCatalogEntry } from '../../../src/content/catalog';
+import { getChapterCatalogEntry } from '../../../src/content/catalog';
 import { getContentAccess } from '../../../src/server/economy';
 import ChapterAccessGate from './ChapterAccessGate';
 
 const BASE_URL = 'https://www.synthoma.cz';
 const OG_IMAGE = `${BASE_URL}/assets/og-synthoma.jpg`;
 
-export async function generateStaticParams() {
-  return CHAPTER_CATALOG.map((chapter) => ({ id: chapter.id }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },

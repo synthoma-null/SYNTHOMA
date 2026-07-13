@@ -6,6 +6,10 @@ import ThemeShopClient from '../../../../app/components/ThemeShopClient';
 import ControlPanelClient from '../../../../app/components/ControlPanelClient';
 import { UI_THEMES } from '../../../lib/themes';
 
+jest.mock('../../access/AccessProvider', () => ({
+  useAccess: () => ({ applySnapshot: jest.fn() }),
+}));
+
 describe('Cyklus theme picker', () => {
   beforeEach(() => {
     localStorage.clear();

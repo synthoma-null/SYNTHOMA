@@ -209,9 +209,13 @@ function validate() {
   console.log(`Content validation passed: ${catalog.length} entries, ${chapters.length} chapters.`);
 }
 
-try {
-  validate();
-} catch (error) {
-  console.error('[content:error] Validator crashed:', error);
-  process.exitCode = 1;
+module.exports = { loadTypeScriptModule };
+
+if (require.main === module) {
+  try {
+    validate();
+  } catch (error) {
+    console.error('[content:error] Validator crashed:', error);
+    process.exitCode = 1;
+  }
 }

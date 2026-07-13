@@ -311,10 +311,9 @@ export async function getEntityRelations(userId: string) {
 
 export async function checkAndActivateMissions(userId: string): Promise<string[]> {
   const { MISSIONS } = await import('../content/booksManifest');
-  const [run, psyche, entitlements, readingProgress, artifacts, nameFragments, whisperCount, missions] = await Promise.all([
+  const [run, psyche, readingProgress, artifacts, nameFragments, whisperCount, missions] = await Promise.all([
     prisma.userRun.findUnique({ where: { userId } }),
     prisma.psycheStats.findUnique({ where: { userId } }),
-    prisma.entitlement.findMany({ where: { userId }, select: { chapterId: true } }),
     prisma.readingProgress.findMany({ where: { userId, completed: true }, select: { chapterId: true } }),
     prisma.userArtifact.findMany({ where: { userId }, select: { artifactId: true } }),
     prisma.userNameFragment.findMany({ where: { userId }, select: { fragment: true } }),
@@ -324,10 +323,7 @@ export async function checkAndActivateMissions(userId: string): Promise<string[]
 
   const missionMap = new Map(missions.map((m: { missionId: string; status: string }) => [m.missionId, m.status]));
   const completedChapters = new Set(
-    [
-      ...entitlements.map((e: { chapterId: string | null }) => e.chapterId).filter(Boolean),
-      ...readingProgress.map((r: { chapterId: string }) => r.chapterId),
-    ].filter(Boolean) as string[],
+    readingProgress.map((progress: { chapterId: string }) => progress.chapterId),
   );
   const artifactIds = new Set(artifacts.map((a: { artifactId: string }) => a.artifactId));
   const fragmentSet = new Set(nameFragments.map((f: { fragment: string }) => f.fragment));

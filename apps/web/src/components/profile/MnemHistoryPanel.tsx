@@ -54,7 +54,7 @@ export default function MnemHistoryPanel({ ledger, ownership, purchases }: Props
             {ownership.map((item) => (
               <li key={`${item.contentType}:${item.contentId}`}>
                 <strong>{item.title}</strong>
-                <span>{item.contentType} // {item.source} // {formatDate(item.grantedAt)}</span>
+                <span>{`${item.contentType} // ${item.source} // ${formatDate(item.grantedAt)}`}</span>
                 {item.expiresAt ? <span>platnost do {formatDate(item.expiresAt)}</span> : null}
               </li>
             ))}
@@ -73,7 +73,7 @@ export default function MnemHistoryPanel({ ledger, ownership, purchases }: Props
               <li key={entry.id}>
                 <strong>{entry.amount > 0 ? '+' : ''}{entry.amount} MNEM</strong>
                 <span>{entry.reason}</span>
-                <span>zůstatek {entry.balanceAfter} // {formatDate(entry.createdAt)}</span>
+                <span>{`zůstatek ${entry.balanceAfter} // ${formatDate(entry.createdAt)}`}</span>
               </li>
             ))}
           </ol>
@@ -87,7 +87,7 @@ export default function MnemHistoryPanel({ ledger, ownership, purchases }: Props
             {purchases.map((purchase) => (
               <li key={purchase.id}>
                 <strong>{purchase.title}</strong>
-                <span>{purchase.mnemCost} MNEM // {purchase.status} // {formatDate(purchase.createdAt)}</span>
+                <span>{`${purchase.mnemCost} MNEM // ${purchase.status} // ${formatDate(purchase.createdAt)}`}</span>
               </li>
             ))}
           </ul>

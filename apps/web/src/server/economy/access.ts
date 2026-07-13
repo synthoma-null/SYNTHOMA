@@ -74,10 +74,15 @@ async function loadAccessFacts(
   const direct = new Set<string>();
   const packages = new Set<string>();
   for (const entitlement of entitlements) {
-    direct.add(`${entitlement.contentType}:${entitlement.contentId}`);
+    const canonicalContentId = entitlement.contentType === 'chapter'
+      ? resolveChapterId(entitlement.contentId) ?? entitlement.contentId
+      : entitlement.contentId;
+    direct.add(`${entitlement.contentType}:${canonicalContentId}`);
     if (entitlement.contentType === 'package') packages.add(entitlement.contentId);
     if (entitlement.packageId) packages.add(entitlement.packageId);
-    if (entitlement.chapterId) direct.add(`chapter:${entitlement.chapterId}`);
+    if (entitlement.chapterId) {
+      direct.add(`chapter:${resolveChapterId(entitlement.chapterId) ?? entitlement.chapterId}`);
+    }
   }
   for (const packageId of packages) {
     for (const chapterId of getPackageChapterIds(packageId)) direct.add(`chapter:${chapterId}`);

@@ -1,7 +1,7 @@
 # SYNTHOMA Phase 5.4 — audit MNEM ekonomiky a přístupu k obsahu
 
-Datum auditu: 2026-07-13  
-Výchozí HEAD: `5c30c38`  
+Datum auditu: 2026-07-13
+Výchozí HEAD: `5c30c38`
 Pracovní větev: `refactor/mnem-entitlement-core`
 
 ## Rozsah a zdroje
