@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
-import prisma from '../../../../src/lib/prisma';
 import { UI_THEMES } from '../../../../src/lib/themes';
+import { getAccessSnapshot, isEconomyError, purchaseWithMnems } from '../../../../src/server/economy';
 
 const PRICE_MAP = new Map(UI_THEMES.map((t) => [t.id, t.cost]));
-const THEME_LABELS = new Map(UI_THEMES.map((t) => [t.id, t.label]));
-
-function cosmeticId(themeId: string) {
-  return `theme-${themeId}`;
-}
-
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {
@@ -17,24 +11,19 @@ export async function GET() {
   }
   const userId = session.user.id;
 
-  const unlocked = await prisma.userCosmeticUnlock.findMany({
-    where: { userId },
-    select: { cosmeticId: true },
-  });
-  const unlockedIds = new Set(unlocked.map((u) => u.cosmeticId));
-
-  const balanceAgg = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const balance = balanceAgg._sum.amount ?? 0;
+  const snapshot = await getAccessSnapshot(
+    userId,
+    UI_THEMES.map((theme) => ({ contentType: 'cosmetic' as const, contentId: theme.id })),
+  );
+  const accessById = new Map(snapshot.access.map((access) => [access.contentId, access]));
 
   const themes = UI_THEMES.map((t) => ({
     ...t,
-    unlocked: t.cost === 0 || unlockedIds.has(cosmeticId(t.id)),
+    unlocked: accessById.get(t.id)?.canAccess ?? false,
+    access: accessById.get(t.id),
   }));
 
-  return NextResponse.json({ themes, balance });
+  return NextResponse.json({ themes, balance: snapshot.balance, snapshot });
 }
 
 export async function POST(req: NextRequest) {
@@ -60,40 +49,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Neplatný motiv.' }, { status: 400 });
   }
 
-  const cid = cosmeticId(themeId);
-
-  const existing = await prisma.userCosmeticUnlock.findUnique({
-    where: { userId_cosmeticId: { userId, cosmeticId: cid } },
-  });
-  if (existing) {
-    return NextResponse.json({ error: 'Tento motiv již vlastníš.' }, { status: 409 });
+  const idempotencyKey = req.headers.get('idempotency-key')?.trim();
+  if (!idempotencyKey) {
+    return NextResponse.json({ error: 'Idempotency-Key je povinný.' }, { status: 400 });
   }
-
-  const balanceAgg = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const balance = balanceAgg._sum.amount ?? 0;
-
-  if (balance < cost) {
-    return NextResponse.json(
-      { error: `Nedostatek mnemů. Potřebuješ ${cost}, máš ${balance}.` },
-      { status: 402 },
-    );
+  try {
+    const result = await purchaseWithMnems({
+      userId,
+      contentType: 'cosmetic',
+      contentId: themeId,
+      idempotencyKey,
+    });
+    return NextResponse.json({ ok: true, themeId, cost, ...result });
+  } catch (error) {
+    if (isEconomyError(error)) {
+      return NextResponse.json(
+        { error: error.message, code: error.code, details: error.details },
+        { status: error.status },
+      );
+    }
+    throw error;
   }
-
-  await prisma.$transaction([
-    prisma.userCosmeticUnlock.create({
-      data: { userId, cosmeticId: cid, source: 'mnem' },
-    }),
-    prisma.mnemLedger.create({
-      data: {
-        userId,
-        amount: -cost,
-        reason: `Motiv: ${THEME_LABELS.get(themeId) ?? themeId}`,
-      },
-    }),
-  ]);
-
-  return NextResponse.json({ ok: true, themeId, cost });
 }

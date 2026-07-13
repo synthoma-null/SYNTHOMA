@@ -1,22 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
-import prisma from '../../../../src/lib/prisma';
-import { grantArtifact } from '../../../../src/lib/access';
 import { getArtifactById, ARTIFACTS } from '../../../../src/content/booksManifest';
+import { getAccessSnapshot, isEconomyError, purchaseWithMnems } from '../../../../src/server/economy';
 
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const userId = session.user.id;
 
-  const owned = await prisma.userArtifact.findMany({
-    where: { userId },
-    orderBy: { unlockedAt: 'desc' },
-  });
-  const ownedIds = new Set(owned.map((a: { artifactId: string }) => a.artifactId));
+  const snapshot = await getAccessSnapshot(
+    userId,
+    ARTIFACTS.map((artifact) => ({ contentType: 'artifact' as const, contentId: artifact.id })),
+  );
+  const accessById = new Map(snapshot.access.map((access) => [access.contentId, access]));
 
   return NextResponse.json(
-    ARTIFACTS.map((a) => ({ ...a, owned: ownedIds.has(a.id) })),
+    ARTIFACTS.map((artifact) => ({
+      ...artifact,
+      owned: accessById.get(artifact.id)?.canAccess ?? false,
+      access: accessById.get(artifact.id),
+    })),
   );
 }
 
@@ -32,25 +35,25 @@ export async function POST(req: NextRequest) {
   if (!artifact) return NextResponse.json({ error: 'Artefakt neexistuje.' }, { status: 404 });
   if (!artifact.purchasable) return NextResponse.json({ error: 'Tento artefakt nelze koupit přímo.' }, { status: 400 });
 
-  const mnemBalance = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const balance = mnemBalance._sum.amount ?? 0;
-
-  if (balance < artifact.cost) {
-    return NextResponse.json(
-      { error: `Nedostatek mnemů. Potřebuješ ${artifact.cost}, máš ${balance}.` },
-      { status: 402 },
-    );
+  const idempotencyKey = req.headers.get('idempotency-key')?.trim();
+  if (!idempotencyKey) {
+    return NextResponse.json({ error: 'Idempotency-Key je povinný.' }, { status: 400 });
   }
-
-  const granted = await grantArtifact(userId, artifactId, 'mnem');
-  if (!granted) return NextResponse.json({ error: 'Artefakt již vlastníš.' }, { status: 409 });
-
-  await prisma.mnemLedger.create({
-    data: { userId, amount: -artifact.cost, reason: `Artefakt: ${artifact.name}` },
-  });
-
-  return NextResponse.json({ ok: true, artifactId });
+  try {
+    const result = await purchaseWithMnems({
+      userId,
+      contentType: 'artifact',
+      contentId: artifactId,
+      idempotencyKey,
+    });
+    return NextResponse.json({ ok: true, artifactId, ...result });
+  } catch (error) {
+    if (isEconomyError(error)) {
+      return NextResponse.json(
+        { error: error.message, code: error.code, details: error.details },
+        { status: error.status },
+      );
+    }
+    throw error;
+  }
 }

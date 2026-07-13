@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
 import { z } from 'zod';
 import prisma from '../../../../src/lib/prisma';
+import { grantMnems } from '../../../../src/server/economy';
 
 const RegisterSchema = z.object({
   email: z.string().email('Neplatný e-mail.'),
@@ -44,32 +45,28 @@ export async function POST(req: NextRequest) {
 
     const passwordHash = await hash(password, 12);
 
-    const user = await prisma.user.create({
-      data: {
-        email: email.trim(),
-        emailLower,
-        nickname: nickname.trim(),
-        nicknameLower,
-        passwordHash,
-        profile: {
-          create: {},
+    const user = await prisma.$transaction(async (tx) => {
+      const created = await tx.user.create({
+        data: {
+          email: email.trim(),
+          emailLower,
+          nickname: nickname.trim(),
+          nicknameLower,
+          passwordHash,
+          profile: { create: {} },
+          settings: { create: {} },
+          psyche: { create: {} },
         },
-        settings: {
-          create: {},
-        },
-        psyche: {
-          create: {},
-        },
-      },
-      select: { id: true, nickname: true, email: true },
-    });
-
-    await prisma.mnemLedger.create({
-      data: {
-        userId: user.id,
+        select: { id: true, nickname: true, email: true },
+      });
+      await grantMnems({
+        userId: created.id,
         amount: 128,
         reason: 'Startovní kredit při registraci',
-      },
+        idempotencyKey: `registration:${created.id}:welcome`,
+        externalReference: created.id,
+      }, tx);
+      return created;
     });
 
     return NextResponse.json(

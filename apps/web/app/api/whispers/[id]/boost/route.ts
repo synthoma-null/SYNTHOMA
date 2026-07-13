@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../../auth';
 import prisma from '../../../../../src/lib/prisma';
+import { isEconomyError, lockMnemAccount, spendMnemsAtomic } from '../../../../../src/server/economy';
 
 const BOOST_COSTS: Record<string, { mnemCost: number; days: number; label: string }> = {
   boost:              { mnemCost: 16, days: 7,  label: 'Stabilizace na 7 dní' },
@@ -19,6 +20,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const userId = session.user.id;
   const body = await req.json();
   const boostType: string = body.type;
+  const idempotencyKey = req.headers.get('idempotency-key')?.trim();
+  if (!idempotencyKey || !/^[A-Za-z0-9:_-]{12,128}$/.test(idempotencyKey)) {
+    return NextResponse.json({ error: 'Platný Idempotency-Key je povinný.' }, { status: 400 });
+  }
 
   const config = BOOST_COSTS[boostType];
   if (!config) {
@@ -36,19 +41,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: 'Nelze boostovat cizí šepot.' }, { status: 403 });
   }
 
-  const mnemBalance = await prisma.mnemLedger.aggregate({
-    where: { userId },
-    _sum: { amount: true },
-  });
-  const balance = mnemBalance._sum.amount ?? 0;
-
-  if (balance < config.mnemCost) {
-    return NextResponse.json(
-      { error: `Nedostatek mnemů. Potřebuješ ${config.mnemCost}, máš ${balance}.` },
-      { status: 402 },
-    );
-  }
-
   const updateData: Record<string, unknown> = {};
   if (boostType === 'boost' || boostType === 'archive_highlight') {
     const until = new Date();
@@ -59,19 +51,46 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     updateData.type = 'log';
   }
 
-  await prisma.$transaction([
-    prisma.mnemLedger.create({
-      data: {
+  try {
+    const result = await prisma.$transaction(async (tx) => {
+      await lockMnemAccount(tx, userId);
+      const existing = await tx.whisperPurchase.findUnique({ where: { idempotencyKey } });
+      if (existing) {
+        if (existing.userId !== userId || existing.whisperId !== id || existing.type !== boostType) {
+          throw new Error('IDEMPOTENCY_CONFLICT');
+        }
+        return { replayed: true };
+      }
+      await spendMnemsAtomic({
         userId,
-        amount: -config.mnemCost,
+        amount: config.mnemCost,
         reason: `Šepot boost: ${config.label} (${id})`,
-      },
-    }),
-    prisma.whisperPurchase.create({
-      data: { userId, whisperId: id, type: boostType, mnemCost: config.mnemCost },
-    }),
-    prisma.whisper.update({ where: { id }, data: updateData }),
-  ]);
-
-  return NextResponse.json({ ok: true, type: boostType, cost: config.mnemCost });
+        idempotencyKey: `whisper:${idempotencyKey}`,
+        externalReference: id,
+      }, tx);
+      await tx.whisperPurchase.create({
+        data: {
+          userId,
+          whisperId: id,
+          type: boostType,
+          mnemCost: config.mnemCost,
+          idempotencyKey,
+        },
+      });
+      await tx.whisper.update({ where: { id }, data: updateData });
+      return { replayed: false };
+    });
+    return NextResponse.json({ ok: true, type: boostType, cost: config.mnemCost, ...result });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'IDEMPOTENCY_CONFLICT') {
+      return NextResponse.json({ error: 'Idempotency klíč patří jiné operaci.' }, { status: 409 });
+    }
+    if (isEconomyError(error)) {
+      return NextResponse.json(
+        { error: error.message, code: error.code, details: error.details },
+        { status: error.status },
+      );
+    }
+    throw error;
+  }
 }

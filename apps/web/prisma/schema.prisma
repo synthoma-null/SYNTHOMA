@@ -25,6 +25,7 @@ model User {
   choices      ChoiceEvent[]
   entitlements Entitlement[]
   mnemLedger   MnemLedger[]
+  purchases    Purchase[]
   accessCodes  AccessCode[]
   cyklusRun    CyklusRun?
 }
@@ -34,10 +35,10 @@ model UserProfile {
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  displayName   String?
-  bio           String?
-  avatarUrl     String?
-  title         String  @default("Nezmapovaný subjekt")
+  displayName String?
+  bio         String?
+  avatarUrl   String?
+  title       String  @default("Nezmapovaný subjekt")
 
   publicProfile Boolean @default(false)
   showPsycheMap Boolean @default(false)
@@ -71,11 +72,11 @@ model ReadingProgress {
   chapterId       String
   chapterTitle    String?
   lastBlockId     String?
-  progressPercent Int      @default(0)
-  readMs          Int      @default(0)
-  completed       Boolean  @default(false)
+  progressPercent Int       @default(0)
+  readMs          Int       @default(0)
+  completed       Boolean   @default(false)
   completedAt     DateTime?
-  updatedAt       DateTime @updatedAt
+  updatedAt       DateTime  @updatedAt
 
   @@unique([userId, collection, chapterId])
 }
@@ -119,12 +120,12 @@ model PsycheStats {
   anger        Int @default(0)
   anticipation Int @default(0)
 
-  shadow    Int    @default(0)
-  tone      String @default("neutrální_sarkastický")
+  shadow     Int    @default(0)
+  tone       String @default("neutrální_sarkastický")
   initiative String @default("standardní")
-  risk      String @default("standardní")
-  tempo     String @default("normální")
-  strategy  String @default("nezjištěno")
+  risk       String @default("standardní")
+  tempo      String @default("normální")
+  strategy   String @default("nezjištěno")
 
   updatedAt DateTime @updatedAt
 }
@@ -134,12 +135,20 @@ model Entitlement {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  packageId String?
-  chapterId String?
-  source    String
-  createdAt DateTime @default(now())
+  packageId       String?
+  chapterId       String?
+  contentType     String
+  contentId       String
+  source          String
+  sourceReference String?
+  metadata        Json?
+  expiresAt       DateTime?
+  grantedAt       DateTime  @default(now())
+  createdAt       DateTime  @default(now())
 
   @@unique([userId, chapterId])
+  @@unique([userId, contentType, contentId])
+  @@index([userId, contentType])
 }
 
 model MnemLedger {
@@ -147,43 +156,92 @@ model MnemLedger {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  amount          Int
-  reason          String
-  stripeSessionId String?
-  createdAt       DateTime @default(now())
+  amount            Int
+  balanceAfter      Int
+  transactionType   String
+  reason            String
+  stripeSessionId   String?
+  contentType       String?
+  contentId         String?
+  packageId         String?
+  externalReference String?
+  idempotencyKey    String?  @unique
+  actorUserId       String?
+  createdAt         DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([externalReference])
+}
+
+model Purchase {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  contentType    String
+  contentId      String
+  mnemCost       Int
+  status         String    @default("pending")
+  entitlementId  String?
+  ledgerEntryId  String?
+  idempotencyKey String    @unique
+  failureCode    String?
+  metadata       Json?
+  createdAt      DateTime  @default(now())
+  completedAt    DateTime?
+
+  @@index([userId, createdAt])
+  @@index([userId, contentType, contentId])
 }
 
 model AccessCode {
-  id     String  @id @default(cuid())
-  codeHash String @unique
-  packageId String
-  userId  String?
-  user    User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id          String  @id @default(cuid())
+  codeHash    String  @unique
+  packageId   String?
+  grantType   String  @default("package")
+  contentType String?
+  contentId   String?
+  mnemAmount  Int?
+  userId      String?
+  user        User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   used            Boolean   @default(false)
   usedAt          DateTime?
   expiresAt       DateTime?
-  stripeSessionId String?
+  stripeSessionId String?   @unique
   createdAt       DateTime  @default(now())
 }
 
+model AdminAuditLog {
+  id           String   @id @default(cuid())
+  actorUserId  String
+  targetUserId String
+  action       String
+  reference    String?  @unique
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  @@index([actorUserId, createdAt])
+  @@index([targetUserId, createdAt])
+}
+
 model UserCosmeticUnlock {
-  id          String   @id @default(cuid())
-  userId      String
-  cosmeticId  String
-  unlockedAt  DateTime @default(now())
-  source      String
+  id         String   @id @default(cuid())
+  userId     String
+  cosmeticId String
+  unlockedAt DateTime @default(now())
+  source     String
 
   @@unique([userId, cosmeticId])
   @@index([userId])
 }
 
 model SubjectBadge {
-  id          String   @id @default(cuid())
-  userId      String
-  badgeId     String
-  earnedAt    DateTime @default(now())
-  source      String   @default("behavior")
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+  source   String   @default("behavior")
 
   @@unique([userId, badgeId])
   @@index([userId])
@@ -212,11 +270,11 @@ model WeeklyMemory {
 }
 
 model SubjectVote {
-  id         String   @id @default(cuid())
-  userId     String
-  pollId     String
-  optionId   String
-  votedAt    DateTime @default(now())
+  id       String   @id @default(cuid())
+  userId   String
+  pollId   String
+  optionId String
+  votedAt  DateTime @default(now())
 
   @@unique([userId, pollId])
   @@index([pollId])
@@ -238,13 +296,13 @@ model UserRun {
 }
 
 model EntityRelation {
-  id         String @id @default(cuid())
+  id         String   @id @default(cuid())
   userId     String
   entity     String
-  trust      Int    @default(0)
-  suspicion  Int    @default(0)
-  sync       Int    @default(0)
-  protection Int    @default(0)
+  trust      Int      @default(0)
+  suspicion  Int      @default(0)
+  sync       Int      @default(0)
+  protection Int      @default(0)
   updatedAt  DateTime @updatedAt
 
   @@unique([userId, entity])
@@ -252,11 +310,11 @@ model EntityRelation {
 }
 
 model UserArtifact {
-  id          String   @id @default(cuid())
-  userId      String
-  artifactId  String
-  source      String
-  unlockedAt  DateTime @default(now())
+  id         String   @id @default(cuid())
+  userId     String
+  artifactId String
+  source     String
+  unlockedAt DateTime @default(now())
 
   @@unique([userId, artifactId])
   @@index([userId])
@@ -289,24 +347,24 @@ model UserMission {
 }
 
 model Whisper {
-  id          String   @id @default(cuid())
-  userId      String
-  publicMode  String   @default("anonymous")
-  type        String
-  text        String
-  status      String   @default("pending")
-  placement   String   @default("random")
-  chapterId   String?
-  emotionTags String   @default("[]")
-  functionTags String  @default("[]")
-  resonanceCount Int   @default(0)
-  displayCount   Int   @default(0)
+  id             String    @id @default(cuid())
+  userId         String
+  publicMode     String    @default("anonymous")
+  type           String
+  text           String
+  status         String    @default("pending")
+  placement      String    @default("random")
+  chapterId      String?
+  emotionTags    String    @default("[]")
+  functionTags   String    @default("[]")
+  resonanceCount Int       @default(0)
+  displayCount   Int       @default(0)
   boostedUntil   DateTime?
-  createdAt      DateTime @default(now())
+  createdAt      DateTime  @default(now())
   approvedAt     DateTime?
 
-  resonances  WhisperResonance[]
-  purchases   WhisperPurchase[]
+  resonances WhisperResonance[]
+  purchases  WhisperPurchase[]
 
   @@index([userId])
   @@index([status])
@@ -320,52 +378,53 @@ model WhisperResonance {
   userId    String
   createdAt DateTime @default(now())
 
-  whisper   Whisper  @relation(fields: [whisperId], references: [id], onDelete: Cascade)
+  whisper Whisper @relation(fields: [whisperId], references: [id], onDelete: Cascade)
 
   @@unique([whisperId, userId])
   @@index([whisperId])
 }
 
 model WhisperPurchase {
-  id        String   @id @default(cuid())
-  userId    String
-  whisperId String
-  type      String
-  mnemCost  Int
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  userId         String
+  whisperId      String
+  type           String
+  mnemCost       Int
+  idempotencyKey String   @unique
+  createdAt      DateTime @default(now())
 
-  whisper   Whisper  @relation(fields: [whisperId], references: [id], onDelete: Cascade)
+  whisper Whisper @relation(fields: [whisperId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([whisperId])
 }
 
 model CyklusRun {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   stateJson       Json
   historyJson     Json     @default("[]")
   discoveryJson   Json     @default("{}")
   progressionJson Json     @default("{}")
   updatedAt       DateTime @updatedAt
-  createdAt   DateTime @default(now())
+  createdAt       DateTime @default(now())
 
   @@index([userId])
 }
 
 model GameRoom {
-  id           String   @id @default(cuid())
-  code         String   @unique
+  id           String           @id @default(cuid())
+  code         String           @unique
   hostUserId   String?
   hostPlayerId String?
-  status       String   @default("lobby")
-  mode         String   @default("party")
-  maxPlayers   Int      @default(6)
+  status       String           @default("lobby")
+  mode         String           @default("party")
+  maxPlayers   Int              @default(6)
   stateJson    Json
-  stateVersion Int      @default(1)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  stateVersion Int              @default(1)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
   startedAt    DateTime?
   finishedAt   DateTime?
   players      GameRoomPlayer[]
@@ -396,15 +455,15 @@ model GameRoomPlayer {
 }
 
 model GameMove {
-  id          String   @id @default(cuid())
-  roomId      String
-  room        GameRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  playerId    String?
-  turnNumber  Int
-  actionType  String
-  payload     Json
-  stateAfter  Json?
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  roomId     String
+  room       GameRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  playerId   String?
+  turnNumber Int
+  actionType String
+  payload    Json
+  stateAfter Json?
+  createdAt  DateTime @default(now())
 
   @@index([roomId])
   @@index([turnNumber])

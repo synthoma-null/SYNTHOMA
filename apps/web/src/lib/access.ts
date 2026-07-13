@@ -1,33 +1,19 @@
 import { Prisma } from '@prisma/client';
 import prisma from './prisma';
-import { getChapterById, getPackageById, isFreeChapter, PACKAGES } from '../content/booksManifest';
+import { getPackageById, PACKAGES } from '../content/booksManifest';
+import {
+  getContentAccess,
+  grantEntitlement,
+  grantPackage as grantPackageEntitlement,
+  purchaseWithMnems,
+} from '../server/economy';
 
 export async function canReadChapter(userId: string, chapterId: string): Promise<boolean> {
-  if (isFreeChapter(chapterId)) return true;
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { role: true },
-  });
-  if (!user) return false;
-  if (user.role === 'admin') return true;
-
-  const entitlements = await prisma.entitlement.findMany({
-    where: { userId },
-    select: { chapterId: true, packageId: true },
-  });
-
-  for (const e of entitlements) {
-    if (e.chapterId === chapterId) return true;
-    if (e.packageId) {
-      const pkg = getPackageById(e.packageId);
-      if (!pkg) continue;
-      if (pkg.supporter) return true;
-      if (pkg.chapterIds.includes(chapterId)) return true;
-    }
+  try {
+    return (await getContentAccess(userId, 'chapter', chapterId)).canAccess;
+  } catch {
+    return false;
   }
-
-  return false;
 }
 
 export async function getUserEntitlements(userId: string) {
@@ -39,28 +25,20 @@ export async function grantChapter(
   chapterId: string,
   source: string,
 ): Promise<void> {
-  const chapter = getChapterById(chapterId);
-  if (!chapter) throw new Error(`Chapter ${chapterId} not found in manifest`);
-
-  if (chapter.mnemCost > 0) {
-    const balanceAgg = await prisma.mnemLedger.aggregate({
-      where: { userId },
-      _sum: { amount: true },
+  if (source === 'mnem') {
+    await purchaseWithMnems({
+      userId,
+      contentType: 'chapter',
+      contentId: chapterId,
+      idempotencyKey: `legacy:chapter:${userId}:${chapterId}`,
     });
-    const balance = balanceAgg._sum.amount ?? 0;
-    if (balance < chapter.mnemCost) {
-      throw new Error(`Nedostatek mnemů. Potřebuješ ${chapter.mnemCost}, máš ${balance}.`);
-    }
+    return;
   }
-
-  await prisma.entitlement.upsert({
-    where: { userId_chapterId: { userId, chapterId } },
-    create: { userId, chapterId, source },
-    update: { source },
-  });
-
-  await prisma.mnemLedger.create({
-    data: { userId, amount: -chapter.mnemCost, reason: `Odemčen fragment: ${chapter.title} (${source})` },
+  await grantEntitlement({
+    userId,
+    contentType: 'chapter',
+    contentId: chapterId,
+    source,
   });
 }
 
@@ -71,30 +49,18 @@ export async function grantPackage(
   stripeSessionId?: string,
   tx?: Prisma.TransactionClient,
 ): Promise<void> {
-  const client = tx ?? prisma;
-  const pkg = getPackageById(packageId);
-  if (!pkg) throw new Error(`Package ${packageId} not found`);
-
-  await client.entitlement.create({
-    data: { userId, packageId, source },
-  });
-
-  await client.mnemLedger.create({
-    data: {
+  await grantPackageEntitlement(
+    {
       userId,
-      amount: pkg.mnems,
-      reason: `Balíček: ${pkg.name} (${source})`,
-      stripeSessionId: stripeSessionId ?? null,
+      packageId,
+      source,
+      idempotencyKey: stripeSessionId
+        ? `stripe:session:${stripeSessionId}`
+        : `${source}:package:${userId}:${packageId}`,
+      ...(stripeSessionId ? { stripeSessionId, sourceReference: stripeSessionId } : {}),
     },
-  });
-
-  for (const chapterId of pkg.chapterIds) {
-    await client.entitlement.upsert({
-      where: { userId_chapterId: { userId, chapterId } },
-      create: { userId, chapterId, packageId, source },
-      update: { packageId, source },
-    });
-  }
+    tx,
+  );
 }
 
 export async function isSupporter(userId: string): Promise<boolean> {
