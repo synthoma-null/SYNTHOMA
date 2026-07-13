@@ -6,7 +6,7 @@ import type { LibraryCollection } from '../../lib/synthoma/library/libraryTypes'
 export interface LibraryCoverDialogProps {
   collection: LibraryCollection;
   onClose: () => void;
-  onEnter?: () => void;
+  onEnter?: (() => void) | undefined;
 }
 
 export default function LibraryCoverDialog({ collection, onClose, onEnter }: LibraryCoverDialogProps) {

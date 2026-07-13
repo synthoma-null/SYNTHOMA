@@ -13,10 +13,12 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
     <ol className="library-chapter-list" aria-label={`Kapitoly sbírky ${collection.title}`}>
       {collection.chapters.map((ch) => {
         const progress = progressByChapterId[ch.id];
-        const isLocked = ch.access === 'paid';
+        const isLocked = ch.access !== 'free';
         const href = ch.id ? `/chapter/${encodeURIComponent(ch.id)}` : `/reader?u=${encodeURIComponent(ch.path)}`;
         const isContinue = progress && !progress.completed && progress.percent > 0;
         const isCompleted = progress?.completed;
+
+        const lockedLabel = ch.access === 'paid' ? `${ch.mnemCost} mnem` : 'UZAMČENO';
 
         return (
           <li key={ch.id || ch.path} className="library-chapter-list__item">
@@ -29,7 +31,8 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
               >
                 <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>
                 <span className="library-chapter-list__title">{ch.title}</span>
-                <span className="library-chapter-list__badge">{ch.mnemCost} mnem</span>
+                <span className="library-chapter-list__badge">{lockedLabel}</span>
+                {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
               </button>
             ) : (
               <Link className="library-chapter-list__row" href={href}>
@@ -40,6 +43,7 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
                 ) : isContinue ? (
                   <span className="library-chapter-list__badge library-chapter-list__badge--resume">{Math.round(progress.percent)}%</span>
                 ) : null}
+                {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
               </Link>
             )}
           </li>

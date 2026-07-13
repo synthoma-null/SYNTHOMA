@@ -11,6 +11,7 @@ export interface RawCollection {
   slug: string;
   title: string;
   cover?: string;
+  description?: string;
   chapters?: RawChapter[];
 }
 
@@ -77,6 +78,7 @@ export async function getLibraryCatalog(): Promise<LibraryCatalog> {
       slug: col.slug,
       title: col.title,
       cover: col.cover,
+      description: col.description,
       chapters,
       availableCount,
       totalCount: chapters.length,

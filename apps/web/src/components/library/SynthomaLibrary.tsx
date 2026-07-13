@@ -6,6 +6,7 @@ import LibraryCollectionHeader from './LibraryCollectionHeader';
 import LibraryChapterList from './LibraryChapterList';
 import LibraryResume from './LibraryResume';
 import LibraryCoverDialog from './LibraryCoverDialog';
+import LibraryCollectionGrid from './LibraryCollectionGrid';
 import { getResumeChapter, useLibraryProgress } from '../../lib/synthoma/library/useLibraryProgress';
 import type { LibraryCatalog, LibraryChapter } from '../../lib/synthoma/library/libraryTypes';
 import ChapterLockModal from '../../../app/components/ChapterLockModal';
@@ -53,42 +54,18 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
         )}
 
         {!selected ? (
-          <section className="synthoma-library__collections" aria-label="Seznam sbírek">
-            {catalog.collections.map((col) => {
-              const progressRecord = progress.byCollection[col.slug];
-              return (
-                <button
-                  key={col.slug}
-                  className="library-collection-card os-surface"
-                  type="button"
-                  onClick={() => setCoverSlug(col.slug)}
-                  aria-label={`Zobrazit přebal sbírky ${col.title}`}
-                >
-                  <div className="library-collection-card__cover">
-                    {col.cover ? (
-                      <img src={col.cover} alt="" loading="lazy" decoding="async" />
-                    ) : (
-                      <div className="library-collection-card__cover-placeholder" aria-hidden="true" />
-                    )}
-                  </div>
-                  <div className="library-collection-card__body">
-                    <h2 className="library-collection-card__title">{col.title}</h2>
-                    <p className="library-collection-card__status">
-                      {col.availableCount} / {col.totalCount} kapitol
-                    </p>
-                    {progressRecord ? (
-                      <p className="library-collection-card__resume">
-                        pokračovat {Math.round(progressRecord.percent)}%
-                      </p>
-                    ) : null}
-                  </div>
-                </button>
-              );
-            })}
-          </section>
+          <LibraryCollectionGrid
+            collections={catalog.collections}
+            progress={progress}
+            onSelect={setSelectedSlug}
+          />
         ) : (
           <section className="synthoma-library__collection-detail">
-            <LibraryCollectionHeader collection={selected} onBack={() => setSelectedSlug(null)} />
+            <LibraryCollectionHeader
+              collection={selected}
+              onBack={() => setSelectedSlug(null)}
+              onCoverClick={() => setCoverSlug(selected.slug)}
+            />
             <LibraryChapterList
               collection={selected}
               progressByChapterId={progress.byChapterId}
@@ -108,7 +85,7 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
         <LibraryCoverDialog
           collection={cover}
           onClose={() => setCoverSlug(null)}
-          onEnter={() => { setSelectedSlug(cover.slug); setCoverSlug(null); }}
+          onEnter={selectedSlug ? undefined : () => { setSelectedSlug(cover.slug); setCoverSlug(null); }}
         />
       )}
     </main>

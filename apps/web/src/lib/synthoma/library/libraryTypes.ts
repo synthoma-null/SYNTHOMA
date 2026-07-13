@@ -22,6 +22,7 @@ export interface LibraryCollection {
   slug: string;
   title: string;
   cover?: string | undefined;
+  description?: string | undefined;
   chapters: LibraryChapter[];
   availableCount: number;
   totalCount: number;
