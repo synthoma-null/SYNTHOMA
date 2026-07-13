@@ -125,5 +125,7 @@ Jest/typecheck/build a PASS desktopového i mobilního nákupního průchodu.
 HOLD nastává při jediné neznámé katalogové referenci, negativním průběhu,
 nevalidovaném constraintu, změně historických počtů mimo plán, duplicitním debitu,
 nejasném cílovém prostředí nebo chybějícím rights-approved kanonickém zdroji.
-Aktuální stagingová migrace je PASS; produkční release zůstává HOLD do dokončení
-browser QA a vyřešení `SYNTHOMA-NULL.txt` podle `docs/CANON_SOURCES.md`.
+Aktuální stagingová migrace i hlavní desktopový/mobilní browser nákupní průchod
+jsou PASS. Produkční release zůstává HOLD do dokončení řádků `BLOCKED` v
+`docs/SYNTHOMA_PHASE_5_4_MANUAL_QA.md` a vyřešení `SYNTHOMA-NULL.txt` podle
+`docs/CANON_SOURCES.md`.

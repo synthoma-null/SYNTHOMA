@@ -612,7 +612,7 @@ export default function CyklusClient() {
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    const activeCard = state ? getCardById(state.currentCardId) : undefined;
+    const activeCard = state ? getCardById(state.currentCardId) ?? getCardById('first_boot') : undefined;
     const posterVisible = activeCard?.presentation?.mode === 'poster-then-text' && !cardArtRevealed;
     if (posterVisible || flyDirection || outcomeVisible || gesturePointerId.current !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
     const now = performance.now();
@@ -668,7 +668,7 @@ export default function CyklusClient() {
     clearGesture();
     if (wasDrag) armClickSuppression();
     if (decision && state) {
-      const activeCard = getCardById(state.currentCardId);
+      const activeCard = getCardById(state.currentCardId) ?? getCardById('first_boot');
       if (activeCard) {
         const side: PhysicalCardSide = decision === 'yes' ? 'right' : 'left';
         handleChoice(getChoiceForPhysicalSide(activeCard, side), decision);
@@ -701,7 +701,7 @@ export default function CyklusClient() {
         return;
       }
       if (!state) return;
-      const activeCard = getCardById(state.currentCardId);
+      const activeCard = getCardById(state.currentCardId) ?? getCardById('first_boot');
       if (!activeCard || (activeCard.presentation?.mode === 'poster-then-text' && !cardArtRevealed)) return;
       if (e.key === 'ArrowRight') handleChoice(getChoiceForPhysicalSide(activeCard, 'right'), 'yes');
       if (e.key === 'ArrowLeft') handleChoice(getChoiceForPhysicalSide(activeCard, 'left'), 'no');

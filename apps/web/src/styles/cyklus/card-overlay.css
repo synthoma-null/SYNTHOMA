@@ -3,6 +3,7 @@
 .cyklus-root--playing > .cyklus-stage {
   display: grid;
   min-height: 0;
+  box-sizing: border-box;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   align-items: stretch;
@@ -12,6 +13,7 @@
   position: relative;
   isolation: isolate;
   display: grid;
+  box-sizing: border-box;
   grid-template-areas:
     "metadata"
     "title"
@@ -27,7 +29,7 @@
 
 .cyklus-card__metadata { grid-area: metadata; }
 .cyklus-card__title { grid-area: title; }
-.cyklus-card-scene { grid-area: scene; height: 100%; min-height: 0; overflow-y: auto; overflow-x: clip; align-content: start; }
+.cyklus-card-scene { grid-area: scene; box-sizing: border-box; height: 100%; min-height: 0; overflow-y: auto; overflow-x: clip; align-content: start; }
 .cyklus-card__restart-badge,
 .cyklus-card__overload { grid-area: badge; }
 .cyklus-card__preview { grid-area: choices; }
@@ -40,6 +42,7 @@
   place-items: stretch;
   padding: clamp(6px, 1.5vw, 12px);
   overflow: hidden;
+  -webkit-user-select: text;
   user-select: text;
 }
 
@@ -176,7 +179,6 @@
 
 @media (max-width: 767px) {
   .cyklus-root--playing > .cyklus-stage {
-    height: 100%;
     grid-template-rows: minmax(0, 1fr);
   }
 

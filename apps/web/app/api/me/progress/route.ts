@@ -27,6 +27,9 @@ export async function POST(req: NextRequest) {
     }
 
     const d = parsed.data;
+    const completionUpdate = d.completed
+      ? { completed: true, completedAt: new Date() }
+      : {};
     const record = await prisma.readingProgress.upsert({
       where: {
         userId_collection_chapterId: {
@@ -49,10 +52,10 @@ export async function POST(req: NextRequest) {
       update: {
         chapterTitle: d.chapterTitle ?? null,
         lastBlockId: d.lastBlockId ?? null,
-        progressPercent: d.progressPercent,
+        progressPercent: d.completed ? 100 : d.progressPercent,
         readMs: d.readMs,
-        completed: d.completed,
-        completedAt: d.completed ? new Date() : null,
+        // Completion is monotonic. A later autosave must not reopen a chapter.
+        ...completionUpdate,
       },
     });
 

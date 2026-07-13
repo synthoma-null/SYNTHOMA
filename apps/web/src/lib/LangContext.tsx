@@ -25,12 +25,15 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, []);
 
+  useEffect(() => {
+    try {
+      document.documentElement.lang = lang;
+    } catch {}
+  }, [lang]);
+
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     try { localStorage.setItem('synthoma_lang', l); } catch {}
-    try {
-      document.documentElement.lang = l;
-    } catch {}
   }, []);
 
   const t = useCallback((key: TKey) => getT(lang)(key), [lang]);

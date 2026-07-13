@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import fs from 'node:fs';
 import path from 'node:path';
 import SynthomaShell from '../SynthomaShell';
 import { HeaderProvider } from '../HeaderContext';
+import { LangProvider } from '../../../lib/LangContext';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn() }));
 const { usePathname } = require('next/navigation');
@@ -13,7 +14,11 @@ function renderWithHeader(ui: React.ReactElement) {
 }
 
 describe('SynthomaShell', () => {
-  beforeEach(() => usePathname.mockReturnValue('/books'));
+  beforeEach(() => {
+    usePathname.mockReturnValue('/books');
+    localStorage.clear();
+    document.documentElement.lang = 'cs';
+  });
 
   it('owns one set of global controls and marks the active route', () => {
     renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
@@ -37,6 +42,39 @@ describe('SynthomaShell', () => {
     expect(audio).toHaveBeenCalledTimes(1);
     document.removeEventListener('synthoma:identity-toggle', identity);
     document.removeEventListener('synthoma:audio-toggle', audio);
+  });
+
+  it('exposes the existing language switcher in the global header', () => {
+    render(
+      <LangProvider>
+        <HeaderProvider>
+          <SynthomaShell><p>CONTENT</p></SynthomaShell>
+        </HeaderProvider>
+      </LangProvider>,
+    );
+
+    const english = screen.getByRole('button', { name: 'EN' });
+    fireEvent.click(english);
+
+    expect(english).toHaveAttribute('aria-pressed', 'true');
+    expect(localStorage.getItem('synthoma_lang')).toBe('en');
+    expect(document.documentElement).toHaveAttribute('lang', 'en');
+  });
+
+  it('restores the document language from the saved preference', async () => {
+    localStorage.setItem('synthoma_lang', 'en');
+    render(
+      <LangProvider>
+        <HeaderProvider>
+          <SynthomaShell><p>CONTENT</p></SynthomaShell>
+        </HeaderProvider>
+      </LangProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'EN' })).toHaveAttribute('aria-pressed', 'true');
+      expect(document.documentElement).toHaveAttribute('lang', 'en');
+    });
   });
 
   it('does not duplicate the specialized Cyklus shell', () => {

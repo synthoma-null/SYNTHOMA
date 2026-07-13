@@ -223,4 +223,11 @@ describe('CyklusCardPoster responsive contract', () => {
     expect(css).toMatch(/\.cyklus-card-art__transform-layer\[data-geometry-ready="true"\] \.cyklus-card-art__image\s*\{[^}]*object-fit:\s*fill;/);
     expect(css).not.toMatch(/cyklus-card-art--zoomed[\s\S]*?height:\s*auto/);
   });
+
+  it('keeps the card shell at a definite height so the poster viewport is not zero', () => {
+    const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/cyklus/card.css'), 'utf8');
+
+    expect(css).not.toMatch(/\.cyklus-card\s*\{[^}]*height:\s*min\(100%,/);
+    expect(css).toMatch(/\.cyklus-card\s*\{[^}]*height:\s*clamp\(/);
+  });
 });

@@ -288,7 +288,7 @@ export default function ReaderContent() {
       saveReadingProgress({ bookId, path: chapterPath, percent: rounded, updatedAt: Date.now() });
       // Throttled server persistence so ReadingProgressPanel shows real progress
       const now = Date.now();
-      if (rounded !== lastServerSaved && now - lastServerSaveTime >= 5000) {
+      if (!completionFiredRef.current && rounded !== lastServerSaved && now - lastServerSaveTime >= 5000) {
         lastServerSaved = rounded;
         lastServerSaveTime = now;
         const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';

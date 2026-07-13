@@ -200,6 +200,19 @@ async function renderPosterRun(): Promise<HTMLElement> {
   return (await screen.findByRole('button', { name: 'OTEVŘÍT ZÁZNAM' })).closest('.cyklus-card') as HTMLElement;
 }
 
+async function renderRestart0Run(): Promise<HTMLElement> {
+  const state = {
+    ...createCyklusRun(true),
+    currentCardId: 'restart_0',
+    flags: ['tutorial_min_done', 'tutorial_v2_done'],
+    preRunWarning: null,
+  } as CyklusRunState;
+  storeRunState(state);
+  render(<HeaderProvider><SynthomaShell><CyklusClient /></SynthomaShell></HeaderProvider>);
+  await continueStoredRun();
+  return (await screen.findByRole('button', { name: 'OTEVŘÍT ZÁZNAM' })).closest('.cyklus-card') as HTMLElement;
+}
+
 describe('CyklusClient', () => {
   beforeAll(() => {
     window.scrollTo = jest.fn();
@@ -344,6 +357,29 @@ describe('CyklusClient', () => {
       expect(screen.getByText('0 [RESTART]')).toBeInTheDocument();
     });
     expect(screen.queryByText(/ROZŠÍŘENÍ/)).not.toBeInTheDocument();
+  });
+
+  it('renders the restart_0 poster image and computes geometry after the tutorial', async () => {
+    const card = await renderRestart0Run();
+    const viewport = screen.getByRole('region', { name: 'Obrazová strana karty 0 [RESTART]' });
+    const image = screen.getByRole('img', { name: 'Obrazový záznam: 0 [RESTART]' });
+    const transformLayer = card.querySelector('.cyklus-card-art__transform-layer') as HTMLElement;
+
+    expect(card).toHaveClass('cyklus-card--poster');
+    expect(image).toHaveAttribute('src', '/cards/cyklus/restart_0.webp');
+    expect(transformLayer).toHaveAttribute('data-geometry-ready', 'false');
+
+    Object.defineProperty(viewport, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({ x: 0, y: 0, left: 0, top: 0, right: 400, bottom: 712, width: 400, height: 712, toJSON: () => ({}) }),
+    });
+    Object.defineProperty(image, 'naturalWidth', { configurable: true, value: 941 });
+    Object.defineProperty(image, 'naturalHeight', { configurable: true, value: 1672 });
+    fireEvent.load(image);
+
+    expect(transformLayer).toHaveAttribute('data-geometry-ready', 'true');
+    expect(viewport).toHaveAttribute('data-base-width', '400');
+    expect(Number(viewport.getAttribute('data-base-height'))).toBeGreaterThan(0);
   });
 
   it('extended tutorial path continues to tutorial_05_profile', async () => {

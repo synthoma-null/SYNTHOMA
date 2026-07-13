@@ -15,6 +15,8 @@ const BOOT_LINES = [
   'SUBJECT: NULL',
   'IDENTITY COLLISION DETECTED',
   'ARCHIVE RESPONSE: HUNGRY',
+  'SENSE OF HOPE: NOT FOUND',
+  'SARCASM MODULE: DEPLOYED BY POPULAR DEMAND',
   'SYNTHOMA OS: READY',
 ] as const;
 
@@ -22,29 +24,21 @@ const MANIFEST = 'Tma nikdy není opravdová, je jen světlem, které se vzdalo 
 
 export default function LandingIntroPage() {
   const router = useRouter();
-  const skipRef = useRef<HTMLButtonElement>(null);
   const mottoRef = useRef<HTMLParagraphElement>(null);
   const [step, setStep] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
   const repeatVisit = useMemo(() => readStorage(SYNTHOMA_INTRO_STORAGE_KEY, null) === SYNTHOMA_INTRO_VERSION, []);
 
-  const complete = useCallback(() => {
+  const enterSYNTHOMA = useCallback(() => {
     writeStorage(SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION);
     router.replace('/');
   }, [router]);
 
   const advance = useCallback(() => {
-    setStep((current) => {
-      if (current >= BOOT_LINES.length - 1) {
-        queueMicrotask(complete);
-        return current;
-      }
-      return current + 1;
-    });
-  }, [complete]);
+    setStep((current) => (current < BOOT_LINES.length - 1 ? current + 1 : current));
+  }, []);
 
   useEffect(() => {
-    skipRef.current?.focus();
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     setReducedMotion(reduced);
     if (reduced) setStep(BOOT_LINES.length - 1);
@@ -63,21 +57,20 @@ export default function LandingIntroPage() {
   }, [repeatVisit]);
 
   useEffect(() => {
-    if (reducedMotion) return;
-    const delay = repeatVisit ? 240 : 720;
-    const timer = window.setTimeout(step >= BOOT_LINES.length - 1 ? complete : advance, step >= BOOT_LINES.length - 1 ? delay + 280 : delay);
-    return () => window.clearTimeout(timer);
-  }, [advance, complete, reducedMotion, repeatVisit, step]);
-
-  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
       event.preventDefault();
-      advance();
+      if (step >= BOOT_LINES.length - 1) {
+        enterSYNTHOMA();
+      } else {
+        advance();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [advance]);
+  }, [advance, enterSYNTHOMA, step]);
+
+  const isLastStep = step >= BOOT_LINES.length - 1;
 
   const visibleLines = reducedMotion ? BOOT_LINES : BOOT_LINES.slice(0, step + 1);
 
@@ -102,9 +95,8 @@ export default function LandingIntroPage() {
           ))}
         </div>
         <div className="synthoma-intro__actions">
-          <button ref={skipRef} className="os-command" type="button" onClick={complete}>PŘESKOČIT</button>
-          <button className="os-command synthoma-intro__enter" type="button" onClick={step >= BOOT_LINES.length - 1 ? complete : advance}>
-            {step >= BOOT_LINES.length - 1 ? 'VSTOUPIT DO SYSTÉMU' : 'POKRAČOVAT'}
+          <button className="os-command synthoma-intro__enter" type="button" onClick={isLastStep ? enterSYNTHOMA : advance}>
+            {isLastStep ? 'VSTOUPIT DO SYSTÉMU' : 'POKRAČOVAT'}
           </button>
         </div>
       </section>

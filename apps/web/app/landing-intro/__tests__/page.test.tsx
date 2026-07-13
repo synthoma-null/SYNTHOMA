@@ -46,9 +46,23 @@ describe('LandingIntroPage', () => {
     expect(screen.getByText('SYNTHOMA OS: READY')).toBeInTheDocument();
   });
 
-  it('navigates to home on skip', () => {
+  it('does not render a skip button', () => {
     render(<LandingIntroPage />);
-    fireEvent.click(screen.getByRole('button', { name: 'PŘESKOČIT' }));
+    expect(screen.queryByRole('button', { name: 'PŘESKOČIT' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'POKRAČOVAT' })).toBeInTheDocument();
+  });
+
+  it('renders sarcastic system boot logs', () => {
+    render(<LandingIntroPage />);
+    expect(screen.getByText('SENSE OF HOPE: NOT FOUND')).toBeInTheDocument();
+    expect(screen.getByText('SARCASM MODULE: DEPLOYED BY POPULAR DEMAND')).toBeInTheDocument();
+  });
+
+  it('navigates to home on manual enter', () => {
+    render(<LandingIntroPage />);
+    for (let i = 0; i < 8; i += 1) {
+      fireEvent.click(screen.getByRole('button', { name: i === 7 ? 'VSTOUPIT DO SYSTÉMU' : 'POKRAČOVAT' }));
+    }
     expect(replace).toHaveBeenCalledWith('/');
   });
 

@@ -36,10 +36,13 @@
 .cyklus-page > .cyklus-root {
   position: relative;
   z-index: var(--cy-z-base);
+  box-sizing: border-box;
   width: min(100%, 1440px);
   max-width: 1440px;
+  height: 100dvh;
   min-height: 100dvh;
   margin: 0 auto;
+  overflow: hidden;
   padding: calc(var(--cy-space-4) + env(safe-area-inset-top)) var(--cy-space-4) calc(var(--cy-space-4) + env(safe-area-inset-bottom));
   color: var(--cy-text);
   font-family: var(--cy-font-mono);

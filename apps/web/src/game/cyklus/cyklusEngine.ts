@@ -688,7 +688,7 @@ function diffRemoved<T>(before: T[], after: T[]): T[] {
 
 export function resolveChoice(state: CyklusRunState, direction: 'yes' | 'no'): CyklusRunState {
   if (state.status !== 'playing') return state;
-  const card = getCardById(state.currentCardId);
+  const card = getCardById(state.currentCardId) ?? getCardById('first_boot');
   if (!card) return state;
   const outcome = card[direction];
   const sectorBefore = state.sector;

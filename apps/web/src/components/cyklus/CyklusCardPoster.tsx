@@ -278,7 +278,7 @@ export default function CyklusCardPoster({
         <span id={instructionId} className="sr-only">Obraz lze přiblížit dvěma prsty nebo tlačítkem Zvětšit.</span>
         <div
           className="cyklus-card-art__transform-layer"
-          data-geometry-ready={Boolean(geometry)}
+          data-geometry-ready={geometry ? 'true' : 'false'}
           style={{
             '--poster-base-width': geometry ? `${geometry.baseWidth}px` : undefined,
             '--poster-base-height': geometry ? `${geometry.baseHeight}px` : undefined,
