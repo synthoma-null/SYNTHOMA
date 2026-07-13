@@ -5,6 +5,7 @@ import { getAccessSnapshot, getAccessSnapshotWithClient, type AccessSnapshot } f
 import { grantEntitlement } from './entitlements';
 import { EconomyError } from './errors';
 import { lockMnemAccount, spendMnemsAtomic } from './ledger';
+import { executePurchaseCore } from './purchaseCore';
 
 export interface PurchaseWithMnemsInput {
   userId: string;
@@ -58,79 +59,48 @@ export async function purchaseWithMnems(
   }
 
   const transactionResult = await prisma.$transaction(
-    async (tx) => {
-      await lockMnemAccount(tx, input.userId);
-
-      const existing = await tx.purchase.findUnique({
-        where: { idempotencyKey: input.idempotencyKey },
-      });
-      if (existing) {
-        if (
-          existing.userId !== input.userId ||
-          existing.contentType !== entry.type ||
-          existing.contentId !== entry.id
-        ) {
-          throw new EconomyError(
-            'IDEMPOTENCY_CONFLICT',
-            'Tento idempotency klíč už patří jinému nákupu.',
-            409,
-          );
-        }
-        return { purchase: existing, replayed: true };
-      }
-
-      const before = await getAccessSnapshotWithClient(tx, input.userId, [
-        { contentType: entry.type, contentId: entry.id },
-      ]);
-      if (before.access[0]?.canAccess) {
-        throw new EconomyError('ALREADY_OWNED', 'Tento obsah už vlastníš.', 409, {
-          access: before.access[0],
-        });
-      }
-
-      const purchase = await tx.purchase.create({
+    async (tx) => executePurchaseCore({
+      lockAccount: (userId) => lockMnemAccount(tx, userId),
+      findPurchaseByIdempotencyKey: (idempotencyKey) =>
+        tx.purchase.findUnique({ where: { idempotencyKey } }),
+      hasAccess: async (userId, contentType, contentId) => {
+        const snapshot = await getAccessSnapshotWithClient(tx, userId, [{ contentType, contentId }]);
+        return snapshot.access[0]?.canAccess ?? false;
+      },
+      createPendingPurchase: (purchaseInput) => tx.purchase.create({
         data: {
-          userId: input.userId,
-          contentType: entry.type,
-          contentId: entry.id,
-          mnemCost,
-          idempotencyKey: input.idempotencyKey,
+          ...purchaseInput,
           ...(input.metadata ? { metadata: input.metadata } : {}),
         },
-      });
-      const ledger = await spendMnemsAtomic(
-        {
-          userId: input.userId,
-          amount: mnemCost,
-          reason: `Nákup: ${entry.title}`,
-          idempotencyKey: `purchase:${input.idempotencyKey}`,
-          contentType: entry.type,
-          contentId: entry.id,
-          externalReference: purchase.id,
-        },
-        tx,
-      );
-      const entitlement = await grantEntitlement(
-        {
-          userId: input.userId,
-          contentType: entry.type,
-          contentId: entry.id,
-          source: 'mnem_purchase',
-          sourceReference: purchase.id,
-        },
-        tx,
-      );
-      const completed = await tx.purchase.update({
-        where: { id: purchase.id },
-        data: {
-          status: 'completed',
-          entitlementId: entitlement.id,
-          ledgerEntryId: ledger.id,
-          completedAt: new Date(),
-        },
-      });
-      return { purchase: completed, replayed: false };
-    },
+      }),
+      spend: async (spendInput) => spendMnemsAtomic({
+        userId: spendInput.userId,
+        amount: spendInput.amount,
+        reason: `Nákup: ${spendInput.title}`,
+        idempotencyKey: `purchase:${spendInput.idempotencyKey}`,
+        contentType: spendInput.contentType,
+        contentId: spendInput.contentId,
+        externalReference: spendInput.purchaseId,
+      }, tx),
+      grant: (grantInput) => grantEntitlement({
+        userId: grantInput.userId,
+        contentType: grantInput.contentType,
+        contentId: grantInput.contentId,
+        source: 'mnem_purchase',
+        sourceReference: grantInput.purchaseId,
+      }, tx),
+      completePurchase: ({ purchaseId, ledgerEntryId, entitlementId }) => tx.purchase.update({
+        where: { id: purchaseId },
+        data: { status: 'completed', entitlementId, ledgerEntryId, completedAt: new Date() },
+      }),
+    }, {
+      userId: input.userId,
+      contentType: entry.type,
+      contentId: entry.id,
+      title: entry.title,
+      mnemCost,
+      idempotencyKey: input.idempotencyKey,
+    }),
     { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
 
