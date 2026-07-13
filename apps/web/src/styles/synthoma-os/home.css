@@ -39,7 +39,8 @@
 .synthoma-home__designation { margin: var(--os-space-4) 0 0; color: var(--os-accent-primary); font: 700 var(--os-text-small)/1.4 var(--os-font-mono); }
 .synthoma-home__statement { max-width: 42rem; margin: var(--os-space-5) 0 0; color: var(--os-text-secondary); font: 500 clamp(0.95rem, 1.5vw, 1.1rem)/1.6 var(--os-font-body); }
 
-.home-primary-action { display: grid; gap: var(--os-space-2); width: min(100%, 440px); margin-top: var(--os-space-6); padding: var(--os-space-4) var(--os-space-5); border: 1px solid var(--os-accent-primary); border-radius: var(--os-corner); background: color-mix(in srgb, var(--os-surface) 88%, transparent); color: var(--os-text); text-decoration: none; box-shadow: inset 4px 0 0 var(--os-accent-primary); }
+.home-primary-action { display: grid; gap: var(--os-space-2); width: min(100%, 440px); margin-top: var(--os-space-6); padding: var(--os-space-4) var(--os-space-5); color: var(--os-text); text-decoration: none; box-shadow: inset 4px 0 0 var(--os-accent-primary); }
+.home-primary-action.os-surface { background: color-mix(in srgb, var(--os-surface) 88%, transparent); border-color: var(--os-accent-primary); }
 .home-primary-action:hover { background: var(--os-surface-raised); }
 .home-primary-action__code { color: var(--os-text-muted); font: 700 var(--os-text-micro)/1.3 var(--os-font-mono); }
 .home-primary-action__label { font: 800 clamp(1rem, 2vw, 1.25rem)/1.2 var(--os-font-heading); }

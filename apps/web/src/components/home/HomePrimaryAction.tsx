@@ -26,7 +26,7 @@ export default function HomePrimaryAction() {
   const [action, setAction] = useState<HomeAction>(() => ({ href: '/books', label: 'VSTOUPIT DO SYNTHOMY', detail: 'Otevřít první dostupnou paměť.', code: 'SUBJECT // NEW' }));
   useEffect(() => setAction(resolveHomeAction()), []);
   return (
-    <Link className="home-primary-action" href={action.href} data-home-primary-action>
+    <Link className="home-primary-action os-surface" href={action.href} data-home-primary-action>
       <span className="home-primary-action__code">{action.code}</span>
       <span className="home-primary-action__label">{action.label}</span>
       <span className="home-primary-action__detail">{action.detail}</span>
