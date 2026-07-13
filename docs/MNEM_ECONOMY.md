@@ -10,7 +10,7 @@ Podporované operace jsou pouze:
 - `spendMnemsAtomic` pro kladnou požadovanou útratu, která se zapíše jako záporná delta,
 - `adjustMnems` pro auditovanou administrátorskou korekci.
 
-Všechny zamknou řádek uživatele `FOR UPDATE`, znovu spočítají aktuální zůstatek a odmítnou výsledek pod nulou. Databázový check `balanceAfter >= 0 NOT VALID` chrání nové řádky a dovoluje samostatně auditovat případná historická data.
+Všechny zamknou řádek uživatele `FOR UPDATE`, znovu spočítají aktuální zůstatek a odmítnou výsledek pod nulou. Migrace zavede databázový check `balanceAfter >= 0` jako `NOT VALID`, aby bylo možné bezpečně auditovat historická data. Úspěšný backfill constraint validuje; release vyžaduje `convalidated = true`.
 
 ## Nákup za MNEM
 

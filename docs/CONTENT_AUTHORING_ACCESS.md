@@ -1,36 +1,45 @@
-# SYNTHOMA — authoring obsahu a přístupu
+# SYNTHOMA — autorství a přístup k obsahu
 
-## Přidání kapitoly
+## Jediný zdroj katalogu kapitol
 
-1. Zvol stabilní kebab-case ID. Po publikaci se ID nemění; staré hodnoty se zachovají jako alias.
-2. Přidej metadata kapitoly do `apps/web/src/content/booksManifest.ts`.
-3. Přidej stejné `id`, pořadí a prezentační metadata do `apps/web/public/books/manifest.json`.
-4. Volná kapitola patří do `public/books/<collection>`. Placená kapitola patří do `src/content/protected/<collection>`.
-5. Nastav `access`, nezápornou celočíselnou cenu a existující `packageIds`. Draft bez souboru musí být `unavailable`/`draft` a nesmí mít prodejnou cenu.
-6. Přidej anglický soubor jen tehdy, když skutečně existuje; chybějící lokalizace se nesmí deklarovat.
+Kapitoly se definují pouze v `apps/web/src/content/catalog.ts`, v poli
+`CANONICAL_CHAPTER_DEFINITIONS`. Tato definice vlastní stabilní ID, pořadí,
+stav vydání, cenu, cesty k souborům, aliasy a prezentační metadata.
 
-## Další typy obsahu
+Po změně katalogu spusť:
 
-- Fragmenty, artefakty, kosmetika a reporty musí mít unikátní ID a cenu v příslušném manifestu.
-- Archive záznamy musí mít stejnou množinu ID v české i anglické lokalizaci. `related` odkazy musí existovat.
-- Archive `chapter` předpoklad používá kanonické ID nebo podporovaný krátký alias. `mnems` znamená nákup entitlementu, nikoli kontrolu zůstatku.
-- Balíček smí odkazovat jen na existující publikovaný obsah. Vazba kapitola ↔ balíček musí být obousměrná.
-
-## Validace
-
-Spusť:
-
-```text
+```powershell
+cd apps/web
+npm run content:generate
 npm run content:validate
 ```
 
-Validátor kontroluje duplicity typu/ID, kapitoly a pořadí veřejného manifestu, shodu free/final stavů, existenci publikovaných souborů, celočíselné ceny, balíčkové vazby, alias 0-11, předpoklady, related odkazy a shodu lokalizací. `npm run build` jej spouští před Prisma/Next buildem a při chybě skončí nenulovým kódem.
+Generátor deterministicky odvodí veřejný manifest, katalog Library, index
+Readeru, validační index a kompatibilní blok `CHAPTERS` v `booksManifest.ts`.
+Produkční build generování zopakuje a výsledek následně validuje.
 
-## Zakázané zkratky
+Ručně neupravuj:
 
-- Nepoužívej MNEM balance jako `canAccess`.
-- Nepřidávej lokální `unlocked` pravidlo do komponenty.
-- Neposílej cenu z klienta jako autoritu.
-- Nevytvářej nový ownership model; použij obecný `Entitlement`.
-- Nevracej 404 pro známý zamčený obsah.
-- Nevkládej chráněné HTML nebo celé Archive body do access snapshotu.
+- `apps/web/public/books/manifest.json`,
+- `apps/web/src/content/generated/*.json`,
+- označený generovaný blok `CHAPTERS` v `apps/web/src/data/booksManifest.ts`.
+
+Zastaralý nebo ručně pozměněný derivát musí `content:validate` odmítnout.
+
+## Zdrojové soubory kapitol
+
+Zdroj kapitoly přidej na cestu uvedenou v kanonickém katalogu a teprve potom
+regeneruj deriváty. Nevytvářej náhradní soubor jen proto, aby validace prošla.
+Texty a další kanonické podklady se řídí registrem `docs/CANON_SOURCES.md`.
+Chybějící podklad označený HOLD se nesmí odhadovat, rekonstruovat z odvozených
+dat ani nahrazovat podobným souborem.
+
+## Přístupová pravidla
+
+Stav `free`, `purchasable` nebo `unavailable` a katalogová cena patří do
+kanonické definice. Klient je pouze zobrazuje; nesmí si cenu ani entitlement
+odvozovat lokálně. Ochranu těla obsahu vždy vynucuje serverový access resolver.
+
+Nový obsahový typ musí dostat stabilní ID, katalogový záznam, serverovou
+validaci a test fail-closed chování. Přímé zápisy entitlementů, hardcodované
+seznamy kapitol v UI a ručně udržované paralelní manifesty jsou zakázané.
