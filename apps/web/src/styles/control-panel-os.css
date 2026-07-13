@@ -205,6 +205,36 @@
   background: var(--cy-line-subtle);
 }
 
+#control-panel .lang-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--cy-line-subtle);
+}
+
+#control-panel .lang-btn {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: var(--cy-button-bg);
+  color: var(--cy-text-soft);
+  font: 700 var(--cy-font-control)/1.3 var(--cy-font-mono);
+  cursor: pointer;
+}
+
+#control-panel .lang-btn:hover {
+  background: var(--cy-button-hover);
+  color: var(--cy-text);
+}
+
+#control-panel .lang-btn--active {
+  border-color: var(--cy-accent-primary);
+  background: var(--cy-button-active);
+  color: var(--cy-accent-primary);
+}
+
 #control-panel :is(.panel-button, .audio-buttons .btn) {
   min-width: 0;
   min-height: 44px;

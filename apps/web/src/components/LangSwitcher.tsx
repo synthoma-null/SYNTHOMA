@@ -6,23 +6,22 @@ export default function LangSwitcher() {
   const { lang, setLang } = useLang();
 
   return (
-    <div className="lang-switcher" aria-label="Language / Jazyk">
+    <div className="lang-switcher" role="group" aria-label="Jazyk rozhraní">
       <button
+        type="button"
         className={`lang-btn${lang === 'cs' ? ' lang-btn--active' : ''}`}
         onClick={() => setLang('cs')}
         aria-pressed={lang === 'cs'}
-        title="Čeština"
       >
-        CS
+        Čeština
       </button>
-      <span className="lang-sep" aria-hidden="true">|</span>
       <button
+        type="button"
         className={`lang-btn${lang === 'en' ? ' lang-btn--active' : ''}`}
         onClick={() => setLang('en')}
         aria-pressed={lang === 'en'}
-        title="English"
       >
-        EN
+        English
       </button>
     </div>
   );

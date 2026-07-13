@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import LangSwitcher from '../LangSwitcher';
 import SynthomaCommandIcon from './SynthomaCommandIcon';
 import { useHeader } from './HeaderContext';
 
@@ -51,7 +50,6 @@ export default function SynthomaCommandHeader() {
       )}
       <nav className="synthoma-command-header__commands" aria-label="Globální ovládání">
         {actions && <span className="synthoma-command-header__slot-actions" data-testid="command-header-slot-actions">{actions}</span>}
-        <LangSwitcher />
         <button className="os-command" type="button" data-synthoma-command="identity" aria-label="Identita" aria-controls="id-panel-popup" aria-expanded="false" aria-pressed="false" onClick={() => { closeCompetingPanels('identity'); document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')); }}><SynthomaCommandIcon name="identity" /></button>
         <button id="toggle-panel-btn" className="os-command" type="button" data-synthoma-command="settings" aria-label="Nastavení" aria-controls="control-panel" aria-expanded="false" aria-pressed="false" onClick={() => closeCompetingPanels('settings')}><SynthomaCommandIcon name="settings" /></button>
         <button id="toggle-audio-panel-btn" className="os-command" type="button" data-synthoma-command="audio" data-audio-state="paused" aria-label="Hudba: pozastaveno" aria-controls="synthoma-audio-panel" aria-expanded="false" aria-pressed="false" onClick={() => { closeCompetingPanels('audio'); document.dispatchEvent(new CustomEvent('synthoma:audio-toggle')); }}><SynthomaCommandIcon name="audio" /></button>

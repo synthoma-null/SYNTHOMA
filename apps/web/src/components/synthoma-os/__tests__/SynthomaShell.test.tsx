@@ -1,10 +1,9 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import fs from 'node:fs';
 import path from 'node:path';
 import SynthomaShell from '../SynthomaShell';
 import { HeaderProvider } from '../HeaderContext';
-import { LangProvider } from '../../../lib/LangContext';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn() }));
 const { usePathname } = require('next/navigation');
@@ -44,37 +43,12 @@ describe('SynthomaShell', () => {
     document.removeEventListener('synthoma:audio-toggle', audio);
   });
 
-  it('exposes the existing language switcher in the global header', () => {
-    render(
-      <LangProvider>
-        <HeaderProvider>
-          <SynthomaShell><p>CONTENT</p></SynthomaShell>
-        </HeaderProvider>
-      </LangProvider>,
-    );
-
-    const english = screen.getByRole('button', { name: 'EN' });
-    fireEvent.click(english);
-
-    expect(english).toHaveAttribute('aria-pressed', 'true');
-    expect(localStorage.getItem('synthoma_lang')).toBe('en');
-    expect(document.documentElement).toHaveAttribute('lang', 'en');
-  });
-
-  it('restores the document language from the saved preference', async () => {
-    localStorage.setItem('synthoma_lang', 'en');
-    render(
-      <LangProvider>
-        <HeaderProvider>
-          <SynthomaShell><p>CONTENT</p></SynthomaShell>
-        </HeaderProvider>
-      </LangProvider>,
-    );
-
-    await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'EN' })).toHaveAttribute('aria-pressed', 'true');
-      expect(document.documentElement).toHaveAttribute('lang', 'en');
-    });
+  it('keeps locale controls out of the global command header', () => {
+    renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
+    const header = screen.getByTestId('synthoma-command-header');
+    expect(header).not.toHaveTextContent('CS');
+    expect(header).not.toHaveTextContent('EN');
+    expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 
   it('does not duplicate the specialized Cyklus shell', () => {
@@ -82,6 +56,7 @@ describe('SynthomaShell', () => {
     renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
     expect(screen.getByText('CYKLUS CONTENT')).toBeInTheDocument();
     expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 
   it.each([

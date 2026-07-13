@@ -39,6 +39,7 @@ import { HeaderProvider } from "../src/components/synthoma-os/HeaderContext";
 import MBTIHudClient from "./components/MBTIHudClient";
 
 import { LangProvider } from "../src/lib/LangContext";
+import LangSwitcher from "../src/components/LangSwitcher";
 import { AccessProvider } from "../src/components/access/AccessProvider";
 
 
@@ -293,9 +294,17 @@ export default function RootLayout({ children }: PropsWithChildren) {
                 </fieldset>
               </section>
 
-              <section className="cp-section cp-section--themes" aria-labelledby="cp-theme-title">
+              <section className="cp-section" aria-labelledby="cp-language-title">
                 <header className="cp-section-header">
                   <span aria-hidden="true">02</span>
+                  <h3 id="cp-language-title">JAZYK</h3>
+                </header>
+                <LangSwitcher />
+              </section>
+
+              <section className="cp-section cp-section--themes" aria-labelledby="cp-theme-title">
+                <header className="cp-section-header">
+                  <span aria-hidden="true">03</span>
                   <h3 id="cp-theme-title">MOTIV</h3>
                 </header>
                 <ThemeShopClient />
@@ -303,7 +312,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
               <section className="cp-section" aria-labelledby="cp-effects-title">
                 <header className="cp-section-header">
-                  <span aria-hidden="true">03</span>
+                  <span aria-hidden="true">04</span>
                   <h3 id="cp-effects-title">VIZUÁLNÍ EFEKTY</h3>
                 </header>
                 <div className="cp-btn-col">
@@ -314,7 +323,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
               <section className="cp-section" aria-labelledby="cp-accessibility-title">
                 <header className="cp-section-header">
-                  <span aria-hidden="true">04</span>
+                  <span aria-hidden="true">05</span>
                   <h3 id="cp-accessibility-title">PŘÍSTUPNOST</h3>
                 </header>
                 <button id="toggle-tts" className="panel-button btn btn-sm" aria-pressed="false">Čtení textu: Vypnuto</button>
