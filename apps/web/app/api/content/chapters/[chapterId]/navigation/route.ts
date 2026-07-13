@@ -8,6 +8,7 @@ import {
   type ChapterCatalogEntry,
 } from '../../../../../../src/content/catalog';
 import { getAccessSnapshot } from '../../../../../../src/server/economy';
+import { reportRuntimeDatabaseError } from '../../../../../../src/server/runtimeDatabase';
 
 function publicChapter(chapter: ChapterCatalogEntry | undefined) {
   if (!chapter) return null;
@@ -34,12 +35,22 @@ export async function GET(
   const next = index >= 0 ? CHAPTER_CATALOG[index + 1] : undefined;
   const session = await auth();
   const adjacent = [previous, next].filter((chapter): chapter is ChapterCatalogEntry => Boolean(chapter));
-  const snapshot = adjacent.length
-    ? await getAccessSnapshot(
-        session?.user?.id ?? null,
-        adjacent.map((chapter) => ({ contentType: 'chapter', contentId: chapter.id })),
-      )
-    : null;
+  let snapshot = null;
+  try {
+    snapshot = adjacent.length
+      ? await getAccessSnapshot(
+          session?.user?.id ?? null,
+          adjacent.map((chapter) => ({ contentType: 'chapter', contentId: chapter.id })),
+        )
+      : null;
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('chapter-navigation', error);
+    return NextResponse.json({
+      error: 'CHAPTER_NAVIGATION_UNAVAILABLE',
+      correlationId: report.correlationId,
+      retryable: true,
+    }, { status: 503, headers: { 'Cache-Control': 'private, no-store' } });
+  }
   const accessById = new Map(snapshot?.access.map((access) => [access.contentId, access]) ?? []);
   return NextResponse.json({
     current: publicChapter(current),

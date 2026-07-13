@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { auth } from '../../../../auth';
-import { getChapterCatalogEntry } from '../../../../src/content/catalog';
+import { getChapterCatalogEntry, type ContentAccess } from '../../../../src/content/catalog';
 import { getContentAccess } from '../../../../src/server/economy';
+import { reportRuntimeDatabaseError } from '../../../../src/server/runtimeDatabase';
 
 const FREE_DIR = path.join(process.cwd(), 'public', 'books', 'SYNTHOMA-NULL');
 const PROTECTED_DIR = path.join(process.cwd(), 'src', 'content', 'protected', 'SYNTHOMA-NULL');
@@ -34,7 +35,21 @@ export async function GET(
   }
 
   const session = await auth();
-  const access = await getContentAccess(session?.user?.id ?? null, 'chapter', chapter.id);
+  let access: ContentAccess;
+  try {
+    access = await getContentAccess(session?.user?.id ?? null, 'chapter', chapter.id);
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('chapter-api-access', error);
+    return NextResponse.json(
+      {
+        error: 'CHAPTER_ACCESS_UNAVAILABLE',
+        message: 'Přístup ke známému fragmentu se teď nepodařilo ověřit.',
+        correlationId: report.correlationId,
+        retryable: true,
+      },
+      { status: 503, headers: { 'Cache-Control': 'private, no-store' } },
+    );
+  }
   if (!access.canAccess) {
     return NextResponse.json(
       { error: 'CONTENT_LOCKED', message: 'Fragment je uzamčen.', access },

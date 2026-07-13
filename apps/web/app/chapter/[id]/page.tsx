@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '../../../auth';
 import { getChapterCatalogEntry } from '../../../src/content/catalog';
+import type { ContentAccess } from '../../../src/content/catalog';
 import { getContentAccess } from '../../../src/server/economy';
+import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
 import ChapterAccessGate from './ChapterAccessGate';
 
 const BASE_URL = 'https://www.synthoma.cz';
@@ -15,7 +17,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await params;
   const chapter = getChapterCatalogEntry(id);
-  if (!chapter) return { title: 'SYNTHOMA', robots: { index: false, follow: false } };
+  if (!chapter) notFound();
 
   const title = `${chapter.title} | SYNTHOMA`;
   const teaser = chapter.metadata?.teaser;
@@ -48,7 +50,33 @@ export default async function ChapterPage(
   if (!chapter) notFound();
 
   const session = await auth();
-  const access = await getContentAccess(session?.user?.id ?? null, 'chapter', chapter.id);
+  let access: ContentAccess;
+  try {
+    access = await getContentAccess(session?.user?.id ?? null, 'chapter', chapter.id);
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('chapter-page-access', error);
+    const closedAccess: ContentAccess = {
+      contentType: 'chapter',
+      contentId: chapter.id,
+      state: 'locked',
+      reason: 'catalog_error',
+      canAccess: false,
+      canPurchase: false,
+      mnemCost: chapter.mnemCost,
+      title: chapter.title,
+      purchasePackageIds: chapter.packageIds,
+      prerequisiteChapterId: chapter.prerequisiteChapterId ?? null,
+    };
+    return (
+      <ChapterAccessGate
+        chapterId={chapter.id}
+        chapterTitle={chapter.title}
+        access={closedAccess}
+        unavailable={false}
+        databaseErrorRef={report.correlationId}
+      />
+    );
+  }
   if (access.canAccess) redirect(`/reader?chapter=${encodeURIComponent(chapter.id)}`);
 
   return (

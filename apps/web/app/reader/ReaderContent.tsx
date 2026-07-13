@@ -66,6 +66,10 @@ export default function ReaderContent() {
 
   useEffect(() => {
     if (!effectiveChapterId) return;
+    if (chapterMeta?.accessPolicy === 'free') {
+      setPaywalled(false);
+      return;
+    }
     let active = true;
     void resolveAccess([{ contentType: 'chapter', contentId: effectiveChapterId }])
       .then(([resolved]) => {
@@ -76,7 +80,7 @@ export default function ReaderContent() {
         if (active) setPaywalled(true);
       });
     return () => { active = false; };
-  }, [effectiveChapterId, resolveAccess]);
+  }, [chapterMeta?.accessPolicy, effectiveChapterId, resolveAccess]);
 
   const currentAccess = effectiveChapterId
     ? getCachedAccess('chapter', effectiveChapterId)
