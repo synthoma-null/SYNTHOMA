@@ -2,6 +2,8 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import SynthomaAudioPanel from '../../../../app/components/SynthomaAudioPanel';
 
+jest.mock('next/navigation', () => ({ usePathname: jest.fn(() => '/cyklus') }));
+
 describe('SynthomaAudioPanel', () => {
   let playSpy: jest.SpyInstance;
   let pauseSpy: jest.SpyInstance;
@@ -42,6 +44,7 @@ describe('SynthomaAudioPanel', () => {
 
     const dialog = await screen.findByRole('dialog', { name: /SYNTHOMA 11/ });
     expect(dialog).toBeVisible();
+    expect(document.getElementById('synthoma-audio-panel')).toHaveClass('cyklus-no-select');
     expect(trigger).toHaveAttribute('aria-pressed', 'true');
     expect(document.querySelector('#control-panel #synthoma-audio-panel')).toBeNull();
     expect(within(dialog).getByRole('button', { name: 'Zavřít hudební přehrávač' })).toHaveFocus();

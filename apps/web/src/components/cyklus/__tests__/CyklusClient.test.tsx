@@ -162,7 +162,9 @@ describe('cycle forecast and summary notices', () => {
     );
 
     expect(screen.getByRole('dialog', { name: 'SYSTÉMOVÉ VAROVÁNÍ' })).toBeInTheDocument();
-    expect(container.querySelector('.cyklus-card-overlay--warning')).toBeInTheDocument();
+    const overlay = container.querySelector('.cyklus-card-overlay--warning');
+    expect(overlay).toHaveClass('cyklus-no-select');
+    expect(overlay?.closest('.cyklus-card')).toBeNull();
     expect(screen.getByRole('button', { name: 'Pokračovat' })).toHaveFocus();
   });
 });
@@ -416,6 +418,7 @@ describe('CyklusClient', () => {
     expect(screen.getByText('Archiv')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matcher|fallback|archive_pool/i);
     expect(document.querySelector('.cyklus-root--playing')).toBeInTheDocument();
+    expect(document.querySelector('.cyklus-root--playing')).toHaveClass('cyklus-no-select');
     expect(screen.getByRole('button', { name: 'Odmítnout: KALIBROVAT' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Přijmout: SPUSTIT' })).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/SWIPE LEFT|SWIPE RIGHT|NE \/ LEFT|ANO \/ RIGHT/i);
@@ -428,6 +431,7 @@ describe('CyklusClient', () => {
     const card = await renderPosterRun();
 
     expect(card).toHaveClass('cyklus-card--poster');
+    expect(card).toHaveClass('cyklus-no-select');
     const viewport = screen.getByRole('region', { name: 'Obrazová strana karty Šumový filtr' });
     const footer = card.querySelector('.cyklus-card-art__footer') as HTMLElement;
     const reveal = screen.getByRole('button', { name: 'OTEVŘÍT ZÁZNAM' });
@@ -475,6 +479,7 @@ describe('CyklusClient', () => {
     const portal = document.querySelector('.cyklus-poster-portal') as HTMLElement;
     const portalImage = document.querySelector('.cyklus-card-art__image') as HTMLImageElement;
     expect(portal).toHaveAttribute('data-theme', 'acid-glitch');
+    expect(portal).toHaveClass('cyklus-no-select');
     expect(portal).toHaveAttribute('data-cyklus-theme', 'acid-glitch');
     expect(portal).toHaveAttribute('data-cyklus-text-scale', '1');
 
@@ -543,6 +548,7 @@ describe('CyklusClient', () => {
 
     expect(await screen.findByRole('dialog', { name: 'KAPSA 0' })).toBeInTheDocument();
     expect(screen.getAllByRole('dialog', { name: 'KAPSA 0' })).toHaveLength(1);
+    expect(screen.getByRole('dialog', { name: 'KAPSA 0' }).closest('.cyklus-bottom-sheet__backdrop')).toHaveClass('cyklus-no-select');
     expect(trigger).toHaveAttribute('aria-pressed', 'true');
   });
 });

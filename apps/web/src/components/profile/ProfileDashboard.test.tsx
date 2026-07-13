@@ -90,4 +90,59 @@ describe('ProfileDashboard dossier', () => {
     await waitFor(() => expect(screen.getByRole('tablist')).toBeInTheDocument());
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
+
+  it('keeps partial legacy data usable instead of crashing the dossier', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({ ...profile, dataState: 'partial', warnings: ['LEGACY_DATABASE_SCHEMA'] }),
+    });
+    render(<ProfileDashboard userId="user-1" nickname="Mira" mode="popup" />);
+
+    expect(await screen.findByText('ČÁSTEČNÝ ZÁZNAM')).toBeInTheDocument();
+    expect(screen.getByRole('tablist')).toBeInTheDocument();
+    expect(document.querySelector('[data-profile-state="partial"]')).toBeInTheDocument();
+  });
+
+  it('renders an explicit empty profile state for a new account', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        ...profile,
+        dataState: 'empty',
+        user: {
+          ...profile.user,
+          profile: null,
+          psyche: null,
+          _count: { choices: 0, reading: 0 },
+        },
+        mnemBalance: 0,
+        ledger: [],
+        ownership: [],
+        purchases: [],
+      }),
+    });
+    render(<ProfileDashboard userId="user-1" nickname="Mira" mode="popup" />);
+
+    expect(await screen.findByText('PRÁZDNÝ PROFIL')).toBeInTheDocument();
+    expect(screen.getByText('Bez dostatku dat')).toBeInTheDocument();
+  });
+
+  it('shows a safe database error with retry and close actions', async () => {
+    const onClose = jest.fn();
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        code: 'PROFILE_DATABASE_UNAVAILABLE',
+        correlationId: 'profile-correlation-1',
+      }),
+    });
+    render(<ProfileDashboard userId="user-1" nickname="Mira" mode="popup" onClose={onClose} />);
+
+    expect(await screen.findByText('LOG [PROFILE_SYNC]')).toBeInTheDocument();
+    expect(screen.getByText('Databáze zřejmě opět předstírá, že neví, kdo jste.')).toBeInTheDocument();
+    expect(screen.getByText('REF profile-correlation-1')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'ZKUSIT ZNOVU' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'ZAVŘÍT' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
 });

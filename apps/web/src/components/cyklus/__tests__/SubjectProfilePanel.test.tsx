@@ -59,4 +59,13 @@ describe('SubjectProfilePanelClient', () => {
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
+
+  it('applies the selection lock only when opened from Cyklus gameplay', async () => {
+    usePathname.mockReturnValue('/cyklus');
+    render(<SubjectProfilePanelClient />);
+
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
+    await screen.findByRole('heading', { name: 'IDENTITA NEROZPOZNÁNA' });
+    expect(document.querySelector('.id-panel-root')).toHaveClass('cyklus-no-select');
+  });
 });
