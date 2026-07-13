@@ -99,7 +99,7 @@ function OverviewTab({ overview, loading, error }: { overview: Overview | null; 
   ];
 
   return (
-    <section className="admin-panel admin-panel--full">
+    <section className="admin-panel os-surface os-surface--glass admin-panel--full">
       <p className="admin-panel-log">LOG [OVERVIEW]:</p>
       <h2 className="admin-panel-title">RYCHLÝ PŘEHLED</h2>
       <dl className="admin-overview-list">
@@ -157,7 +157,7 @@ function UserLookupTab() {
 
   return (
     <div className="admin-user-lookup">
-      <section className="admin-panel">
+      <section className="admin-panel os-surface os-surface--glass">
         <p className="admin-panel-log">LOG [USER_LOOKUP]:</p>
         <h2 className="admin-panel-title">VYHLEDAT SUBJEKT</h2>
         <form onSubmit={handleSearch} className="admin-form admin-form--row">
@@ -223,7 +223,7 @@ function UserLookupTab() {
 
 function UserDetailPanel({ user }: { user: UserDetail }) {
   return (
-    <section className="admin-panel admin-panel--full admin-detail">
+    <section className="admin-panel os-surface os-surface--glass admin-panel--full admin-detail">
       <p className="admin-panel-log">LOG [SUBJECT_DETAIL]: {user.nickname}</p>
       <h2 className="admin-panel-title">DETAIL SUBJEKTU</h2>
 
@@ -374,7 +374,7 @@ function MnemsTab({ onGrantSuccess }: { onGrantSuccess: () => void }) {
 
   return (
     <div className="admin-mnems-layout">
-      <section className="admin-panel">
+      <section className="admin-panel os-surface os-surface--glass">
         <p className="admin-panel-log">LOG [MNEM_GRANT]:</p>
         <h2 className="admin-panel-title">ZAPSAT MNEMY DO LEDGERU</h2>
         <p className="admin-panel-note">Kladné nebo záporné. Každý zásah je trvalý záznam.</p>
@@ -405,7 +405,7 @@ function MnemsTab({ onGrantSuccess }: { onGrantSuccess: () => void }) {
       </section>
 
       {recentGrants.length > 0 && (
-        <section className="admin-panel">
+        <section className="admin-panel os-surface os-surface--glass">
           <p className="admin-panel-log">LOG [RECENT_GRANTS]:</p>
           <h2 className="admin-panel-title">POSLEDNÍ RUČNÍ ZÁSAHY (tato session)</h2>
           <div className="admin-table-wrap">
@@ -475,7 +475,7 @@ function CodesTab() {
   }
 
   return (
-    <section className="admin-panel admin-panel--full">
+    <section className="admin-panel os-surface os-surface--glass admin-panel--full">
       <p className="admin-panel-log">LOG [CODE_GENERATOR]:</p>
       <h2 className="admin-panel-title">GENEROVAT REDEEM KÓDY</h2>
       <form onSubmit={handleGenerateCodes} className="admin-form admin-form--two-col">
@@ -561,7 +561,7 @@ function WhispersTab() {
   }
 
   return (
-    <section className="admin-panel admin-panel--full">
+    <section className="admin-panel os-surface os-surface--glass admin-panel--full">
       <p className="admin-panel-log">LOG [WHISPER_MODERATION]:</p>
       <h2 className="admin-panel-title">MODERACE ŠEPOTŮ</h2>
 
@@ -618,7 +618,7 @@ function WhispersTab() {
 
 function SystemLogTab() {
   return (
-    <section className="admin-panel admin-panel--full">
+    <section className="admin-panel os-surface os-surface--glass admin-panel--full">
       <p className="admin-panel-log">LOG [SYSTEM_LOG]:</p>
       <h2 className="admin-panel-title">SYSTÉMOVÝ LOG</h2>
       <p className="admin-result admin-result--note">

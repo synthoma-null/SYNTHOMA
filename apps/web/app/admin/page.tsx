@@ -21,7 +21,7 @@ export default async function AdminPage() {
   if (role !== 'admin') {
     return (
       <main className="admin-access-denied-page">
-        <div className="admin-access-denied">
+        <div className="admin-access-denied os-surface os-surface--glass">
           <p className="admin-log-prefix">LOG [ACCESS_DENIED]:</p>
           <p className="admin-access-msg">&#8222;Tento terminál není určen pro běžné subjekty.&#8220;</p>
         </div>
