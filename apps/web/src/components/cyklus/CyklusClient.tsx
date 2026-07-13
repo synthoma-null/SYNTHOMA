@@ -1062,72 +1062,6 @@ export default function CyklusClient() {
       </main>
 
       {!ending && (
-        <div className={`cyklus-pocket cyklus-pocket--standalone ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
-          <button
-            className="cyklus-pocket__toggle cyklus-pocket-trigger"
-            type="button"
-            onClick={() => setShowPocket((v) => !v)}
-            aria-expanded={showPocket ? 'true' : 'false'}
-            aria-pressed={showPocket}
-            aria-label={`KAPSA, ${state.inventory.length} předmětů`}
-          >
-            <span className="cyklus-pocket-trigger__icon"><PocketIcon /></span>
-            <span className="cyklus-pocket-trigger__label cyklus-footer__label">KAPSA</span>
-            <span className="cyklus-pocket-trigger__count cyklus-pocket__count">{state.inventory.length}</span>
-          </button>
-          {showPocket && (
-            <div className="cyklus-pocket__panel">
-              {state.inventory.length === 0 ? (
-                <div className="cyklus-pocket__empty">Kapsa je prázdná. Nic tu nečeká.</div>
-              ) : (
-                <>
-                  {getPocketAmbientText(state) && (
-                    <div className="cyklus-pocket__ambient">{getPocketAmbientText(state)}</div>
-                  )}
-                  {getComboHint(state) && (
-                    <div className="cyklus-pocket__combo-hint">{getComboHint(state)}</div>
-                  )}
-                  <div className="cyklus-pocket__items">
-                    {getPocketItems(state).map((item: ItemWithMood) => {
-                      const activatable = ['rubber_seal', 'mirror_shard', 'archive_key', 'soft_bug', 'warm_token'].includes(item.id);
-                      const canActivate = activatable && state.lastItemActivationCycle < state.cycle;
-                      const isConfirming = confirmActivateId === item.id;
-                      return (
-                        <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
-                          <span className="cyklus-pocket__item-name">{item.title}</span>
-                          <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
-                          <span className="cyklus-pocket__item-text">{item.moodText}</span>
-                          {activatable && ITEM_ACTIVATION_HINTS[item.id] && (
-                            <span className="cyklus-pocket__item-hint">{ITEM_ACTIVATION_HINTS[item.id]}</span>
-                          )}
-                          {activatable && (
-                            isConfirming ? (
-                              <div className="cyklus-pocket__confirm">
-                                <button type="button" className="cyklus-pocket__activate" onClick={() => { handleActivateItem(item.id); setConfirmActivateId(null); }}>Potvrdit</button>
-                              </div>
-                            ) : (
-                              <button
-                                type="button"
-                                className="cyklus-pocket__activate"
-                                disabled={!canActivate}
-                                onClick={() => canActivate && setConfirmActivateId(item.id)}
-                              >
-                                {canActivate ? 'Aktivovat' : 'Aktivováno'}
-                              </button>
-                            )
-      )}
-    </div>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {!ending && (
         <div className="cyklus-desktop-top">
           <StatDock
             stats={state.stats}
@@ -1204,6 +1138,72 @@ export default function CyklusClient() {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {!ending && (
+        <div className={`cyklus-pocket cyklus-pocket--standalone ${tutorialHighlight?.pocket ? 'cyklus-pocket--highlight' : ''} ${state.inventory.length > 0 ? `cyklus-pocket--mood-${getPrimaryMoodItem(state)?.mood ?? 'quiet'}` : ''}`}>
+          <button
+            className="cyklus-pocket__toggle cyklus-pocket-trigger"
+            type="button"
+            onClick={() => setShowPocket((v) => !v)}
+            aria-expanded={showPocket ? 'true' : 'false'}
+            aria-pressed={showPocket}
+            aria-label={`KAPSA, ${state.inventory.length} předmětů`}
+          >
+            <span className="cyklus-pocket-trigger__icon"><PocketIcon /></span>
+            <span className="cyklus-pocket-trigger__label cyklus-footer__label">KAPSA</span>
+            <span className="cyklus-pocket-trigger__count cyklus-pocket__count">{state.inventory.length}</span>
+          </button>
+          {showPocket && (
+            <div className="cyklus-pocket__panel">
+              {state.inventory.length === 0 ? (
+                <div className="cyklus-pocket__empty">Kapsa je prázdná. Nic tu nečeká.</div>
+              ) : (
+                <>
+                  {getPocketAmbientText(state) && (
+                    <div className="cyklus-pocket__ambient">{getPocketAmbientText(state)}</div>
+                  )}
+                  {getComboHint(state) && (
+                    <div className="cyklus-pocket__combo-hint">{getComboHint(state)}</div>
+                  )}
+                  <div className="cyklus-pocket__items">
+                    {getPocketItems(state).map((item: ItemWithMood) => {
+                      const activatable = ['rubber_seal', 'mirror_shard', 'archive_key', 'soft_bug', 'warm_token'].includes(item.id);
+                      const canActivate = activatable && state.lastItemActivationCycle < state.cycle;
+                      const isConfirming = confirmActivateId === item.id;
+                      return (
+                        <div key={item.id} className={`cyklus-pocket__item cyklus-pocket__item--${item.mood}`}>
+                          <span className="cyklus-pocket__item-name">{item.title}</span>
+                          <span className="cyklus-pocket__item-mood">{MOOD_LABELS[item.mood]}</span>
+                          <span className="cyklus-pocket__item-text">{item.moodText}</span>
+                          {activatable && ITEM_ACTIVATION_HINTS[item.id] && (
+                            <span className="cyklus-pocket__item-hint">{ITEM_ACTIVATION_HINTS[item.id]}</span>
+                          )}
+                          {activatable && (
+                            isConfirming ? (
+                              <div className="cyklus-pocket__confirm">
+                                <button type="button" className="cyklus-pocket__activate" onClick={() => { handleActivateItem(item.id); setConfirmActivateId(null); }}>Potvrdit</button>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                className="cyklus-pocket__activate"
+                                disabled={!canActivate}
+                                onClick={() => canActivate && setConfirmActivateId(item.id)}
+                              >
+                                {canActivate ? 'Aktivovat' : 'Aktivováno'}
+                              </button>
+                            )
+      )}
+    </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
 
