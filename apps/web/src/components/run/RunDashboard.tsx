@@ -257,7 +257,7 @@ export default function RunDashboard() {
             <p className="run-empty">{t('run.entities.empty')}</p>
           )}
           {entities.map((e) => (
-            <div key={e.entity} className="run-entity">
+            <div key={e.entity} className="run-entity os-surface">
               <span className="run-entity-name">{t(`run.entity.${e.entity}` as any) || e.entity.toUpperCase()}</span>
               <div className="run-entity-metrics">
                 {(Object.entries({
@@ -287,7 +287,7 @@ export default function RunDashboard() {
           )}
           <div className="run-artifacts-grid">
             {artifacts.map((a) => (
-              <div key={a.artifactId} className="run-artifact-card">
+              <div key={a.artifactId} className="run-artifact-card os-surface">
                 <span className="run-artifact-id">{a.artifactId.toUpperCase().replace(/-/g, ' ')}</span>
               </div>
             ))}
@@ -298,7 +298,7 @@ export default function RunDashboard() {
       {section === 'missions' && (
         <div className="run-section">
           {missions.map((m) => (
-            <div key={m.id} className={`run-mission-card run-mission-card--${m.status}`}>
+            <div key={m.id} className={`run-mission-card os-surface run-mission-card--${m.status}`}>
               <div className="run-mission-card-header">
                 <span className="run-mission-card-log">{m.logLabel}</span>
                 <span className={`run-mission-card-status run-mission-status--${m.status}`}>

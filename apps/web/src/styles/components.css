@@ -3695,9 +3695,8 @@
   flex-direction: column;
   gap: 8px;
   padding: 10px 12px;
-  border: 1px solid var(--border-secondary, rgba(255,255,255,.08));
-  border-radius: 8px;
 }
+.run-entity.os-surface { border-radius: 8px; }
 .run-entity-name {
   font-family: 'Text02', monospace;
   font-size: .72rem;
@@ -3726,10 +3725,8 @@
 }
 .run-artifact-card {
   padding: 10px 12px;
-  border: 1px solid var(--border-secondary, rgba(255,255,255,.1));
-  border-radius: 7px;
-  background: rgba(124,92,255,.06);
 }
+.run-artifact-card.os-surface { background: rgba(124,92,255,.06); border-radius: 7px; }
 .run-artifact-id {
   font-family: 'Text02', monospace;
   font-size: .62rem;
@@ -3739,14 +3736,13 @@
 
 .run-mission-card {
   padding: 12px 14px;
-  border: 1px solid var(--border-secondary, rgba(255,255,255,.08));
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.run-mission-card--active { border-color: rgba(124,92,255,.3); background: rgba(124,92,255,.04); }
-.run-mission-card--completed { border-color: rgba(0,212,100,.25); background: rgba(0,212,100,.03); opacity: .7; }
+.run-mission-card.os-surface { border-radius: 8px; }
+.run-mission-card.run-mission-card--active { border-color: rgba(124,92,255,.3); background: rgba(124,92,255,.04); }
+.run-mission-card.run-mission-card--completed { border-color: rgba(0,212,100,.25); background: rgba(0,212,100,.03); opacity: .7; }
 .run-mission-card--locked { opacity: .4; }
 
 .run-mission-card-header { display: flex; justify-content: space-between; align-items: center; }
