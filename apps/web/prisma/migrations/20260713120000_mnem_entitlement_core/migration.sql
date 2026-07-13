@@ -19,14 +19,48 @@ SET
 WHERE "contentType" IS NULL OR "contentId" IS NULL;
 
 WITH ranked AS (
-  SELECT "id", ROW_NUMBER() OVER (
+  SELECT
+    "id",
+    FIRST_VALUE("id") OVER (
+      PARTITION BY "userId", "contentType", "contentId"
+      ORDER BY "createdAt", "id"
+    ) AS canonical_id,
+    ROW_NUMBER() OVER (
     PARTITION BY "userId", "contentType", "contentId"
     ORDER BY "createdAt", "id"
   ) AS duplicate_rank
   FROM "Entitlement"
 )
-DELETE FROM "Entitlement"
-WHERE "id" IN (SELECT "id" FROM ranked WHERE duplicate_rank > 1);
+UPDATE "Entitlement" entitlement
+SET
+  "contentType" = 'legacy_duplicate',
+  "contentId" = 'legacy:' || entitlement."id",
+  "metadata" = COALESCE(entitlement."metadata", '{}'::JSONB)
+    || jsonb_build_object('legacyDuplicateOf', ranked.canonical_id)
+FROM ranked
+WHERE entitlement."id" = ranked."id" AND ranked.duplicate_rank > 1;
+
+CREATE FUNCTION "synthoma_fill_legacy_entitlement_fields"()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW."contentType" IS NULL THEN
+    NEW."contentType" := CASE
+      WHEN NEW."chapterId" IS NOT NULL THEN 'chapter'
+      WHEN NEW."packageId" IS NOT NULL THEN 'package'
+      ELSE 'legacy_unknown'
+    END;
+  END IF;
+  IF NEW."contentId" IS NULL THEN
+    NEW."contentId" := COALESCE(NEW."chapterId", NEW."packageId", 'legacy:' || NEW."id");
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "Entitlement_legacy_write_compatibility"
+BEFORE INSERT OR UPDATE OF "chapterId", "packageId", "contentType", "contentId"
+ON "Entitlement"
+FOR EACH ROW EXECUTE FUNCTION "synthoma_fill_legacy_entitlement_fields"();
 
 ALTER TABLE "Entitlement"
   ALTER COLUMN "contentType" SET NOT NULL,
@@ -63,6 +97,28 @@ SET "balanceAfter" = running.balance,
     "transactionType" = running.kind
 FROM running
 WHERE ledger."id" = running."id";
+
+CREATE FUNCTION "synthoma_fill_legacy_ledger_fields"()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW."transactionType" IS NULL THEN
+    NEW."transactionType" := CASE WHEN NEW."amount" < 0 THEN 'spend' ELSE 'grant' END;
+  END IF;
+  IF NEW."balanceAfter" IS NULL THEN
+    PERFORM 1 FROM "User" WHERE "id" = NEW."userId" FOR UPDATE;
+    SELECT COALESCE(SUM("amount"), 0) + NEW."amount"
+      INTO NEW."balanceAfter"
+      FROM "MnemLedger"
+      WHERE "userId" = NEW."userId";
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER "MnemLedger_legacy_write_compatibility"
+BEFORE INSERT OR UPDATE OF "amount", "balanceAfter", "transactionType"
+ON "MnemLedger"
+FOR EACH ROW EXECUTE FUNCTION "synthoma_fill_legacy_ledger_fields"();
 
 ALTER TABLE "MnemLedger"
   ALTER COLUMN "balanceAfter" SET NOT NULL,

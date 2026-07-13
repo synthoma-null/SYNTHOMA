@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
+const crypto = require('crypto');
 const { Pool } = require('pg');
 const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require('@prisma/client');
@@ -34,6 +35,10 @@ const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
 
 function key(contentType, contentId) {
   return `${contentType}:${contentId}`;
+}
+
+function anonymizeLedgerId(id) {
+  return crypto.createHash('sha256').update(id).digest('hex').slice(0, 12);
 }
 
 async function main() {
@@ -76,10 +81,10 @@ async function main() {
   const rawLedgerPromise = balanceAfterPresent
     ? prisma.mnemLedger.findMany({
         orderBy: [{ userId: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
-        select: { id: true, userId: true, amount: true, balanceAfter: true },
+        select: { id: true, userId: true, amount: true, balanceAfter: true, createdAt: true },
       })
     : prisma.$queryRawUnsafe(
-        `SELECT "id", "userId", "amount", NULL::INTEGER AS "balanceAfter"
+        `SELECT "id", "userId", "amount", NULL::INTEGER AS "balanceAfter", "createdAt"
          FROM "MnemLedger" ORDER BY "userId", "createdAt", "id"`,
       );
   const [fragments, artifacts, cosmetics, ledger] = await Promise.all([
@@ -146,21 +151,103 @@ async function main() {
   }
 
   const runningByUser = new Map();
+  const sumByUser = new Map();
+  const ledgerUpdates = [];
+  const negativeLedgerIds = [];
   let balanceMismatches = 0;
   let negativeHistoricalBalances = 0;
   let missingBalanceAfter = 0;
   for (const entry of ledger) {
     const expected = (runningByUser.get(entry.userId) ?? 0) + entry.amount;
     runningByUser.set(entry.userId, expected);
+    sumByUser.set(entry.userId, (sumByUser.get(entry.userId) ?? 0) + entry.amount);
     if (entry.balanceAfter === null) missingBalanceAfter += 1;
     else if (expected !== entry.balanceAfter) balanceMismatches += 1;
-    if (expected < 0) negativeHistoricalBalances += 1;
+    if (entry.balanceAfter === null || expected !== entry.balanceAfter) {
+      ledgerUpdates.push({ id: entry.id, balanceAfter: expected });
+    }
+    if (expected < 0) {
+      negativeHistoricalBalances += 1;
+      negativeLedgerIds.push(anonymizeLedgerId(entry.id));
+    }
   }
 
+  const finalBalanceMismatches = [...runningByUser.entries()].filter(
+    ([userId, balance]) => balance !== sumByUser.get(userId),
+  ).length;
+  const constraintBeforeRows = balanceAfterPresent
+    ? await prisma.$queryRawUnsafe(
+        `SELECT convalidated AS "validated"
+         FROM pg_constraint
+         WHERE conname = 'MnemLedger_balanceAfter_nonnegative'
+           AND conrelid = '"MnemLedger"'::regclass`,
+      )
+    : [];
+  const constraintBefore = {
+    present: constraintBeforeRows.length === 1,
+    validated: constraintBeforeRows[0]?.validated ?? false,
+  };
+
   let inserted = 0;
-  if (apply && inserts.length) {
-    const result = await prisma.entitlement.createMany({ data: inserts, skipDuplicates: true });
-    inserted = result.count;
+  let updatedLedgerRows = 0;
+  let constraintAfter = constraintBefore;
+  if (apply) {
+    if (unknownReferences.length) {
+      throw new Error('Unknown catalog references detected; --apply stopped before writes.');
+    }
+    if (negativeLedgerIds.length) {
+      throw new Error(
+        `Historical running balance is negative at anonymized ledger IDs: ${negativeLedgerIds.join(', ')}`,
+      );
+    }
+    if (finalBalanceMismatches !== 0) {
+      throw new Error('Final running balances do not equal SUM(amount); --apply stopped.');
+    }
+    if (!constraintBefore.present) {
+      throw new Error('MnemLedger nonnegative constraint is missing; --apply stopped.');
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+      let ledgerCount = 0;
+      for (const update of ledgerUpdates) {
+        const updateResult = await tx.mnemLedger.updateMany({
+          where: { id: update.id },
+          data: { balanceAfter: update.balanceAfter },
+        });
+        ledgerCount += updateResult.count;
+      }
+      if (ledgerCount !== ledgerUpdates.length) {
+        throw new Error('Updated ledger row count does not match the dry-run plan.');
+      }
+
+      const entitlementResult = inserts.length
+        ? await tx.entitlement.createMany({ data: inserts, skipDuplicates: true })
+        : { count: 0 };
+      if (entitlementResult.count !== inserts.length) {
+        throw new Error('Inserted entitlement count does not match the dry-run plan.');
+      }
+
+      await tx.$executeRawUnsafe(
+        'ALTER TABLE "MnemLedger" VALIDATE CONSTRAINT "MnemLedger_balanceAfter_nonnegative"',
+      );
+      const status = await tx.$queryRawUnsafe(
+        `SELECT convalidated AS "validated"
+         FROM pg_constraint
+         WHERE conname = 'MnemLedger_balanceAfter_nonnegative'
+           AND conrelid = '"MnemLedger"'::regclass`,
+      );
+      if (status.length !== 1 || status[0].validated !== true) {
+        throw new Error('MnemLedger nonnegative constraint was not validated.');
+      }
+      return {
+        insertedEntitlements: entitlementResult.count,
+        updatedLedgerRows: ledgerCount,
+        constraintAfter: { present: true, validated: true },
+      };
+    }, { isolationLevel: 'Serializable', maxWait: 10_000, timeout: 120_000 });
+    inserted = result.insertedEntitlements;
+    updatedLedgerRows = result.updatedLedgerRows;
+    constraintAfter = result.constraintAfter;
   }
 
   console.log(JSON.stringify({
@@ -175,8 +262,18 @@ async function main() {
     },
     plannedEntitlements: inserts.length,
     insertedEntitlements: inserted,
+    plannedLedgerUpdates: ledgerUpdates.length,
+    updatedLedgerRows,
     unknownReferences: [...new Set(unknownReferences)].sort(),
-    ledgerAudit: { balanceMismatches, missingBalanceAfter, negativeHistoricalBalances },
+    ledgerAudit: {
+      balanceMismatches,
+      missingBalanceAfter,
+      negativeHistoricalBalances,
+      negativeLedgerIds,
+      finalBalanceMismatches,
+      constraintBefore,
+      constraintAfter,
+    },
   }, null, 2));
 }
 
