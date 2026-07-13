@@ -128,7 +128,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
       aria-label={t('paywall.aria')}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="paywall-modal">
+      <div className="paywall-modal os-surface">
         <button className="paywall-close" onClick={onClose} aria-label={t('paywall.close')}>✕</button>
 
         <div className="paywall-log">
@@ -222,7 +222,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
               <div className="paywall-packages paywall-packages--structured">
 
                 {isAct1Chapter && act1Pkg && (
-                  <div className="paywall-package paywall-package--primary">
+                  <div className="paywall-package os-surface paywall-package--primary">
                     <div className="paywall-package-badge">{t('paywall.recommended')}</div>
                     <div className="paywall-package-info">
                       <span className="paywall-package-name">{t('paywall.pkg.act1.name')}</span>
@@ -244,7 +244,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                 )}
 
                 {singlePkg && (
-                  <div className="paywall-package paywall-package--secondary">
+                  <div className="paywall-package os-surface paywall-package--secondary">
                     <div className="paywall-package-info">
                       <span className="paywall-package-name">{t('paywall.single.name')}</span>
                       <span className="paywall-package-price">{mnemCost} {t('paywall.unit.mnems')}</span>
@@ -264,7 +264,7 @@ export default function ChapterLockModal({ chapterId, chapterTitle, onClose }: P
                 )}
 
                 {archivPlusPkg && (
-                  <div className="paywall-package paywall-package--subscription">
+                  <div className="paywall-package os-surface paywall-package--subscription">
                     <div className="paywall-package-badge paywall-package-badge--sub">ARCHIV+</div>
                     <div className="paywall-package-info">
                       <span className="paywall-package-name">{t('paywall.pkg.archivplus.name')}</span>

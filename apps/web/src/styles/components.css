@@ -2810,16 +2810,16 @@
 /* ── Paywall structured packages ─────────────────────────────────────────── */
 .paywall-packages--structured { display: flex; flex-direction: column; gap: 10px; }
 
-.paywall-package--primary {
+.paywall-package.paywall-package--primary {
   border-color: var(--accent-primary, #7c5cff);
   box-shadow: 0 0 12px rgba(124,92,255,.2);
   position: relative;
 }
-.paywall-package--secondary {
+.paywall-package.paywall-package--secondary {
   border-color: var(--border-secondary, rgba(255,255,255,.15));
   background: rgba(255,255,255,.02);
 }
-.paywall-package--subscription {
+.paywall-package.paywall-package--subscription {
   border-color: var(--accent-secondary, rgba(255,200,60,.4));
   background: rgba(255,200,60,.03);
 }
