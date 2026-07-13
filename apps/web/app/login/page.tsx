@@ -19,7 +19,7 @@ export default function LoginPage() {
           <span className="glitch-real" aria-hidden>AUTH GATE</span>
           <span className="sr-only">AUTH GATE</span>
         </h1>
-        <section className="panel glass auth-home-panel" aria-label="Přihlášení">
+        <section className="auth-home-panel os-surface os-surface--glass" aria-label="Přihlášení">
           <LoginForm />
         </section>
       </main>

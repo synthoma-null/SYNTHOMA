@@ -19,7 +19,7 @@ export default function RegisterPage() {
           <span className="glitch-real" aria-hidden>SUBJEKT INIT</span>
           <span className="sr-only">SUBJEKT INIT</span>
         </h1>
-        <section className="panel glass auth-home-panel" aria-label="Registrace">
+        <section className="auth-home-panel os-surface os-surface--glass" aria-label="Registrace">
           <RegisterForm />
         </section>
       </main>
