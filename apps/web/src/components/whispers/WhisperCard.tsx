@@ -96,7 +96,7 @@ export default function WhisperCard({ whisper, showBoost = false, onResonanceCha
   };
 
   return (
-    <div className={`whisper-card${isBoosted ? ' whisper-card--boosted' : ''}${resonated ? ' whisper-card--resonated' : ''}`}>
+    <div className={`whisper-card os-surface os-surface--glass${isBoosted ? ' whisper-card--boosted' : ''}${resonated ? ' whisper-card--resonated' : ''}`}>
       <div className="whisper-card-header">
         <span className="whisper-card-type">{TYPE_LABELS[whisper.type] ?? whisper.type.toUpperCase()}</span>
         <span className="whisper-card-mode">{MODE_LABEL}</span>

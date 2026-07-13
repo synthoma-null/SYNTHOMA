@@ -102,7 +102,7 @@ export default function WhisperForm({ chapterId, onSuccess, compact = false }: P
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`whisper-form${compact ? ' whisper-form--compact' : ''}`}>
+    <form onSubmit={handleSubmit} className={`whisper-form os-surface os-surface--glass${compact ? ' whisper-form--compact' : ''}`}>
       <div className="whisper-form-header">
         <span className="whisper-log-prefix">LOG [WHISPER_INPUT]:</span>
         <span className="whisper-form-subtitle">{t('whisperform.header')}</span>

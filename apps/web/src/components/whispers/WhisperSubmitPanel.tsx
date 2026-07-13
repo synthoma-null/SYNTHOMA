@@ -47,7 +47,7 @@ export default function WhisperSubmitPanel({
 
   if (status === 'unauthenticated') {
     return (
-      <div className={`whisper-submit-panel whisper-submit-panel--auth${compact ? ' whisper-submit-panel--compact' : ''}`}>
+      <div className={`whisper-submit-panel os-surface os-surface--glass whisper-submit-panel--auth${compact ? ' whisper-submit-panel--compact' : ''}`}>
         <p className="whisper-submit-title">{t('whispersubmit.title')}</p>
         <p className="whisper-submit-text">
           {t('whispersubmit.auth.text')}
@@ -59,7 +59,7 @@ export default function WhisperSubmitPanel({
 
   if (status === 'loading') {
     return (
-      <div className={`whisper-submit-panel${compact ? ' whisper-submit-panel--compact' : ''}`}>
+      <div className={`whisper-submit-panel os-surface os-surface--glass${compact ? ' whisper-submit-panel--compact' : ''}`}>
         <p className="whisper-submit-title">{t('whispersubmit.title')}</p>
         <p className="whisper-submit-text whisper-submit-text--dim">{t('whispersubmit.loading')}</p>
       </div>

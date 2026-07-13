@@ -6,6 +6,12 @@
   color: var(--os-text);
 }
 
+.os-surface--glass {
+  background: var(--bg-glass, rgba(255,255,255,.04));
+  border-color: var(--os-border);
+  border-radius: 10px;
+}
+
 .os-surface::before {
   content: "";
   position: absolute;
