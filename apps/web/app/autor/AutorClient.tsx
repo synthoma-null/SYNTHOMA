@@ -1,17 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
-import TypewriterReader from "../../src/components/TypewriterReader";
 import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
-import { useLang } from "../../src/lib/LangContext";
 
-export default function AutorClient() {
+export default function AutorClient({ initialHtml }: { initialHtml: string }) {
   const TITLE = "A U T O R";
-  const { lang } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
-  const autorSrcUrl = useMemo(() => lang === 'en' ? '/data/SYNTHOMAAUTOR_en.html' : '/data/SYNTHOMAAUTOR.html', [lang]);
   const videoRef = useVideoVisibility();
 
   useEffect(() => {
@@ -64,16 +60,17 @@ export default function AutorClient() {
 
         </section>
 
-        <section>
-          <TypewriterReader
-            srcUrl={autorSrcUrl}
-            ariaLabel="O autorovi"
-            autoStart
-            className="readerOverlay-35 readerOverlay-blur"
-            chapterId="autor-info"
-            collection="SYNTHOMA-NULL"
-          />
-        </section>
+        <article
+          className="readerOverlay-35 readerOverlay-blur autor-semantic-content"
+          aria-label="O autorovi"
+          dangerouslySetInnerHTML={{ __html: initialHtml }}
+        />
+
+        <p className="public-machine-links">
+          <a href="/ai/cs/author.md">MARKDOWN</a>
+          {' // '}
+          <a href="/api/public/v1/author?locale=cs">JSON</a>
+        </p>
 
         <article className="autor-panel os-surface os-surface--glass" aria-label="Navigace zpět">
           <section className="story-block">

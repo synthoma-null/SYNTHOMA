@@ -434,6 +434,17 @@
 .synthoma-archive__panel { display: grid; gap: var(--os-space-4); }
 .synthoma-archive__panel[hidden] { display: none; }
 
+.archive-public-content,
+.archive-public-detail,
+.public-chapter-page { width: min(100% - 32px, 980px); margin: var(--os-space-6) auto; }
+.archive-public-content { display: grid; gap: var(--os-space-4); }
+.archive-public-content > article { padding-block: var(--os-space-3); border-top: 1px solid var(--os-border); }
+.archive-public-content h2,
+.archive-public-content h3,
+.archive-public-detail h1 { margin-block: 0 var(--os-space-2); }
+.public-chapter-navigation { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--os-space-2); margin-top: var(--os-space-5); }
+.public-machine-links { font-family: var(--font-mono, monospace); font-size: var(--os-font-size-xs); text-align: center; }
+
 .cyklus-card-collection { display: grid; gap: var(--os-space-3); }
 .cyklus-card-collection__header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--os-space-2); }
 .cyklus-card-collection__header h2 { margin: 4px 0 0; font-size: var(--os-font-size-xl); }

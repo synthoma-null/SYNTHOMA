@@ -46,13 +46,18 @@ describe('/chapter/[id] server route contract', () => {
     (auth as jest.Mock).mockResolvedValue(null);
   });
 
-  it('redirects free and owned chapters to Reader', async () => {
-    (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'free', canAccess: true, canPurchase: false }));
-    await expect(ChapterPage(params('0-0-null'))).rejects.toThrow('NEXT_REDIRECT:/reader?chapter=0-0-null');
+  it('renders a free chapter as semantic server HTML and redirects an owned chapter to Reader', async () => {
+    const freeChapter = await ChapterPage(params('0-0-null'));
+    const renderedFree = render(freeChapter);
+    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveTextContent('Nikdo v Synthomě přesně neví');
+    expect(auth).not.toHaveBeenCalled();
+    expect(getContentAccess).not.toHaveBeenCalled();
+    renderedFree.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'owned', canAccess: true, canPurchase: false }));
     await expect(ChapterPage(params('0-4-defragmentation'))).rejects.toThrow('NEXT_REDIRECT:/reader?chapter=0-4-defragmentation');
-    expect(redirect).toHaveBeenCalledTimes(2);
+    expect(redirect).toHaveBeenCalledTimes(1);
   });
 
   it('renders purchase and unavailable states for known chapters', async () => {

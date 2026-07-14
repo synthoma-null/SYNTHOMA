@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { type ArchiveCardData } from './ArchiveClient';
 import SynthomaArchive from '../../src/components/archive/SynthomaArchive';
 import { normalizeArchiveCards } from '../../src/lib/synthoma/archive/normalizeArchiveEntries';
+import { getPublicArchive } from '../../src/server/public-ai/contentService';
 import '../../src/styles/library-archive.css';
 
 export const revalidate = 3600;
@@ -32,21 +33,40 @@ export default async function ArchivePage() {
   }
 
   const normalized = normalizeArchiveCards(cards);
+  const publicCards = getPublicArchive('cs');
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Archiv SYNTHOMA',
+    url: 'https://www.synthoma.cz/archive',
+    inLanguage: 'cs',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: publicCards.map((card, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://www.synthoma.cz/archive/${card.id}`,
+        name: card.title,
+      })),
+    },
+  };
 
   return (
     <>
-      <noscript>
-        <div className="archive-fallback">
-          <h1>Archiv SYNTHOMA</h1>
-          {normalized.slice(0, 20).map((c) => (
-            <article key={c.id}>
-              <h2>{c.title}</h2>
-              <p>{c.teaser}</p>
-            </article>
-          ))}
-        </div>
-      </noscript>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SynthomaArchive initialCards={normalized} />
+      <section className="archive-public-content" aria-labelledby="archive-public-title">
+        <h2 id="archive-public-title">VEŘEJNÉ ZÁZNAMY ARCHIVU</h2>
+        {publicCards.map((card) => (
+          <article key={card.id} id={`public-${card.id}`}>
+            <h3><a href={`/archive/${card.id}`}>{card.title}</a></h3>
+            <p>{card.teaser}</p>
+            {card.visibility === 'publicFull' ? card.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>) : (
+              <p>UZAMČENO: {card.access?.label ?? 'Vyžaduje další přístup.'}</p>
+            )}
+          </article>
+        ))}
+      </section>
     </>
   );
 }

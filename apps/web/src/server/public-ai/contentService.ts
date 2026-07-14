@@ -1,0 +1,181 @@
+import { promises as fs } from 'fs';
+import path from 'path';
+import archiveCardsCs from '../../../public/data/archiveCards.json';
+import archiveCardsEn from '../../../public/data/archiveCards_en.json';
+import { CHAPTER_CATALOG, getChapterCatalogEntry } from '../../content/catalog';
+import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
+import type { SwipeCard } from '../../game/cyklus/cyklusTypes';
+import { normalizeArchiveCards } from '../../lib/synthoma/archive/normalizeArchiveEntries';
+import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
+import type { ArchiveCardData } from '../../../app/archive/ArchiveClient';
+import { absolutePublicUrl, PUBLIC_CONTENT_UPDATED_AT, type PublicLocale } from './config';
+import { canonicalHtmlToMarkdown, canonicalHtmlToText, countWords, sanitizeCanonicalHtml } from './htmlContent';
+import {
+  resolveArchivePublicVisibility,
+  resolveCardPublicVisibility,
+  resolveChapterPublicVisibility,
+  type PublicCardVisibility,
+  type PublicVisibility,
+} from './visibility';
+
+export interface PublicChapterDocument {
+  id: string;
+  title: string;
+  locale: PublicLocale;
+  sourceLocale: PublicLocale;
+  visibility: PublicVisibility;
+  status: 'free' | 'locked' | 'unavailable';
+  canonicalUrl: string;
+  updatedAt: string;
+  summary: string;
+  bodyHtml: string | null;
+  text: string | null;
+  markdown: string | null;
+  wordCount: number | null;
+  previousId: string | null;
+  nextId: string | null;
+}
+
+function chapterSourcePath(chapter: NonNullable<ReturnType<typeof getChapterCatalogEntry>>, locale: PublicLocale): string | null {
+  if (chapter.accessPolicy !== 'free' || chapter.availability !== 'published') return null;
+  const filename = locale === 'en' ? chapter.filenameEn ?? chapter.filename : chapter.filename;
+  return path.join(process.cwd(), 'public', 'books', chapter.collection, filename);
+}
+
+export async function getPublicChapterDocument(reference: string, locale: PublicLocale): Promise<PublicChapterDocument | null> {
+  const chapter = getChapterCatalogEntry(reference);
+  if (!chapter) return null;
+  const visibility = resolveChapterPublicVisibility(chapter);
+  const index = CHAPTER_CATALOG.findIndex((entry) => entry.id === chapter.id);
+  const sourcePath = chapterSourcePath(chapter, locale);
+  let bodyHtml: string | null = null;
+  let text: string | null = null;
+  let markdown: string | null = null;
+  let wordCount: number | null = null;
+  let sourceLocale: PublicLocale = locale;
+
+  if (visibility === 'publicFull' && sourcePath) {
+    let source: string;
+    try {
+      source = await fs.readFile(sourcePath, 'utf8');
+    } catch {
+      const fallback = chapterSourcePath(chapter, 'cs');
+      if (!fallback) throw new Error(`Missing public chapter source for ${chapter.id}`);
+      source = await fs.readFile(fallback, 'utf8');
+      sourceLocale = 'cs';
+    }
+    bodyHtml = sanitizeCanonicalHtml(source);
+    text = canonicalHtmlToText(source);
+    markdown = canonicalHtmlToMarkdown(source);
+    wordCount = countWords(text);
+  }
+
+  const status = chapter.availability !== 'published'
+    ? 'unavailable'
+    : chapter.accessPolicy === 'free' ? 'free' : 'locked';
+
+  return {
+    id: chapter.id,
+    title: locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title,
+    locale,
+    sourceLocale,
+    visibility,
+    status,
+    canonicalUrl: absolutePublicUrl(`/chapter/${chapter.id}`),
+    updatedAt: PUBLIC_CONTENT_UPDATED_AT,
+    summary: chapter.summary ?? '',
+    bodyHtml,
+    text,
+    markdown,
+    wordCount,
+    previousId: index > 0 ? CHAPTER_CATALOG[index - 1]?.id ?? null : null,
+    nextId: index >= 0 ? CHAPTER_CATALOG[index + 1]?.id ?? null : null,
+  };
+}
+
+export async function getPublicChapters(locale: PublicLocale): Promise<PublicChapterDocument[]> {
+  return Promise.all(CHAPTER_CATALOG.map((chapter) => getPublicChapterDocument(chapter.id, locale)))
+    .then((entries) => entries.filter((entry): entry is PublicChapterDocument => Boolean(entry)));
+}
+
+function archiveSource(locale: PublicLocale): ArchiveCard[] {
+  const source = locale === 'en' ? archiveCardsEn : archiveCardsCs;
+  return normalizeArchiveCards((source as { cards: ArchiveCardData[] }).cards ?? []);
+}
+
+export function getPublicArchive(locale: PublicLocale): Array<ArchiveCard & { visibility: PublicVisibility }> {
+  return archiveSource(locale)
+    .map((card) => ({ ...card, visibility: resolveArchivePublicVisibility(card) }))
+    .filter((card) => card.visibility !== 'private')
+    .map((card) => card.visibility === 'publicFull' ? card : { ...card, body: [], quote: undefined, images: undefined });
+}
+
+export function getPublicArchiveEntry(id: string, locale: PublicLocale) {
+  return getPublicArchive(locale).find((entry) => entry.id === id) ?? null;
+}
+
+export interface PublicCardDocument {
+  id: string;
+  locale: PublicLocale;
+  sourceLocale: 'cs';
+  visibility: PublicCardVisibility;
+  title: string;
+  category: SwipeCard['category'];
+  tags: string[];
+  scene: string | null;
+  choices: Array<{ id: 'yes' | 'no'; label: string }>;
+  posterUrl: string | null;
+  posterAlt: string | null;
+  canonicalUrl: string;
+  updatedAt: string;
+}
+
+function publicCardDocument(card: SwipeCard, locale: PublicLocale): PublicCardDocument {
+  const visibility = resolveCardPublicVisibility(card);
+  const full = visibility === 'publicFull';
+  return {
+    id: card.id,
+    locale,
+    sourceLocale: 'cs',
+    visibility,
+    title: card.title,
+    category: card.category,
+    tags: [...card.tags],
+    scene: full ? card.scene : null,
+    choices: full ? [{ id: 'yes', label: card.yesLabel }, { id: 'no', label: card.noLabel }] : [],
+    posterUrl: full && card.presentation?.artSrc ? absolutePublicUrl(card.presentation.artSrc) : null,
+    posterAlt: full ? card.presentation?.artAlt ?? null : null,
+    canonicalUrl: absolutePublicUrl(`/cards/${card.id}`),
+    updatedAt: PUBLIC_CONTENT_UPDATED_AT,
+  };
+}
+
+export function getPublicCards(locale: PublicLocale): PublicCardDocument[] {
+  return Object.values(CYKLUS_CARDS)
+    .map((card) => publicCardDocument(card, locale))
+    .filter((card) => card.visibility !== 'hidden')
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+export function getPublicCard(id: string, locale: PublicLocale): PublicCardDocument | null {
+  const card = CYKLUS_CARDS[id];
+  if (!card) return null;
+  const document = publicCardDocument(card, locale);
+  return document.visibility === 'hidden' ? null : document;
+}
+
+export async function getPublicAuthor(locale: PublicLocale) {
+  const filename = locale === 'en' ? 'SYNTHOMAAUTOR_en.html' : 'SYNTHOMAAUTOR.html';
+  const source = await fs.readFile(path.join(process.cwd(), 'public', 'data', filename), 'utf8');
+  const html = sanitizeCanonicalHtml(source);
+  return {
+    id: 'author',
+    locale,
+    title: locale === 'en' ? 'About the author' : 'O autorovi',
+    canonicalUrl: absolutePublicUrl('/autor'),
+    updatedAt: PUBLIC_CONTENT_UPDATED_AT,
+    html,
+    text: canonicalHtmlToText(source),
+    markdown: canonicalHtmlToMarkdown(source),
+  };
+}

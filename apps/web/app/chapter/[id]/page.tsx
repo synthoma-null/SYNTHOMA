@@ -5,7 +5,9 @@ import { getChapterCatalogEntry } from '../../../src/content/catalog';
 import type { ContentAccess } from '../../../src/content/catalog';
 import { getContentAccess } from '../../../src/server/economy';
 import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
+import { getPublicChapterDocument } from '../../../src/server/public-ai/contentService';
 import ChapterAccessGate from './ChapterAccessGate';
+import PublicChapterArticle from './PublicChapterArticle';
 
 const BASE_URL = 'https://www.synthoma.cz';
 const OG_IMAGE = `${BASE_URL}/assets/og-synthoma.jpg`;
@@ -28,7 +30,13 @@ export async function generateMetadata(
   return {
     title,
     description,
-    alternates: { canonical: canonicalUrl },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        cs: canonicalUrl,
+        en: `${canonicalUrl}?locale=en`,
+      },
+    },
     robots: { index: chapter.accessPolicy === 'free', follow: true },
     openGraph: {
       type: 'article',
@@ -48,6 +56,30 @@ export default async function ChapterPage(
   const { id } = await params;
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
+
+  if (chapter.availability === 'published' && chapter.accessPolicy === 'free') {
+    const publicChapter = await getPublicChapterDocument(chapter.id, 'cs');
+    if (!publicChapter?.bodyHtml) notFound();
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'Chapter',
+      name: publicChapter.title,
+      position: (chapter.order ?? 0) + 1,
+      author: { '@type': 'Person', name: 'Tomáš Valíček', url: `${BASE_URL}/autor` },
+      isPartOf: { '@type': 'Book', name: 'SYNTHOMA-NULL', url: `${BASE_URL}/books` },
+      inLanguage: publicChapter.sourceLocale,
+      isAccessibleForFree: true,
+      wordCount: publicChapter.wordCount,
+      dateModified: publicChapter.updatedAt,
+      url: publicChapter.canonicalUrl,
+    };
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <PublicChapterArticle chapter={publicChapter} />
+      </>
+    );
+  }
 
   const session = await auth();
   let access: ContentAccess;

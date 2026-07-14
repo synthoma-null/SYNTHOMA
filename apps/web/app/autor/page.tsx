@@ -1,7 +1,6 @@
 ﻿import type { Metadata } from "next";
-import { promises as fs } from 'fs';
-import path from 'path';
 import AutorClient from "./AutorClient";
+import { getPublicAuthor } from '../../src/server/public-ai/contentService';
 
 export const metadata: Metadata = {
   title: "Autor | SYNTHOMA",
@@ -16,23 +15,25 @@ export const metadata: Metadata = {
 };
 
 export default async function AutorPage() {
-  // Load author content for server-side fallback
-  let authorContent = "";
-  try {
-    const authorPath = path.join(process.cwd(), 'public', 'data', 'SYNTHOMAAUTOR.html');
-    authorContent = await fs.readFile(authorPath, 'utf8');
-  } catch {}
+  const author = await getPublicAuthor('cs');
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: author.title,
+    url: author.canonicalUrl,
+    dateModified: author.updatedAt,
+    mainEntity: {
+      '@type': 'Person',
+      name: 'Tomáš Valíček',
+      alternateName: 'WalliCzech',
+      url: author.canonicalUrl,
+    },
+  };
 
   return (
     <>
-      {/* Server-side fallback for crawlers and no-JS */}
-      <noscript>
-        <div 
-          className="autor-fallback"
-          dangerouslySetInnerHTML={{ __html: authorContent }}
-        />
-      </noscript>
-      <AutorClient />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <AutorClient initialHtml={author.html} />
     </>
   );
 }
