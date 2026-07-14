@@ -12,8 +12,8 @@ export interface ArchiveRecordCardProps {
 
 export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: ArchiveRecordCardProps) {
   const { t } = useLang();
-  const isInteractive = visibility === 'full' || visibility === 'teaser';
-  const isLocked = visibility === 'hidden';
+  const isInteractive = true;
+  const isLocked = visibility !== 'full';
   const accent = card.display?.accent;
 
   const classes = [
@@ -29,7 +29,8 @@ export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: 
 
   const style = accent ? ({ '--card-accent': accent } as React.CSSProperties) : undefined;
 
-  const icon = isLocked ? '⬡' : (card.display?.icon ?? '⬡');
+  const icon = isLocked ? '🔒' : (card.display?.icon ?? '◇');
+  const stateLabel = isLocked ? t('archive.card.state.locked') : t('archive.card.available');
 
   const content = (
     <>
@@ -37,19 +38,12 @@ export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: 
         {icon && <span className="archive-record-card__icon">{icon}</span>}
         <span className="archive-record-card__title">{card.title}</span>
         <span className="archive-record-card__category">{card.category}</span>
-        {isLocked && <span className="archive-record-card__lock">⬡</span>}
+        <span className={`archive-record-card__badge${isLocked ? ' archive-record-card__badge--locked' : ''}`}>{stateLabel}</span>
+        {isLocked && <span className="archive-record-card__lock" aria-hidden="true">🔒</span>}
       </span>
       <span className="archive-record-card__teaser">{card.teaser}</span>
     </>
   );
-
-  if (!isInteractive) {
-    return (
-      <article className={classes} style={style} aria-label={`${card.title} — ${card.category}`}>
-        {content}
-      </article>
-    );
-  }
 
   return (
     <button
@@ -58,7 +52,7 @@ export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: 
       style={style}
       aria-haspopup="dialog"
       aria-expanded={isOpen ?? false}
-      aria-label={`${t('action.open')} ${t('archive.detail.aria').toLocaleLowerCase()} ${card.title}`}
+      aria-label={`${t('action.open')} ${t('archive.detail.aria').toLocaleLowerCase()} ${card.title}, ${stateLabel}`}
       onClick={() => onOpen?.(card.id)}
     >
       {content}

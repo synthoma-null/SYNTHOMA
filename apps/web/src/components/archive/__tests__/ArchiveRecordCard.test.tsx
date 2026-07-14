@@ -31,11 +31,12 @@ describe('ArchiveRecordCard', () => {
     expect(screen.getByRole('button')).toHaveClass('archive-record-card--teaser');
   });
 
-  it('hidden card is not a button', () => {
-    const { container } = render(<ArchiveRecordCard card={card} visibility="hidden" />);
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
-    expect(container.querySelector('article')).toBeInTheDocument();
-    expect(container.querySelector('article')).toHaveClass('archive-record-card--locked');
+  it('hidden card remains a safe locked button with text and lock icon', () => {
+    render(<ArchiveRecordCard card={card} visibility="hidden" />);
+    const button = screen.getByRole('button', { name: /UZAMČENO/ });
+    expect(button).toHaveClass('archive-record-card--locked');
+    expect(screen.getByText('UZAMČENO')).toBeInTheDocument();
+    expect(screen.getAllByText('🔒')).toHaveLength(2);
   });
 
   it('clicking anywhere on the card opens the dialog', () => {
@@ -68,12 +69,11 @@ describe('ArchiveRecordCard', () => {
     expect(onOpen).toHaveBeenCalledWith('rec-1');
   });
 
-  it('hidden card is not clickable and does not open dialog', () => {
+  it('hidden card opens only the access gate path', () => {
     const onOpen = jest.fn();
-    const { container } = render(<ArchiveRecordCard card={card} visibility="hidden" onOpen={onOpen} />);
-    const article = container.querySelector('article');
-    fireEvent.click(article as HTMLElement);
-    expect(onOpen).not.toHaveBeenCalled();
+    render(<ArchiveRecordCard card={card} visibility="hidden" onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole('button'));
+    expect(onOpen).toHaveBeenCalledWith('rec-1');
   });
 
   it('interactive card has interactive modifier and locked card has locked modifier', () => {
@@ -82,8 +82,7 @@ describe('ArchiveRecordCard', () => {
     expect(screen.getByRole('button')).not.toHaveClass('archive-record-card--locked');
 
     rerender(<ArchiveRecordCard card={card} visibility="hidden" />);
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
-    expect(document.querySelector('article')).toHaveClass('archive-record-card--locked');
-    expect(document.querySelector('article')).not.toHaveClass('archive-record-card--interactive');
+    expect(screen.getByRole('button')).toHaveClass('archive-record-card--locked');
+    expect(screen.getByRole('button')).toHaveClass('archive-record-card--interactive');
   });
 });

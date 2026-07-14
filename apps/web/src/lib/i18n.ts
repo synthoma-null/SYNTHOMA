@@ -124,6 +124,8 @@ export const translations = {
   'archive.card.open': { cs: 'Otevřít kartu', en: 'Open card' },
   'archive.card.close': { cs: 'Zavřít kartu', en: 'Close card' },
   'archive.card.locked': { cs: 'Zamčená karta', en: 'Locked card' },
+  'archive.card.available': { cs: 'DOSTUPNÉ', en: 'AVAILABLE' },
+  'archive.card.state.locked': { cs: 'UZAMČENO', en: 'LOCKED' },
   'archive.card.related': { cs: 'Související:', en: 'Related:' },
   'archive.card.related.open': { cs: 'Otevřít související kartu', en: 'Open related card' },
   'archive.card.tags': { cs: 'Tagy:', en: 'Tags:' },

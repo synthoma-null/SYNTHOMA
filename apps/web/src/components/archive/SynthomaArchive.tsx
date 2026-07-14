@@ -247,7 +247,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
         </section>
       </div>
 
-      {dialogEntry && dialogEntry.visibility !== 'hidden' && (
+      {dialogEntry && (
         <ArchiveDetailDialog
           card={dialogEntry.card}
           mode={dialogEntry.visibility}

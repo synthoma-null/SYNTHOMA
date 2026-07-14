@@ -490,9 +490,10 @@
 }
 
 .archive-record-card--locked {
-  opacity: 0.55;
-  cursor: not-allowed;
+  filter: saturate(0.35);
   border-left-style: dashed;
+  border-left-color: var(--os-text-muted);
+  background: color-mix(in srgb, var(--os-surface) 88%, black);
 }
 
 .archive-record-card--locked .archive-record-card__teaser {
@@ -533,6 +534,16 @@
   flex-shrink: 0;
   color: var(--os-accent-primary);
 }
+
+.archive-record-card__badge {
+  flex-shrink: 0;
+  padding: 3px 6px;
+  border: 1px solid var(--os-accent-primary);
+  color: var(--os-accent-primary);
+  font: 700 var(--os-font-size-xs)/1 var(--font-mono, monospace);
+}
+
+.archive-record-card__badge--locked { border-color: var(--os-text-muted); color: var(--os-text-muted); }
 
 .archive-record-card__teaser {
   display: block;

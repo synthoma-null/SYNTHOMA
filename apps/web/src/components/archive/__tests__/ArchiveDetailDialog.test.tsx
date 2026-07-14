@@ -41,9 +41,10 @@ describe('ArchiveDetailDialog', () => {
     expect(screen.queryByText('První odstavec.')).not.toBeInTheDocument();
   });
 
-  it('returns null for hidden mode', () => {
-    const { container } = render(<ArchiveDetailDialog card={card} mode="hidden" relatedCards={[]} onClose={onClose} />);
-    expect(container.firstChild).toBeNull();
+  it('renders a safe access gate for hidden mode without protected body', () => {
+    render(<ArchiveDetailDialog card={card} mode="hidden" relatedCards={[]} onClose={onClose} />);
+    expect(screen.getByText(/Záznam je uzamčen/)).toBeInTheDocument();
+    expect(screen.queryByText('První odstavec.')).not.toBeInTheDocument();
   });
 
   it('calls onClose on close and overlay click', () => {

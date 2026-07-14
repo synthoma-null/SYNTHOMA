@@ -18,7 +18,7 @@ export interface ArchiveDetailDialogProps {
 
 export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose, access, onPurchase }: ArchiveDetailDialogProps) {
   const { t } = useLang();
-  const isLocked = mode === 'teaser';
+  const isLocked = mode !== 'full';
   const isFull = mode === 'full';
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -52,8 +52,6 @@ export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose,
       document.body.classList.remove('synthoma-dialog-lock');
     };
   }, [onClose]);
-
-  if (mode === 'hidden') return null;
 
   return (
     <div
