@@ -1,9 +1,11 @@
 /* Gameplay shell and boot surface. */
 
 .cyklus-page {
+  --cy-shell-top: var(--os-command-height, 56px);
+  --cy-shell-bottom: 0px;
   position: relative;
   isolation: isolate;
-  min-height: 100dvh;
+  min-height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
   background:
     radial-gradient(ellipse at 8% 12%, color-mix(in srgb, var(--cy-accent-system) 7.5%, transparent), transparent 36%),
     radial-gradient(ellipse at 92% 82%, color-mix(in srgb, var(--cy-accent-memory) 6.5%, transparent), transparent 34%),
@@ -46,6 +48,11 @@
   padding: calc(var(--cy-space-4) + env(safe-area-inset-top)) var(--cy-space-4) calc(var(--cy-space-4) + env(safe-area-inset-bottom));
   color: var(--cy-text);
   font-family: var(--cy-font-mono);
+}
+
+.cyklus-page > .cyklus-root--playing {
+  height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
+  min-height: 0;
 }
 
 .cyklus-loading {
@@ -541,11 +548,16 @@
 }
 
 @media (max-width: 767px) {
+  .cyklus-page {
+    --cy-shell-top: 48px;
+    --cy-shell-bottom: calc(var(--os-mobile-nav-height, 56px) + env(safe-area-inset-bottom));
+  }
+
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
     grid-template-rows: auto auto minmax(0, 1fr) auto auto;
     width: 100%;
-    height: 100dvh;
+    height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
     min-height: 0;
     padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
     overflow: hidden;

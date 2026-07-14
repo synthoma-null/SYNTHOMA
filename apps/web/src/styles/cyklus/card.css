@@ -379,7 +379,7 @@ body.cyklus-poster-lock {
 .cyklus-poster-viewer {
   position: fixed;
   inset: 0;
-  z-index: calc(var(--cy-z-sheet) + 10);
+  z-index: calc(var(--os-z-critical, 120) + 10);
   display: grid;
   width: 100vw;
   height: 100dvh;

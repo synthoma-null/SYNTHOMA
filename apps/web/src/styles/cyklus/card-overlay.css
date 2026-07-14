@@ -1,11 +1,16 @@
 /* Final card geometry and the shared card-bound modal layer. */
 
+.cyklus-page > .cyklus-root--playing:not(.cyklus-root--menu) {
+  height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
+  min-height: 0;
+}
+
 .cyklus-root--playing > .cyklus-stage {
   display: grid;
   min-height: 0;
   box-sizing: border-box;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
 }
 
@@ -21,6 +26,7 @@
     "badge"
     "choices";
   grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  height: 100%;
   align-self: stretch;
   justify-self: stretch;
   max-height: 100%;
@@ -208,6 +214,52 @@
 
   .cyklus-card-overlay .cyklus-outcome__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .cyklus-page > .cyklus-root--playing:not(.cyklus-root--menu) {
+    gap: 4px;
+    padding-block: 8px;
+  }
+
+  .cyklus-root--playing > .cyklus-stat-dock {
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    max-width: none;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .cyklus-root--playing > .cyklus-stat-dock > :is(.cyklus-stat-dock__climate, .cyklus-tutorial-progress) {
+    display: none;
+  }
+
+  .cyklus-root--playing > .cyklus-stat-dock .cyklus-stat-chip {
+    height: 44px;
+    min-height: 44px;
+    padding: 3px 6px;
+    grid-template-areas:
+      "label value"
+      "bar bar";
+    grid-template-rows: minmax(0, 1fr) 4px;
+  }
+
+  .cyklus-root--playing > .cyklus-stat-dock .cyklus-stat-chip__status {
+    display: none;
+  }
+
+  .cyklus-root--playing > .cyklus-pocket--standalone {
+    height: 38px;
+    min-height: 38px;
+    padding-top: 0;
+    overflow: visible;
+  }
+
+  .cyklus-root--playing > .cyklus-pocket--standalone > .cyklus-pocket__toggle {
+    height: 38px;
+    min-height: 38px;
   }
 }
 

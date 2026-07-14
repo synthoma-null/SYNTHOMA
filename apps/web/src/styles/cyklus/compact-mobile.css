@@ -54,7 +54,7 @@
 
   .cyklus-page > .cyklus-root--playing {
     grid-template-rows: 44px 38px minmax(0, 1fr) 58px calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
-    height: 100dvh;
+    height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
     min-height: 0;
     padding: env(safe-area-inset-top) 0 0;
     overflow: hidden;

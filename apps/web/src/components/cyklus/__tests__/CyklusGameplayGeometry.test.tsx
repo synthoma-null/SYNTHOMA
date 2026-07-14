@@ -8,13 +8,15 @@ function readStyle(file: string) {
 describe('Cyklus gameplay geometry contract', () => {
   const shell = readStyle('shell.css');
   const card = readStyle('card.css');
+  const cardOverlay = readStyle('card-overlay.css');
   const compact = readStyle('compact-mobile.css');
   const client = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8');
   const bottomNav = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusBottomNav.tsx'), 'utf8');
 
-  it('keeps active gameplay in a non-scrolling 100dvh shell', () => {
-    expect(shell).toMatch(/\.cyklus-page > \.cyklus-root\s*\{[\s\S]*?height:\s*100dvh;[\s\S]*?overflow:\s*hidden;/);
-    expect(compact).toMatch(/\.cyklus-page > \.cyklus-root--playing\s*\{[\s\S]*?height:\s*100dvh;[\s\S]*?overflow:\s*hidden;/);
+  it('keeps active gameplay inside the viewport below the global shell controls', () => {
+    expect(cardOverlay).toMatch(/\.cyklus-page > \.cyklus-root--playing:not\(\.cyklus-root--menu\)\s*\{[\s\S]*?height:\s*calc\(100dvh - var\(--cy-shell-top\) - var\(--cy-shell-bottom\)\);[\s\S]*?min-height:\s*0;/);
+    expect(shell).toMatch(/--cy-shell-bottom:\s*calc\(var\(--os-mobile-nav-height, 56px\) \+ env\(safe-area-inset-bottom\)\);/);
+    expect(compact).toMatch(/\.cyklus-page > \.cyklus-root--playing\s*\{[\s\S]*?height:\s*calc\(100dvh - var\(--cy-shell-top\) - var\(--cy-shell-bottom\)\);[\s\S]*?overflow:\s*hidden;/);
   });
 
   it('reserves explicit rows for stats, pocket, stage, choices and navigation', () => {
@@ -23,6 +25,7 @@ describe('Cyklus gameplay geometry contract', () => {
     expect(client.indexOf('<StatDock')).toBeLessThan(client.indexOf('<CyklusPocketDock'));
     expect(client.indexOf('<CyklusPocketDock')).toBeLessThan(client.indexOf('<main className="cyklus-stage">'));
     expect(client.indexOf('<main className="cyklus-stage">')).toBeLessThan(client.indexOf('data-cyklus-choice-dock'));
+    expect(cardOverlay).toMatch(/@media \(max-height: 600px\) and \(orientation: landscape\)[\s\S]*?\.cyklus-root--playing > \.cyklus-stat-dock\s*\{[\s\S]*?height:\s*44px;[\s\S]*?\.cyklus-root--playing > \.cyklus-pocket--standalone\s*\{[\s\S]*?height:\s*38px;/);
   });
 
   it('uses the complete stage rect for text and poster cards', () => {
@@ -30,6 +33,8 @@ describe('Cyklus gameplay geometry contract', () => {
     expect(card).toMatch(/\.cyklus-card\s*\{[\s\S]*?width:\s*min\(100%, 1360px\);[\s\S]*?height:\s*100%;[\s\S]*?min-height:\s*0;/);
     expect(card).not.toMatch(/\.cyklus-card\s*\{[^}]*height:\s*clamp\(/);
     expect(card).not.toMatch(/^\.cyklus-card--poster\s*\{[^}]*height:/m);
+    expect(cardOverlay).toMatch(/\.cyklus-root--playing > \.cyklus-stage\s*\{[\s\S]*?grid-template-rows:\s*minmax\(0, 1fr\);/);
+    expect(cardOverlay).toMatch(/\.cyklus-card\s*\{[\s\S]*?height:\s*100%;/);
   });
 
   it('scrolls long scene text internally while choices remain outside the card', () => {
