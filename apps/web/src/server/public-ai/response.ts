@@ -60,6 +60,18 @@ export function publicError(request: Request, status: number, code: string, mess
   return publicJson(request, { error: { code, message, status } }, { status });
 }
 
+export function publicOptions(): NextResponse {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, If-None-Match',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
+}
+
 export function localeFromRequest(request: Request): PublicLocale | null {
   const value = new URL(request.url).searchParams.get('locale');
   return value === null || value === 'cs' ? 'cs' : value === 'en' ? 'en' : null;

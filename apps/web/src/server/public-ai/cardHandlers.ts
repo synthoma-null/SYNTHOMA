@@ -1,6 +1,7 @@
 import { absolutePublicUrl, type PublicLocale } from './config';
 import { getPublicCard, getPublicCards, type PublicCardDocument } from './contentService';
 import { localeFromRequest, paginate, publicEnvelope, publicError, publicJson } from './response';
+import { enforcePublicRateLimit } from './rateLimit';
 
 function cardData(card: PublicCardDocument) {
   return {
@@ -17,13 +18,14 @@ function cardData(card: PublicCardDocument) {
   };
 }
 
-function requestLocale(request: Request): PublicLocale | null {
-  return localeFromRequest(request);
+function requestLocale(request: Request): PublicLocale | Response {
+  const limited = enforcePublicRateLimit(request, 'read');
+  return limited ?? localeFromRequest(request) ?? publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
 }
 
 export function cardsApi(request: Request): Response {
   const locale = requestLocale(request);
-  if (!locale) return publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
+  if (locale instanceof Response) return locale;
   const page = paginate(request, getPublicCards(locale).map(cardData));
   if (!page) return publicError(request, 400, 'INVALID_CURSOR', 'The pagination cursor is invalid.');
   return publicJson(request, publicEnvelope({
@@ -35,7 +37,7 @@ export function cardsApi(request: Request): Response {
 
 export function cardApi(request: Request, id: string): Response {
   const locale = requestLocale(request);
-  if (!locale) return publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
+  if (locale instanceof Response) return locale;
   const card = getPublicCard(id, locale);
   if (!card) return publicError(request, 404, 'NOT_FOUND', 'Unknown or hidden Cyklus card.');
   return publicJson(request, publicEnvelope({

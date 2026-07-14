@@ -8,8 +8,11 @@ import {
   getPublicChapters,
 } from './contentService';
 import { localeFromRequest, paginate, publicEnvelope, publicError, publicJson } from './response';
+import { enforcePublicRateLimit } from './rateLimit';
 
 function localeOrError(request: Request): PublicLocale | Response {
+  const limited = enforcePublicRateLimit(request, 'read');
+  if (limited) return limited;
   const locale = localeFromRequest(request);
   return locale ?? publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
 }
