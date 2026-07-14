@@ -10,10 +10,11 @@ export interface CyklusDiscovery {
   endings: string[];
   variants: string[];
   findings: string[];
+  cardRecords?: Record<string, { firstSeenAt: number; lastSeenAt: number; seenCount: number }>;
 }
 
 export function getEmptyDiscovery(): CyklusDiscovery {
-  return { cards: [], sectors: [], items: [], imprints: [], endings: [], variants: [], findings: [] };
+  return { cards: [], sectors: [], items: [], imprints: [], endings: [], variants: [], findings: [], cardRecords: {} };
 }
 
 export function loadDiscovery(): CyklusDiscovery {

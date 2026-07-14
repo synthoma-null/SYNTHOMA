@@ -47,6 +47,7 @@ interface CyklusCardPosterProps {
   onOpenViewer?: () => void;
   onClose?: () => void;
   zoomTriggerRef?: React.Ref<HTMLButtonElement>;
+  hideRevealAction?: boolean;
 }
 
 const COMPLETE_VIEW: PosterTransform = { scale: MIN_SCALE, x: 0, y: 0 };
@@ -89,6 +90,7 @@ export default function CyklusCardPoster({
   onOpenViewer,
   onClose,
   zoomTriggerRef,
+  hideRevealAction = false,
 }: CyklusCardPosterProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -381,7 +383,7 @@ export default function CyklusCardPoster({
             <ZoomIcon />
           </button>
         )}
-        <button
+        {!hideRevealAction ? <button
           className="cyklus-card-art__reveal"
           type="button"
           onClick={() => {
@@ -390,7 +392,7 @@ export default function CyklusCardPoster({
           }}
         >
           {presentation.revealLabel ?? 'OTEVŘÍT ZÁZNAM'}
-        </button>
+        </button> : null}
       </footer>
     </section>
   );

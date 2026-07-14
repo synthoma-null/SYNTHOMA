@@ -14,6 +14,7 @@ import { useAccess } from '../access/AccessProvider';
 import ContentPurchaseDialog from '../access/ContentPurchaseDialog';
 import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
+import CyklusCardCollection from './CyklusCardCollection';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -34,6 +35,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
   const [showWhisperForm, setShowWhisperForm] = useState(false);
   const [enCards, setEnCards] = useState<ArchiveCard[] | null>(null);
   const [purchaseCardId, setPurchaseCardId] = useState<string | null>(null);
+  const [activeView, setActiveView] = useState<'records' | 'collection'>('records');
   const { resolve: resolveAccess, getCachedAccess } = useAccess();
   const returnFocusRef = useRef<HTMLElement | null>(null);
 
@@ -142,6 +144,12 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           </div>
         </section>
 
+        <div className="synthoma-archive__tabs" role="tablist" aria-label={t('archive.tabs.aria')}>
+          <button id="archive-tab-records" className={`os-command ${activeView === 'records' ? 'os-command--active' : ''}`} type="button" role="tab" aria-selected={activeView === 'records'} aria-controls="archive-panel-records" onClick={() => setActiveView('records')}>{t('archive.tab.records')}</button>
+          <button id="archive-tab-collection" className={`os-command ${activeView === 'collection' ? 'os-command--active' : ''}`} type="button" role="tab" aria-selected={activeView === 'collection'} aria-controls="archive-panel-collection" onClick={() => setActiveView('collection')}>{t('archive.tab.collection')}</button>
+        </div>
+
+        <div id="archive-panel-records" className="synthoma-archive__panel" role="tabpanel" aria-labelledby="archive-tab-records" hidden={activeView !== 'records'}>
         <section className="synthoma-archive__section" aria-label={t('archive.reading.aria')}>
           <h2 className="synthoma-archive__section-title">{t('archive.reading.title')}</h2>
           {currentChapter ? (
@@ -245,6 +253,11 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           )}
           <WhisperSubmitPanel placement="archive" compact />
         </section>
+        </div>
+
+        <div id="archive-panel-collection" className="synthoma-archive__panel" role="tabpanel" aria-labelledby="archive-tab-collection" hidden={activeView !== 'collection'}>
+          <CyklusCardCollection />
+        </div>
       </div>
 
       {dialogEntry && (
