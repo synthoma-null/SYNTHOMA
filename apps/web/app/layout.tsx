@@ -183,25 +183,33 @@ export const generateViewport = (): Viewport => ({
 });
 
 const jsonLd = {
-
   "@context": "https://schema.org",
-
-  "@type": "CreativeWork",
-
-  "name": "SYNTHOMA",
-
-  "description": "Cyberpunková interaktivní čtečka a knihovna – glitch-noir narativní zážitek.",
-
-  "url": "https://www.synthoma.cz",
-
-  "inLanguage": "cs",
-
-  "genre": ["Cyberpunk", "Interactive Fiction", "Glitch Noir"],
-
-  "isAccessibleForFree": true,
-
-  "image": "https://www.synthoma.cz/assets/og-synthoma.jpg",
-
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.synthoma.cz/#website",
+      "name": "SYNTHOMA",
+      "url": "https://www.synthoma.cz",
+      "inLanguage": ["cs", "en"],
+      "description": "Glitch-noir interaktivní literatura, archiv a diagnostická karetní hra.",
+    },
+    {
+      "@type": "CreativeWorkSeries",
+      "@id": "https://www.synthoma.cz/#series",
+      "name": "SYNTHOMA",
+      "url": "https://www.synthoma.cz",
+      "author": { "@type": "Person", "name": "Tomáš Valíček", "url": "https://www.synthoma.cz/autor" },
+      "inLanguage": ["cs", "en"],
+      "genre": ["Cyberpunk", "Interactive Fiction", "Glitch Noir"],
+      "isAccessibleForFree": true,
+      "image": "https://www.synthoma.cz/assets/og-synthoma.jpg",
+      "hasPart": [
+        { "@type": "Book", "name": "SYNTHOMA-NULL", "url": "https://www.synthoma.cz/books" },
+        { "@type": "CollectionPage", "name": "Archiv SYNTHOMA", "url": "https://www.synthoma.cz/archive" },
+        { "@type": "Game", "name": "Cyklus", "url": "https://www.synthoma.cz/cyklus" }
+      ]
+    }
+  ]
 };
 
 
