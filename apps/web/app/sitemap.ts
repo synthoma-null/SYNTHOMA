@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { CHAPTER_CATALOG } from '../src/content/catalog';
 import { getPublicArchive } from '../src/server/public-ai/contentService';
+import { getPublicCards } from '../src/server/public-ai/contentService';
 import { PUBLIC_CONTENT_UPDATED_AT, PUBLIC_SITE_URL } from '../src/server/public-ai/config';
 
 const LAST_MODIFIED = new Date(PUBLIC_CONTENT_UPDATED_AT);
@@ -39,5 +40,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...localized(`${PUBLIC_SITE_URL}/archive/${entry.id}`),
   }));
 
-  return [...staticPages, ...chapterPages, ...archivePages];
+  const cardPages: MetadataRoute.Sitemap = [
+    { url: `${PUBLIC_SITE_URL}/cards`, lastModified: LAST_MODIFIED, changeFrequency: 'weekly', priority: 0.8 },
+    ...getPublicCards('cs').map((card) => ({
+      url: card.canonicalUrl,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'monthly' as const,
+      priority: card.visibility === 'publicFull' ? 0.6 : 0.4,
+      ...localized(card.canonicalUrl),
+    })),
+  ];
+
+  return [...staticPages, ...chapterPages, ...archivePages, ...cardPages];
 }
