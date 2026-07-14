@@ -632,6 +632,8 @@
   backdrop-filter: blur(8px);
 }
 
+body.synthoma-dialog-lock { overflow: hidden; }
+
 .library-cover-overlay {
   background-image: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)), var(--cover-image);
   background-size: cover, cover;
@@ -775,8 +777,9 @@
   position: absolute;
   top: var(--os-space-3);
   right: var(--os-space-3);
-  width: 36px;
-  height: 36px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -786,6 +789,8 @@
   cursor: pointer;
   z-index: 2;
 }
+
+.synthoma-detail-dialog__close-label { margin-left: 6px; font: 700 9px/1 var(--font-mono, monospace); }
 
 .synthoma-detail-dialog__close:hover {
   border-color: var(--os-accent-primary);
@@ -904,5 +909,10 @@
 
   .synthoma-detail-overlay {
     padding: 0;
+  }
+
+  .synthoma-detail-dialog__close {
+    top: max(var(--os-space-2), env(safe-area-inset-top));
+    right: max(var(--os-space-2), env(safe-area-inset-right));
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import SynthomaMediaLayer from '../synthoma-os/SynthomaMediaLayer';
@@ -12,6 +12,8 @@ import ArchiveDetailDialog from './ArchiveDetailDialog';
 import ArchiveRecordCard from './ArchiveRecordCard';
 import { useAccess } from '../access/AccessProvider';
 import ContentPurchaseDialog from '../access/ContentPurchaseDialog';
+import { useLang } from '../../lib/LangContext';
+import type { TKey } from '../../lib/i18n';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -25,6 +27,7 @@ const WHISPER_FILTERS = ['all', 'unsent', 'memory', 'fear', 'regret', 'wish', 'w
 const WHISPER_SORTS = ['random', 'resonance', 'new'] as const;
 
 export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) {
+  const { t, lang } = useLang();
   const [openCardId, setOpenCardId] = useState<string | null>(null);
   const [whisperFilter, setWhisperFilter] = useState<string>('all');
   const [whisperSort, setWhisperSort] = useState<string>('random');
@@ -32,6 +35,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
   const [enCards, setEnCards] = useState<ArchiveCard[] | null>(null);
   const [purchaseCardId, setPurchaseCardId] = useState<string | null>(null);
   const { resolve: resolveAccess, getCachedAccess } = useAccess();
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   const snapshot = useArchiveSnapshot(enCards ?? initialCards, whisperFilter, whisperSort);
   const cards = useMemo(() => enCards ?? initialCards, [enCards, initialCards]);
@@ -57,6 +61,10 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (lang !== 'en') {
+      setEnCards(null);
+      return;
+    }
     fetch('/data/archiveCards_en.json', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
@@ -65,7 +73,22 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
         }
       })
       .catch(() => {});
+  }, [lang]);
+
+  const openRecord = useCallback((id: string) => {
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setOpenCardId(id);
   }, []);
+
+  const closeRecord = useCallback(() => {
+    setOpenCardId(null);
+    window.setTimeout(() => returnFocusRef.current?.focus({ preventScroll: true }), 0);
+  }, []);
+
+  const whisperFilterLabel = (filter: (typeof WHISPER_FILTERS)[number]): string => {
+    if (filter === 'all') return t('archive.whispers.filter.all').toLocaleUpperCase();
+    return t(`archive.whispers.filter.${filter}` as TKey);
+  };
 
   const displayCards = useMemo(() => {
     return cards
@@ -96,37 +119,37 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
       <SynthomaMediaLayer src="/video/SYNTHOMA10.webm" className="synthoma-archive__media" />
       <div className="synthoma-archive__content">
         <header className="synthoma-archive__header">
-          <span className="os-status__code">ARCHIVE // SUBJECT MEMORY</span>
-          <h1 className="synthoma-archive__title">Co systém uchoval z tebe</h1>
+          <span className="os-status__code">{t('archive.code')}</span>
+          <h1 className="synthoma-archive__title">{t('archive.title')}</h1>
         </header>
 
-        <section className="synthoma-archive__overview os-surface" aria-label="Přehled stopy subjektu">
+        <section className="synthoma-archive__overview os-surface" aria-label={t('archive.overview.aria')}>
           <div className="synthoma-archive__count">
-            <span className="os-status__code">DOČTENÉ KAPITOLY</span>
+            <span className="os-status__code">{t('archive.count.chapters')}</span>
             <span className="synthoma-archive__value">{completedChapters.length}</span>
           </div>
           <div className="synthoma-archive__count">
-            <span className="os-status__code">ZÁZNAMY ARCHIVU</span>
+            <span className="os-status__code">{t('archive.count.records')}</span>
             <span className="synthoma-archive__value">{displayCards.length}</span>
           </div>
           <div className="synthoma-archive__count">
-            <span className="os-status__code">NÁLEZY CYKLUS</span>
+            <span className="os-status__code">{t('archive.count.findings')}</span>
             <span className="synthoma-archive__value">{snapshot.cyklus.findings.length}</span>
           </div>
           <div className="synthoma-archive__count">
-            <span className="os-status__code">ŠPOTY</span>
+            <span className="os-status__code">{t('archive.count.whispers')}</span>
             <span className="synthoma-archive__value">{snapshot.whispers.length}</span>
           </div>
         </section>
 
-        <section className="synthoma-archive__section" aria-label="Paměť čtení">
-          <h2 className="synthoma-archive__section-title">PAMĚŤ ČTENÍ</h2>
+        <section className="synthoma-archive__section" aria-label={t('archive.reading.aria')}>
+          <h2 className="synthoma-archive__section-title">{t('archive.reading.title')}</h2>
           {currentChapter ? (
             <p className="synthoma-archive__status-line">
-              Aktuální stopa: <Link href={`/chapter/${encodeURIComponent(currentChapter.chapterId)}`}>{currentChapter.chapterTitle || currentChapter.chapterId}</Link>
+              {t('archive.reading.current')}: <Link href={`/chapter/${encodeURIComponent(currentChapter.chapterId)}`}>{currentChapter.chapterTitle || currentChapter.chapterId}</Link>
             </p>
           ) : (
-            <p className="synthoma-archive__status-line">Žádná aktivní stopa.</p>
+            <p className="synthoma-archive__status-line">{t('archive.reading.none')}</p>
           )}
           {completedChapters.length > 0 ? (
             <ul className="synthoma-archive__chapter-list">
@@ -137,12 +160,12 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
               ))}
             </ul>
           ) : (
-            <p className="synthoma-archive__empty">Zatím žádná dokončená kapitola.</p>
+            <p className="synthoma-archive__empty">{t('archive.reading.completed.none')}</p>
           )}
         </section>
 
-        <section className="synthoma-archive__section" aria-label="Záznamy">
-          <h2 className="synthoma-archive__section-title">RECOVERED RECORDS</h2>
+        <section className="synthoma-archive__section" aria-label={t('archive.records.aria')}>
+          <h2 className="synthoma-archive__section-title">{t('archive.records.title')}</h2>
           <ul className="synthoma-archive__records" role="list">
             {displayCards.map((entry) => (
               <li key={entry.card.id} className="archive-record-card__item">
@@ -150,15 +173,15 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
                   card={entry.card}
                   visibility={entry.visibility}
                   isOpen={openCardId === entry.card.id}
-                  onOpen={(id) => setOpenCardId(id)}
+                  onOpen={openRecord}
                 />
               </li>
             ))}
           </ul>
         </section>
 
-        <section className="synthoma-archive__section" aria-label="Paměť Cyklus">
-          <h2 className="synthoma-archive__section-title">CYKLUS MEMORY</h2>
+        <section className="synthoma-archive__section" aria-label={t('archive.cyklus.aria')}>
+          <h2 className="synthoma-archive__section-title">{t('archive.cyklus.title')}</h2>
           {snapshot.cyklus.findings.length > 0 ? (
             <ul className="synthoma-archive__findings">
               {snapshot.cyklus.findings.map((f) => (
@@ -169,17 +192,17 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
               ))}
             </ul>
           ) : (
-            <p className="synthoma-archive__empty">Zatím žádné diagnostické nálezy.</p>
+            <p className="synthoma-archive__empty">{t('archive.cyklus.none')}</p>
           )}
           {snapshot.cyklus.activeRun && (
             <p className="synthoma-archive__status-line">
-              <Link href="/cyklus">Aktivní cyklus</Link>
+              <Link href="/cyklus">{t('archive.cyklus.active')}</Link>
             </p>
           )}
         </section>
 
-        <section className="synthoma-archive__section" aria-label="Šepoty">
-          <h2 className="synthoma-archive__section-title">WHISPER CHANNEL</h2>
+        <section className="synthoma-archive__section" aria-label={t('archive.whispers.aria')}>
+          <h2 className="synthoma-archive__section-title">{t('archive.whispers.channel')}</h2>
           <div className="synthoma-archive__filters">
             {WHISPER_FILTERS.map((f) => (
               <button
@@ -188,7 +211,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
                 type="button"
                 onClick={() => setWhisperFilter(f)}
               >
-                {f === 'all' ? 'VŠE' : f.toUpperCase()}
+                {whisperFilterLabel(f)}
               </button>
             ))}
           </div>
@@ -200,13 +223,13 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
                 type="button"
                 onClick={() => setWhisperSort(s)}
               >
-                {s === 'random' ? 'NÁHODNĚ' : s === 'resonance' ? 'REZONANCE' : 'NOVÉ'}
+                {s === 'random' ? t('archive.whispers.sort.random').toLocaleUpperCase() : s === 'resonance' ? t('archive.whispers.sort.resonance').toLocaleUpperCase() : t('archive.whispers.sort.new').toLocaleUpperCase()}
               </button>
             ))}
           </div>
           <div className="synthoma-archive__whispers" role="list">
             {whisperData.length === 0 ? (
-              <p className="synthoma-archive__empty">Žádné šepoty v kanálu.</p>
+              <p className="synthoma-archive__empty">{t('archive.whispers.none')}</p>
             ) : (
               whisperData.map((w) => (
                 <WhisperCard key={w.id} whisper={w} />
@@ -215,7 +238,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           </div>
           {!showWhisperForm ? (
             <button className="os-command" type="button" onClick={() => setShowWhisperForm(true)}>
-              ZANECH ŠEPOT
+              {t('archive.whispers.leave')}
             </button>
           ) : (
             <WhisperForm onSuccess={() => setShowWhisperForm(false)} />
@@ -229,7 +252,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           card={dialogEntry.card}
           mode={dialogEntry.visibility}
           relatedCards={relatedCards}
-          onClose={() => setOpenCardId(null)}
+          onClose={closeRecord}
           access={dialogEntry.access}
           onPurchase={() => setPurchaseCardId(dialogEntry.card.id)}
         />

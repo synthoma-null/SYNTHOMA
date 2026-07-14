@@ -1,6 +1,7 @@
 'use client';
 
 import type { ArchiveCard, ArchiveCardVisibility } from '../../lib/synthoma/archive/archiveTypes';
+import { useLang } from '../../lib/LangContext';
 
 export interface ArchiveRecordCardProps {
   card: ArchiveCard;
@@ -10,6 +11,7 @@ export interface ArchiveRecordCardProps {
 }
 
 export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: ArchiveRecordCardProps) {
+  const { t } = useLang();
   const isInteractive = visibility === 'full' || visibility === 'teaser';
   const isLocked = visibility === 'hidden';
   const accent = card.display?.accent;
@@ -56,7 +58,7 @@ export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: 
       style={style}
       aria-haspopup="dialog"
       aria-expanded={isOpen ?? false}
-      aria-label={`Otevřít záznam ${card.title}`}
+      aria-label={`${t('action.open')} ${t('archive.detail.aria').toLocaleLowerCase()} ${card.title}`}
       onClick={() => onOpen?.(card.id)}
     >
       {content}

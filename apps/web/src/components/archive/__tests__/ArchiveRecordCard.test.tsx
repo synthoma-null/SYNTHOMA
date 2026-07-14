@@ -18,7 +18,7 @@ const card: ArchiveCard = {
 describe('ArchiveRecordCard', () => {
   it('full card is a button with aria-haspopup', () => {
     render(<ArchiveRecordCard card={card} visibility="full" />);
-    const btn = screen.getByRole('button', { name: /Otevřít záznam/ });
+    const btn = screen.getByRole('button', { name: /otevřít záznam/i });
     expect(btn).toHaveAttribute('aria-haspopup', 'dialog');
     expect(btn).toHaveClass('archive-record-card--interactive');
     expect(btn).toHaveClass('archive-record-card--full');

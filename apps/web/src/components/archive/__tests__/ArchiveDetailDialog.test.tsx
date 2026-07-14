@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ArchiveDetailDialog from '../ArchiveDetailDialog';
 
 const card = {
@@ -25,9 +25,11 @@ const related = [{
 const onClose = jest.fn();
 
 describe('ArchiveDetailDialog', () => {
+  beforeEach(() => onClose.mockClear());
+
   it('renders full content for full mode', () => {
     render(<ArchiveDetailDialog card={card} mode="full" relatedCards={related} onClose={onClose} />);
-    expect(screen.getByRole('dialog', { name: 'Záznam: Záznam jedna' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Záznam jedna' })).toBeInTheDocument();
     expect(screen.getByText('První odstavec.')).toBeInTheDocument();
     expect(screen.getByText('tagA')).toBeInTheDocument();
     expect(screen.getByText('Související náhled.')).toBeInTheDocument();
@@ -46,10 +48,31 @@ describe('ArchiveDetailDialog', () => {
 
   it('calls onClose on close and overlay click', () => {
     const { container } = render(<ArchiveDetailDialog card={card} mode="full" relatedCards={[]} onClose={onClose} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Zavřít záznam' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Zavřít detail karty' }));
     expect(onClose).toHaveBeenCalled();
     onClose.mockClear();
     fireEvent.click(container.firstChild as HTMLElement);
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('closes with Escape and traps keyboard focus', async () => {
+    render(<ArchiveDetailDialog card={card} mode="teaser" relatedCards={[]} onClose={onClose} access={{
+      contentType: 'archive_record', contentId: card.id, state: 'locked', reason: 'purchase_required',
+      canAccess: false, canPurchase: true, mnemCost: 12, title: card.title,
+      purchasePackageIds: [], prerequisiteChapterId: null,
+    }} onPurchase={jest.fn()} />);
+    const close = screen.getByRole('button', { name: 'Zavřít detail karty' });
+    await waitFor(() => expect(close).toHaveFocus());
+    fireEvent.keyDown(window, { key: 'Tab', shiftKey: true });
+    expect(screen.getByRole('button', { name: 'ODEMKNOUT ZA 12 MNEM' })).toHaveFocus();
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('removes the body scroll lock when unmounted', () => {
+    const { unmount } = render(<ArchiveDetailDialog card={card} mode="full" relatedCards={[]} onClose={onClose} />);
+    expect(document.body).toHaveClass('synthoma-dialog-lock');
+    unmount();
+    expect(document.body).not.toHaveClass('synthoma-dialog-lock');
   });
 });
