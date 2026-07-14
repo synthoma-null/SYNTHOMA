@@ -1,6 +1,7 @@
 @media (max-width: 767px) {
   .synthoma-shell__content { padding-bottom: calc(var(--os-mobile-nav-height) + env(safe-area-inset-bottom)); }
   .synthoma-shell--quiet .synthoma-shell__content { padding-bottom: env(safe-area-inset-bottom); }
+  .synthoma-shell--cyklus .synthoma-shell__content { padding-bottom: 0; }
   .synthoma-local-scrim { background: linear-gradient(180deg, var(--os-scrim-strong) 0 62%, var(--os-scrim-soft) 82%, transparent 100%); }
 
   .synthoma-command-header {

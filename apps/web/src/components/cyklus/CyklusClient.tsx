@@ -13,8 +13,8 @@ import { loadStoryProgression, updateStoryAfterRun, saveStoryProgression } from 
 import StatDock from './StatDock';
 import { CyklusVoidHub } from './CyklusVoidHub';
 import CyklusVoidHubClient from './CyklusVoidHubClient';
-import CyklusBottomNav from './CyklusBottomNav';
 import CyklusPocketDock from './CyklusPocketDock';
+import CyklusMobileUtilityDock from './CyklusMobileUtilityDock';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import CyklusCardOverlay from './CyklusCardOverlay';
@@ -24,6 +24,7 @@ import { Button } from '../synthoma-os/ui';
 import SynthomaWordmark from '../synthoma/SynthomaWordmark';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 import { getCardChoiceOrder, getChoiceForPhysicalSide, type PhysicalCardSide } from '../../game/cyklus/cyklusCardPresentation';
+import useCyklusMobileLayout from './useCyklusMobileLayout';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
   switch (cardId) {
@@ -167,6 +168,7 @@ import CyklusPortalScope from './CyklusPortalScope';
 export default function CyklusClient() {
   const { setStatus, setActions } = useHeader();
   const { data: session } = useSession();
+  const mobileGameplayLayout = useCyklusMobileLayout();
   const [state, setState] = useState<CyklusRunState | null>(null);
   const [loading, setLoading] = useState(true);
   const [outcomeVisible, setOutcomeVisible] = useState(false);
@@ -834,13 +836,14 @@ export default function CyklusClient() {
           })() : undefined}
         />
       )}
-      {!ending && (
+      {!ending && !mobileGameplayLayout && (
         <CyklusPocketDock
           state={state}
           open={showPocket}
           highlighted={tutorialHighlight?.pocket}
           confirmActivateId={confirmActivateId}
           onToggle={() => setShowPocket((value) => !value)}
+          onClose={() => setShowPocket(false)}
           onConfirmActivate={setConfirmActivateId}
           onActivate={handleActivateItem}
         />
@@ -1107,6 +1110,18 @@ export default function CyklusClient() {
         </div>
       )}
 
+      {!ending && mobileGameplayLayout && (
+        <CyklusMobileUtilityDock
+          state={state}
+          open={showPocket}
+          confirmActivateId={confirmActivateId}
+          onToggle={() => setShowPocket((value) => !value)}
+          onClose={() => setShowPocket(false)}
+          onConfirmActivate={setConfirmActivateId}
+          onActivate={handleActivateItem}
+        />
+      )}
+
       {!ending && (
         <div className="cyklus-desktop-top__right">
             <div className="cyklus-nav-panel">
@@ -1164,16 +1179,6 @@ export default function CyklusClient() {
               </div>
             )}
         </div>
-      )}
-
-      {!ending && (
-        <CyklusBottomNav
-          onBuild={() => setShowBuild((v) => !v)}
-          onArchive={() => setShowDiscovery((v) => !v)}
-          onVoid={() => setShowVoidHub(true)}
-          active={showBuild ? 'build' : showDiscovery ? 'archive' : showVoidHub ? 'void' : null}
-          dimmed={outcomeVisible}
-        />
       )}
 
     </div>

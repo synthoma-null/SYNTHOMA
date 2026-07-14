@@ -477,7 +477,7 @@
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     gap: var(--cy-space-4);
     align-items: start;
     padding-inline: clamp(1rem, 3vw, 2.5rem);
@@ -517,7 +517,7 @@
     grid-column: 1 / -1 !important;
   }
 
-  .cyklus-root--ended > :is(.cyklus-pocket--standalone, .cyklus-stat-dock, .cyklus-desktop-top__right, .cyklus-bottom-nav) {
+  .cyklus-root--ended > :is(.cyklus-pocket--standalone, .cyklus-stat-dock, .cyklus-desktop-top__right, .cyklus-bottom-nav, .cyklus-mobile-utility-dock) {
     display: none;
   }
 }
@@ -525,7 +525,7 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     max-width: 1024px;
     padding-inline: var(--cy-space-4);
   }
@@ -534,7 +534,6 @@
   .cyklus-root--playing > .cyklus-pocket--standalone { grid-row: 2; }
   .cyklus-root--playing > .cyklus-stage { grid-row: 3; }
   .cyklus-root--playing > .cyklus-choice-dock { grid-row: 4; }
-  .cyklus-root--playing > .cyklus-bottom-nav { grid-row: 5; }
 
   .cyklus-desktop-top__right {
     display: none;
@@ -550,16 +549,16 @@
 @media (max-width: 767px) {
   .cyklus-page {
     --cy-shell-top: 48px;
-    --cy-shell-bottom: calc(var(--os-mobile-nav-height, 56px) + env(safe-area-inset-bottom));
+    --cy-shell-bottom: 0px;
   }
 
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
     width: 100%;
     height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
     min-height: 0;
-    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    padding: env(safe-area-inset-top) 0 0;
     overflow: hidden;
   }
 
@@ -567,20 +566,16 @@
     grid-row: 1;
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-pocket--standalone {
+  .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
     grid-row: 2;
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
-    grid-row: 3;
-  }
-
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-bottom-nav {
-    grid-row: 5;
+  .cyklus-root:not(.cyklus-root--menu) > .cyklus-mobile-utility-dock {
+    grid-row: 4;
   }
 
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-choice-dock {
-    grid-row: 4;
+    grid-row: 3;
   }
 
   .cyklus-desktop-top__right {
