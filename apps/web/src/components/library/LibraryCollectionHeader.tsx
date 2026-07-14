@@ -1,4 +1,7 @@
+'use client';
+
 import type { LibraryCollection } from '../../lib/synthoma/library/libraryTypes';
+import { useLang } from '../../lib/LangContext';
 
 export interface LibraryCollectionHeaderProps {
   collection: LibraryCollection;
@@ -7,6 +10,7 @@ export interface LibraryCollectionHeaderProps {
 }
 
 export default function LibraryCollectionHeader({ collection, onBack, onCoverClick }: LibraryCollectionHeaderProps) {
+  const { t } = useLang();
   const cover = collection.cover ? (
     <img src={collection.cover} alt="" loading="lazy" decoding="async" />
   ) : (
@@ -15,11 +19,11 @@ export default function LibraryCollectionHeader({ collection, onBack, onCoverCli
 
   return (
     <header className="library-collection-header">
-      <button className="os-command" onClick={onBack} type="button" aria-label="Zpět na přehled sbírek">
-        <span className="os-command__label">⟵ ZPĚT</span>
+      <button className="os-command" onClick={onBack} type="button" aria-label={t('books.back.collections')}>
+        <span className="os-command__label">⟵ {t('books.back').replace(/^.*?\s/, '').toLocaleUpperCase()}</span>
       </button>
       {onCoverClick ? (
-        <button className="library-collection-header__cover" type="button" onClick={onCoverClick} aria-label={`Zobrazit přebal ${collection.title}`}>
+        <button className="library-collection-header__cover" type="button" onClick={onCoverClick} aria-label={`${t('books.cover.show')} ${collection.title}`}>
           {cover}
         </button>
       ) : (
@@ -30,7 +34,7 @@ export default function LibraryCollectionHeader({ collection, onBack, onCoverCli
       <div className="library-collection-header__info">
         <h2 className="library-collection-header__title">{collection.title}</h2>
         <p className="library-collection-header__status">
-          {collection.availableCount} / {collection.totalCount} dostupných
+          {collection.availableCount} / {collection.totalCount} {t('books.available')}
         </p>
       </div>
     </header>

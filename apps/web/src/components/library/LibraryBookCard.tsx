@@ -1,4 +1,7 @@
+'use client';
+
 import type { LibraryCollection } from '../../lib/synthoma/library/libraryTypes';
+import { useLang } from '../../lib/LangContext';
 
 export interface LibraryBookCardProps {
   collection: LibraryCollection;
@@ -7,13 +10,14 @@ export interface LibraryBookCardProps {
 }
 
 export default function LibraryBookCard({ collection, progressRecord, onClick }: LibraryBookCardProps) {
+  const { t } = useLang();
   const completed = progressRecord ? (progressRecord.completed ?? progressRecord.percent >= 100) : false;
   const hasProgress = progressRecord && progressRecord.percent > 0 && !completed;
-  const description = collection.description || `Dostupných ${collection.availableCount} / ${collection.totalCount} kapitol`;
-  const cta = hasProgress ? 'POKRAČOVAT' : 'OTEVŘÍT';
+  const description = collection.description || `${t('books.available.capital')} ${collection.availableCount} / ${collection.totalCount} ${t('books.chapters')}`;
+  const cta = hasProgress ? t('action.continue') : t('action.open');
   const status = hasProgress
-    ? `pokračovat ${Math.round(progressRecord.percent)}%`
-    : `${collection.availableCount} / ${collection.totalCount} kapitol`;
+    ? `${t('books.continue').toLocaleLowerCase()} ${Math.round(progressRecord.percent)}%`
+    : `${collection.availableCount} / ${collection.totalCount} ${t('books.chapters')}`;
 
   return (
     <button

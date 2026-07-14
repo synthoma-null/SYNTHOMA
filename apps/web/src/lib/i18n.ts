@@ -1,6 +1,17 @@
 export type Lang = 'cs' | 'en';
 
 export const translations = {
+  // ─── shared actions ──────────────────────────────────────────────────────
+  'action.open': { cs: 'OTEVŘÍT', en: 'OPEN' },
+  'action.read': { cs: 'ČÍST', en: 'READ' },
+  'action.continue': { cs: 'POKRAČOVAT', en: 'CONTINUE' },
+  'action.locked': { cs: 'UZAMČENO', en: 'LOCKED' },
+  'action.unlock': { cs: 'ODEMKNOUT', en: 'UNLOCK' },
+  'action.close': { cs: 'ZAVŘÍT', en: 'CLOSE' },
+  'status.collection': { cs: 'SBÍRKA', en: 'COLLECTION' },
+  'status.discovered': { cs: 'OBJEVENO', en: 'DISCOVERED' },
+  'status.unknown': { cs: 'NEZAZNAMENÁNO', en: 'UNKNOWN' },
+
   // ─── layout ───────────────────────────────────────────────────────────────
   'layout.skip': { cs: 'Přeskočit na obsah', en: 'Skip to content' },
   'layout.noscript.p1': { cs: 'Cyberpunková interaktivní čtečka vyžaduje JavaScript pro plný zážitek.', en: 'The cyberpunk interactive reader requires JavaScript for the full experience.' },
@@ -37,6 +48,11 @@ export const translations = {
   'home.autor.teaser': { cs: 'Záznam o člověku, který systém spustil.', en: 'A record of the human who started the system.' },
   'home.game.title': { cs: 'Cyklus', en: 'Cyklus' },
   'home.game.teaser': { cs: 'Solo psychologická roguelite v univerzu SYNTHOMA. 4 staty, sektory, itemy, restarty.', en: 'Solo psychological roguelite in the SYNTHOMA universe. 4 stats, sectors, items, restarts.' },
+  'home.sector.library.detail': { cs: 'Knihy, kapitoly, pokračování', en: 'Books, chapters, continuations' },
+  'home.sector.archive.detail': { cs: 'Stopy, fragmenty, záznamy', en: 'Traces, fragments, records' },
+  'home.sector.cyklus.active': { cs: 'Diagnostický běh zůstal otevřený. Systém čeká na další volbu.', en: 'The diagnostic run remains open. The system awaits another choice.' },
+  'home.sector.cyklus.new': { cs: 'Spusť nový diagnostický běh a podrob se analýze paměti.', en: 'Start a new diagnostic run and submit to memory analysis.' },
+  'home.sector.cyklus.start': { cs: 'SPOUSTIT', en: 'START' },
 
   // ─── identity panel ───────────────────────────────────────────────────────
   'id.aria.btn': { cs: 'Identita subjektu', en: 'Subject identity' },
@@ -92,6 +108,16 @@ export const translations = {
   'books.nav.back.aria': { cs: 'Navigace zpět', en: 'Back navigation' },
   'books.nav.back.label': { cs: 'Zpět na seznam knih', en: 'Back to book list' },
   'books.nav.continue.label': { cs: 'Pokračovat ve čtení', en: 'Continue reading' },
+  'books.available': { cs: 'dostupných', en: 'available' },
+  'books.available.capital': { cs: 'Dostupných', en: 'Available' },
+  'books.chapters': { cs: 'kapitol', en: 'chapters' },
+  'books.collections.available': { cs: 'K dispozici', en: 'Available' },
+  'books.collections': { cs: 'sbírky', en: 'collections' },
+  'books.back.collections': { cs: 'Zpět na přehled sbírek', en: 'Back to collection overview' },
+  'books.cover.show': { cs: 'Zobrazit přebal', en: 'Show cover' },
+  'books.resume.aria': { cs: 'Pokračování ve čtení', en: 'Continue reading' },
+  'books.chapter.unavailable': { cs: 'NEDOSTUPNÉ', en: 'UNAVAILABLE' },
+  'books.chapter.completed': { cs: 'dokončeno', en: 'completed' },
 
   // ─── archive ──────────────────────────────────────────────────────────────
   'archive.card.locked.default': { cs: 'Tento záznam zatím leží za zdí Archivu.', en: 'This record still lies behind the wall of the Archive.' },
