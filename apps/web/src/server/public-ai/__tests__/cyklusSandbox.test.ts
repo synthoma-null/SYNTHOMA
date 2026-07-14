@@ -55,6 +55,31 @@ describe('public Cyklus sandbox', () => {
     spy.mockRestore();
   });
 
+  it('requires a dedicated sufficiently long production token secret', async () => {
+    const environment = process.env as Record<string, string | undefined>;
+    const originalAiSecret = environment.AI_STATE_TOKEN_SECRET;
+    const originalAuthSecret = environment.AUTH_SECRET;
+    const originalNodeEnv = environment.NODE_ENV;
+    try {
+      environment.NODE_ENV = 'production';
+      delete environment.AI_STATE_TOKEN_SECRET;
+      environment.AUTH_SECRET = 'auth-secret-must-not-sign-public-ai-state';
+
+      await expect(sealPublicCyklusState({ state: createPublicCyklusState('secret-contract'), locale: 'cs' }))
+        .rejects.toThrow('AI_STATE_TOKEN_SECRET is required');
+
+      environment.AI_STATE_TOKEN_SECRET = 'too-short';
+      await expect(sealPublicCyklusState({ state: createPublicCyklusState('secret-length-contract'), locale: 'cs' }))
+        .rejects.toThrow('at least 32 characters');
+    } finally {
+      if (originalAiSecret === undefined) delete environment.AI_STATE_TOKEN_SECRET;
+      else environment.AI_STATE_TOKEN_SECRET = originalAiSecret;
+      if (originalAuthSecret === undefined) delete environment.AUTH_SECRET;
+      else environment.AUTH_SECRET = originalAuthSecret;
+      environment.NODE_ENV = originalNodeEnv;
+    }
+  });
+
   it('can collapse through the real effect engine', () => {
     const candidate = Object.values(CYKLUS_CARDS).find((card) =>
       resolveCardPublicVisibility(card) === 'publicFull' && (['yes', 'no'] as const).some((choice) => card[choice].effects.some((effect) => effect.type === 'stat' && effect.amount > 0)),

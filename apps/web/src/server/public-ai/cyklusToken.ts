@@ -21,9 +21,12 @@ export class PublicTokenError extends Error {
 }
 
 function tokenKey(): Buffer {
-  const configured = process.env.AI_STATE_TOKEN_SECRET || process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  const configured = process.env.AI_STATE_TOKEN_SECRET;
+  if (configured && configured.length < 32) {
+    throw new Error('AI_STATE_TOKEN_SECRET must be at least 32 characters.');
+  }
   if (!configured && process.env.NODE_ENV === 'production') {
-    throw new Error('AI_STATE_TOKEN_SECRET or AUTH_SECRET is required for public Cyklus tokens.');
+    throw new Error('AI_STATE_TOKEN_SECRET is required for public Cyklus tokens.');
   }
   return createHash('sha256').update(configured || developmentSecret).digest();
 }
