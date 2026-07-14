@@ -10,21 +10,25 @@ describe('Cyklus gameplay geometry contract', () => {
   const card = readStyle('card.css');
   const cardOverlay = readStyle('card-overlay.css');
   const compact = readStyle('compact-mobile.css');
+  const hud = readStyle('hud.css');
   const client = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8');
-  const bottomNav = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusBottomNav.tsx'), 'utf8');
 
   it('keeps active gameplay inside the viewport below the global shell controls', () => {
     expect(cardOverlay).toMatch(/\.cyklus-page > \.cyklus-root--playing:not\(\.cyklus-root--menu\)\s*\{[\s\S]*?height:\s*calc\(100dvh - var\(--cy-shell-top\) - var\(--cy-shell-bottom\)\);[\s\S]*?min-height:\s*0;/);
-    expect(shell).toMatch(/--cy-shell-bottom:\s*calc\(var\(--os-mobile-nav-height, 56px\) \+ env\(safe-area-inset-bottom\)\);/);
+    expect(shell).toMatch(/@media \(max-width: 767px\)[\s\S]*?--cy-shell-bottom:\s*0px;/);
     expect(compact).toMatch(/\.cyklus-page > \.cyklus-root--playing\s*\{[\s\S]*?height:\s*calc\(100dvh - var\(--cy-shell-top\) - var\(--cy-shell-bottom\)\);[\s\S]*?overflow:\s*hidden;/);
   });
 
-  it('reserves explicit rows for stats, pocket, stage, choices and navigation', () => {
-    expect(shell).toMatch(/grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto auto;/);
-    expect(compact).toMatch(/grid-template-rows:\s*44px 38px minmax\(0, 1fr\) 58px calc\(var\(--cy-bottom-height\)/);
+  it('uses a desktop pocket row and a mobile utility row without stacking both bars', () => {
+    expect(shell).toMatch(/grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto;/);
+    expect(compact).toMatch(/grid-template-rows:\s*44px minmax\(0, 1fr\) 58px calc\(var\(--cy-bottom-height\)/);
     expect(client.indexOf('<StatDock')).toBeLessThan(client.indexOf('<CyklusPocketDock'));
     expect(client.indexOf('<CyklusPocketDock')).toBeLessThan(client.indexOf('<main className="cyklus-stage">'));
     expect(client.indexOf('<main className="cyklus-stage">')).toBeLessThan(client.indexOf('data-cyklus-choice-dock'));
+    expect(client.indexOf('data-cyklus-choice-dock')).toBeLessThan(client.indexOf('<CyklusMobileUtilityDock'));
+    expect(client).not.toContain('<CyklusBottomNav');
+    expect(hud).toMatch(/\.cyklus-mobile-utility-dock\s*\{[\s\S]*?display:\s*none;/);
+    expect(hud).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.cyklus-mobile-utility-dock\s*\{[\s\S]*?min-height:\s*calc\(var\(--cy-bottom-height\) \+ env\(safe-area-inset-bottom\)\);/);
     expect(cardOverlay).toMatch(/@media \(max-height: 600px\) and \(orientation: landscape\)[\s\S]*?\.cyklus-root--playing > \.cyklus-stat-dock\s*\{[\s\S]*?height:\s*44px;[\s\S]*?\.cyklus-root--playing > \.cyklus-pocket--standalone\s*\{[\s\S]*?height:\s*38px;/);
   });
 
@@ -43,12 +47,14 @@ describe('Cyklus gameplay geometry contract', () => {
     expect(card).toMatch(/\.cyklus-choice-dock\s*\{[\s\S]*?max-width:\s*1360px;[\s\S]*?overflow:\s*hidden;/);
   });
 
-  it('keeps one non-fixed pocket trigger out of BottomNav', () => {
+  it('keeps one responsive pocket branch for each viewport', () => {
     const pocketBlock = shell.match(/\.cyklus-pocket--standalone\s*\{([^}]*)\}/)?.[1] ?? '';
     expect(pocketBlock).toContain('position: relative');
     expect(pocketBlock).not.toMatch(/position:\s*(?:fixed|sticky)|bottom:\s*0|margin-top:\s*auto/);
-    expect(bottomNav).not.toContain('KAPSA');
     expect(client.match(/<CyklusPocketDock/g)).toHaveLength(1);
+    expect(client.match(/<CyklusMobileUtilityDock/g)).toHaveLength(1);
+    expect(client).toContain('!mobileGameplayLayout');
+    expect(client).toContain('mobileGameplayLayout &&');
   });
 
   it('declares one accessible fullscreen viewer with bounded zoom controls', () => {

@@ -59,6 +59,13 @@ describe('SynthomaShell', () => {
     expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 
+  it.each(['/cyklus', '/cyklus/void', '/cyklus/archive'])('keeps the global mobile navigation out of %s', (route) => {
+    usePathname.mockReturnValue(route);
+    const { container } = renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
+    expect(container.querySelector('.synthoma-shell--cyklus')).toBeInTheDocument();
+    expect(container.querySelector('.synthoma-mobile-nav')).not.toBeInTheDocument();
+  });
+
   it.each([
     { route: '/', variant: 'full' },
     { route: '/books', variant: 'full' },

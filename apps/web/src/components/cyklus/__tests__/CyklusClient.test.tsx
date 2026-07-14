@@ -477,7 +477,7 @@ describe('CyklusClient', () => {
     expect(root).toHaveClass('cyklus-root--poster-active');
     expect(document.body).toHaveClass('cyklus-poster-lock');
     expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
-    expect(screen.getByRole('navigation', { name: 'Navigace' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Navigace' })).not.toBeInTheDocument();
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
     const portal = document.querySelector('.cyklus-poster-portal') as HTMLElement;
     const portalImage = document.querySelector('.cyklus-card-art__image') as HTMLImageElement;
@@ -541,6 +541,20 @@ describe('CyklusClient', () => {
     document.removeEventListener('synthoma:identity-toggle', identityToggle);
   });
 
+  it('renders one route-owned mobile utility dock after the choice controls', async () => {
+    mockMobileViewport(true);
+    await renderFirstBootRun();
+    const utilityDock = await screen.findByRole('toolbar', { name: 'Herní utility' });
+    const choiceDock = document.querySelector('[data-cyklus-choice-dock]') as HTMLElement;
+
+    expect(document.querySelector('.synthoma-mobile-nav')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-cyklus-pocket-dock]')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'KAPSA, 0 předmětů' })).toHaveLength(1);
+    expect(choiceDock.compareDocumentPosition(utilityDock) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(utilityDock).queryByText('UZEL')).not.toBeInTheDocument();
+    expect(within(utilityDock).queryByText('ARCHIV')).not.toBeInTheDocument();
+  });
+
   it('opens one pocket dock directly below the stat dock', async () => {
     await renderFirstBootRun();
     const trigger = screen.getByRole('button', { name: 'KAPSA, 0 předmětů' });
@@ -558,7 +572,7 @@ describe('CyklusClient', () => {
 
     expect(screen.getByText('Kapsa je prázdná. Nic tu nečeká.')).toBeVisible();
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(within(screen.getByRole('navigation', { name: 'Navigace' })).queryByText('KAPSA')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'KAPSA, 0 předmětů' })).toHaveLength(1);
   });
 });
 

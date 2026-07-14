@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import LangSwitcher from '../../LangSwitcher';
+import { LangProvider } from '../../../lib/LangContext';
 import HomeSectorLinks from '../HomeSectorLinks';
 
 jest.mock('../../../game/cyklus/cyklusStorage', () => ({
@@ -14,12 +16,26 @@ describe('HomeSectorLinks', () => {
     mockedHasActiveCyklusRun.mockReset();
   });
 
-  it('renders all three sector links', () => {
+  it('renders the three main sectors and the canonical Author entry', () => {
     mockedHasActiveCyklusRun.mockReturnValue(false);
     render(<HomeSectorLinks />);
     expect(screen.getByRole('link', { name: /KNIHOVNA/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
+    const author = screen.getByRole('link', { name: /AUTOR/ });
+    expect(author).toHaveAttribute('href', '/autor');
+    expect(author).toHaveTextContent('Záznam o člověku, který systém spustil.');
+    author.focus();
+    expect(author).toHaveFocus();
+  });
+
+  it('updates Author copy through the existing locale provider without changing its route', async () => {
+    mockedHasActiveCyklusRun.mockReturnValue(false);
+    render(<LangProvider><LangSwitcher /><HomeSectorLinks /></LangProvider>);
+    fireEvent.click(screen.getByRole('button', { name: 'English' }));
+    const author = await screen.findByRole('link', { name: /AUTHOR/ });
+    await waitFor(() => expect(author).toHaveTextContent('A record of the human who started the system.'));
+    expect(author).toHaveAttribute('href', '/autor');
   });
 
   it('marks Cyklus as featured and shows start CTA when no active run', () => {
