@@ -33,8 +33,8 @@ export const translations = {
   'home.library.teaser': { cs: 'Procházet všechny kapitoly – od RESTARTU po hluboký glitch-core.', en: 'Browse all chapters – from RESTART to deep glitch-core.' },
   'home.archive.title': { cs: 'Archiv', en: 'Archive' },
   'home.archive.teaser': { cs: 'Svět SYNTHOMY: entity, biome, signály a pravidla glitch-noir reality.', en: 'The world of SYNTHOMA: entities, biomes, signals and glitch-noir reality rules.' },
-  'home.autor.title': { cs: 'Autor', en: 'Author' },
-  'home.autor.teaser': { cs: 'WalliCzech, bug report, hudba a proces vzniku glitch-noir světa.', en: 'WalliCzech, bug report, music and the process of building a glitch-noir world.' },
+  'home.autor.title': { cs: 'AUTOR', en: 'AUTHOR' },
+  'home.autor.teaser': { cs: 'Záznam o člověku, který systém spustil.', en: 'A record of the human who started the system.' },
   'home.game.title': { cs: 'Cyklus', en: 'Cyklus' },
   'home.game.teaser': { cs: 'Solo psychologická roguelite v univerzu SYNTHOMA. 4 staty, sektory, itemy, restarty.', en: 'Solo psychological roguelite in the SYNTHOMA universe. 4 stats, sectors, items, restarts.' },
 
