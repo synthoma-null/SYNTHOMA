@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation';
-import { auth } from '../../auth';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,11 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function ProfilePage() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect('/login');
-  }
-  // Profile is shown as a popup overlay via ProfilePanelClient in the global layout
-  redirect('/?login=1');
+export default function ProfilePage() {
+  // The global panel selects a local or signed-in dossier from the current session.
+  redirect('/?profile=1');
 }

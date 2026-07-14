@@ -53,6 +53,13 @@ describe('SubjectProfilePanelClient', () => {
     expect(replace).toHaveBeenCalledWith('/books');
   });
 
+  it('auto-opens the local dossier from the direct profile route state', async () => {
+    window.history.replaceState({}, '', '/books?profile=1');
+    render(<SubjectProfilePanelClient />);
+    expect(await screen.findByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' })).toBeInTheDocument();
+    expect(replace).toHaveBeenCalledWith('/books');
+  });
+
   it('toggles the same dialog through the compatibility event', async () => {
     render(<SubjectProfilePanelClient />);
 

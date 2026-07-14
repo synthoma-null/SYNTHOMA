@@ -2,9 +2,11 @@
 
 import { createPortal } from 'react-dom';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import CyklusCardPoster from '../cyklus/CyklusCardPoster';
 import CyklusPortalScope from '../cyklus/CyklusPortalScope';
-import { loadDiscovery } from '../../game/cyklus/cyklusDiscovery';
+import { loadDiscovery, mergeDiscovery, saveDiscovery, saveDiscoveryWithSync } from '../../game/cyklus/cyklusDiscovery';
+import { loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
 import { getCyklusCardArtworkCatalog } from '../../game/cyklus/cyklusCardCollection';
 import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
@@ -17,11 +19,14 @@ function formatDate(timestamp: number, lang: 'cs' | 'en'): string {
 
 export default function CyklusCardCollection() {
   const { t, lang } = useLang();
+  const { data: session } = useSession();
   const [discovery, setDiscovery] = useState(() => loadDiscovery());
   const [filter, setFilter] = useState<CollectionFilter>('all');
   const [category, setCategory] = useState<string>('all');
   const [viewerCardId, setViewerCardId] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [syncError, setSyncError] = useState(false);
+  const [syncNonce, setSyncNonce] = useState(0);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -33,6 +38,25 @@ export default function CyklusCardCollection() {
       window.removeEventListener('synthoma:cyklus-card-discovery', refresh);
     };
   }, []);
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    let cancelled = false;
+    setSyncError(false);
+    void loadServerCyklusRun().then((server) => {
+      if (cancelled) return;
+      if (!server?.discovery) {
+        setSyncError(true);
+        return;
+      }
+      const local = loadDiscovery();
+      const merged = mergeDiscovery(server.discovery, local);
+      saveDiscovery(merged);
+      setDiscovery(merged);
+      if (JSON.stringify(merged) !== JSON.stringify(server.discovery)) void saveDiscoveryWithSync(merged);
+    });
+    return () => { cancelled = true; };
+  }, [session?.user?.id, syncNonce]);
 
   const cards = useMemo(() => getCyklusCardArtworkCatalog(discovery), [discovery]);
   const categories = useMemo(() => [...new Set(cards.map((card) => card.category))].sort(), [cards]);
@@ -93,6 +117,12 @@ export default function CyklusCardCollection() {
       </label>
 
       {discoveredCount === 0 ? <p className="cyklus-card-collection__empty">{t('archive.collection.empty')}</p> : null}
+      {syncError ? (
+        <div className="cyklus-card-collection__notice" role="alert">
+          <p>{t('archive.collection.sync.error')}</p>
+          <button className="os-command" type="button" onClick={() => setSyncNonce((value) => value + 1)}>{t('archive.collection.sync.retry')}</button>
+        </div>
+      ) : null}
       {notice ? <p className="cyklus-card-collection__notice" role="status">{notice}</p> : null}
 
       <ul className="cyklus-card-collection__grid" role="list">

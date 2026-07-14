@@ -37,8 +37,8 @@ describe('HomeSectorLinks', () => {
     const author = await screen.findByRole('link', { name: /AUTHOR/ });
     await waitFor(() => expect(author).toHaveTextContent('A record of the human who started the system.'));
     expect(author).toHaveAttribute('href', '/autor');
-    expect(screen.getAllByText('OPEN')).toHaveLength(2);
-    expect(screen.getByText('READ')).toBeInTheDocument();
+    expect(screen.getAllByText('OPEN')).toHaveLength(3);
+    expect(screen.queryByText('READ')).not.toBeInTheDocument();
   });
 
   it('uses Czech navigation actions in the Czech locale', () => {
@@ -46,8 +46,8 @@ describe('HomeSectorLinks', () => {
     render(<LangProvider><HomeSectorLinks /></LangProvider>);
     expect(screen.queryByText('OPEN')).not.toBeInTheDocument();
     expect(screen.queryByText('READ')).not.toBeInTheDocument();
-    expect(screen.getAllByText('OTEVŘÍT')).toHaveLength(2);
-    expect(screen.getByText('ČÍST')).toBeInTheDocument();
+    expect(screen.getAllByText('OTEVŘÍT')).toHaveLength(3);
+    expect(screen.queryByText('ČÍST')).not.toBeInTheDocument();
   });
 
   it('marks Cyklus as featured and shows start CTA when no active run', () => {

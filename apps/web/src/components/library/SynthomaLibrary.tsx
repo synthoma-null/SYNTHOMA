@@ -66,7 +66,7 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
       <SynthomaMediaLayer src="/video/SYNTHOMA7.webm" className="synthoma-library__media" />
       <div className="synthoma-library__content">
         <header className="synthoma-library__header">
-          <span className="os-status__code">{t('home.library.title').toLocaleUpperCase()} // {t('books.available').toLocaleUpperCase()}</span>
+          <span className="os-status__code">{t('home.library.title').toLocaleUpperCase()} {'//'} {t('books.available').toLocaleUpperCase()}</span>
           <h1 className="synthoma-library__title">{t('books.collections.available')}: {catalog.collections.length} {t('books.collections')}</h1>
         </header>
 

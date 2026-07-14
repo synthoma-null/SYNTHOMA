@@ -20,6 +20,15 @@ describe('LibraryChapterList', () => {
     const restart = screen.getByRole('link', { name: /0-∞ \[RESTART\]/ });
     expect(restart).toHaveAttribute('href', '/chapter/0-inf-restart');
     expect(screen.getByText('Smyčka začíná znovu.')).toBeInTheDocument();
+    expect(screen.getAllByText('ČÍST')).toHaveLength(2);
+  });
+
+  it('uses continue for a started chapter and read for a new chapter', () => {
+    render(<LibraryChapterList collection={collection} progressByChapterId={{
+      '0-inf-restart': { chapterId: '0-inf-restart', path: '/books/0.html', percent: 42, completed: false, updatedAt: 1 },
+    }} />);
+    expect(screen.getByText('POKRAČOVAT · 42%')).toBeInTheDocument();
+    expect(screen.getByText('ČÍST')).toBeInTheDocument();
   });
 
   it('renders locked chapters as buttons that open a modal', () => {

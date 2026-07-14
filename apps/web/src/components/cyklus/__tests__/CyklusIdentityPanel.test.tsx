@@ -51,9 +51,9 @@ describe('Cyklus identity ownership', () => {
 
     expect(await screen.findByRole('dialog', { name: 'Profil subjektu' })).toBeVisible();
     expect(screen.getAllByRole('dialog')).toHaveLength(1);
-    expect(screen.getByRole('heading', { name: 'IDENTITA NEROZPOZNÁNA' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Přihlásit' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Registrovat' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' })).toBeInTheDocument();
+    expect(screen.getByText('SUBJECT // LOCAL')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'PŘIHLÁSIT SE' })).toBeInTheDocument();
     expect(identityTrigger).toHaveAttribute('aria-pressed', 'true');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Zavřít profil subjektu' })).toHaveFocus());
 
@@ -81,10 +81,10 @@ describe('Cyklus identity ownership', () => {
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
 
     const close = await screen.findByRole('button', { name: 'Zavřít profil subjektu' });
-    const register = screen.getByRole('link', { name: 'Registrovat' });
+    const login = screen.getByRole('link', { name: 'PŘIHLÁSIT SE' });
     close.focus();
     fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
-    expect(register).toHaveFocus();
+    expect(login).toHaveFocus();
     fireEvent.keyDown(document, { key: 'Tab' });
     expect(close).toHaveFocus();
 

@@ -7,6 +7,7 @@ import { CycleForecastNotice, CycleSummaryNotice } from '../CycleNotices';
 import { createCyklusRun, getCardById, resolveChoice } from '../../../game/cyklus/cyklusEngine';
 import type { CyklusChoiceRecord, CyklusRunState, RunEnding } from '../../../game/cyklus/cyklusTypes';
 import type { RunReward } from '../../../game/cyklus/cyklusProgression';
+import { loadDiscovery } from '../../../game/cyklus/cyklusDiscovery';
 
 jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
 jest.mock('next/navigation', () => ({ usePathname: jest.fn(), useRouter: jest.fn() }));
@@ -382,6 +383,14 @@ describe('CyklusClient', () => {
     expect(transformLayer).toHaveAttribute('data-geometry-ready', 'true');
     expect(viewport).toHaveAttribute('data-base-width', '400');
     expect(Number(viewport.getAttribute('data-base-height'))).toBeGreaterThan(0);
+  });
+
+  it('discovers a poster only after the active gameplay card is rendered', async () => {
+    expect(loadDiscovery().cards).not.toContain('restart_0');
+    const card = await renderRestart0Run();
+    expect(card).toHaveAttribute('data-card-id', 'restart_0');
+    await waitFor(() => expect(loadDiscovery().cards).toContain('restart_0'));
+    expect(loadDiscovery().cardRecords?.restart_0?.seenCount).toBe(1);
   });
 
   it('extended tutorial path continues to tutorial_05_profile', async () => {

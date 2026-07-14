@@ -47,8 +47,10 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
                 {isCompleted ? (
                   <span className="library-chapter-list__badge library-chapter-list__badge--done">{t('books.chapter.completed')}</span>
                 ) : isContinue ? (
-                  <span className="library-chapter-list__badge library-chapter-list__badge--resume">{Math.round(progress.percent)}%</span>
-                ) : null}
+                  <span className="library-chapter-list__badge library-chapter-list__badge--resume">{t('action.continue')} · {Math.round(progress.percent)}%</span>
+                ) : (
+                  <span className="library-chapter-list__badge">{t('action.read')}</span>
+                )}
                 {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
               </Link>
             )}

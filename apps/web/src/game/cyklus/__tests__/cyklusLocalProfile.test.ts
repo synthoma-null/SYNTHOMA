@@ -4,7 +4,9 @@ import {
   LOCAL_SUBJECT_PROFILE_VERSION,
   loadLocalSubjectProfile,
   loadLocalSubjectProfileStore,
+  recordLocalCyklusDecision,
 } from '../cyklusLocalProfile';
+import { createCyklusRun, resolveChoice } from '../cyklusEngine';
 
 const stats = { energy: 51, memory: 49, bond: 52, control: 48 };
 
@@ -33,6 +35,15 @@ describe('local Cyklus Subject Profile storage', () => {
     localStorage.setItem(LOCAL_SUBJECT_PROFILE_KEY, JSON.stringify({ version: 1, decisions: [decision(1)] }));
     expect(loadLocalSubjectProfileStore().decisions).toHaveLength(1);
     expect(loadLocalSubjectProfileStore().decisions[0]?.cardId).toBe('restart_0');
+  });
+
+  it('stores the bounded decision record when a choice result is confirmed', () => {
+    const before = { ...createCyklusRun(true), currentCardId: 'restart_0' };
+    const after = resolveChoice(before, 'yes');
+    recordLocalCyklusDecision(before, after, 'yes');
+    expect(loadLocalSubjectProfileStore().decisions[0]).toMatchObject({
+      cardId: 'restart_0', direction: 'yes', runId: before.id, resultingStats: after.stats,
+    });
   });
 
   it('safely ignores corrupt storage', () => {

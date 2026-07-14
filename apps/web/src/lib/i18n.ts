@@ -196,6 +196,8 @@ export const translations = {
   'archive.collection.seenCount': { cs: 'Zobrazení', en: 'Views' },
   'archive.collection.empty': { cs: 'LOG [CARD_COLLECTION]:\nArchiv připravil místo pro vzpomínky.\nHra zatím žádné nedodala.', en: 'LOG [CARD_COLLECTION]:\nThe Archive prepared room for memories.\nThe game has not delivered any yet.' },
   'archive.collection.unknown.log': { cs: 'LOG [CARD_TRACE]:\nTato vizuální stopa zatím nebyla zaznamenána.\nSystém odmítá vzpomínat dopředu.', en: 'LOG [CARD_TRACE]:\nThis visual trace has not been recorded yet.\nThe system refuses to remember ahead.' },
+  'archive.collection.sync.error': { cs: 'LOG [COLLECTION_SYNC]:\nSbírku se nepodařilo synchronizovat.\nLokální paměť zůstala zachována.', en: 'LOG [COLLECTION_SYNC]:\nThe collection could not be synchronized.\nLocal memory remains preserved.' },
+  'archive.collection.sync.retry': { cs: 'ZKUSIT ZNOVU', en: 'TRY AGAIN' },
 
   // ─── paywall / chapter lock ───────────────────────────────────────────────
   'paywall.aria': { cs: 'Uzamčený fragment', en: 'Locked fragment' },

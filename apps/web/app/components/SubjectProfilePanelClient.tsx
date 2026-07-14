@@ -104,12 +104,14 @@ export default function SubjectProfilePanelClient() {
   }, [closePanel, open]);
 
   useEffect(() => {
-    if (status !== 'authenticated' || !session?.user) return;
+    if (status === 'loading') return;
     try {
       const params = new URLSearchParams(window.location.search);
-      if (params.get('login') !== '1') return;
+      const opensAfterLogin = params.get('login') === '1' && status === 'authenticated' && Boolean(session?.user);
+      if (params.get('profile') !== '1' && !opensAfterLogin) return;
       openPanel();
       params.delete('login');
+      params.delete('profile');
       const search = params.toString();
       router.replace(window.location.pathname + (search ? `?${search}` : ''));
     } catch {}

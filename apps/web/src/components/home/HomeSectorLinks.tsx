@@ -8,7 +8,7 @@ import type { TKey } from '../../lib/i18n';
 
 const SECTORS = [
   { href: '/books', index: '01', label: 'KNIHOVNA', detailKey: 'home.sector.library.detail', markerKey: 'action.open' },
-  { href: '/archive', index: '02', label: 'ARCHIV', detailKey: 'home.sector.archive.detail', markerKey: 'action.read' },
+  { href: '/archive', index: '02', label: 'ARCHIV', detailKey: 'home.sector.archive.detail', markerKey: 'action.open' },
   { href: '/cyklus', index: '03', label: 'CYKLUS', detailKey: 'home.sector.cyklus.new', markerKey: 'home.sector.cyklus.start' },
 ] as const;
 
