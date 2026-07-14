@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPublicArchiveEntry } from '../../../src/server/public-ai/contentService';
 
@@ -32,11 +33,11 @@ export default async function ArchiveEntryPage({ params }: { params: Promise<{ i
         ) : <p>UZAMČENO: {entry.access?.label ?? 'Vyžaduje další přístup.'}</p>}
       </article>
       <nav aria-label="Strojové verze">
-        <a href={`/ai/cs/archive.md#${entry.id}`}>MARKDOWN</a>
+        <a href={`https://www.synthoma.cz/ai/cs/archive.md#${entry.id}`}>MARKDOWN</a>
         {' // '}
-        <a href={`/api/public/v1/archive/${entry.id}?locale=cs`}>JSON</a>
+        <a href={`https://www.synthoma.cz/api/public/v1/archive/${entry.id}?locale=cs`}>JSON</a>
         {' // '}
-        <a href="/archive">ZPĚT DO ARCHIVU</a>
+        <Link href="/archive">ZPĚT DO ARCHIVU</Link>
       </nav>
     </main>
   );

@@ -24,7 +24,7 @@ export default function CardsPage() {
       <p className="public-ai-kicker">CYKLUS // PUBLIC REGISTRY</p>
       <h1>Katalog karet</h1>
       <p>Veřejné záznamy z kanonického registru. Některé vrstvy zatím zůstávají jen metadaty. Systém je překvapivě diskrétní, když se mu to hodí.</p>
-      <nav aria-label="Strojové verze"><a href="/ai/cs/cards/index.md">Markdown</a><a href="/api/public/v1/cards">JSON</a></nav>
+      <nav aria-label="Strojové verze"><a href="https://www.synthoma.cz/ai/cs/cards/index.md">Markdown</a><a href="https://www.synthoma.cz/api/public/v1/cards">JSON</a></nav>
     </header>
     <ol className="public-card-grid">
       {cards.map((card) => <li key={card.id}>

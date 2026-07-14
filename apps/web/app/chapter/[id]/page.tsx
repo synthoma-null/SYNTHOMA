@@ -15,13 +15,14 @@ const OG_IMAGE = `${BASE_URL}/assets/og-synthoma.jpg`;
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ id: string }> },
+  { params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<{ locale?: string }> },
 ): Promise<Metadata> {
   const { id } = await params;
+  const locale = (await searchParams)?.locale === 'en' ? 'en' : 'cs';
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
 
-  const title = `${chapter.title} | SYNTHOMA`;
+  const title = `${locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title} | SYNTHOMA`;
   const teaser = chapter.metadata?.teaser;
   const description = typeof teaser === 'string'
     ? teaser.replace(/^„|"$/g, '').trim()
@@ -37,7 +38,7 @@ export async function generateMetadata(
         en: `${canonicalUrl}?locale=en`,
       },
     },
-    robots: { index: chapter.accessPolicy === 'free', follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       type: 'article',
       url: canonicalUrl,
@@ -51,14 +52,15 @@ export async function generateMetadata(
 }
 
 export default async function ChapterPage(
-  { params }: { params: Promise<{ id: string }> },
+  { params, searchParams }: { params: Promise<{ id: string }>; searchParams?: Promise<{ locale?: string }> },
 ) {
   const { id } = await params;
+  const locale = (await searchParams)?.locale === 'en' ? 'en' : 'cs';
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
 
   if (chapter.availability === 'published' && chapter.accessPolicy === 'free') {
-    const publicChapter = await getPublicChapterDocument(chapter.id, 'cs');
+    const publicChapter = await getPublicChapterDocument(chapter.id, locale);
     if (!publicChapter?.bodyHtml) notFound();
     const jsonLd = {
       '@context': 'https://schema.org',

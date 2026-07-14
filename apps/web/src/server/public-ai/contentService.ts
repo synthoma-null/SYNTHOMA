@@ -148,6 +148,7 @@ export interface PublicCardDocument {
 function publicCardDocument(card: SwipeCard, locale: PublicLocale): PublicCardDocument {
   const visibility = resolveCardPublicVisibility(card);
   const full = visibility === 'publicFull';
+  const posterPath = full ? card.presentation?.artSrc ?? `/cards/cyklus/${card.id}.webp` : null;
   return {
     id: card.id,
     locale,
@@ -158,8 +159,8 @@ function publicCardDocument(card: SwipeCard, locale: PublicLocale): PublicCardDo
     tags: [...card.tags],
     scene: full ? card.scene : null,
     choices: full ? [{ id: 'yes', label: card.yesLabel }, { id: 'no', label: card.noLabel }] : [],
-    posterUrl: full && card.presentation?.artSrc ? absolutePublicUrl(card.presentation.artSrc) : null,
-    posterAlt: full ? card.presentation?.artAlt ?? null : null,
+    posterUrl: posterPath ? absolutePublicUrl(posterPath) : null,
+    posterAlt: full ? card.presentation?.artAlt ?? `Obrazovy zaznam: ${card.title}` : null,
     canonicalUrl: absolutePublicUrl(`/cards/${card.id}`),
     updatedAt: PUBLIC_CONTENT_UPDATED_AT,
   };

@@ -24,7 +24,7 @@ export default async function CardPage({ params }: { params: Promise<{ id: strin
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <p><Link href="/cards">← Katalog karet</Link></p>
     <article>
-      <p className="public-ai-kicker">{card.category} // {card.id}</p>
+      <p className="public-ai-kicker">{card.category}{' // '}{card.id}</p>
       <h1>{card.title}</h1>
       {card.visibility === 'publicFull' ? <>
         {card.posterUrl ? <Image src={new URL(card.posterUrl).pathname} alt={card.posterAlt ?? card.title} width={768} height={1152} priority /> : null}

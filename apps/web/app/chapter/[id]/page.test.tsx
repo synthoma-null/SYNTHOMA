@@ -53,7 +53,17 @@ describe('/chapter/[id] server route contract', () => {
     expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveTextContent('Nikdo v Synthomě přesně neví');
     expect(auth).not.toHaveBeenCalled();
     expect(getContentAccess).not.toHaveBeenCalled();
+    const structured = renderedFree.container.querySelector('script[type="application/ld+json"]');
+    expect(JSON.parse(structured?.textContent ?? '{}')).toMatchObject({
+      '@type': 'Chapter', isAccessibleForFree: true, inLanguage: 'cs', isPartOf: { '@type': 'Book' },
+    });
     renderedFree.unmount();
+
+    const englishChapter = await ChapterPage({ params: Promise.resolve({ id: '0-0-null' }), searchParams: Promise.resolve({ locale: 'en' }) });
+    const renderedEnglish = render(englishChapter);
+    expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveAttribute('lang', 'en');
+    expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveTextContent('No one in Synthoma knows exactly');
+    renderedEnglish.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'owned', canAccess: true, canPurchase: false }));
     await expect(ChapterPage(params('0-4-defragmentation'))).rejects.toThrow('NEXT_REDIRECT:/reader?chapter=0-4-defragmentation');
