@@ -71,6 +71,10 @@ describe('public Cyklus sandbox', () => {
       environment.AI_STATE_TOKEN_SECRET = 'too-short';
       await expect(sealPublicCyklusState({ state: createPublicCyklusState('secret-length-contract'), locale: 'cs' }))
         .rejects.toThrow('at least 32 characters');
+
+      environment.AI_STATE_TOKEN_SECRET = environment.AUTH_SECRET;
+      await expect(sealPublicCyklusState({ state: createPublicCyklusState('secret-isolation-contract'), locale: 'cs' }))
+        .rejects.toThrow('must differ from authentication secrets');
     } finally {
       if (originalAiSecret === undefined) delete environment.AI_STATE_TOKEN_SECRET;
       else environment.AI_STATE_TOKEN_SECRET = originalAiSecret;

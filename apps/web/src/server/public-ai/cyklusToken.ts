@@ -25,6 +25,9 @@ function tokenKey(): Buffer {
   if (configured && configured.length < 32) {
     throw new Error('AI_STATE_TOKEN_SECRET must be at least 32 characters.');
   }
+  if (configured && (configured === process.env.AUTH_SECRET || configured === process.env.NEXTAUTH_SECRET)) {
+    throw new Error('AI_STATE_TOKEN_SECRET must differ from authentication secrets.');
+  }
   if (!configured && process.env.NODE_ENV === 'production') {
     throw new Error('AI_STATE_TOKEN_SECRET is required for public Cyklus tokens.');
   }
