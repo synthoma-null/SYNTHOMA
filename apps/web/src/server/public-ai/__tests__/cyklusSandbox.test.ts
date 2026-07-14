@@ -99,6 +99,8 @@ describe('public Cyklus sandbox', () => {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'x-forwarded-for': 'test-agent' },
       body: JSON.stringify({ locale: 'cs', seed: 'http-contract' }),
     }));
+    expect(start.headers.get('cache-control')).toBe('private, no-store');
+    expect(start.headers.get('etag')).toBeNull();
     let payload = await start.json();
     expect(payload).toMatchObject({ schemaVersion: '1', engineVersion: '1.0.0', run: { turn: 1, maxTurns: 12, status: 'active' } });
     expect(payload.card.choices.map((choice: { id: string }) => choice.id)).toEqual(['yes', 'no']);
@@ -115,6 +117,7 @@ describe('public Cyklus sandbox', () => {
         body: JSON.stringify({ stateToken: payload.stateToken, choiceId: turn % 2 === 0 ? 'yes' : 'no' }),
       }));
       expect(response.status).toBe(200);
+      expect(response.headers.get('cache-control')).toBe('private, no-store');
       payload = await response.json();
       if (payload.run.status !== 'active') break;
     }

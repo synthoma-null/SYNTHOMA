@@ -44,6 +44,14 @@ export function publicJson(request: Request, payload: unknown, init: ResponseIni
   return new NextResponse(body, { ...init, headers });
 }
 
+export function publicNoStoreJson(request: Request, payload: unknown, init: ResponseInit = {}): NextResponse {
+  const response = publicJson(request, payload, init);
+  response.headers.set('Cache-Control', 'private, no-store');
+  response.headers.delete('ETag');
+  response.headers.delete('Last-Modified');
+  return response;
+}
+
 export function publicMarkdown(body: string, status = 200): NextResponse {
   return new NextResponse(body, {
     status,
@@ -57,7 +65,7 @@ export function publicMarkdown(body: string, status = 200): NextResponse {
 }
 
 export function publicError(request: Request, status: number, code: string, message: string): NextResponse {
-  return publicJson(request, { error: { code, message, status } }, { status });
+  return publicNoStoreJson(request, { error: { code, message, status } }, { status });
 }
 
 export function publicOptions(): NextResponse {

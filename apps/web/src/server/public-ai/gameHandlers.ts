@@ -10,7 +10,7 @@ import {
 } from './cyklusSandbox';
 import { openPublicCyklusState, PublicTokenError, sealPublicCyklusState } from './cyklusToken';
 import { enforcePublicRateLimit } from './rateLimit';
-import { publicEnvelope, publicError, publicJson } from './response';
+import { publicEnvelope, publicError, publicJson, publicNoStoreJson } from './response';
 
 const MAX_BODY_BYTES = 65_536;
 const startSchema = z.object({ locale: z.enum(['cs', 'en']).default('cs'), seed: z.string().trim().min(1).max(128).optional() }).strict();
@@ -61,7 +61,7 @@ export async function startCyklusRun(request: Request): Promise<Response> {
     const card = publicCardView(state, parsed.data.locale);
     if (!card) return publicError(request, 500, 'PUBLIC_CARD_UNAVAILABLE', 'No public starting card is available.');
     const stateToken = await sealPublicCyklusState({ state, locale: parsed.data.locale });
-    return publicJson(request, {
+    return publicNoStoreJson(request, {
       schemaVersion: '1', ...publicCyklusVersions, stateToken, run: publicRunView(state), card,
       links: { choose: '/api/public/v1/cyklus/choice', rules: '/api/public/v1/cyklus/rules' },
     });
@@ -97,7 +97,7 @@ export async function chooseCyklus(request: Request): Promise<Response> {
     if (!applied) return publicError(request, 400, 'INVALID_CHOICE', 'The choice is not valid for this run.');
     const active = applied.state.status === 'playing';
     const stateToken = active ? await sealPublicCyklusState({ state: applied.state, locale: payload.locale }) : null;
-    return publicJson(request, {
+    return publicNoStoreJson(request, {
       schemaVersion: '1', ...publicCyklusVersions, stateToken, result: applied.result,
       run: publicRunView(applied.state),
       card: active ? publicCardView(applied.state, payload.locale) : null,
