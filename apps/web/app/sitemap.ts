@@ -19,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${PUBLIC_SITE_URL}/cyklus`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${PUBLIC_SITE_URL}/ai/cs/index.md`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${PUBLIC_SITE_URL}/ai/en/index.md`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${PUBLIC_SITE_URL}/ai/api`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${PUBLIC_SITE_URL}/ai-policy`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${PUBLIC_SITE_URL}/privacy`, lastModified: LAST_MODIFIED, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${PUBLIC_SITE_URL}/terms`, lastModified: LAST_MODIFIED, changeFrequency: 'yearly', priority: 0.3 },
   ];

@@ -222,6 +222,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
       <head>
 
+        <link rel="service-desc" type="application/vnd.oai.openapi+json" href="/api/public/openapi.json" />
+
         <script
 
           type="application/ld+json"

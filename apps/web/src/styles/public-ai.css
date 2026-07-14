@@ -15,6 +15,9 @@
 .public-card-grid strong { align-self: center; color: var(--text-primary, #fff); }
 .public-card-detail article { max-width: 760px; }
 .public-card-detail img { width: min(100%, 560px); height: auto; border: 1px solid rgba(255, 255, 255, 0.2); }
+.public-ai-page section { margin: 32px 0; }
+.public-ai-page pre { max-width: 100%; overflow-x: auto; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.2); background: #050505; }
+.public-ai-page code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 
 @media (max-width: 600px) {
   .public-ai-page { width: min(100% - 24px, 1120px); padding-top: 72px; }
