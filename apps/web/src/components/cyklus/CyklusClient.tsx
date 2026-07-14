@@ -163,7 +163,7 @@ const TUTORIAL_PROGRESS_MAP: Record<string, { index: number; total: number; tier
   tutorial_15_ready:     { index: 10, total: 10, tier: 'ext', label: 'Start',  flavour: 'Konec návodu. Začátek poškození.' },
 };
 import { CYKLUS_CARDS, CYKLUS_ITEMS, CYKLUS_IMPRINTS } from '../../game/cyklus/content';
-import { updateDiscoveryFromRun, loadDiscovery, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
+import { loadDiscovery, mergeDiscovery, recordCardDiscovery, saveDiscovery, saveDiscoveryWithSync, updateDiscoveryFromRun, type CyklusDiscovery } from '../../game/cyklus/cyklusDiscovery';
 import CyklusPortalScope from './CyklusPortalScope';
 
 export default function CyklusClient() {
@@ -295,7 +295,9 @@ export default function CyklusClient() {
             setRunHistory(history);
           }
           if (server.discovery) {
-            discovery = server.discovery;
+            discovery = mergeDiscovery(server.discovery, discovery);
+            saveDiscovery(discovery);
+            if (JSON.stringify(discovery) !== JSON.stringify(server.discovery)) void saveDiscoveryWithSync(discovery);
             setDiscovery(discovery);
           }
           if (server.progression && typeof server.progression === 'object') {
@@ -342,6 +344,26 @@ export default function CyklusClient() {
       saveCyklusRun(state).catch(() => { /* ignore */ });
     }
   }, [state]);
+
+  useEffect(() => {
+    if (loading || showMenu || state?.status !== 'playing' || !activeCard?.presentation?.artSrc) return;
+    const recordRenderedCard = () => {
+      const renderedPoster = cardRef.current?.querySelector('[data-poster-mode="card-contained"] .cyklus-card-art__image');
+      if (!renderedPoster || !cardRef.current?.isConnected) return;
+      const nextDiscovery = recordCardDiscovery(activeCard.id, {
+        viewKey: `${state.id}:${state.totalChoices}:${activeCard.id}`,
+        sync: Boolean(session?.user?.id),
+      });
+      if (nextDiscovery) setDiscovery(nextDiscovery);
+    };
+    const frame = typeof window.requestAnimationFrame === 'function'
+      ? window.requestAnimationFrame(recordRenderedCard)
+      : window.setTimeout(recordRenderedCard, 0);
+    return () => {
+      if (typeof window.cancelAnimationFrame === 'function') window.cancelAnimationFrame(frame);
+      else window.clearTimeout(frame);
+    };
+  }, [activeCard?.id, activeCard?.presentation?.artSrc, loading, session?.user?.id, showMenu, state?.id, state?.status, state?.totalChoices]);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && state?.currentCardId) {
@@ -1031,6 +1053,7 @@ export default function CyklusClient() {
               onClickCapture={onCardClickCapture}
               tabIndex={-1}
               data-gameplay-surface="fixed"
+              data-card-id={card.id}
               aria-hidden={posterViewerOpen ? true : undefined}
             >
               {showCardPoster && !posterViewerOpen && card.presentation && (

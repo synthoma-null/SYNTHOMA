@@ -76,6 +76,10 @@ export const CYKLUS_CARD_ART_IDS = [
 
 const cardArtIds = new Set<string>(CYKLUS_CARD_ART_IDS);
 
+export function hasCyklusCardArt(cardId: string): boolean {
+  return cardArtIds.has(cardId);
+}
+
 export function applyCardPresentations(cards: Record<string, SwipeCard>): Record<string, SwipeCard> {
   return Object.fromEntries(Object.entries(cards).map(([id, card]) => {
     if (card.presentation || !cardArtIds.has(id)) return [id, card];

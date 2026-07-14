@@ -3,6 +3,7 @@ import { computeProfile } from './cyklusProfile';
 import { loadDiscovery } from './cyklusDiscovery';
 import { loadCyklusRun, loadCyklusRunHistory } from './cyklusStorage';
 import type { CardChoice, CyklusChoiceRecord, CyklusRunState, StatKey } from './cyklusTypes';
+import { hasCyklusCardArt } from './cyklusCardPresentation';
 
 export const LOCAL_SUBJECT_PROFILE_KEY = 'synthoma_cyklus_local_profile_v1';
 export const LOCAL_SUBJECT_PROFILE_VERSION = 1;
@@ -171,7 +172,7 @@ export function loadLocalSubjectProfile(): LocalSubjectProfileSnapshot {
     stats,
     completedRuns: summaries.length,
     lastCycle: Math.max(run?.cycle ?? 0, lastSummary?.cyclesSurvived ?? 0),
-    discoveredCards: new Set(discovery.cards).size,
+    discoveredCards: new Set(discovery.cards.filter(hasCyklusCardArt)).size,
     discoveredFragments: fragmentIds.size,
     lastActivityAt,
     psyche: psyche ? { dominantLabel: psyche.dominantLabel, archetype: psyche.archetype, stability: psyche.stability } : null,
