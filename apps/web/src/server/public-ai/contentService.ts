@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import archiveCardsCs from '../../../public/data/archiveCards.json';
 import archiveCardsEn from '../../../public/data/archiveCards_en.json';
-import { CHAPTER_CATALOG, getChapterCatalogEntry } from '../../content/catalog';
+import { BOOK_COLLECTION, CHAPTER_CATALOG, getChapterCatalogEntry } from '../../content/catalog';
 import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
 import type { SwipeCard } from '../../game/cyklus/cyklusTypes';
 import { normalizeArchiveCards } from '../../lib/synthoma/archive/normalizeArchiveEntries';
@@ -96,6 +96,21 @@ export async function getPublicChapterDocument(reference: string, locale: Public
 export async function getPublicChapters(locale: PublicLocale): Promise<PublicChapterDocument[]> {
   return Promise.all(CHAPTER_CATALOG.map((chapter) => getPublicChapterDocument(chapter.id, locale)))
     .then((entries) => entries.filter((entry): entry is PublicChapterDocument => Boolean(entry)));
+}
+
+export async function getPublicBook(locale: PublicLocale) {
+  const chapters = await getPublicChapters(locale);
+  return {
+    id: 'synthoma-null',
+    locale,
+    title: BOOK_COLLECTION.title,
+    canonicalUrl: absolutePublicUrl('/books'),
+    updatedAt: PUBLIC_CONTENT_UPDATED_AT,
+    description: locale === 'en'
+      ? 'An interactive glitch-noir book about memory, identity and a system that refuses to forget.'
+      : 'Interaktivni glitch-noir kniha o pameti, identite a systemu, ktery odmita zapomenout.',
+    chapters,
+  };
 }
 
 function archiveSource(locale: PublicLocale): ArchiveCard[] {
