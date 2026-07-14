@@ -2,8 +2,14 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPublicCard } from '../../../src/server/public-ai/contentService';
+import { getPublicCard, getPublicCards } from '../../../src/server/public-ai/contentService';
 import '../../../src/styles/public-ai.css';
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return getPublicCards('cs').map((card) => ({ id: card.id }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const card = getPublicCard((await params).id, 'cs');
