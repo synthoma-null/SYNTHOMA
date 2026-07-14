@@ -1,10 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import ProfileDashboard from '../../src/components/profile/ProfileDashboard';
+import LocalSubjectProfile from '../../src/components/profile/LocalSubjectProfile';
 import { useLang } from '../../src/lib/LangContext';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -132,15 +132,7 @@ export default function SubjectProfilePanelClient() {
             ) : open && status === 'authenticated' && session?.user ? (
               <ProfileDashboard userId={userId} nickname={session.user.name ?? ''} mode="popup" onClose={() => closePanel()} />
             ) : open && status !== 'loading' ? (
-              <section className="subject-auth-gate" data-profile-state="signed-out" aria-labelledby="subject-auth-title">
-                <span className="subject-auth-gate__code">AUTH_GATE // 401</span>
-                <h2 id="subject-auth-title">IDENTITA NEROZPOZNÁNA</h2>
-                <p>Systém neví, kdo jsi. Tentokrát to není metafora.</p>
-                <div className="subject-auth-gate__actions">
-                  <Link className="btn" href="/login" onClick={() => closePanel(false)}>{t('id.login')}</Link>
-                  <Link className="btn" href="/register" onClick={() => closePanel(false)}>{t('id.register')}</Link>
-                </div>
-              </section>
+              <LocalSubjectProfile />
             ) : null}
           </div>
         </div>

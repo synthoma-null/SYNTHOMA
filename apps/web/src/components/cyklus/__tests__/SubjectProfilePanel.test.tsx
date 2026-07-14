@@ -10,6 +10,10 @@ jest.mock('../../profile/ProfileDashboard', () => ({
   __esModule: true,
   default: () => <div data-testid="subject-dashboard">Dossier</div>,
 }));
+jest.mock('../../profile/LocalSubjectProfile', () => ({
+  __esModule: true,
+  default: () => <section data-profile-state="local-active"><h2>LOKÁLNÍ SUBJEKT</h2><span>SUBJECT // LOCAL</span></section>,
+}));
 jest.mock('../../../lib/LangContext', () => ({
   useLang: () => ({
     t: (key: string) => ({
@@ -53,7 +57,8 @@ describe('SubjectProfilePanelClient', () => {
     render(<SubjectProfilePanelClient />);
 
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
-    expect(await screen.findByRole('heading', { name: 'IDENTITA NEROZPOZNÁNA' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' })).toBeInTheDocument();
+    expect(screen.queryByText(/401|VERIFIED/)).not.toBeInTheDocument();
     expect(screen.queryByTestId('subject-dashboard')).not.toBeInTheDocument();
 
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
@@ -65,7 +70,7 @@ describe('SubjectProfilePanelClient', () => {
     render(<SubjectProfilePanelClient />);
 
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
-    await screen.findByRole('heading', { name: 'IDENTITA NEROZPOZNÁNA' });
+    await screen.findByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' });
     expect(document.querySelector('.id-panel-root')).toHaveClass('cyklus-no-select');
   });
 });

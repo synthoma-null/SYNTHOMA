@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
 import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { recordLocalCyklusDecision } from '../../game/cyklus/cyklusLocalProfile';
 import { loadRecentCyklusComments, saveRecentCyklusComment } from '../../game/cyklus/cyklusCommentPool';
 import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression, type CyklusVoidHubActions } from '../../game/cyklus/cyklusProgression';
 import { formatDelta, formatAbsDelta } from '../../game/cyklus/cyklusFormat';
@@ -469,6 +470,7 @@ export default function CyklusClient() {
     if (outcomeTimer.current) clearTimeout(outcomeTimer.current);
     outcomeTimer.current = setTimeout(() => {
       const next = resolveChoice(state, direction);
+      recordLocalCyklusDecision(state, next, direction);
       setState(next);
       setOutcomeVisible(true);
       setDragX(0);
