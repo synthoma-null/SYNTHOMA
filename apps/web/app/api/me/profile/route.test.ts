@@ -64,6 +64,7 @@ const baseUser = {
   profile: { title: 'Subjekt', publicProfile: false, showPsycheMap: false, showProgress: true, showChoices: false },
   settings: { theme: 'synthoma' },
   psyche: { ni: 50 },
+  choices: [],
   _count: { choices: 1, reading: 1 },
 };
 
@@ -145,5 +146,38 @@ describe('GET /api/me/profile runtime recovery', () => {
       correlationId: 'runtime-correlation-1',
       retryable: true,
     });
+  });
+
+  it('returns only a short plain-text trace of recent decisions', async () => {
+    db.user.findUnique.mockResolvedValue({
+      ...baseUser,
+      choices: [{
+        id: 'choice-1',
+        collection: 'synthoma',
+        chapterId: '0-0-null',
+        choiceId: 'accept',
+        choiceText: '<p>Přijmout <strong>záznam</strong></p>',
+        nextBlockId: 'next',
+        functionDelta: { ti: 2 },
+        emotionDelta: null,
+        tone: 'tender',
+        createdAt: new Date('2026-07-12T08:20:00.000Z'),
+      }],
+    });
+    db.mnemLedger.findMany.mockResolvedValue([]);
+    db.entitlement.findMany.mockResolvedValue([]);
+    db.purchase.findMany.mockResolvedValue([]);
+
+    const response = await GET();
+    const payload = await response.json();
+
+    expect(payload.user.choices).toBeUndefined();
+    expect(payload.recentChoices).toHaveLength(1);
+    expect(payload.recentChoices[0]).toMatchObject({
+      id: 'choice-1',
+      choiceText: 'Přijmout záznam',
+      functionDelta: { ti: 2 },
+    });
+    expect(payload.recentChoices[0].choiceText).not.toContain('<');
   });
 });

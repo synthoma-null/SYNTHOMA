@@ -6,6 +6,8 @@ jest.mock('next-auth/react', () => ({ signOut: jest.fn() }));
 jest.mock('./PsycheMap', () => ({ __esModule: true, default: ({ detailed }: { detailed?: boolean }) => <div data-testid="psyche-map">Psyche {String(detailed)}</div> }));
 jest.mock('./ReadingProgressPanel', () => ({ __esModule: true, default: () => <div data-testid="reading-progress">Čtení</div> }));
 jest.mock('./MnemAccessPanel', () => ({ __esModule: true, default: () => <div data-testid="mnem-access">Mnemy</div> }));
+jest.mock('./DecisionTimeline', () => ({ __esModule: true, default: ({ decisions }: { decisions: unknown[] }) => <div data-testid="decision-timeline">Rozhodnutí {decisions.length}</div> }));
+jest.mock('./SubjectCollectionPanel', () => ({ __esModule: true, default: () => <div data-testid="subject-collection">Sbírka</div> }));
 jest.mock('./PrivacyPanel', () => ({ __esModule: true, default: () => <div data-testid="privacy-panel">Soukromí</div> }));
 jest.mock('../run/RunDashboard', () => ({ __esModule: true, default: () => <div data-testid="run-dashboard">Cyklus</div> }));
 
@@ -33,6 +35,11 @@ const profile: ProfileData = {
   ledger: [],
   ownership: [],
   purchases: [],
+  recentChoices: [{
+    id: 'choice-1', collection: 'synthoma', chapterId: '0-0-null', chapterTitle: 'NULL', choiceId: 'accept',
+    choiceText: 'Přijmout záznam', nextBlockId: 'next', functionDelta: { ti: 2 }, emotionDelta: null,
+    tone: 'tender', createdAt: '2026-07-12T08:20:00.000Z',
+  }],
 };
 
 describe('ProfileDashboard dossier', () => {
@@ -40,13 +47,13 @@ describe('ProfileDashboard dossier', () => {
     global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => profile });
   });
 
-  it('renders five accessible sections without duplicate settings or psyche content', async () => {
+  it('renders six accessible sections and keeps collection separate from access data', async () => {
     render(<ProfileDashboard userId="user-1" nickname="Mira" mode="popup" />);
 
     const tablist = await screen.findByRole('tablist', { name: 'Sekce profilu subjektu' });
     const tabs = within(tablist).getAllByRole('tab');
-    expect(tabs).toHaveLength(5);
-    expect(tabs.map((tab) => tab.textContent)).toEqual(['01PŘEHLED', '02PSYCHÉ', '03CYKLUS', '04ARCHIV', '05PŘÍSTUP']);
+    expect(tabs).toHaveLength(6);
+    expect(tabs.map((tab) => tab.textContent)).toEqual(['01PŘEHLED', '02PSYCHÉ', '03CYKLUS', '04ROZHODNUTÍ', '05SBÍRKA', '06PŘÍSTUP']);
     expect(screen.queryByRole('tab', { name: /nastavení/i })).not.toBeInTheDocument();
     expect(screen.queryByTestId('psyche-map')).not.toBeInTheDocument();
 
@@ -56,15 +63,29 @@ describe('ProfileDashboard dossier', () => {
     fireEvent.click(screen.getByRole('tab', { name: /cyklus/i }));
     expect(screen.getByTestId('run-dashboard')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /archiv/i }));
-    expect(screen.getByTestId('reading-progress')).toBeInTheDocument();
-    expect(screen.getByTestId('mnem-access')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /rozhodnutí/i }));
+    expect(screen.getByTestId('decision-timeline')).toHaveTextContent('Rozhodnutí 1');
+
+    fireEvent.click(screen.getByRole('tab', { name: /sbírka/i }));
+    expect(screen.getByTestId('subject-collection')).toBeInTheDocument();
+    expect(screen.queryByTestId('mnem-access')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: /přístup/i }));
+    expect(screen.getByTestId('mnem-access')).toBeInTheDocument();
     expect(screen.getByTestId('privacy-panel')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'ADMIN' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'ODHLÁSIT' })).toBeInTheDocument();
     expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the verified identity and core metrics visible above tab content', async () => {
+    render(<ProfileDashboard userId="user-1" nickname="Mira" mode="popup" />);
+
+    const identity = await screen.findByRole('banner', { name: 'Identita subjektu' });
+    expect(within(identity).getByText('PROFIL SUBJEKTU')).toBeInTheDocument();
+    expect(within(identity).getByText('SUBJECT // VERIFIED')).toBeInTheDocument();
+    expect(within(identity).getByText('Mira')).toBeInTheDocument();
+    expect(identity).toHaveTextContent('Systém je eviduje jako osobnost.');
   });
 
   it('supports Arrow, Home and End navigation in the tablist', async () => {

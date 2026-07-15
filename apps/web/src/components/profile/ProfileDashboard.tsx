@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import SubjectHeader from './SubjectHeader';
 import PsycheMap from './PsycheMap';
-import ReadingProgressPanel from './ReadingProgressPanel';
 import MnemAccessPanel from './MnemAccessPanel';
 import PrivacyPanel from './PrivacyPanel';
 import RunDashboard from '../run/RunDashboard';
@@ -14,6 +13,8 @@ import MnemHistoryPanel, {
   type OwnershipHistoryItem,
   type PurchaseHistoryItem,
 } from './MnemHistoryPanel';
+import DecisionTimeline, { type RecentDecision } from './DecisionTimeline';
+import SubjectCollectionPanel from './SubjectCollectionPanel';
 
 export interface ProfileData {
   dataState?: 'empty' | 'partial' | 'ready';
@@ -49,6 +50,7 @@ export interface ProfileData {
       joy: number; trust: number; fear: number; surprise: number;
       sadness: number; disgust: number; anger: number; anticipation: number;
       shadow: number; tone: string; initiative: string; risk: string; tempo: string; strategy: string;
+      updatedAt?: string;
     } | null;
     _count: { choices: number; reading: number };
   };
@@ -56,6 +58,7 @@ export interface ProfileData {
   ledger: LedgerHistoryItem[];
   ownership: OwnershipHistoryItem[];
   purchases: PurchaseHistoryItem[];
+  recentChoices?: RecentDecision[];
 }
 
 interface Props {
@@ -69,7 +72,8 @@ const TABS = [
   { key: 'overview', label: 'PŘEHLED' },
   { key: 'psyche', label: 'PSYCHÉ' },
   { key: 'cycle', label: 'CYKLUS' },
-  { key: 'archive', label: 'ARCHIV' },
+  { key: 'decisions', label: 'ROZHODNUTÍ' },
+  { key: 'collection', label: 'SBÍRKA' },
   { key: 'access', label: 'PŘÍSTUP' },
 ] as const;
 
@@ -170,32 +174,19 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
       <SubjectHeader
         nickname={nickname || data.user.nickname}
         title={data.user.profile?.title ?? 'Subjekt bez klasifikace'}
-        createdAt={data.user.createdAt}
         choiceCount={data.user._count.choices}
         readingCount={data.user._count.reading}
         mnemBalance={data.mnemBalance}
       />
 
-      <div className="subject-dossier__main">
-        {profileState === 'partial' ? (
-          <div className="profile-data-notice" role="status">
-            <strong>ČÁSTEČNÝ ZÁZNAM</strong>
-            <span>Některé vrstvy profilu nejsou dostupné. Zbytek spisu zůstal čitelný.</span>
-          </div>
-        ) : null}
-        {profileState === 'empty' ? (
-          <div className="profile-data-notice" role="status">
-            <strong>PRÁZDNÝ PROFIL</strong>
-            <span>Subjekt existuje. Data zatím jen sbírají odvahu.</span>
-          </div>
-        ) : null}
-        <div className="subject-dossier__topbar">
+      <div className={`subject-dossier__main${mode === 'standalone' ? ' subject-dossier__main--standalone' : ''}`}>
+        {mode === 'standalone' ? <div className="subject-dossier__topbar">
           <div>
             <span>SUBJECT DOSSIER // VERIFIED</span>
             <strong>{TABS.find((tab) => tab.key === activeTab)?.label}</strong>
           </div>
-          {mode === 'standalone' && <Link href="/" className="btn profile-back-btn">ZPĚT</Link>}
-        </div>
+          <Link href="/" className="btn profile-back-btn">ZPĚT</Link>
+        </div> : null}
 
         <div className="profile-tabs" role="tablist" aria-label="Sekce profilu subjektu">
           {TABS.map((tab, index) => (
@@ -218,6 +209,18 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
         </div>
 
         <div id={`profile-panel-${activeTab}`} className="profile-content" role="tabpanel" aria-labelledby={`profile-tab-${activeTab}`} tabIndex={0}>
+          {profileState === 'partial' ? (
+            <div className="profile-data-notice" role="status">
+              <strong>ČÁSTEČNÝ ZÁZNAM</strong>
+              <span>Některé vrstvy profilu nejsou dostupné. Zbytek spisu zůstal čitelný.</span>
+            </div>
+          ) : null}
+          {profileState === 'empty' ? (
+            <div className="profile-data-notice" role="status">
+              <strong>PRÁZDNÝ PROFIL</strong>
+              <span>Subjekt existuje. Data zatím jen sbírají odvahu.</span>
+            </div>
+          ) : null}
           {activeTab === 'overview' && (
             <section className="profile-overview" aria-labelledby="profile-overview-title">
               <div className="profile-section-heading">
@@ -230,6 +233,8 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
                 <div><dt>Rozhodnutí</dt><dd>{data.user._count.choices}</dd></div>
                 <div><dt>Fragmenty</dt><dd>{data.user._count.reading}</dd></div>
                 <div><dt>První synchronizace</dt><dd>{formatDate(data.user.createdAt)}</dd></div>
+                <div><dt>Poslední synchronizace</dt><dd>{formatDate(data.user.lastLoginAt)}</dd></div>
+                <div><dt>Poslední změna psyché</dt><dd>{formatDate(psyche?.updatedAt ?? null)}</dd></div>
               </dl>
               <div className="profile-overview__summaries">
                 <section>
@@ -247,25 +252,15 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
           )}
           {activeTab === 'psyche' && (psyche ? <PsycheMap psyche={psyche} detailed /> : <p className="profile-empty">Psychický otisk zatím není dostupný.</p>)}
           {activeTab === 'cycle' && <RunDashboard />}
-          {activeTab === 'archive' && (
-            <div className="profile-archive">
-              <section aria-labelledby="profile-reading-title">
-                <div className="profile-section-heading"><span>ARCHIV // ČTENÍ</span><h2 id="profile-reading-title">Čtenářské fragmenty</h2></div>
-                <ReadingProgressPanel />
-              </section>
-              <section aria-labelledby="profile-mnem-title">
-                <div className="profile-section-heading"><span>ARCHIV // MNEM</span><h2 id="profile-mnem-title">Přístupové stopy</h2></div>
-                <MnemAccessPanel mnemBalance={data.mnemBalance} />
-                <MnemHistoryPanel
-                  ledger={data.ledger}
-                  ownership={data.ownership}
-                  purchases={data.purchases}
-                />
-              </section>
-            </div>
-          )}
+          {activeTab === 'decisions' && <DecisionTimeline decisions={data.recentChoices ?? []} />}
+          {activeTab === 'collection' && <SubjectCollectionPanel ownership={data.ownership} readingCount={data.user._count.reading} />}
           {activeTab === 'access' && (
             <div className="profile-access">
+              <section aria-labelledby="profile-mnem-title">
+                <div className="profile-section-heading"><span>ACCESS // MNEM</span><h2 id="profile-mnem-title">Vlastnictví a přístup</h2></div>
+                <MnemAccessPanel mnemBalance={data.mnemBalance} />
+                <MnemHistoryPanel ledger={data.ledger} ownership={data.ownership} purchases={data.purchases} />
+              </section>
               <section aria-labelledby="profile-access-title">
                 <div className="profile-section-heading"><span>AUTH // VERIFIED</span><h2 id="profile-access-title">Přístup k účtu</h2></div>
                 <dl className="profile-access__facts">

@@ -147,6 +147,15 @@ const SettingsPatchSchema = z.object({
   ttsEnabled: z.boolean().optional(),
 });
 
+function summarizeChoiceText(value: string): string {
+  const plain = value
+    .replace(/<br\s*\/?\s*>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return plain.length > 180 ? `${plain.slice(0, 177).trimEnd()}...` : plain;
+}
+
 export async function GET() {
   const session = await auth();
   const userId = session?.user?.id;
@@ -165,6 +174,22 @@ export async function GET() {
         profile: true,
         settings: true,
         psyche: true,
+        choices: {
+          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+          take: 12,
+          select: {
+            id: true,
+            collection: true,
+            chapterId: true,
+            choiceId: true,
+            choiceText: true,
+            nextBlockId: true,
+            functionDelta: true,
+            emotionDelta: true,
+            tone: true,
+            createdAt: true,
+          },
+        },
         _count: {
           select: { choices: true, reading: true },
         },
@@ -172,6 +197,13 @@ export async function GET() {
     });
 
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+    const { choices = [], ...profileUser } = user;
+    const recentChoices = choices.map((choice) => ({
+      ...choice,
+      choiceText: summarizeChoiceText(choice.choiceText),
+      chapterTitle: getCatalogEntry('chapter', choice.chapterId)?.title ?? choice.chapterId,
+    }));
 
     const mnemBalance = await getMnemBalance(userId);
     const [ledgerResult, entitlementResult, purchaseResult, legacyFragments, legacyArtifacts, legacyCosmetics] = await Promise.all([
@@ -238,7 +270,8 @@ export async function GET() {
         ...(!user.profile ? ['PROFILE_RECORD_MISSING'] : []),
         ...(!user.psyche ? ['PSYCHE_RECORD_MISSING'] : []),
       ],
-      user,
+      user: profileUser,
+      recentChoices,
       mnemBalance,
       ledger,
       ownership: titledOwnership,

@@ -80,4 +80,13 @@ describe('SubjectProfilePanelClient', () => {
     await screen.findByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' });
     expect(document.querySelector('.id-panel-root')).toHaveClass('cyklus-no-select');
   });
+
+  it('keeps profile scrolling inside the viewport-bounded content panel', () => {
+    const css = readFileSync(join(process.cwd(), 'src/styles/profile.css'), 'utf8');
+
+    expect(css).toMatch(/\.profile-panel-popup\s*\{[\s\S]*?height:\s*min\(880px, calc\(100dvh - 32px\)\)/);
+    expect(css).toMatch(/\.profile-tabs\s*\{[\s\S]*?overflow-x:\s*auto[\s\S]*?overscroll-behavior-x:\s*contain/);
+    expect(css).toMatch(/\.profile-content\s*\{[\s\S]*?min-height:\s*0[\s\S]*?overflow-y:\s*auto[\s\S]*?touch-action:\s*pan-y/);
+    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.profile-panel-popup\s*\{[\s\S]*?width:\s*100vw[\s\S]*?height:\s*100dvh/);
+  });
 });

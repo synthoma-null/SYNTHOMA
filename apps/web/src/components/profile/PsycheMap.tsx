@@ -14,6 +14,24 @@ interface Props {
   detailed?: boolean;
 }
 
+const PROCESS_LABELS = {
+  NI: 'VNITŘNÍ VIZE',
+  FE: 'EMPATICKÁ ODEZVA',
+  TI: 'VNITŘNÍ ANALÝZA',
+  SE: 'SMYSLOVÝ KONTAKT',
+} as const;
+
+const PROCESS_SUMMARIES = {
+  NI: 'Subjekt hledá vzorec dřív, než připustí, že některé věci žádný nemají.',
+  FE: 'Subjekt nejprve vyhodnocuje dopad na ostatní a teprve potom cenu pro sebe.',
+  TI: 'Subjekt dává přednost rozboru před okamžitou úlevou. Emoce budou zpracovány v pracovní době.',
+  SE: 'Subjekt reaguje na přítomný okamžik dřív, než ho archiv stihne přejmenovat.',
+} as const;
+
+function displayTone(value: string): string {
+  return value.replace(/_/g, ' ').toLocaleUpperCase('cs-CZ');
+}
+
 function Bar({ label, value, max = 100 }: { label: string; value: number; max?: number }) {
   const pct = Math.round((value / max) * 100);
   return (
@@ -29,11 +47,30 @@ function Bar({ label, value, max = 100 }: { label: string; value: number; max?: 
 
 export default function PsycheMap({ psyche, detailed }: Props) {
   const { t } = useLang();
+  const processes = ([['NI', psyche.ni], ['FE', psyche.fe], ['TI', psyche.ti], ['SE', psyche.se]] as const)
+    .slice()
+    .sort((left, right) => right[1] - left[1]);
+  const dominant = processes[0]!;
+  const secondary = processes[1]!;
   return (
     <section className="psyche-map">
       <div className="psyche-log">
         <span className="psyche-log-prefix">LOG [SOVEREIGN_PSYCHE_MAP]:</span>
         <span className="psyche-log-msg">&#8222;{t('psyche.log')}&#8220;</span>
+      </div>
+
+      <div className="psyche-imprint" aria-labelledby="psyche-imprint-title">
+        <div className="profile-section-heading">
+          <span>PSYCHE // INTERPRETATION</span>
+          <h2 id="psyche-imprint-title">Psychický otisk</h2>
+        </div>
+        <dl className="psyche-imprint__signals">
+          <div><dt>DOMINANTNÍ PROCES</dt><dd>{dominant[0]}{' // '}{PROCESS_LABELS[dominant[0]]}</dd></div>
+          <div><dt>SEKUNDÁRNÍ ODEZVA</dt><dd>{secondary[0]}{' // '}{PROCESS_LABELS[secondary[0]]}</dd></div>
+          <div><dt>OBRANNÝ MODUL</dt><dd>{displayTone(psyche.tone)}</dd></div>
+          <div><dt>NESTABILITA OTISKU</dt><dd>{Math.max(0, Math.min(100, psyche.shadow))} %</dd></div>
+        </dl>
+        <p className="psyche-imprint__summary">{PROCESS_SUMMARIES[dominant[0]]} Strategie: {psyche.strategy}; tolerance rizika: {psyche.risk}.</p>
       </div>
 
       <div className="psyche-section">
