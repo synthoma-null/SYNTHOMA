@@ -224,6 +224,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
         <link rel="service-desc" type="application/vnd.oai.openapi+json" href="/api/public/openapi.json" />
 
+        <link rel="alternate" type="application/json" href="/api/public/v1/cyklus/rules" />
+
+        <link rel="help" href="/ai/api" />
+
         <script
 
           type="application/ld+json"
