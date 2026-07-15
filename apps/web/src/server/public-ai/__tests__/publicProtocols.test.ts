@@ -22,6 +22,7 @@ describe('public AI discovery protocols', () => {
     expect(urls).toEqual(expect.arrayContaining([
       'https://www.synthoma.cz/books', 'https://www.synthoma.cz/chapter/0-0-null',
       'https://www.synthoma.cz/archive', 'https://www.synthoma.cz/cards',
+      'https://www.synthoma.cz/cards/acid_filter',
       'https://www.synthoma.cz/ai/api', 'https://www.synthoma.cz/ai-policy',
     ]));
     expect(urls.some((url) => url.includes('tutorial_00_welcome'))).toBe(false);
@@ -32,6 +33,10 @@ describe('public AI discovery protocols', () => {
     const [index, full] = await Promise.all([llmsIndex(), llmsFull()]);
     expect(index).toContain('# SYNTHOMA');
     expect(index).toContain('/api/public/openapi.json');
+    expect(index).toContain('/api/public/v1/cyklus/rules');
+    expect(index).toContain('/api/public/v1/cyklus/run');
+    expect(index).toContain('/api/public/v1/cyklus/choice');
+    expect(index).toContain('/ai/api');
     expect(full).toContain('## Free chapters');
     expect(full).not.toContain('### 0-4 [DEFRAGMENTATION]');
     for (const term of ['mnemBalance', 'userId', 'sessionId', 'Purchase']) expect(full).not.toContain(term);
@@ -41,10 +46,16 @@ describe('public AI discovery protocols', () => {
     expect(publicOpenApi.openapi).toBe('3.1.0');
     expect(Object.keys(publicOpenApi.paths)).toEqual(expect.arrayContaining([
       '/api/public/v1/site', '/api/public/v1/author', '/api/public/v1/books',
+      '/api/public', '/api/public/v1', '/api/public/v1/cyklus',
       '/api/public/v1/chapters', '/api/public/v1/archive', '/api/public/v1/cards',
       '/api/public/v1/cyklus/rules', '/api/public/v1/cyklus/run', '/api/public/v1/cyklus/choice',
     ]));
     expect(JSON.parse(JSON.stringify(publicOpenApi))).toMatchObject({ security: [], info: { version: '1' } });
+    expect(publicOpenApi.paths['/api/public/v1/cyklus/rules'].get.operationId).toBe('get_cyklus_rules');
+    expect(publicOpenApi.paths['/api/public/v1/cyklus/run'].post.operationId).toBe('start_cyklus_run');
+    expect(publicOpenApi.paths['/api/public/v1/cyklus/choice'].post.operationId).toBe('choose_cyklus');
+    expect(publicOpenApi.paths['/api/public/v1/cyklus/run'].post.requestBody.content['application/json'].example).toEqual({ locale: 'cs', seed: 'agent-example' });
+    expect(publicOpenApi.paths['/api/public/v1/cyklus/choice'].post.requestBody.content['application/json'].example).toMatchObject({ choiceId: 'yes' });
     const yaml = publicOpenApiYaml();
     expect(yaml).toContain('openapi: "3.1.0"');
     expect(yaml).toContain('security:\n  []');

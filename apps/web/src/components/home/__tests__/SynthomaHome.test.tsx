@@ -21,6 +21,7 @@ describe('Synthoma Home', () => {
     expect(screen.getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
+    expect(screen.getByRole('link', { name: /PŘÍSTUP PRO AI.*AI ACCESS/ })).toHaveAttribute('href', '/ai/api');
     await waitFor(() => expect(screen.getByRole('link', { name: /VSTOUPIT DO SYNTHOMY/ })).toHaveAttribute('href', '/books'));
   });
 
