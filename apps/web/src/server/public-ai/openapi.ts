@@ -7,6 +7,10 @@ const listParameters = [
   { name: 'cursor', in: 'query', schema: { type: 'string' } },
 ];
 const jsonResponse = { description: 'Versioned public response', content: { 'application/json': { schema: { type: 'object' } } } };
+const discoveryResponse = (example: unknown) => ({
+  description: 'Public discovery response',
+  content: { 'application/json': { schema: { type: 'object' }, example } },
+});
 const publicGet = (summary: string, list = false) => ({
   summary, operationId: summary.toLowerCase().replace(/[^a-z0-9]+/g, '_'),
   parameters: list ? listParameters : [localeParameter], responses: { '200': jsonResponse, '400': { $ref: '#/components/responses/Error' }, '429': { $ref: '#/components/responses/RateLimited' } },
@@ -26,6 +30,9 @@ export const publicOpenApi = {
     { name: 'Cyklus', description: 'Anonymous stateless gameplay.' },
   ],
   paths: {
+    '/api/public': { get: { tags: ['Lore'], summary: 'Discover SYNTHOMA public API', operationId: 'discover_public_api', responses: { '200': discoveryResponse({ name: 'SYNTHOMA Public API', version: '1', documentation: '/ai/api', openapi: '/api/public/openapi.json' }) } } },
+    '/api/public/v1': { get: { tags: ['Lore'], summary: 'Discover SYNTHOMA public API v1', operationId: 'discover_public_api_v1', responses: { '200': discoveryResponse({ name: 'SYNTHOMA Public API v1', version: '1', resources: { site: '/api/public/v1/site', cyklus: '/api/public/v1/cyklus' } }) } } },
+    '/api/public/v1/cyklus': { get: { tags: ['Cyklus'], summary: 'Discover public Cyklus operations', operationId: 'discover_cyklus', responses: { '200': discoveryResponse({ name: 'SYNTHOMA Cyklus', engineVersion: PUBLIC_CYKLUS_ENGINE_VERSION, rules: '/api/public/v1/cyklus/rules', start: { method: 'POST', href: '/api/public/v1/cyklus/run' }, choose: { method: 'POST', href: '/api/public/v1/cyklus/choice' } }) } } },
     '/api/public/v1/site': { get: { ...publicGet('Get Synthoma overview'), tags: ['Lore'] } },
     '/api/public/v1/author': { get: { ...publicGet('Get public author profile'), tags: ['Lore'] } },
     '/api/public/v1/books': { get: { ...publicGet('List public books'), tags: ['Lore'] } },
@@ -36,16 +43,19 @@ export const publicOpenApi = {
     '/api/public/v1/archive/{id}': { get: { ...publicGet('Get public archive record'), tags: ['Lore'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }, localeParameter] } },
     '/api/public/v1/cards': { get: { ...publicGet('List public Cyklus cards', true), tags: ['Cards'] } },
     '/api/public/v1/cards/{id}': { get: { ...publicGet('Get public Cyklus card'), tags: ['Cards'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }, localeParameter] } },
-    '/api/public/v1/cyklus/rules': { get: { ...publicGet('Get public Cyklus rules'), tags: ['Cyklus'] } },
+    '/api/public/v1/cyklus/rules': { get: {
+      ...publicGet('Get public Cyklus rules'), tags: ['Cyklus'], operationId: 'get_cyklus_rules',
+      responses: { '200': discoveryResponse({ data: { maxTurns: 12, stats: ['energy', 'memory', 'bond', 'control'], choices: ['yes', 'no'] } }), '400': { $ref: '#/components/responses/Error' }, '429': { $ref: '#/components/responses/RateLimited' } },
+    } },
     '/api/public/v1/cyklus/run': { post: {
       tags: ['Cyklus'], summary: 'Start stateless Cyklus run', operationId: 'start_cyklus_run',
-      requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/StartRunRequest' } } } },
-      responses: { '200': jsonResponse, '400': { $ref: '#/components/responses/Error' }, '413': { $ref: '#/components/responses/Error' }, '429': { $ref: '#/components/responses/RateLimited' } },
+      requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/StartRunRequest' }, example: { locale: 'cs', seed: 'agent-example' } } } },
+      responses: { '200': discoveryResponse({ stateToken: 'opaque-state-token', run: { turn: 1, maxTurns: 12, status: 'active' }, card: { id: 'restart_0', choices: [{ id: 'yes' }, { id: 'no' }] } }), '400': { $ref: '#/components/responses/Error' }, '413': { $ref: '#/components/responses/Error' }, '429': { $ref: '#/components/responses/RateLimited' } },
     } },
     '/api/public/v1/cyklus/choice': { post: {
       tags: ['Cyklus'], summary: 'Choose in stateless Cyklus run', operationId: 'choose_cyklus',
-      requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/ChoiceRequest' } } } },
-      responses: { '200': jsonResponse, '400': { $ref: '#/components/responses/Error' }, '410': { $ref: '#/components/responses/Error' }, '429': { $ref: '#/components/responses/RateLimited' } },
+      requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/ChoiceRequest' }, example: { stateToken: 'opaque-state-token', choiceId: 'yes' } } } },
+      responses: { '200': discoveryResponse({ stateToken: 'next-opaque-state-token', result: { cardId: 'restart_0', choiceId: 'yes' }, run: { turn: 2, maxTurns: 12, status: 'active' } }), '400': { $ref: '#/components/responses/Error' }, '410': { $ref: '#/components/responses/Error' }, '429': { $ref: '#/components/responses/RateLimited' } },
     } },
   },
   components: {

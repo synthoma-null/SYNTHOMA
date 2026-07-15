@@ -7,6 +7,9 @@ export const metadata: Metadata = { title: 'Public AI API | SYNTHOMA', alternate
 export default function PublicApiPage() {
   return <main className="public-ai-page">
     <header className="public-ai-header"><p className="public-ai-kicker">SYNTHOMA // PUBLIC AI</p><h1>Veřejné rozhraní</h1><p>Strojově čitelné veřejné lore a izolovaný dvanáctitahový Cyklus. Bez účtu, cookies, MNEM, entitlementů a zápisu do progrese.</p></header>
+    <section aria-labelledby="public-ai-quick-start"><h2 id="public-ai-quick-start">QUICK START</h2><pre><code>{`GET  /api/public/v1/cyklus/rules
+POST /api/public/v1/cyklus/run
+POST /api/public/v1/cyklus/choice`}</code></pre><p><a href="/api/public/v1/cyklus">Otevřít index Cyklu</a></p></section>
     <section><h2>Specifikace</h2><p><a href="/api/public/openapi.json">OpenAPI JSON</a> · <a href="/api/public/openapi.yaml">OpenAPI YAML</a> · <Link href="/ai-policy">Pravidla přístupu</Link></p></section>
     <section><h2>Obsah</h2><pre><code>{`GET /api/public/v1/site?locale=cs
 GET /api/public/v1/chapters?locale=en&limit=20

@@ -28,9 +28,28 @@ ${chapters.map((chapter) => `- [${chapter.title}](${absolutePublicUrl(`/ai/en/ch
 - [Card JSON API](${absolutePublicUrl('/api/public/v1/cards?locale=en')})
 
 ## Play Cyklus
+- [Cyklus API index](${absolutePublicUrl('/api/public/v1/cyklus')})
 - [Rules](${absolutePublicUrl('/api/public/v1/cyklus/rules?locale=en')})
+- [Start endpoint (POST)](${absolutePublicUrl('/api/public/v1/cyklus/run')})
+- [Choice endpoint (POST)](${absolutePublicUrl('/api/public/v1/cyklus/choice')})
 - [API docs](${absolutePublicUrl('/ai/api')})
 - [OpenAPI](${absolutePublicUrl('/api/public/openapi.json')})
+
+### Machine quick start
+
+\`POST ${absolutePublicUrl('/api/public/v1/cyklus/run')}\`
+
+\`\`\`json
+{"locale":"en","seed":"agent-example"}
+\`\`\`
+
+Then send the returned \`stateToken\` and one offered \`choiceId\`:
+
+\`POST ${absolutePublicUrl('/api/public/v1/cyklus/choice')}\`
+
+\`\`\`json
+{"stateToken":"<stateToken from run>","choiceId":"yes"}
+\`\`\`
 
 ## Languages
 - [Czech index](${absolutePublicUrl('/ai/cs/index.md')})
@@ -70,5 +89,13 @@ ${publicArchive.map((entry) => `### ${entry.title}\n\nID: \`${entry.id}\`\n\n${e
 Public card catalog: ${absolutePublicUrl('/cards')}
 
 Rules and stateless agent API: ${absolutePublicUrl('/api/public/v1/cyklus/rules?locale=en')}
+
+Start (POST): ${absolutePublicUrl('/api/public/v1/cyklus/run')}
+
+Choose (POST): ${absolutePublicUrl('/api/public/v1/cyklus/choice')}
+
+OpenAPI: ${absolutePublicUrl('/api/public/openapi.json')}
+
+Documentation: ${absolutePublicUrl('/ai/api')}
 `;
 }
