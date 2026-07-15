@@ -90,20 +90,39 @@ export function ActiveObjectivePanel({
   state,
   runHistoryCount,
   tutorialActive,
+  onClose,
+  closeButtonRef,
 }: {
   state: CyklusRunState;
   runHistoryCount: number;
   tutorialActive: boolean;
+  onClose?: () => void;
+  closeButtonRef?: React.Ref<HTMLButtonElement>;
 }) {
   const showHint = shouldShowStatRuleHint(state, runHistoryCount, tutorialActive);
   return (
     <section
-      className="cyklus-active-objective cyklus-active-objective--mobile-hidden"
+      className="cyklus-active-objective cyklus-active-objective--popover cyklus-active-objective--mobile-hidden"
+      id="cyklus-current-trace-panel"
       aria-labelledby="cyklus-active-objective-title"
       data-mobile-mode="hidden"
+      data-cyklus-trace-panel
     >
+      <header className="cyklus-active-objective__header">
+        <h2 className="cyklus-active-objective__label" id="cyklus-active-objective-title">AKTUÁLNÍ STOPA</h2>
+        {onClose && (
+          <button
+            ref={closeButtonRef}
+            className="cyklus-active-objective__close"
+            type="button"
+            onClick={onClose}
+            aria-label="Zavřít aktuální stopu"
+          >
+            ×
+          </button>
+        )}
+      </header>
       <div className="cyklus-active-objective__body">
-        <div className="cyklus-active-objective__label" id="cyklus-active-objective-title">AKTUÁLNÍ STOPA</div>
         <p className="cyklus-active-objective__text">{getActiveObjectiveText(state, runHistoryCount, tutorialActive)}</p>
         {state.runFocus && <strong className="cyklus-active-objective__focus">{state.runFocus.label}</strong>}
         {showHint && (
@@ -177,6 +196,7 @@ export default function CyklusClient() {
   const [flyDirection, setFlyDirection] = useState<'yes' | 'no' | null>(null);
   const [cardArtRevealed, setCardArtRevealed] = useState(false);
   const [posterViewerOpen, setPosterViewerOpen] = useState(false);
+  const [currentTraceOpen, setCurrentTraceOpen] = useState(false);
   const [runHistory, setRunHistory] = useState<CyklusRunSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
@@ -205,6 +225,8 @@ export default function CyklusClient() {
   const cardRef = useRef<HTMLDivElement>(null);
   const cardTitleRef = useRef<HTMLHeadingElement>(null);
   const posterViewerTriggerRef = useRef<HTMLButtonElement>(null);
+  const currentTraceTriggerRef = useRef<HTMLButtonElement>(null);
+  const currentTraceCloseRef = useRef<HTMLButtonElement>(null);
   const gesturePointerId = useRef<number | null>(null);
   const gestureStartX = useRef(0);
   const gestureStartY = useRef(0);
@@ -273,6 +295,37 @@ export default function CyklusClient() {
     setPosterViewerOpen(false);
     window.setTimeout(() => posterViewerTriggerRef.current?.focus(), 0);
   }, []);
+
+  const closeCurrentTrace = useCallback((restoreFocus = true) => {
+    setCurrentTraceOpen(false);
+    if (restoreFocus) {
+      window.setTimeout(() => currentTraceTriggerRef.current?.focus(), 0);
+    }
+  }, []);
+
+  const toggleCurrentTrace = useCallback(() => {
+    if (currentTraceOpen) {
+      closeCurrentTrace();
+      return;
+    }
+    setCurrentTraceOpen(true);
+  }, [closeCurrentTrace, currentTraceOpen]);
+
+  useEffect(() => {
+    if (!currentTraceOpen) return;
+    currentTraceCloseRef.current?.focus();
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeCurrentTrace();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [closeCurrentTrace, currentTraceOpen]);
+
+  useEffect(() => {
+    if (mobileGameplayLayout && currentTraceOpen) {
+      closeCurrentTrace(false);
+    }
+  }, [closeCurrentTrace, currentTraceOpen, mobileGameplayLayout]);
 
   useEffect(() => {
     let cancelled = false;
@@ -847,6 +900,9 @@ export default function CyklusClient() {
           highlight={tutorialHighlight?.stat}
           history={state.history}
           climate={state.modifier.id !== 'none' ? state.modifier : null}
+          traceOpen={!mobileGameplayLayout ? currentTraceOpen : undefined}
+          onToggleTrace={!mobileGameplayLayout ? toggleCurrentTrace : undefined}
+          traceTriggerRef={currentTraceTriggerRef}
           tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (() => {
             const tp = TUTORIAL_PROGRESS_MAP[card.id];
             const tierLabel = tp?.tier === 'ext' ? 'ROZŠÍŘENÍ' : 'ZÁKLAD';
@@ -1029,7 +1085,15 @@ export default function CyklusClient() {
           </div>
         ) : card ? (
           <>
-            <ActiveObjectivePanel state={state} runHistoryCount={runHistory.length} tutorialActive={tutorialActive} />
+            {currentTraceOpen && !mobileGameplayLayout && (
+              <ActiveObjectivePanel
+                state={state}
+                runHistoryCount={runHistory.length}
+                tutorialActive={tutorialActive}
+                onClose={closeCurrentTrace}
+                closeButtonRef={currentTraceCloseRef}
+              />
+            )}
             <div
               ref={cardRef}
               className={[

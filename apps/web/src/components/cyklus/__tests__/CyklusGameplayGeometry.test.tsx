@@ -11,6 +11,8 @@ describe('Cyklus gameplay geometry contract', () => {
   const cardOverlay = readStyle('card-overlay.css');
   const compact = readStyle('compact-mobile.css');
   const hud = readStyle('hud.css');
+  const trace = readStyle('trace-panel.css');
+  const tokens = readStyle('tokens.css');
   const client = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8');
 
   it('keeps active gameplay inside the viewport below the global shell controls', () => {
@@ -41,6 +43,24 @@ describe('Cyklus gameplay geometry contract', () => {
     expect(cardOverlay).toMatch(/\.cyklus-card\s*\{[\s\S]*?height:\s*100%;/);
   });
 
+  it('keeps the current trace out of gameplay geometry until the desktop disclosure opens', () => {
+    expect(cardOverlay).toMatch(/\.cyklus-root--playing > \.cyklus-stage\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\);/);
+    expect(client).toContain('{currentTraceOpen && !mobileGameplayLayout && (');
+    expect(client).not.toMatch(/<>\s*<ActiveObjectivePanel/);
+    expect(trace).toMatch(/\.cyklus-stage > \.cyklus-active-objective--popover\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?z-index:\s*var\(--cy-z-sheet\);[\s\S]*?max-height:\s*calc\(100% - \(2 \* var\(--cy-space-2\)\)\);[\s\S]*?overflow:\s*hidden;/);
+    expect(trace).toMatch(/\.cyklus-active-objective--popover \.cyklus-active-objective__body\s*\{[\s\S]*?overflow-y:\s*auto;[\s\S]*?overscroll-behavior:\s*contain;/);
+  });
+
+  it('keeps one 44px desktop trace utility while retaining the four-column mobile stat dock', () => {
+    expect(client.match(/aria-label="Otevřít aktuální stopu"/g) ?? []).toHaveLength(0);
+    const statDock = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/StatDock.tsx'), 'utf8');
+    expect(statDock.match(/aria-label="Otevřít aktuální stopu"/g)).toHaveLength(1);
+    expect(statDock).toContain("aria-controls={traceOpen ? 'cyklus-current-trace-panel' : undefined}");
+    expect(statDock).toContain('aria-expanded={traceOpen}');
+    expect(trace).toMatch(/\.cyklus-stat-dock__trace-trigger\s*\{[\s\S]*?min-height:\s*44px;/);
+    expect(trace).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.cyklus-stat-dock--with-trace\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/);
+  });
+
   it('scrolls long scene text internally while choices remain outside the card', () => {
     expect(card).toMatch(/\.cyklus-card-scene\s*\{[\s\S]*?min-height:\s*0;[\s\S]*?overflow-y:\s*auto;[\s\S]*?overscroll-behavior:\s*contain;[\s\S]*?scrollbar-gutter:\s*stable;[\s\S]*?touch-action:\s*pan-y;/);
     expect(client).toMatch(/<\/main>[\s\S]*?data-cyklus-choice-dock/);
@@ -64,5 +84,8 @@ describe('Cyklus gameplay geometry contract', () => {
     expect(poster).toContain("event.key !== 'Escape'");
     expect(poster).toContain('onWheel={fullscreen ? handleWheel : undefined}');
     expect(client.match(/createPortal\(/g)).toHaveLength(1);
+    expect(tokens).toMatch(/--cy-z-sheet:\s*60;/);
+    expect(tokens).toMatch(/--cy-z-critical:\s*120;/);
+    expect(card).toMatch(/\.cyklus-poster-viewer\s*\{[\s\S]*?z-index:\s*calc\(var\(--os-z-critical, 120\) \+ 10\);/);
   });
 });

@@ -169,11 +169,15 @@ interface StatDockProps {
   history: CyklusChoiceRecord[];
   climate?: CyklusRunModifier | null;
   tutorialProgress?: React.ReactNode;
+  traceOpen?: boolean | undefined;
+  onToggleTrace?: (() => void) | undefined;
+  traceTriggerRef?: React.Ref<HTMLButtonElement> | undefined;
 }
 
-export default function StatDock({ stats, openStat, onOpenStat, highlight, history, climate, tutorialProgress }: StatDockProps) {
+export default function StatDock({ stats, openStat, onOpenStat, highlight, history, climate, tutorialProgress, traceOpen, onToggleTrace, traceTriggerRef }: StatDockProps) {
   const previousStats = usePrevious(stats);
   const [changedKeys, setChangedKeys] = useState<Set<StatKey>>(new Set());
+  const hasTraceTrigger = typeof traceOpen === 'boolean' && Boolean(onToggleTrace);
 
   useEffect(() => {
     if (!previousStats) return;
@@ -189,7 +193,7 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
 
   return (
     <>
-      <aside className={`cyklus-stat-dock ${highlight ? 'cyklus-stat-dock--highlighted' : ''}`} aria-label="Stav subjektu">
+      <aside className={`cyklus-stat-dock ${highlight ? 'cyklus-stat-dock--highlighted' : ''} ${hasTraceTrigger ? 'cyklus-stat-dock--with-trace' : ''}`} aria-label="Stav subjektu">
         {tutorialProgress}
         {climate && (
           <div className="cyklus-stat-dock__climate">
@@ -245,6 +249,19 @@ export default function StatDock({ stats, openStat, onOpenStat, highlight, histo
             </button>
           );
         })}
+        {hasTraceTrigger && (
+          <button
+            ref={traceTriggerRef}
+            className="cyklus-stat-dock__trace-trigger"
+            type="button"
+            onClick={onToggleTrace}
+            aria-label="Otevřít aktuální stopu"
+            aria-controls={traceOpen ? 'cyklus-current-trace-panel' : undefined}
+            aria-expanded={traceOpen}
+          >
+            STOPA
+          </button>
+        )}
       </aside>
       {openStat && (
         <StatPopup
