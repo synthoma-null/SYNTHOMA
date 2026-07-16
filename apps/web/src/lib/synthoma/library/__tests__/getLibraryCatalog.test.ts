@@ -20,6 +20,13 @@ describe('getLibraryCatalog', () => {
     expect(restart?.id).toBe('0-inf-restart');
   });
 
+  it('gives every public library chapter a canonical route id', async () => {
+    const catalog = await getLibraryCatalog();
+    const chapters = catalog.collections.flatMap((collection) => collection.chapters);
+    expect(chapters).not.toHaveLength(0);
+    expect(chapters.every((chapter) => typeof chapter.id === 'string' && chapter.id.length > 0)).toBe(true);
+  });
+
   it('returns an empty catalog when no collection matches', async () => {
     const catalog = await getLibraryCatalog();
     expect(catalog.collections.find((c) => c.slug === 'unknown')).toBeUndefined();

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import SynthomaHome from '../SynthomaHome';
 
 describe('Synthoma Home', () => {
@@ -17,11 +17,17 @@ describe('Synthoma Home', () => {
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toHaveTextContent('SYNTHOMA');
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' }).querySelector('br')).toBeNull();
     expect(document.querySelectorAll('[data-home-primary-action]')).toHaveLength(1);
-    expect(screen.getByRole('link', { name: /KNIHOVNA/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
+    const sectors = screen.getByRole('navigation', { name: 'Sektory SYNTHOMA' });
+    expect(within(sectors).getByRole('link', { name: /KNIHOVNA/ })).toBeInTheDocument();
+    expect(within(sectors).getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
+    expect(within(sectors).getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
+    expect(within(sectors).getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
     expect(screen.getByRole('link', { name: /PŘÍSTUP PRO AI.*AI ACCESS/ })).toHaveAttribute('href', '/ai/api');
+    expect(screen.getByText(/SYNTHOMA je interaktivní psychologický román/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'PRVNÍ NÁVŠTĚVA' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /ZAČÍT PŘÍBĚH/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
+    expect(screen.getByRole('link', { name: /SPUSTIT CYKLUS/ })).toHaveAttribute('href', '/cyklus');
+    expect(screen.getByRole('link', { name: /POCHOPIT SYNTHOMU/ })).toHaveAttribute('href', '/archive');
     await waitFor(() => expect(screen.getByRole('link', { name: /VSTOUPIT DO SYNTHOMY/ })).toHaveAttribute('href', '/books'));
   });
 
@@ -29,6 +35,12 @@ describe('Synthoma Home', () => {
     store.lastChapterPath = '/api/chapter/0-1-start';
     render(<SynthomaHome />);
     await waitFor(() => expect(screen.getByRole('link', { name: /POKRAČOVAT VE ČTENÍ/ })).toHaveAttribute('href', '/chapter/0-1-start'));
+  });
+
+  it('translates a legacy book path to the canonical chapter route', async () => {
+    store.lastChapterPath = '/books/SYNTHOMA-NULL/0-∞ [RESTART].html';
+    render(<SynthomaHome />);
+    await waitFor(() => expect(screen.getByRole('link', { name: /POKRAČOVAT VE ČTENÍ/ })).toHaveAttribute('href', '/chapter/0-inf-restart'));
   });
 
   it('continues an active Cyklus when no reading resume exists', async () => {

@@ -30,9 +30,7 @@ function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>)
       '@type': 'Chapter',
       'name': ch.title,
       'position': idx + 1,
-      'url': ch.id
-        ? `https://www.synthoma.cz/chapter/${ch.id}`
-        : `https://www.synthoma.cz/reader?u=${encodeURIComponent(ch.path)}`,
+      'url': `https://www.synthoma.cz/chapter/${encodeURIComponent(ch.id)}`,
       'isAccessibleForFree': ch.access === 'free',
     })),
   }));
@@ -57,7 +55,7 @@ export default async function BooksPage() {
               <ul>
                 {col.chapters.map((ch) => (
                   <li key={ch.path}>
-                    <a href={ch.id ? `/chapter/${ch.id}` : `/reader?u=${encodeURIComponent(ch.path)}`}>
+                    <a href={`/chapter/${encodeURIComponent(ch.id)}`}>
                       {ch.title}
                     </a>
                   </li>

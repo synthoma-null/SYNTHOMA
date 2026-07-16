@@ -15,6 +15,12 @@ export default function CyklusPage() {
   return (
     <main className="cyklus-page">
       <CyklusClient />
+      <section className="cyklus-public-intro" aria-labelledby="cyklus-public-intro-title">
+        <p className="cyklus-public-intro__kicker">CYKLUS // DIAGNOSTICKÁ KARETNÍ HRA</p>
+        <h1 id="cyklus-public-intro-title">Dvanáct voleb. Čtyři nestabilní hodnoty. Jeden záznam o tom, jak ses rozhodoval.</h1>
+        <p>V každém běhu volíš mezi dvěma reakcemi a držíš Energii, Paměť, Vazbu a Kontrolu mimo krajní hodnoty. Cílem není mít všechno vysoko. Cílem je nespadnout z obou stran.</p>
+        <p>První běh je zdarma a nevyžaduje přihlášení. Výsledek ukáže konec cyklu, hlavní příčiny a další stopu v Prázdnotě.</p>
+      </section>
       <section className="cyklus-ai-discovery" aria-labelledby="cyklus-ai-discovery-title">
         <p className="cyklus-ai-discovery__kicker">CYKLUS // PUBLIC INTERFACE</p>
         <h2 id="cyklus-ai-discovery-title">AI A AUTOMATIZOVANÝ PŘÍSTUP</h2>

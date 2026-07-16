@@ -45,13 +45,13 @@ export const translations = {
   'home.archive.title': { cs: 'Archiv', en: 'Archive' },
   'home.archive.teaser': { cs: 'Svět SYNTHOMY: entity, biome, signály a pravidla glitch-noir reality.', en: 'The world of SYNTHOMA: entities, biomes, signals and glitch-noir reality rules.' },
   'home.autor.title': { cs: 'AUTOR', en: 'AUTHOR' },
-  'home.autor.teaser': { cs: 'Záznam o člověku, který systém spustil.', en: 'A record of the human who started the system.' },
+  'home.autor.teaser': { cs: 'Zjisti, kdo ten systém vůbec pustil.', en: 'Find out who let the system loose.' },
   'home.game.title': { cs: 'Cyklus', en: 'Cyklus' },
   'home.game.teaser': { cs: 'Solo psychologická roguelite v univerzu SYNTHOMA. 4 staty, sektory, itemy, restarty.', en: 'Solo psychological roguelite in the SYNTHOMA universe. 4 stats, sectors, items, restarts.' },
-  'home.sector.library.detail': { cs: 'Knihy, kapitoly, pokračování', en: 'Books, chapters, continuations' },
-  'home.sector.archive.detail': { cs: 'Stopy, fragmenty, záznamy', en: 'Traces, fragments, records' },
+  'home.sector.library.detail': { cs: 'Čti příběh SYNTHOMA-NULL', en: 'Read the SYNTHOMA-NULL story' },
+  'home.sector.archive.detail': { cs: 'Poznej svět, entity a zákony paměti', en: 'Explore the world, entities, and laws of memory' },
   'home.sector.cyklus.active': { cs: 'Diagnostický běh zůstal otevřený. Systém čeká na další volbu.', en: 'The diagnostic run remains open. The system awaits another choice.' },
-  'home.sector.cyklus.new': { cs: 'Spusť nový diagnostický běh a podrob se analýze paměti.', en: 'Start a new diagnostic run and submit to memory analysis.' },
+  'home.sector.cyklus.new': { cs: 'Hraj diagnostickou karetní hru.', en: 'Play the diagnostic card game.' },
   'home.sector.cyklus.start': { cs: 'SPOUSTIT', en: 'START' },
 
   // ─── identity panel ───────────────────────────────────────────────────────

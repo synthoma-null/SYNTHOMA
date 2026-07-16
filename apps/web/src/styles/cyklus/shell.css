@@ -55,7 +55,7 @@
   min-height: 0;
 }
 
-.cyklus-page > .cyklus-ai-discovery {
+.cyklus-page > :is(.cyklus-public-intro, .cyklus-ai-discovery) {
   position: relative;
   z-index: var(--cy-z-base);
   width: min(100% - 32px, 960px);
@@ -64,6 +64,32 @@
   border-top: 1px solid var(--cy-border);
   color: var(--cy-text-muted);
   font-family: var(--cy-font-mono);
+}
+
+.cyklus-page > .cyklus-public-intro {
+  padding-bottom: var(--cy-space-5);
+}
+
+.cyklus-public-intro__kicker {
+  margin: 0 0 var(--cy-space-2);
+  color: var(--cy-accent-system);
+  font-size: var(--cy-text-micro);
+  font-weight: 700;
+}
+
+.cyklus-public-intro h1 {
+  max-width: 820px;
+  margin: 0;
+  color: var(--cy-text);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+.cyklus-public-intro p:not(.cyklus-public-intro__kicker) {
+  max-width: 760px;
+  margin: var(--cy-space-3) 0 0;
+  line-height: 1.6;
 }
 
 .cyklus-ai-discovery__kicker {

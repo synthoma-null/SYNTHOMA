@@ -19,7 +19,7 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
         const progress = progressByChapterId[ch.id];
         const isLocked = ch.access === 'locked';
         const isUnavailable = ch.access === 'unavailable';
-        const href = ch.id ? `/chapter/${encodeURIComponent(ch.id)}` : `/reader?u=${encodeURIComponent(ch.path)}`;
+        const href = `/chapter/${encodeURIComponent(ch.id)}`;
         const isContinue = progress && !progress.completed && progress.percent > 0;
         const isCompleted = progress?.completed;
 
@@ -27,19 +27,34 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
 
         return (
           <li key={ch.id || ch.path} className="library-chapter-list__item">
-            {isLocked || isUnavailable ? (
+            {isUnavailable ? (
               <button
                 className="library-chapter-list__row library-chapter-list__row--locked"
                 type="button"
-                onClick={() => { if (isLocked) onLockedClick?.(ch); }}
-                disabled={isUnavailable}
-                aria-label={`${ch.title}, ${isUnavailable ? t('books.chapter.unavailable').toLocaleLowerCase() : t('action.locked').toLocaleLowerCase()}`}
+                disabled
+                aria-label={`${ch.title}, ${t('books.chapter.unavailable').toLocaleLowerCase()}`}
               >
                 <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>
                 <span className="library-chapter-list__title">{ch.title}</span>
-                <span className="library-chapter-list__badge">{isUnavailable ? t('books.chapter.unavailable') : lockedLabel}</span>
+                <span className="library-chapter-list__badge">{t('books.chapter.unavailable')}</span>
                 {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
               </button>
+            ) : isLocked ? (
+              <Link
+                className="library-chapter-list__row library-chapter-list__row--locked"
+                href={href}
+                onClick={(event) => {
+                  if (!onLockedClick) return;
+                  event.preventDefault();
+                  onLockedClick(ch);
+                }}
+                aria-label={`${ch.title}, ${t('action.locked').toLocaleLowerCase()}`}
+              >
+                <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>
+                <span className="library-chapter-list__title">{ch.title}</span>
+                <span className="library-chapter-list__badge">{lockedLabel}</span>
+                {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
+              </Link>
             ) : (
               <Link className="library-chapter-list__row" href={href}>
                 <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>

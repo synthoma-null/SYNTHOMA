@@ -31,13 +31,18 @@ describe('LibraryChapterList', () => {
     expect(screen.getByText('ČÍST')).toBeInTheDocument();
   });
 
-  it('renders locked chapters as buttons that open a modal', () => {
+  it('renders locked chapters as canonical links enhanced by the purchase modal', () => {
     const onLockedClick = jest.fn();
     render(<LibraryChapterList collection={collection} progressByChapterId={{}} onLockedClick={onLockedClick} />);
-    const locked = screen.getByRole('button', { name: /Locked chapter, uzamčeno/ });
-    expect(locked).toBeInTheDocument();
+    const locked = screen.getByRole('link', { name: /Locked chapter, uzamčeno/ });
+    expect(locked).toHaveAttribute('href', '/chapter/ch-2');
     fireEvent.click(locked);
     expect(onLockedClick).toHaveBeenCalledWith(collection.chapters[2]);
+  });
+
+  it('contains no legacy reader-shell links', () => {
+    const { container } = render(<LibraryChapterList collection={collection} progressByChapterId={{}} />);
+    expect(container.innerHTML).not.toContain('/reader?u=');
   });
 
   it('shows chapter summary with proper typography', () => {

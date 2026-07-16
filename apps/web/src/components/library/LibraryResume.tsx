@@ -12,7 +12,7 @@ export interface LibraryResumeProps {
 
 export default function LibraryResume({ collection, chapter, percent }: LibraryResumeProps) {
   const { t } = useLang();
-  const href = chapter.id ? `/chapter/${encodeURIComponent(chapter.id)}` : `/reader?u=${encodeURIComponent(chapter.path)}`;
+  const href = `/chapter/${encodeURIComponent(chapter.id)}`;
   return (
     <section className="library-resume os-surface" aria-label={t('books.resume.aria')}>
       <div className="library-resume__meta">

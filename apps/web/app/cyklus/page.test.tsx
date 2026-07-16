@@ -14,6 +14,9 @@ describe('Cyklus public AI SSR discovery', () => {
   it('renders crawlable discovery content without running client JavaScript', () => {
     const html = renderToStaticMarkup(<CyklusPage />);
 
+    expect(html).toContain('CYKLUS // DIAGNOSTICKÁ KARETNÍ HRA');
+    expect(html).toContain('Dvanáct voleb. Čtyři nestabilní hodnoty.');
+    expect(html).toContain('První běh je zdarma a nevyžaduje přihlášení.');
     expect(html).toContain('AI A AUTOMATIZOVANÝ PŘÍSTUP');
     expect(html).toContain('href="/ai/api"');
     expect(html).toContain('href="/api/public/v1/cyklus/rules"');

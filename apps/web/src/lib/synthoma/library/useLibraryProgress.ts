@@ -89,5 +89,5 @@ export function getResumeChapter(collections: LibraryCollection[], byCollection:
 
 export function pathToHref(path: string, chapterId: string): string {
   if (chapterId) return `/chapter/${encodeURIComponent(chapterId)}`;
-  return `/reader?u=${encodeURIComponent(path)}`;
+  return '/books';
 }

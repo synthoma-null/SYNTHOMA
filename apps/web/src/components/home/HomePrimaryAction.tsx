@@ -4,20 +4,13 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { readLastChapterPath } from '../../lib/readerState';
 import { hasActiveCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { resolveResumeHref } from '../../lib/synthoma/library/getResumeTarget';
 
 type HomeAction = { href: string; label: string; detail: string; code: string };
 
-function readingHref(path: string) {
-  const api = path.match(/^\/api\/chapter\/([^/?]+)/);
-  if (api) return `/chapter/${encodeURIComponent(decodeURIComponent(api[1] ?? ''))}`;
-  if (path.startsWith('/chapter/')) return path;
-  if (path.startsWith('/books/')) return `/reader?u=${encodeURIComponent(path)}`;
-  return path.startsWith('/') ? path : `/reader?u=${encodeURIComponent(path)}`;
-}
-
 export function resolveHomeAction(): HomeAction {
   const reading = readLastChapterPath();
-  if (reading) return { href: readingHref(reading), label: 'POKRAČOVAT VE ČTENÍ', detail: 'Obnovit poslední paměťovou stopu.', code: 'RESUME // READER' };
+  if (reading) return { href: resolveResumeHref(reading), label: 'POKRAČOVAT VE ČTENÍ', detail: 'Obnovit poslední paměťovou stopu.', code: 'RESUME // READER' };
   if (hasActiveCyklusRun()) return { href: '/cyklus', label: 'POKRAČOVAT V CYKLU', detail: 'Diagnostický běh zůstal otevřený.', code: 'RESUME // CYKLUS' };
   return { href: '/books', label: 'VSTOUPIT DO SYNTHOMY', detail: 'Otevřít první dostupnou paměť.', code: 'SUBJECT // NEW' };
 }

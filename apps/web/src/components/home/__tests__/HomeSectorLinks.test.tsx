@@ -25,7 +25,7 @@ describe('HomeSectorLinks', () => {
     expect(screen.getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
     const author = screen.getByRole('link', { name: /AUTOR/ });
     expect(author).toHaveAttribute('href', '/autor');
-    expect(author).toHaveTextContent('Záznam o člověku, který systém spustil.');
+    expect(author).toHaveTextContent('Zjisti, kdo ten systém vůbec pustil.');
     author.focus();
     expect(author).toHaveFocus();
   });
@@ -35,7 +35,7 @@ describe('HomeSectorLinks', () => {
     render(<LangProvider><LangSwitcher /><HomeSectorLinks /></LangProvider>);
     fireEvent.click(screen.getByRole('button', { name: 'English' }));
     const author = await screen.findByRole('link', { name: /AUTHOR/ });
-    await waitFor(() => expect(author).toHaveTextContent('A record of the human who started the system.'));
+    await waitFor(() => expect(author).toHaveTextContent('Find out who let the system loose.'));
     expect(author).toHaveAttribute('href', '/autor');
     expect(screen.getAllByText('OPEN')).toHaveLength(3);
     expect(screen.queryByText('READ')).not.toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('HomeSectorLinks', () => {
     render(<HomeSectorLinks />);
     const cyklus = screen.getByRole('link', { name: /CYKLUS/ });
     expect(cyklus).toHaveClass('home-sector-link--featured');
-    expect(screen.getByText('Spusť nový diagnostický běh a podrob se analýze paměti.')).toBeInTheDocument();
+    expect(screen.getByText('Hraj diagnostickou karetní hru.')).toBeInTheDocument();
     expect(screen.getByText('SPOUSTIT')).toBeInTheDocument();
   });
 
