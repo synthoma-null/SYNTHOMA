@@ -1,6 +1,7 @@
 import type { ChapterCatalogEntry } from '../../../src/content/catalog';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 import { PUBLIC_CONTENT_UPDATED_AT } from '../../../src/server/public-ai/config';
+import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 
 const BASE_URL = 'https://www.synthoma.cz';
 
@@ -14,6 +15,11 @@ interface Props {
 export default function ChapterStructuredData({ chapter, locale, accessibleForFree, wordCount }: Props) {
   const canonical = `${BASE_URL}${chapter.route}${locale === 'en' ? '?locale=en' : ''}`;
   const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
+  const description = locale === 'en'
+    ? (chapter.metadata?.teaserEn ?? chapter.summary ?? '')
+    : (chapter.metadata?.teaser ?? chapter.summary ?? '');
+  const presentation = getChapterPresentation(chapter.id);
+  const image = `${BASE_URL}${presentation?.poster ?? '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png'}`;
   const data = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -26,8 +32,20 @@ export default function ChapterStructuredData({ chapter, locale, accessibleForFr
         isPartOf: { '@type': 'Book', '@id': `${BASE_URL}/books#book`, name: 'SYNTHOMA-NULL', url: `${BASE_URL}/books` },
         inLanguage: locale,
         isAccessibleForFree: accessibleForFree,
+        description,
+        image,
         ...(typeof wordCount === 'number' ? { wordCount } : {}),
         dateModified: PUBLIC_CONTENT_UPDATED_AT,
+        url: canonical,
+      },
+      {
+        '@type': 'CreativeWork',
+        '@id': `${canonical}#creative-work`,
+        name: title,
+        description,
+        image,
+        inLanguage: locale,
+        isPartOf: { '@id': `${BASE_URL}/books#book` },
         url: canonical,
       },
       {

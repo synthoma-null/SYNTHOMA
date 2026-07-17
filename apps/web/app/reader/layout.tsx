@@ -2,13 +2,11 @@
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: 'Čtečka | SYNTHOMA',
-  description: 'Interaktivní čtečka pro glitch-noir příběhy v univerzu SYNTHOMA.',
-  alternates: {
-    canonical: 'https://www.synthoma.cz/reader',
-  },
+  title: 'Přesměrování kapitoly | SYNTHOMA',
+  description: 'Kompatibilní přesměrování na kanonickou stránku kapitoly SYNTHOMA-NULL.',
+  alternates: { canonical: 'https://www.synthoma.cz/books' },
   robots: {
-    index: true,
+    index: false,
     follow: true,
   },
 };

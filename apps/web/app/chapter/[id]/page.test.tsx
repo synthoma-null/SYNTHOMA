@@ -58,7 +58,10 @@ describe('/chapter/[id] server route contract', () => {
     expect(structuredData['@graph'][0]).toMatchObject({
       '@type': 'Chapter', isAccessibleForFree: true, inLanguage: 'cs', isPartOf: { '@type': 'Book' },
     });
-    expect(structuredData['@graph'][1]).toMatchObject({ '@type': 'BreadcrumbList' });
+    expect(structuredData['@graph']).toEqual(expect.arrayContaining([
+      expect.objectContaining({ '@type': 'CreativeWork' }),
+      expect.objectContaining({ '@type': 'BreadcrumbList' }),
+    ]));
     renderedFree.unmount();
 
     const englishChapter = await ChapterPage({ params: Promise.resolve({ id: '0-0-null' }), searchParams: Promise.resolve({ locale: 'en' }) });

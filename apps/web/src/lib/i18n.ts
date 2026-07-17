@@ -14,7 +14,7 @@ export const translations = {
 
   // ─── layout ───────────────────────────────────────────────────────────────
   'layout.skip': { cs: 'Přeskočit na obsah', en: 'Skip to content' },
-  'layout.noscript.p1': { cs: 'Cyberpunková interaktivní čtečka vyžaduje JavaScript pro plný zážitek.', en: 'The cyberpunk interactive reader requires JavaScript for the full experience.' },
+  'layout.noscript.p1': { cs: 'Interaktivní román, karetní hra a živý archiv vyžadují JavaScript pro plný zážitek.', en: 'The interactive novel, card game, and living archive require JavaScript for the full experience.' },
   'layout.noscript.p2.pre': { cs: 'Zapněte JavaScript nebo navštivte ', en: 'Enable JavaScript or visit the ' },
   'layout.noscript.p2.link': { cs: 'knihovnu', en: 'library' },
   'layout.noscript.p2.post': { cs: ' pro statický obsah.', en: ' for static content.' },
@@ -33,7 +33,7 @@ export const translations = {
   'layout.panel.tts.off': { cs: 'TTS: Vypnuto 🔇', en: 'TTS: Off 🔇' },
 
   // ─── home ─────────────────────────────────────────────────────────────────
-  'home.subtitle': { cs: 'Interaktivní čtečka o paměti, identitě a systému, který se naučil bolet.', en: 'An interactive reader about memory, identity, and a system that learned to hurt.' },
+  'home.subtitle': { cs: 'Interaktivní psychologický román, diagnostická karetní hra a živý archiv.', en: 'An interactive psychological novel, a diagnostic card game, and a living archive.' },
   'home.aria': { cs: 'Hlavní menu', en: 'Main menu' },
   'home.menu.aria': { cs: 'Primární navigace', en: 'Primary navigation' },
   'home.continue': { cs: 'Pokračovat ve čtení', en: 'Continue reading' },

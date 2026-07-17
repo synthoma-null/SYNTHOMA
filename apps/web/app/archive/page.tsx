@@ -11,7 +11,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Archiv | SYNTHOMA',
-  description: 'Archiv lore, pojmů, entit a fragmentů univerza SYNTHOMA.',
+  description: 'Živý archiv světa SYNTHOMA: entity, zákony paměti a stopy rozbitého terapeutického systému.',
   alternates: {
     canonical: 'https://www.synthoma.cz/archive',
   },

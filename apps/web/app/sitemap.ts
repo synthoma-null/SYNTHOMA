@@ -7,7 +7,7 @@ import { PUBLIC_CONTENT_UPDATED_AT, PUBLIC_SITE_URL } from '../src/server/public
 const LAST_MODIFIED = new Date(PUBLIC_CONTENT_UPDATED_AT);
 
 function localized(url: string): Pick<MetadataRoute.Sitemap[number], 'alternates'> {
-  return { alternates: { languages: { cs: url, en: `${url}${url.includes('?') ? '&' : '?'}locale=en` } } };
+  return { alternates: { languages: { cs: url, en: `${url}${url.includes('?') ? '&' : '?'}locale=en`, 'x-default': url } } };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const chapterPages: MetadataRoute.Sitemap = CHAPTER_CATALOG
+    .filter((chapter) => chapter.availability === 'published')
     .map((ch) => ({
       url: `${PUBLIC_SITE_URL}/chapter/${ch.id}`,
       lastModified: LAST_MODIFIED,

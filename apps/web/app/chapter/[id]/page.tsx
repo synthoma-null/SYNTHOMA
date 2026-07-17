@@ -35,7 +35,9 @@ export async function generateMetadata(
   const chapterUrl = `${BASE_URL}${chapter.route}`;
   const canonicalUrl = `${chapterUrl}${locale === 'en' ? '?locale=en' : ''}`;
   const presentation = getChapterPresentation(chapter.id);
-  const image = presentation ? `${BASE_URL}${presentation.poster}` : DEFAULT_OG_IMAGE;
+  const image = presentation
+    ? `${chapterUrl}/opengraph-image`
+    : DEFAULT_OG_IMAGE;
   const indexable = chapter.availability === 'published';
 
   return {

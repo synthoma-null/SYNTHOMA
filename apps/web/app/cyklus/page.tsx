@@ -4,7 +4,7 @@ import CyklusClient from '../../src/components/cyklus/CyklusClient';
 
 export const metadata: Metadata = {
   title: 'SYNTHOMA: CYKLUS',
-  description: 'Swipe-based psychological roguelite. Balance stats, collect items, survive the cycles.',
+  description: 'Diagnostická karetní hra SYNTHOMA. Dvanáct voleb, čtyři nestabilní hodnoty a záznam toho, jak ses rozhodoval.',
   alternates: {
     canonical: 'https://www.synthoma.cz/cyklus',
     types: { 'application/json': '/api/public/v1/cyklus/rules' },

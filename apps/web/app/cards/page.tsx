@@ -5,7 +5,7 @@ import '../../src/styles/public-ai.css';
 
 export const metadata: Metadata = {
   title: 'Katalog karet Cyklus | SYNTHOMA',
-  description: 'Veřejný katalog karet narativní hry Cyklus.',
+  description: 'Veřejný katalog karet diagnostické hry Cyklus ze světa SYNTHOMA.',
   alternates: { canonical: 'https://www.synthoma.cz/cards' },
 };
 

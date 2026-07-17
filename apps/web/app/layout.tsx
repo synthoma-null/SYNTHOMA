@@ -87,7 +87,7 @@ export const metadata: Metadata = {
 
   title: "SYNTHOMA",
 
-  description: "Glitch-noir psychologický horor, interaktivní literatura a diagnostická hra v rozhraní SYNTHOMA OS.",
+  description: "SYNTHOMA je interaktivní psychologický román, diagnostická karetní hra a živý archiv v rozbitém terapeutickém systému.",
 
   icons: {
 
@@ -137,7 +137,7 @@ export const metadata: Metadata = {
 
     title: "SYNTHOMA",
 
-    description: "Glitch-noir interaktivní literatura a diagnostická hra v rozhraní SYNTHOMA OS.",
+    description: "Interaktivní psychologický román, diagnostická karetní hra a živý archiv v rozbitém terapeutickém systému.",
 
     siteName: "SYNTHOMA",
 
@@ -145,13 +145,13 @@ export const metadata: Metadata = {
 
       {
 
-        url: "/assets/og-synthoma.jpg",
+        url: "/assets/og-synthoma.png",
 
         width: 1200,
 
         height: 630,
 
-        alt: "SYNTHOMA – cyberpunková interaktivní čtečka",
+        alt: "SYNTHOMA — interaktivní román, karetní hra a živý archiv",
 
       },
 
@@ -167,9 +167,9 @@ export const metadata: Metadata = {
 
     title: "SYNTHOMA",
 
-    description: "Glitch-noir interaktivní literatura a diagnostická hra v rozhraní SYNTHOMA OS.",
+    description: "Interaktivní psychologický román, diagnostická karetní hra a živý archiv v rozbitém terapeutickém systému.",
 
-    images: ["/assets/og-synthoma.jpg"],
+    images: ["/assets/og-synthoma.png"],
 
   },
 
@@ -202,7 +202,7 @@ const jsonLd = {
       "inLanguage": ["cs", "en"],
       "genre": ["Cyberpunk", "Interactive Fiction", "Glitch Noir"],
       "isAccessibleForFree": true,
-      "image": "https://www.synthoma.cz/assets/og-synthoma.jpg",
+      "image": "https://www.synthoma.cz/assets/og-synthoma.png",
       "hasPart": [
         { "@type": "Book", "name": "SYNTHOMA-NULL", "url": "https://www.synthoma.cz/books" },
         { "@type": "CollectionPage", "name": "Archiv SYNTHOMA", "url": "https://www.synthoma.cz/archive" },
@@ -248,7 +248,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
             <h1>SYNTHOMA</h1>
 
-            <p>Cyberpunková interaktivní čtečka vyžaduje JavaScript pro plný zážitek.</p>
+            <p>Interaktivní román, karetní hra a živý archiv vyžadují JavaScript pro plný zážitek.</p>
 
             <p>Zapněte JavaScript nebo navštivte <a href="/books">knihovnu</a> pro statický obsah.</p>
 

@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Knihovna | SYNTHOMA',
-  description: 'Knihovna interaktivních glitch-noir příběhů v univerzu SYNTHOMA.',
+  description: 'Čti interaktivní psychologický román SYNTHOMA-NULL. Bezplatný začátek nevyžaduje přihlášení.',
   alternates: {
     canonical: 'https://www.synthoma.cz/books',
   },
@@ -25,7 +25,6 @@ function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>)
     'url': 'https://www.synthoma.cz/books',
     'inLanguage': 'cs',
     'author': { '@type': 'Person', 'name': 'Tomáš Valíček' },
-    'publisher': { '@type': 'Organization', 'name': 'SYNTHOMA', 'url': 'https://www.synthoma.cz' },
     'hasPart': col.chapters.map((ch, idx) => ({
       '@type': 'Chapter',
       'name': ch.title,
