@@ -1,7 +1,7 @@
-import { readFile } from 'node:fs/promises';
 import { GET } from './route';
 import { auth } from '../../../../auth';
 import { getContentAccess } from '../../../../src/server/economy';
+import { readChapterDocument } from '../../../../src/server/chapters/chapterDocument';
 
 jest.mock('next/server', () => {
   class MockNextResponse {
@@ -29,7 +29,7 @@ jest.mock('../../../../src/server/economy', () => ({ getContentAccess: jest.fn()
 jest.mock('../../../../src/server/runtimeDatabase', () => ({
   reportRuntimeDatabaseError: jest.fn(() => ({ correlationId: 'chapter-correlation-1' })),
 }));
-jest.mock('node:fs/promises', () => ({ readFile: jest.fn() }));
+jest.mock('../../../../src/server/chapters/chapterDocument', () => ({ readChapterDocument: jest.fn() }));
 
 function request(chapterId: string) {
   return GET(
@@ -57,7 +57,12 @@ describe('GET /api/chapter/[chapterId]', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (auth as jest.Mock).mockResolvedValue(null);
-    (readFile as jest.Mock).mockResolvedValue('<article>chapter body</article>');
+    (readChapterDocument as jest.Mock).mockResolvedValue({
+      bodyHtml: '<article>chapter body</article>',
+      sourceHtml: '<article>chapter body</article>',
+      sourceLocale: 'cs',
+      wordCount: 2,
+    });
   });
 
   it.each([
@@ -81,7 +86,7 @@ describe('GET /api/chapter/[chapterId]', () => {
 
     expect(response.status).toBe(403);
     expect(payload.error).toBe('CONTENT_LOCKED');
-    expect(readFile).not.toHaveBeenCalled();
+    expect(readChapterDocument).not.toHaveBeenCalled();
   });
 
   it('distinguishes unavailable and unknown chapters before database access', async () => {
@@ -109,6 +114,6 @@ describe('GET /api/chapter/[chapterId]', () => {
       correlationId: 'chapter-correlation-1',
       retryable: true,
     });
-    expect(readFile).not.toHaveBeenCalled();
+    expect(readChapterDocument).not.toHaveBeenCalled();
   });
 });

@@ -8,8 +8,9 @@ import type { SwipeCard } from '../../game/cyklus/cyklusTypes';
 import { normalizeArchiveCards } from '../../lib/synthoma/archive/normalizeArchiveEntries';
 import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
 import type { ArchiveCardData } from '../../../app/archive/ArchiveClient';
+import { readChapterDocument } from '../chapters/chapterDocument';
 import { absolutePublicUrl, PUBLIC_CONTENT_UPDATED_AT, type PublicLocale } from './config';
-import { canonicalHtmlToMarkdown, canonicalHtmlToText, countWords, sanitizeCanonicalHtml } from './htmlContent';
+import { canonicalHtmlToMarkdown, canonicalHtmlToText, sanitizeCanonicalHtml } from './htmlContent';
 import {
   resolveArchivePublicVisibility,
   resolveCardPublicVisibility,
@@ -36,38 +37,24 @@ export interface PublicChapterDocument {
   nextId: string | null;
 }
 
-function chapterSourcePath(chapter: NonNullable<ReturnType<typeof getChapterCatalogEntry>>, locale: PublicLocale): string | null {
-  if (chapter.accessPolicy !== 'free' || chapter.availability !== 'published') return null;
-  const filename = locale === 'en' ? chapter.filenameEn ?? chapter.filename : chapter.filename;
-  return path.join(process.cwd(), 'public', 'books', chapter.collection, filename);
-}
-
 export async function getPublicChapterDocument(reference: string, locale: PublicLocale): Promise<PublicChapterDocument | null> {
   const chapter = getChapterCatalogEntry(reference);
   if (!chapter) return null;
   const visibility = resolveChapterPublicVisibility(chapter);
   const index = CHAPTER_CATALOG.findIndex((entry) => entry.id === chapter.id);
-  const sourcePath = chapterSourcePath(chapter, locale);
   let bodyHtml: string | null = null;
   let text: string | null = null;
   let markdown: string | null = null;
   let wordCount: number | null = null;
   let sourceLocale: PublicLocale = locale;
 
-  if (visibility === 'publicFull' && sourcePath) {
-    let source: string;
-    try {
-      source = await fs.readFile(sourcePath, 'utf8');
-    } catch {
-      const fallback = chapterSourcePath(chapter, 'cs');
-      if (!fallback) throw new Error(`Missing public chapter source for ${chapter.id}`);
-      source = await fs.readFile(fallback, 'utf8');
-      sourceLocale = 'cs';
-    }
-    bodyHtml = sanitizeCanonicalHtml(source);
-    text = canonicalHtmlToText(source);
-    markdown = canonicalHtmlToMarkdown(source);
-    wordCount = countWords(text);
+  if (visibility === 'publicFull') {
+    const document = await readChapterDocument(chapter, locale);
+    bodyHtml = document.bodyHtml;
+    text = canonicalHtmlToText(document.bodyHtml);
+    markdown = canonicalHtmlToMarkdown(document.sourceHtml);
+    wordCount = document.wordCount;
+    sourceLocale = document.sourceLocale;
   }
 
   const status = chapter.availability !== 'published'

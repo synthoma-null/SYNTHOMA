@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFile } from 'fs/promises';
-import path from 'path';
 import { auth } from '../../../../auth';
 import { getChapterCatalogEntry, type ContentAccess } from '../../../../src/content/catalog';
 import { getContentAccess } from '../../../../src/server/economy';
 import { reportRuntimeDatabaseError } from '../../../../src/server/runtimeDatabase';
-
-const FREE_DIR = path.join(process.cwd(), 'public', 'books', 'SYNTHOMA-NULL');
-const PROTECTED_DIR = path.join(process.cwd(), 'src', 'content', 'protected', 'SYNTHOMA-NULL');
-
-function safeFilename(filename: string): string | null {
-  const base = path.basename(filename);
-  if (base !== filename || base.includes('..') || base.includes('/') || base.includes('\\')) return null;
-  return base;
-}
+import { readChapterDocument } from '../../../../src/server/chapters/chapterDocument';
 
 export async function GET(
   req: NextRequest,
@@ -57,17 +47,10 @@ export async function GET(
     );
   }
 
-  const lang = req.nextUrl.searchParams.get('lang');
-  const rawFilename = lang === 'en' && chapter.filenameEn ? chapter.filenameEn : chapter.filename;
-  const safeFile = safeFilename(rawFilename);
-  if (!safeFile) {
-    return NextResponse.json({ error: 'INVALID_PATH' }, { status: 500 });
-  }
-
-  const dir = chapter.accessPolicy === 'free' ? FREE_DIR : PROTECTED_DIR;
+  const locale = req.nextUrl.searchParams.get('lang') === 'en' ? 'en' : 'cs';
   try {
-    const html = await readFile(path.join(dir, safeFile), 'utf-8');
-    return new NextResponse(html, {
+    const document = await readChapterDocument(chapter, locale);
+    return new NextResponse(document.sourceHtml, {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
@@ -76,7 +59,7 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error('[chapter/file-missing]', { chapterId: chapter.id, filename: safeFile, error });
+    console.error('[chapter/file-missing]', { chapterId: chapter.id, filename: chapter.filename, error });
     return NextResponse.json(
       { error: 'CONTENT_FILE_MISSING', message: 'Publikovaný fragment nelze bezpečně načíst.' },
       { status: 500 },

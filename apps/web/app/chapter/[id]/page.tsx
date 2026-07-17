@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { auth } from '../../../auth';
 import { getChapterCatalogEntry } from '../../../src/content/catalog';
 import type { ContentAccess } from '../../../src/content/catalog';
 import { getContentAccess } from '../../../src/server/economy';
 import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
 import { getPublicChapterDocument } from '../../../src/server/public-ai/contentService';
+import { readChapterDocument } from '../../../src/server/chapters/chapterDocument';
 import ChapterAccessGate from './ChapterAccessGate';
-import PublicChapterArticle from './PublicChapterArticle';
+import ChapterReaderArticle from './ChapterReaderArticle';
 
 const BASE_URL = 'https://www.synthoma.cz';
 const OG_IMAGE = `${BASE_URL}/assets/og-synthoma.jpg`;
@@ -78,7 +79,13 @@ export default async function ChapterPage(
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <PublicChapterArticle chapter={publicChapter} />
+        <ChapterReaderArticle
+          chapter={chapter}
+          locale={locale}
+          sourceLocale={publicChapter.sourceLocale}
+          bodyHtml={publicChapter.bodyHtml}
+          publicMachineLinks
+        />
       </>
     );
   }
@@ -111,7 +118,17 @@ export default async function ChapterPage(
       />
     );
   }
-  if (access.canAccess) redirect(`/reader?chapter=${encodeURIComponent(chapter.id)}`);
+  if (access.canAccess) {
+    const document = await readChapterDocument(chapter, locale);
+    return (
+      <ChapterReaderArticle
+        chapter={chapter}
+        locale={locale}
+        sourceLocale={document.sourceLocale}
+        bodyHtml={document.bodyHtml}
+      />
+    );
+  }
 
   return (
     <ChapterAccessGate

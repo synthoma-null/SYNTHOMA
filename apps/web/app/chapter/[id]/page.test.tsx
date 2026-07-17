@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import ChapterPage from './page';
 import { auth } from '../../../auth';
 import { getContentAccess } from '../../../src/server/economy';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 jest.mock('../../../auth', () => ({ auth: jest.fn() }));
 jest.mock('../../../src/server/economy', () => ({ getContentAccess: jest.fn() }));
@@ -16,7 +16,7 @@ jest.mock('../../../src/components/access/ContentPurchaseDialog', () => ({
 }));
 jest.mock('next/navigation', () => ({
   notFound: jest.fn(() => { throw new Error('NEXT_NOT_FOUND'); }),
-  redirect: jest.fn((target: string) => { throw new Error(`NEXT_REDIRECT:${target}`); }),
+  permanentRedirect: jest.fn((target: string) => { throw new Error(`NEXT_REDIRECT:${target}`); }),
   useRouter: jest.fn(() => ({ refresh: jest.fn(), replace: jest.fn() })),
 }));
 
@@ -46,7 +46,7 @@ describe('/chapter/[id] server route contract', () => {
     (auth as jest.Mock).mockResolvedValue(null);
   });
 
-  it('renders a free chapter as semantic server HTML and redirects an owned chapter to Reader', async () => {
+  it('renders free and owned chapters as semantic server HTML', async () => {
     const freeChapter = await ChapterPage(params('0-0-null'));
     const renderedFree = render(freeChapter);
     expect(screen.getByRole('main')).toBeInTheDocument();
@@ -66,8 +66,9 @@ describe('/chapter/[id] server route contract', () => {
     renderedEnglish.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'owned', canAccess: true, canPurchase: false }));
-    await expect(ChapterPage(params('0-4-defragmentation'))).rejects.toThrow('NEXT_REDIRECT:/reader?chapter=0-4-defragmentation');
-    expect(redirect).toHaveBeenCalledTimes(1);
+    const ownedChapter = await ChapterPage(params('0-4-defragmentation'));
+    render(ownedChapter);
+    expect(screen.getByRole('article', { name: '0-4 [DEFRAGMENTATION]' })).toHaveTextContent('Defragmentace neznamená uzdravení');
   });
 
   it('renders purchase and unavailable states for known chapters', async () => {
@@ -75,6 +76,7 @@ describe('/chapter/[id] server route contract', () => {
     const locked = await ChapterPage(params('0-4-defragmentation'));
     const rendered = render(locked);
     expect(screen.getByRole('button', { name: 'ODEMKNOUT ZA 64 MNEM' })).toBeInTheDocument();
+    expect(rendered.container).not.toHaveTextContent('Defragmentace neznamená uzdravení');
     rendered.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValueOnce(access({ state: 'unavailable', canPurchase: false, mnemCost: null }));
