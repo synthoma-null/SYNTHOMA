@@ -14,7 +14,7 @@ function movingBackgroundAllowed(): boolean {
   if (typeof window === 'undefined') return false;
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
   const animationsDisabled = window.localStorage.getItem('animationsDisabled') === 'true';
-  const movingBackground = readUiPreferences().movingBackground;
+  const movingBackground = readUiPreferences().backgroundMotion !== 'off';
   const connection = (navigator as Navigator & { connection?: NetworkInformationLike }).connection;
   return movingBackground && !reducedMotion && !animationsDisabled && connection?.saveData !== true;
 }

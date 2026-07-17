@@ -2,24 +2,17 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { UI_THEMES } from '../../src/lib/themes';
+import { readUiPreferences, updateUiPreferences } from '../../src/lib/uiPreferences';
 import { useAccess, type ClientAccessSnapshot } from '../../src/components/access/AccessProvider';
 
 type Theme = { id: string; label: string; cost: number; description: string; palette: readonly [string, string, string]; unlocked: boolean };
 
-const STORAGE_KEY = 'theme';
-
 function readTheme(): string {
-  try {
-    return localStorage.getItem(STORAGE_KEY) || 'synthoma';
-  } catch {
-    return 'synthoma';
-  }
+  return readUiPreferences().theme;
 }
 
 function writeTheme(theme: string) {
-  try {
-    localStorage.setItem(STORAGE_KEY, theme);
-  } catch {}
+  updateUiPreferences({ theme });
 }
 
 function applyTheme(theme: string) {

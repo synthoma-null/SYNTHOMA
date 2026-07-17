@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { getSharedAudio } from "../../src/lib/audio";
 
 import { readBooleanStorage, readNumberStorage, readStorage, removeStorage, writeStorage } from "../../src/lib/browser";
-import { readUiPreferences, setMovingBackground } from "../../src/lib/uiPreferences";
+import { getEffectiveMotionMode, readUiPreferences, setMovingBackground, updateUiPreferences } from "../../src/lib/uiPreferences";
 
 
 
@@ -123,11 +123,11 @@ export default function ControlPanelClient() {
 
       toggleAll: function () {
 
-        const disabled = readFlag("animationsDisabled", false);
+        const disabled = readUiPreferences().motionMode === 'off';
 
         const next = !disabled;
 
-        writeText("animationsDisabled", String(next));
+        updateUiPreferences({ motionMode: next ? 'off' : 'system' });
 
         body.classList.toggle("no-animations", next);
 
@@ -223,7 +223,8 @@ export default function ControlPanelClient() {
 
       try {
 
-        const areDisabled = readFlag("animationsDisabled", false);
+        const preferences = readUiPreferences();
+        const areDisabled = getEffectiveMotionMode(preferences) === 'off';
 
         body.classList.toggle("no-animations", areDisabled);
 
@@ -261,13 +262,13 @@ export default function ControlPanelClient() {
 
         }
 
-        const fs = readStorage("fontSizeMultiplier", null);
+        const fs = String(preferences.fontScale);
 
         if (fs) root.style.setProperty("--font-size-multiplier", fs);
 
         // Initialize global panel opacity for glass panels
 
-        const pa = readStorage("panelAlpha", null);
+        const pa = String(preferences.readerOpacity);
 
         if (pa) {
 
@@ -287,7 +288,7 @@ export default function ControlPanelClient() {
 
         }
 
-        const op = readStorage("readerBgOpacity", null);
+        const op = String(preferences.readerOpacity);
 
         if (op) {
 
@@ -321,7 +322,7 @@ export default function ControlPanelClient() {
 
         // Glass mode
 
-        const isGlass = readFlag("glassMode", false);
+        const isGlass = preferences.glassEnabled;
 
         body.classList.toggle("glass-mode", isGlass);
 
@@ -359,7 +360,7 @@ export default function ControlPanelClient() {
 
         });
 
-        const savedBlur = readText("glassBlur", "12");
+        const savedBlur = String(preferences.glassBlur);
 
         // jednotná root proměnná pro blur + kompatibilní --glass-blur
 
@@ -655,7 +656,7 @@ export default function ControlPanelClient() {
 
       function updateButtonState() {
 
-        const areAnimationsDisabled = readFlag("animationsDisabled", false);
+        const areAnimationsDisabled = readUiPreferences().motionMode === 'off';
 
         if (toggleAnimationsBtn){
 
@@ -665,8 +666,8 @@ export default function ControlPanelClient() {
 
         }
 
-        const isGlass = readFlag("glassMode", false);
-        const movingBackground = readUiPreferences().movingBackground;
+        const isGlass = readUiPreferences().glassEnabled;
+        const movingBackground = readUiPreferences().backgroundMotion !== 'off';
         if (toggleMovingBackgroundBtn) {
           toggleMovingBackgroundBtn.textContent = movingBackground
             ? cp('Pohyblivé pozadí: Zapnuto', 'Moving background: On')
@@ -693,11 +694,11 @@ export default function ControlPanelClient() {
 
       // 🎛️ NOVÝ SYNCHRONIZOVANÝ SYSTÉM PRO SLIDERY A GLASS MODE
 
-      let currentGlassMode = readFlag('glassMode', false);
+      let currentGlassMode = readUiPreferences().glassEnabled;
 
-      let currentOpacity = readNum("readerBgOpacity", 0.85);
+      let currentOpacity = readUiPreferences().readerOpacity;
 
-      let currentBlur = Math.round(readNum("glassBlur", 12));
+      let currentBlur = Math.round(readUiPreferences().glassBlur);
 
       currentBlur = Math.max(0, Math.min(24, currentBlur));
 
@@ -783,7 +784,7 @@ export default function ControlPanelClient() {
 
         }
 
-        try { writeText('glassMode', String(isGlass)); } catch {}
+        try { updateUiPreferences({ glassEnabled: isGlass }); } catch {}
 
         // Update label and value indicator
 
@@ -805,7 +806,7 @@ export default function ControlPanelClient() {
 
       if (fontSizeSlider) {
 
-        const savedFontSize = readText("fontSizeMultiplier", "1");
+        const savedFontSize = String(readUiPreferences().fontScale);
 
         fontSizeSlider.value = savedFontSize;
 
@@ -821,7 +822,9 @@ export default function ControlPanelClient() {
 
           const target = e.target as HTMLInputElement;
 
-          applySetting("fontSizeMultiplier", target.value, "--font-size-multiplier");
+          updateUiPreferences({ fontScale: Number(target.value) });
+          root.style.setProperty("--font-size-multiplier", target.value);
+          body.style.setProperty("--font-size-multiplier", target.value);
 
           updateFontSizeOutput(target.value);
 
@@ -937,7 +940,7 @@ export default function ControlPanelClient() {
 
             setReaderVar('--bg-blur', `${currentBlur}px`);
 
-            try { writeText("glassBlur", String(currentBlur)); } catch {}
+            try { updateUiPreferences({ glassBlur: currentBlur }); } catch {}
 
           } else {
 
@@ -951,7 +954,7 @@ export default function ControlPanelClient() {
 
             setReaderVar('--bg-opacity', String(c));
 
-            try { writeText("readerBgOpacity", val.toString()); } catch {}
+            try { updateUiPreferences({ readerOpacity: val }); } catch {}
 
             // glow doplněk
 
@@ -969,7 +972,7 @@ export default function ControlPanelClient() {
 
           root.style.setProperty("--panel-alpha", String(c));
 
-          try { writeText("panelAlpha", String(c)); } catch {}
+          root.style.setProperty("--panel-alpha", String(c));
 
         };
 
@@ -1786,7 +1789,7 @@ export default function ControlPanelClient() {
 
       const onTtsToggle = () => {
 
-        const on = readFlag('ttsOn', false);
+        const on = readUiPreferences().ttsEnabled;
 
         ttsEnabled = on;
 
@@ -1806,7 +1809,7 @@ export default function ControlPanelClient() {
 
       // Počáteční stav TTS tlačítka a auto-start dle localStorage
 
-      const ttsInitOn = readFlag('ttsOn', false);
+      const ttsInitOn = readUiPreferences().ttsEnabled;
 
       ttsEnabled = ttsInitOn;
 
@@ -1878,7 +1881,7 @@ export default function ControlPanelClient() {
 
             try { el.textContent = next ? cp('TTS: Zapnuto 🔊', 'TTS: On 🔊') : cp('TTS: Vypnuto 🔇', 'TTS: Off 🔇'); } catch {}
 
-            try { writeText('ttsOn', String(next)); } catch {}
+            try { updateUiPreferences({ ttsEnabled: next }); } catch {}
 
             try { document.dispatchEvent(new CustomEvent('synthoma:tts-toggle')); } catch {}
 
@@ -1917,7 +1920,7 @@ export default function ControlPanelClient() {
           } else if ((btn as HTMLElement).id === 'toggle-moving-background') {
 
             try { ev.preventDefault(); ev.stopPropagation(); } catch {}
-            setMovingBackground(!readUiPreferences().movingBackground);
+            setMovingBackground(readUiPreferences().backgroundMotion === 'off');
             updateButtonState();
 
           } else if ((btn as HTMLElement).id === 'toggle-glass') {

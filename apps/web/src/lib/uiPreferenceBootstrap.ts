@@ -1,0 +1,41 @@
+import { UI_PREFERENCES_KEY, UI_PREFERENCES_VERSION } from './uiPreferences';
+
+export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
+  const key=${JSON.stringify(UI_PREFERENCES_KEY)};
+  const version=${UI_PREFERENCES_VERSION};
+  const root=document.documentElement;
+  const clamp=(value,min,max,fallback)=>{const n=Number(value);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback};
+  let raw={};try{raw=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
+  const legacy=raw.version!==version;
+  const legacyValue=(name,fallback)=>{try{const value=localStorage.getItem(name);return value===null?fallback:value}catch{return fallback}};
+  const theme=legacy?legacyValue('theme','synthoma'):(typeof raw.theme==='string'?raw.theme:'synthoma');
+  const motionMode=legacy?(legacyValue('animationsDisabled','false')==='true'?'off':'system'):(['system','full','reduced','off'].includes(raw.motionMode)?raw.motionMode:'system');
+  const systemReduced=matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
+  const motion=motionMode==='system'?(systemReduced?'reduced':'full'):motionMode;
+  const oldMoving=legacy&&raw.version===1&&raw.movingBackground===false;
+  const backgroundPref=legacy?(oldMoving?'off':'auto'):(['auto','on','off'].includes(raw.backgroundMotion)?raw.backgroundMotion:'auto');
+  const saveData=navigator.connection?.saveData===true;
+  const background=motion==='full'&&backgroundPref!=='off'&&!saveData?'on':'off';
+  const glitch=legacy?true:raw.glitchEffects!==false;
+  const noise=legacy?true:raw.noiseEffects!==false;
+  const scanlines=legacy?true:raw.scanlines!==false;
+  const textEffects=legacy?'normal':(['normal','reduced','off'].includes(raw.textEffects)?raw.textEffects:'normal');
+  const fontScale=clamp(legacy?legacyValue('fontSizeMultiplier',1):raw.fontScale,.8,1.4,1);
+  const opacity=clamp(legacy?legacyValue('readerBgOpacity',.85):raw.readerOpacity,0,1,.85);
+  const glass=legacy?legacyValue('glassMode','false')==='true':raw.glassEnabled===true;
+  const blur=clamp(legacy?legacyValue('glassBlur',12):raw.glassBlur,0,24,12);
+  root.dataset.theme=theme;
+  root.dataset.motionPreference=motionMode;
+  root.dataset.motion=motion;
+  root.dataset.backgroundMotion=background;
+  root.dataset.glitch=glitch&&motion==='full'?'on':'off';
+  root.dataset.noise=noise&&motion==='full'?'on':'off';
+  root.dataset.scanlines=scanlines&&motion!=='off'?'on':'off';
+  root.dataset.textEffects=motion==='off'?'off':textEffects;
+  root.dataset.glass=glass?'on':'off';
+  root.style.setProperty('--font-size-multiplier',String(fontScale));
+  root.style.setProperty('--app-bg-opacity',String(opacity));
+  root.style.setProperty('--bg-opacity',String(opacity));
+  root.style.setProperty('--app-bg-blur',blur+'px');
+  root.style.setProperty('--glass-blur',blur+'px');
+}catch{}})();`;

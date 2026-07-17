@@ -44,8 +44,11 @@ import { AccessProvider } from "../src/components/access/AccessProvider";
 
 
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
+import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRuntime";
+import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 
 import type { PropsWithChildren } from "react";
 
@@ -218,9 +221,15 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
   return (
 
-    <html lang="cs" data-theme="synthoma">
+    <html lang="cs" data-theme="synthoma" suppressHydrationWarning>
 
       <head>
+
+        <Script
+          id="synthoma-ui-preferences-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: UI_PREFERENCE_BOOTSTRAP }}
+        />
 
         <link rel="service-desc" type="application/vnd.oai.openapi+json" href="/api/public/openapi.json" />
 
@@ -238,7 +247,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
       </head>
 
-      <body>
+      <body suppressHydrationWarning>
+
+        <UiPreferencesRuntime />
 
         <a href="#main-content" className="skip-to-content">Přeskočit na obsah</a>
 
