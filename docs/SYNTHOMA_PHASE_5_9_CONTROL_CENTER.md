@@ -192,10 +192,9 @@ Automated verification on 2026-07-17:
 - content validation: PASS, 96 entries and 22 chapters
 - Prisma validation: PASS
 - TypeScript: PASS
-- targeted preference, bootstrap, motion, typewriter, Control Center, chapter
-  background, and Cyklus audio tests: PASS, 7 suites and 24 tests after the tab-row
-  regression was added
-- full Jest: PASS, 88 passed suites, 1 skipped suite, 656 passed tests, 21 skipped
+- targeted preference, bootstrap, motion, typewriter, Control Center, service
+  worker, chapter background, and Cyklus audio tests: PASS, 8 suites and 27 tests
+- full Jest: PASS, 89 passed suites, 1 skipped suite, 659 passed tests, 21 skipped
 - targeted lint for changed Control Center/preference/Reader files: PASS, no
   warnings or errors
 - production build: PASS, 261 static pages
@@ -224,6 +223,91 @@ and was not changed. Native Safari/iPhone rendering remains a manual release
 sanity check; the responsive and motion contracts are covered by Chromium QA,
 CSS contracts, and component tests.
 
+## LIVE PRODUCTION QA - PHASE 5.9.1
+
+The final Phase 5.9 checkpoint is
+`cf3f3f1b5ae81f3f938a4e1f7abcedb70f4ba364`. Production verification was
+completed on `https://www.synthoma.cz` on 2026-07-17 at 19:35 CEST against
+service worker deployment
+`3b698c0882a11662f5b1db32db8670bc6491eae6`.
+
+### Production hotfix chain
+
+1. `cc216c0` `fix: restore production Control Center visibility`
+2. `29f4d67` `fix: keep Control Center interactive across routes`
+3. `3703e04` `fix: restore Control Center descendant visibility`
+4. `dfc547e` `fix: remove legacy Control Center visibility transition`
+5. `df43afc` `fix: refresh deployed HTML through the service worker`
+6. `3b698c0` `fix: keep private pages out of service worker cache`
+
+The original production regression was caused by `synthoma-v1` serving a stale
+cached HTML shell during navigation. The final deployed worker is
+`synthoma-v3`. Its install cache contains only the neutral offline page, favicon,
+and public OG image. Activation removes every cache whose name is not the current
+version and claims existing clients.
+
+All HTML navigations are now network-first and are never written to Cache
+Storage. Network failure can return only `/offline.html` or a plain 503 response.
+`/api/*`, Profile, admin, login, registration, and purchase requests explicitly
+bypass caching; non-GET and external requests also bypass it. Asset caching
+rejects partial responses and responses marked `private` or `no-store`.
+
+### Live results
+
+| Check | Result | Observation |
+| --- | --- | --- |
+| Existing browser profile without clearing site data | PASS | The profile retained Motion `off` and its original Cyber Dystopia theme while loading the current production shell. The original stale-home regression did not reproduce. |
+| Worker deployment | PASS | The live `/sw.js` response is `synthoma-v3` and the application logged a successful worker registration. |
+| Direct cache-name and controller inspection | HOLD | The browser QA surface does not expose Cache Storage or the service-worker controller object. The activation policy is verified in the live worker source, but a manual DevTools `caches.keys()` check remains. |
+| Fresh isolated anonymous browser profile | HOLD | The available browser shares the existing site profile. Signed-out behavior was tested after logout, but a separate clean profile was not available. |
+| Private navigation cache boundary | PASS | The deployed worker never stores HTML navigation responses. Profile/API/purchase traffic is excluded before asset caching. |
+| Owned chapter after logout | PASS | `0-4-defragmentation` rendered its full Reader while owned. After logout and reload it rendered the 64 MNEM access gate, zero article elements, and no protected chapter text. |
+| Locked chapter disclosure | PASS | The signed-out gate exposed title, price, and navigation only. |
+| Offline fallback document | PASS | `/offline.html` is a neutral page with no form, account/profile fields, or personalized content and links only back to `/`. |
+| True browser-offline navigation | HOLD | Network emulation is not exposed by the available browser. The deployed fetch handler and offline document are verified; physical offline behavior remains a short manual DevTools check. |
+
+The exact Motion regression sequence passed without clearing storage:
+
+`free chapter -> Motion OFF -> home -> theme change -> Cyklus -> Books -> Back -> reload -> tab hidden -> tab visible`
+
+At every checkpoint the root retained `data-motion="off"`, decorative video count
+was zero, playing video count was zero, visible canvas count was zero, active
+infinite CSS animation count was zero, and typewriter state was absent. One shared
+audio element remained present and paused throughout, so motion changes did not
+replace or remove the audio owner. Exact network-request counting and physical
+audio playback remain browser-runner limitations; the DOM and worker strategy
+ensure that no video element or cached HTML navigation was present.
+
+The final Control Center passed at 1280x720 and 390x844. Desktop geometry was a
+440px panel fully inside the right edge of the viewport. On mobile the panel had
+no horizontal document overflow; only `.control-center__body` scrolled while the
+header, presets, tabs, and footer kept their viewport positions. The active tab
+was pointer-reachable, only one tabpanel was rendered, and no Control Center
+descendant inherited `visibility:hidden`. Source inspection found no broad
+`.control-center * { visibility: visible !important; }` override.
+
+Close X, Escape, backdrop, and Done all closed the panel and returned focus to the
+single Settings trigger. The single panel and trigger remained stable on Reader,
+home, Books, and Cyklus routes. A one-off React hydration warning observed during
+the long QA session did not reproduce in a fresh production tab and therefore did
+not justify another runtime change.
+
+Final verification after the service worker privacy fix:
+
+- content validation: PASS, 96 entries and 22 chapters
+- Prisma validation: PASS
+- TypeScript: PASS
+- targeted regression tests: PASS, 8 suites and 27 tests
+- full Jest: PASS, 89 passed suites, 1 skipped suite, 659 passed tests, 21 skipped
+- production build: PASS, 261 pages
+- build warnings: the same four pre-existing hook dependency warnings in
+  `BooksClient`, `GameShell`, and `TypewriterReader`
+
+Native Safari/iPhone rendering, a fresh isolated anonymous profile, direct
+Cache Storage/controller inspection, and physical offline emulation remain
+explicit manual HOLD checks. They do not conceal a reproduced runtime failure;
+they mark capabilities not available in this QA browser.
+
 ## GIT
 
 Phase checkpoints:
@@ -233,9 +317,13 @@ Phase checkpoints:
 3. `ebce916` `fix: stop all visual effects when motion is disabled`
 4. `cdee5f6` `refactor: rebuild the Synthoma control center`
 5. `01484f4` `feat: add contextual controls presets and accessible audio`
-6. This report and the final regression suite are the
-   `test: verify control center and motion contracts` checkpoint; its exact SHA is
-   reported after the commit is created.
+6. `cf3f3f1` `test: verify control center and motion contracts`
+7. `cc216c0` `fix: restore production Control Center visibility`
+8. `29f4d67` `fix: keep Control Center interactive across routes`
+9. `3703e04` `fix: restore Control Center descendant visibility`
+10. `dfc547e` `fix: remove legacy Control Center visibility transition`
+11. `df43afc` `fix: refresh deployed HTML through the service worker`
+12. `3b698c0` `fix: keep private pages out of service worker cache`
 
 Generated build output, screenshots, local preference dumps, environment files,
 database artifacts, and `tsconfig.tsbuildinfo` are excluded.
@@ -247,4 +335,7 @@ database artifacts, and `tsconfig.tsbuildinfo` are excluded.
 - Motion contract: PASS
 - Audio ownership and motion independence: PASS
 - Responsive Chromium matrix: PASS
+- Live service worker strategy and private cache boundary: PASS
+- Owned chapter logout boundary: PASS
+- Direct cache/controller and physical offline inspection: HOLD for manual DevTools QA
 - Safari/iPhone visual sanity: HOLD for human device QA, non-blocking for this phase
