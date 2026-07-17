@@ -1,8 +1,30 @@
-const CACHE_NAME = 'synthoma-v2'
+const CACHE_NAME = 'synthoma-v3'
+const OFFLINE_URL = '/offline.html'
 const STATIC_CACHE = [
+  OFFLINE_URL,
   '/assets/favicon.ico',
   '/assets/og-synthoma.png'
 ]
+const CACHEABLE_DESTINATIONS = new Set(['audio', 'font', 'image', 'script', 'style', 'video'])
+
+function isSensitiveRequest(request) {
+  const { pathname } = new URL(request.url)
+  return pathname.startsWith('/api/')
+    || pathname === '/profile'
+    || pathname.startsWith('/admin')
+    || pathname.startsWith('/login')
+    || pathname.startsWith('/register')
+    || pathname.startsWith('/purchase')
+}
+
+function isCacheableAsset(request, response) {
+  const cacheControl = response.headers.get('cache-control') || ''
+  return CACHEABLE_DESTINATIONS.has(request.destination)
+    && response.ok
+    && response.status !== 206
+    && !cacheControl.includes('private')
+    && !cacheControl.includes('no-store')
+}
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
@@ -42,28 +64,19 @@ self.addEventListener('fetch', (event) => {
   if (isNavigation) {
     event.respondWith(
       fetch(request)
-        .then((networkResponse) => {
-          if (networkResponse.ok && networkResponse.status !== 206) {
-            event.waitUntil(
-              caches.open(CACHE_NAME)
-                .then((cache) => cache.put(request, networkResponse.clone()))
-            )
-          }
-          return networkResponse
-        })
-        .catch(async () => (
-          await caches.match(request)
-          || await caches.match('/')
-          || new Response('Offline', { status: 503 })
-        ))
+        .catch(async () => await caches.match(OFFLINE_URL)
+          || new Response('Offline', { status: 503 }))
     )
     return
   }
 
+  // Account, API and purchase traffic always bypasses Cache Storage.
+  if (isSensitiveRequest(request) || !CACHEABLE_DESTINATIONS.has(request.destination)) return
+
   event.respondWith(
     caches.match(request).then((cachedResponse) => (
       cachedResponse || fetch(request).then((networkResponse) => {
-        if (networkResponse.ok && networkResponse.status !== 206) {
+        if (isCacheableAsset(request, networkResponse)) {
           event.waitUntil(
             caches.open(CACHE_NAME)
               .then((cache) => cache.put(request, networkResponse.clone()))
