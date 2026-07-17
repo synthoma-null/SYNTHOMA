@@ -54,9 +54,11 @@ describe('/chapter/[id] server route contract', () => {
     expect(auth).not.toHaveBeenCalled();
     expect(getContentAccess).not.toHaveBeenCalled();
     const structured = renderedFree.container.querySelector('script[type="application/ld+json"]');
-    expect(JSON.parse(structured?.textContent ?? '{}')).toMatchObject({
+    const structuredData = JSON.parse(structured?.textContent ?? '{}');
+    expect(structuredData['@graph'][0]).toMatchObject({
       '@type': 'Chapter', isAccessibleForFree: true, inLanguage: 'cs', isPartOf: { '@type': 'Book' },
     });
+    expect(structuredData['@graph'][1]).toMatchObject({ '@type': 'BreadcrumbList' });
     renderedFree.unmount();
 
     const englishChapter = await ChapterPage({ params: Promise.resolve({ id: '0-0-null' }), searchParams: Promise.resolve({ locale: 'en' }) });
@@ -79,7 +81,6 @@ describe('/chapter/[id] server route contract', () => {
     expect(rendered.container).not.toHaveTextContent('Defragmentace neznamená uzdravení');
     rendered.unmount();
 
-    (getContentAccess as jest.Mock).mockResolvedValueOnce(access({ state: 'unavailable', canPurchase: false, mnemCost: null }));
     const unavailable = await ChapterPage(params('0-12-conflict'));
     render(unavailable);
     expect(screen.getByText('Fragment je evidovaný, ale ještě nebyl publikován.')).toBeInTheDocument();

@@ -1,17 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { auth } from '../../../auth';
-import { getChapterCatalogEntry } from '../../../src/content/catalog';
-import type { ContentAccess } from '../../../src/content/catalog';
-import { getContentAccess } from '../../../src/server/economy';
-import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
-import { getPublicChapterDocument } from '../../../src/server/public-ai/contentService';
+import { getChapterCatalogEntry, type ContentAccess } from '../../../src/content/catalog';
+import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 import { readChapterDocument } from '../../../src/server/chapters/chapterDocument';
+import { getContentAccess } from '../../../src/server/economy';
+import { getPublicChapterDocument } from '../../../src/server/public-ai/contentService';
+import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
 import ChapterAccessGate from './ChapterAccessGate';
 import ChapterReaderArticle from './ChapterReaderArticle';
+import ChapterStructuredData from './ChapterStructuredData';
 
 const BASE_URL = 'https://www.synthoma.cz';
-const OG_IMAGE = `${BASE_URL}/assets/og-synthoma.jpg`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/assets/og-synthoma.png`;
 
 export const dynamic = 'force-dynamic';
 
@@ -23,32 +24,35 @@ export async function generateMetadata(
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
 
-  const title = `${locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title} | SYNTHOMA`;
-  const teaser = chapter.metadata?.teaser;
+  const chapterTitle = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
+  const title = `${chapterTitle} | SYNTHOMA-NULL`;
+  const teaser = locale === 'en' ? chapter.metadata?.teaserEn ?? chapter.metadata?.teaser : chapter.metadata?.teaser;
   const description = typeof teaser === 'string'
     ? teaser.replace(/^„|"$/g, '').trim()
-    : `Kapitola ${chapter.title} z interaktivního glitch-noir příběhu SYNTHOMA.`;
-  const canonicalUrl = `${BASE_URL}/chapter/${chapter.id}`;
+    : locale === 'en'
+      ? chapter.summary ?? 'A chapter from the interactive glitch-noir story SYNTHOMA.'
+      : chapter.summary ?? `Kapitola ${chapter.title} z interaktivního glitch-noir příběhu SYNTHOMA.`;
+  const chapterUrl = `${BASE_URL}${chapter.route}`;
+  const canonicalUrl = `${chapterUrl}${locale === 'en' ? '?locale=en' : ''}`;
+  const presentation = getChapterPresentation(chapter.id);
+  const image = presentation ? `${BASE_URL}${presentation.poster}` : DEFAULT_OG_IMAGE;
+  const indexable = chapter.availability === 'published';
+
   return {
     title,
     description,
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        cs: canonicalUrl,
-        en: `${canonicalUrl}?locale=en`,
-      },
+      languages: { cs: chapterUrl, en: `${chapterUrl}?locale=en`, 'x-default': chapterUrl },
     },
-    robots: { index: true, follow: true },
+    robots: { index: indexable, follow: indexable },
     openGraph: {
-      type: 'article',
-      url: canonicalUrl,
-      title,
-      description,
-      siteName: 'SYNTHOMA',
-      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'SYNTHOMA' }],
+      type: 'article', url: canonicalUrl, title, description, siteName: 'SYNTHOMA',
+      locale: locale === 'en' ? 'en_US' : 'cs_CZ',
+      alternateLocale: locale === 'en' ? ['cs_CZ'] : ['en_US'],
+      images: [{ url: image, alt: `${chapterTitle} — SYNTHOMA-NULL` }],
     },
-    twitter: { card: 'summary_large_image', title, description, images: [OG_IMAGE] },
+    twitter: { card: 'summary_large_image', title, description, images: [image] },
   };
 }
 
@@ -60,25 +64,26 @@ export default async function ChapterPage(
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
 
-  if (chapter.availability === 'published' && chapter.accessPolicy === 'free') {
-    const publicChapter = await getPublicChapterDocument(chapter.id, locale);
-    if (!publicChapter?.bodyHtml) notFound();
-    const jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'Chapter',
-      name: publicChapter.title,
-      position: (chapter.order ?? 0) + 1,
-      author: { '@type': 'Person', name: 'Tomáš Valíček', url: `${BASE_URL}/autor` },
-      isPartOf: { '@type': 'Book', name: 'SYNTHOMA-NULL', url: `${BASE_URL}/books` },
-      inLanguage: publicChapter.sourceLocale,
-      isAccessibleForFree: true,
-      wordCount: publicChapter.wordCount,
-      dateModified: publicChapter.updatedAt,
-      url: publicChapter.canonicalUrl,
+  if (chapter.availability !== 'published') {
+    const unavailableAccess: ContentAccess = {
+      contentType: 'chapter', contentId: chapter.id, state: 'unavailable', reason: 'not_published',
+      canAccess: false, canPurchase: false, mnemCost: null, title: chapter.title,
+      purchasePackageIds: chapter.packageIds, prerequisiteChapterId: chapter.prerequisiteChapterId ?? null,
     };
     return (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
+        <ChapterAccessGate chapterId={chapter.id} chapterTitle={chapter.title} access={unavailableAccess} unavailable />
+      </>
+    );
+  }
+
+  if (chapter.accessPolicy === 'free') {
+    const publicChapter = await getPublicChapterDocument(chapter.id, locale);
+    if (!publicChapter?.bodyHtml) notFound();
+    return (
+      <>
+        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree wordCount={publicChapter.wordCount} />
         <ChapterReaderArticle
           chapter={chapter}
           locale={locale}
@@ -97,45 +102,43 @@ export default async function ChapterPage(
   } catch (error) {
     const report = reportRuntimeDatabaseError('chapter-page-access', error);
     const closedAccess: ContentAccess = {
-      contentType: 'chapter',
-      contentId: chapter.id,
-      state: 'locked',
-      reason: 'catalog_error',
-      canAccess: false,
-      canPurchase: false,
-      mnemCost: chapter.mnemCost,
-      title: chapter.title,
-      purchasePackageIds: chapter.packageIds,
-      prerequisiteChapterId: chapter.prerequisiteChapterId ?? null,
+      contentType: 'chapter', contentId: chapter.id, state: 'locked', reason: 'catalog_error',
+      canAccess: false, canPurchase: false, mnemCost: chapter.mnemCost, title: chapter.title,
+      purchasePackageIds: chapter.packageIds, prerequisiteChapterId: chapter.prerequisiteChapterId ?? null,
     };
     return (
-      <ChapterAccessGate
-        chapterId={chapter.id}
-        chapterTitle={chapter.title}
-        access={closedAccess}
-        unavailable={false}
-        databaseErrorRef={report.correlationId}
-      />
+      <>
+        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
+        <ChapterAccessGate
+          chapterId={chapter.id}
+          chapterTitle={chapter.title}
+          access={closedAccess}
+          unavailable={false}
+          databaseErrorRef={report.correlationId}
+        />
+      </>
     );
   }
+
   if (access.canAccess) {
     const document = await readChapterDocument(chapter, locale);
     return (
-      <ChapterReaderArticle
-        chapter={chapter}
-        locale={locale}
-        sourceLocale={document.sourceLocale}
-        bodyHtml={document.bodyHtml}
-      />
+      <>
+        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} wordCount={document.wordCount} />
+        <ChapterReaderArticle
+          chapter={chapter}
+          locale={locale}
+          sourceLocale={document.sourceLocale}
+          bodyHtml={document.bodyHtml}
+        />
+      </>
     );
   }
 
   return (
-    <ChapterAccessGate
-      chapterId={chapter.id}
-      chapterTitle={chapter.title}
-      access={access}
-      unavailable={chapter.availability === 'unavailable'}
-    />
+    <>
+      <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
+      <ChapterAccessGate chapterId={chapter.id} chapterTitle={chapter.title} access={access} unavailable={false} />
+    </>
   );
 }
