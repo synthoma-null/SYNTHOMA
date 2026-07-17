@@ -190,7 +190,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                           const matchedCh = selected.chapters?.find(c => c.path === p.path);
                           const href = matchedCh?.id
                             ? `/chapter/${encodeURIComponent(matchedCh.id)}`
-                            : `/reader?u=${encodeURIComponent(p.path)}`;
+                            : '/books';
                           return (
                             <Link className="btn btn-lg" prefetch={false} href={href} aria-label={t('books.nav.continue.label')}>
                               ▶ {t('books.continue')} ({Math.max(0, Math.min(100, Math.round(p.percent ?? 0)))}%)
@@ -255,7 +255,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
                               <Link
                                 className="lib-link"
                                 prefetch={false}
-                                href={ch.id ? `/chapter/${encodeURIComponent(ch.id)}` : `/reader?u=${encodeURIComponent(ch.path)}`}
+                                href={ch.id ? `/chapter/${encodeURIComponent(ch.id)}` : '/books'}
                                 data-echo={ch.title}
                               >
                                 <span className="lib-link-title">{ch.title}</span>

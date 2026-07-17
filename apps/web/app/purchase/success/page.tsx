@@ -64,7 +64,7 @@ export default function PurchaseSuccessPage() {
         <div className="purchase-success-links">
           <Link href="/profile" className="btn">PROFIL</Link>
           <Link href="/books" className="btn">KNIHOVNA</Link>
-          {state === 'completed' ? <Link href="/reader" className="btn">ČTEČKA</Link> : null}
+          {state === 'completed' ? <Link href="/books" className="btn">ČÍST</Link> : null}
         </div>
       </div>
     </main>

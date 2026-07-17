@@ -48,7 +48,7 @@ export default function ChapterAccessGate({ chapterId, chapterTitle, access, una
           onClose={() => setOpen(false)}
           onPurchased={() => {
             setOpen(false);
-            router.replace(`/reader?chapter=${encodeURIComponent(chapterId)}`);
+            router.replace(`/chapter/${encodeURIComponent(chapterId)}`);
             router.refresh();
           }}
         />

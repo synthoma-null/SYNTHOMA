@@ -5,6 +5,21 @@ import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 import { saveLastChapterPath, saveReaderResume } from "../lib/readerState";
 import { CHAPTERS } from "../content/booksManifest";
 
+function canonicalChapterRoute(reference: string): string | null {
+  try {
+    const path = decodeURIComponent(reference).split("#")[0]?.split("?")[0] ?? reference;
+    const filename = path.split("/").pop() ?? path;
+    const chapter = CHAPTERS.find((candidate) =>
+      candidate.id === reference
+      || candidate.filename === filename
+      || candidate.filename_en === filename,
+    );
+    return chapter ? `/chapter/${encodeURIComponent(chapter.id)}` : null;
+  } catch {
+    return null;
+  }
+}
+
 function softFail(scope: string, err: unknown): void {
   if (process.env.NODE_ENV !== "production") {
     console.warn(`[useChoiceHandlers:${scope}]`, err);
@@ -185,29 +200,18 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
           // Site route
           if (href.startsWith("/")) {
             if (/^\/books\/.+\.html(\?.*)?(#.*)?$/i.test(href)) {
-              // Resolve legacy /books/<collection>/<filename>.html to /chapter/<id>
-              try {
-                const hrefPath = href.split("?")[0] ?? href;
-                const filenameRaw = decodeURIComponent(hrefPath.split("/").pop() ?? "");
-                const matched = CHAPTERS.find(
-                  (ch) => ch.filename === filenameRaw || ch.filename_en === filenameRaw,
-                );
-                if (matched) {
-                  scoreFromNode(node);
-                  try {
-                    const host2 = hostRef.current;
-                    if (host2) persistChoiceState(node, host2);
-                  } catch {}
-                  saveLastChapterPath(`/chapter/${matched.id}`);
-                  router.push(`/chapter/${encodeURIComponent(matched.id)}`);
-                  return;
-                }
-              } catch {}
-              // Fallback: legacy ?u= if no manifest match
-              try {
-                saveLastChapterPath(href);
-              } catch {}
-              router.push(`/reader?u=${encodeURIComponent(href)}`);
+              const chapterRoute = canonicalChapterRoute(href);
+              if (chapterRoute) {
+                scoreFromNode(node);
+                try {
+                  const host2 = hostRef.current;
+                  if (host2) persistChoiceState(node, host2);
+                } catch {}
+                saveLastChapterPath(chapterRoute);
+                router.push(chapterRoute);
+                return;
+              }
+              router.push("/books");
             } else {
               router.push(href);
             }
@@ -225,12 +229,12 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
               }
             }
           } catch {}
-          // Fallback: treat as external chapter path
+          // Fallback: resolve relative legacy chapter filenames through the catalog.
           let path = href;
           if (!(path.startsWith("/") || path.startsWith("http") || path.startsWith("#"))) {
             path = "/" + path;
           }
-          router.push(`/reader?u=${encodeURIComponent(path)}`);
+          router.push(canonicalChapterRoute(path) ?? "/books");
         }
       });
 
