@@ -32,7 +32,7 @@
   visibility: visible;
 }
 
-#control-panel.control-panel.visible > * { visibility: visible; }
+#control-panel.control-panel.visible * { visibility: visible; }
 
 #control-panel.control-panel.glass {
   background: color-mix(in srgb, var(--cy-surface-1) 90%, transparent) !important;
