@@ -10,7 +10,15 @@ import {
 export default function UiPreferencesRuntime() {
   useEffect(() => {
     const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    const apply = () => applyUiPreferencesToDocument(readUiPreferences());
+    const apply = () => {
+      const preferences = readUiPreferences();
+      applyUiPreferencesToDocument(preferences);
+      const audio = window.__synthomaAudio;
+      if (audio) {
+        audio.volume = preferences.audioVolume;
+        if (!preferences.audioEnabled) audio.pause();
+      }
+    };
     const onStorage = (event: StorageEvent) => {
       if (!event.key || event.key === 'synthoma_ui_preferences') apply();
     };

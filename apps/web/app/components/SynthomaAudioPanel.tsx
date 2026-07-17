@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import { usePathname } from 'next/navigation';
 import { tracks, type Track } from '../../src/data/playlist';
 import { getSharedAudio } from '../../src/lib/audio';
+import { updateUiPreferences } from '../../src/lib/uiPreferences';
 
 const PLAYER_ORDER = [
   'Comet',
@@ -85,6 +86,7 @@ export default function SynthomaAudioPanel() {
       audio.load();
     }
     try { localStorage.setItem('audioAutoplayBlocked', 'false'); } catch {}
+    updateUiPreferences({ audioEnabled: true });
     audio.play().catch(() => {});
   }, [playlist]);
 
@@ -112,7 +114,7 @@ export default function SynthomaAudioPanel() {
     const audio = getSharedAudio();
     audioRef.current = audio;
     window.__synthomaAudio = audio;
-    audio.preload = 'auto';
+    audio.preload = 'metadata';
     audio.controls = false;
     audio.setAttribute('playsinline', 'true');
 

@@ -1,12 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useUiPreferences } from '../../hooks/useUiPreferences';
+import { updateUiPreferences } from '../../lib/uiPreferences';
 
 export default function ReaderCommandUtilities({ articleId, locale }: { articleId: string; locale: 'cs' | 'en' }) {
   const [speaking, setSpeaking] = useState(false);
-  const [focusMode, setFocusMode] = useState(false);
+  const preferences = useUiPreferences();
 
   useEffect(() => () => window.speechSynthesis?.cancel(), []);
+  useEffect(() => {
+    document.querySelector('.chapter-reader')?.classList.toggle('chapter-reader--focus', preferences.focusMode);
+  }, [preferences.focusMode]);
+  useEffect(() => {
+    if (!preferences.ttsEnabled && speaking) {
+      window.speechSynthesis?.cancel();
+      setSpeaking(false);
+    }
+  }, [preferences.ttsEnabled, speaking]);
 
   const toggleSpeech = () => {
     if (!('speechSynthesis' in window)) return;
@@ -17,6 +28,7 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
     }
     const text = document.getElementById(articleId)?.textContent?.trim();
     if (!text) return;
+    updateUiPreferences({ ttsEnabled: true });
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = locale === 'en' ? 'en-US' : 'cs-CZ';
     utterance.onend = () => setSpeaking(false);
@@ -26,9 +38,7 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
   };
 
   const toggleFocus = () => {
-    const next = !focusMode;
-    document.querySelector('.chapter-reader')?.classList.toggle('chapter-reader--focus', next);
-    setFocusMode(next);
+    updateUiPreferences({ focusMode: !preferences.focusMode });
   };
 
   const share = async () => {
@@ -44,7 +54,7 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
       <button type="button" aria-label={locale === 'en' ? 'Settings' : 'Nastavení'} onClick={() => document.getElementById('toggle-panel-btn')?.click()}>NASTAVENÍ</button>
       <button type="button" aria-label={locale === 'en' ? 'Audio' : 'Hudba'} onClick={() => document.dispatchEvent(new CustomEvent('synthoma:audio-toggle'))}>AUDIO</button>
       <button type="button" aria-label={locale === 'en' ? 'Read chapter aloud' : 'Přečíst kapitolu nahlas'} aria-pressed={speaking} onClick={toggleSpeech}>TTS</button>
-      <button type="button" aria-label={locale === 'en' ? 'Focus mode' : 'Režim soustředění'} aria-pressed={focusMode} onClick={toggleFocus}>FOKUS</button>
+      <button type="button" aria-label={locale === 'en' ? 'Focus mode' : 'Režim soustředění'} aria-pressed={preferences.focusMode} onClick={toggleFocus}>FOKUS</button>
       <button type="button" aria-label={locale === 'en' ? 'Share chapter' : 'Sdílet kapitolu'} onClick={() => void share()}>SDÍLET</button>
     </div>
   );

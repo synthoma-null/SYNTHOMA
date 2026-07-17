@@ -28,6 +28,13 @@ export interface SynthomaUiPreferences {
   ttsEnabled: boolean;
 }
 
+export type UiPreferencePresetId = 'canon' | 'focus' | 'saver' | 'calm';
+
+export interface UiPreferencePreset {
+  id: UiPreferencePresetId;
+  patch: Partial<Omit<SynthomaUiPreferences, 'version'>>;
+}
+
 export const DEFAULT_UI_PREFERENCES: Readonly<SynthomaUiPreferences> = Object.freeze({
   version: UI_PREFERENCES_VERSION,
   theme: 'synthoma',
@@ -47,6 +54,23 @@ export const DEFAULT_UI_PREFERENCES: Readonly<SynthomaUiPreferences> = Object.fr
   focusMode: false,
   ttsEnabled: false,
 });
+
+export const UI_PREFERENCE_PRESETS: readonly UiPreferencePreset[] = [
+  { id: 'canon', patch: { theme: 'synthoma', motionMode: 'system', backgroundMotion: 'auto', glitchEffects: true, noiseEffects: true, scanlines: true, textEffects: 'normal', typewriterSpeed: 'normal', glassEnabled: false, readerOpacity: 0.85, focusMode: false } },
+  { id: 'focus', patch: { backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, textEffects: 'reduced', typewriterSpeed: 'instant', glassEnabled: false, readerOpacity: 0.95, focusMode: true, audioEnabled: false } },
+  { id: 'saver', patch: { motionMode: 'off', backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, scanlines: false, textEffects: 'off', typewriterSpeed: 'instant', audioEnabled: false } },
+  { id: 'calm', patch: { motionMode: 'reduced', backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, scanlines: false, textEffects: 'reduced', typewriterSpeed: 'instant', readerOpacity: 0.95 } },
+] as const;
+
+export function getMatchingUiPreferencePreset(preferences: SynthomaUiPreferences): UiPreferencePresetId | null {
+  const match = UI_PREFERENCE_PRESETS.find((preset) => Object.entries(preset.patch).every(([key, value]) => preferences[key as keyof SynthomaUiPreferences] === value));
+  return match?.id ?? null;
+}
+
+export function applyUiPreferencePreset(id: UiPreferencePresetId): SynthomaUiPreferences {
+  const preset = UI_PREFERENCE_PRESETS.find((candidate) => candidate.id === id);
+  return preset ? updateUiPreferences(preset.patch) : readUiPreferences();
+}
 
 const THEMES = new Set([
   'synthoma',

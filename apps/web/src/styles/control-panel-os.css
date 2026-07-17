@@ -572,7 +572,7 @@
 .control-center__tabs,
 .control-center__segments,
 .control-center__footer { display: grid; gap: 1px; background: var(--cy-line-subtle); }
-.control-center__tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--cy-line-strong); }
+.control-center__tabs { grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); border-bottom: 1px solid var(--cy-line-strong); }
 .control-center__tabs button,
 .control-center__segments button,
 .control-center__footer button {
@@ -645,6 +645,29 @@
 .control-center__confirm > div > div { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--cy-line-subtle); }
 .control-center__confirm button { min-height: 44px; border: 0; border-radius: 0; background: var(--cy-button-bg); color: var(--cy-text); }
 
+.control-center__presets { padding: 10px 14px; border-bottom: 1px solid var(--cy-line-strong); background: var(--cy-surface-2); }
+.control-center__presets > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.control-center__presets h3 { margin: 0; color: var(--cy-text-soft); font: 800 var(--cy-font-micro)/1.2 var(--cy-font-mono); }
+.control-center__presets > div:first-child span { color: var(--cy-accent-secondary); font: 800 var(--cy-font-micro)/1.2 var(--cy-font-mono); }
+.control-center__presets > div:last-child { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--cy-line-subtle); }
+.control-center__presets button,
+.control-center__font-steps button,
+.control-audio__transport button { min-height: 44px; border: 0; border-radius: 0; background: var(--cy-button-bg); color: var(--cy-text-soft); font: 700 var(--cy-font-micro)/1.2 var(--cy-font-mono); }
+.control-center__presets button[aria-pressed="true"] { background: var(--cy-button-active); color: var(--cy-accent-primary); box-shadow: inset 0 -3px 0 var(--cy-accent-primary); }
+.control-center__font-steps { display: grid; grid-template-columns: 44px minmax(72px, 1fr) 44px; gap: 1px; max-width: 180px; margin-left: auto; background: var(--cy-line-subtle); }
+.control-center__effective { display: grid; gap: 3px; margin: 4px 0 0; padding: 10px; border-left: 3px solid var(--cy-accent-primary); background: var(--cy-surface-2); }
+.control-center__effective strong { color: var(--cy-accent-primary); font: 800 var(--cy-font-small)/1.3 var(--cy-font-mono); }
+.control-center__effective span { color: var(--cy-text-soft); font-size: var(--cy-font-small); }
+
+.control-audio { display: grid; gap: 12px; padding-top: 12px; }
+.control-audio__track { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 10px; align-items: center; }
+.control-audio__track select { width: 100%; min-height: 44px; border: 1px solid var(--cy-line); border-radius: 0; background: var(--cy-button-bg); color: var(--cy-text); }
+.control-audio__transport { display: grid; grid-template-columns: repeat(3, 48px); justify-content: center; gap: 1px; background: var(--cy-line-subtle); }
+.control-audio__transport button { font-size: 1.1rem; }
+.control-audio__progress input { width: 100%; accent-color: var(--cy-accent-primary); }
+.control-audio__time { display: flex; justify-content: space-between; color: var(--cy-text-dim); font: 700 var(--cy-font-micro)/1 var(--cy-font-mono); }
+.control-audio__status { margin: 0; color: var(--cy-text-soft); font-size: var(--cy-font-small); }
+
 #control-panel :is(button, input):focus-visible { outline: 2px solid var(--cy-focus-ring); outline-offset: 2px; }
 
 @media (max-width: 767px) {
@@ -654,6 +677,7 @@
 }
 
 @media (max-width: 379px) {
+  .control-center__presets > div:last-child { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .control-center__segments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .control-center__range { grid-template-columns: minmax(0, 1fr) 88px 40px; gap: 6px; }
 }
