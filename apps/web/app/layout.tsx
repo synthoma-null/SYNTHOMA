@@ -21,7 +21,7 @@ import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";
 
 import RetroPixelCanvasClient from "./components/RetroPixelCanvasClient";
-import ThemeShopClient from "./components/ThemeShopClient";
+import ControlCenterClient from "./components/ControlCenterClient";
 
 import ScrollGuardClient from "./components/ScrollGuardClient";
 
@@ -40,7 +40,6 @@ import { HeaderProvider } from "../src/components/synthoma-os/HeaderContext";
 import MBTIHudClient from "./components/MBTIHudClient";
 
 import { LangProvider } from "../src/lib/LangContext";
-import LangSwitcher from "../src/components/LangSwitcher";
 import { AccessProvider } from "../src/components/access/AccessProvider";
 
 
@@ -52,20 +51,6 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import type { PropsWithChildren } from "react";
-
-
-
-// Client Component wrapper for dynamic ControlPanelClient
-
-function ControlPanelWrapper() {
-
-  "use client";
-
-  const ControlPanelClient = require("./components/ControlPanelClient").default;
-
-  return <ControlPanelClient />;
-
-}
 
 
 
@@ -286,81 +271,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
             </SynthomaShell>
           </HeaderProvider>
 
-          {/* Global Control Panel trigger and container */}
-
           <SynthomaPortalRoot>
 
-          <div id="control-panel" className="control-panel" role="region" aria-labelledby="cp-title" aria-hidden="true">
-            <div className="cp-header">
-              <div className="cp-heading">
-                <span className="cp-kicker">SYS / CTRL</span>
-                <h2 id="cp-title" className="cp-title">OVLÁDACÍ PANEL</h2>
-                <p className="cp-status">SYNTHOMA OS // USER CHANNEL</p>
-              </div>
-              <button id="cp-close-btn" className="cp-close" type="button" aria-label="Zavřít ovládací panel">×</button>
-            </div>
-
-            <div className="controls-grid">
-              <section className="cp-section" aria-labelledby="cp-interface-title">
-                <header className="cp-section-header">
-                  <span aria-hidden="true">01</span>
-                  <h3 id="cp-interface-title">ROZHRANÍ</h3>
-                </header>
-                <fieldset className="group" aria-label="Nastavení rozhraní">
-                  <label className="slider-label">
-                    <span className="slider-label-text">Velikost textu</span>
-                    <input id="font-size-slider" type="range" min="0.8" max="1.4" step="0.05" defaultValue="1" />
-                    <output id="font-size-value" className="slider-value">100%</output>
-                  </label>
-                  <label className="slider-label">
-                    <span className="slider-label-text" id="opacity-slider-label">Průhlednost</span>
-                    <input id="opacity-slider" type="range" min="0" max="1" step="0.01" defaultValue="0.8" aria-labelledby="opacity-slider-label" />
-                    <output id="opacity-slider-value" className="slider-value">80%</output>
-                  </label>
-                </fieldset>
-              </section>
-
-              <section className="cp-section" aria-labelledby="cp-language-title">
-                <header className="cp-section-header">
-                  <span aria-hidden="true">02</span>
-                  <h3 id="cp-language-title">JAZYK</h3>
-                </header>
-                <LangSwitcher />
-              </section>
-
-              <section className="cp-section cp-section--themes" aria-labelledby="cp-theme-title">
-                <header className="cp-section-header">
-                  <span aria-hidden="true">03</span>
-                  <h3 id="cp-theme-title">MOTIV</h3>
-                </header>
-                <ThemeShopClient />
-              </section>
-
-              <section className="cp-section" aria-labelledby="cp-effects-title">
-                <header className="cp-section-header">
-                  <span aria-hidden="true">04</span>
-                  <h3 id="cp-effects-title">VIZUÁLNÍ EFEKTY</h3>
-                </header>
-                <div className="cp-btn-col">
-                  <button id="toggle-animations" className="panel-button btn btn-sm" aria-pressed="true">Animace: Zapnuty</button>
-                  <button id="toggle-moving-background" className="panel-button btn btn-sm" aria-pressed="true">Pohyblivé pozadí: Zapnuto</button>
-                  <button id="toggle-glass" className="panel-button btn btn-sm" aria-pressed="false">Sklo: Vypnuto</button>
-                </div>
-              </section>
-
-              <section className="cp-section" aria-labelledby="cp-accessibility-title">
-                <header className="cp-section-header">
-                  <span aria-hidden="true">05</span>
-                  <h3 id="cp-accessibility-title">PŘÍSTUPNOST</h3>
-                </header>
-                <button id="toggle-tts" className="panel-button btn btn-sm" aria-pressed="false">Čtení textu: Vypnuto</button>
-              </section>
-            </div>
-          </div>
+          <ControlCenterClient />
 
           <SynthomaAudioPanel />
-
-          <ControlPanelWrapper />
 
           <SubjectProfilePanelClient />
 
