@@ -693,6 +693,33 @@
   z-index: 1;
 }
 
+.chapter-reader__progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 30;
+  height: 3px;
+  background: rgba(255, 255, 255, .08);
+  pointer-events: none;
+}
+
+.chapter-reader__progress-bar {
+  display: block;
+  width: var(--chapter-progress, 0%);
+  height: 100%;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 10px var(--glow-secondary);
+  transition: width .12s linear;
+}
+
+.chapter-reader__progress-label {
+  position: absolute;
+  top: .45rem;
+  right: .8rem;
+  color: var(--text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: .62rem;
+}
+
 .chapter-reader__command-bar {
   position: sticky;
   top: .75rem;
@@ -745,6 +772,53 @@
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, .32);
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  cursor: text;
+  line-height: 1.72;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content,
+.chapter-reader__article.SYNTHOMAREADER .chapter-content p,
+.chapter-reader__article.SYNTHOMAREADER .chapter-content :where(.text, .dialog, .dialogN, .dialogS, .dialogG, .log) {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content p {
+  margin-bottom: 1rem;
+  line-height: 1.72;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content .log {
+  margin-top: 1.5rem;
+  margin-bottom: .35rem;
+  font-size: .78em;
+  line-height: 1.45;
+  opacity: .82;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content :where(.dialog, .dialogN, .dialogS, .dialogG) {
+  padding-block: .15rem;
+  line-height: 1.62;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .choice-link,
+.chapter-reader__command-bar,
+.chapter-reader__navigation {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.chapter-reader__article ::selection {
+  color: var(--bg-primary);
+  background: var(--accent-secondary);
+  text-shadow: none;
+}
+
+.chapter-reader :focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 3px;
 }
 
 .chapter-reader__navigation {
@@ -784,8 +858,13 @@
   .chapter-reader__command-bar { top: .35rem; gap: .5rem; margin-bottom: 1rem; }
   .chapter-reader__identity { font-size: .68rem; }
   .chapter-reader__article.SYNTHOMAREADER { padding: 1rem .85rem; }
+  .chapter-reader__article.SYNTHOMAREADER .chapter-content p { line-height: 1.62; }
   .chapter-reader__navigation { gap: .5rem; }
   .chapter-reader__navigation a { padding: .75rem; font-size: .78rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-reader__progress-bar { transition: none; }
 }
 
   /* Autor page navigation panel migrated to shared os-surface--glass. */

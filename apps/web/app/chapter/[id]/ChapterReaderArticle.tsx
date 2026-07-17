@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { CHAPTER_CATALOG, type ChapterCatalogEntry } from '../../../src/content/catalog';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 import ChapterBackground from '../../../src/components/reader/ChapterBackground';
+import ChapterReadingProgress from '../../../src/components/reader/ChapterReadingProgress';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 
 interface Props {
@@ -33,6 +34,12 @@ export default function ChapterReaderArticle({
   return (
     <main className="chapter-reader" id="main-content">
       {presentation ? <ChapterBackground presentation={presentation} /> : null}
+      <ChapterReadingProgress
+        chapterId={chapter.id}
+        chapterTitle={title}
+        collection={chapter.collection}
+        chapterPath={chapter.route}
+      />
       <header className="chapter-reader__command-bar">
         <Link className="chapter-reader__command" href="/books">KNIHOVNA</Link>
         <span className="chapter-reader__identity" aria-current="page">
@@ -52,6 +59,7 @@ export default function ChapterReaderArticle({
         className="chapter-reader__article SYNTHOMAREADER choices-shown typewriter-instant"
         aria-label={title}
         lang={sourceLocale}
+        tabIndex={-1}
       >
         <div className="chapter-content" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
       </article>
