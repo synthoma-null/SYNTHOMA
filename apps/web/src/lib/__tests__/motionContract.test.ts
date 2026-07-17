@@ -29,7 +29,8 @@ describe('global motion contract', () => {
 
   it('does not leave an opened control center in its off-canvas transition state', () => {
     const panel = fs.readFileSync(path.join(process.cwd(), 'src/styles/control-panel-os.css'), 'utf8');
+    const legacy = fs.readFileSync(path.join(process.cwd(), 'src/styles/components.css'), 'utf8');
     expect(panel).toMatch(/#control-panel\.control-panel\.visible\s*{[^}]*transform:\s*translateX\(0\);[^}]*transition:\s*none;[^}]*visibility:\s*visible;/);
-    expect(panel).toContain('#control-panel.control-panel.visible * { visibility: visible; }');
+    expect(legacy).not.toMatch(/#control-panel\s*{[^}]*visibility:\s*hidden/);
   });
 });

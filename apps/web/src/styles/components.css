@@ -2019,8 +2019,7 @@
   #glitch-bg, #noise-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 1; }
   
   .panel-toggle-button { position: fixed; right: 16px; bottom: 16px; z-index: 1002; }
-  #control-panel { position: fixed; right: 16px; bottom: 16px; z-index: 1001; max-width: min(92vw, 520px); pointer-events: auto; opacity: 0; transform: translateY(12px); visibility: hidden; transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s; overflow-x: hidden; box-sizing: border-box; }
-  #control-panel.visible { opacity: 1; transform: none; visibility: visible; transition: opacity .18s ease, transform .18s ease, visibility 0s; }
+  #control-panel { position: fixed; right: 16px; bottom: 16px; z-index: 1001; max-width: min(92vw, 520px); pointer-events: auto; overflow-x: hidden; box-sizing: border-box; }
   
   /* =========================
      KEYFRAMES (sjednocené) – všechny v jednom bloku, bez duplicit.
