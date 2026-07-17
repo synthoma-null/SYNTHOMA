@@ -644,6 +644,39 @@
   /* Media – img/video. */
   #reader-body img, #reader-extra img, #reader-body video, #reader-extra video { max-width: 100%; height: auto; display: block; }
 
+/* Stable chapter media layer. The poster is always present; video only enhances it. */
+.chapter-background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  background: #050507;
+  pointer-events: none;
+}
+
+.chapter-background__poster,
+.chapter-background__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chapter-background__video {
+  position: absolute;
+  inset: 0;
+}
+
+.chapter-background__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--chapter-overlay-color, #050507);
+  opacity: var(--chapter-overlay-opacity, .72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-background__video { display: none; }
+}
+
   /* Autor page navigation panel migrated to shared os-surface--glass. */
   .autor-panel.os-surface--glass {
     background: rgba(var(--bg-secondary-rgb), 0.6);

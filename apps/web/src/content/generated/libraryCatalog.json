@@ -227,7 +227,6 @@
           "packageIds": [
             "archiv-1024"
           ],
-          "backgroundVideo": "/video/SYNTHOMA29.webm",
           "summary": "Přebytek vjemů. Hranice mezi bolestí a extází se rozpouští.",
           "status": "final",
           "estimatedMinutes": 30,
@@ -257,7 +256,6 @@
           "access": "unavailable",
           "mnemCost": null,
           "packageIds": [],
-          "backgroundVideo": "/video/SYNTHOMA28.webm",
           "summary": "Touha jako virus. Infikuje každý rozhodovací uzel.",
           "status": "draft"
         },

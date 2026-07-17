@@ -227,7 +227,7 @@ const CANONICAL_CHAPTER_DEFINITIONS: CanonicalChapterDefinition[] = [
   {
     id: '0-11-orgie', title: '0-11 [ORGIE]', filename: '0-11 [ORGIE].html', order: 12,
     status: 'final', mnemCost: 64, packageIds: ['archiv-1024'], aliases: ['orgie', '0-11-orgie-1'],
-    backgroundVideo: '/video/SYNTHOMA29.webm', estimatedMinutes: 30,
+    estimatedMinutes: 30,
     summary: 'Přebytek vjemů. Hranice mezi bolestí a extází se rozpouští.',
     teaser: '„Archiv se otevřel. To, co vypadalo jako konec, byl jen vstupní protokol."',
     teaserEn: '"The archive opened. What looked like an ending was just an entry protocol."',
@@ -239,7 +239,7 @@ const CANONICAL_CHAPTER_DEFINITIONS: CanonicalChapterDefinition[] = [
   },
   {
     id: '0-13-lust', title: '0-13 [LUST]', order: 14, status: 'draft',
-    backgroundVideo: '/video/SYNTHOMA28.webm', summary: 'Touha jako virus. Infikuje každý rozhodovací uzel.',
+    summary: 'Touha jako virus. Infikuje každý rozhodovací uzel.',
   },
   {
     id: '0-14-absence', title: '0-14 [ABSENCE]', order: 15, status: 'draft',

@@ -174,8 +174,7 @@
     "order": 12,
     "availability": "published",
     "accessPolicy": "entitlement",
-    "mnemCost": 64,
-    "backgroundVideo": "/video/SYNTHOMA29.webm"
+    "mnemCost": 64
   },
   {
     "id": "0-12-conflict",
@@ -200,8 +199,7 @@
     "order": 14,
     "availability": "unavailable",
     "accessPolicy": "entitlement",
-    "mnemCost": null,
-    "backgroundVideo": "/video/SYNTHOMA28.webm"
+    "mnemCost": null
   },
   {
     "id": "0-14-absence",
