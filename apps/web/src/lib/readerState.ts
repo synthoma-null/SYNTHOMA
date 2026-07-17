@@ -8,8 +8,11 @@ export type ReaderResume = {
 
 export type ReadingProgressEntry = {
   bookId: string;
+  chapterId?: string;
   path: string;
   percent: number;
+  completed?: boolean;
+  lastBlockId?: string;
   updatedAt: number;
 };
 

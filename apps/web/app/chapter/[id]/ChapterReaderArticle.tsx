@@ -3,6 +3,7 @@ import { CHAPTER_CATALOG, type ChapterCatalogEntry } from '../../../src/content/
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 import ChapterBackground from '../../../src/components/reader/ChapterBackground';
 import ChapterReadingProgress from '../../../src/components/reader/ChapterReadingProgress';
+import ReaderCommandUtilities from '../../../src/components/reader/ReaderCommandUtilities';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 
 interface Props {
@@ -41,22 +42,26 @@ export default function ChapterReaderArticle({
         chapterPath={chapter.route}
       />
       <header className="chapter-reader__command-bar">
-        <Link className="chapter-reader__command" href="/books">KNIHOVNA</Link>
+        <div className="chapter-reader__route-commands">
+          <Link className="chapter-reader__command" href="/books">KNIHOVNA</Link>
+          {previous ? <Link className="chapter-reader__command" rel="prev" href={localizedRoute(previous, locale)}>PŘEDCHOZÍ</Link> : null}
+          {next ? <Link className="chapter-reader__command" rel="next" href={localizedRoute(next, locale)}>DALŠÍ</Link> : null}
+        </div>
         <span className="chapter-reader__identity" aria-current="page">
           <span className="chapter-reader__sequence">{String((chapter.order ?? 0) + 1).padStart(2, '0')}</span>
           <span>{title}</span>
         </span>
-        <Link
-          className="chapter-reader__command"
-          href={`${chapter.route}${locale === 'en' ? '' : '?locale=en'}`}
-          hrefLang={locale === 'en' ? 'cs' : 'en'}
-        >
-          {locale === 'en' ? 'CS' : 'EN'}
-        </Link>
+        <div className="chapter-reader__command-end">
+          <Link className="chapter-reader__command" href={`${chapter.route}${locale === 'en' ? '' : '?locale=en'}`} hrefLang={locale === 'en' ? 'cs' : 'en'}>
+            {locale === 'en' ? 'CS' : 'EN'}
+          </Link>
+          <ReaderCommandUtilities articleId="chapter-reader-article" locale={locale} />
+        </div>
       </header>
 
       <article
         className="chapter-reader__article SYNTHOMAREADER choices-shown typewriter-instant"
+        id="chapter-reader-article"
         aria-label={title}
         lang={sourceLocale}
         tabIndex={-1}

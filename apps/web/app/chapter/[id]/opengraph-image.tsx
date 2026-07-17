@@ -35,7 +35,7 @@ export default async function ChapterOpenGraphImage({ params }: { params: Promis
           {chapter.title}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '18px', fontSize: 27, color: '#c8cadb' }}>
-          <span>SYNTHOMA-NULL</span><span style={{ color: '#ff4fd8' }}>//</span><span>INTERAKTIVNÍ ROMÁN</span>
+          <span>SYNTHOMA-NULL</span><span style={{ color: '#ff4fd8' }}>{'//'}</span><span>INTERAKTIVNÍ ROMÁN</span>
         </div>
       </div>
     </div>,

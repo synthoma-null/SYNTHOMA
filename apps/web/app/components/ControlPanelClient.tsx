@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { getSharedAudio } from "../../src/lib/audio";
 
 import { readBooleanStorage, readNumberStorage, readStorage, removeStorage, writeStorage } from "../../src/lib/browser";
+import { readUiPreferences, setMovingBackground } from "../../src/lib/uiPreferences";
 
 
 
@@ -648,6 +649,7 @@ export default function ControlPanelClient() {
       // animations
 
       const toggleAnimationsBtn = document.getElementById("toggle-animations");
+      const toggleMovingBackgroundBtn = document.getElementById("toggle-moving-background");
 
       const toggleGlassBtn = document.getElementById("toggle-glass");
 
@@ -664,6 +666,13 @@ export default function ControlPanelClient() {
         }
 
         const isGlass = readFlag("glassMode", false);
+        const movingBackground = readUiPreferences().movingBackground;
+        if (toggleMovingBackgroundBtn) {
+          toggleMovingBackgroundBtn.textContent = movingBackground
+            ? cp('Pohyblivé pozadí: Zapnuto', 'Moving background: On')
+            : cp('Pohyblivé pozadí: Vypnuto', 'Moving background: Off');
+          toggleMovingBackgroundBtn.setAttribute('aria-pressed', String(movingBackground));
+        }
 
         if (toggleGlassBtn){
 
@@ -676,6 +685,7 @@ export default function ControlPanelClient() {
       }
 
       if (toggleAnimationsBtn) { updateButtonState(); }
+      if (toggleMovingBackgroundBtn) { updateButtonState(); }
 
       if (toggleGlassBtn) { updateButtonState(); }
 
@@ -1902,6 +1912,12 @@ export default function ControlPanelClient() {
 
             window.animationManager?.toggleAll();
 
+            updateButtonState();
+
+          } else if ((btn as HTMLElement).id === 'toggle-moving-background') {
+
+            try { ev.preventDefault(); ev.stopPropagation(); } catch {}
+            setMovingBackground(!readUiPreferences().movingBackground);
             updateButtonState();
 
           } else if ((btn as HTMLElement).id === 'toggle-glass') {

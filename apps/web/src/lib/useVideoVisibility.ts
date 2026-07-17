@@ -59,6 +59,7 @@ export function useVideoVisibility(
     document.addEventListener("visibilitychange", onVis);
     document.addEventListener("synthoma:animations-changed", onAnimationsChanged);
     return () => {
+      el.pause();
       document.removeEventListener("visibilitychange", onVis);
       document.removeEventListener("synthoma:animations-changed", onAnimationsChanged);
     };

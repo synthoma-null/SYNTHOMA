@@ -27,19 +27,29 @@ export default function ChapterReadingProgress({ chapterId, chapterTitle, collec
     setProgress(initial);
     saveLastChapterPath(chapterPath);
 
+    if (initial > 1 && initial < 98 && typeof window.scrollTo === 'function') {
+      const restore = () => requestAnimationFrame(() => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        window.scrollTo({ top: Math.max(0, scrollable * (initial / 100)), behavior: 'auto' });
+      });
+      void (document.fonts?.ready ?? Promise.resolve()).then(restore);
+    }
+
     let frame = 0;
     const persist = (next: number) => {
       const previous = readReadingProgress(collection);
       const monotonic = previous?.path === chapterPath ? Math.max(previous.percent, next) : next;
+      const completed = monotonic >= 98;
       saveReadingProgress({
         bookId: collection,
+        chapterId,
         path: chapterPath,
         percent: monotonic,
+        completed,
         updatedAt: Date.now(),
       });
       setProgress(monotonic);
 
-      const completed = monotonic >= 98;
       if (!completed && monotonic - lastServerProgress.current < 5) return;
       lastServerProgress.current = monotonic;
       void fetch('/api/me/progress', {

@@ -57,9 +57,16 @@ export function getChapterPresentation(reference: string): ChapterPresentation |
   return chapter ? CHAPTER_PRESENTATIONS[chapter.id] ?? null : null;
 }
 
-export function validateChapterPresentations(): string[] {
-  return CHAPTER_CATALOG.flatMap((chapter) => {
-    const presentation = CHAPTER_PRESENTATIONS[chapter.id];
+export function validateChapterPresentations(
+  registry: Readonly<Record<string, ChapterPresentation>> = CHAPTER_PRESENTATIONS,
+  assetExists?: (publicPath: string) => boolean,
+): string[] {
+  const catalogIds = new Set(CHAPTER_CATALOG.map((chapter) => chapter.id));
+  const unknownMappings = Object.keys(registry)
+    .filter((chapterId) => !catalogIds.has(chapterId))
+    .map((chapterId) => `${chapterId}: presentation references an unknown chapter`);
+  const chapterErrors = CHAPTER_CATALOG.flatMap((chapter) => {
+    const presentation = registry[chapter.id];
     if (!presentation) return [`${chapter.id}: presentation is missing`];
     if (chapter.availability === 'published' && !presentation.poster) {
       return [`${chapter.id}: published chapter poster is missing`];
@@ -67,6 +74,16 @@ export function validateChapterPresentations(): string[] {
     if (presentation.video && presentation.video.sources.length === 0) {
       return [`${chapter.id}: video has no sources`];
     }
-    return [];
+    const paths = [presentation.poster, presentation.fallbackImage, ...(presentation.video?.sources.map((source) => source.src) ?? [])];
+    return paths.flatMap((publicPath) => {
+      if (!/^\/(?:video|chapters\/posters|books)\//.test(publicPath)) {
+        return [`${chapter.id}: asset is outside approved public media roots (${publicPath})`];
+      }
+      if (assetExists && !assetExists(publicPath)) {
+        return [`${chapter.id}: asset is missing (${publicPath})`];
+      }
+      return [];
+    });
   });
+  return [...unknownMappings, ...chapterErrors];
 }

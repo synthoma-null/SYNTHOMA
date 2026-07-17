@@ -331,6 +331,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
                 </header>
                 <div className="cp-btn-col">
                   <button id="toggle-animations" className="panel-button btn btn-sm" aria-pressed="true">Animace: Zapnuty</button>
+                  <button id="toggle-moving-background" className="panel-button btn btn-sm" aria-pressed="true">Pohyblivé pozadí: Zapnuto</button>
                   <button id="toggle-glass" className="panel-button btn btn-sm" aria-pressed="false">Sklo: Vypnuto</button>
                 </div>
               </section>

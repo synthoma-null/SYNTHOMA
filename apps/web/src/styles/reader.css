@@ -664,7 +664,11 @@
 .chapter-background__video {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  transition: opacity .7s ease;
 }
+
+.chapter-background__video.is-ready { opacity: 1; }
 
 .chapter-background__overlay {
   position: absolute;
@@ -736,6 +740,31 @@
   backdrop-filter: blur(12px);
   z-index: 10;
 }
+
+.chapter-reader__route-commands,
+.chapter-reader__command-end,
+.chapter-reader__utilities {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.chapter-reader__command-end { justify-content: flex-end; min-width: 0; }
+
+.chapter-reader__utilities button {
+  border: 0;
+  padding: .2rem;
+  color: var(--text-secondary);
+  background: transparent;
+  font-family: var(--font-family-mono);
+  font-size: .62rem;
+  cursor: pointer;
+}
+
+.chapter-reader__utilities button[aria-pressed="true"] { color: var(--accent-secondary); }
+
+.chapter-reader--focus .chapter-background__video { opacity: .18; }
+.chapter-reader--focus .chapter-reader__article.SYNTHOMAREADER { background: color-mix(in srgb, var(--bg-primary) 96%, transparent); }
 
 .chapter-reader__command {
   color: var(--text-secondary);
@@ -857,6 +886,10 @@
   .chapter-reader { padding: 4rem .65rem 2rem; }
   .chapter-reader__command-bar { top: .35rem; gap: .5rem; margin-bottom: 1rem; }
   .chapter-reader__identity { font-size: .68rem; }
+  .chapter-reader__route-commands .chapter-reader__command:not(:first-child),
+  .chapter-reader__utilities button:not(:nth-child(-n+3)) { display: none; }
+  .chapter-reader__utilities { gap: .25rem; }
+  .chapter-reader__utilities button { font-size: .55rem; }
   .chapter-reader__article.SYNTHOMAREADER { padding: 1rem .85rem; }
   .chapter-reader__article.SYNTHOMAREADER .chapter-content p { line-height: 1.62; }
   .chapter-reader__navigation { gap: .5rem; }
@@ -865,6 +898,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .chapter-reader__progress-bar { transition: none; }
+  .chapter-background__video { transition: none; }
 }
 
   /* Autor page navigation panel migrated to shared os-surface--glass. */
