@@ -123,32 +123,128 @@ second confirmed code path for the same class of bug.
 
 ## MOTION
 
-Pending implementation after the audit checkpoint.
+The effective motion state is now derived once from the versioned preference
+snapshot, the live `prefers-reduced-motion` query, and the background-motion
+setting. The bootstrap writes the contract to the root element before hydration:
+`data-motion-preference`, `data-motion`, `data-background-motion`, `data-glitch`,
+`data-noise`, `data-scanlines`, and `data-text-effects`.
+
+`off` is a real stop state. Decorative video owners do not mount their video,
+global CSS removes animations and transitions, typewriters finish immediately,
+glitch timers are cancelled, and the retro canvas cancels its animation frame.
+The contract survives route changes and reloads without a route component being
+allowed to restart media. `reduced` keeps the information layer while suppressing
+non-essential movement. Audio is intentionally independent.
+
+The original production failure is fixed locally: with motion set to `off`, home,
+Books, a free chapter, a locked chapter, Archive, Autor, Cyklus, and Profile all
+reported `data-motion="off"`, zero decorative videos, and zero active CSS
+animations. Books and the free chapter stayed in that state after a full reload.
 
 ## PREFERENCES
 
-Pending implementation after the audit checkpoint.
+`synthoma_ui_preferences` v2 is the single local runtime authority. Reads validate
+and clamp every field, migrate the v1 object and legacy keys, repair malformed
+values, and write one normalized snapshot. Migration is idempotent. A shared
+subscription API drives React and non-React consumers without polling.
+
+The store owns theme, motion mode, background motion, glitch/noise/scanlines,
+text effects, typewriter speed, font scale, Reader opacity, glass and blur, audio
+master and volume, focus mode, and TTS. Root bootstrap prevents theme, motion,
+font, opacity, and glass flashes. Reader progress, consent, language, account
+entitlements, and Cyklus state remain separate domain data.
+
+Four declarative presets are available: Canon, Focus, Saver, and Calm. A modified
+snapshot is labelled Custom and applying a preset over Custom requires explicit
+confirmation. Reset also requires confirmation and restores the full canonical
+default snapshot.
 
 ## CONTROL CENTER
 
-Pending implementation after the audit checkpoint.
+The legacy 2,146-line DOM controller was removed and replaced with a controlled
+React dialog. It owns focus trapping, Escape/backdrop/close/Done behavior, focus
+return, mutual overlay coordination, accessible tabs, and stable range labels.
+The side rail becomes a bottom sheet on narrow viewports and only its content body
+scrolls; header, presets, tabs, and footer remain reachable.
+
+Tabs are contextual. Display, Motion, and Sound are global; Reading appears on
+chapter routes and exposes typewriter, focus, and TTS settings. Theme purchasing
+remains in the existing Theme Shop and is not duplicated by the preference store.
+
+Manual QA found one layout defect after the automated suite: the five panel rows
+were described by a four-row grid, so scroll content could cover the tab strip.
+The grid now explicitly owns header, presets, tabs, scroll body, and footer. The
+tab strip is pointer-reachable and the regression is covered by a CSS contract
+test.
 
 ## AUDIO
 
-Pending implementation after the audit checkpoint.
+The Sound tab controls the existing shared audio element; it does not create a
+second player. It exposes master enablement, volume, track selection, previous,
+play/pause, next, progress, elapsed/duration, and loading/error status. Audio uses
+metadata preload and explicit user play. Disabling motion does not disable audio:
+manual QA confirmed motion `off` while the audio master remained `ON` at 70%.
 
 ## TESTS
 
-Pending implementation after the audit checkpoint.
+Automated verification on 2026-07-17:
+
+- content validation: PASS, 96 entries and 22 chapters
+- Prisma validation: PASS
+- TypeScript: PASS
+- targeted preference, bootstrap, motion, typewriter, Control Center, chapter
+  background, and Cyklus audio tests: PASS, 7 suites and 24 tests after the tab-row
+  regression was added
+- full Jest: PASS, 88 passed suites, 1 skipped suite, 656 passed tests, 21 skipped
+- targeted lint for changed Control Center/preference/Reader files: PASS, no
+  warnings or errors
+- production build: PASS, 261 static pages
+
+The build retains four known pre-existing hook dependency warnings in
+`BooksClient`, `GameShell`, and `TypewriterReader`. No new Phase 5.9 lint warning
+was introduced.
+
+### Manual browser QA
+
+The local development build was checked in Chromium at 320x568, 390x844,
+844x390, 1024x600, 1366x768, 1920x1080, and 2560x1440. At every size the panel
+remained inside the viewport, exposed all contextual tabs, used internal vertical
+scrolling, and caused no horizontal document overflow.
+
+Route checks covered `/`, `/books`, `/chapter/0-inf-restart`,
+`/chapter/0-4-defragmentation`, `/archive`, `/autor`, `/cyklus`, and `/profile`.
+The Settings trigger remained singular on each route. The free Reader exposed the
+Reading tab; the locked chapter kept its access gate. Motion `off` survived route
+changes and reload, produced no decorative video or active CSS animation, and
+suppressed typewriter state. Reset restored the Synthoma theme, system motion,
+100% font scale, and background video.
+
+Authenticated owned-chapter state was not required for the preference contract
+and was not changed. Native Safari/iPhone rendering remains a manual release
+sanity check; the responsive and motion contracts are covered by Chromium QA,
+CSS contracts, and component tests.
 
 ## GIT
 
-The audit checkpoint is the first Phase 5.9 commit. Generated build output,
-screenshots, local preference dumps, environment files, and database artifacts are
-excluded.
+Phase checkpoints:
+
+1. `4e2f877` `audit: document Synthoma control panel and preference ownership`
+2. `341256f` `refactor: unify Synthoma UI preferences and motion state`
+3. `ebce916` `fix: stop all visual effects when motion is disabled`
+4. `cdee5f6` `refactor: rebuild the Synthoma control center`
+5. `01484f4` `feat: add contextual controls presets and accessible audio`
+6. This report and the final regression suite are the
+   `test: verify control center and motion contracts` checkpoint; its exact SHA is
+   reported after the commit is created.
+
+Generated build output, screenshots, local preference dumps, environment files,
+database artifacts, and `tsconfig.tsbuildinfo` are excluded.
 
 ## RELEASE
 
-- Control Center: HOLD - legacy DOM client and duplicate settings remain.
-- Motion: FAIL - route/reload reproduction starts background video under motion off.
-- Audio: HOLD - active React player is sound, but legacy ownership remains.
+- Control Center: PASS
+- Preference migration and bootstrap: PASS
+- Motion contract: PASS
+- Audio ownership and motion independence: PASS
+- Responsive Chromium matrix: PASS
+- Safari/iPhone visual sanity: HOLD for human device QA, non-blocking for this phase

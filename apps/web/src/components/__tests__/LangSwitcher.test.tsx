@@ -24,10 +24,12 @@ describe('LangSwitcher', () => {
 
   it('is mounted in Settings rather than the command header', () => {
     const layout = fs.readFileSync(path.join(process.cwd(), 'app/layout.tsx'), 'utf8');
+    const controlCenter = fs.readFileSync(path.join(process.cwd(), 'app/components/ControlCenterClient.tsx'), 'utf8');
     const header = fs.readFileSync(path.join(process.cwd(), 'src/components/synthoma-os/SynthomaCommandHeader.tsx'), 'utf8');
 
-    expect(layout).toMatch(/id="cp-language-title">JAZYK/);
-    expect(layout).toContain('<LangSwitcher />');
+    expect(layout).toContain('<ControlCenterClient />');
+    expect(controlCenter).toContain('<LangSwitcher />');
+    expect(controlCenter).toContain("language: 'Jazyk'");
     expect(header).not.toContain('LangSwitcher');
   });
 
