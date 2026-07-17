@@ -9,6 +9,7 @@ import ChapterLockModal from "../components/ChapterLockModal";
 import { CHAPTERS } from "../../src/content/booksManifest";
 import { useLang } from "../../src/lib/LangContext";
 import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
+import { useBackgroundMotionAllowed } from '../../src/hooks/useBackgroundMotionAllowed';
 
 const DESCRIPTIONS_CS: Record<string, string> = {
   'synthoma-null': `Vítejte v Synthomě. Virtuální terapii, která se zbláznila. Ve světě, kde je těžší zapomenout než přežít.<br/><br/>
@@ -48,6 +49,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
   const [progress, setProgress] = useState<Record<string, { path: string; percent: number; updatedAt: number }>>({})
   const [lockedChapter, setLockedChapter] = useState<{ id: string; title: string } | null>(null);
   const bgVideoRef = useVideoVisibility();
+  const motionAllowed = useBackgroundMotionAllowed();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
 
   
@@ -102,7 +104,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
     <div className="glitch-bg library-page">
       {/* Background video layer */}
       <div aria-hidden className="lib-bg">
-        <video
+        {motionAllowed ? <video
           ref={bgVideoRef}
           autoPlay
           loop
@@ -114,7 +116,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
         >
           <source src="/video/SYNTHOMA7.webm" type="video/webm" />
           <source src="/video/SYNTHOMA7.mp4" type="video/mp4" />
-        </video>
+        </video> : null}
         {/* subtle dark overlay for readability */}
         <div className="lib-bg-vignette" />
       </div>

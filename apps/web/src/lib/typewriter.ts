@@ -1,5 +1,11 @@
 type CancelFn = () => void;
 
+import {
+  UI_PREFERENCES_CHANGED_EVENT,
+  getEffectiveMotionMode,
+  readUiPreferences,
+} from './uiPreferences';
+
 // Types for /books/manifest.json
 type BooksManifest = {
   collections: Array<{
@@ -44,9 +50,12 @@ export function runTypewriter(opts: {
   let cancelled = false;
   let timerId: number | null = null;
   let rafId: number | null = null;
-  const prefersReduced = (() => {
-    try { return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches; } catch { return false; }
-  })();
+  const shouldRenderInstantly = () => {
+    const preferences = readUiPreferences();
+    return getEffectiveMotionMode(preferences) !== 'full'
+      || preferences.textEffects !== 'normal'
+      || preferences.typewriterSpeed === 'instant';
+  };
   const chars = Array.from(text);
   const total = Math.max(1, chars.length);
   const durationRaw = Number(getDurationMs?.() ?? 1200);
@@ -57,6 +66,24 @@ export function runTypewriter(opts: {
     if (timerId !== null) { try { window.clearTimeout(timerId); } catch {} timerId = null; }
     if (rafId !== null) { try { window.cancelAnimationFrame(rafId); } catch {} rafId = null; }
     try { host.classList.remove('tw-running'); } catch {}
+    document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
+  };
+
+  const renderRemainder = () => {
+    while (i < chars.length) {
+      const el = document.createElement('span');
+      el.className = 'tw-char noising-char';
+      el.textContent = String(chars[i]);
+      target!.appendChild(el);
+      i++;
+    }
+  };
+
+  const onPreferencesChanged = () => {
+    if (!cancelled && shouldRenderInstantly()) {
+      renderRemainder();
+      finish();
+    }
   };
 
   const finish = () => {
@@ -66,7 +93,8 @@ export function runTypewriter(opts: {
   };
 
   // Instant render for reduced motion or degenerate cases
-  if (prefersReduced || duration <= 90 || total === 1) {
+  let i = 0;
+  if (shouldRenderInstantly() || duration <= 90 || total === 1) {
     try {
       for (const ch of chars) {
         const el = document.createElement('span');
@@ -83,9 +111,9 @@ export function runTypewriter(opts: {
   // Mark running state for CSS coordination
   try { host.classList.add('tw-running'); } catch {}
   try { onStart && onStart(); } catch {}
+  document.addEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
 
   // Deterministic timer using setTimeout step to avoid rAF throttling on bg tabs
-  let i = 0;
   const step = () => {
     if (cancelled) return;
     if (i >= chars.length) { finish(); return; }

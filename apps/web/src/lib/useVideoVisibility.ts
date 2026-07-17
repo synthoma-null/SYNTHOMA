@@ -1,26 +1,20 @@
 import { useEffect, useRef, type RefObject } from "react";
-
-function areAnimationsDisabled(): boolean {
-  try {
-    const v = localStorage.getItem("animationsDisabled");
-    return v === "true";
-  } catch {
-    return false;
-  }
-}
+import {
+  UI_PREFERENCES_CHANGED_EVENT,
+  isBackgroundMotionAllowed,
+  readUiPreferences,
+} from './uiPreferences';
 
 function shouldBePaused(): boolean {
   if (typeof window === "undefined") return false;
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return true;
-  if (areAnimationsDisabled()) return true;
+  if (!isBackgroundMotionAllowed(readUiPreferences())) return true;
   if (document.hidden) return true;
   return false;
 }
 
 /**
  * Pauses a background video when the tab is hidden, when the user prefers
- * reduced motion, or when synthoma animations are disabled via the control panel.
- * Listens to `synthoma:animations-changed` to react to panel toggles.
+ * reduced motion, data saver, or the canonical background motion preference.
  * Pass an existing ref or use the returned ref on a <video> element.
  */
 export function useVideoVisibility(
@@ -48,20 +42,14 @@ export function useVideoVisibility(
       }
     };
 
-    const onAnimationsChanged = () => {
-      if (areAnimationsDisabled()) {
-        el.pause();
-      } else if (!document.hidden) {
-        el.play().catch(() => {});
-      }
-    };
+    const onAnimationsChanged = onVis;
 
     document.addEventListener("visibilitychange", onVis);
-    document.addEventListener("synthoma:animations-changed", onAnimationsChanged);
+    document.addEventListener(UI_PREFERENCES_CHANGED_EVENT, onAnimationsChanged);
     return () => {
       el.pause();
       document.removeEventListener("visibilitychange", onVis);
-      document.removeEventListener("synthoma:animations-changed", onAnimationsChanged);
+      document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, onAnimationsChanged);
     };
   }, [ref]);
 

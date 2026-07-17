@@ -15,6 +15,7 @@ import "../src/styles/game-v1.css";
 import "../src/styles/cyklus.css";
 import "../src/styles/control-panel-os.css";
 import "../src/styles/audio-panel.css";
+import "../src/styles/motion-contract.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";

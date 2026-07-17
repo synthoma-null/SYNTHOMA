@@ -1,3 +1,9 @@
+import {
+  UI_PREFERENCES_CHANGED_EVENT,
+  getEffectiveMotionMode,
+  readUiPreferences,
+} from './uiPreferences';
+
 // Glitch heading manager working on per-character spans when available.
 // Usage: const detach = attachGlitchHeading(rootElement, originalText, options)
 
@@ -15,8 +21,10 @@ export type GlitchOptions = {
 
 const DEFAULT_CHARS = "!@#$%^&*_-+=/?\\|<>[]{};:~NYHSMT#¤%&@§÷×¤░▒▓█▄▀●◊ O|/\\\\_^-~.*+";
 
-function prefersReducedMotion(): boolean {
-  try { return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
+function glitchAllowed(respectReduced: boolean): boolean {
+  const preferences = readUiPreferences();
+  if (!preferences.glitchEffects || preferences.textEffects === 'off') return false;
+  return !respectReduced || getEffectiveMotionMode(preferences) === 'full';
 }
 
 function setDataAttr(el: Element, key: string, value: string) {
@@ -115,7 +123,7 @@ export function attachGlitchHeading(
 
   function start() {
     if (id) return;
-    if (respectReduced && prefersReducedMotion()) return; // A11y: respect reduced motion unless overridden
+    if (!glitchAllowed(respectReduced)) return;
     id = (setInterval(() => {
       // avoid spamming when tab is hidden
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {
@@ -152,6 +160,17 @@ export function attachGlitchHeading(
     } catch {}
   }
 
-  start();
-  return stop;
+  const sync = () => {
+    if (glitchAllowed(respectReduced)) start();
+    else stop();
+  };
+  const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  document.addEventListener(UI_PREFERENCES_CHANGED_EVENT, sync);
+  motion?.addEventListener?.('change', sync);
+  sync();
+  return () => {
+    document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, sync);
+    motion?.removeEventListener?.('change', sync);
+    stop();
+  };
 }

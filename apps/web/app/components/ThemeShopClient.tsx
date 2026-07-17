@@ -22,16 +22,6 @@ function applyTheme(theme: string) {
   try {
     document.documentElement.setAttribute('data-theme', theme);
   } catch {}
-  try {
-    if (typeof (window as any).startVideoRotation === 'function') {
-      (window as any).startVideoRotation();
-    }
-  } catch {}
-  try {
-    document.querySelectorAll<HTMLVideoElement>('.video-background video, .bg-video, .bg-video video').forEach((v) => {
-      try { v.play().catch(() => {}); } catch {}
-    });
-  } catch {}
 }
 
 export default function ThemeShopClient() {

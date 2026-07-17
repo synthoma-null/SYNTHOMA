@@ -4,11 +4,13 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
+import { useBackgroundMotionAllowed } from '../../src/hooks/useBackgroundMotionAllowed';
 
 export default function AutorClient({ initialHtml }: { initialHtml: string }) {
   const TITLE = "A U T O R";
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const videoRef = useVideoVisibility();
+  const motionAllowed = useBackgroundMotionAllowed();
 
   useEffect(() => {
     const prefersReduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -34,7 +36,7 @@ export default function AutorClient({ initialHtml }: { initialHtml: string }) {
     <div className={"glitch-bg autor-page"}>
       {/* Background video layer to match visual style with Archive */}
       <div aria-hidden className="video-background">
-        <video
+        {motionAllowed ? <video
           ref={videoRef}
           src="/video/SYNTHOMA12.webm"
           autoPlay
@@ -43,7 +45,7 @@ export default function AutorClient({ initialHtml }: { initialHtml: string }) {
           playsInline
           preload="metadata"
           className="active"
-        />
+        /> : null}
       </div>
       <main className="story" aria-label="O autorovi">
         <section className="story-block" data-theme="synthoma">

@@ -10,6 +10,11 @@ import {
   splitContentAtChoices,
   transformChoicesToButtons,
 } from "./typewriterContent";
+import {
+  UI_PREFERENCES_CHANGED_EVENT,
+  getEffectiveMotionMode,
+  readUiPreferences,
+} from './uiPreferences';
 
 export type RenderMode = "typed" | "instant";
 
@@ -126,9 +131,19 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
   box.appendChild(segment);
 
   let cancelled = false;
+  let frameId = 0;
+
+  const prefersInstant = () => {
+    const preferences = readUiPreferences();
+    return getEffectiveMotionMode(preferences) !== 'full'
+      || preferences.textEffects !== 'normal'
+      || preferences.typewriterSpeed === 'instant';
+  };
 
   const finish = () => {
     if (cancelled) return;
+    if (frameId) cancelAnimationFrame(frameId);
+    document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
     try {
       segment.innerHTML = sanitizeHTML(transformed);
     } catch {}
@@ -158,7 +173,11 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
     onDone({ segment, remainderHtml });
   };
 
-  if (mode === "instant" || textLength === 0) {
+  const onPreferencesChanged = () => {
+    if (prefersInstant()) finish();
+  };
+
+  if (mode === "instant" || textLength === 0 || prefersInstant()) {
     segment.innerHTML = sanitizeHTML(transformed);
     cleanupChoices(segment);
     bindChoiceHandlers();
@@ -174,6 +193,8 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
 
   const cancel = () => {
     cancelled = true;
+    if (frameId) cancelAnimationFrame(frameId);
+    document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
   };
 
   const tick = (ts: number) => {
@@ -189,7 +210,7 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
       finish();
       return;
     }
-    requestAnimationFrame(tick);
+    frameId = requestAnimationFrame(tick);
   };
 
   try {
@@ -200,7 +221,8 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
   } catch {
     segment.innerHTML = "";
   }
-  requestAnimationFrame(tick);
+  document.addEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
+  frameId = requestAnimationFrame(tick);
 
   return { segment, remainderHtml, cancel };
 }

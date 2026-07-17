@@ -10,6 +10,7 @@ import Link from "next/link";
 import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import { useLang } from "../../src/lib/LangContext";
 import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
+import { useBackgroundMotionAllowed } from '../../src/hooks/useBackgroundMotionAllowed';
 
 export type ArchiveCardAccess = {
   mode: 'free' | 'chapter' | 'mnems' | 'chapter_or_mnems';
@@ -95,6 +96,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
   const { t, lang } = useLang();
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const videoRef = useVideoVisibility();
+  const motionAllowed = useBackgroundMotionAllowed();
   const [completedChapterIds, setCompletedChapterIds] = useState<Set<string>>(new Set());
   const [mnemBalance, setMnemBalance] = useState<number>(0);
   const [accessLoaded, setAccessLoaded] = useState(false);
@@ -215,7 +217,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
     <div className={`glitch-bg archive-page ${openId ? 'is-modal' : ''}`.trim()}>
       {/* Background video layer for Archive */}
       <div aria-hidden className="video-background">
-        <video
+        {motionAllowed ? <video
           ref={videoRef}
           src="/video/SYNTHOMA10.webm"
           autoPlay
@@ -224,7 +226,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
           playsInline
           preload="metadata"
           className="active"
-        />
+        /> : null}
       </div>
       <a id="top" aria-hidden="true" className="top-anchor" />
       <main className="story archive-story">

@@ -26,6 +26,7 @@ import SynthomaWordmark from '../synthoma/SynthomaWordmark';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 import { getCardChoiceOrder, getChoiceForPhysicalSide, type PhysicalCardSide } from '../../game/cyklus/cyklusCardPresentation';
 import useCyklusMobileLayout from './useCyklusMobileLayout';
+import { useBackgroundMotionAllowed } from '../../hooks/useBackgroundMotionAllowed';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
   switch (cardId) {
@@ -189,6 +190,7 @@ export default function CyklusClient() {
   const { setStatus, setActions } = useHeader();
   const { data: session } = useSession();
   const mobileGameplayLayout = useCyklusMobileLayout();
+  const backgroundMotionAllowed = useBackgroundMotionAllowed();
   const [state, setState] = useState<CyklusRunState | null>(null);
   const [loading, setLoading] = useState(true);
   const [outcomeVisible, setOutcomeVisible] = useState(false);
@@ -787,9 +789,9 @@ export default function CyklusClient() {
   if (showMenu) {
     return (
       <div className="cyklus-no-select cyklus-root cyklus-root--menu">
-        <video className="cyklus-menu__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1}>
+        {backgroundMotionAllowed ? <video className="cyklus-menu__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1}>
           <source src="/video/SYNTHOMA5.webm" type="video/webm" />
-        </video>
+        </video> : null}
         <main className="cyklus-menu">
           <div className="cyklus-menu__bootbar" aria-label="SYNTHOMA OS terminal">
             <span>SYNTHOMA OS</span>

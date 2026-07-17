@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { getSharedAudio } from "../../src/lib/audio";
 
 import { readBooleanStorage, readNumberStorage, readStorage, removeStorage, writeStorage } from "../../src/lib/browser";
-import { getEffectiveMotionMode, readUiPreferences, setMovingBackground, updateUiPreferences } from "../../src/lib/uiPreferences";
+import { readUiPreferences, setMovingBackground, updateUiPreferences } from "../../src/lib/uiPreferences";
 
 
 
@@ -131,49 +131,6 @@ export default function ControlPanelClient() {
 
         body.classList.toggle("no-animations", next);
 
-        // update glitch/video helpers
-
-        if (typeof window.stopGlitchBg === "function" && next) window.stopGlitchBg();
-
-        if (typeof window.startGlitchBg === "function" && !next) window.startGlitchBg();
-
-        if (typeof window.stopVideoRotation === "function" && next) window.stopVideoRotation();
-
-        if (typeof window.startVideoRotation === "function" && !next) window.startVideoRotation();
-
-        if (typeof window.stopNoise === "function" && next) window.stopNoise();
-
-        if (typeof window.startNoise === "function" && !next) window.startNoise();
-
-        if (typeof window.stopShinning === "function" && next) window.stopShinning();
-
-        if (typeof window.startShinning === "function" && !next) window.startShinning();
-
-        // hard pause/resume all background videos
-
-        const vids = document.querySelectorAll<HTMLVideoElement>(".video-background video, .bg-video, .bg-video video");
-
-        vids.forEach((v) => {
-
-          try {
-
-            if (next) {
-
-              v.pause();
-
-            } else {
-
-              v.play().catch(() => { /* ignore */ });
-
-            }
-
-          } catch {}
-
-        });
-
-        // Dispatch event so all listeners (incl. useVideoVisibility) react
-        try { document.dispatchEvent(new CustomEvent('synthoma:animations-changed')); } catch {}
-
         // Button label + aria-pressed update
         const btn = document.getElementById("toggle-animations");
         if (btn) {
@@ -224,43 +181,9 @@ export default function ControlPanelClient() {
       try {
 
         const preferences = readUiPreferences();
-        const areDisabled = getEffectiveMotionMode(preferences) === 'off';
+        const areDisabled = preferences.motionMode === 'off';
 
         body.classList.toggle("no-animations", areDisabled);
-
-        if (areDisabled) {
-
-          if (typeof window.stopGlitchBg === "function") window.stopGlitchBg();
-
-          if (typeof window.stopVideoRotation === "function") window.stopVideoRotation();
-
-          if (typeof window.stopNoise === "function") window.stopNoise();
-
-          if (typeof window.stopShinning === "function") window.stopShinning();
-
-          const vids0 = document.querySelectorAll<HTMLVideoElement>(".video-background video, .bg-video, .bg-video video");
-
-          vids0.forEach((v) => {
-
-            try {
-
-              v.pause();
-
-            } catch {}
-
-          });
-
-        } else {
-
-          if (typeof window.startGlitchBg === "function") window.startGlitchBg();
-
-          if (typeof window.startVideoRotation === "function") window.startVideoRotation();
-
-          if (typeof window.startNoise === "function") window.startNoise();
-
-          if (typeof window.startShinning === "function") window.startShinning();
-
-        }
 
         const fs = String(preferences.fontScale);
 
@@ -1073,18 +996,6 @@ export default function ControlPanelClient() {
               b.setAttribute('aria-pressed', String(activeNow));
 
             });
-
-            try { if (typeof window.startVideoRotation === 'function') window.startVideoRotation(); } catch {}
-
-            try {
-
-              document.querySelectorAll<HTMLVideoElement>('.video-background video, .bg-video, .bg-video video').forEach(v => {
-
-                try { v.play().catch(()=>{}); } catch {}
-
-              });
-
-            } catch {}
 
           });
 

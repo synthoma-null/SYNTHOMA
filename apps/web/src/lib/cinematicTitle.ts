@@ -1,4 +1,11 @@
+import { getEffectiveMotionMode, readUiPreferences } from './uiPreferences';
+
 export function runCinematicTitleIntro(root: HTMLElement) {
+  const preferences = readUiPreferences();
+  if (getEffectiveMotionMode(preferences) !== 'full' || preferences.textEffects !== 'normal') {
+    root.classList.remove('intro-flicker');
+    return () => {};
+  }
   // Jednoduchý intro efekt: krátký flicker třídy, dokud se nenastartuje reálný helper z window
   let active = true;
   const cls = "intro-flicker";

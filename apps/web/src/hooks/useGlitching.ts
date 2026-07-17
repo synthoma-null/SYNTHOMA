@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useRef, type RefObject } from 'react'
+import { UI_PREFERENCES_CHANGED_EVENT, getEffectiveMotionMode, readUiPreferences } from '../lib/uiPreferences'
 
 interface GlitchHTMLElement extends HTMLElement {
   __glitchOrig?: string | undefined
@@ -8,21 +9,26 @@ interface GlitchHTMLElement extends HTMLElement {
   __glitchOverlay?: HTMLElement | undefined
 }
 
+function glitchAllowed(): boolean {
+  const preferences = readUiPreferences()
+  return getEffectiveMotionMode(preferences) === 'full'
+    && preferences.glitchEffects
+    && preferences.textEffects === 'normal'
+}
+
 export function useGlitching(hostRef: RefObject<HTMLElement | null>, isTypingRef: RefObject<boolean>) {
   const glitchCleanupRef = useRef<Array<() => void>>([])
 
   const enhanceGlitching = useCallback((container: HTMLElement | null) => {
     if (!container) return
     try {
-      const prefersReduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+      if (!glitchAllowed()) return
       const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
       const pick = () => GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length)) || '#'
       const targets = Array.from(container.querySelectorAll<HTMLElement>('.glitching'))
 
       targets.forEach((el) => {
         const glitchEl = el as GlitchHTMLElement
-        if (prefersReduced) return
-
         try {
           const label = el.getAttribute('aria-label')
           if (label && el.querySelector('.glitching-char')) {
@@ -88,6 +94,12 @@ export function useGlitching(hostRef: RefObject<HTMLElement | null>, isTypingRef
 
             const step = () => {
               try {
+                if (!glitchAllowed()) {
+                  glitchEl.__glitchBusy = 0
+                  glitchEl.__glitchOverlay?.remove()
+                  glitchEl.__glitchOverlay = undefined
+                  return
+                }
                 if (!kerningPatched) { try { (el as HTMLElement).style.fontKerning = 'none'; kerningPatched = true; } catch {} }
                 const base = source()
                 const arr = Array.from(base)
@@ -197,6 +209,14 @@ export function useGlitching(hostRef: RefObject<HTMLElement | null>, isTypingRef
     const host = hostRef.current
     if (!host) return
     const tick = () => enhanceGlitching(host)
+    const stopAll = () => {
+      glitchCleanupRef.current.forEach(fn => { try { fn() } catch {} })
+      glitchCleanupRef.current = []
+    }
+    const sync = () => {
+      if (glitchAllowed()) tick()
+      else stopAll()
+    }
     try { tick(); } catch {}
 
     let debounceTimer: ReturnType<typeof setTimeout> | null = null
@@ -210,15 +230,16 @@ export function useGlitching(hostRef: RefObject<HTMLElement | null>, isTypingRef
 
     const onVis = () => { try { if (document.visibilityState === 'visible') tick(); } catch {} }
     document.addEventListener('visibilitychange', onVis)
+    document.addEventListener(UI_PREFERENCES_CHANGED_EVENT, sync)
 
     return () => {
       try {
         obs.disconnect()
         document.removeEventListener('visibilitychange', onVis)
+        document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, sync)
       } catch {}
       // Clear all registered glitch intervals
-      glitchCleanupRef.current.forEach(fn => { try { fn(); } catch {} })
-      glitchCleanupRef.current = []
+      stopAll()
     }
   }, [hostRef, isTypingRef, enhanceGlitching])
 

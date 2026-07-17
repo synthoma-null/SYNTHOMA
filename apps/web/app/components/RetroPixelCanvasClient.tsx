@@ -1,163 +1,115 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import {
+  UI_PREFERENCES_CHANGED_EVENT,
+  isBackgroundMotionAllowed,
+  readUiPreferences,
+} from '../../src/lib/uiPreferences';
 
-/**
- * RetroPixelCanvasClient
- * - Renders a fixed canvas above the global background video (.bg-video)
- * - When the Retro Arcade theme is active, reads CSS vars from :root:
- *   --retro-canvas-pixelate (0/1), --pixelate-scale, --pixelate-contrast, --pixelate-saturation, --video-opacity, --retro-canvas-opacity
- * - Samples the <video.bg-video> to a tiny offscreen canvas and upscales to this canvas with imageSmoothing disabled
- */
 export default function RetroPixelCanvasClient() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const root = document.documentElement;
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
 
-    // Find preferred video to pixelate
-    const findPreferredVideo = (): HTMLVideoElement | null => {
-      // Priority: explicit pixel source, reader/landing background, any visible video
-      const explicit = document.querySelector<HTMLVideoElement>('video[data-pixel-source]');
-      if (explicit) return explicit;
-      const pageBg = document.querySelector<HTMLVideoElement>('.video-background video, .lib-bg video');
-      if (pageBg) return pageBg as HTMLVideoElement;
-      const anyVisible = Array.from(document.querySelectorAll<HTMLVideoElement>('video')).find(v => v.offsetParent !== null);
-      return anyVisible || null;
-    };
+    const offscreen = document.createElement('canvas');
+    const offscreenContext = offscreen.getContext('2d');
+    if (!offscreenContext) return;
 
-    let video: HTMLVideoElement | null = findPreferredVideo();
-    if (!video) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const off = document.createElement("canvas");
-    const offCtx = off.getContext("2d");
-    if (!offCtx) return;
-
-    let running = true;
-    let rafId = 0;
-    let paused = false;
-    let pauseTimer: ReturnType<typeof setTimeout> | null = null;
-
-    // Cache computed style — refresh only every 500ms
-    let cachedStyle = getComputedStyle(root);
-    let styleAge = 0;
-    const readNumberVar = (name: string, fallback: number) => {
-      try {
-        const now = Date.now();
-        if (now - styleAge > 500) { cachedStyle = getComputedStyle(root); styleAge = now; }
-        const v = cachedStyle.getPropertyValue(name).trim();
-        const n = Number(v);
-        return Number.isFinite(n) ? n : fallback;
-      } catch {
-        return fallback;
-      }
-    };
-
-    // Target 15fps for pixelation — no need for 60fps
-    const TARGET_FPS = 15;
-    const FRAME_MS = 1000 / TARGET_FPS;
+    let frameId = 0;
     let lastFrame = 0;
+    let video: HTMLVideoElement | null = null;
+
+    const findVideo = () => document.querySelector<HTMLVideoElement>(
+      'video[data-pixel-source], .video-background video, .lib-bg video',
+    );
+
+    const readNumber = (name: string, fallback: number) => {
+      const value = Number(getComputedStyle(root).getPropertyValue(name).trim());
+      return Number.isFinite(value) ? value : fallback;
+    };
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    resize();
-    const onResize = () => resize();
-    window.addEventListener("resize", onResize);
 
-    const resumeLoop = () => {
-      if (!running) return;
-      paused = false;
-      rafId = requestAnimationFrame(draw);
+    const stop = () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      frameId = 0;
+      canvas.hidden = true;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
 
-    const draw = (ts: number = 0) => {
-      if (!running) return;
-
-      // Skip hidden tabs entirely — wake up every 2s to recheck
-      if (document.visibilityState === "hidden") {
-        paused = true;
-        pauseTimer = setTimeout(resumeLoop, 2000);
+    const draw = (timestamp: number) => {
+      frameId = 0;
+      if (document.hidden || !isBackgroundMotionAllowed(readUiPreferences())) {
+        stop();
+        return;
+      }
+      if (readNumber('--retro-canvas-pixelate', 0) !== 1) {
+        stop();
+        return;
+      }
+      video = video?.isConnected ? video : findVideo();
+      if (!video || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+        stop();
         return;
       }
 
-      const enabled = readNumberVar("--retro-canvas-pixelate", 0);
+      if (timestamp - lastFrame >= 1000 / 15) {
+        lastFrame = timestamp;
+        canvas.hidden = false;
+        const scale = Math.max(1, Math.floor(readNumber('--pixelate-scale', 8)));
+        const width = Math.max(1, Math.floor(canvas.width / scale));
+        const height = Math.max(1, Math.floor(canvas.height / scale));
+        offscreen.width = width;
+        offscreen.height = height;
+        try {
+          offscreenContext.imageSmoothingEnabled = false;
+          offscreenContext.drawImage(video, 0, 0, width, height);
+          ctx.imageSmoothingEnabled = false;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(offscreen, 0, 0, width, height, 0, 0, canvas.width, canvas.height);
+        } catch {}
+      }
+      frameId = requestAnimationFrame(draw);
+    };
+
+    const sync = () => {
+      video = findVideo();
+      const enabled = !document.hidden
+        && isBackgroundMotionAllowed(readUiPreferences())
+        && readNumber('--retro-canvas-pixelate', 0) === 1
+        && Boolean(video);
       if (!enabled) {
-        // Retro not active — hide canvas and pause loop, recheck every 2s
-        if (canvas.style.display !== "none") canvas.style.display = "none";
-        paused = true;
-        pauseTimer = setTimeout(resumeLoop, 2000);
+        stop();
         return;
       }
-
-      // Throttle to TARGET_FPS
-      if (ts - lastFrame < FRAME_MS) {
-        rafId = requestAnimationFrame(draw);
-        return;
-      }
-      lastFrame = ts;
-      canvas.style.display = "";
-
-      const scale = Math.max(1, Math.floor(readNumberVar("--pixelate-scale", 8)));
-      const sw = Math.max(1, Math.floor(canvas.width / scale));
-      const sh = Math.max(1, Math.floor(canvas.height / scale));
-      if (off.width !== sw || off.height !== sh) {
-        off.width = sw; off.height = sh;
-      }
-
-      try {
-        offCtx.imageSmoothingEnabled = false;
-        offCtx.clearRect(0, 0, sw, sh);
-        if (video) offCtx.drawImage(video, 0, 0, sw, sh);
-
-        ctx.imageSmoothingEnabled = false;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(off, 0, 0, sw, sh, 0, 0, canvas.width, canvas.height);
-      } catch {
-        // ignore frame errors (e.g., while switching sources)
-      }
-
-      rafId = requestAnimationFrame(draw);
+      if (!frameId) frameId = requestAnimationFrame(draw);
     };
 
-    // Start paused — will wake when retro theme activates
-    paused = true;
-    pauseTimer = setTimeout(resumeLoop, 100);
-
-    // Observe DOM changes to retarget when page video switches
-    const mo = new MutationObserver(() => {
-      const next = findPreferredVideo();
-      if (next && next !== video) {
-        video = next;
-      }
-    });
-    mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['src'] });
-
-    // Wake up immediately when tab becomes visible again
-    const onVisibility = () => {
-      if (document.visibilityState === 'visible' && paused && running) {
-        if (pauseTimer) { clearTimeout(pauseTimer); pauseTimer = null; }
-        resumeLoop();
-      }
-    };
-    document.addEventListener('visibilitychange', onVisibility);
+    resize();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(root, { attributes: true, attributeFilter: ['class', 'data-theme', 'data-motion', 'data-background-motion', 'style'] });
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', sync);
+    document.addEventListener(UI_PREFERENCES_CHANGED_EVENT, sync);
+    sync();
 
     return () => {
-      running = false;
-      try { cancelAnimationFrame(rafId); } catch {}
-      if (pauseTimer) { try { clearTimeout(pauseTimer); } catch {} }
-      try { mo.disconnect(); } catch {}
-      document.removeEventListener('visibilitychange', onVisibility);
-      window.removeEventListener("resize", onResize);
-      try { ctx.clearRect(0, 0, canvas.width, canvas.height); } catch {}
+      stop();
+      observer.disconnect();
+      window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', sync);
+      document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, sync);
     };
   }, []);
 
-  return <canvas id="retro-video-canvas" ref={canvasRef} aria-hidden="true" />;
+  return <canvas id="retro-video-canvas" ref={canvasRef} hidden aria-hidden="true" />;
 }

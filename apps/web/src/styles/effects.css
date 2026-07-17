@@ -375,9 +375,9 @@ body.no-animations .effect-pulseWave::after {
 }
 
 /* Respect no-animations – statický glow. */
-body:not(.force-shine) .no-animations .noising-char { animation: none !important; filter: none !important; }
-body:not(.force-shine) .no-animations .noising-char:not(.noising-static) { text-shadow: none !important; }
-body:not(.force-shine) .no-animations .noising-char.noising-static {
+body.no-animations:not(.force-shine) .noising-char { animation: none !important; filter: none !important; }
+body.no-animations:not(.force-shine) .noising-char:not(.noising-static) { text-shadow: none !important; }
+body.no-animations:not(.force-shine) .noising-char.noising-static {
   text-shadow:
     0 0 1px rgba(255,255,255,0.18),
     0 0 4px var(--accent-primary),

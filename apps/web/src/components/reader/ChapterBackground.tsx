@@ -1,42 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { ChapterPresentation } from '../../content/chapterPresentation';
 import { useVideoVisibility } from '../../lib/useVideoVisibility';
-import { readUiPreferences } from '../../lib/uiPreferences';
-
-interface NetworkInformationLike {
-  saveData?: boolean;
-}
-
-function movingBackgroundAllowed(): boolean {
-  if (typeof window === 'undefined') return false;
-  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-  const animationsDisabled = window.localStorage.getItem('animationsDisabled') === 'true';
-  const movingBackground = readUiPreferences().backgroundMotion !== 'off';
-  const connection = (navigator as Navigator & { connection?: NetworkInformationLike }).connection;
-  return movingBackground && !reducedMotion && !animationsDisabled && connection?.saveData !== true;
-}
+import { useBackgroundMotionAllowed } from '../../hooks/useBackgroundMotionAllowed';
 
 export default function ChapterBackground({ presentation }: { presentation: ChapterPresentation }) {
-  const [showVideo, setShowVideo] = useState(false);
+  const motionAllowed = useBackgroundMotionAllowed();
   const [videoReady, setVideoReady] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const videoRef = useVideoVisibility();
-
-  useEffect(() => {
-    const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    const update = () => setShowVideo(Boolean(presentation.video) && movingBackgroundAllowed());
-    update();
-    motion?.addEventListener?.('change', update);
-    document.addEventListener('synthoma:animations-changed', update);
-    document.addEventListener('synthoma:ui-preferences-changed', update);
-    return () => {
-      motion?.removeEventListener?.('change', update);
-      document.removeEventListener('synthoma:animations-changed', update);
-      document.removeEventListener('synthoma:ui-preferences-changed', update);
-    };
-  }, [presentation.video]);
 
   const style = {
     '--chapter-overlay-color': presentation.overlay.color,
@@ -53,7 +27,7 @@ export default function ChapterBackground({ presentation }: { presentation: Chap
         sizes="100vw"
         priority
       />
-      {showVideo && presentation.video ? (
+      {motionAllowed && presentation.video && !videoFailed ? (
         <video
           ref={videoRef}
           className={`chapter-background__video${videoReady ? ' is-ready' : ''}`}
@@ -77,7 +51,7 @@ export default function ChapterBackground({ presentation }: { presentation: Chap
               });
             }
             setVideoReady(false);
-            setShowVideo(false);
+            setVideoFailed(true);
           }}
         >
           {presentation.video.sources.map((source) => (

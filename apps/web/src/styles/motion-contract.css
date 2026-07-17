@@ -1,0 +1,42 @@
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
+  animation: none !important;
+  scroll-behavior: auto !important;
+  transition: none !important;
+}
+
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation: none !important;
+  scroll-behavior: auto !important;
+  transition-duration: 80ms !important;
+}
+
+:root[data-background-motion="off"] .synthoma-media-layer__video,
+:root[data-background-motion="off"] .video-background video,
+:root[data-background-motion="off"] .lib-bg-video,
+:root[data-background-motion="off"] .chapter-background__video,
+:root[data-background-motion="off"] .cyklus-menu__video,
+:root[data-background-motion="off"] #retro-video-canvas {
+  display: none !important;
+}
+
+:root[data-glitch="off"] .glitch-fake1,
+:root[data-glitch="off"] .glitch-fake2,
+:root[data-glitch="off"] .glitchy,
+:root[data-text-effects="off"] .noising-char,
+:root[data-text-effects="off"] .glitching-char {
+  animation: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+}
+
+:root[data-glitch="off"] .glitch-fake1,
+:root[data-glitch="off"] .glitch-fake2,
+:root[data-noise="off"] .noise,
+:root[data-scanlines="off"] .scanlines {
+  display: none !important;
+}
