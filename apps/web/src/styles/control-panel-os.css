@@ -28,6 +28,7 @@
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
+  transition: none;
 }
 
 #control-panel.control-panel.glass {

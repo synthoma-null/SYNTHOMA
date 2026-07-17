@@ -26,4 +26,9 @@ describe('global motion contract', () => {
     const panel = fs.readFileSync(path.join(process.cwd(), 'src/styles/control-panel-os.css'), 'utf8');
     expect(panel).toContain('grid-template-rows: auto auto auto minmax(0, 1fr) auto;');
   });
+
+  it('does not leave an opened control center in its off-canvas transition state', () => {
+    const panel = fs.readFileSync(path.join(process.cwd(), 'src/styles/control-panel-os.css'), 'utf8');
+    expect(panel).toMatch(/#control-panel\.control-panel\.visible\s*{[^}]*transform:\s*translateX\(0\);[^}]*transition:\s*none;/);
+  });
 });
