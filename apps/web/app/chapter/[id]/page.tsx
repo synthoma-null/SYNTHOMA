@@ -26,11 +26,11 @@ export async function generateMetadata(
 
   const chapterTitle = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
   const title = `${chapterTitle} | SYNTHOMA-NULL`;
-  const teaser = locale === 'en' ? chapter.metadata?.teaserEn ?? chapter.metadata?.teaser : chapter.metadata?.teaser;
+  const teaser = locale === 'en' ? chapter.metadata?.teaserEn : chapter.metadata?.teaser;
   const description = typeof teaser === 'string'
     ? teaser.replace(/^„|"$/g, '').trim()
     : locale === 'en'
-      ? chapter.summary ?? 'A chapter from the interactive glitch-noir story SYNTHOMA.'
+      ? `Read ${chapterTitle}, a chapter of the interactive psychological novel SYNTHOMA-NULL.`
       : chapter.summary ?? `Kapitola ${chapter.title} z interaktivního glitch-noir příběhu SYNTHOMA.`;
   const chapterUrl = `${BASE_URL}${chapter.route}`;
   const canonicalUrl = `${chapterUrl}${locale === 'en' ? '?locale=en' : ''}`;

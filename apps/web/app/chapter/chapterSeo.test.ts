@@ -36,10 +36,12 @@ describe('chapter SEO contracts', () => {
     });
 
     const english = await generateMetadata({
-      params: Promise.resolve({ id: '0-0-null' }),
+      params: Promise.resolve({ id: '0-inf-restart' }),
       searchParams: Promise.resolve({ locale: 'en' }),
     });
-    expect(english.alternates?.canonical).toBe('https://www.synthoma.cz/chapter/0-0-null?locale=en');
+    expect(english.alternates?.canonical).toBe('https://www.synthoma.cz/chapter/0-inf-restart?locale=en');
+    expect(english.description).toBe('Read 0-∞ [RESTART], a chapter of the interactive psychological novel SYNTHOMA-NULL.');
+    expect(english.description).not.toContain('Smyčka začíná znovu');
   });
 
   it('keeps sitemap and robots on canonical public routes', () => {

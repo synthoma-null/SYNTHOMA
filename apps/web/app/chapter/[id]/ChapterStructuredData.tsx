@@ -16,7 +16,7 @@ export default function ChapterStructuredData({ chapter, locale, accessibleForFr
   const canonical = `${BASE_URL}${chapter.route}${locale === 'en' ? '?locale=en' : ''}`;
   const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
   const description = locale === 'en'
-    ? (chapter.metadata?.teaserEn ?? chapter.summary ?? '')
+    ? (chapter.metadata?.teaserEn ?? `Read ${title}, a chapter of the interactive psychological novel SYNTHOMA-NULL.`)
     : (chapter.metadata?.teaser ?? chapter.summary ?? '');
   const presentation = getChapterPresentation(chapter.id);
   const image = `${BASE_URL}${presentation?.poster ?? '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png'}`;
