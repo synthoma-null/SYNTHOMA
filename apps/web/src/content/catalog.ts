@@ -371,8 +371,8 @@ const artifactEntries: CatalogEntry[] = ARTIFACTS.map((item) => ({
 const cosmeticProducts = [
   ...UI_THEMES.map((item) => ({
     id: item.id,
-    title: item.label,
-    description: item.description,
+    title: item.name.cs,
+    description: item.description.cs,
     cost: item.cost,
   })),
   ...COSMETICS.filter((item) => !UI_THEMES.some((theme) => theme.id === item.id)).map((item) => ({

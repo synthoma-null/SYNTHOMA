@@ -6,7 +6,7 @@ export default function LangSwitcher() {
   const { lang, setLang } = useLang();
 
   return (
-    <div className="lang-switcher" role="group" aria-label="Jazyk rozhraní">
+    <div className="lang-switcher" role="group" aria-label={lang === 'en' ? 'Interface language' : 'Jazyk rozhraní'}>
       <button
         type="button"
         className={`lang-btn${lang === 'cs' ? ' lang-btn--active' : ''}`}

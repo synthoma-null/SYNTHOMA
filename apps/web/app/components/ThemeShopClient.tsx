@@ -2,10 +2,17 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { UI_THEMES } from '../../src/lib/themes';
+import type { UiTheme } from '../../src/lib/themes';
+import { useLang } from '../../src/lib/LangContext';
 import { readUiPreferences, updateUiPreferences } from '../../src/lib/uiPreferences';
 import { useAccess, type ClientAccessSnapshot } from '../../src/components/access/AccessProvider';
 
-type Theme = { id: string; label: string; cost: number; description: string; palette: readonly [string, string, string]; unlocked: boolean };
+type Theme = UiTheme & { unlocked: boolean };
+
+const COPY = {
+  cs: { aria: 'Barevný motiv', legend: 'MOTIV', balance: 'Dostupné mnemy', load: 'Načítání…', active: 'AKTIVNÍ', owned: 'ODEMČENO', need: 'potřebuješ', buyFor: 'koupit za', purchaseError: 'Nákup se nezdařil.', error: 'Chyba', confirmLog: 'LOG [THEME_PURCHASE]:', confirmTitle: 'POTVRDIT NÁKUP', confirmLead: 'Chceš odemknout motiv', for: 'za', mnems: 'mnemů', currentBalance: 'Aktuální zůstatek', cancel: 'Zrušit', processing: 'ZPRACOVÁNÍ…', buy: 'Koupit' },
+  en: { aria: 'Color theme', legend: 'THEME', balance: 'Available mnems', load: 'Loading…', active: 'ACTIVE', owned: 'UNLOCKED', need: 'requires', buyFor: 'buy for', purchaseError: 'Purchase failed.', error: 'Error', confirmLog: 'LOG [THEME_PURCHASE]:', confirmTitle: 'CONFIRM PURCHASE', confirmLead: 'Unlock theme', for: 'for', mnems: 'mnems', currentBalance: 'Current balance', cancel: 'Cancel', processing: 'PROCESSING…', buy: 'Buy' },
+} as const;
 
 function readTheme(): string {
   return readUiPreferences().theme;
@@ -25,6 +32,8 @@ function applyTheme(theme: string) {
 }
 
 export default function ThemeShopClient() {
+  const { lang } = useLang();
+  const copy = COPY[lang];
   const { applySnapshot } = useAccess();
   const [themes, setThemes] = useState<Theme[]>([]);
   const [balance, setBalance] = useState<number | null>(null);
@@ -43,7 +52,7 @@ export default function ThemeShopClient() {
 
     fetch('/api/me/themes')
       .then(async (res) => {
-        if (!res.ok) throw new Error('Nepodařilo se načíst motivy.');
+        if (!res.ok) throw new Error(copy.purchaseError);
         const data = await res.json();
         setThemes(data.themes || []);
         setBalance(typeof data.balance === 'number' ? data.balance : null);
@@ -82,7 +91,7 @@ export default function ThemeShopClient() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Nákup se nezdařil.');
+        throw new Error(copy.purchaseError);
       }
       if (data.snapshot) applySnapshot(data.snapshot as ClientAccessSnapshot, true);
       setThemes((prev) =>
@@ -91,11 +100,11 @@ export default function ThemeShopClient() {
       setBalance((prev) => (prev !== null ? prev - theme.cost : null));
       activate(theme);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Chyba');
+      setError(err instanceof Error ? err.message : copy.error);
     } finally {
       setBuying(null);
     }
-  }, [buying, activate, applySnapshot]);
+  }, [buying, activate, applySnapshot, copy.error, copy.purchaseError]);
 
   const startPreview = useCallback((theme: Theme) => {
     if (previewTimeoutRef.current) {
@@ -130,20 +139,22 @@ export default function ThemeShopClient() {
   }, [activate, startPreview]);
 
   return (
-    <fieldset id="theme-shop" className="group" aria-label="Barevný motiv">
-      <legend className="panel-section-title">MOTIV</legend>
+    <fieldset id="theme-shop" className="group" aria-label={copy.aria}>
+      <legend className="panel-section-title">{copy.legend}</legend>
       {balance !== null && (
-        <p className="theme-balance">Dostupné mnemy: <strong>{balance}</strong></p>
+        <p className="theme-balance">{copy.balance}: <strong>{balance}</strong></p>
       )}
       {error && <p className="theme-error" role="alert">{error}</p>}
       {loading ? (
-        <p className="theme-hint">Načítání…</p>
+        <p className="theme-hint">{copy.load}</p>
       ) : (
         <div className="theme-grid">
           {themes.map((theme) => {
             const isActive = currentTheme === theme.id;
             const locked = !theme.unlocked && theme.cost > 0;
             const cantAfford = locked && balance !== null && balance < theme.cost;
+            const label = theme.name[lang];
+            const description = theme.description[lang];
             return (
               <button
                 key={theme.id}
@@ -152,19 +163,19 @@ export default function ThemeShopClient() {
                 aria-pressed={isActive ? 'true' : 'false'}
                 disabled={!!buying || cantAfford}
                 onClick={() => handleClick(theme)}
-                title={cantAfford ? `${theme.label} — potřebuješ ${theme.cost} mnemů` : locked ? `${theme.label} — koupit za ${theme.cost} mnemů` : theme.label}
+                title={cantAfford ? `${label} — ${copy.need} ${theme.cost} ${copy.mnems}` : locked ? `${label} — ${copy.buyFor} ${theme.cost} ${copy.mnems}` : label}
               >
                 <span className="theme-palette" aria-hidden="true">
                   {theme.palette.map((color, index) => <span key={color} className={`theme-palette__swatch theme-palette__swatch--${index + 1}`} />)}
                 </span>
                 <span className="theme-copy">
-                  <span className="theme-label">{theme.label}</span>
-                  <span className="theme-description">{theme.description}</span>
+                  <span className="theme-label">{label}</span>
+                  <span className="theme-description">{description}</span>
                 </span>
                 <span className="theme-state">
-                  {isActive && <span className="theme-active">AKTIVNÍ</span>}
+                  {isActive && <span className="theme-active">{copy.active}</span>}
                   {!isActive && locked && <span className="theme-cost">{theme.cost} mn</span>}
-                  {!isActive && !locked && theme.cost > 0 && <span className="theme-owned">ODEMČENO</span>}
+                  {!isActive && !locked && theme.cost > 0 && <span className="theme-owned">{copy.owned}</span>}
                 </span>
               </button>
             );
@@ -175,13 +186,13 @@ export default function ThemeShopClient() {
       {confirmTheme && (
         <div className="theme-dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-dialog-title">
           <div className="theme-dialog os-surface">
-            <p className="theme-dialog-log">LOG [THEME_PURCHASE]:</p>
-            <h2 id="theme-dialog-title" className="theme-dialog-title">POTVRDIT NÁKUP</h2>
+            <p className="theme-dialog-log">{copy.confirmLog}</p>
+            <h2 id="theme-dialog-title" className="theme-dialog-title">{copy.confirmTitle}</h2>
             <p className="theme-dialog-body">
-              Chceš odemknout motiv <strong>{confirmTheme.label}</strong> za <strong>{confirmTheme.cost} mnemů</strong>?
+              {copy.confirmLead} <strong>{confirmTheme.name[lang]}</strong> {copy.for} <strong>{confirmTheme.cost} {copy.mnems}</strong>?
             </p>
             {balance !== null && (
-              <p className="theme-dialog-balance">Aktuální zůstatek: <strong>{balance}</strong> mnemů</p>
+              <p className="theme-dialog-balance">{copy.currentBalance}: <strong>{balance}</strong> {copy.mnems}</p>
             )}
             <div className="theme-dialog-actions">
               <button
@@ -192,7 +203,7 @@ export default function ThemeShopClient() {
                 }}
                 disabled={!!buying}
               >
-                Zrušit
+                {copy.cancel}
               </button>
               <button
                 className="btn theme-dialog-btn theme-dialog-btn--confirm"
@@ -206,7 +217,7 @@ export default function ThemeShopClient() {
                 }}
                 disabled={!!buying}
               >
-                {buying === confirmTheme.id ? 'ZPRACOVÁNÍ…' : 'Koupit'}
+                {buying === confirmTheme.id ? copy.processing : copy.buy}
               </button>
             </div>
           </div>

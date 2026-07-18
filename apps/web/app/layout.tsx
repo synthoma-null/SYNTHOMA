@@ -241,7 +241,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
         <UiPreferencesRuntime />
 
-        <a href="#main-content" className="skip-to-content">Přeskočit na obsah</a>
+        <a href="#main-content" className="skip-to-content">{initialLang === 'en' ? 'Skip to content' : 'Přeskočit na obsah'}</a>
 
         <noscript>
 
@@ -249,9 +249,9 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
             <h1>SYNTHOMA</h1>
 
-            <p>Interaktivní román, karetní hra a živý archiv vyžadují JavaScript pro plný zážitek.</p>
+            <p>{initialLang === 'en' ? 'The interactive novel, card game and living archive require JavaScript for the full experience.' : 'Interaktivní román, karetní hra a živý archiv vyžadují JavaScript pro plný zážitek.'}</p>
 
-            <p>Zapněte JavaScript nebo navštivte <a href="/books">knihovnu</a> pro statický obsah.</p>
+            <p>{initialLang === 'en' ? <>Enable JavaScript or visit the <a href="/books?locale=en">library</a> for static content.</> : <>Zapněte JavaScript nebo navštivte <a href="/books">knihovnu</a> pro statický obsah.</>}</p>
 
           </div>
 
