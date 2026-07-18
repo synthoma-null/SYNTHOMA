@@ -21,13 +21,16 @@ describe('SynthomaShell', () => {
   });
 
   it('owns one set of global controls and marks the active route', () => {
-    renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
+    const { container } = renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);
     expect(screen.getAllByRole('button', { name: 'Identita' })).toHaveLength(1);
     expect(screen.getAllByRole('button', { name: 'Nastavení' })).toHaveLength(1);
     expect(screen.getAllByRole('button', { name: /Hudba/ })).toHaveLength(1);
     expect(screen.getByRole('navigation', { name: 'Hlavní sektory' }).querySelector('a[aria-current="page"]')).toHaveTextContent('KNIHOVNA');
     expect(document.querySelectorAll('#toggle-panel-btn')).toHaveLength(1);
     expect(document.querySelectorAll('#toggle-audio-panel-btn')).toHaveLength(1);
+    const shell = container.querySelector('.synthoma-shell')!;
+    expect(shell.firstElementChild).toHaveClass('synthoma-shell__content');
+    expect(shell.children[1]).toHaveAttribute('data-testid', 'synthoma-command-header');
   });
 
   it('uses the existing panel events', () => {

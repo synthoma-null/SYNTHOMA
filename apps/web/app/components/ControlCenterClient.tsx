@@ -115,11 +115,13 @@ export default function ControlCenterClient() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
+  if (!open) return null;
+
   const tabs: TabId[] = readingContext ? ['display', 'motion', 'reading', 'sound'] : ['display', 'motion', 'sound'];
 
   return <>
-    <button className={`control-center__backdrop${open ? ' is-visible' : ''}`} type="button" aria-label={copy.close} tabIndex={open ? 0 : -1} onClick={() => close()} />
-    <div id="control-panel" ref={panelRef} className={`control-panel control-center${open ? ' visible' : ''}`} role="dialog" aria-modal="true" aria-labelledby="control-center-title" aria-hidden={!open}>
+    <button className="control-center__backdrop is-visible" type="button" aria-label={copy.close} onClick={() => close()} />
+    <div id="control-panel" ref={panelRef} className="control-panel control-center visible" role="dialog" aria-modal="true" aria-labelledby="control-center-title">
       <header className="control-center__header"><div><span className="control-center__kicker">SYS / CTRL</span><h2 id="control-center-title">{copy.title}</h2><p>SYNTHOMA OS // USER CHANNEL</p></div><button ref={closeRef} className="control-center__close" type="button" aria-label={copy.close} onClick={() => close()}>×</button></header>
       <section className="control-center__presets" aria-labelledby="control-presets-title"><div><h3 id="control-presets-title">{copy.presets}</h3><span>{matchingPreset ? PRESET_LABELS[matchingPreset][lang] : copy.custom}</span></div><div>{(Object.keys(PRESET_LABELS) as UiPreferencePresetId[]).map((id) => <button key={id} type="button" aria-pressed={matchingPreset === id} title={PRESET_LABELS[id].detail} onClick={() => { if (matchingPreset === null) setPendingPreset(id); else applyUiPreferencePreset(id); }}>{PRESET_LABELS[id][lang]}</button>)}</div></section>
       <div className="control-center__tabs" role="tablist" aria-label={copy.title}>{tabs.map((id) => <button key={id} id={`control-tab-${id}`} type="button" role="tab" aria-selected={tab === id} aria-controls={`control-tabpanel-${id}`} onClick={() => setTab(id)}>{copy[id]}</button>)}</div>

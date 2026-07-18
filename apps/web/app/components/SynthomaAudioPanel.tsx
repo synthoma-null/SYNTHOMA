@@ -8,8 +8,8 @@ import { updateUiPreferences } from '../../src/lib/uiPreferences';
 import { useLang } from '../../src/lib/LangContext';
 
 const AUDIO_COPY = {
-  cs: { external: 'Externí stopa', empty: 'Bez aktivní stopy', close: 'Zavřít hudební přehrávač', position: 'Pozice skladby', of: 'z', previous: 'Předchozí skladba', pause: 'Pozastavit hudbu', play: 'Přehrát hudbu', next: 'Další skladba', unmute: 'Zapnout zvuk hudby', mute: 'Ztlumit hudbu', library: 'KNIHOVNA STOP', music: 'Hudba', muted: 'ztlumeno', playing: 'přehrává se', paused: 'pozastaveno', activeTrack: 'Aktivní skladba', playTrack: 'Přehrát skladbu' },
-  en: { external: 'External track', empty: 'No active track', close: 'Close music player', position: 'Track position', of: 'of', previous: 'Previous track', pause: 'Pause music', play: 'Play music', next: 'Next track', unmute: 'Unmute music', mute: 'Mute music', library: 'TRACK LIBRARY', music: 'Music', muted: 'muted', playing: 'playing', paused: 'paused', activeTrack: 'Active track', playTrack: 'Play track' },
+  cs: { ambient: 'DOPROVODNÝ ZVUK', external: 'Externí stopa', empty: 'Bez aktivní stopy', close: 'Zavřít hudební přehrávač', position: 'Pozice skladby', of: 'z', previous: 'Předchozí skladba', pause: 'Pozastavit hudbu', play: 'Přehrát hudbu', next: 'Další skladba', unmute: 'Zapnout zvuk hudby', mute: 'Ztlumit hudbu', library: 'KNIHOVNA STOP', music: 'Hudba', muted: 'ztlumeno', playing: 'přehrává se', paused: 'pozastaveno', activeTrack: 'Aktivní skladba', playTrack: 'Přehrát skladbu' },
+  en: { ambient: 'AMBIENT AUDIO', external: 'External track', empty: 'No active track', close: 'Close music player', position: 'Track position', of: 'of', previous: 'Previous track', pause: 'Pause music', play: 'Play music', next: 'Next track', unmute: 'Unmute music', mute: 'Mute music', library: 'TRACK LIBRARY', music: 'Music', muted: 'muted', playing: 'playing', paused: 'paused', activeTrack: 'Active track', playTrack: 'Play track' },
 } as const;
 
 const PLAYER_ORDER = [
@@ -216,13 +216,15 @@ export default function SynthomaAudioPanel() {
   const title = externalTitle ?? currentTrack?.title ?? copy.empty;
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
+  if (!open) return null;
+
   return (
-    <div id="synthoma-audio-panel" className={`synthoma-audio-panel${open ? ' is-open' : ''}${isCyklusGameplay ? ' cyklus-no-select' : ''}`} aria-hidden={!open}>
+    <div id="synthoma-audio-panel" className={`synthoma-audio-panel is-open${isCyklusGameplay ? ' cyklus-no-select' : ''}`}>
       <button className="synthoma-audio-panel__backdrop" type="button" aria-label={copy.close} onClick={() => setOpen(false)} />
       <section className="synthoma-audio-panel__surface" role="dialog" aria-modal="true" aria-labelledby="synthoma-audio-title">
         <header className="synthoma-audio-panel__header">
           <div>
-            <span className="synthoma-audio-panel__kicker">AUDIO CHANNEL // {playing ? 'ACTIVE' : 'PAUSED'}</span>
+            <span className="synthoma-audio-panel__kicker">{copy.ambient} // {playing ? 'ACTIVE' : 'PAUSED'}</span>
             <h2 id="synthoma-audio-title">SYNTHOMA {String(trackIndex + 1).padStart(2, '0')}</h2>
           </div>
           <button ref={closeRef} className="synthoma-audio-panel__close" type="button" aria-label={copy.close} onClick={() => setOpen(false)}>

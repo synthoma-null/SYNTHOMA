@@ -23,9 +23,16 @@ describe('ControlCenterClient', () => {
     mockPathname = '/';
   });
 
+  it('does not render utility markup until the panel is opened', () => {
+    document.body.innerHTML = '<button id="toggle-panel-btn" aria-expanded="false">Settings</button>';
+    render(<LangProvider initialLang="cs"><ControlCenterClient /></LangProvider>);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.queryByText('SYS / CTRL')).not.toBeInTheDocument();
+  });
+
   it('shows only relevant tabs and keeps opacity separate from glass blur', async () => {
     renderCenter();
-    expect(await screen.findByRole('dialog', { name: /ovládací centrum/i })).toHaveAttribute('aria-hidden', 'false');
+    expect(await screen.findByRole('dialog', { name: /ovládací centrum/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: 'Vzhled' })).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'Čtení' })).not.toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Zvuk' })).toBeInTheDocument();

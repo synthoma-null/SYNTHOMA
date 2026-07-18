@@ -36,6 +36,13 @@ describe('SynthomaAudioPanel', () => {
     delete window.__synthomaAudio;
   });
 
+  it('keeps the audio engine available without rendering the closed utility library', () => {
+    render(<SynthomaAudioPanel />);
+    expect(document.getElementById('synthoma-shared-audio')).toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.queryByText(/KNIHOVNA STOP/)).not.toBeInTheDocument();
+  });
+
   it('opens outside the control panel and returns focus after Escape', async () => {
     render(<SynthomaAudioPanel />);
     const trigger = document.getElementById('toggle-audio-panel-btn') as HTMLButtonElement;
@@ -44,6 +51,7 @@ describe('SynthomaAudioPanel', () => {
 
     const dialog = await screen.findByRole('dialog', { name: /SYNTHOMA 11/ });
     expect(dialog).toBeVisible();
+    expect(within(dialog).getByText(/DOPROVODNÝ ZVUK/)).toBeInTheDocument();
     expect(document.getElementById('synthoma-audio-panel')).toHaveClass('cyklus-no-select');
     expect(trigger).toHaveAttribute('aria-pressed', 'true');
     expect(document.querySelector('#control-panel #synthoma-audio-panel')).toBeNull();

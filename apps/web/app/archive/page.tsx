@@ -54,7 +54,6 @@ export default async function ArchivePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <SynthomaArchive initialCards={normalized} />
       <section className="archive-public-content" aria-labelledby="archive-public-title">
         <h2 id="archive-public-title">VEŘEJNÉ ZÁZNAMY ARCHIVU</h2>
         {publicCards.map((card) => (
@@ -67,6 +66,7 @@ export default async function ArchivePage() {
           </article>
         ))}
       </section>
+      <SynthomaArchive initialCards={normalized} />
     </>
   );
 }

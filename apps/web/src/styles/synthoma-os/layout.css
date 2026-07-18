@@ -89,6 +89,5 @@
 }
 
 .synthoma-command-header--quiet { grid-template-columns: auto minmax(0, 1fr) auto; height: 44px; }
-.synthoma-command-header--quiet + .synthoma-shell__content { padding-top: 44px; }
 
 .synthoma-mobile-nav { display: none; }

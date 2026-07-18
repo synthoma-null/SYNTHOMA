@@ -37,8 +37,8 @@ export default function SynthomaShell({ children }: PropsWithChildren) {
 
   return (
     <div className={`synthoma-shell${quiet ? ' synthoma-shell--quiet' : ''}${utility ? ' synthoma-shell--utility' : ''}${cyklus ? ' synthoma-shell--cyklus' : ''}`}>
-      <SynthomaCommandHeader />
       <div className="synthoma-shell__content">{children}</div>
+      <SynthomaCommandHeader />
       {!quiet && !utility && !cyklus && <SynthomaMobileNavigation />}
     </div>
   );
