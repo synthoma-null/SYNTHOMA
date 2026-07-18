@@ -1,4 +1,8 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import fs from 'fs';
+import path from 'path';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import LangSwitcher from '../../LangSwitcher';
+import { LangProvider } from '../../../lib/LangContext';
 import SynthomaHome from '../SynthomaHome';
 
 describe('Synthoma Home', () => {
@@ -55,5 +59,34 @@ describe('Synthoma Home', () => {
     expect(video).toHaveAttribute('aria-hidden', 'true');
     expect(video).toHaveProperty('muted', true);
     expect(document.querySelector('.synthoma-media-layer__fallback')).toBeInTheDocument();
+  });
+
+  it('keeps one footer, the main routes and the corrected Czech Cyklus CTA', () => {
+    render(<SynthomaHome />);
+    expect(document.querySelectorAll('footer')).toHaveLength(1);
+    expect(screen.getByText('SPUSTIT')).toBeInTheDocument();
+    expect(screen.queryByText('SPOUSTIT')).not.toBeInTheDocument();
+    const sectors = screen.getByRole('navigation', { name: 'Sektory SYNTHOMA' });
+    expect(within(sectors).getByRole('link', { name: /KNIHOVNA/ })).toHaveAttribute('href', '/books');
+    expect(within(sectors).getByRole('link', { name: /ARCHIV/ })).toHaveAttribute('href', '/archive');
+    expect(within(sectors).getByRole('link', { name: /CYKLUS/ })).toHaveAttribute('href', '/cyklus');
+    expect(within(sectors).getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
+  });
+
+  it('localizes the shared legal navigation without changing its canonical route', async () => {
+    render(<LangProvider><LangSwitcher /><SynthomaHome /></LangProvider>);
+    fireEvent.click(screen.getByRole('button', { name: 'English' }));
+    const nav = await screen.findByRole('navigation', { name: 'Legal information' });
+    expect(within(nav).getByRole('link', { name: 'COMMERCIAL TERMS' })).toHaveAttribute('href', '/terms');
+    expect(within(nav).getByRole('link', { name: 'TERMS OF USE' })).toHaveAttribute('href', '/terms');
+  });
+
+  it('keeps the legal footer in flow, touch-safe and clear of the mobile dock', () => {
+    const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/home.css'), 'utf8');
+    expect(css).toMatch(/\.synthoma-home__memory\s*\{[^}]*display:\s*grid/);
+    expect(css).not.toMatch(/\.synthoma-home__memory\s*\{[^}]*position:\s*(?:fixed|sticky)/);
+    expect(css).toMatch(/\.synthoma-home__legal a\s*\{[^}]*min-height:\s*44px/);
+    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.synthoma-home__memory\s*\{[^}]*safe-area-inset-bottom/);
+    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.synthoma-home__legal\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
   });
 });

@@ -52,7 +52,10 @@ export const translations = {
   'home.sector.archive.detail': { cs: 'Poznej svět, entity a zákony paměti', en: 'Explore the world, entities, and laws of memory' },
   'home.sector.cyklus.active': { cs: 'Diagnostický běh zůstal otevřený. Systém čeká na další volbu.', en: 'The diagnostic run remains open. The system awaits another choice.' },
   'home.sector.cyklus.new': { cs: 'Hraj diagnostickou karetní hru.', en: 'Play the diagnostic card game.' },
-  'home.sector.cyklus.start': { cs: 'SPOUSTIT', en: 'START' },
+  'home.sector.cyklus.start': { cs: 'SPUSTIT', en: 'START' },
+  'home.legal.aria': { cs: 'Právní informace', en: 'Legal information' },
+  'home.legal.commercial': { cs: 'OBCHODNÍ PODMÍNKY', en: 'COMMERCIAL TERMS' },
+  'home.legal.terms': { cs: 'PODMÍNKY POUŽITÍ', en: 'TERMS OF USE' },
 
   // ─── identity panel ───────────────────────────────────────────────────────
   'id.aria.btn': { cs: 'Identita subjektu', en: 'Subject identity' },

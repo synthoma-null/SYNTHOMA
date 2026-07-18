@@ -56,7 +56,8 @@ describe('HomeSectorLinks', () => {
     const cyklus = screen.getByRole('link', { name: /CYKLUS/ });
     expect(cyklus).toHaveClass('home-sector-link--featured');
     expect(screen.getByText('Hraj diagnostickou karetní hru.')).toBeInTheDocument();
-    expect(screen.getByText('SPOUSTIT')).toBeInTheDocument();
+    expect(screen.getByText('SPUSTIT')).toBeInTheDocument();
+    expect(screen.queryByText('SPOUSTIT')).not.toBeInTheDocument();
   });
 
   it('shows continue CTA when an active Cyklus run exists', () => {
