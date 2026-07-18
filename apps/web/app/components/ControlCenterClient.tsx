@@ -15,7 +15,7 @@ const TEXT = {
   cs: {
     title: 'OVLÁDACÍ CENTRUM', close: 'Zavřít nastavení', done: 'Hotovo', reset: 'Obnovit výchozí',
     display: 'Vzhled', motion: 'Pohyb', reading: 'Čtení', sound: 'Zvuk', language: 'Jazyk', theme: 'Motiv',
-    font: 'Velikost textu', opacity: 'Krytí čtecí plochy', glass: 'Skleněný efekt', blur: 'Rozostření skla',
+    font: 'Velikost textu', opacity: 'PRŮHLEDNOST ČTECÍ PLOCHY', glass: 'Skleněný efekt', blur: 'Rozostření skla',
     motionMode: 'Režim pohybu', background: 'Pohyblivé pozadí', glitch: 'Glitch textu', noise: 'Šum', scanlines: 'Řádkování obrazovky', textEffects: 'Textové efekty',
     typewriter: 'Rychlost psaní', focus: 'Režim soustředění', tts: 'Čtení nahlas',
     confirmTitle: 'Obnovit výchozí nastavení?', confirmBody: 'Motiv, pohyb, čtení i zvuk se vrátí do výchozího stavu.', cancel: 'Zrušit', confirm: 'Obnovit',
@@ -129,7 +129,7 @@ export default function ControlCenterClient() {
           <h3>{copy.theme}</h3><ThemeShopClient />
           <label className="control-center__range"><span>{copy.font}</span><input type="range" min="0.8" max="1.4" step="0.05" value={preferences.fontScale} aria-label={copy.font} aria-valuetext={`${Math.round(preferences.fontScale * 100)} %`} onChange={(event) => updateUiPreferences({ fontScale: Number(event.target.value) })} /><output>{Math.round(preferences.fontScale * 100)}%</output></label>
           <div className="control-center__font-steps" aria-label={copy.font}><button type="button" aria-label={`${copy.font} -`} onClick={() => updateUiPreferences({ fontScale: preferences.fontScale - 0.05 })}>−</button><button type="button" onClick={() => updateUiPreferences({ fontScale: 1 })}>100 %</button><button type="button" aria-label={`${copy.font} +`} onClick={() => updateUiPreferences({ fontScale: preferences.fontScale + 0.05 })}>+</button></div>
-          <label className="control-center__range"><span>{copy.opacity}</span><input type="range" min="0" max="1" step="0.05" value={preferences.readerOpacity} aria-label={copy.opacity} aria-valuetext={`${Math.round(preferences.readerOpacity * 100)} %`} onChange={(event) => updateUiPreferences({ readerOpacity: Number(event.target.value) })} /><output>{Math.round(preferences.readerOpacity * 100)}%</output></label>
+          <label className="control-center__range"><span>{copy.opacity}</span><input type="range" min="0.4" max="1" step="0.05" value={preferences.readerOpacity} aria-label={copy.opacity} aria-valuetext={`${Math.round(preferences.readerOpacity * 100)} %`} onChange={(event) => updateUiPreferences({ readerOpacity: Number(event.target.value) })} /><output>{Math.round(preferences.readerOpacity * 100)}%</output></label>
           <Toggle label={copy.glass} pressed={preferences.glassEnabled} onChange={(glassEnabled) => updateUiPreferences({ glassEnabled })} />
           <label className="control-center__range"><span>{copy.blur}</span><input type="range" min="0" max="24" step="1" value={preferences.glassBlur} disabled={!preferences.glassEnabled} aria-label={copy.blur} aria-valuetext={`${preferences.glassBlur} px`} onChange={(event) => updateUiPreferences({ glassBlur: Number(event.target.value) })} /><output>{preferences.glassBlur}px</output></label>
         </section> : null}

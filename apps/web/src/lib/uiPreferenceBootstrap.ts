@@ -21,7 +21,7 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   const scanlines=legacy?true:raw.scanlines!==false;
   const textEffects=legacy?'normal':(['normal','reduced','off'].includes(raw.textEffects)?raw.textEffects:'normal');
   const fontScale=clamp(legacy?legacyValue('fontSizeMultiplier',1):raw.fontScale,.8,1.4,1);
-  const opacity=clamp(legacy?legacyValue('readerBgOpacity',.85):raw.readerOpacity,0,1,.85);
+  const opacity=clamp(legacy?legacyValue('readerBgOpacity',.85):raw.readerOpacity,.4,1,.85);
   const glass=legacy?legacyValue('glassMode','false')==='true':raw.glassEnabled===true;
   const blur=clamp(legacy?legacyValue('glassBlur',12):raw.glassBlur,0,24,12);
   root.dataset.theme=theme;
@@ -33,7 +33,10 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   root.dataset.scanlines=scanlines&&motion!=='off'?'on':'off';
   root.dataset.textEffects=motion==='off'?'off':textEffects;
   root.dataset.glass=glass?'on':'off';
+  root.dataset.readerGlass=glass?'on':'off';
   root.style.setProperty('--font-size-multiplier',String(fontScale));
+  root.style.setProperty('--reader-surface-opacity',Math.round(opacity*100)+'%');
+  root.style.setProperty('--reader-glass-blur',blur+'px');
   root.style.setProperty('--app-bg-opacity',String(opacity));
   root.style.setProperty('--bg-opacity',String(opacity));
   root.style.setProperty('--app-bg-blur',blur+'px');

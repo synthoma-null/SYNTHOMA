@@ -122,7 +122,7 @@ export function validateUiPreferences(value: unknown): SynthomaUiPreferences {
     textEffects: enumValue(source.textEffects, TEXT_EFFECT_MODES, DEFAULT_UI_PREFERENCES.textEffects),
     typewriterSpeed: enumValue(source.typewriterSpeed, TYPEWRITER_SPEEDS, DEFAULT_UI_PREFERENCES.typewriterSpeed),
     fontScale: clamp(source.fontScale, 0.8, 1.4, DEFAULT_UI_PREFERENCES.fontScale),
-    readerOpacity: clamp(source.readerOpacity, 0, 1, DEFAULT_UI_PREFERENCES.readerOpacity),
+    readerOpacity: clamp(source.readerOpacity, 0.4, 1, DEFAULT_UI_PREFERENCES.readerOpacity),
     glassEnabled: booleanValue(source.glassEnabled, DEFAULT_UI_PREFERENCES.glassEnabled),
     glassBlur: clamp(source.glassBlur, 0, 24, DEFAULT_UI_PREFERENCES.glassBlur),
     audioEnabled: booleanValue(source.audioEnabled, DEFAULT_UI_PREFERENCES.audioEnabled),
@@ -245,7 +245,10 @@ export function applyUiPreferencesToDocument(preferences: SynthomaUiPreferences 
   root.dataset.scanlines = preferences.scanlines && effectiveMotion !== 'off' ? 'on' : 'off';
   root.dataset.textEffects = effectiveMotion === 'off' ? 'off' : preferences.textEffects;
   root.dataset.glass = preferences.glassEnabled ? 'on' : 'off';
+  root.dataset.readerGlass = preferences.glassEnabled ? 'on' : 'off';
   root.style.setProperty('--font-size-multiplier', String(preferences.fontScale));
+  root.style.setProperty('--reader-surface-opacity', `${Math.round(preferences.readerOpacity * 100)}%`);
+  root.style.setProperty('--reader-glass-blur', `${preferences.glassBlur}px`);
   root.style.setProperty('--app-bg-opacity', String(preferences.readerOpacity));
   root.style.setProperty('--bg-opacity', String(preferences.readerOpacity));
   root.style.setProperty('--app-bg-blur', `${preferences.glassBlur}px`);
