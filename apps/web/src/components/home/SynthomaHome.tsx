@@ -21,8 +21,8 @@ export default function SynthomaHome() {
           <p className="synthoma-home__designation">{t('home.designation')}</p>
           <p className="synthoma-home__statement">{t('home.statement')}</p>
           <p className="synthoma-home__format">{t('home.format')}</p>
-          <HomePrimaryAction />
           <HomeFirstContact />
+          <HomePrimaryAction />
         </section>
         <HomeSectorLinks />
         <HomeMemorySignal />

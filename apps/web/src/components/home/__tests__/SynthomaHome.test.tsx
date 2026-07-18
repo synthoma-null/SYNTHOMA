@@ -18,11 +18,11 @@ describe('Synthoma Home', () => {
 
   afterEach(() => jest.restoreAllMocks());
 
-  it('renders one literal brand, one primary action and all three sectors', async () => {
+  it('renders one literal brand, the three public paths and all sectors', () => {
     render(<SynthomaHome />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toHaveTextContent('SYNTHOMA');
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' }).querySelector('br')).toBeNull();
-    expect(document.querySelectorAll('[data-home-primary-action]')).toHaveLength(1);
+    expect(document.querySelectorAll('[data-home-primary-action]')).toHaveLength(0);
     const sectors = screen.getByRole('navigation', { name: 'Sektory SYNTHOMA' });
     expect(within(sectors).getByRole('link', { name: /KNIHOVNA/ })).toBeInTheDocument();
     expect(within(sectors).getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
@@ -33,8 +33,10 @@ describe('Synthoma Home', () => {
     expect(screen.getByRole('heading', { name: 'PRVNÍ NÁVŠTĚVA' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ZAČÍT PŘÍBĚH/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
     expect(screen.getByRole('link', { name: /SPUSTIT CYKLUS/ })).toHaveAttribute('href', '/cyklus');
-    expect(screen.getByRole('link', { name: /POCHOPIT SYNTHOMU/ })).toHaveAttribute('href', '/archive');
-    await waitFor(() => expect(screen.getByRole('link', { name: /VSTOUPIT DO SYNTHOMY/ })).toHaveAttribute('href', '/books'));
+    expect(screen.getByRole('link', { name: /POCHOPIT SVĚT/ })).toHaveAttribute('href', '/archive');
+    expect(screen.getByText(/První stopy jsou veřejné/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'PŘIHLÁSIT' })).toHaveAttribute('href', '/login');
+    expect(screen.getByRole('link', { name: 'REGISTROVAT' })).toHaveAttribute('href', '/register');
   });
 
   it('prioritizes a real reading resume', async () => {

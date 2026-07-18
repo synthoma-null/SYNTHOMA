@@ -40,6 +40,17 @@ export default function HomeFirstContact() {
           </Link>
         ))}
       </nav>
+      <aside className="home-first-contact__guest" aria-labelledby="home-guest-access-title">
+        <div>
+          <span id="home-guest-access-title">{t('home.guest.log')}</span>
+          <p>{t('home.guest.body')}</p>
+          <small>{t('home.guest.benefits')}</small>
+        </div>
+        <nav aria-label={t('home.guest.auth.aria')}>
+          <Link href="/login">{t('home.guest.login')}</Link>
+          <Link href="/register">{t('home.guest.register')}</Link>
+        </nav>
+      </aside>
     </section>
   );
 }
