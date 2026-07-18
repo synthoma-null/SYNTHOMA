@@ -23,7 +23,8 @@ const PATHS = [
 ] as const;
 
 export default function HomeFirstContact() {
-  const { t } = useLang();
+  const { lang, t } = useLang();
+  const localizeHref = (href: string) => lang === 'en' ? `${href}?locale=en` : href;
   return (
     <section className="home-first-contact" aria-labelledby="home-first-contact-title">
       <div className="home-first-contact__heading">
@@ -33,7 +34,12 @@ export default function HomeFirstContact() {
       </div>
       <nav className="home-first-contact__paths" aria-label={t('home.first.aria')}>
         {PATHS.map((path, index) => (
-          <Link href={path.href} key={path.href}>
+          <Link
+            className={index === 0 ? 'home-first-contact__path home-first-contact__path--primary' : 'home-first-contact__path'}
+            data-first-contact-path={path.href}
+            href={localizeHref(path.href)}
+            key={path.href}
+          >
             <span>{String(index + 1).padStart(2, '0')}</span>
             <strong>{t(path.labelKey as TKey)}</strong>
             <small>{t(path.detailKey as TKey)}</small>

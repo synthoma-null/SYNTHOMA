@@ -55,6 +55,7 @@
 .home-first-contact__heading p { max-width: 36rem; margin: 0; color: var(--os-text-muted); font: 500 var(--os-text-small)/1.45 var(--os-font-body); }
 .home-first-contact__paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: var(--os-space-3); background: var(--os-border); }
 .home-first-contact__paths a { display: grid; min-width: 0; min-height: 94px; align-content: start; gap: 4px; padding: var(--os-space-3); background: color-mix(in srgb, var(--os-surface) 92%, transparent); color: var(--os-text); text-decoration: none; }
+.home-first-contact__path--primary { box-shadow: inset 0 2px 0 var(--os-accent-primary); }
 .home-first-contact__paths a:hover { background: var(--os-surface-raised); }
 .home-first-contact__paths a > span { color: var(--os-accent-primary); font: 700 var(--os-text-micro)/1.2 var(--os-font-mono); }
 .home-first-contact__paths strong { font: 800 var(--os-text-small)/1.25 var(--os-font-heading); }

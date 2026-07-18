@@ -84,6 +84,20 @@ describe('Synthoma Home', () => {
     expect(within(nav).getByRole('link', { name: 'PRIVACY POLICY' })).toHaveAttribute('href', '/privacy');
     expect(screen.getByRole('navigation', { name: 'SYNTHOMA sectors' })).toHaveTextContent('LIBRARY');
     expect(screen.getByText(/SYNTHOMA is an interactive psychological novel/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /START THE STORY/ })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
+    expect(screen.getByRole('link', { name: /START THE CYCLE/ })).toHaveAttribute('href', '/cyklus?locale=en');
+    expect(screen.getByRole('link', { name: /UNDERSTAND THE WORLD/ })).toHaveAttribute('href', '/archive?locale=en');
+  });
+
+  it('keeps the story, Cycle and Archive as the three explicit first-contact paths', () => {
+    render(<SynthomaHome />);
+    const paths = Array.from(document.querySelectorAll('[data-first-contact-path]'));
+    expect(paths.map((path) => path.getAttribute('data-first-contact-path'))).toEqual([
+      '/chapter/0-inf-restart',
+      '/cyklus',
+      '/archive',
+    ]);
+    expect(paths[0]).toHaveClass('home-first-contact__path--primary');
   });
 
   it('keeps the legal footer in flow, touch-safe and clear of the mobile dock', () => {
