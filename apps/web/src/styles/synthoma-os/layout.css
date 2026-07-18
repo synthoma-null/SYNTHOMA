@@ -1,6 +1,10 @@
 .synthoma-shell { position: relative; min-height: 100dvh; background: var(--os-bg); color: var(--os-text); }
 .synthoma-shell__content { position: relative; z-index: var(--os-z-base); min-height: 100dvh; padding-top: var(--os-command-height); }
 .synthoma-shell--quiet .synthoma-shell__content { padding-top: 44px; }
+.synthoma-shell--cyklus .synthoma-shell__content { padding-top: 0; }
+.synthoma-shell--cyklus-game { height: 100dvh; min-height: 100dvh; overflow: hidden; }
+.synthoma-shell--cyklus-game .synthoma-shell__content,
+.synthoma-shell--cyklus-game .synthoma-shell__content > #main-content { height: 100%; min-height: 0; overflow: hidden; }
 .synthoma-portal-root { display: contents; }
 
 .synthoma-command-header {

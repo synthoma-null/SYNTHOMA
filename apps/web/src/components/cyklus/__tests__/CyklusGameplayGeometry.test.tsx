@@ -15,15 +15,16 @@ describe('Cyklus gameplay geometry contract', () => {
   const tokens = readStyle('tokens.css');
   const client = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8');
 
-  it('keeps active gameplay inside the viewport below the global shell controls', () => {
+  it('locks active gameplay to the complete viewport without global shell offsets', () => {
+    expect(shell).toMatch(/\.cyklus-page\s*\{[\s\S]*?--cy-shell-top:\s*0px;[\s\S]*?position:\s*fixed;[\s\S]*?inset:\s*0;[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100dvh;[\s\S]*?min-height:\s*100dvh;[\s\S]*?overflow:\s*hidden;/);
     expect(cardOverlay).toMatch(/\.cyklus-page > \.cyklus-root--playing:not\(\.cyklus-root--menu\)\s*\{[\s\S]*?height:\s*calc\(100dvh - var\(--cy-shell-top\) - var\(--cy-shell-bottom\)\);[\s\S]*?min-height:\s*0;/);
-    expect(shell).toMatch(/@media \(max-width: 767px\)[\s\S]*?--cy-shell-bottom:\s*0px;/);
+    expect(shell).toMatch(/@media \(max-width: 767px\)[\s\S]*?--cy-shell-top:\s*0px;[\s\S]*?--cy-shell-bottom:\s*0px;/);
     expect(compact).toMatch(/\.cyklus-page > \.cyklus-root--playing\s*\{[\s\S]*?height:\s*calc\(100dvh - var\(--cy-shell-top\) - var\(--cy-shell-bottom\)\);[\s\S]*?overflow:\s*hidden;/);
   });
 
   it('uses a desktop pocket row and a mobile utility row without stacking both bars', () => {
-    expect(shell).toMatch(/grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto;/);
-    expect(compact).toMatch(/grid-template-rows:\s*44px minmax\(0, 1fr\) 58px calc\(var\(--cy-bottom-height\)/);
+    expect(shell).toMatch(/grid-template-rows:\s*44px auto auto minmax\(0, 1fr\) auto;/);
+    expect(compact).toMatch(/grid-template-rows:\s*44px 44px minmax\(0, 1fr\) 58px calc\(var\(--cy-bottom-height\)/);
     expect(client.indexOf('<StatDock')).toBeLessThan(client.indexOf('<CyklusPocketDock'));
     expect(client.indexOf('<CyklusPocketDock')).toBeLessThan(client.indexOf('<main className="cyklus-stage">'));
     expect(client.indexOf('<main className="cyklus-stage">')).toBeLessThan(client.indexOf('data-cyklus-choice-dock'));

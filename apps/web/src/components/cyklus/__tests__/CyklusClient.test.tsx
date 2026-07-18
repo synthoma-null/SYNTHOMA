@@ -542,7 +542,7 @@ describe('CyklusClient', () => {
     expect(poster).toBeInTheDocument();
     expect(root).toHaveClass('cyklus-root--poster-active');
     expect(document.body).toHaveClass('cyklus-poster-lock');
-    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
+    expect(screen.getByTestId('cyklus-command-rail')).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Navigace' })).not.toBeInTheDocument();
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
     const portal = document.querySelector('.cyklus-poster-portal') as HTMLElement;
@@ -568,7 +568,7 @@ describe('CyklusClient', () => {
     await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Zvětšený obrázek karty Šumový filtr' })).not.toBeInTheDocument());
     expect(root).not.toHaveClass('cyklus-root--poster-active');
     expect(document.body).not.toHaveClass('cyklus-poster-lock');
-    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
+    expect(screen.getByTestId('cyklus-command-rail')).toBeInTheDocument();
     await waitFor(() => expect(screen.getByRole('button', { name: 'Zvětšit obrázek' })).toHaveFocus());
   });
 
@@ -586,12 +586,12 @@ describe('CyklusClient', () => {
     expect(dialog).toHaveTextContent(getCardById('noise_filter')!.no.resultText);
   });
 
-  it('renders the unified command rail with real run status and accessible controls', async () => {
+  it('renders the route-owned command rail with real run status and accessible controls', async () => {
     const identityToggle = jest.fn();
     document.addEventListener('synthoma:identity-toggle', identityToggle);
 
     await renderFirstBootRun();
-    const header = screen.getByTestId('synthoma-command-header');
+    const header = screen.getByTestId('cyklus-command-rail');
     const headerQueries = within(header);
 
     expect(headerQueries.getByText('Prázdnota')).toBeInTheDocument();
@@ -602,6 +602,7 @@ describe('CyklusClient', () => {
     expect(identityToggle).toHaveBeenCalledTimes(1);
     expect(headerQueries.getByRole('button', { name: 'Nastavení' })).toHaveAttribute('aria-controls', 'control-panel');
     expect(headerQueries.getByRole('button', { name: /Hudba/ })).toHaveAttribute('aria-controls', 'synthoma-audio-panel');
+    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
     expect(document.querySelector('.cyklus-mobile-hud')).toBeNull();
 
     document.removeEventListener('synthoma:identity-toggle', identityToggle);

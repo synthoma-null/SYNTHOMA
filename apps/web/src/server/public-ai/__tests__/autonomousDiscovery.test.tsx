@@ -1,31 +1,21 @@
 /** @jest-environment node */
 
 import { renderToStaticMarkup } from 'react-dom/server';
-import CyklusPage from '../../../../app/cyklus/page';
 import PublicApiPage from '../../../../app/ai/api/page';
 import { cyklusDiscovery } from '../discovery';
 import { chooseCyklus, startCyklusRun } from '../gameHandlers';
 import { publicOpenApi } from '../openapi';
 import { resetPublicRateLimitsForTests } from '../rateLimit';
 
-jest.mock('../../../components/cyklus/CyklusClient', () => ({
-  __esModule: true,
-  default: () => <div>Nahrává se Cyklus...</div>,
-}));
-
 function linksFrom(html: string): string[] {
   return [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map((match) => match[1]!);
 }
 
-describe('autonomous public AI discovery from Cyklus', () => {
+describe('autonomous public AI discovery outside the gameplay route', () => {
   beforeAll(() => { process.env.AI_STATE_TOKEN_SECRET = 'autonomous-discovery-test-secret-32-bytes'; });
   beforeEach(resetPublicRateLimitsForTests);
 
-  it('discovers documentation, OpenAPI, the API index and a complete run from the Cyklus HTML', async () => {
-    const cyklusHtml = renderToStaticMarkup(await CyklusPage());
-    const documentationHref = linksFrom(cyklusHtml).find((href) => href === '/ai/api');
-    expect(documentationHref).toBe('/ai/api');
-
+  it('discovers OpenAPI, the API index and a complete run from the public API documentation', async () => {
     const documentationHtml = renderToStaticMarkup(<PublicApiPage />);
     const openApiHref = linksFrom(documentationHtml).find((href) => href.endsWith('/api/public/openapi.json'));
     expect(openApiHref).toBe('/api/public/openapi.json');

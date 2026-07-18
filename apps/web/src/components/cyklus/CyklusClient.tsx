@@ -16,6 +16,7 @@ import { CyklusVoidHub } from './CyklusVoidHub';
 import CyklusVoidHubClient from './CyklusVoidHubClient';
 import CyklusPocketDock from './CyklusPocketDock';
 import CyklusMobileUtilityDock from './CyklusMobileUtilityDock';
+import CyklusCommandRail from './CyklusCommandRail';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import CyklusCardOverlay from './CyklusCardOverlay';
@@ -789,6 +790,7 @@ export default function CyklusClient() {
   if (showMenu) {
     return (
       <div className="cyklus-no-select cyklus-root cyklus-root--menu">
+        <CyklusCommandRail />
         {backgroundMotionAllowed ? <video className="cyklus-menu__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1}>
           <source src="/video/SYNTHOMA5.webm" type="video/webm" />
         </video> : null}
@@ -872,6 +874,7 @@ export default function CyklusClient() {
       outcomeVisible ? 'cyklus-root--outcome-visible' : '',
       posterViewerOpen ? 'cyklus-root--poster-active' : '',
     ].filter(Boolean).join(' ')}>
+      <CyklusCommandRail />
       {showSkipConfirm && (
         <div className="cyklus-no-select cyklus-overlay cyklus-overlay--warning">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu" />

@@ -70,7 +70,7 @@ describe('SynthomaShell', () => {
     usePathname.mockReturnValue('/cyklus');
     renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
     expect(screen.getByText('CYKLUS CONTENT')).toBeInTheDocument();
-    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
+    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
     expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 
@@ -78,6 +78,7 @@ describe('SynthomaShell', () => {
     usePathname.mockReturnValue(route);
     const { container } = renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
     expect(container.querySelector('.synthoma-shell--cyklus')).toBeInTheDocument();
+    expect(container.querySelector('.synthoma-command-header')).not.toBeInTheDocument();
     expect(container.querySelector('.synthoma-mobile-nav')).not.toBeInTheDocument();
   });
 
@@ -121,7 +122,19 @@ describe('SynthomaShell', () => {
     usePathname.mockReturnValue('/cyklus/void');
     const { container: cyklusContainer } = renderWithHeader(<SynthomaShell><p>CYKLUS</p></SynthomaShell>);
     expect(cyklusContainer.firstChild).toHaveTextContent('CYKLUS');
-    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
+    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+  });
+
+  it('locks only the gameplay route to the viewport', () => {
+    usePathname.mockReturnValue('/cyklus');
+    const { container, unmount } = renderWithHeader(<SynthomaShell><p>GAME</p></SynthomaShell>);
+    expect(container.firstChild).toHaveClass('synthoma-shell--cyklus-game');
+    unmount();
+
+    usePathname.mockReturnValue('/cyklus/void');
+    const voidShell = renderWithHeader(<SynthomaShell><p>VOID</p></SynthomaShell>);
+    expect(voidShell.container.firstChild).toHaveClass('synthoma-shell--cyklus');
+    expect(voidShell.container.firstChild).not.toHaveClass('synthoma-shell--cyklus-game');
   });
 
   it('keeps mobile controls bounded and reserves safe-area content space', () => {

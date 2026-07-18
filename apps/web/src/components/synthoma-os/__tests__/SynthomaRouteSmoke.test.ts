@@ -17,6 +17,6 @@ describe('Synthoma public route smoke contract', () => {
     expect(layout.match(/<SynthomaPortalRoot>/g)).toHaveLength(1);
     expect(layout.match(/<SynthomaAudioPanel\s*\/>/g)).toHaveLength(1);
     expect(layout.match(/<SubjectProfilePanelClient\s*\/>/g)).toHaveLength(1);
-    expect(layout).toContain('className="skip-to-content"');
+    expect(layout).toContain('<SynthomaSkipLink label=');
   });
 });

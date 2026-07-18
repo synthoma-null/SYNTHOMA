@@ -10,25 +10,29 @@ jest.mock('../../src/components/cyklus/CyklusClient', () => ({
   default: () => <div data-testid="cyklus-client-placeholder">Nahrává se Cyklus...</div>,
 }));
 
-describe('Cyklus public AI SSR discovery', () => {
-  it('renders crawlable discovery content without running client JavaScript', async () => {
+describe('Cyklus fullscreen route shell', () => {
+  it('renders the game as the only main route content', async () => {
     const html = renderToStaticMarkup(await CyklusPage());
 
-    expect(html).toContain('CYKLUS // DIAGNOSTICKÁ KARETNÍ HRA');
-    expect(html).toContain('Dvanáct voleb. Čtyři nestabilní hodnoty.');
-    expect(html).toContain('První běh je zdarma a nevyžaduje přihlášení.');
-    expect(html).toContain('AI A AUTOMATIZOVANÝ PŘÍSTUP');
-    expect(html).toContain('href="/ai/api"');
-    expect(html).toContain('href="/api/public/v1/cyklus/rules"');
-    expect(html).not.toMatch(/cyklus-ai-discovery[^>]*(?:display\s*:\s*none|aria-hidden)/i);
+    expect(html.match(/<main\b/g)).toHaveLength(1);
+    expect(html).toContain('id="cyklus-game"');
+    expect(html).toContain('class="cyklus-page cyklus-game-shell"');
+    expect(html).toContain('data-testid="cyklus-client-placeholder"');
+    expect(html).not.toContain('CYKLUS // DIAGNOSTICKÁ KARETNÍ HRA');
+    expect(html).not.toContain('CYKLUS // PUBLIC INTERFACE');
+    expect(html).not.toContain('AI A AUTOMATIZOVANÝ PŘÍSTUP');
+    expect(html).not.toMatch(/href="\/(?:ai\/api|api\/public|llms\.txt)/);
+    expect(html).not.toMatch(/<footer\b/i);
   });
 
-  it('publishes the service discovery relations from the root head', () => {
+  it('keeps public AI discovery on specialized routes and root head relations', () => {
     const layout = readFileSync(join(process.cwd(), 'app/layout.tsx'), 'utf8');
+    const publicApiPage = readFileSync(join(process.cwd(), 'app/ai/api/page.tsx'), 'utf8');
 
     expect(layout).toContain('rel="service-desc"');
     expect(layout).toContain('href="/api/public/openapi.json"');
     expect(layout).toContain('rel="alternate" type="application/json" href="/api/public/v1/cyklus/rules"');
     expect(layout).toContain('rel="help" href="/ai/api"');
+    expect(publicApiPage).toContain('/api/public/openapi.json');
   });
 });

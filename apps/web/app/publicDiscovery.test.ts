@@ -58,14 +58,16 @@ describe('public discovery contracts', () => {
     expect(entries.every((entry) => entry.lastModified instanceof Date && entry.lastModified.toISOString() === '2026-07-18T00:00:00.000Z')).toBe(true);
   });
 
-  it('orders public route content before fixed and interactive utility markup', () => {
+  it('keeps public content ordered while Cyklus remains a dedicated game route', () => {
     const read = (file: string) => fs.readFileSync(path.join(process.cwd(), file), 'utf8');
     const shell = read('src/components/synthoma-os/SynthomaShell.tsx');
     const cycle = read('app/cyklus/page.tsx');
     const archive = read('app/archive/page.tsx');
     const books = read('app/books/page.tsx');
     expect(shell.indexOf('<div className="synthoma-shell__content">')).toBeLessThan(shell.indexOf('<SynthomaCommandHeader />'));
-    expect(cycle.indexOf('cyklus-public-intro')).toBeLessThan(cycle.indexOf('<CyklusClient />'));
+    expect(cycle).toContain('<main id="cyklus-game" className="cyklus-page cyklus-game-shell"');
+    expect(cycle).not.toContain('cyklus-public-intro');
+    expect(cycle).not.toContain('cyklus-ai-discovery');
     expect(archive.indexOf('archive-public-content')).toBeLessThan(archive.indexOf('<SynthomaArchive'));
     expect(books.indexOf('<noscript>')).toBeLessThan(books.indexOf('<SynthomaLibrary'));
   });

@@ -34,6 +34,7 @@ import WhisperFloat from "../src/components/whispers/WhisperFloat";
 
 import CookieConsent from "../src/components/consent/CookieConsent";
 import SynthomaShell from "../src/components/synthoma-os/SynthomaShell";
+import SynthomaSkipLink from "../src/components/synthoma-os/SynthomaSkipLink";
 import SynthomaPortalRoot from "../src/components/synthoma-os/SynthomaPortalRoot";
 import { HeaderProvider } from "../src/components/synthoma-os/HeaderContext";
 
@@ -250,7 +251,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
         <UiPreferencesRuntime />
 
-        <a href="#main-content" className="skip-to-content">{initialLang === 'en' ? 'Skip to content' : 'Přeskočit na obsah'}</a>
+        <SynthomaSkipLink label={initialLang === 'en' ? 'Skip to content' : 'Přeskočit na obsah'} />
 
         <noscript>
 

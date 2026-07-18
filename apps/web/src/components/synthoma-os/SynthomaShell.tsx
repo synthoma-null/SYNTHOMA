@@ -34,11 +34,12 @@ export default function SynthomaShell({ children }: PropsWithChildren) {
   const quiet = pathname === '/reader' || pathname.startsWith('/chapter/');
   const utility = pathname.startsWith('/admin') || pathname === '/game' || pathname.startsWith('/game/');
   const cyklus = pathname === '/cyklus' || pathname.startsWith('/cyklus/');
+  const cyklusGame = pathname === '/cyklus';
 
   return (
-    <div className={`synthoma-shell${quiet ? ' synthoma-shell--quiet' : ''}${utility ? ' synthoma-shell--utility' : ''}${cyklus ? ' synthoma-shell--cyklus' : ''}`}>
+    <div className={`synthoma-shell${quiet ? ' synthoma-shell--quiet' : ''}${utility ? ' synthoma-shell--utility' : ''}${cyklus ? ' synthoma-shell--cyklus' : ''}${cyklusGame ? ' synthoma-shell--cyklus-game' : ''}`}>
       <div className="synthoma-shell__content">{children}</div>
-      <SynthomaCommandHeader />
+      {!cyklus && <SynthomaCommandHeader />}
       {!quiet && !utility && !cyklus && <SynthomaMobileNavigation />}
     </div>
   );

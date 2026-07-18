@@ -270,7 +270,7 @@ body.no-animations *::after {
 
 /* Skip-to-content accessibility link */
 .skip-to-content {
-  position: absolute;
+  position: fixed;
   top: -100%;
   left: 50%;
   transform: translateX(-50%);
@@ -284,7 +284,8 @@ body.no-animations *::after {
   font-size: 0.9rem;
   transition: top 0.2s ease;
 }
-.skip-to-content:focus {
+.skip-to-content:focus,
+.skip-to-content:focus-visible {
   top: 1rem;
   outline: 2px solid var(--accent-primary, #f0f);
   outline-offset: 2px;

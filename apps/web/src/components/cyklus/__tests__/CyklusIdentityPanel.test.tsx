@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import SubjectProfilePanelClient from '../../../../app/components/SubjectProfilePanelClient';
 import SynthomaShell from '../../synthoma-os/SynthomaShell';
 import { HeaderProvider } from '../../synthoma-os/HeaderContext';
+import CyklusCommandRail from '../CyklusCommandRail';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn(), useRouter: jest.fn() }));
 jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
@@ -51,6 +52,7 @@ describe('Cyklus identity ownership', () => {
     render(
       <HeaderProvider>
         <SynthomaShell>
+          <CyklusCommandRail />
           <SubjectProfilePanelClient />
         </SynthomaShell>
       </HeaderProvider>,
