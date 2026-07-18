@@ -3,6 +3,10 @@ import path from 'node:path';
 
 describe('service worker cache contract', () => {
   const source = fs.readFileSync(path.join(process.cwd(), 'public/sw.js'), 'utf8');
+  const registrationSource = fs.readFileSync(
+    path.join(process.cwd(), 'app/components/ServiceWorkerRegister.tsx'),
+    'utf8',
+  );
 
   it('invalidates legacy HTML caches and keeps navigations network-first', () => {
     const staticCache = source.match(/const STATIC_CACHE = \[([\s\S]*?)\]/)?.[1] ?? '';
@@ -26,5 +30,12 @@ describe('service worker cache contract', () => {
     expect(source).toContain('isSensitiveRequest(request)');
     expect(source).toContain("!cacheControl.includes('private')");
     expect(source).toContain("!cacheControl.includes('no-store')");
+  });
+
+  it('checks for a fresh worker even when React hydrates after window load', () => {
+    expect(registrationSource).toContain("document.readyState === 'complete'");
+    expect(registrationSource).toContain("window.addEventListener('load', register, { once: true })");
+    expect(registrationSource).toContain('registration.update()');
+    expect(registrationSource).toContain("window.removeEventListener('load', register)");
   });
 });
