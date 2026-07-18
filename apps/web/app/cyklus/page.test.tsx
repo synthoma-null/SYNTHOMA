@@ -11,8 +11,8 @@ jest.mock('../../src/components/cyklus/CyklusClient', () => ({
 }));
 
 describe('Cyklus public AI SSR discovery', () => {
-  it('renders crawlable discovery content without running client JavaScript', () => {
-    const html = renderToStaticMarkup(<CyklusPage />);
+  it('renders crawlable discovery content without running client JavaScript', async () => {
+    const html = renderToStaticMarkup(await CyklusPage());
 
     expect(html).toContain('CYKLUS // DIAGNOSTICKÁ KARETNÍ HRA');
     expect(html).toContain('Dvanáct voleb. Čtyři nestabilní hodnoty.');

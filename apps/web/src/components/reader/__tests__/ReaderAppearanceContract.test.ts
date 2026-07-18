@@ -20,6 +20,17 @@ describe('Reader appearance contract', () => {
     expect(themesCss).not.toContain('--reader-glass-blur');
   });
 
+  it('keeps reading progress and chapter navigation while focus hides utilities', () => {
+    const readerCss = read('src/styles/reader.css');
+    const utilities = read('src/components/reader/ReaderCommandUtilities.tsx');
+    expect(readerCss).toMatch(/data-reader-focus="on"[\s\S]*synthoma-command-header[\s\S]*display:\s*none/);
+    expect(readerCss).toMatch(/chapter-reader--focus[\s\S]*chapter-reader__machine-links[\s\S]*display:\s*none/);
+    expect(readerCss).not.toMatch(/chapter-reader--focus[^}]*chapter-reader__navigation[^}]*display:\s*none/);
+    expect(readerCss).not.toMatch(/chapter-reader--focus[^}]*chapter-reader__progress[^}]*display:\s*none/);
+    expect(utilities).toContain("updateUiPreferences({ focusMode: !preferences.focusMode })");
+    expect(utilities).not.toMatch(/toggleFocus[\s\S]{0,180}audioEnabled/);
+  });
+
   it('uses the same article for free and owned content while gates expose no preview', () => {
     const page = read('app/chapter/[id]/page.tsx');
     const gate = read('app/chapter/[id]/ChapterAccessGate.tsx');

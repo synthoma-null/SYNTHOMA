@@ -82,23 +82,21 @@ describe('control center behavior', () => {
   it('opens, closes and responds to Escape without a duplicate panel', async () => {
     render(<LangProvider><ControlCenterClient /></LangProvider>);
     const trigger = document.getElementById('toggle-panel-btn') as HTMLButtonElement;
-    const panel = document.getElementById('control-panel') as HTMLElement;
 
     trigger.focus();
     act(() => document.dispatchEvent(new CustomEvent('synthoma:control-panel-toggle')));
-    await waitFor(() => expect(panel).toHaveClass('visible'));
-    expect(panel).toHaveAttribute('aria-hidden', 'false');
+    const panel = await screen.findByRole('dialog', { name: /ovládací centrum/i });
+    expect(panel).toHaveClass('visible');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
     await waitFor(() => expect(panel.querySelector('.control-center__close')).toHaveFocus());
 
     fireEvent.keyDown(document, { key: 'Escape' });
-    expect(panel).not.toHaveClass('visible');
-    expect(panel).toHaveAttribute('aria-hidden', 'true');
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     await waitFor(() => expect(trigger).toHaveFocus());
 
     act(() => document.dispatchEvent(new CustomEvent('synthoma:control-panel-toggle')));
-    fireEvent.click(panel.querySelector('.control-center__close') as HTMLButtonElement);
-    expect(panel).not.toHaveClass('visible');
-    expect(document.querySelectorAll('#control-panel')).toHaveLength(1);
+    const reopened = await screen.findByRole('dialog', { name: /ovládací centrum/i });
+    fireEvent.click(reopened.querySelector('.control-center__close') as HTMLButtonElement);
+    await waitFor(() => expect(document.querySelectorAll('#control-panel')).toHaveLength(0));
   });
 });

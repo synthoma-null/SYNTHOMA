@@ -22,7 +22,7 @@ describe('autonomous public AI discovery from Cyklus', () => {
   beforeEach(resetPublicRateLimitsForTests);
 
   it('discovers documentation, OpenAPI, the API index and a complete run from the Cyklus HTML', async () => {
-    const cyklusHtml = renderToStaticMarkup(<CyklusPage />);
+    const cyklusHtml = renderToStaticMarkup(await CyklusPage());
     const documentationHref = linksFrom(cyklusHtml).find((href) => href === '/ai/api');
     expect(documentationHref).toBe('/ai/api');
 
