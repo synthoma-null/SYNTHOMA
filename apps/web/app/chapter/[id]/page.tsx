@@ -75,8 +75,21 @@ export default async function ChapterPage(
     return (
       <>
         <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
-        <ChapterAccessGate chapterId={chapter.id} chapterTitle={chapter.title} access={unavailableAccess} unavailable />
+        <ChapterAccessGate chapterId={chapter.id} chapterTitle={locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title} access={unavailableAccess} unavailable locale={locale} />
       </>
+    );
+  }
+
+  if (locale === 'en' && !chapter.filenameEn) {
+    return (
+      <main className="story chapter-access-gate" id="main-content">
+        <section className="panel glass os-surface">
+          <p className="os-status__code">LOG [TRANSLATION_UNAVAILABLE]</p>
+          <h1>{chapter.titleEn ?? chapter.title}</h1>
+          <p>English translation is not available yet.</p>
+          <a className="btn btn-outline" href={chapter.route}>OPEN CZECH VERSION</a>
+        </section>
+      </main>
     );
   }
 
@@ -116,6 +129,7 @@ export default async function ChapterPage(
           chapterTitle={chapter.title}
           access={closedAccess}
           unavailable={false}
+          locale={locale}
           databaseErrorRef={report.correlationId}
         />
       </>
@@ -140,7 +154,7 @@ export default async function ChapterPage(
   return (
     <>
       <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
-      <ChapterAccessGate chapterId={chapter.id} chapterTitle={chapter.title} access={access} unavailable={false} />
+      <ChapterAccessGate chapterId={chapter.id} chapterTitle={locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title} access={access} unavailable={false} locale={locale} />
     </>
   );
 }

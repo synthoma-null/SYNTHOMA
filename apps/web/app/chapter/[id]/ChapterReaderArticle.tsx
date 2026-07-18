@@ -31,6 +31,9 @@ export default function ChapterReaderArticle({
   const next = index >= 0 ? published[index + 1] : undefined;
   const presentation = getChapterPresentation(chapter.id);
   const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
+  const copy = locale === 'en'
+    ? { library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
+    : { library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ', next: 'DALŠÍ' };
 
   return (
     <main className="chapter-reader" id="main-content">
@@ -43,9 +46,9 @@ export default function ChapterReaderArticle({
       />
       <header className="chapter-reader__command-bar">
         <div className="chapter-reader__route-commands">
-          <Link className="chapter-reader__command" href="/books">KNIHOVNA</Link>
-          {previous ? <Link className="chapter-reader__command" rel="prev" href={localizedRoute(previous, locale)}>PŘEDCHOZÍ</Link> : null}
-          {next ? <Link className="chapter-reader__command" rel="next" href={localizedRoute(next, locale)}>DALŠÍ</Link> : null}
+          <Link className="chapter-reader__command" href={locale === 'en' ? '/books?locale=en' : '/books'}>{copy.library}</Link>
+          {previous ? <Link className="chapter-reader__command" rel="prev" href={localizedRoute(previous, locale)}>{copy.previous}</Link> : null}
+          {next ? <Link className="chapter-reader__command" rel="next" href={localizedRoute(next, locale)}>{copy.next}</Link> : null}
         </div>
         <span className="chapter-reader__identity" aria-current="page">
           <span className="chapter-reader__sequence">{String((chapter.order ?? 0) + 1).padStart(2, '0')}</span>

@@ -48,6 +48,7 @@ import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRun
 import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import Script from "next/script";
 
 import type { PropsWithChildren } from "react";
@@ -203,11 +204,14 @@ const jsonLd = {
 
 
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default async function RootLayout({ children }: PropsWithChildren) {
+
+  const requestHeaders = await headers();
+  const initialLang = requestHeaders.get('x-synthoma-locale') === 'en' ? 'en' : 'cs';
 
   return (
 
-    <html lang="cs" data-theme="synthoma" suppressHydrationWarning>
+    <html lang={initialLang} data-theme="synthoma" suppressHydrationWarning>
 
       <head>
 
@@ -255,7 +259,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
         <SessionProviderClient>
 
-        <LangProvider>
+        <LangProvider initialLang={initialLang}>
 
         <AccessProvider>
 
