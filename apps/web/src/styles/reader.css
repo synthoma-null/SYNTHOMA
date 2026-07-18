@@ -936,7 +936,7 @@ html[data-reader-glass="on"] .chapter-reader__article.SYNTHOMAREADER {
   .chapter-reader__command-bar { top: .35rem; gap: .5rem; margin-bottom: 1rem; }
   .chapter-reader__identity { font-size: .68rem; }
   .chapter-reader__route-commands .chapter-reader__command:not(:first-child),
-  .chapter-reader__utilities button:not(:nth-child(-n+3)) { display: none; }
+  .chapter-reader__utilities button:last-child { display: none; }
   .chapter-reader__utilities { gap: .25rem; }
   .chapter-reader__utilities button { font-size: .55rem; }
   .chapter-reader__article.SYNTHOMAREADER { padding: 1rem .85rem; }
