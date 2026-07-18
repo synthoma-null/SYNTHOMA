@@ -763,7 +763,44 @@
 
 .chapter-reader__utilities button[aria-pressed="true"] { color: var(--accent-secondary); }
 
-.chapter-reader--focus .chapter-background__video { opacity: .18; }
+.chapter-reader--focus .chapter-background__video { display: none; }
+
+html[data-reader-focus="on"] .synthoma-shell--quiet .synthoma-command-header { display: none; }
+html[data-reader-focus="on"] .synthoma-shell--quiet .synthoma-shell__content { padding-top: 0; }
+
+.chapter-reader--focus {
+  padding-top: 1rem;
+}
+
+.chapter-reader--focus .chapter-reader__command-bar {
+  top: .5rem;
+  grid-template-columns: minmax(0, 1fr);
+  width: min(100%, 48rem);
+  justify-items: end;
+  margin-bottom: 1rem;
+}
+
+.chapter-reader--focus .chapter-reader__route-commands,
+.chapter-reader--focus .chapter-reader__identity,
+.chapter-reader--focus .chapter-reader__command-end > .chapter-reader__command,
+.chapter-reader--focus .chapter-reader__utilities button:not([data-reader-tool="focus"]),
+.chapter-reader--focus .chapter-reader__machine-links {
+  display: none;
+}
+
+.chapter-reader--focus .chapter-reader__utilities button[data-reader-tool="focus"] {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: .4rem .6rem;
+  color: var(--accent-secondary);
+}
+
+.chapter-reader--focus,
+.chapter-reader--focus * {
+  animation: none !important;
+  transition: none !important;
+}
 
 .chapter-reader__command {
   color: var(--text-secondary);

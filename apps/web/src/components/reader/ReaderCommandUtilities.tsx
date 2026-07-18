@@ -8,12 +8,20 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
   const [speaking, setSpeaking] = useState(false);
   const preferences = useUiPreferences();
   const copy = locale === 'en'
-    ? { settings: 'SETTINGS', audio: 'AUDIO', focus: 'FOCUS', share: 'SHARE' }
-    : { settings: 'NASTAVENÍ', audio: 'AUDIO', focus: 'FOKUS', share: 'SDÍLET' };
+    ? { settings: 'SETTINGS', audio: 'AUDIO', focus: 'FOCUS', focusExit: 'EXIT FOCUS', share: 'SHARE' }
+    : { settings: 'NASTAVENÍ', audio: 'AUDIO', focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', share: 'SDÍLET' };
 
   useEffect(() => () => window.speechSynthesis?.cancel(), []);
   useEffect(() => {
     document.querySelector('.chapter-reader')?.classList.toggle('chapter-reader--focus', preferences.focusMode);
+  }, [preferences.focusMode]);
+  useEffect(() => {
+    if (!preferences.focusMode) return;
+    const leaveFocus = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') updateUiPreferences({ focusMode: false });
+    };
+    document.addEventListener('keydown', leaveFocus);
+    return () => document.removeEventListener('keydown', leaveFocus);
   }, [preferences.focusMode]);
   useEffect(() => {
     if (!preferences.ttsEnabled && speaking) {
@@ -57,7 +65,17 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
       <button type="button" aria-label={locale === 'en' ? 'Settings' : 'Nastavení'} onClick={() => document.getElementById('toggle-panel-btn')?.click()}>{copy.settings}</button>
       <button type="button" aria-label={locale === 'en' ? 'Audio' : 'Hudba'} onClick={() => document.dispatchEvent(new CustomEvent('synthoma:audio-toggle'))}>{copy.audio}</button>
       <button type="button" aria-label={locale === 'en' ? 'Read chapter aloud' : 'Přečíst kapitolu nahlas'} aria-pressed={speaking} onClick={toggleSpeech}>TTS</button>
-      <button type="button" aria-label={locale === 'en' ? 'Focus mode' : 'Režim soustředění'} aria-pressed={preferences.focusMode} onClick={toggleFocus}>{copy.focus}</button>
+      <button
+        type="button"
+        data-reader-tool="focus"
+        aria-label={preferences.focusMode
+          ? locale === 'en' ? 'Exit focus mode' : 'Ukončit režim soustředění'
+          : locale === 'en' ? 'Focus mode' : 'Režim soustředění'}
+        aria-pressed={preferences.focusMode}
+        onClick={toggleFocus}
+      >
+        {preferences.focusMode ? copy.focusExit : copy.focus}
+      </button>
       <button type="button" aria-label={locale === 'en' ? 'Share chapter' : 'Sdílet kapitolu'} onClick={() => void share()}>{copy.share}</button>
     </div>
   );

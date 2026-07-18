@@ -11,7 +11,7 @@ describe('UI preference bootstrap', () => {
     localStorage.setItem('synthoma_ui_preferences', JSON.stringify({
       version: 2, theme: 'mono', motionMode: 'off', backgroundMotion: 'auto', glitchEffects: true,
       noiseEffects: true, scanlines: true, textEffects: 'normal', fontScale: 1.2,
-      readerOpacity: 0.72, glassEnabled: true, glassBlur: 18,
+      readerOpacity: 0.72, glassEnabled: true, glassBlur: 18, focusMode: true,
     }));
     Function(UI_PREFERENCE_BOOTSTRAP)();
     const root = document.documentElement;
@@ -22,6 +22,7 @@ describe('UI preference bootstrap', () => {
     expect(root.style.getPropertyValue('--font-size-multiplier')).toBe('1.2');
     expect(root.style.getPropertyValue('--glass-blur')).toBe('18px');
     expect(root).toHaveAttribute('data-reader-glass', 'on');
+    expect(root).toHaveAttribute('data-reader-focus', 'on');
     expect(root.style.getPropertyValue('--reader-surface-opacity')).toBe('72%');
     expect(root.style.getPropertyValue('--reader-glass-blur')).toBe('18px');
   });

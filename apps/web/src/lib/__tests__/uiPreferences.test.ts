@@ -42,6 +42,13 @@ describe('versioned UI preferences', () => {
     expect(document.documentElement.style.getPropertyValue('--reader-surface-opacity')).toBe('80%');
   });
 
+  it('exposes focus mode as a root presentation state', () => {
+    applyUiPreferencesToDocument(updateUiPreferences({ focusMode: true }));
+    expect(document.documentElement).toHaveAttribute('data-reader-focus', 'on');
+    applyUiPreferencesToDocument(updateUiPreferences({ focusMode: false }));
+    expect(document.documentElement).toHaveAttribute('data-reader-focus', 'off');
+  });
+
   it('persists moving background and derives exact motion modes', () => {
     setMovingBackground(false);
     expect(readUiPreferences().backgroundMotion).toBe('off');

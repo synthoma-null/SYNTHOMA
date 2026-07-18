@@ -246,6 +246,7 @@ export function applyUiPreferencesToDocument(preferences: SynthomaUiPreferences 
   root.dataset.textEffects = effectiveMotion === 'off' ? 'off' : preferences.textEffects;
   root.dataset.glass = preferences.glassEnabled ? 'on' : 'off';
   root.dataset.readerGlass = preferences.glassEnabled ? 'on' : 'off';
+  root.dataset.readerFocus = preferences.focusMode ? 'on' : 'off';
   root.style.setProperty('--font-size-multiplier', String(preferences.fontScale));
   root.style.setProperty('--reader-surface-opacity', `${Math.round(preferences.readerOpacity * 100)}%`);
   root.style.setProperty('--reader-glass-blur', `${preferences.glassBlur}px`);
