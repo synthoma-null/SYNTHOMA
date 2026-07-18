@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useLang } from '../../lib/LangContext';
 import { readReadingProgress, saveLastChapterPath, saveReadingProgress } from '../../lib/readerState';
 
 interface Props {
@@ -17,6 +18,7 @@ function pageProgress(): number {
 }
 
 export default function ChapterReadingProgress({ chapterId, chapterTitle, collection, chapterPath }: Props) {
+  const { t } = useLang();
   const [progress, setProgress] = useState(0);
   const lastServerProgress = useRef(-5);
   const startedAt = useRef(Date.now());
@@ -88,7 +90,7 @@ export default function ChapterReadingProgress({ chapterId, chapterTitle, collec
     <div
       className="chapter-reader__progress"
       role="progressbar"
-      aria-label="Průběh čtení kapitoly"
+      aria-label={t('reader.progress.aria')}
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={progress}

@@ -14,7 +14,7 @@ Implementation base: `7629b94`
 - The blur control is disabled while glass is off and retains its value for the next activation.
 - Free and owned chapters share the same Reader surface contract. A locked chapter renders its access gate, not a false prose preview.
 - Theme and focus selectors no longer override opacity or glass. Contract tests cover all current theme selectors.
-- Local production browser measurement: glass OFF produced `backdrop-filter: none`; glass ON produced `blur(12px)`; the article alpha was `0.85`; state survived reload and navigation to the next chapter.
+- Local and live production browser measurement: glass OFF produced `backdrop-filter: none`; glass ON produced `blur(12px)`; the article alpha was `0.85`; state survived reload and navigation to the next chapter.
 - Persistence is covered by preference/bootstrap tests and local route-change QA.
 - Browser automation limitation: the attached browser driver can alter a range element's native value but does not dispatch the React state transition. Exact visual measurements for opacity `100/80/40%` and blur `0/12/24px` remain a short manual visual QA step; their root/CSS contracts and clamping are automated.
 
@@ -29,6 +29,7 @@ Implementation base: `7629b94`
 - All five English free chapters returned HTTP 200, `<html lang="en">`, and the full article in initial local production HTML.
 - Published chapters without an approved English source show `English translation is not available yet.` and a link to Czech; Czech prose is not silently emitted under `lang="en"`.
 - Reader navigation, TTS language, metadata, structured data, Open Graph locale, and hreflang use the resolved chapter locale.
+- Live QA found one remaining Czech accessibility label on the chapter progressbar. It was moved to the locale catalog as `reader.progress.aria` and covered in both languages before the final deployment.
 - Translation coverage tests require every CS/EN catalog key and every theme description to be present and non-empty.
 
 ## LEGAL
@@ -55,10 +56,10 @@ Implementation base: `7629b94`
 - Prisma schema validation: PASS. No migration or backfill was run.
 - TypeScript: PASS.
 - Targeted appearance, preferences, locale, chapter, Theme Shop, homepage, consent, shell, and legal contracts: PASS.
-- Full Jest: PASS, 93 suites passed, 1 skipped; 675 tests passed, 21 skipped, 696 total.
+- Full Jest: PASS, 93 suites passed, 1 skipped; 676 tests passed, 21 skipped, 697 total.
 - Production build: PASS, 261 pages generated. Only the four previously documented hook dependency warnings remain.
 - Local production HTTP/browser QA: PASS except for the explicit manual range-slider visual measurements above.
-- Live production QA: pending deployment of the final test commit.
+- Live production QA on `10812a1`: CS/EN homepage SSR, CTA, footer, legal routes, five English free chapters, metadata, Theme Shop descriptions, glass measurement, reload, and route persistence passed. The progressbar localization patch is deployed from the follow-up commit recorded in the release handoff.
 
 ## GIT
 
@@ -67,12 +68,13 @@ Implementation base: `7629b94`
 - `81f48f2 fix: localize theme descriptions and remaining English UI`
 - `7629b94 fix: expose homepage legal navigation and correct the Cyklus CTA`
 - Final test commit: recorded in the release handoff because a commit cannot contain its own SHA.
-- Deployment SHA: pending final test commit and production deployment.
+- Main production QA deployment: `10812a1`.
+- Final progressbar patch deployment: this document's follow-up commit; exact SHA is recorded in the release handoff because a commit cannot contain its own SHA.
 
 ## RELEASE
 
 - Reader appearance: PASS for implementation, tests, glass measurement, persistence, and route change; manual opacity/blur endpoint comparison remains.
-- English locale: PASS for the canonical server/client contract and the five approved English chapters.
+- English locale: PASS after the progressbar accessibility-label patch for the canonical server/client contract and the five approved English chapters.
 - Theme localization: PASS for all eight themes.
-- Legal footer: PASS locally for SSR, hydration, routes, and responsive layout.
-- Release status: HOLD until the final commit is deployed and the live production matrix plus manual range-slider comparison are completed.
+- Legal footer: PASS in live SSR, hydration, routes, and responsive layout.
+- Release status: HOLD only for the manual opacity `100/80/40%` and blur `0/12/24px` visual comparison that the available browser automation cannot drive through React. All automated and live HTTP contracts pass.

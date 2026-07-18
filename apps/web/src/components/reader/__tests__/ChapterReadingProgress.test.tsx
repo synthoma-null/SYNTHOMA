@@ -1,5 +1,6 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import ChapterReadingProgress from '../ChapterReadingProgress';
+import { LangProvider } from '../../../lib/LangContext';
 import { readReadingProgress, saveReadingProgress } from '../../../lib/readerState';
 
 jest.mock('../../../lib/readerState', () => ({
@@ -53,5 +54,15 @@ describe('ChapterReadingProgress', () => {
     Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } });
     render(<ChapterReadingProgress {...props} />);
     await waitFor(() => expect(scrollTo).toHaveBeenCalledWith({ top: 250, behavior: 'auto' }));
+  });
+
+  it('localizes the progressbar label', () => {
+    const { getByRole } = render(
+      <LangProvider initialLang="en">
+        <ChapterReadingProgress {...props} />
+      </LangProvider>,
+    );
+
+    expect(getByRole('progressbar', { name: 'Chapter reading progress' })).toBeInTheDocument();
   });
 });

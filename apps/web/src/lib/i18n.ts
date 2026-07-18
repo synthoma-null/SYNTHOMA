@@ -98,6 +98,7 @@ export const translations = {
   'shell.settings': { cs: 'Nastavení', en: 'Settings' },
   'shell.audio.paused': { cs: 'Hudba: pozastaveno', en: 'Music: paused' },
   'shell.mobile.aria': { cs: 'Mobilní sektory', en: 'Mobile sectors' },
+  'reader.progress.aria': { cs: 'Průběh čtení kapitoly', en: 'Chapter reading progress' },
 
   // ─── identity panel ───────────────────────────────────────────────────────
   'id.aria.btn': { cs: 'Identita subjektu', en: 'Subject identity' },
