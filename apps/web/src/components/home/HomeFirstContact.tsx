@@ -1,37 +1,42 @@
+'use client';
+
 import Link from 'next/link';
+import { useLang } from '../../lib/LangContext';
+import type { TKey } from '../../lib/i18n';
 
 const PATHS = [
   {
     href: '/chapter/0-inf-restart',
-    label: 'ZAČÍT PŘÍBĚH',
-    detail: 'Otevřít 0-∞ [RESTART]. Bez registrace.',
+    labelKey: 'home.first.story.label',
+    detailKey: 'home.first.story.detail',
   },
   {
     href: '/cyklus',
-    label: 'SPUSTIT CYKLUS',
-    detail: 'Projít prvním diagnostickým během.',
+    labelKey: 'home.first.cyklus.label',
+    detailKey: 'home.first.cyklus.detail',
   },
   {
     href: '/archive',
-    label: 'POCHOPIT SYNTHOMU',
-    detail: 'Otevřít základní Archiv světa.',
+    labelKey: 'home.first.archive.label',
+    detailKey: 'home.first.archive.detail',
   },
 ] as const;
 
 export default function HomeFirstContact() {
+  const { t } = useLang();
   return (
     <section className="home-first-contact" aria-labelledby="home-first-contact-title">
       <div className="home-first-contact__heading">
-        <span>LOG [FIRST_CONTACT] // UZEL</span>
-        <h2 id="home-first-contact-title">PRVNÍ NÁVŠTĚVA</h2>
-        <p>Nemusíš chápat všechno. Systém také nezačal tím, že by chápal sám sebe.</p>
+        <span>{t('home.first.log')}</span>
+        <h2 id="home-first-contact-title">{t('home.first.title')}</h2>
+        <p>{t('home.first.body')}</p>
       </div>
-      <nav className="home-first-contact__paths" aria-label="Tři vstupy do SYNTHOMY">
+      <nav className="home-first-contact__paths" aria-label={t('home.first.aria')}>
         {PATHS.map((path, index) => (
           <Link href={path.href} key={path.href}>
             <span>{String(index + 1).padStart(2, '0')}</span>
-            <strong>{path.label}</strong>
-            <small>{path.detail}</small>
+            <strong>{t(path.labelKey as TKey)}</strong>
+            <small>{t(path.detailKey as TKey)}</small>
           </Link>
         ))}
       </nav>

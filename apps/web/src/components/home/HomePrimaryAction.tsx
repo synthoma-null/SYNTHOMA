@@ -5,19 +5,23 @@ import { useEffect, useState } from 'react';
 import { readLastChapterPath } from '../../lib/readerState';
 import { hasActiveCyklusRun } from '../../game/cyklus/cyklusStorage';
 import { resolveResumeHref } from '../../lib/synthoma/library/getResumeTarget';
+import { useLang } from '../../lib/LangContext';
+import { getT, type Lang } from '../../lib/i18n';
 
 type HomeAction = { href: string; label: string; detail: string; code: string };
 
-export function resolveHomeAction(): HomeAction {
+export function resolveHomeAction(lang: Lang = 'cs'): HomeAction {
+  const t = getT(lang);
   const reading = readLastChapterPath();
-  if (reading) return { href: resolveResumeHref(reading), label: 'POKRAČOVAT VE ČTENÍ', detail: 'Obnovit poslední paměťovou stopu.', code: 'RESUME // READER' };
-  if (hasActiveCyklusRun()) return { href: '/cyklus', label: 'POKRAČOVAT V CYKLU', detail: 'Diagnostický běh zůstal otevřený.', code: 'RESUME // CYKLUS' };
-  return { href: '/books', label: 'VSTOUPIT DO SYNTHOMY', detail: 'Otevřít první dostupnou paměť.', code: 'SUBJECT // NEW' };
+  if (reading) return { href: resolveResumeHref(reading), label: t('home.primary.reader.label'), detail: t('home.primary.reader.detail'), code: 'RESUME // READER' };
+  if (hasActiveCyklusRun()) return { href: '/cyklus', label: t('home.primary.cyklus.label'), detail: t('home.primary.cyklus.detail'), code: 'RESUME // CYKLUS' };
+  return { href: '/books', label: t('home.primary.new.label'), detail: t('home.primary.new.detail'), code: 'SUBJECT // NEW' };
 }
 
 export default function HomePrimaryAction() {
-  const [action, setAction] = useState<HomeAction>(() => ({ href: '/books', label: 'VSTOUPIT DO SYNTHOMY', detail: 'Otevřít první dostupnou paměť.', code: 'SUBJECT // NEW' }));
-  useEffect(() => setAction(resolveHomeAction()), []);
+  const { lang } = useLang();
+  const [action, setAction] = useState<HomeAction>(() => resolveHomeAction(lang));
+  useEffect(() => setAction(resolveHomeAction(lang)), [lang]);
   return (
     <Link className="home-primary-action os-surface" href={action.href} data-home-primary-action>
       <span className="home-primary-action__code">{action.code}</span>

@@ -7,9 +7,9 @@ import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
 
 const SECTORS = [
-  { href: '/books', index: '01', label: 'KNIHOVNA', detailKey: 'home.sector.library.detail', markerKey: 'action.open' },
-  { href: '/archive', index: '02', label: 'ARCHIV', detailKey: 'home.sector.archive.detail', markerKey: 'action.open' },
-  { href: '/cyklus', index: '03', label: 'CYKLUS', detailKey: 'home.sector.cyklus.new', markerKey: 'home.sector.cyklus.start' },
+  { href: '/books', index: '01', labelKey: 'home.sector.library.label', detailKey: 'home.sector.library.detail', markerKey: 'action.open' },
+  { href: '/archive', index: '02', labelKey: 'home.sector.archive.label', detailKey: 'home.sector.archive.detail', markerKey: 'action.open' },
+  { href: '/cyklus', index: '03', labelKey: 'home.sector.cyklus.label', detailKey: 'home.sector.cyklus.new', markerKey: 'home.sector.cyklus.start' },
 ] as const;
 
 export default function HomeSectorLinks() {
@@ -17,7 +17,7 @@ export default function HomeSectorLinks() {
   const { t } = useLang();
 
   return (
-    <nav className="synthoma-home__sectors" aria-label="Sektory SYNTHOMA">
+    <nav className="synthoma-home__sectors" aria-label={t('home.sectors.aria')}>
       {SECTORS.map((sector) => {
         const isCyklus = sector.href === '/cyklus';
         const detail = isCyklus
@@ -34,7 +34,7 @@ export default function HomeSectorLinks() {
         return (
           <Link className={classes} href={sector.href} key={sector.href}>
             <span className="home-sector-link__index">{sector.index}</span>
-            <span className="home-sector-link__copy"><strong>{sector.label}</strong><span>{detail}</span></span>
+            <span className="home-sector-link__copy"><strong>{t(sector.labelKey as TKey)}</strong><span>{detail}</span></span>
             <span className="home-sector-link__marker">{marker}</span>
           </Link>
         );
