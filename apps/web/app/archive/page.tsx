@@ -5,23 +5,24 @@ import { type ArchiveCardData } from './ArchiveClient';
 import SynthomaArchive from '../../src/components/archive/SynthomaArchive';
 import { normalizeArchiveCards } from '../../src/lib/synthoma/archive/normalizeArchiveEntries';
 import { getPublicArchive } from '../../src/server/public-ai/contentService';
+import { buildPublicMetadata, requestLocale } from '../../src/lib/publicMetadata';
 import '../../src/styles/library-archive.css';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Archiv | SYNTHOMA',
-  description: 'Živý archiv světa SYNTHOMA: entity, zákony paměti a stopy rozbitého terapeutického systému.',
-  alternates: {
-    canonical: 'https://www.synthoma.cz/archive',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await requestLocale();
+  return buildPublicMetadata({
+    locale,
+    path: '/archive',
+    title: locale === 'en' ? 'Living Archive | SYNTHOMA' : 'Živý archiv | SYNTHOMA',
+    description: locale === 'en' ? 'Explore entities, memory laws and traces from the broken therapeutic system of SYNTHOMA.' : 'Prozkoumej entity, zákony paměti a stopy z rozbitého terapeutického systému SYNTHOMA.',
+    imageAlt: locale === 'en' ? 'The living SYNTHOMA Archive' : 'Živý Archiv světa SYNTHOMA',
+  });
+}
 
 export default async function ArchivePage() {
+  const locale = await requestLocale();
   const dataPath = path.join(process.cwd(), 'public', 'data', 'archiveCards.json');
   let cards: ArchiveCardData[] = [];
   try {
@@ -33,13 +34,13 @@ export default async function ArchivePage() {
   }
 
   const normalized = normalizeArchiveCards(cards);
-  const publicCards = getPublicArchive('cs');
+  const publicCards = getPublicArchive(locale);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Archiv SYNTHOMA',
     url: 'https://www.synthoma.cz/archive',
-    inLanguage: 'cs',
+    inLanguage: locale,
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: publicCards.map((card, index) => ({
@@ -55,13 +56,13 @@ export default async function ArchivePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="archive-public-content" aria-labelledby="archive-public-title">
-        <h2 id="archive-public-title">VEŘEJNÉ ZÁZNAMY ARCHIVU</h2>
+        <h2 id="archive-public-title">{locale === 'en' ? 'PUBLIC ARCHIVE RECORDS' : 'VEŘEJNÉ ZÁZNAMY ARCHIVU'}</h2>
         {publicCards.map((card) => (
           <article key={card.id} id={`public-${card.id}`}>
             <h3><a href={`/archive/${card.id}`}>{card.title}</a></h3>
             <p>{card.teaser}</p>
             {card.visibility === 'publicFull' ? card.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>) : (
-              <p>UZAMČENO: {card.access?.label ?? 'Vyžaduje další přístup.'}</p>
+              <p>{locale === 'en' ? 'LOCKED' : 'UZAMČENO'}: {card.access?.label ?? (locale === 'en' ? 'Further access required.' : 'Vyžaduje další přístup.')}</p>
             )}
           </article>
         ))}

@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 import { CHAPTER_CATALOG } from '../src/content/catalog';
 import { getPublicArchive } from '../src/server/public-ai/contentService';
 import { getPublicCards } from '../src/server/public-ai/contentService';
-import { PUBLIC_CONTENT_UPDATED_AT, PUBLIC_SITE_URL } from '../src/server/public-ai/config';
+import { PUBLIC_SITE_URL } from '../src/server/public-ai/config';
 
-const LAST_MODIFIED = new Date(PUBLIC_CONTENT_UPDATED_AT);
+const LAST_MODIFIED = new Date('2026-07-18T00:00:00.000Z');
 
 function localized(url: string): Pick<MetadataRoute.Sitemap[number], 'alternates'> {
   return { alternates: { languages: { cs: url, en: `${url}${url.includes('?') ? '&' : '?'}locale=en`, 'x-default': url } } };

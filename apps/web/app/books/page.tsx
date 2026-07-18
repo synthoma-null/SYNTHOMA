@@ -1,21 +1,21 @@
 ﻿import type { Metadata } from 'next';
 import { getLibraryCatalog } from '../../src/lib/synthoma/library/getLibraryCatalog';
+import { buildPublicMetadata, requestLocale } from '../../src/lib/publicMetadata';
 import SynthomaLibrary from '../../src/components/library/SynthomaLibrary';
 import '../../src/styles/library-archive.css';
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: 'Knihovna | SYNTHOMA',
-  description: 'Čti interaktivní psychologický román SYNTHOMA-NULL. Bezplatný začátek nevyžaduje přihlášení.',
-  alternates: {
-    canonical: 'https://www.synthoma.cz/books',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await requestLocale();
+  return buildPublicMetadata({
+    locale,
+    path: '/books',
+    title: locale === 'en' ? 'SYNTHOMA-NULL Library | SYNTHOMA' : 'Knihovna SYNTHOMA-NULL | SYNTHOMA',
+    description: locale === 'en' ? 'Read SYNTHOMA-NULL, an interactive psychological novel. The opening chapters are free without registration.' : 'Čti interaktivní psychologický román SYNTHOMA-NULL. Úvodní kapitoly jsou zdarma bez registrace.',
+    imageAlt: locale === 'en' ? 'SYNTHOMA-NULL interactive novel library' : 'Knihovna interaktivního románu SYNTHOMA-NULL',
+  });
+}
 
 function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>) {
   return catalog.collections.map((col) => ({
@@ -36,6 +36,7 @@ function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>)
 }
 
 export default async function BooksPage() {
+  const locale = await requestLocale();
   const catalog = await getLibraryCatalog();
   const jsonLd = buildBookJsonLd(catalog);
 
@@ -47,16 +48,18 @@ export default async function BooksPage() {
       />
       <noscript>
         <div className="books-fallback">
-          <h1>Knihovna SYNTHOMA</h1>
+          <h1>{locale === 'en' ? 'SYNTHOMA Library' : 'Knihovna SYNTHOMA'}</h1>
+          <p>{locale === 'en' ? 'Start with the first free chapter. No registration is required.' : 'Začni první bezplatnou kapitolou. Registrace není nutná.'}</p>
           {catalog.collections.map((col) => (
             <section key={col.slug}>
               <h2>{col.title}</h2>
               <ul>
                 {col.chapters.map((ch) => (
                   <li key={ch.path}>
-                    <a href={`/chapter/${encodeURIComponent(ch.id)}`}>
+                    <a href={`/chapter/${encodeURIComponent(ch.id)}${locale === 'en' ? '?locale=en' : ''}`}>
                       {ch.title}
                     </a>
+                    {' — '}{ch.access === 'free' ? (locale === 'en' ? 'FREE' : 'ZDARMA') : (locale === 'en' ? 'LOCKED' : 'UZAMČENO')}
                   </li>
                 ))}
               </ul>

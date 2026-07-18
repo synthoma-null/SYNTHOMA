@@ -6,8 +6,8 @@ import { attachGlitchHeading } from "../../src/lib/glitchHeading";
 import { useVideoVisibility } from "../../src/lib/useVideoVisibility";
 import { useBackgroundMotionAllowed } from '../../src/hooks/useBackgroundMotionAllowed';
 
-export default function AutorClient({ initialHtml }: { initialHtml: string }) {
-  const TITLE = "A U T O R";
+export default function AutorClient({ initialHtml, locale }: { initialHtml: string; locale: 'cs' | 'en' }) {
+  const TITLE = locale === 'en' ? 'A U T H O R' : 'A U T O R';
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const videoRef = useVideoVisibility();
   const motionAllowed = useBackgroundMotionAllowed();
@@ -19,7 +19,7 @@ export default function AutorClient({ initialHtml }: { initialHtml: string }) {
     if (!root) return;
     const detach = attachGlitchHeading(root, TITLE, { intervalMs: 260, chance: 0.08 });
     return () => { try { detach && detach(); } catch {} };
-  }, []);
+  }, [TITLE]);
 
   useEffect(() => {
     try {
@@ -47,7 +47,7 @@ export default function AutorClient({ initialHtml }: { initialHtml: string }) {
           className="active"
         /> : null}
       </div>
-      <main className="story" aria-label="O autorovi">
+      <main className="story" aria-label={locale === 'en' ? 'About the author' : 'O autorovi'}>
         <section className="story-block" data-theme="synthoma">
           <h1 id="glitch-autor" className="glitch-master title" ref={glitchRootRef as any} aria-label={TITLE}>
             <span className="glitch-fake1">{TITLE}</span>
@@ -64,20 +64,20 @@ export default function AutorClient({ initialHtml }: { initialHtml: string }) {
 
         <article
           className="readerOverlay-35 readerOverlay-blur autor-semantic-content"
-          aria-label="O autorovi"
+          aria-label={locale === 'en' ? 'About the author' : 'O autorovi'}
           dangerouslySetInnerHTML={{ __html: initialHtml }}
         />
 
         <p className="public-machine-links">
-          <a href="/ai/cs/author.md">MARKDOWN</a>
+          <a href={`/ai/${locale}/author.md`}>MARKDOWN</a>
           {' // '}
-          <a href="/api/public/v1/author?locale=cs">JSON</a>
+          <a href={`/api/public/v1/author?locale=${locale}`}>JSON</a>
         </p>
 
-        <article className="autor-panel os-surface os-surface--glass" aria-label="Navigace zpět">
+        <article className="autor-panel os-surface os-surface--glass" aria-label={locale === 'en' ? 'Back navigation' : 'Navigace zpět'}>
           <section className="story-block">
             <div className="hero-cta">
-              <Link className="btn btn-lg" href="/">⟵ Hlavní stránka</Link>
+              <Link className="btn btn-lg" href={locale === 'en' ? '/?locale=en' : '/'}>⟵ {locale === 'en' ? 'Homepage' : 'Hlavní stránka'}</Link>
             </div>
           </section>
         </article>

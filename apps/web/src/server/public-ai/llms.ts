@@ -5,11 +5,14 @@ export async function llmsIndex(): Promise<string> {
   const chapters = (await getPublicChapters('en')).filter((chapter) => chapter.visibility === 'publicFull');
   return `# SYNTHOMA
 
-> Czech glitch-noir interactive book, archive and deterministic narrative card game. Public AI access includes free chapters, public Archive records, Author information, public Cyklus cards and a stateless gameplay API.
+> SYNTHOMA is an interactive psychological novel, a diagnostic card game, and a living archive inside a broken therapeutic system. Public AI access includes free chapters, public Archive records, Author information, public Cyklus cards and a stateless gameplay API.
 
 ## Start
 - [AI overview](${absolutePublicUrl('/ai/en/index.md')})
 - [Human homepage](${absolutePublicUrl('/')})
+- [Start the story](${absolutePublicUrl('/chapter/0-inf-restart')})
+- [Start Cyklus](${absolutePublicUrl('/cyklus')})
+- [Understand the world](${absolutePublicUrl('/archive')})
 
 ## Free book
 - [Book index](${absolutePublicUrl('/ai/en/books/synthoma-null.md')})

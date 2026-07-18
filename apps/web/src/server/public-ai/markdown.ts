@@ -11,8 +11,8 @@ export async function siteMarkdown(locale: PublicLocale): Promise<string> {
   return `${frontMatter({ id: 'synthoma', locale, status: 'public', canonical: absolutePublicUrl('/'), updatedAt: PUBLIC_CONTENT_UPDATED_AT })}# SYNTHOMA
 
 ${cs
-    ? 'Cesky glitch-noir interaktivni pribeh, archiv a deterministicka narativni karetní hra.'
-    : 'Czech glitch-noir interactive fiction, archive and deterministic narrative card game.'}
+    ? 'SYNTHOMA je interaktivni psychologicky roman, diagnosticka karetni hra a zivy archiv uvnitr rozbiteho terapeutickeho systemu.'
+    : 'SYNTHOMA is an interactive psychological novel, a diagnostic card game, and a living archive inside a broken therapeutic system.'}
 
 ## ${cs ? 'Verejny obsah' : 'Public content'}
 

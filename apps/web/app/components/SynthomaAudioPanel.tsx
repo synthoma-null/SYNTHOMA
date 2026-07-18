@@ -224,7 +224,7 @@ export default function SynthomaAudioPanel() {
       <section className="synthoma-audio-panel__surface" role="dialog" aria-modal="true" aria-labelledby="synthoma-audio-title">
         <header className="synthoma-audio-panel__header">
           <div>
-            <span className="synthoma-audio-panel__kicker">{copy.ambient} // {playing ? 'ACTIVE' : 'PAUSED'}</span>
+            <span className="synthoma-audio-panel__kicker">{copy.ambient}{' // '}{playing ? 'ACTIVE' : 'PAUSED'}</span>
             <h2 id="synthoma-audio-title">SYNTHOMA {String(trackIndex + 1).padStart(2, '0')}</h2>
           </div>
           <button ref={closeRef} className="synthoma-audio-panel__close" type="button" aria-label={copy.close} onClick={() => setOpen(false)}>

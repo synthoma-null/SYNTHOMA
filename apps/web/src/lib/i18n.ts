@@ -59,7 +59,7 @@ export const translations = {
   'home.sectors.aria': { cs: 'Sektory SYNTHOMA', en: 'SYNTHOMA sectors' },
   'home.designation': { cs: 'OS // ROZHRANÍ ČERNÉ PAMĚTI', en: 'OS // BLACK MEMORY INTERFACE' },
   'home.statement': { cs: 'Rozbitý terapeutický systém, který si pamatuje víc, než by měl. Vyber další stopu. Systém už si vybral tebe.', en: 'A broken therapeutic system that remembers more than it should. Choose the next trace. The system has already chosen you.' },
-  'home.format': { cs: 'SYNTHOMA je interaktivní psychologický román, diagnostická karetní hra a živý archiv v jednom rozbitém terapeutickém systému.', en: 'SYNTHOMA is an interactive psychological novel, a diagnostic card game and a living archive inside one broken therapeutic system.' },
+  'home.format': { cs: 'SYNTHOMA je interaktivní psychologický román, diagnostická karetní hra a živý archiv uvnitř rozbitého terapeutického systému.', en: 'SYNTHOMA is an interactive psychological novel, a diagnostic card game, and a living archive inside a broken therapeutic system.' },
   'home.first.log': { cs: 'LOG [FIRST_CONTACT] // UZEL', en: 'LOG [FIRST_CONTACT] // NODE' },
   'home.first.title': { cs: 'PRVNÍ NÁVŠTĚVA', en: 'FIRST VISIT' },
   'home.first.body': { cs: 'Nemusíš chápat všechno. Systém také nezačal tím, že by chápal sám sebe.', en: 'You do not have to understand everything. The system did not begin by understanding itself either.' },

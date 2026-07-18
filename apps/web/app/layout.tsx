@@ -46,6 +46,7 @@ import { AccessProvider } from "../src/components/access/AccessProvider";
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRuntime";
 import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
+import { SYNTHOMA_DESCRIPTOR } from "../src/lib/publicMetadata";
 
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
@@ -77,7 +78,7 @@ export const metadata: Metadata = {
 
   title: "SYNTHOMA",
 
-  description: "SYNTHOMA je interaktivní psychologický román, diagnostická karetní hra a živý archiv v rozbitém terapeutickém systému.",
+  description: SYNTHOMA_DESCRIPTOR.cs,
 
   icons: {
 
@@ -127,7 +128,7 @@ export const metadata: Metadata = {
 
     title: "SYNTHOMA",
 
-    description: "Interaktivní psychologický román, diagnostická karetní hra a živý archiv v rozbitém terapeutickém systému.",
+    description: SYNTHOMA_DESCRIPTOR.cs,
 
     siteName: "SYNTHOMA",
 
@@ -157,7 +158,7 @@ export const metadata: Metadata = {
 
     title: "SYNTHOMA",
 
-    description: "Interaktivní psychologický román, diagnostická karetní hra a živý archiv v rozbitém terapeutickém systému.",
+    description: SYNTHOMA_DESCRIPTOR.cs,
 
     images: ["/assets/og-synthoma.png"],
 
@@ -172,7 +173,7 @@ export const generateViewport = (): Viewport => ({
   ],
 });
 
-const jsonLd = {
+function buildSiteJsonLd(locale: 'cs' | 'en') { return {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -181,14 +182,14 @@ const jsonLd = {
       "name": "SYNTHOMA",
       "url": "https://www.synthoma.cz",
       "inLanguage": ["cs", "en"],
-      "description": "Glitch-noir interaktivní literatura, archiv a diagnostická karetní hra.",
+      "description": SYNTHOMA_DESCRIPTOR[locale],
     },
     {
       "@type": "CreativeWorkSeries",
       "@id": "https://www.synthoma.cz/#series",
       "name": "SYNTHOMA",
       "url": "https://www.synthoma.cz",
-      "author": { "@type": "Person", "name": "Tomáš Valíček", "url": "https://www.synthoma.cz/autor" },
+      "author": { "@id": "https://www.synthoma.cz/#author" },
       "inLanguage": ["cs", "en"],
       "genre": ["Cyberpunk", "Interactive Fiction", "Glitch Noir"],
       "isAccessibleForFree": true,
@@ -198,9 +199,16 @@ const jsonLd = {
         { "@type": "CollectionPage", "name": "Archiv SYNTHOMA", "url": "https://www.synthoma.cz/archive" },
         { "@type": "Game", "name": "Cyklus", "url": "https://www.synthoma.cz/cyklus" }
       ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.synthoma.cz/#author",
+      "name": "Tomáš Valíček",
+      "alternateName": "WalliCzech",
+      "url": "https://www.synthoma.cz/autor"
     }
   ]
-};
+}; }
 
 
 
@@ -208,6 +216,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
   const requestHeaders = await headers();
   const initialLang = requestHeaders.get('x-synthoma-locale') === 'en' ? 'en' : 'cs';
+  const jsonLd = buildSiteJsonLd(initialLang);
 
   return (
 
