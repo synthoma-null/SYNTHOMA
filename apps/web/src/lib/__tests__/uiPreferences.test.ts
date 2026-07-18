@@ -3,6 +3,7 @@ import {
   applyUiPreferencePreset,
   getEffectiveMotionMode,
   getMatchingUiPreferencePreset,
+  applyUiPreferencesToDocument,
   readUiPreferences,
   setMovingBackground,
   updateUiPreferences,
@@ -26,7 +27,19 @@ describe('versioned UI preferences', () => {
 
   it('repairs invalid values and clamps numeric preferences', () => {
     localStorage.setItem('synthoma_ui_preferences', JSON.stringify({ version: 2, motionMode: 'shake', fontScale: 9, readerOpacity: -4, glassBlur: 100, audioVolume: -1 }));
-    expect(readUiPreferences()).toMatchObject({ motionMode: 'system', fontScale: 1.4, readerOpacity: 0, glassBlur: 24, audioVolume: 0 });
+    expect(readUiPreferences()).toMatchObject({ motionMode: 'system', fontScale: 1.4, readerOpacity: 0.4, glassBlur: 24, audioVolume: 0 });
+  });
+
+  it('applies the Reader surface contract independently from glass blur', () => {
+    const preferences = updateUiPreferences({ readerOpacity: 0.8, glassEnabled: false, glassBlur: 24 });
+    applyUiPreferencesToDocument(preferences);
+    expect(document.documentElement).toHaveAttribute('data-reader-glass', 'off');
+    expect(document.documentElement.style.getPropertyValue('--reader-surface-opacity')).toBe('80%');
+    expect(document.documentElement.style.getPropertyValue('--reader-glass-blur')).toBe('24px');
+
+    applyUiPreferencesToDocument(updateUiPreferences({ glassEnabled: true }));
+    expect(document.documentElement).toHaveAttribute('data-reader-glass', 'on');
+    expect(document.documentElement.style.getPropertyValue('--reader-surface-opacity')).toBe('80%');
   });
 
   it('persists moving background and derives exact motion modes', () => {

@@ -68,12 +68,28 @@ describe('/chapter/[id] server route contract', () => {
     const renderedEnglish = render(englishChapter);
     expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveAttribute('lang', 'en');
     expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveTextContent('No one in Synthoma knows exactly');
+    expect(screen.getByRole('link', { name: 'LIBRARY' })).toHaveAttribute('href', '/books?locale=en');
+    expect(screen.getByRole('link', { name: 'PREVIOUS' })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
+    expect(screen.getByRole('link', { name: 'NEXT' })).toHaveAttribute('href', '/chapter/0-1-start?locale=en');
+    expect(screen.getByRole('button', { name: 'Settings' })).toHaveTextContent('SETTINGS');
     renderedEnglish.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'owned', canAccess: true, canPurchase: false }));
     const ownedChapter = await ChapterPage(params('0-4-defragmentation'));
     render(ownedChapter);
     expect(screen.getByRole('article', { name: '0-4 [DEFRAGMENTATION]' })).toHaveTextContent('Defragmentace neznamená uzdravení');
+  });
+
+  it('shows an explicit state instead of Czech fallback when English is unavailable', async () => {
+    const result = await ChapterPage({
+      params: Promise.resolve({ id: '0-4-defragmentation' }),
+      searchParams: Promise.resolve({ locale: 'en' }),
+    });
+    render(result);
+    expect(screen.getByText('English translation is not available yet.')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'OPEN CZECH VERSION' })).toHaveAttribute('href', '/chapter/0-4-defragmentation');
+    expect(screen.queryByText(/Defragmentace neznamená uzdravení/)).not.toBeInTheDocument();
+    expect(getContentAccess).not.toHaveBeenCalled();
   });
 
   it('renders purchase and unavailable states for known chapters', async () => {

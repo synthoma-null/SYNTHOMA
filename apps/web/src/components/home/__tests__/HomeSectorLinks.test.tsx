@@ -9,6 +9,8 @@ jest.mock('../../../game/cyklus/cyklusStorage', () => ({
 
 import { hasActiveCyklusRun } from '../../../game/cyklus/cyklusStorage';
 
+jest.mock('next/navigation', () => ({ useRouter: () => ({ replace: jest.fn() }) }));
+
 const mockedHasActiveCyklusRun = hasActiveCyklusRun as jest.MockedFunction<typeof hasActiveCyklusRun>;
 
 describe('HomeSectorLinks', () => {

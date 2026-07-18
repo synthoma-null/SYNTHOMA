@@ -4,10 +4,15 @@ import path from 'node:path';
 import LangSwitcher from '../LangSwitcher';
 import { LangProvider } from '../../lib/LangContext';
 
+const replace = jest.fn();
+jest.mock('next/navigation', () => ({ useRouter: () => ({ replace }) }));
+
 describe('LangSwitcher', () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.lang = 'cs';
+    window.history.replaceState({}, '', '/chapter/0-0-null');
+    replace.mockClear();
   });
 
   it('persists the selected settings locale and updates html lang', () => {
@@ -20,6 +25,7 @@ describe('LangSwitcher', () => {
     expect(screen.getByRole('button', { name: 'English' })).toHaveAttribute('aria-pressed', 'true');
     expect(localStorage.getItem('synthoma_lang')).toBe('en');
     expect(document.documentElement).toHaveAttribute('lang', 'en');
+    expect(replace).toHaveBeenCalledWith('/chapter/0-0-null?locale=en', { scroll: true });
   });
 
   it('is mounted in Settings rather than the command header', () => {
@@ -33,9 +39,8 @@ describe('LangSwitcher', () => {
     expect(header).not.toContain('LangSwitcher');
   });
 
-  it('restores a stored locale without changing content identifiers', async () => {
-    localStorage.setItem('synthoma_lang', 'en');
-    render(<LangProvider><LangSwitcher /></LangProvider>);
+  it('hydrates the server-resolved locale without changing content identifiers', async () => {
+    render(<LangProvider initialLang="en"><LangSwitcher /></LangProvider>);
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'English' })).toHaveAttribute('aria-pressed', 'true');

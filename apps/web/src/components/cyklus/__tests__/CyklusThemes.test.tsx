@@ -7,7 +7,7 @@ import ControlCenterClient from '../../../../app/components/ControlCenterClient'
 import { UI_THEMES } from '../../../lib/themes';
 import { LangProvider } from '../../../lib/LangContext';
 
-jest.mock('next/navigation', () => ({ usePathname: () => '/' }));
+jest.mock('next/navigation', () => ({ usePathname: () => '/', useRouter: () => ({ replace: jest.fn() }) }));
 jest.mock('../../access/AccessProvider', () => ({
   useAccess: () => ({ applySnapshot: jest.fn() }),
 }));
@@ -29,7 +29,7 @@ describe('Cyklus theme picker', () => {
   it('offers every existing theme with palette and accessible active state', async () => {
     const { container } = render(<ThemeShopClient />);
     for (const theme of UI_THEMES) {
-      expect(await screen.findByRole('button', { name: new RegExp(theme.label, 'i') })).toBeInTheDocument();
+      expect(await screen.findByRole('button', { name: new RegExp(theme.name.cs, 'i') })).toBeInTheDocument();
     }
     expect(container.querySelectorAll('.theme-palette')).toHaveLength(UI_THEMES.length);
     expect(screen.getByRole('button', { name: /Synthoma/i })).toHaveAttribute('aria-pressed', 'true');
@@ -42,6 +42,15 @@ describe('Cyklus theme picker', () => {
     expect(document.body).toHaveAttribute('data-theme', 'mono-light');
     expect(document.documentElement).toHaveAttribute('data-theme', 'mono-light');
     expect(monoLight).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('renders every canonical theme description in English immediately', async () => {
+    render(<LangProvider initialLang="en"><ThemeShopClient /></LangProvider>);
+    for (const theme of UI_THEMES) {
+      expect(await screen.findByText(theme.description.en)).toBeInTheDocument();
+    }
+    expect(screen.getByRole('group', { name: 'Color theme' })).toBeInTheDocument();
+    expect(screen.getByText('ACTIVE')).toBeInTheDocument();
   });
 
   it('uses one shared theme media filter for videos and card posters', () => {

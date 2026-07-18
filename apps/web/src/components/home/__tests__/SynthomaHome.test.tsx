@@ -5,6 +5,8 @@ import LangSwitcher from '../../LangSwitcher';
 import { LangProvider } from '../../../lib/LangContext';
 import SynthomaHome from '../SynthomaHome';
 
+jest.mock('next/navigation', () => ({ useRouter: () => ({ replace: jest.fn() }) }));
+
 describe('Synthoma Home', () => {
   let store: Record<string, string>;
 
@@ -26,7 +28,7 @@ describe('Synthoma Home', () => {
     expect(within(sectors).getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
     expect(within(sectors).getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
     expect(within(sectors).getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
-    expect(screen.getByRole('link', { name: /PŘÍSTUP PRO AI.*AI ACCESS/ })).toHaveAttribute('href', '/ai/api');
+    expect(screen.getByRole('link', { name: 'PŘÍSTUP PRO AI' })).toHaveAttribute('href', '/ai/api');
     expect(screen.getByText(/SYNTHOMA je interaktivní psychologický román/)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'PRVNÍ NÁVŠTĚVA' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ZAČÍT PŘÍBĚH/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
@@ -74,11 +76,12 @@ describe('Synthoma Home', () => {
   });
 
   it('localizes the shared legal navigation without changing its canonical route', async () => {
-    render(<LangProvider><LangSwitcher /><SynthomaHome /></LangProvider>);
-    fireEvent.click(screen.getByRole('button', { name: 'English' }));
+    render(<LangProvider initialLang="en"><LangSwitcher /><SynthomaHome /></LangProvider>);
     const nav = await screen.findByRole('navigation', { name: 'Legal information' });
-    expect(within(nav).getByRole('link', { name: 'COMMERCIAL TERMS' })).toHaveAttribute('href', '/terms');
-    expect(within(nav).getByRole('link', { name: 'TERMS OF USE' })).toHaveAttribute('href', '/terms');
+    expect(within(nav).getByRole('link', { name: 'TERMS OF USE AND SALE' })).toHaveAttribute('href', '/terms');
+    expect(within(nav).getByRole('link', { name: 'PRIVACY POLICY' })).toHaveAttribute('href', '/privacy');
+    expect(screen.getByRole('navigation', { name: 'SYNTHOMA sectors' })).toHaveTextContent('LIBRARY');
+    expect(screen.getByText(/SYNTHOMA is an interactive psychological novel/)).toBeInTheDocument();
   });
 
   it('keeps the legal footer in flow, touch-safe and clear of the mobile dock', () => {

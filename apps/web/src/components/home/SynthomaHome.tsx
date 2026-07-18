@@ -1,3 +1,5 @@
+'use client';
+
 import HomeBackground from './HomeBackground';
 import HomeMemorySignal from './HomeMemorySignal';
 import HomeFirstContact from './HomeFirstContact';
@@ -28,4 +30,3 @@ export default function SynthomaHome() {
     </main>
   );
 }
-'use client';

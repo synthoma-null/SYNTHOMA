@@ -5,13 +5,13 @@ import { LangProvider } from '../../../src/lib/LangContext';
 import { updateUiPreferences } from '../../../src/lib/uiPreferences';
 
 let mockPathname = '/';
-jest.mock('next/navigation', () => ({ usePathname: () => mockPathname }));
+jest.mock('next/navigation', () => ({ usePathname: () => mockPathname, useRouter: () => ({ replace: jest.fn() }) }));
 jest.mock('../ThemeShopClient', () => ({ __esModule: true, default: () => <div data-testid="theme-shop" /> }));
 jest.mock('../ControlCenterAudio', () => ({ __esModule: true, default: () => <div data-testid="control-audio" /> }));
 
-function renderCenter() {
+function renderCenter(initialLang: 'cs' | 'en' = 'cs') {
   document.body.innerHTML = '<button id="toggle-panel-btn" aria-expanded="false">Settings</button>';
-  const view = render(<LangProvider><ControlCenterClient /></LangProvider>);
+  const view = render(<LangProvider initialLang={initialLang}><ControlCenterClient /></LangProvider>);
   act(() => document.dispatchEvent(new CustomEvent('synthoma:control-panel-toggle')));
   return view;
 }
@@ -29,7 +29,7 @@ describe('ControlCenterClient', () => {
     expect(screen.getByRole('tab', { name: 'Vzhled' })).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'Čtení' })).not.toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Zvuk' })).toBeInTheDocument();
-    expect(screen.getByRole('slider', { name: 'Krytí čtecí plochy' })).toBeEnabled();
+    expect(screen.getByRole('slider', { name: 'PRŮHLEDNOST ČTECÍ PLOCHY' })).toBeEnabled();
     expect(screen.getByRole('slider', { name: 'Rozostření skla' })).toBeDisabled();
   });
 
@@ -45,8 +45,7 @@ describe('ControlCenterClient', () => {
 
   it('shows reader controls only on a chapter and localizes to English', async () => {
     mockPathname = '/chapter/0-0-null';
-    localStorage.setItem('synthoma_lang', 'en');
-    renderCenter();
+    renderCenter('en');
     expect(await screen.findByRole('tab', { name: 'Reading' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab', { name: 'Reading' }));
     expect(screen.getByText('FOR THIS SCREEN')).toBeInTheDocument();

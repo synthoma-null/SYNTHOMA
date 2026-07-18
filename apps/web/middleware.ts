@@ -7,7 +7,7 @@ const LOCALE_COOKIE = 'synthoma_locale';
 function resolveRequestLocale(request: NextRequest): 'cs' | 'en' {
   const queryLocale = request.nextUrl.searchParams.get('locale');
   if (queryLocale === 'en' || queryLocale === 'cs') return queryLocale;
-  return request.cookies.get(LOCALE_COOKIE)?.value === 'en' ? 'en' : 'cs';
+  return request.cookies?.get?.(LOCALE_COOKIE)?.value === 'en' ? 'en' : 'cs';
 }
 
 function nextWithLocale(request: NextRequest, locale: 'cs' | 'en') {

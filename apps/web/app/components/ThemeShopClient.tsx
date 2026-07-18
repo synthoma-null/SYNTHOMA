@@ -52,7 +52,7 @@ export default function ThemeShopClient() {
 
     fetch('/api/me/themes')
       .then(async (res) => {
-        if (!res.ok) throw new Error(copy.purchaseError);
+        if (!res.ok) throw new Error('THEME_LOAD_FAILED');
         const data = await res.json();
         setThemes(data.themes || []);
         setBalance(typeof data.balance === 'number' ? data.balance : null);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getConsent, saveConsent, type ConsentState } from '../../lib/consent';
+import { useLang } from '../../lib/LangContext';
 
 type Prefs = {
   preferences: boolean;
@@ -10,6 +11,7 @@ type Prefs = {
 };
 
 export default function CookieConsent() {
+  const { t } = useLang();
   const [show, setShow] = useState(false);
   const [detail, setDetail] = useState(false);
   const [prefs, setPrefs] = useState<Prefs>({ preferences: true, analytics: false, readerTrace: false });
@@ -29,43 +31,39 @@ export default function CookieConsent() {
   if (!show) return null;
 
   return (
-    <div className="cc-overlay" role="dialog" aria-modal="true" aria-label="Paměťové stopy – souhlas">
+    <div className="cc-overlay" role="dialog" aria-modal="true" aria-label={t('cc.aria')}>
       <div className="cc-panel os-surface--glass">
         <div className="cc-log">
-          <span className="cc-log-prefix">LOG [CONSENT_REQUEST]:</span>
-          <span className="cc-log-msg">
-            &#8222;SYNTHOMA žádá o povolení uložit paměťové stopy.&#8220;
-          </span>
+          <span className="cc-log-prefix">{t('cc.log.prefix')}</span>
+          <span className="cc-log-msg">{t('cc.log.msg')}</span>
         </div>
 
         {!detail ? (
           <>
             <p className="cc-body">
-              <strong>Nezbytné stopy</strong> drží přihlášení, bezpečnost a základní funkce čtečky.{' '}
-              <strong>Volitelné stopy</strong> pomáhají ukládat nastavení, postup čtení a anonymní statistiky.
+              {t('cc.body')}
             </p>
             <p className="cc-body cc-flavor">
-              Systém tvrdí, že je to pro tvé dobro.<br />
-              Systém to tvrdí často.
+              {t('cc.flavor')}
             </p>
             <div className="cc-actions">
               <button
                 className="cc-btn cc-btn-primary"
                 onClick={() => accept({ preferences: true, analytics: true, readerTrace: true })}
               >
-                POVOLIT VŠECHNO
+                {t('cc.accept.all')}
               </button>
               <button
                 className="cc-btn cc-btn-secondary"
                 onClick={() => accept({ preferences: false, analytics: false, readerTrace: false })}
               >
-                POUZE NEZBYTNÉ
+                {t('cc.accept.necessary')}
               </button>
               <button
                 className="cc-btn cc-btn-ghost"
                 onClick={() => setDetail(true)}
               >
-                NASTAVIT STOPY
+                {t('cc.configure')}
               </button>
             </div>
           </>
@@ -74,63 +72,66 @@ export default function CookieConsent() {
             <div className="cc-categories">
               <div className="cc-category">
                 <div className="cc-cat-header">
-                  <span className="cc-cat-name">NEZBYTNÉ STOPY</span>
-                  <span className="cc-cat-badge cc-always">VŽDY AKTIVNÍ</span>
+                  <span className="cc-cat-name">{t('cc.cat.necessary')}</span>
+                  <span className="cc-cat-badge cc-always">{t('cc.cat.always')}</span>
                 </div>
-                <p className="cc-cat-desc">Přihlášení, bezpečnost, základní běh systému. Nelze vypnout.</p>
+                <p className="cc-cat-desc">{t('cc.cat.necessary.desc')}</p>
               </div>
               <div className="cc-category">
                 <div className="cc-cat-header">
-                  <span className="cc-cat-name">KONFIGURAČNÍ STOPY</span>
+                  <span className="cc-cat-name">{t('cc.cat.preferences')}</span>
                   <label className="cc-toggle">
                     <input
                       type="checkbox"
                       checked={prefs.preferences}
+                      aria-label={t('cc.cat.preferences')}
                       onChange={e => setPrefs(p => ({ ...p, preferences: e.target.checked }))}
                     />
                     <span className="cc-toggle-slider" />
                   </label>
                 </div>
-                <p className="cc-cat-desc">Rychlost psaní, animace, audio, vzhled a výkon vrstvy.</p>
+                <p className="cc-cat-desc">{t('cc.cat.preferences.desc')}</p>
               </div>
               <div className="cc-category">
                 <div className="cc-cat-header">
-                  <span className="cc-cat-name">ANALYTICKÉ STOPY</span>
+                  <span className="cc-cat-name">{t('cc.cat.analytics')}</span>
                   <label className="cc-toggle">
                     <input
                       type="checkbox"
                       checked={prefs.analytics}
+                      aria-label={t('cc.cat.analytics')}
                       onChange={e => setPrefs(p => ({ ...p, analytics: e.target.checked }))}
                     />
                     <span className="cc-toggle-slider" />
                   </label>
                 </div>
-                <p className="cc-cat-desc">Pomáhají poznat, kde se SYNTHOMA rozpadá, seká nebo bolí správným způsobem.</p>
+                <p className="cc-cat-desc">{t('cc.cat.analytics.desc')}</p>
               </div>
               <div className="cc-category">
                 <div className="cc-cat-header">
-                  <span className="cc-cat-name">ČTENÁŘSKÝ OTISK</span>
+                  <span className="cc-cat-name">{t('cc.cat.reader')}</span>
                   <label className="cc-toggle">
                     <input
                       type="checkbox"
                       checked={prefs.readerTrace}
+                      aria-label={t('cc.cat.reader')}
                       onChange={e => setPrefs(p => ({ ...p, readerTrace: e.target.checked }))}
                     />
                     <span className="cc-toggle-slider" />
                   </label>
                 </div>
-                <p className="cc-cat-desc">Volby, postup čtení, psychomapa. Pouze lokálně, pokud nemáš účet.</p>
+                <p className="cc-cat-desc">{t('cc.cat.reader.desc')}</p>
               </div>
             </div>
             <div className="cc-actions">
               <button className="cc-btn cc-btn-primary" onClick={() => accept(prefs)}>
-                ULOŽIT NASTAVENÍ
+                {t('cc.save')}
               </button>
               <button
                 className="cc-btn cc-btn-ghost"
                 onClick={() => setDetail(false)}
               >
-                ← ZPĚT
+                {t('cc.back')}
               </button>
             </div>
           </>

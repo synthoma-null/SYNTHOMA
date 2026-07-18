@@ -4,12 +4,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import SynthomaShell from '../SynthomaShell';
 import { HeaderProvider } from '../HeaderContext';
+import { LangProvider } from '../../../lib/LangContext';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn() }));
 const { usePathname } = require('next/navigation');
 
-function renderWithHeader(ui: React.ReactElement) {
-  return render(<HeaderProvider>{ui}</HeaderProvider>);
+function renderWithHeader(ui: React.ReactElement, lang: 'cs' | 'en' = 'cs') {
+  return render(<LangProvider initialLang={lang}><HeaderProvider>{ui}</HeaderProvider></LangProvider>);
 }
 
 describe('SynthomaShell', () => {
@@ -41,6 +42,17 @@ describe('SynthomaShell', () => {
     expect(audio).toHaveBeenCalledTimes(1);
     document.removeEventListener('synthoma:identity-toggle', identity);
     document.removeEventListener('synthoma:audio-toggle', audio);
+  });
+
+  it('localizes the complete global shell in English', () => {
+    renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>, 'en');
+    expect(screen.getByRole('link', { name: 'SYNTHOMA, main node' })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Main sectors' })).toHaveTextContent('LIBRARY');
+    expect(screen.getByRole('navigation', { name: 'Global controls' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Identity' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Settings' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Music: paused' })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Mobile sectors' })).toHaveTextContent('NODE');
   });
 
   it('keeps locale controls out of the global command header', () => {

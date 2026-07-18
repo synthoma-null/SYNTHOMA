@@ -84,6 +84,21 @@ export const translations = {
   'home.legal.terms': { cs: 'PODMÍNKY POUŽITÍ A PRODEJE', en: 'TERMS OF USE AND SALE' },
   'home.legal.privacy': { cs: 'OCHRANA OSOBNÍCH ÚDAJŮ', en: 'PRIVACY POLICY' },
 
+  // ─── global shell ────────────────────────────────────────────────────────
+  'shell.node': { cs: 'UZEL', en: 'NODE' },
+  'shell.library': { cs: 'KNIHOVNA', en: 'LIBRARY' },
+  'shell.archive': { cs: 'ARCHIV', en: 'ARCHIVE' },
+  'shell.cyklus': { cs: 'CYKLUS', en: 'CYKLUS' },
+  'shell.system': { cs: 'SYSTÉM', en: 'SYSTEM' },
+  'shell.brand.aria': { cs: 'SYNTHOMA, hlavní uzel', en: 'SYNTHOMA, main node' },
+  'shell.active.aria': { cs: 'Aktivní sektor', en: 'Active sector' },
+  'shell.sectors.aria': { cs: 'Hlavní sektory', en: 'Main sectors' },
+  'shell.controls.aria': { cs: 'Globální ovládání', en: 'Global controls' },
+  'shell.identity': { cs: 'Identita', en: 'Identity' },
+  'shell.settings': { cs: 'Nastavení', en: 'Settings' },
+  'shell.audio.paused': { cs: 'Hudba: pozastaveno', en: 'Music: paused' },
+  'shell.mobile.aria': { cs: 'Mobilní sektory', en: 'Mobile sectors' },
+
   // ─── identity panel ───────────────────────────────────────────────────────
   'id.aria.btn': { cs: 'Identita subjektu', en: 'Subject identity' },
   'id.aria.panel': { cs: 'Panel identity', en: 'Identity panel' },
@@ -510,6 +525,10 @@ export const translations = {
   'cc.configure': { cs: 'KONFIGUROVAT', en: 'CONFIGURE' },
   'cc.save': { cs: 'ULOŽIT NASTAVENÍ', en: 'SAVE SETTINGS' },
   'cc.back': { cs: '← ZPĚT', en: '← BACK' },
+  'cc.aria': { cs: 'Paměťové stopy – souhlas', en: 'Memory traces consent' },
+  'cc.cat.always': { cs: 'VŽDY AKTIVNÍ', en: 'ALWAYS ACTIVE' },
+  'cc.cat.preferences': { cs: 'KONFIGURAČNÍ STOPY', en: 'PREFERENCE TRACES' },
+  'cc.cat.preferences.desc': { cs: 'Rychlost psaní, animace, audio, vzhled a výkon vrstvy.', en: 'Typing speed, animation, audio, appearance and layer performance.' },
   'cc.cat.necessary': { cs: 'NUTNÉ PROTOKOLY', en: 'NECESSARY PROTOCOLS' },
   'cc.cat.necessary.desc': { cs: 'Autentizace, session, bezpečnost. Bez těchto cookies SYNTHOMA nefunguje.', en: 'Authentication, session, security. Without these cookies SYNTHOMA does not work.' },
   'cc.cat.analytics': { cs: 'ANALYTICKÝ OTISK', en: 'ANALYTICS IMPRINT' },

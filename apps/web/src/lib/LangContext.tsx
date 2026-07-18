@@ -1,7 +1,6 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { getT, type Lang, type TKey } from './i18n';
 
 interface LangCtx {
@@ -16,11 +15,17 @@ export const LangContext = createContext<LangCtx>({
   t: getT('cs'),
 });
 
-export function LangProvider({ children, initialLang = 'cs' }: { children: React.ReactNode; initialLang?: Lang }) {
-  const router = useRouter();
-  const [lang, setLangState] = useState<Lang>(initialLang);
+function readLegacyLanguage(): Lang {
+  if (typeof window === 'undefined') return 'cs';
+  try { return localStorage.getItem('synthoma_lang') === 'en' ? 'en' : 'cs'; } catch { return 'cs'; }
+}
 
-  useEffect(() => setLangState(initialLang), [initialLang]);
+export function LangProvider({ children, initialLang }: { children: React.ReactNode; initialLang?: Lang }) {
+  const [lang, setLangState] = useState<Lang>(() => initialLang ?? readLegacyLanguage());
+
+  useEffect(() => {
+    if (initialLang) setLangState(initialLang);
+  }, [initialLang]);
 
   useEffect(() => {
     try {
@@ -32,13 +37,7 @@ export function LangProvider({ children, initialLang = 'cs' }: { children: React
     setLangState(l);
     try { localStorage.setItem('synthoma_lang', l); } catch {}
     try { document.cookie = `synthoma_locale=${l}; Path=/; Max-Age=31536000; SameSite=Lax`; } catch {}
-    try {
-      const target = new URL(window.location.href);
-      if (l === 'en') target.searchParams.set('locale', 'en');
-      else target.searchParams.delete('locale');
-      router.replace(`${target.pathname}${target.search}${target.hash}`, { scroll: true });
-    } catch {}
-  }, [router]);
+  }, []);
 
   const t = useCallback((key: TKey) => getT(lang)(key), [lang]);
 

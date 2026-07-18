@@ -21,6 +21,9 @@ describe('UI preference bootstrap', () => {
     expect(root).toHaveAttribute('data-glitch', 'off');
     expect(root.style.getPropertyValue('--font-size-multiplier')).toBe('1.2');
     expect(root.style.getPropertyValue('--glass-blur')).toBe('18px');
+    expect(root).toHaveAttribute('data-reader-glass', 'on');
+    expect(root.style.getPropertyValue('--reader-surface-opacity')).toBe('72%');
+    expect(root.style.getPropertyValue('--reader-glass-blur')).toBe('18px');
   });
 
   it('resolves system motion and data saver without loading background motion', () => {

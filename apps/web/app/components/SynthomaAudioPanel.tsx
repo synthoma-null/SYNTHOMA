@@ -5,6 +5,12 @@ import { usePathname } from 'next/navigation';
 import { tracks, type Track } from '../../src/data/playlist';
 import { getSharedAudio } from '../../src/lib/audio';
 import { updateUiPreferences } from '../../src/lib/uiPreferences';
+import { useLang } from '../../src/lib/LangContext';
+
+const AUDIO_COPY = {
+  cs: { external: 'Externí stopa', empty: 'Bez aktivní stopy', close: 'Zavřít hudební přehrávač', position: 'Pozice skladby', of: 'z', previous: 'Předchozí skladba', pause: 'Pozastavit hudbu', play: 'Přehrát hudbu', next: 'Další skladba', unmute: 'Zapnout zvuk hudby', mute: 'Ztlumit hudbu', library: 'KNIHOVNA STOP', music: 'Hudba', muted: 'ztlumeno', playing: 'přehrává se', paused: 'pozastaveno', activeTrack: 'Aktivní skladba', playTrack: 'Přehrát skladbu' },
+  en: { external: 'External track', empty: 'No active track', close: 'Close music player', position: 'Track position', of: 'of', previous: 'Previous track', pause: 'Pause music', play: 'Play music', next: 'Next track', unmute: 'Unmute music', mute: 'Mute music', library: 'TRACK LIBRARY', music: 'Music', muted: 'muted', playing: 'playing', paused: 'paused', activeTrack: 'Active track', playTrack: 'Play track' },
+} as const;
 
 const PLAYER_ORDER = [
   'Comet',
@@ -47,6 +53,8 @@ function AudioIcon({ name }: { name: 'previous' | 'play' | 'pause' | 'next' | 'v
 }
 
 export default function SynthomaAudioPanel() {
+  const { lang } = useLang();
+  const copy = AUDIO_COPY[lang];
   const pathname = usePathname();
   const isCyklusGameplay = pathname === '/cyklus';
   const playlist = useMemo(orderedTracks, []);
@@ -106,9 +114,9 @@ export default function SynthomaAudioPanel() {
     }
     audio.src = source;
     audio.load();
-    setExternalTitle(decodeURIComponent(fileName).replace(/\.[^.]+$/, '') || 'Externí stopa');
+    setExternalTitle(decodeURIComponent(fileName).replace(/\.[^.]+$/, '') || copy.external);
     audio.play().catch(() => {});
-  }, [playTrack, playlist, trackIndex]);
+  }, [copy.external, playTrack, playlist, trackIndex]);
 
   useEffect(() => {
     const audio = getSharedAudio();
@@ -177,7 +185,7 @@ export default function SynthomaAudioPanel() {
     trigger?.setAttribute('aria-expanded', String(open));
     trigger?.setAttribute('aria-pressed', String(open));
     trigger?.setAttribute('data-audio-state', state);
-    trigger?.setAttribute('aria-label', `Hudba: ${muted ? 'ztlumeno' : playing ? 'přehrává se' : 'pozastaveno'}`);
+    trigger?.setAttribute('aria-label', `${copy.music}: ${muted ? copy.muted : playing ? copy.playing : copy.paused}`);
     if (open) {
       document.dispatchEvent(new CustomEvent('synthoma:audio-open', { detail: { restoreFocus: false } }));
       setTimeout(() => closeRef.current?.focus(), 0);
@@ -185,7 +193,7 @@ export default function SynthomaAudioPanel() {
       setTimeout(() => trigger?.focus(), 0);
     }
     wasOpenRef.current = open;
-  }, [muted, open, playing]);
+  }, [copy, muted, open, playing]);
 
   useEffect(() => {
     if (!open) return;
@@ -205,19 +213,19 @@ export default function SynthomaAudioPanel() {
   }, [externalTitle, open, trackIndex]);
 
   const currentTrack = playlist[trackIndex];
-  const title = externalTitle ?? currentTrack?.title ?? 'Bez aktivní stopy';
+  const title = externalTitle ?? currentTrack?.title ?? copy.empty;
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   return (
     <div id="synthoma-audio-panel" className={`synthoma-audio-panel${open ? ' is-open' : ''}${isCyklusGameplay ? ' cyklus-no-select' : ''}`} aria-hidden={!open}>
-      <button className="synthoma-audio-panel__backdrop" type="button" aria-label="Zavřít hudební přehrávač" onClick={() => setOpen(false)} />
+      <button className="synthoma-audio-panel__backdrop" type="button" aria-label={copy.close} onClick={() => setOpen(false)} />
       <section className="synthoma-audio-panel__surface" role="dialog" aria-modal="true" aria-labelledby="synthoma-audio-title">
         <header className="synthoma-audio-panel__header">
           <div>
             <span className="synthoma-audio-panel__kicker">AUDIO CHANNEL // {playing ? 'ACTIVE' : 'PAUSED'}</span>
             <h2 id="synthoma-audio-title">SYNTHOMA {String(trackIndex + 1).padStart(2, '0')}</h2>
           </div>
-          <button ref={closeRef} className="synthoma-audio-panel__close" type="button" aria-label="Zavřít hudební přehrávač" onClick={() => setOpen(false)}>
+          <button ref={closeRef} className="synthoma-audio-panel__close" type="button" aria-label={copy.close} onClick={() => setOpen(false)}>
             <AudioIcon name="close" />
           </button>
         </header>
@@ -225,7 +233,7 @@ export default function SynthomaAudioPanel() {
         <div className="synthoma-audio-panel__body">
           <p className="synthoma-audio-panel__track">{title}</p>
           <label className="synthoma-audio-panel__progress">
-            <span className="sr-only">Pozice skladby</span>
+            <span className="sr-only">{copy.position}</span>
             <input
               type="range"
               min="0"
@@ -233,7 +241,7 @@ export default function SynthomaAudioPanel() {
               step="0.1"
               value={Math.min(currentTime, duration || 0)}
               disabled={duration <= 0}
-              aria-valuetext={`${formatTime(currentTime)} z ${formatTime(duration)}`}
+              aria-valuetext={`${formatTime(currentTime)} ${copy.of} ${formatTime(duration)}`}
               style={{ '--audio-progress': `${progress}%` } as CSSProperties}
               onChange={(event) => {
                 if (!audioRef.current || duration <= 0) return;
@@ -246,11 +254,11 @@ export default function SynthomaAudioPanel() {
           </div>
 
           <div className="synthoma-audio-panel__controls">
-            <button type="button" aria-label="Předchozí skladba" onClick={() => playTrack((trackIndex - 1 + playlist.length) % playlist.length)}><AudioIcon name="previous" /></button>
+            <button type="button" aria-label={copy.previous} onClick={() => playTrack((trackIndex - 1 + playlist.length) % playlist.length)}><AudioIcon name="previous" /></button>
             <button
               className="synthoma-audio-panel__play"
               type="button"
-              aria-label={playing ? 'Pozastavit hudbu' : 'Přehrát hudbu'}
+              aria-label={playing ? copy.pause : copy.play}
               aria-pressed={playing}
               onClick={() => {
                 const audio = audioRef.current;
@@ -264,10 +272,10 @@ export default function SynthomaAudioPanel() {
             >
               <AudioIcon name={playing ? 'pause' : 'play'} />
             </button>
-            <button type="button" aria-label="Další skladba" onClick={() => playTrack((trackIndex + 1) % playlist.length)}><AudioIcon name="next" /></button>
+            <button type="button" aria-label={copy.next} onClick={() => playTrack((trackIndex + 1) % playlist.length)}><AudioIcon name="next" /></button>
             <button
               type="button"
-              aria-label={muted ? 'Zapnout zvuk hudby' : 'Ztlumit hudbu'}
+              aria-label={muted ? copy.unmute : copy.mute}
               aria-pressed={muted}
               onClick={() => { if (audioRef.current) audioRef.current.muted = !audioRef.current.muted; }}
             >
@@ -277,7 +285,7 @@ export default function SynthomaAudioPanel() {
         </div>
 
         <div className="synthoma-audio-panel__library" aria-labelledby="synthoma-audio-library-title">
-          <h3 id="synthoma-audio-library-title">KNIHOVNA STOP // {playlist.length}</h3>
+          <h3 id="synthoma-audio-library-title">{copy.library}{' // '}{playlist.length}</h3>
           <ol>
             {playlist.map((track, index) => {
               const active = !externalTitle && index === trackIndex;
@@ -289,8 +297,8 @@ export default function SynthomaAudioPanel() {
                     className={active ? 'is-active' : undefined}
                     aria-current={active ? 'true' : undefined}
                     aria-label={active
-                      ? `Aktivní skladba ${track.title}, ${muted ? 'ztlumeno' : playing ? 'přehrává se' : 'pozastaveno'}`
-                      : `Přehrát skladbu ${track.title}, ${track.mood}`}
+                      ? `${copy.activeTrack} ${track.title}, ${muted ? copy.muted : playing ? copy.playing : copy.paused}`
+                      : `${copy.playTrack} ${track.title}, ${track.mood}`}
                     onClick={() => playTrack(index)}
                   >
                     <span className="synthoma-audio-panel__track-number">{String(index + 1).padStart(2, '0')}</span>
