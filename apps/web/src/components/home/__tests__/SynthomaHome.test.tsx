@@ -108,4 +108,10 @@ describe('Synthoma Home', () => {
     expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.synthoma-home__memory\s*\{[^}]*safe-area-inset-bottom/);
     expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.synthoma-home__legal\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
   });
+
+  it('prioritizes the descriptor and entry paths in short mobile and landscape viewports', () => {
+    const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/home.css'), 'utf8');
+    expect(css).toMatch(/@media \(max-width: 767px\) and \(max-height: 700px\)[\s\S]*?home-first-contact__paths a\s*\{[^}]*min-height:\s*60px/);
+    expect(css).toMatch(/@media \(min-width: 768px\) and \(max-height: 640px\)[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\)/);
+  });
 });
