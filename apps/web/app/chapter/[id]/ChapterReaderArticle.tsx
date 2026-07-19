@@ -4,6 +4,7 @@ import { getChapterPresentation } from '../../../src/content/chapterPresentation
 import ChapterBackground from '../../../src/components/reader/ChapterBackground';
 import ChapterReadingProgress from '../../../src/components/reader/ChapterReadingProgress';
 import ReaderCommandUtilities from '../../../src/components/reader/ReaderCommandUtilities';
+import ReaderDecisionController from '../../../src/components/reader/ReaderDecisionController';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 
 interface Props {
@@ -69,7 +70,20 @@ export default function ChapterReaderArticle({
         lang={sourceLocale}
         tabIndex={-1}
       >
-        <div className="chapter-content" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+        <div
+          className="chapter-content reader-decisions-pending"
+          id="chapter-reader-decisions"
+          data-reader-decisions="pending"
+          aria-busy="true"
+          inert
+          dangerouslySetInnerHTML={{ __html: bodyHtml }}
+        />
+        <ReaderDecisionController
+          rootId="chapter-reader-decisions"
+          chapterId={chapter.id}
+          collection={chapter.collection}
+          locale={locale}
+        />
       </article>
 
       <nav className="chapter-reader__navigation" aria-label={locale === 'en' ? 'Chapter navigation' : 'Navigace kapitolami'}>

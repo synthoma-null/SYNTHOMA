@@ -273,3 +273,104 @@ p.choice[data-tags].faded:not(:has(> .choice-link)) {
     transition: none !important;
   }
 }
+
+/* Canonical Reader decisions: one committed choice per stable question ID. */
+.reader-decisions-pending .choice-link,
+.reader-decisions-pending p.choice {
+  pointer-events: none !important;
+}
+
+.reader-decision-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.reader-decision-group .choice-link {
+  width: 100%;
+}
+
+.reader-decision-group[data-state="submitting"] .choice-link {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.reader-decision-group[data-state="locked"] .choice-link {
+  cursor: default !important;
+  pointer-events: none !important;
+}
+
+.reader-decision-group[data-state="locked"] .choice-link:hover,
+.reader-decision-group[data-state="locked"] .choice-link:active {
+  transform: none !important;
+  filter: none !important;
+}
+
+.reader-decision-group[data-state="locked"] p.choice[data-tags] > .choice-link[data-state="selected-locked"] {
+  opacity: 1 !important;
+  color: var(--text-primary, #f4fbff) !important;
+  border-color: var(--accent-primary, #00e5ff) !important;
+  background:
+    linear-gradient(90deg, rgba(0, 229, 255, 0.16), rgba(0, 229, 255, 0.045)),
+    color-mix(in oklab, var(--bg-secondary, #05070d) 88%, transparent) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--accent-primary, #00e5ff) 48%, transparent),
+    0 0 14px color-mix(in oklab, var(--accent-primary, #00e5ff) 28%, transparent),
+    inset 0 0 16px color-mix(in oklab, var(--accent-primary, #00e5ff) 12%, transparent) !important;
+}
+
+.reader-decision-group[data-state="locked"] p.choice[data-tags] > .choice-link[data-state="unselected-locked"] {
+  opacity: 0.58 !important;
+  color: var(--text-primary, #f4fbff) !important;
+  border-color: color-mix(in oklab, var(--border-primary, #5b7080) 66%, transparent) !important;
+  background: color-mix(in oklab, var(--bg-secondary, #05070d) 86%, transparent) !important;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.025) !important;
+  filter: saturate(0.55) brightness(0.82) !important;
+}
+
+.reader-decision-marker {
+  display: inline-block;
+  margin-left: 0.7rem;
+  color: var(--accent-primary, #00e5ff);
+  font-family: 'Text03i', monospace;
+  font-size: 0.68em;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-shadow: 0 0 7px color-mix(in oklab, var(--accent-primary, #00e5ff) 42%, transparent);
+}
+
+.reader-decision-status--error {
+  display: block;
+  margin: 0.35rem 0 0;
+  color: var(--danger, #ff6b88);
+  font-family: 'Text03i', monospace;
+  font-size: 0.78rem;
+}
+
+@keyframes reader-decision-commit {
+  from { box-shadow: 0 0 0 rgba(0, 229, 255, 0); }
+  to { box-shadow: 0 0 14px color-mix(in oklab, var(--accent-primary, #00e5ff) 28%, transparent); }
+}
+
+.reader-decision-group[data-reader-decision-animate="true"] .choice-link[data-state="selected-locked"] {
+  animation: reader-decision-commit 220ms ease-out both;
+}
+
+:root[data-motion="off"] .reader-decision-group .choice-link,
+:root[data-motion="off"] .reader-decision-group .choice-link::before,
+:root[data-motion="off"] .reader-decision-group .choice-link::after {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reader-decision-group .choice-link,
+  .reader-decision-group .choice-link::before,
+  .reader-decision-group .choice-link::after {
+    animation: none !important;
+    transition: opacity 0.01ms linear, border-color 0.01ms linear, background-color 0.01ms linear !important;
+    transform: none !important;
+  }
+}
