@@ -7,6 +7,7 @@ import { normalizeArchiveCards } from '../../src/lib/synthoma/archive/normalizeA
 import { getPublicArchive } from '../../src/server/public-ai/contentService';
 import { buildPublicMetadata, requestLocale } from '../../src/lib/publicMetadata';
 import { getLibraryCatalog } from '../../src/lib/synthoma/library/getLibraryCatalog';
+import ArchivePublicFallback from '../../src/components/archive/ArchivePublicFallback';
 import '../../src/styles/library-archive.css';
 
 export const revalidate = 3600;
@@ -57,32 +58,10 @@ export default async function ArchivePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <section className="archive-public-content" aria-labelledby="archive-books-title">
-        <h2 id="archive-books-title">{locale === 'en' ? 'BOOKS IN THE ARCHIVE' : 'KNIHY V ARCHIVU'}</h2>
-        {library.collections.map((collection) => (
-          <article key={collection.slug}>
-            <h3>{collection.title}</h3>
-            <p>{collection.description}</p>
-            <p>{collection.totalCount} {locale === 'en' ? 'chapters' : 'kapitol'} · {collection.status === 'complete' ? (locale === 'en' ? 'COMPLETE' : 'DOKONČENO') : (locale === 'en' ? 'ONGOING' : 'POKRAČUJE')}</p>
-            <a href={`/chapter/${collection.chapters[0]?.id ?? ''}`}>
-              {locale === 'en' ? 'OPEN BOOK' : 'OTEVŘÍT KNIHU'}
-            </a>
-          </article>
-        ))}
-      </section>
-      <section className="archive-public-content" aria-labelledby="archive-public-title">
-        <h2 id="archive-public-title">{locale === 'en' ? 'PUBLIC ARCHIVE RECORDS' : 'VEŘEJNÉ ZÁZNAMY ARCHIVU'}</h2>
-        {publicCards.map((card) => (
-          <article key={card.id} id={`public-${card.id}`}>
-            <h3><a href={`/archive/${card.id}`}>{card.title}</a></h3>
-            <p>{card.teaser}</p>
-            {card.visibility === 'publicFull' ? card.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>) : (
-              <p>{locale === 'en' ? 'LOCKED' : 'UZAMČENO'}: {card.access?.label ?? (locale === 'en' ? 'Further access required.' : 'Vyžaduje další přístup.')}</p>
-            )}
-          </article>
-        ))}
-      </section>
-      <SynthomaArchive initialCards={normalized} />
+      <noscript>
+        <ArchivePublicFallback cards={publicCards} locale={locale} />
+      </noscript>
+      <SynthomaArchive initialCards={normalized} library={library} />
     </>
   );
 }

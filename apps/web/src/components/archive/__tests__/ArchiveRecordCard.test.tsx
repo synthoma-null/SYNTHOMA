@@ -36,7 +36,7 @@ describe('ArchiveRecordCard', () => {
     const button = screen.getByRole('button', { name: /UZAMČENO/ });
     expect(button).toHaveClass('archive-record-card--locked');
     expect(screen.getByText('UZAMČENO')).toBeInTheDocument();
-    expect(screen.getAllByText('🔒')).toHaveLength(2);
+    expect(screen.getByText('🔒')).toBeInTheDocument();
   });
 
   it('clicking anywhere on the card opens the dialog', () => {
@@ -51,7 +51,7 @@ describe('ArchiveRecordCard', () => {
     expect(onOpen).toHaveBeenCalledWith('rec-1');
 
     onOpen.mockClear();
-    fireEvent.click(screen.getByText('memory'));
+    fireEvent.click(screen.getByText('MEMORY'));
     expect(onOpen).toHaveBeenCalledWith('rec-1');
   });
 

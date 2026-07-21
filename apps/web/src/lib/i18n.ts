@@ -150,6 +150,7 @@ export const translations = {
   // ─── books ────────────────────────────────────────────────────────────────
   'books.empty': { cs: 'Knihovna se načítá...', en: 'Library loading...' },
   'books.continue': { cs: 'Pokračovat', en: 'Continue' },
+  'books.status.complete': { cs: 'DOKONČENO', en: 'COMPLETE' },
   'books.last': { cs: 'Poslední kapitola', en: 'Last chapter' },
   'books.open': { cs: 'Otevřít kolekci', en: 'Open collection' },
   'books.desc.aria': { cs: 'Popis knihy', en: 'Book description' },

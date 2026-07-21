@@ -19,8 +19,9 @@ describe('LibraryBookCard', () => {
     expect(btn).toBeInTheDocument();
     expect(screen.getByText('SYNTHOMA-NULL')).toBeInTheDocument();
     expect(screen.getByText('Smyčka začíná znovu.')).toBeInTheDocument();
-    expect(screen.getByText('3 / 5 kapitol')).toBeInTheDocument();
+    expect(screen.getByText('5 kapitol')).toBeInTheDocument();
     expect(screen.getByText('OTEVŘÍT')).toBeInTheDocument();
+    expect(screen.getByTestId('book-card')).toHaveAttribute('data-chapter-count', '5');
   });
 
   it('uses fallback description when none is provided', () => {
@@ -33,6 +34,11 @@ describe('LibraryBookCard', () => {
     render(<LibraryBookCard collection={collection} progressRecord={{ percent: 42 }} onClick={jest.fn()} />);
     expect(screen.getByText('POKRAČOVAT')).toBeInTheDocument();
     expect(screen.getByText('pokračovat 42%')).toBeInTheDocument();
+  });
+
+  it('marks a completed collection and keeps its total chapter count visible', () => {
+    render(<LibraryBookCard collection={{ ...collection, status: 'complete', totalCount: 19 }} onClick={jest.fn()} />);
+    expect(screen.getByText('DOKONČENO · 19 kapitol')).toBeInTheDocument();
   });
 
   it('calls onClick with collection slug when clicked', () => {

@@ -15,6 +15,9 @@ import ContentPurchaseDialog from '../access/ContentPurchaseDialog';
 import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
 import CyklusCardCollection from './CyklusCardCollection';
+import ArchiveBookGrid from './ArchiveBookGrid';
+import type { LibraryCatalog } from '../../lib/synthoma/library/libraryTypes';
+import { getArchiveCategoryLabel } from '../../lib/synthoma/archive/archiveCategoryLabel';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -22,12 +25,13 @@ const WhisperSubmitPanel = dynamic(() => import('../whispers/WhisperSubmitPanel'
 
 export interface SynthomaArchiveProps {
   initialCards: ArchiveCard[];
+  library?: LibraryCatalog | undefined;
 }
 
 const WHISPER_FILTERS = ['all', 'unsent', 'memory', 'fear', 'regret', 'wish', 'warning', 'log'] as const;
 const WHISPER_SORTS = ['random', 'resonance', 'new'] as const;
 
-export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) {
+export default function SynthomaArchive({ initialCards, library }: SynthomaArchiveProps) {
   const { t, lang } = useLang();
   const [openCardId, setOpenCardId] = useState<string | null>(null);
   const [whisperFilter, setWhisperFilter] = useState<string>('all');
@@ -107,6 +111,15 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
 
   const completedChapters = snapshot.progress.filter((p) => p.completed);
   const currentChapter = snapshot.progress.find((p) => !p.completed && p.progressPercent && p.progressPercent > 0);
+  const groupedCards = useMemo(() => {
+    const groups = new Map<string, typeof displayCards>();
+    for (const entry of displayCards) {
+      const group = groups.get(entry.card.category) ?? [];
+      group.push(entry);
+      groups.set(entry.card.category, group);
+    }
+    return [...groups.entries()];
+  }, [displayCards]);
 
   const dialogEntry = useMemo(() => displayCards.find((entry) => entry.card.id === openCardId), [displayCards, openCardId]);
   const relatedCards = useMemo(() => {
@@ -125,20 +138,22 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           <h1 className="synthoma-archive__title">{t('archive.title')}</h1>
         </header>
 
-        <section className="synthoma-archive__overview os-surface" aria-label={t('archive.overview.aria')}>
-          <div className="synthoma-archive__count">
+        {library ? <ArchiveBookGrid collections={library.collections} locale={lang} /> : null}
+
+        <section className="synthoma-archive__overview" aria-label={t('archive.overview.aria')}>
+          <div className="synthoma-archive__count os-surface" data-testid="archive-stat-card">
             <span className="os-status__code">{t('archive.count.chapters')}</span>
             <span className="synthoma-archive__value">{completedChapters.length}</span>
           </div>
-          <div className="synthoma-archive__count">
+          <div className="synthoma-archive__count os-surface" data-testid="archive-stat-card">
             <span className="os-status__code">{t('archive.count.records')}</span>
             <span className="synthoma-archive__value">{displayCards.length}</span>
           </div>
-          <div className="synthoma-archive__count">
+          <div className="synthoma-archive__count os-surface" data-testid="archive-stat-card">
             <span className="os-status__code">{t('archive.count.findings')}</span>
             <span className="synthoma-archive__value">{snapshot.cyklus.findings.length}</span>
           </div>
-          <div className="synthoma-archive__count">
+          <div className="synthoma-archive__count os-surface" data-testid="archive-stat-card">
             <span className="os-status__code">{t('archive.count.whispers')}</span>
             <span className="synthoma-archive__value">{snapshot.whispers.length}</span>
           </div>
@@ -150,15 +165,17 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
         </div>
 
         <div id="archive-panel-records" className="synthoma-archive__panel" role="tabpanel" aria-labelledby="archive-tab-records" hidden={activeView !== 'records'}>
-        <section className="synthoma-archive__section" aria-label={t('archive.reading.aria')}>
+        <section className="synthoma-archive__section archive-memory-section" data-testid="archive-memory-card" aria-label={t('archive.reading.aria')}>
           <h2 className="synthoma-archive__section-title">{t('archive.reading.title')}</h2>
-          {currentChapter ? (
-            <p className="synthoma-archive__status-line">
-              {t('archive.reading.current')}: <Link href={`/chapter/${encodeURIComponent(currentChapter.chapterId)}`}>{currentChapter.chapterTitle || currentChapter.chapterId}</Link>
-            </p>
-          ) : (
-            <p className="synthoma-archive__status-line">{t('archive.reading.none')}</p>
-          )}
+          <div className="archive-reading-card os-surface">
+            {currentChapter ? (
+              <p className="synthoma-archive__status-line">
+                {t('archive.reading.current')}: <Link href={`/chapter/${encodeURIComponent(currentChapter.chapterId)}`}>{currentChapter.chapterTitle || currentChapter.chapterId}</Link>
+              </p>
+            ) : (
+              <p className="synthoma-archive__status-line">{t('archive.reading.none')}</p>
+            )}
+          </div>
           {completedChapters.length > 0 ? (
             <ul className="synthoma-archive__chapter-list">
               {completedChapters.map((ch) => (
@@ -174,18 +191,25 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
 
         <section className="synthoma-archive__section" aria-label={t('archive.records.aria')}>
           <h2 className="synthoma-archive__section-title">{t('archive.records.title')}</h2>
-          <ul className="synthoma-archive__records" role="list">
-            {displayCards.map((entry) => (
-              <li key={entry.card.id} className="archive-record-card__item">
-                <ArchiveRecordCard
-                  card={entry.card}
-                  visibility={entry.visibility}
-                  isOpen={openCardId === entry.card.id}
-                  onOpen={openRecord}
-                />
-              </li>
+          <div className="synthoma-archive__categories">
+            {groupedCards.map(([category, entries]) => (
+              <section key={category} className="synthoma-archive__category" data-testid="archive-category" aria-labelledby={`archive-category-${category}`}>
+                <h3 id={`archive-category-${category}`} className="synthoma-archive__category-title">{getArchiveCategoryLabel(category, lang)}</h3>
+                <ul className="synthoma-archive__records" role="list">
+                  {entries.map((entry) => (
+                    <li key={entry.card.id} className="archive-record-card__item">
+                      <ArchiveRecordCard
+                        card={entry.card}
+                        visibility={entry.visibility}
+                        isOpen={openCardId === entry.card.id}
+                        onOpen={openRecord}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </section>
             ))}
-          </ul>
+          </div>
         </section>
 
         <section className="synthoma-archive__section" aria-label={t('archive.cyklus.aria')}>
@@ -193,7 +217,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           {snapshot.cyklus.findings.length > 0 ? (
             <ul className="synthoma-archive__findings">
               {snapshot.cyklus.findings.map((f) => (
-                <li key={f.id} className="synthoma-archive__finding">
+                <li key={f.id} className="synthoma-archive__finding" data-testid="archive-finding-card">
                   <strong>{f.title}</strong>
                   <p>{f.description}</p>
                 </li>
@@ -209,7 +233,7 @@ export default function SynthomaArchive({ initialCards }: SynthomaArchiveProps) 
           )}
         </section>
 
-        <section className="synthoma-archive__section" aria-label={t('archive.whispers.aria')}>
+        <section className="synthoma-archive__section archive-channel-panel" aria-label={t('archive.whispers.aria')}>
           <h2 className="synthoma-archive__section-title">{t('archive.whispers.channel')}</h2>
           <div className="synthoma-archive__filters">
             {WHISPER_FILTERS.map((f) => (

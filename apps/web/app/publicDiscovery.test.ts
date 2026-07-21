@@ -68,9 +68,11 @@ describe('public discovery contracts', () => {
     expect(cycle).toContain('<main id="cyklus-game" className="cyklus-page cyklus-game-shell"');
     expect(cycle).not.toContain('cyklus-public-intro');
     expect(cycle).not.toContain('cyklus-ai-discovery');
-    expect(archive.indexOf('archive-public-content')).toBeLessThan(archive.indexOf('<SynthomaArchive'));
+    expect(archive.indexOf('<noscript>')).toBeLessThan(archive.indexOf('<SynthomaArchive'));
+    expect(archive).toContain('<ArchivePublicFallback');
+    expect(archive).not.toContain('archive-public-content');
     expect(archive).toContain('getLibraryCatalog');
-    expect(archive).toContain('KNIHY V ARCHIVU');
+    expect(archive).toContain('library={library}');
     expect(books.indexOf('<noscript>')).toBeLessThan(books.indexOf('<SynthomaLibrary'));
   });
 

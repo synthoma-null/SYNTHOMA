@@ -12,13 +12,14 @@ import type { LibraryCatalog, LibraryChapter } from '../../lib/synthoma/library/
 import ChapterLockModal from '../../../app/components/ChapterLockModal';
 import { useAccess } from '../access/AccessProvider';
 import { useLang } from '../../lib/LangContext';
+import { formatCollectionCount } from '../../lib/synthoma/library/libraryGrammar';
 
 export interface SynthomaLibraryProps {
   catalog: LibraryCatalog;
 }
 
 export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [coverSlug, setCoverSlug] = useState<string | null>(null);
   const [lockedChapter, setLockedChapter] = useState<LibraryChapter | null>(null);
@@ -67,7 +68,9 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
       <div className="synthoma-library__content">
         <header className="synthoma-library__header">
           <span className="os-status__code">{t('home.library.title').toLocaleUpperCase()} {'//'} {t('books.available').toLocaleUpperCase()}</span>
-          <h1 className="synthoma-library__title">{t('books.collections.available')}: {catalog.collections.length} {t('books.collections')}</h1>
+          <h1 className="synthoma-library__title">
+            {t('books.collections.available')}: {formatCollectionCount(catalog.collections.length, lang)}
+          </h1>
         </header>
 
         {resume && !selected && (

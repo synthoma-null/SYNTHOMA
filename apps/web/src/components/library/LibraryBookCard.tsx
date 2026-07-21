@@ -17,11 +17,14 @@ export default function LibraryBookCard({ collection, progressRecord, onClick }:
   const cta = hasProgress ? t('action.continue') : t('action.open');
   const status = hasProgress
     ? `${t('books.continue').toLocaleLowerCase()} ${Math.round(progressRecord.percent)}%`
-    : `${collection.availableCount} / ${collection.totalCount} ${t('books.chapters')}`;
+    : `${collection.status === 'complete' ? `${t('books.status.complete')} · ` : ''}${collection.totalCount} ${t('books.chapters')}`;
 
   return (
     <button
       className="library-book-card os-surface"
+      data-testid="book-card"
+      data-collection-slug={collection.slug}
+      data-chapter-count={collection.totalCount}
       type="button"
       onClick={() => onClick(collection.slug)}
       aria-label={`${cta}: ${collection.title}`}
