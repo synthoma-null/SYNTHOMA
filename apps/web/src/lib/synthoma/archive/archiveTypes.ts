@@ -21,6 +21,11 @@ export interface ArchiveCard {
   teaser: string;
   quote?: string | undefined;
   body: string[];
+  summary?: string | undefined;
+  details?: string[] | undefined;
+  sourceBook?: 'synthoma-null' | 'konec-podpory' | undefined;
+  unlockChapter?: string | undefined;
+  speakerId?: string | undefined;
   tags?: string[] | undefined;
   spoilerLevel?: number | undefined;
   display?: {

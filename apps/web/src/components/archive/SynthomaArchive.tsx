@@ -18,6 +18,8 @@ import CyklusCardCollection from './CyklusCardCollection';
 import ArchiveBookGrid from './ArchiveBookGrid';
 import type { LibraryCatalog } from '../../lib/synthoma/library/libraryTypes';
 import { getArchiveCategoryLabel } from '../../lib/synthoma/archive/archiveCategoryLabel';
+import { normalizeArchiveCards } from '../../lib/synthoma/archive/normalizeArchiveEntries';
+import type { ArchiveCardData } from '../../../app/archive/ArchiveClient';
 
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
@@ -40,6 +42,7 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
   const [enCards, setEnCards] = useState<ArchiveCard[] | null>(null);
   const [purchaseCardId, setPurchaseCardId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<'records' | 'collection'>('records');
+  const [bookFilter, setBookFilter] = useState<'all' | 'synthoma-null' | 'konec-podpory'>('all');
   const { resolve: resolveAccess, getCachedAccess } = useAccess();
   const returnFocusRef = useRef<HTMLElement | null>(null);
 
@@ -75,7 +78,7 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (Array.isArray(json?.cards)) {
-          setEnCards(json.cards as ArchiveCard[]);
+          setEnCards(normalizeArchiveCards(json.cards as ArchiveCardData[]));
         }
       })
       .catch(() => {});
@@ -98,6 +101,7 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
 
   const displayCards = useMemo(() => {
     return cards
+      .filter((card) => bookFilter === 'all' || (card.sourceBook ?? 'synthoma-null') === bookFilter)
       .map((card) => {
         const access = getCachedAccess('archive_record', card.id);
         return {
@@ -107,7 +111,7 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
         };
       })
       .sort((a, b) => (a.card.order ?? 999) - (b.card.order ?? 999));
-  }, [cards, getCachedAccess]);
+  }, [bookFilter, cards, getCachedAccess]);
 
   const completedChapters = snapshot.progress.filter((p) => p.completed);
   const currentChapter = snapshot.progress.find((p) => !p.completed && p.progressPercent && p.progressPercent > 0);
@@ -191,6 +195,15 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
 
         <section className="synthoma-archive__section" aria-label={t('archive.records.aria')}>
           <h2 className="synthoma-archive__section-title">{t('archive.records.title')}</h2>
+          <div className="synthoma-archive__book-filters" role="group" aria-label={lang === 'en' ? 'Filter records by book' : 'Filtrovat záznamy podle knihy'}>
+            {([
+              ['all', lang === 'en' ? 'ALL' : 'VŠE'],
+              ['synthoma-null', 'SYNTHOMA-NULL'],
+              ['konec-podpory', 'KONEC PODPORY'],
+            ] as const).map(([id, label]) => (
+              <button key={id} className={`os-command ${bookFilter === id ? 'os-command--active' : ''}`} type="button" aria-pressed={bookFilter === id} onClick={() => setBookFilter(id)}>{label}</button>
+            ))}
+          </div>
           <div className="synthoma-archive__categories">
             {groupedCards.map(([category, entries]) => (
               <section key={category} className="synthoma-archive__category" data-testid="archive-category" aria-labelledby={`archive-category-${category}`}>

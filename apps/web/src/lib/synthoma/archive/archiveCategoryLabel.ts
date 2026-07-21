@@ -9,6 +9,10 @@ const CATEGORY_LABELS: Record<string, Record<Lang, string>> = {
   fragmenty: { cs: 'IDENTITA A FRAGMENTY', en: 'IDENTITY AND FRAGMENTS' },
   tajemstvi: { cs: 'TAJEMSTVÍ', en: 'SECRETS' },
   design: { cs: 'AUTORSKÁ BIBLE', en: 'AUTHOR BIBLE' },
+  'systemy-protokoly': { cs: 'SYSTÉMY A PROTOKOLY', en: 'SYSTEMS AND PROTOCOLS' },
+  mista: { cs: 'MÍSTA', en: 'PLACES' },
+  udalosti: { cs: 'UDÁLOSTI', en: 'EVENTS' },
+  koncepty: { cs: 'KONCEPTY', en: 'CONCEPTS' },
 };
 
 export function getArchiveCategoryLabel(category: string, lang: Lang): string {

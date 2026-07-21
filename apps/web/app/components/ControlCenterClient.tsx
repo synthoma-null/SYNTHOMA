@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import LangSwitcher from '../../src/components/LangSwitcher';
 import { useUiPreferences } from '../../src/hooks/useUiPreferences';
 import { useLang } from '../../src/lib/LangContext';
-import { applyUiPreferencePreset, getEffectiveMotionMode, getMatchingUiPreferencePreset, resetUiPreferences, updateUiPreferences, type MotionMode, type TextEffectsMode, type TypewriterSpeed, type UiPreferencePresetId } from '../../src/lib/uiPreferences';
+import { applyUiPreferencePreset, getEffectiveMotionMode, getMatchingUiPreferencePreset, resetUiPreferences, updateUiPreferences, type MotionMode, type ReaderLineHeight, type ReaderWidth, type TextEffectsMode, type TypewriterSpeed, type UiPreferencePresetId } from '../../src/lib/uiPreferences';
 import ThemeShopClient from './ThemeShopClient';
 import ControlCenterAudio from './ControlCenterAudio';
 
@@ -17,7 +17,7 @@ const TEXT = {
     display: 'Vzhled', motion: 'Pohyb', reading: 'Čtení', sound: 'Zvuk', language: 'Jazyk', theme: 'Motiv',
     font: 'Velikost textu', opacity: 'PRŮHLEDNOST ČTECÍ PLOCHY', glass: 'Skleněný efekt', blur: 'Rozostření skla',
     motionMode: 'Režim pohybu', background: 'Pohyblivé pozadí', glitch: 'Glitch textu', noise: 'Šum', scanlines: 'Řádkování obrazovky', textEffects: 'Textové efekty',
-    typewriter: 'Rychlost psaní', focus: 'Režim soustředění', tts: 'Čtení nahlas',
+    typewriter: 'Rychlost psaní', focus: 'Režim soustředění', tts: 'Čtení nahlas', readerWidth: 'Šířka textu', readerLineHeight: 'Řádkování', effectIntensity: 'Intenzita efektů',
     confirmTitle: 'Obnovit výchozí nastavení?', confirmBody: 'Motiv, pohyb, čtení i zvuk se vrátí do výchozího stavu.', cancel: 'Zrušit', confirm: 'Obnovit',
     presets: 'Předvolby', custom: 'VLASTNÍ', presetConfirm: 'Nahradit vlastní úpravy?', presetBody: 'Vybraná předvolba změní pouze uvedená nastavení.', apply: 'Použít', effective: 'Efektivní stav', systemReason: 'Určuje systémové nastavení omezení pohybu.', directReason: 'Určuje ručně zvolený režim.', context: 'PRO TUTO OBRAZOVKU',
   },
@@ -26,7 +26,7 @@ const TEXT = {
     display: 'Display', motion: 'Motion', reading: 'Reading', sound: 'Sound', language: 'Language', theme: 'Theme',
     font: 'Text size', opacity: 'Reader surface opacity', glass: 'Glass effect', blur: 'Glass blur',
     motionMode: 'Motion mode', background: 'Moving background', glitch: 'Text glitch', noise: 'Noise', scanlines: 'Scanlines', textEffects: 'Text effects',
-    typewriter: 'Typing speed', focus: 'Focus mode', tts: 'Read aloud',
+    typewriter: 'Typing speed', focus: 'Focus mode', tts: 'Read aloud', readerWidth: 'Text width', readerLineHeight: 'Line spacing', effectIntensity: 'Effect intensity',
     confirmTitle: 'Restore default settings?', confirmBody: 'Theme, motion, reading and sound return to their default state.', cancel: 'Cancel', confirm: 'Restore',
     presets: 'Presets', custom: 'CUSTOM', presetConfirm: 'Replace custom changes?', presetBody: 'The selected preset changes only the listed preferences.', apply: 'Apply', effective: 'Effective state', systemReason: 'Determined by the system reduced-motion setting.', directReason: 'Determined by the selected motion mode.', context: 'FOR THIS SCREEN',
   },
@@ -35,6 +35,8 @@ const TEXT = {
 const MOTION_OPTIONS: MotionMode[] = ['system', 'full', 'reduced', 'off'];
 const TEXT_EFFECT_OPTIONS: TextEffectsMode[] = ['normal', 'reduced', 'off'];
 const TYPEWRITER_OPTIONS: TypewriterSpeed[] = ['slow', 'normal', 'fast', 'instant'];
+const READER_WIDTH_OPTIONS: ReaderWidth[] = ['narrow', 'standard', 'wide'];
+const READER_LINE_HEIGHT_OPTIONS: ReaderLineHeight[] = ['compact', 'comfortable', 'airy'];
 const PRESET_LABELS: Record<UiPreferencePresetId, { cs: string; en: string; detail: string }> = {
   canon: { cs: 'KANON', en: 'CANON', detail: 'SYSTEM / VIDEO / STANDARD' },
   focus: { cs: 'SOUSTŘEDĚNÍ', en: 'FOCUS', detail: 'STATIC / INSTANT / QUIET' },
@@ -145,7 +147,11 @@ export default function ControlCenterClient() {
           <p className="control-center__effective" aria-live="polite"><strong>{copy.effective}: {effectiveMotion.toUpperCase()}</strong><span>{preferences.motionMode === 'system' ? copy.systemReason : copy.directReason}</span></p>
         </section> : null}
         {tab === 'reading' && readingContext ? <section id="control-tabpanel-reading" role="tabpanel" aria-labelledby="control-tab-reading">
-          <h3>{copy.context}</h3><Segmented label={copy.typewriter} value={preferences.typewriterSpeed} options={TYPEWRITER_OPTIONS} onChange={(typewriterSpeed) => updateUiPreferences({ typewriterSpeed })} />
+          <h3>{copy.context}</h3>
+          <Segmented label={copy.readerWidth} value={preferences.readerWidth} options={READER_WIDTH_OPTIONS} onChange={(readerWidth) => updateUiPreferences({ readerWidth })} />
+          <Segmented label={copy.readerLineHeight} value={preferences.readerLineHeight} options={READER_LINE_HEIGHT_OPTIONS} onChange={(readerLineHeight) => updateUiPreferences({ readerLineHeight })} />
+          <label className="control-center__range"><span>{copy.effectIntensity}</span><input type="range" min="0" max="1" step="0.05" value={preferences.effectIntensity} aria-label={copy.effectIntensity} aria-valuetext={`${Math.round(preferences.effectIntensity * 100)} %`} onChange={(event) => updateUiPreferences({ effectIntensity: Number(event.target.value) })} /><output>{Math.round(preferences.effectIntensity * 100)}%</output></label>
+          <Segmented label={copy.typewriter} value={preferences.typewriterSpeed} options={TYPEWRITER_OPTIONS} onChange={(typewriterSpeed) => updateUiPreferences({ typewriterSpeed })} />
           <Toggle label={copy.focus} pressed={preferences.focusMode} onChange={(focusMode) => updateUiPreferences({ focusMode })} />
           <Toggle label={copy.tts} pressed={preferences.ttsEnabled} onChange={(ttsEnabled) => updateUiPreferences({ ttsEnabled })} />
         </section> : null}

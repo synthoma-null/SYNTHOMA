@@ -47,6 +47,17 @@ const lockedCard: ArchiveCard = {
   access: { mode: 'chapter', visibility: 'teaser', requiredChapterId: '0-0-null', requiredChapterTitle: '0-0 NULL', mnemCost: 0, label: 'Po kapitole' },
 };
 
+const konecPodporyCard: ArchiveCard = {
+  id: 'kp-tova-neonova',
+  category: 'postavy',
+  title: 'Tova Neonová',
+  teaser: 'Servisní technička.',
+  body: ['Plný záznam.'],
+  sourceBook: 'konec-podpory',
+  speakerId: 'tova',
+  access: { mode: 'free', visibility: 'full', requiredChapterId: null, requiredChapterTitle: null, mnemCost: 0, label: 'Dostupné' },
+};
+
 const library: LibraryCatalog = {
   collections: [
     { slug: 'SYNTHOMA-NULL', title: 'SYNTHOMA-NULL', chapters: [], availableCount: 5, totalCount: 22 },
@@ -114,5 +125,12 @@ describe('SynthomaArchive localization and dialog integration', () => {
     expect(screen.getByRole('heading', { name: 'JÁDRO SVĚTA' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'ENTITY' })).toBeInTheDocument();
     expect(screen.getAllByTestId('archive-category')).toHaveLength(2);
+  });
+
+  it('filters records by their source book', () => {
+    render(<SynthomaArchive initialCards={[card, konecPodporyCard]} />);
+    fireEvent.click(screen.getByRole('button', { name: 'KONEC PODPORY' }));
+    expect(screen.getByRole('button', { name: /Tova Neonová/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Záznam jedna/ })).not.toBeInTheDocument();
   });
 });

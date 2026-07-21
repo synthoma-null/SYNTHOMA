@@ -746,6 +746,134 @@
     "packageIds": []
   },
   {
+    "key": "archive_record:kp-tova-neonova",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-00-podporovano"
+  },
+  {
+    "key": "archive_record:kp-boris",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-02-volny-pad"
+  },
+  {
+    "key": "archive_record:kp-milo",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-02-volny-pad"
+  },
+  {
+    "key": "archive_record:kp-mina",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-03-podpora"
+  },
+  {
+    "key": "archive_record:kp-vanta",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-03-podpora"
+  },
+  {
+    "key": "archive_record:kp-sara",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-03-podpora"
+  },
+  {
+    "key": "archive_record:kp-radim",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-00-podporovano"
+  },
+  {
+    "key": "archive_record:kp-ela",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-00-podporovano"
+  },
+  {
+    "key": "archive_record:kp-juros",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-06-pece"
+  },
+  {
+    "key": "archive_record:kp-konec-centralni-podpory",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-01-oznameni"
+  },
+  {
+    "key": "archive_record:kp-protokol-tova",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-12-tova"
+  },
+  {
+    "key": "archive_record:kp-komfortni-zona",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-04-komfortni-zona"
+  },
+  {
+    "key": "archive_record:kp-reklamace",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-14-reklamace"
+  },
+  {
+    "key": "archive_record:kp-migrace",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-15-migrace"
+  },
+  {
+    "key": "archive_record:kp-kontinuita",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-13-kontinuita"
+  },
+  {
+    "key": "archive_record:kp-rucni-rezim",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "kp-16-rucni-rezim"
+  },
+  {
     "key": "cosmetic:synthoma",
     "availability": "published",
     "accessPolicy": "free",
@@ -755,29 +883,29 @@
   {
     "key": "cosmetic:green-matrix",
     "availability": "published",
-    "accessPolicy": "entitlement",
-    "mnemCost": 64,
+    "accessPolicy": "free",
+    "mnemCost": 0,
     "packageIds": []
   },
   {
     "key": "cosmetic:neon-hellfire",
     "availability": "published",
-    "accessPolicy": "entitlement",
-    "mnemCost": 128,
+    "accessPolicy": "free",
+    "mnemCost": 0,
     "packageIds": []
   },
   {
     "key": "cosmetic:cyber-dystopia",
     "availability": "published",
-    "accessPolicy": "entitlement",
-    "mnemCost": 64,
+    "accessPolicy": "free",
+    "mnemCost": 0,
     "packageIds": []
   },
   {
     "key": "cosmetic:acid-glitch",
     "availability": "published",
-    "accessPolicy": "entitlement",
-    "mnemCost": 128,
+    "accessPolicy": "free",
+    "mnemCost": 0,
     "packageIds": []
   },
   {
@@ -790,15 +918,15 @@
   {
     "key": "cosmetic:mono",
     "availability": "published",
-    "accessPolicy": "entitlement",
-    "mnemCost": 128,
+    "accessPolicy": "free",
+    "mnemCost": 0,
     "packageIds": []
   },
   {
     "key": "cosmetic:mono-light",
     "availability": "published",
-    "accessPolicy": "entitlement",
-    "mnemCost": 128,
+    "accessPolicy": "free",
+    "mnemCost": 0,
     "packageIds": []
   },
   {

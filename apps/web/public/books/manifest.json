@@ -13,6 +13,8 @@
       "chapters": [
         {
           "title": "0 - ∞ [RESTART]",
+          "ordinal": "0-∞",
+          "fullTitle": "0-∞ [RESTART]",
           "path": "/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
           "free": true,
           "track": "/audio/SYNTHOMA1.mp3",
@@ -24,6 +26,8 @@
         },
         {
           "title": "0 - 0 [NULL]",
+          "ordinal": "0-0",
+          "fullTitle": "0-0 [NULL]",
           "path": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
           "free": true,
           "backgroundVideo": "/video/SYNTHOMA23.webm",
@@ -34,6 +38,8 @@
         },
         {
           "title": "0 - 1 [START]",
+          "ordinal": "0-1",
+          "fullTitle": "0-1 [START]",
           "path": "/books/SYNTHOMA-NULL/0-1 [START].html",
           "free": true,
           "track": "/audio/SynthBachmoff.mp3",
@@ -45,6 +51,8 @@
         },
         {
           "title": "0 - 2 [RUN]",
+          "ordinal": "0-2",
+          "fullTitle": "0-2 [RUN]",
           "path": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
           "free": true,
           "track": "/audio/Nuova.mp3",
@@ -56,6 +64,8 @@
         },
         {
           "title": "0 - 3 [DISCONTINUUM]",
+          "ordinal": "0-3",
+          "fullTitle": "0-3 [DISCONTINUUM]",
           "path": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
           "free": true,
           "backgroundVideo": "/video/SYNTHOMA33.webm",
@@ -66,6 +76,8 @@
         },
         {
           "title": "0 - 4 [DEFRAGMENTATION]",
+          "ordinal": "0-4",
+          "fullTitle": "0-4 [DEFRAGMENTATION]",
           "path": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA8.webm",
@@ -76,6 +88,8 @@
         },
         {
           "title": "0 - 5 [PAUSE]",
+          "ordinal": "0-5",
+          "fullTitle": "0-5 [PAUSE]",
           "path": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA4.webm",
@@ -86,6 +100,8 @@
         },
         {
           "title": "0 - 6 [SEARCHING]",
+          "ordinal": "0-6",
+          "fullTitle": "0-6 [SEARCHING]",
           "path": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
           "free": false,
           "track": "/audio/Searching.mp3",
@@ -97,6 +113,8 @@
         },
         {
           "title": "0 - 7 [RUINS]",
+          "ordinal": "0-7",
+          "fullTitle": "0-7 [RUINS]",
           "path": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA18.webm",
@@ -107,6 +125,8 @@
         },
         {
           "title": "0 - 8 [REZIDUUM]",
+          "ordinal": "0-8",
+          "fullTitle": "0-8 [REZIDUUM]",
           "path": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA16.webm",
@@ -117,6 +137,8 @@
         },
         {
           "title": "0 - 9 [SECTOR]",
+          "ordinal": "0-9",
+          "fullTitle": "0-9 [SECTOR]",
           "path": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA22.webm",
@@ -127,6 +149,8 @@
         },
         {
           "title": "0 - 10 [REST]",
+          "ordinal": "0-10",
+          "fullTitle": "0-10 [REST]",
           "path": "/books/SYNTHOMA-NULL/0-10 [REST].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA19.webm",
@@ -137,6 +161,8 @@
         },
         {
           "title": "0 - 11 [ORGIE]",
+          "ordinal": "0-11",
+          "fullTitle": "0-11 [ORGIE]",
           "path": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
           "free": false,
           "id": "0-11-orgie",
@@ -146,6 +172,8 @@
         },
         {
           "title": "0 - 12 [CONFLICT]",
+          "ordinal": "0-12",
+          "fullTitle": "0-12 [CONFLICT]",
           "path": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA21.webm",
@@ -156,6 +184,8 @@
         },
         {
           "title": "0 - 13 [LUST]",
+          "ordinal": "0-13",
+          "fullTitle": "0-13 [LUST]",
           "path": "/books/SYNTHOMA-NULL/0-13 [LUST].html",
           "free": false,
           "id": "0-13-lust",
@@ -165,6 +195,8 @@
         },
         {
           "title": "0 - 14 [ABSENCE]",
+          "ordinal": "0-14",
+          "fullTitle": "0-14 [ABSENCE]",
           "path": "/books/SYNTHOMA-NULL/0-14 [ABSENCE].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA7.webm",
@@ -175,6 +207,8 @@
         },
         {
           "title": "0 - 15 [REBIRTH]",
+          "ordinal": "0-15",
+          "fullTitle": "0-15 [REBIRTH]",
           "path": "/books/SYNTHOMA-NULL/0-15 [REBIRTH].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA20.webm",
@@ -185,6 +219,8 @@
         },
         {
           "title": "0 - 16 [ILLUSION]",
+          "ordinal": "0-16",
+          "fullTitle": "0-16 [ILLUSION]",
           "path": "/books/SYNTHOMA-NULL/0-16 [ILLUSION].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA5.webm",
@@ -195,6 +231,8 @@
         },
         {
           "title": "0 - 17 [DISCONNECT]",
+          "ordinal": "0-17",
+          "fullTitle": "0-17 [DISCONNECT]",
           "path": "/books/SYNTHOMA-NULL/0-17 [DISCONNECT].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA3.webm",
@@ -205,6 +243,8 @@
         },
         {
           "title": "0 - 18 [AWAKENING]",
+          "ordinal": "0-18",
+          "fullTitle": "0-18 [AWAKENING]",
           "path": "/books/SYNTHOMA-NULL/0-18 [AWAKENING].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA30.webm",
@@ -215,6 +255,8 @@
         },
         {
           "title": "0 - 19 [ECHO]",
+          "ordinal": "0-19",
+          "fullTitle": "0-19 [ECHO]",
           "path": "/books/SYNTHOMA-NULL/0-19 [ECHO].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA10.webm",
@@ -225,6 +267,8 @@
         },
         {
           "title": "0 - 20 [GENESIS]",
+          "ordinal": "0-20",
+          "fullTitle": "0-20 [GENESIS]",
           "path": "/books/SYNTHOMA-NULL/0-20 [GENESIS].html",
           "free": false,
           "backgroundVideo": "/video/SYNTHOMA31.webm",
@@ -249,6 +293,8 @@
       "chapters": [
         {
           "title": "00. PODPOROVÁNO",
+          "ordinal": "00",
+          "fullTitle": "00. PODPOROVÁNO",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
           "free": true,
           "id": "kp-00-podporovano",
@@ -257,6 +303,8 @@
         },
         {
           "title": "01. OZNÁMENÍ",
+          "ordinal": "01",
+          "fullTitle": "01. OZNÁMENÍ",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
           "free": true,
           "id": "kp-01-oznameni",
@@ -265,6 +313,8 @@
         },
         {
           "title": "02. VOLNÝ PÁD",
+          "ordinal": "02",
+          "fullTitle": "02. VOLNÝ PÁD",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
           "free": true,
           "id": "kp-02-volny-pad",
@@ -273,6 +323,8 @@
         },
         {
           "title": "03. PODPORA",
+          "ordinal": "03",
+          "fullTitle": "03. PODPORA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
           "free": true,
           "id": "kp-03-podpora",
@@ -281,6 +333,8 @@
         },
         {
           "title": "04. KOMFORTNÍ ZÓNA",
+          "ordinal": "04",
+          "fullTitle": "04. KOMFORTNÍ ZÓNA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
           "free": true,
           "id": "kp-04-komfortni-zona",
@@ -289,6 +343,8 @@
         },
         {
           "title": "05. OBJÍŽĎKA",
+          "ordinal": "05",
+          "fullTitle": "05. OBJÍŽĎKA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
           "free": true,
           "id": "kp-05-objizdka",
@@ -297,6 +353,8 @@
         },
         {
           "title": "06. PÉČE",
+          "ordinal": "06",
+          "fullTitle": "06. PÉČE",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
           "free": true,
           "id": "kp-06-pece",
@@ -305,6 +363,8 @@
         },
         {
           "title": "07. ZÁSILKA",
+          "ordinal": "07",
+          "fullTitle": "07. ZÁSILKA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
           "free": true,
           "id": "kp-07-zasilka",
@@ -313,6 +373,8 @@
         },
         {
           "title": "08. DOMOV",
+          "ordinal": "08",
+          "fullTitle": "08. DOMOV",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
           "free": true,
           "id": "kp-08-domov",
@@ -321,6 +383,8 @@
         },
         {
           "title": "09. NEOPRÁVNĚNÝ UŽIVATEL",
+          "ordinal": "09",
+          "fullTitle": "09. NEOPRÁVNĚNÝ UŽIVATEL",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
           "free": true,
           "id": "kp-09-neopravneny-uzivatel",
@@ -329,6 +393,8 @@
         },
         {
           "title": "10. TICHO",
+          "ordinal": "10",
+          "fullTitle": "10. TICHO",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
           "free": true,
           "id": "kp-10-ticho",
@@ -337,6 +403,8 @@
         },
         {
           "title": "11. BETA",
+          "ordinal": "11",
+          "fullTitle": "11. BETA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
           "free": true,
           "id": "kp-11-beta",
@@ -345,6 +413,8 @@
         },
         {
           "title": "12. TOVA",
+          "ordinal": "12",
+          "fullTitle": "12. TOVA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
           "free": true,
           "id": "kp-12-tova",
@@ -353,6 +423,8 @@
         },
         {
           "title": "13. KONTINUITA",
+          "ordinal": "13",
+          "fullTitle": "13. KONTINUITA",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
           "free": true,
           "id": "kp-13-kontinuita",
@@ -361,6 +433,8 @@
         },
         {
           "title": "14. REKLAMACE",
+          "ordinal": "14",
+          "fullTitle": "14. REKLAMACE",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
           "free": true,
           "id": "kp-14-reklamace",
@@ -369,6 +443,8 @@
         },
         {
           "title": "15. MIGRACE",
+          "ordinal": "15",
+          "fullTitle": "15. MIGRACE",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
           "free": true,
           "id": "kp-15-migrace",
@@ -377,6 +453,8 @@
         },
         {
           "title": "16. RUČNÍ REŽIM",
+          "ordinal": "16",
+          "fullTitle": "16. RUČNÍ REŽIM",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
           "free": true,
           "id": "kp-16-rucni-rezim",
@@ -385,6 +463,8 @@
         },
         {
           "title": "17. ŽÁDNÁ ODPOVĚĎ",
+          "ordinal": "17",
+          "fullTitle": "17. ŽÁDNÁ ODPOVĚĎ",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
           "free": true,
           "id": "kp-17-zadna-odpoved",
@@ -393,6 +473,8 @@
         },
         {
           "title": "18. KONEC PODPORY",
+          "ordinal": "18",
+          "fullTitle": "18. KONEC PODPORY",
           "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
           "free": true,
           "id": "kp-18-konec-podpory",

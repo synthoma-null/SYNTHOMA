@@ -30,6 +30,11 @@ export type ArchiveCardData = {
   teaser: string;
   quote?: string;
   body: string[];
+  summary?: string;
+  details?: string[];
+  sourceBook?: 'synthoma-null' | 'konec-podpory';
+  unlockChapter?: string;
+  speakerId?: string;
   tags?: string[];
   spoilerLevel?: number;
   display?: {

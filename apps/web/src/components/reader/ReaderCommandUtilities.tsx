@@ -8,8 +8,8 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
   const [speaking, setSpeaking] = useState(false);
   const preferences = useUiPreferences();
   const copy = locale === 'en'
-    ? { settings: 'SETTINGS', audio: 'AUDIO', focus: 'FOCUS', focusExit: 'EXIT FOCUS', share: 'SHARE' }
-    : { settings: 'NASTAVENÍ', audio: 'AUDIO', focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', share: 'SDÍLET' };
+    ? { settings: 'SETTINGS', audio: 'AUDIO', focus: 'FOCUS', focusExit: 'EXIT FOCUS', help: 'HELP', share: 'SHARE' }
+    : { settings: 'NASTAVENÍ', audio: 'AUDIO', focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', help: 'NÁPOVĚDA', share: 'SDÍLET' };
 
   useEffect(() => () => window.speechSynthesis?.cancel(), []);
   useEffect(() => {
@@ -76,6 +76,7 @@ export default function ReaderCommandUtilities({ articleId, locale }: { articleI
       >
         {preferences.focusMode ? copy.focusExit : copy.focus}
       </button>
+      <button type="button" data-reader-tool="help" aria-label={locale === 'en' ? 'How to control the reader' : 'Jak ovládat čtečku'} onClick={() => document.dispatchEvent(new CustomEvent('synthoma:reader-help'))}>{copy.help}</button>
       <button type="button" aria-label={locale === 'en' ? 'Share chapter' : 'Sdílet kapitolu'} onClick={() => void share()}>{copy.share}</button>
     </div>
   );

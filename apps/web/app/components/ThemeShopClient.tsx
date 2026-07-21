@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { UI_THEMES } from '../../src/lib/themes';
+import { UI_THEMES, isThemeUnlocked } from '../../src/lib/themes';
 import type { UiTheme } from '../../src/lib/themes';
 import { useLang } from '../../src/lib/LangContext';
 import { readUiPreferences, updateUiPreferences } from '../../src/lib/uiPreferences';
@@ -58,7 +58,7 @@ export default function ThemeShopClient() {
         setBalance(typeof data.balance === 'number' ? data.balance : null);
       })
       .catch(() => {
-        setThemes(UI_THEMES.map((t) => ({ ...t, unlocked: t.cost === 0 })));
+        setThemes(UI_THEMES.map((t) => ({ ...t, unlocked: isThemeUnlocked(t) })));
         setBalance(null);
       })
       .finally(() => setLoading(false));
@@ -129,7 +129,7 @@ export default function ThemeShopClient() {
   }, []);
 
   const handleClick = useCallback((theme: Theme) => {
-    if (theme.unlocked || theme.cost === 0) {
+    if (theme.unlocked || !theme.premium) {
       activate(theme);
     } else {
       startPreview(theme);
@@ -151,7 +151,7 @@ export default function ThemeShopClient() {
         <div className="theme-grid">
           {themes.map((theme) => {
             const isActive = currentTheme === theme.id;
-            const locked = !theme.unlocked && theme.cost > 0;
+            const locked = theme.premium && !theme.unlocked;
             const cantAfford = locked && balance !== null && balance < theme.cost;
             const label = theme.name[lang];
             const description = theme.description[lang];
@@ -175,7 +175,7 @@ export default function ThemeShopClient() {
                 <span className="theme-state">
                   {isActive && <span className="theme-active">{copy.active}</span>}
                   {!isActive && locked && <span className="theme-cost">{theme.cost} mn</span>}
-                  {!isActive && !locked && theme.cost > 0 && <span className="theme-owned">{copy.owned}</span>}
+                  {!isActive && theme.premium && !locked && <span className="theme-owned">{copy.owned}</span>}
                 </span>
               </button>
             );

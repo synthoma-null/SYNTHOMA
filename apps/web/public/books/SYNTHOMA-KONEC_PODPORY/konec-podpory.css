@@ -12200,3 +12200,17 @@
     scroll-behavior: auto !important;
   }
 }
+@media (max-width: 480px) {
+  .kp-chapter[data-book="konec-podpory"][data-chapter="00"] .kp-sensor-denial {
+    display: inline-flex;
+    gap: 0.35em;
+  }
+
+  .kp-chapter[data-book="konec-podpory"][data-chapter="00"] .kp-sensor-denial::after {
+    position: static;
+    display: inline;
+    margin-left: 0;
+    white-space: nowrap;
+    letter-spacing: 0;
+  }
+}

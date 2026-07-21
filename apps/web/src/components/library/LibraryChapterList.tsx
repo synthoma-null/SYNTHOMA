@@ -34,7 +34,7 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
                 disabled
                 aria-label={`${ch.title}, ${t('books.chapter.unavailable').toLocaleLowerCase()}`}
               >
-                <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>
+                <span className="library-chapter-list__index">{ch.ordinal ?? String(ch.order).padStart(2, '0')}</span>
                 <span className="library-chapter-list__title">{ch.title}</span>
                 <span className="library-chapter-list__badge">{t('books.chapter.unavailable')}</span>
                 {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
@@ -50,14 +50,14 @@ export default function LibraryChapterList({ collection, progressByChapterId, on
                 }}
                 aria-label={`${ch.title}, ${t('action.locked').toLocaleLowerCase()}`}
               >
-                <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>
+                <span className="library-chapter-list__index">{ch.ordinal ?? String(ch.order).padStart(2, '0')}</span>
                 <span className="library-chapter-list__title">{ch.title}</span>
                 <span className="library-chapter-list__badge">{lockedLabel}</span>
                 {ch.summary ? <span className="library-chapter-list__summary">{ch.summary}</span> : null}
               </Link>
             ) : (
               <Link className="library-chapter-list__row" href={href}>
-                <span className="library-chapter-list__index">{String(ch.order).padStart(2, '0')}</span>
+                <span className="library-chapter-list__index">{ch.ordinal ?? String(ch.order).padStart(2, '0')}</span>
                 <span className="library-chapter-list__title">{ch.title}</span>
                 {isCompleted ? (
                   <span className="library-chapter-list__badge library-chapter-list__badge--done">{t('books.chapter.completed')}</span>

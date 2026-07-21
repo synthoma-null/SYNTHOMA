@@ -5,6 +5,9 @@ import ChapterBackground from '../../../src/components/reader/ChapterBackground'
 import ChapterReadingProgress from '../../../src/components/reader/ChapterReadingProgress';
 import ReaderCommandUtilities from '../../../src/components/reader/ReaderCommandUtilities';
 import ReaderDecisionController from '../../../src/components/reader/ReaderDecisionController';
+import ChapterRail from '../../../src/components/reader/ChapterRail';
+import ReaderDialogController from '../../../src/components/reader/ReaderDialogController';
+import ReaderOnboarding from '../../../src/components/reader/ReaderOnboarding';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 
 interface Props {
@@ -35,14 +38,15 @@ export default function ChapterReaderArticle({
   const presentation = getChapterPresentation(chapter.id);
   const collection = getBookCollection(chapter.collection);
   const isKonecPodpory = collection?.slug === 'konec-podpory';
-  const chapterCode = String(chapter.order ?? 0).padStart(2, '0');
-  const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
+  const chapterCode = chapter.ordinal;
+  const title = locale === 'en' ? chapter.titleEn ?? chapter.displayTitle : chapter.displayTitle;
+  const accessibleTitle = locale === 'en' ? chapter.titleEn ?? chapter.fullTitle : chapter.fullTitle;
   const copy = locale === 'en'
     ? { library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
     : { library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ', next: 'DALŠÍ' };
 
   return (
-    <main className="chapter-reader" id="main-content">
+    <main className="chapter-reader" id="main-content" data-book={collection?.publicId ?? 'synthoma-null'}>
       {collection?.stylesheet ? <link rel="stylesheet" href={collection.stylesheet} /> : null}
       {presentation ? <ChapterBackground presentation={presentation} /> : null}
       <ChapterReadingProgress
@@ -51,6 +55,12 @@ export default function ChapterReaderArticle({
         collection={chapter.collection}
         chapterPath={chapter.route}
       />
+      <ChapterRail
+        book={collection?.shortTitle ?? collection?.title ?? 'SYNTHOMA'}
+        ordinal={chapter.ordinal}
+        position={index + 1}
+        total={published.length}
+      />
       <header className="chapter-reader__command-bar">
         <div className="chapter-reader__route-commands">
           <Link className="chapter-reader__command" href={locale === 'en' ? '/books?locale=en' : '/books'}>{copy.library}</Link>
@@ -58,7 +68,7 @@ export default function ChapterReaderArticle({
           {next ? <Link className="chapter-reader__command" rel="next" href={localizedRoute(next, locale)}>{copy.next}</Link> : null}
         </div>
         <span className="chapter-reader__identity" aria-current="page">
-          <span className="chapter-reader__sequence">{String((chapter.order ?? 0) + 1).padStart(2, '0')}</span>
+          <span className="chapter-reader__sequence">{chapter.ordinal}</span>
           <span>{title}</span>
         </span>
         <div className="chapter-reader__command-end">
@@ -74,15 +84,15 @@ export default function ChapterReaderArticle({
       <article
         className="chapter-reader__article SYNTHOMAREADER choices-shown typewriter-instant"
         id="chapter-reader-article"
-        aria-label={title}
+        aria-label={accessibleTitle}
         lang={sourceLocale}
         tabIndex={-1}
       >
         <div
           className={`chapter-content reader-decisions-pending${isKonecPodpory ? ' kp-chapter' : ''}`}
           id="chapter-reader-decisions"
-          data-book={isKonecPodpory ? 'konec-podpory' : undefined}
-          data-chapter={isKonecPodpory ? chapterCode : undefined}
+          data-book={isKonecPodpory ? 'konec-podpory' : 'synthoma-null'}
+          data-chapter={chapterCode}
           data-reader-decisions="pending"
           aria-busy="true"
           inert
@@ -95,18 +105,20 @@ export default function ChapterReaderArticle({
           locale={locale}
         />
       </article>
+      <ReaderDialogController rootId="chapter-reader-decisions" />
+      <ReaderOnboarding locale={locale} />
 
       <nav className="chapter-reader__navigation" aria-label={locale === 'en' ? 'Chapter navigation' : 'Navigace kapitolami'}>
         {previous ? (
           <Link rel="prev" href={localizedRoute(previous, locale)}>
             <span>{locale === 'en' ? 'Previous' : 'Předchozí'}</span>
-            <strong>{locale === 'en' ? previous.titleEn ?? previous.title : previous.title}</strong>
+            <strong>{locale === 'en' ? previous.titleEn ?? previous.displayTitle : previous.displayTitle}</strong>
           </Link>
         ) : <span />}
         {next ? (
           <Link rel="next" href={localizedRoute(next, locale)}>
             <span>{locale === 'en' ? 'Next' : 'Další'}</span>
-            <strong>{locale === 'en' ? next.titleEn ?? next.title : next.title}</strong>
+            <strong>{locale === 'en' ? next.titleEn ?? next.displayTitle : next.displayTitle}</strong>
           </Link>
         ) : <span />}
       </nav>

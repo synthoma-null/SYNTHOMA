@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
-import { UI_THEMES } from '../../../../src/lib/themes';
+import { UI_THEMES, isThemeUnlocked } from '../../../../src/lib/themes';
 import { getAccessSnapshot, isEconomyError, purchaseWithMnems } from '../../../../src/server/economy';
 
 const PRICE_MAP = new Map(UI_THEMES.map((t) => [t.id, t.cost]));
@@ -19,7 +19,7 @@ export async function GET() {
 
   const themes = UI_THEMES.map((t) => ({
     ...t,
-    unlocked: accessById.get(t.id)?.canAccess ?? false,
+    unlocked: isThemeUnlocked(t, accessById.get(t.id)?.canAccess ?? false),
     access: accessById.get(t.id),
   }));
 

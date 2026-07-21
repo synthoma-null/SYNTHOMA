@@ -1,7 +1,10 @@
 import type { ArchiveCardData } from '../../../../app/archive/ArchiveClient';
 import type { ArchiveCard } from './archiveTypes';
+import { SPEAKER_REGISTRY } from '../../../content/speakers';
 
 export function normalizeArchiveCard(data: ArchiveCardData): ArchiveCard {
+  const registeredSpeaker = data.speakerId
+    ?? SPEAKER_REGISTRY.find((speaker) => speaker.archiveEntryId === data.id)?.id;
   return {
     id: data.id,
     category: data.category,
@@ -9,6 +12,11 @@ export function normalizeArchiveCard(data: ArchiveCardData): ArchiveCard {
     teaser: data.teaser,
     quote: data.quote,
     body: Array.isArray(data.body) ? data.body : [],
+    summary: data.summary ?? data.teaser,
+    details: data.details ?? data.body,
+    sourceBook: data.sourceBook ?? 'synthoma-null',
+    unlockChapter: data.unlockChapter ?? data.access?.requiredChapterId ?? undefined,
+    ...(registeredSpeaker ? { speakerId: registeredSpeaker } : {}),
     tags: data.tags,
     spoilerLevel: data.spoilerLevel,
     display: data.display,

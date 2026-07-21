@@ -573,7 +573,7 @@
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   align-items: center;
   gap: var(--os-space-2);
   min-width: 0;
@@ -583,7 +583,7 @@
 
 .archive-record-card__icon {
   grid-column: 1;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
   flex-shrink: 0;
   font-size: var(--os-font-size-xl);
 }
@@ -609,7 +609,7 @@
 
 .archive-record-card__badge {
   grid-column: 3;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
   flex-shrink: 0;
   padding: 3px 6px;
   border: 1px solid var(--os-accent-primary);
@@ -1023,4 +1023,24 @@ body.synthoma-dialog-lock { overflow: hidden; }
     top: max(var(--os-space-2), env(safe-area-inset-top));
     right: max(var(--os-space-2), env(safe-area-inset-right));
   }
+}
+.synthoma-archive__book-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.archive-record-card__source {
+  grid-column: 2;
+  grid-row: 3;
+  min-width: 0;
+  color: var(--card-accent, var(--os-accent-primary));
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-label, 0.7rem);
+  letter-spacing: 0.06em;
+}
+
+.archive-record-card[data-source-book="konec-podpory"] {
+  border-left: 3px solid var(--card-accent, #00eaff);
 }

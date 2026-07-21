@@ -74,6 +74,9 @@ export interface CatalogEntry {
 
 export interface ChapterCatalogEntry extends CatalogEntry {
   type: 'chapter';
+  ordinal: string;
+  displayTitle: string;
+  fullTitle: string;
   collection: string;
   filename: string;
   filenameEn?: string;
@@ -428,10 +431,18 @@ function chapterCatalogEntry(chapter: CanonicalChapterDefinition): ChapterCatalo
   const filename = chapter.filename ?? `${chapter.title}.html`;
   const published = chapter.status === 'final';
   const free = published && chapter.free === true;
+  const fullTitle = chapter.title;
+  const numberedTitle = fullTitle.match(/^(\d{2})\.\s+(.+)$/);
+  const codedTitle = fullTitle.match(/^(0-(?:\d+|∞))\s+(.+)$/);
+  const ordinal = numberedTitle?.[1] ?? codedTitle?.[1] ?? String(chapter.order).padStart(2, '0');
+  const title = numberedTitle?.[2] ?? codedTitle?.[2] ?? fullTitle;
   return {
     id: chapter.id,
     type: 'chapter',
-    title: chapter.title,
+    ordinal,
+    title: fullTitle,
+    displayTitle: title,
+    fullTitle,
     collection: collection.slug,
     filename,
     ...(chapter.filenameEn ? { filenameEn: chapter.filenameEn } : {}),

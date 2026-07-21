@@ -19,14 +19,14 @@ describe('versioned UI preferences', () => {
     localStorage.setItem('glassMode', 'true');
     localStorage.setItem('glassBlur', '18');
 
-    expect(readUiPreferences()).toMatchObject({ version: 2, motionMode: 'off', fontScale: 1.2, readerOpacity: 0.7, glassEnabled: true, glassBlur: 18 });
+    expect(readUiPreferences()).toMatchObject({ version: 3, motionMode: 'off', fontScale: 1.2, readerOpacity: 0.7, glassEnabled: true, glassBlur: 18 });
     const migrated = localStorage.getItem('synthoma_ui_preferences');
     readUiPreferences();
     expect(localStorage.getItem('synthoma_ui_preferences')).toBe(migrated);
   });
 
   it('repairs invalid values and clamps numeric preferences', () => {
-    localStorage.setItem('synthoma_ui_preferences', JSON.stringify({ version: 2, motionMode: 'shake', fontScale: 9, readerOpacity: -4, glassBlur: 100, audioVolume: -1 }));
+    localStorage.setItem('synthoma_ui_preferences', JSON.stringify({ version: 3, motionMode: 'shake', fontScale: 9, readerOpacity: -4, glassBlur: 100, audioVolume: -1 }));
     expect(readUiPreferences()).toMatchObject({ motionMode: 'system', fontScale: 1.4, readerOpacity: 0.4, glassBlur: 24, audioVolume: 0 });
   });
 
@@ -40,6 +40,14 @@ describe('versioned UI preferences', () => {
     applyUiPreferencesToDocument(updateUiPreferences({ glassEnabled: true }));
     expect(document.documentElement).toHaveAttribute('data-reader-glass', 'on');
     expect(document.documentElement.style.getPropertyValue('--reader-surface-opacity')).toBe('80%');
+  });
+
+  it('persists Reader width, line spacing and effect intensity', () => {
+    const preferences = updateUiPreferences({ readerWidth: 'wide', readerLineHeight: 'airy', effectIntensity: 0.4 });
+    expect(preferences).toMatchObject({ readerWidth: 'wide', readerLineHeight: 'airy', effectIntensity: 0.4 });
+    expect(document.documentElement).toHaveAttribute('data-reader-width', 'wide');
+    expect(document.documentElement).toHaveAttribute('data-reader-line-height', 'airy');
+    expect(document.documentElement.style.getPropertyValue('--reader-effect-intensity')).toBe('0.4');
   });
 
   it('exposes focus mode as a root presentation state', () => {

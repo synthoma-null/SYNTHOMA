@@ -6,7 +6,7 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   const root=document.documentElement;
   const clamp=(value,min,max,fallback)=>{const n=Number(value);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback};
   let raw={};try{raw=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
-  const legacy=raw.version!==version;
+  const legacy=raw.version!==version&&raw.version!==2;
   const legacyValue=(name,fallback)=>{try{const value=localStorage.getItem(name);return value===null?fallback:value}catch{return fallback}};
   const theme=legacy?legacyValue('theme','synthoma'):(typeof raw.theme==='string'?raw.theme:'synthoma');
   const motionMode=legacy?(legacyValue('animationsDisabled','false')==='true'?'off':'system'):(['system','full','reduced','off'].includes(raw.motionMode)?raw.motionMode:'system');
@@ -21,6 +21,9 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   const scanlines=legacy?true:raw.scanlines!==false;
   const textEffects=legacy?'normal':(['normal','reduced','off'].includes(raw.textEffects)?raw.textEffects:'normal');
   const fontScale=clamp(legacy?legacyValue('fontSizeMultiplier',1):raw.fontScale,.8,1.4,1);
+  const readerWidth=!legacy&&['narrow','standard','wide'].includes(raw.readerWidth)?raw.readerWidth:'standard';
+  const readerLineHeight=!legacy&&['compact','comfortable','airy'].includes(raw.readerLineHeight)?raw.readerLineHeight:'comfortable';
+  const effectIntensity=clamp(!legacy?raw.effectIntensity:.75,0,1,.75);
   const opacity=clamp(legacy?legacyValue('readerBgOpacity',.85):raw.readerOpacity,.4,1,.85);
   const glass=legacy?legacyValue('glassMode','false')==='true':raw.glassEnabled===true;
   const focus=!legacy&&raw.focusMode===true;
@@ -36,7 +39,10 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   root.dataset.glass=glass?'on':'off';
   root.dataset.readerGlass=glass?'on':'off';
   root.dataset.readerFocus=focus?'on':'off';
+  root.dataset.readerWidth=readerWidth;
+  root.dataset.readerLineHeight=readerLineHeight;
   root.style.setProperty('--font-size-multiplier',String(fontScale));
+  root.style.setProperty('--reader-effect-intensity',String(effectIntensity));
   root.style.setProperty('--reader-surface-opacity',Math.round(opacity*100)+'%');
   root.style.setProperty('--reader-glass-blur',blur+'px');
   root.style.setProperty('--app-bg-opacity',String(opacity));

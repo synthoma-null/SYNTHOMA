@@ -1,0 +1,240 @@
+:root {
+  --font-size-body: 1rem;
+  --font-size-ui: 0.875rem;
+  --font-size-small: 0.78rem;
+  --font-size-label: 0.7rem;
+  --font-size-reader: 1.15rem;
+  --book-reader-measure: 68ch;
+  --book-reader-leading: 1.76;
+  --reader-effect-intensity: 0.75;
+}
+
+html[data-reader-width="narrow"] { --book-reader-measure: 58ch; }
+html[data-reader-width="standard"] { --book-reader-measure: 68ch; }
+html[data-reader-width="wide"] { --book-reader-measure: 76ch; }
+html[data-reader-line-height="compact"] { --book-reader-leading: 1.58; }
+html[data-reader-line-height="comfortable"] { --book-reader-leading: 1.76; }
+html[data-reader-line-height="airy"] { --book-reader-leading: 1.9; }
+
+@media (min-width: 900px) {
+  :root {
+    --font-size-body: 1.1rem;
+    --font-size-ui: 0.96rem;
+    --font-size-small: 0.86rem;
+    --font-size-label: 0.77rem;
+    --font-size-reader: 1.27rem;
+  }
+}
+
+body { font-size: var(--font-size-body); }
+
+.chapter-reader[data-book="synthoma-null"] {
+  --book-accent: var(--accent-secondary, #00eaff);
+  --book-secondary: var(--accent-primary, #ff19c7);
+  --book-warning: var(--accent-warning, #f6ff00);
+  --book-background: var(--bg-primary, #020306);
+}
+
+.chapter-reader[data-book="konec-podpory"] {
+  --book-accent: #00eaff;
+  --book-secondary: #ff78d8;
+  --book-warning: #f6ff00;
+  --book-background: #03080b;
+}
+
+.chapter-reader__article.SYNTHOMAREADER {
+  width: min(100%, var(--book-reader-measure));
+  max-width: var(--book-reader-measure);
+  font-family: var(--font-family-primary, Text03, system-ui, sans-serif);
+  font-size: var(--font-size-reader);
+  line-height: var(--book-reader-leading);
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content,
+.chapter-reader__article.SYNTHOMAREADER .chapter-content :where(.text, p:not(.log):not([class*="terminal"]):not([class*="system"])) {
+  font-family: var(--font-family-primary, Text03, system-ui, sans-serif);
+  line-height: var(--book-reader-leading);
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content p {
+  margin-block: 0 1.05rem;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content > p:not(.log):not(.choice),
+.chapter-reader__article.SYNTHOMAREADER .chapter-content .dialog-line {
+  font-family: var(--font-family-primary, Text03, system-ui, sans-serif) !important;
+  font-size: 1em !important;
+  line-height: var(--book-reader-leading) !important;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content .log {
+  font-size: 0.78em !important;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content :where(.log, [class*="terminal"], [class*="system"], .dialogSystem, .dialog1024) {
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+}
+
+.chapter-reader__article.SYNTHOMAREADER .chapter-content :where(h1, h2, h3, .kp-title) {
+  font-family: var(--font-family-heading, Text03b, system-ui, sans-serif);
+  line-height: 1.14;
+  overflow-wrap: anywhere;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .dialog-line {
+  position: relative;
+  padding: 0.72rem 1rem 0.72rem 1.15rem !important;
+  border-left: 3px solid var(--speaker-color) !important;
+  color: var(--speaker-color) !important;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--speaker-color) 10%, transparent), transparent 76%) !important;
+  box-shadow: inset 0.12rem 0 0 color-mix(in srgb, var(--speaker-secondary) 35%, transparent);
+  text-shadow: 0 0 calc(0.2rem + 0.65rem * var(--reader-effect-intensity)) color-mix(in srgb, var(--speaker-color) 22%, transparent);
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  cursor: help;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .dialog-line::after {
+  content: "i";
+  position: absolute;
+  top: 0.42rem;
+  right: 0.55rem;
+  color: var(--speaker-secondary);
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  font-size: 0.62rem;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.chapter-reader__article.SYNTHOMAREADER .dialog-line:hover::after,
+.chapter-reader__article.SYNTHOMAREADER .dialog-line:focus-visible::after,
+.chapter-reader__article.SYNTHOMAREADER .dialog-line--active::after { opacity: 0.8; }
+
+.chapter-reader__article.SYNTHOMAREADER .dialog-line--active {
+  box-shadow: inset 0.18rem 0 0 var(--speaker-secondary), 0 0 1rem color-mix(in srgb, var(--speaker-color) 18%, transparent);
+}
+
+.reader-dialog-status {
+  position: fixed;
+  z-index: var(--os-z-portal, 110);
+  display: grid;
+  gap: 0.22rem;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: 0.85rem 2.5rem 0.85rem 1rem;
+  border: 1px solid var(--speaker-color);
+  border-left-width: 4px;
+  background: color-mix(in srgb, var(--book-background, #020306) 94%, var(--speaker-color));
+  color: var(--speaker-color);
+  box-shadow: 0 0 1.4rem color-mix(in srgb, var(--speaker-color) 28%, transparent);
+  font-family: var(--font-family-ui, system-ui, sans-serif);
+}
+
+.reader-dialog-status__eyebrow {
+  color: var(--speaker-secondary);
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  font-size: var(--font-size-label);
+  letter-spacing: 0.08em;
+}
+
+.reader-dialog-status strong { font-size: 1rem; text-transform: uppercase; }
+.reader-dialog-status > span:last-of-type { color: var(--text-primary, #e8fbff); font-size: var(--font-size-small); }
+.reader-dialog-status button {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.reader-onboarding {
+  position: fixed;
+  z-index: var(--os-z-modal, 90);
+  top: 50%;
+  left: 50%;
+  width: min(34rem, calc(100vw - 2rem));
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--book-accent, var(--accent-secondary));
+  background: color-mix(in srgb, var(--book-background, #020306) 96%, var(--book-accent));
+  color: var(--text-primary, #e8fbff);
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.76), 0 0 2rem color-mix(in srgb, var(--book-accent) 24%, transparent);
+  transform: translate(-50%, -50%);
+}
+.reader-onboarding__kicker { color: var(--book-accent); font-family: var(--font-family-mono); font-size: var(--font-size-label); }
+.reader-onboarding h2 { margin: 0.5rem 0 0.75rem; font-size: clamp(1.3rem, 3vw, 2rem); }
+.reader-onboarding p { max-width: 48ch; line-height: 1.6; }
+.reader-onboarding__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+.reader-onboarding__actions button { min-height: 2.75rem; padding: 0.65rem 0.9rem; border: 1px solid var(--book-accent); background: transparent; color: inherit; cursor: pointer; }
+.reader-onboarding__actions button:first-child { background: var(--book-accent); color: var(--book-background, #020306); font-weight: 700; }
+
+.chapter-rail {
+  position: fixed;
+  z-index: var(--os-z-shell, 40);
+  top: 50%;
+  left: max(0.55rem, calc((100vw - 92rem) / 2));
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  width: 3.4rem;
+  color: var(--book-accent);
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.chapter-rail__book {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: color-mix(in srgb, var(--book-accent) 76%, white);
+  font-size: var(--font-size-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.chapter-rail__number { font-size: 1.35rem; font-weight: 700; }
+.chapter-rail__progress { font-size: var(--font-size-label); white-space: nowrap; }
+.chapter-rail__signal {
+  width: 1px;
+  height: 5rem;
+  background: linear-gradient(transparent, var(--book-accent), transparent);
+  box-shadow: 0 0 0.8rem var(--book-accent);
+}
+
+@media (max-width: 900px) {
+  .chapter-rail {
+    position: absolute;
+    top: 3.35rem;
+    left: 0.7rem;
+    right: 0.7rem;
+    display: flex;
+    width: auto;
+    min-width: 0;
+    justify-content: flex-start;
+    transform: none;
+  }
+  .chapter-rail__book { writing-mode: initial; transform: none; }
+  .chapter-rail__number { font-size: 0.9rem; }
+  .chapter-rail__progress { margin-left: auto; }
+  .chapter-rail__signal { position: absolute; inset: auto 0 -0.45rem; width: auto; height: 1px; }
+}
+
+@media (max-width: 640px) {
+  .chapter-reader__article.SYNTHOMAREADER { font-size: var(--font-size-reader); }
+  .reader-dialog-status {
+    top: auto !important;
+    right: 0;
+    bottom: 0;
+    left: 0 !important;
+    width: 100%;
+    max-width: none;
+    padding: 1rem 3rem calc(1rem + env(safe-area-inset-bottom)) 1rem;
+  }
+  .reader-onboarding { top: auto; right: 0; bottom: 0; left: 0; width: 100%; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-rail__signal { box-shadow: none; }
+}

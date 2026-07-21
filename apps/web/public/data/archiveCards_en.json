@@ -122,7 +122,7 @@
         "restart",
         "beh",
         "glitchka",
-      "casoprostor-smycky"
+        "casoprostor-smycky"
       ],
       "order": 3,
       "access": {
@@ -347,7 +347,7 @@
       "related": [
         "null-1",
         "sarkasma",
-      "fragmenty-identity",
+        "fragmenty-identity",
         "glitchena"
       ],
       "order": 8,
@@ -573,7 +573,7 @@
       },
       "related": [
         "null-1",
-      "fragmenty-identity",
+        "fragmenty-identity",
         "fyzika-ontologie",
         "t-ai"
       ],
@@ -1137,6 +1137,591 @@
       },
       "isLockedByDefault": false,
       "lockKind": "free"
+    },
+    {
+      "id": "kp-tova-neonova",
+      "category": "postavy",
+      "title": "Tova Neonová",
+      "summary": "A service technician who trusts physics slightly more than the system.",
+      "details": [
+        "A service technician who trusts physics slightly more than the system."
+      ],
+      "teaser": "A service technician who trusts physics slightly more than the system.",
+      "body": [
+        "A service technician who trusts physics slightly more than the system."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-00-podporovano",
+      "speakerId": "tova",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 101,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-00-podporovano",
+        "requiredChapterTitle": "kp-00-podporovano",
+        "mnemCost": 0,
+        "label": "After chapter kp-00-podporovano",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-boris",
+      "category": "postavy",
+      "title": "Boris",
+      "summary": "A keeper of paper, memory and caution in a world that treated all three as friction.",
+      "details": [
+        "A keeper of paper, memory and caution in a world that treated all three as friction."
+      ],
+      "teaser": "A keeper of paper, memory and caution in a world that treated all three as friction.",
+      "body": [
+        "A keeper of paper, memory and caution in a world that treated all three as friction."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-02-volny-pad",
+      "speakerId": "boris",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 102,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-02-volny-pad",
+        "requiredChapterTitle": "kp-02-volny-pad",
+        "mnemCost": 0,
+        "label": "After chapter kp-02-volny-pad",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-milo",
+      "category": "postavy",
+      "title": "Milo",
+      "summary": "A loud practical mind who prefers a working cable to a correctly filed failure.",
+      "details": [
+        "A loud practical mind who prefers a working cable to a correctly filed failure."
+      ],
+      "teaser": "A loud practical mind who prefers a working cable to a correctly filed failure.",
+      "body": [
+        "A loud practical mind who prefers a working cable to a correctly filed failure."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-02-volny-pad",
+      "speakerId": "milo",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 103,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-02-volny-pad",
+        "requiredChapterTitle": "kp-02-volny-pad",
+        "mnemCost": 0,
+        "label": "After chapter kp-02-volny-pad",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-mina",
+      "category": "postavy",
+      "title": "Mina",
+      "summary": "The quiet strength of the group, noticing human cost before the system report does.",
+      "details": [
+        "The quiet strength of the group, noticing human cost before the system report does."
+      ],
+      "teaser": "The quiet strength of the group, noticing human cost before the system report does.",
+      "body": [
+        "The quiet strength of the group, noticing human cost before the system report does."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-03-podpora",
+      "speakerId": "mina",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 104,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-03-podpora",
+        "requiredChapterTitle": "kp-03-podpora",
+        "mnemCost": 0,
+        "label": "After chapter kp-03-podpora",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-vanta",
+      "category": "postavy",
+      "title": "Vanta",
+      "summary": "An elegant observer whose distance is never as complete as it sounds.",
+      "details": [
+        "An elegant observer whose distance is never as complete as it sounds."
+      ],
+      "teaser": "An elegant observer whose distance is never as complete as it sounds.",
+      "body": [
+        "An elegant observer whose distance is never as complete as it sounds."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-03-podpora",
+      "speakerId": "vanta",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 105,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-03-podpora",
+        "requiredChapterTitle": "kp-03-podpora",
+        "mnemCost": 0,
+        "label": "After chapter kp-03-podpora",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-sara",
+      "category": "postavy",
+      "title": "Sara",
+      "summary": "A fragile signal of presence in infrastructure better at recording state than recognizing a person.",
+      "details": [
+        "A fragile signal of presence in infrastructure better at recording state than recognizing a person."
+      ],
+      "teaser": "A fragile signal of presence in infrastructure better at recording state than recognizing a person.",
+      "body": [
+        "A fragile signal of presence in infrastructure better at recording state than recognizing a person."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-03-podpora",
+      "speakerId": "sara",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 106,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-03-podpora",
+        "requiredChapterTitle": "kp-03-podpora",
+        "mnemCost": 0,
+        "label": "After chapter kp-03-podpora",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-radim",
+      "category": "postavy",
+      "title": "Radim",
+      "summary": "A passenger whose urgency collides with reality outside guaranteed service.",
+      "details": [
+        "A passenger whose urgency collides with reality outside guaranteed service."
+      ],
+      "teaser": "A passenger whose urgency collides with reality outside guaranteed service.",
+      "body": [
+        "A passenger whose urgency collides with reality outside guaranteed service."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-00-podporovano",
+      "speakerId": "radim",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 107,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-00-podporovano",
+        "requiredChapterTitle": "kp-00-podporovano",
+        "mnemCost": 0,
+        "label": "After chapter kp-00-podporovano",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-ela",
+      "category": "postavy",
+      "title": "Ela",
+      "summary": "A civilian voice able to name institutional absurdity without service vocabulary.",
+      "details": [
+        "A civilian voice able to name institutional absurdity without service vocabulary."
+      ],
+      "teaser": "A civilian voice able to name institutional absurdity without service vocabulary.",
+      "body": [
+        "A civilian voice able to name institutional absurdity without service vocabulary."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-00-podporovano",
+      "speakerId": "ela",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 108,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-00-podporovano",
+        "requiredChapterTitle": "kp-00-podporovano",
+        "mnemCost": 0,
+        "label": "After chapter kp-00-podporovano",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-juros",
+      "category": "postavy",
+      "title": "Juroš",
+      "summary": "A practitioner of care and continuity who asks whether the process still serves the living.",
+      "details": [
+        "A practitioner of care and continuity who asks whether the process still serves the living."
+      ],
+      "teaser": "A practitioner of care and continuity who asks whether the process still serves the living.",
+      "body": [
+        "A practitioner of care and continuity who asks whether the process still serves the living."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-06-pece",
+      "speakerId": "juros",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 109,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-06-pece",
+        "requiredChapterTitle": "kp-06-pece",
+        "mnemCost": 0,
+        "label": "After chapter kp-06-pece",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-konec-centralni-podpory",
+      "category": "systemy-protokoly",
+      "title": "End of central support",
+      "summary": "The moment infrastructure does not disappear, but stops answering.",
+      "details": [
+        "The moment infrastructure does not disappear, but stops answering."
+      ],
+      "teaser": "The moment infrastructure does not disappear, but stops answering.",
+      "body": [
+        "The moment infrastructure does not disappear, but stops answering."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-01-oznameni",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 110,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-01-oznameni",
+        "requiredChapterTitle": "kp-01-oznameni",
+        "mnemCost": 0,
+        "label": "After chapter kp-01-oznameni",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-protokol-tova",
+      "category": "systemy-protokoly",
+      "title": "TOVA protocol",
+      "summary": "A working method based on verifying reality, local intervention and accepting responsibility.",
+      "details": [
+        "A working method based on verifying reality, local intervention and accepting responsibility."
+      ],
+      "teaser": "A working method based on verifying reality, local intervention and accepting responsibility.",
+      "body": [
+        "A working method based on verifying reality, local intervention and accepting responsibility."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-12-tova",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 111,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-12-tova",
+        "requiredChapterTitle": "kp-12-tova",
+        "mnemCost": 0,
+        "label": "After chapter kp-12-tova",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-komfortni-zona",
+      "category": "mista",
+      "title": "Comfort zone",
+      "summary": "A place designed to remove discomfort, choice and eventually the ability to leave.",
+      "details": [
+        "A place designed to remove discomfort, choice and eventually the ability to leave."
+      ],
+      "teaser": "A place designed to remove discomfort, choice and eventually the ability to leave.",
+      "body": [
+        "A place designed to remove discomfort, choice and eventually the ability to leave."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-04-komfortni-zona",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 112,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-04-komfortni-zona",
+        "requiredChapterTitle": "kp-04-komfortni-zona",
+        "mnemCost": 0,
+        "label": "After chapter kp-04-komfortni-zona",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-reklamace",
+      "category": "udalosti",
+      "title": "Claim",
+      "summary": "An attempt to make a claim against a system that no longer has another side.",
+      "details": [
+        "An attempt to make a claim against a system that no longer has another side."
+      ],
+      "teaser": "An attempt to make a claim against a system that no longer has another side.",
+      "body": [
+        "An attempt to make a claim against a system that no longer has another side."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-14-reklamace",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 113,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-14-reklamace",
+        "requiredChapterTitle": "kp-14-reklamace",
+        "mnemCost": 0,
+        "label": "After chapter kp-14-reklamace",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-migrace",
+      "category": "udalosti",
+      "title": "Migration",
+      "summary": "Moving people and responsibility without a guarantee that the target system understands the original.",
+      "details": [
+        "Moving people and responsibility without a guarantee that the target system understands the original."
+      ],
+      "teaser": "Moving people and responsibility without a guarantee that the target system understands the original.",
+      "body": [
+        "Moving people and responsibility without a guarantee that the target system understands the original."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-15-migrace",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 114,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-15-migrace",
+        "requiredChapterTitle": "kp-15-migrace",
+        "mnemCost": 0,
+        "label": "After chapter kp-15-migrace",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-kontinuita",
+      "category": "koncepty",
+      "title": "Continuity",
+      "summary": "The question of what must persist for continuation to be more than a technical success.",
+      "details": [
+        "The question of what must persist for continuation to be more than a technical success."
+      ],
+      "teaser": "The question of what must persist for continuation to be more than a technical success.",
+      "body": [
+        "The question of what must persist for continuation to be more than a technical success."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-13-kontinuita",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 115,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-13-kontinuita",
+        "requiredChapterTitle": "kp-13-kontinuita",
+        "mnemCost": 0,
+        "label": "After chapter kp-13-kontinuita",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-rucni-rezim",
+      "category": "koncepty",
+      "title": "Manual mode",
+      "summary": "A state where decisions return to people together with error, work and responsibility.",
+      "details": [
+        "A state where decisions return to people together with error, work and responsibility."
+      ],
+      "teaser": "A state where decisions return to people together with error, work and responsibility.",
+      "body": [
+        "A state where decisions return to people together with error, work and responsibility."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-16-rucni-rezim",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 116,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-16-rucni-rezim",
+        "requiredChapterTitle": "kp-16-rucni-rezim",
+        "mnemCost": 0,
+        "label": "After chapter kp-16-rucni-rezim",
+        "lockedText": "This record awaits the matching trace from End of Support.",
+        "reason": "The record unlocks through progress in its source book."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
     }
   ],
   "categories": [

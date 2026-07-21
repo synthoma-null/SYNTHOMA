@@ -2,7 +2,9 @@ export type LibraryChapterState = 'free' | 'owned' | 'locked' | 'unavailable';
 
 export interface LibraryChapter {
   id: string;
+  ordinal?: string;
   title: string;
+  fullTitle?: string;
   path: string;
   filename: string;
   collectionSlug: string;

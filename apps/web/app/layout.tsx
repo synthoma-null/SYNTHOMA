@@ -7,6 +7,7 @@ import "../src/styles/themes.css";
 import "../src/styles/synthoma-os/index.css";
 import "../src/styles/synthoma-wordmark.css";
 import "../src/styles/reader.css";
+import "../src/styles/book-reader-base.css";
 import "../src/styles/auth.css";
 import "../src/styles/profile.css";
 import "../src/styles/paywall.css";

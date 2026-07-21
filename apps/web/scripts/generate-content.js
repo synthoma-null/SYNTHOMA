@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console -- This CLI reports generation results to stdout. */
 const fs = require('fs');
 const path = require('path');
 
@@ -78,6 +79,8 @@ function buildGeneratedOutputs(catalogModule) {
       ...publicCollection(collection),
       chapters: chapters.filter((chapter) => chapter.collection === collection.slug).map((chapter) => ({
         title: publicChapterTitle(chapter.title),
+        ordinal: chapter.ordinal,
+        fullTitle: chapter.fullTitle,
         path: chapter.publicPath,
         free: chapter.availability === 'published' && chapter.accessPolicy === 'free',
         ...(chapter.track ? { track: chapter.track } : {}),
@@ -96,7 +99,9 @@ function buildGeneratedOutputs(catalogModule) {
       ...publicCollection(collection),
       chapters: collectionChapters.map((chapter) => ({
         id: chapter.id,
-        title: chapter.title,
+        ordinal: chapter.ordinal,
+        title: chapter.displayTitle,
+        fullTitle: chapter.fullTitle,
         path: chapter.publicPath,
         filename: chapter.filename,
         collectionSlug: chapter.collection,
@@ -123,7 +128,9 @@ function buildGeneratedOutputs(catalogModule) {
   };
   const readerChapterIndex = chapters.map((chapter) => ({
     id: chapter.id,
-    title: chapter.title,
+    ordinal: chapter.ordinal,
+    title: chapter.displayTitle,
+    fullTitle: chapter.fullTitle,
     collection: chapter.collection,
     filename: chapter.filename,
     ...(chapter.filenameEn ? { filenameEn: chapter.filenameEn } : {}),

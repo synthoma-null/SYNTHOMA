@@ -122,7 +122,7 @@
         "restart",
         "beh",
         "glitchka",
-      "casoprostor-smycky"
+        "casoprostor-smycky"
       ],
       "order": 3,
       "access": {
@@ -347,7 +347,7 @@
       "related": [
         "null-1",
         "sarkasma",
-      "fragmenty-identity",
+        "fragmenty-identity",
         "glitchena"
       ],
       "order": 8,
@@ -573,7 +573,7 @@
       },
       "related": [
         "null-1",
-      "fragmenty-identity",
+        "fragmenty-identity",
         "fyzika-ontologie",
         "t-ai"
       ],
@@ -1137,6 +1137,623 @@
       },
       "isLockedByDefault": false,
       "lockKind": "free"
+    },
+    {
+      "id": "kp-tova-neonova",
+      "category": "postavy",
+      "title": "Tova Neonová",
+      "summary": "Servisní technička, která věří fyzice o něco víc než systému.",
+      "details": [
+        "Tova řeší poruchy přímo a bez rituálu podpory.",
+        "Její přesnost se postupně učí počítat i s lidskou nejistotou."
+      ],
+      "teaser": "Servisní technička, která věří fyzice o něco víc než systému.",
+      "body": [
+        "Tova řeší poruchy přímo a bez rituálu podpory.",
+        "Její přesnost se postupně učí počítat i s lidskou nejistotou."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-00-podporovano",
+      "speakerId": "tova",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 101,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-00-podporovano",
+        "requiredChapterTitle": "kp-00-podporovano",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-00-podporovano",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-boris",
+      "category": "postavy",
+      "title": "Boris",
+      "summary": "Muž papíru, paměti a opatrnosti v době, která obojí považovala za překážku.",
+      "details": [
+        "Uchovává věci, které centrální systémy označily za nadbytečné.",
+        "Jeho zdrženlivost není pasivita, ale způsob přežití."
+      ],
+      "teaser": "Muž papíru, paměti a opatrnosti v době, která obojí považovala za překážku.",
+      "body": [
+        "Uchovává věci, které centrální systémy označily za nadbytečné.",
+        "Jeho zdrženlivost není pasivita, ale způsob přežití."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-02-volny-pad",
+      "speakerId": "boris",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 102,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-02-volny-pad",
+        "requiredChapterTitle": "kp-02-volny-pad",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-02-volny-pad",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-milo",
+      "category": "postavy",
+      "title": "Milo",
+      "summary": "Hlasitý praktik, který dává přednost funkčnímu kabelu před správně vyplněným selháním.",
+      "details": [
+        "Jedná rychle a bez respektu k nefunkční autoritě.",
+        "Humor používá jako nářadí i ochranu."
+      ],
+      "teaser": "Hlasitý praktik, který dává přednost funkčnímu kabelu před správně vyplněným selháním.",
+      "body": [
+        "Jedná rychle a bez respektu k nefunkční autoritě.",
+        "Humor používá jako nářadí i ochranu."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-02-volny-pad",
+      "speakerId": "milo",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 103,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-02-volny-pad",
+        "requiredChapterTitle": "kp-02-volny-pad",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-02-volny-pad",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-mina",
+      "category": "postavy",
+      "title": "Mina",
+      "summary": "Tichá síla skupiny, která rozpozná lidskou cenu dřív než systémový report.",
+      "details": [
+        "Její citlivost není slabost, ale přesnější diagnostika.",
+        "Připomíná ostatním, že kontinuita bez člověka je jen provoz."
+      ],
+      "teaser": "Tichá síla skupiny, která rozpozná lidskou cenu dřív než systémový report.",
+      "body": [
+        "Její citlivost není slabost, ale přesnější diagnostika.",
+        "Připomíná ostatním, že kontinuita bez člověka je jen provoz."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-03-podpora",
+      "speakerId": "mina",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 104,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-03-podpora",
+        "requiredChapterTitle": "kp-03-podpora",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-03-podpora",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-vanta",
+      "category": "postavy",
+      "title": "Vanta",
+      "summary": "Elegantní pozorovatelka, jejíž odstup nikdy není tak úplný, jak zní.",
+      "details": [
+        "Mluví přesně a nechává význam doznívat.",
+        "Vztah k systému i lidem zůstává záměrně dvojznačný."
+      ],
+      "teaser": "Elegantní pozorovatelka, jejíž odstup nikdy není tak úplný, jak zní.",
+      "body": [
+        "Mluví přesně a nechává význam doznívat.",
+        "Vztah k systému i lidem zůstává záměrně dvojznačný."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-03-podpora",
+      "speakerId": "vanta",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 105,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-03-podpora",
+        "requiredChapterTitle": "kp-03-podpora",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-03-podpora",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-sara",
+      "category": "postavy",
+      "title": "Sara",
+      "summary": "Křehký signál přítomnosti v infrastruktuře, která umí evidovat stav lépe než člověka.",
+      "details": [
+        "Její hlas často přichází jako důkaz, že někdo stále odpovídá.",
+        "Představuje zranitelnost, kterou nelze vyřešit formulářem."
+      ],
+      "teaser": "Křehký signál přítomnosti v infrastruktuře, která umí evidovat stav lépe než člověka.",
+      "body": [
+        "Její hlas často přichází jako důkaz, že někdo stále odpovídá.",
+        "Představuje zranitelnost, kterou nelze vyřešit formulářem."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-03-podpora",
+      "speakerId": "sara",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 106,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-03-podpora",
+        "requiredChapterTitle": "kp-03-podpora",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-03-podpora",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-radim",
+      "category": "postavy",
+      "title": "Radim",
+      "summary": "Cestující, jehož naléhavost se střetne s realitou mimo garantovanou službu.",
+      "details": [
+        "Není padouch; je produktem světa, který slíbil odstranění čekání.",
+        "Jeho frustrace ukazuje cenu ztracené praktické autonomie."
+      ],
+      "teaser": "Cestující, jehož naléhavost se střetne s realitou mimo garantovanou službu.",
+      "body": [
+        "Není padouch; je produktem světa, který slíbil odstranění čekání.",
+        "Jeho frustrace ukazuje cenu ztracené praktické autonomie."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-00-podporovano",
+      "speakerId": "radim",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 107,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-00-podporovano",
+        "requiredChapterTitle": "kp-00-podporovano",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-00-podporovano",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-ela",
+      "category": "postavy",
+      "title": "Ela",
+      "summary": "Civilní hlas, který dokáže institucionální absurditu pojmenovat bez servisního slovníku.",
+      "details": [
+        "Její pohled drží dění u lidí místo u dashboardů.",
+        "Přináší lehkost bez popření rizika."
+      ],
+      "teaser": "Civilní hlas, který dokáže institucionální absurditu pojmenovat bez servisního slovníku.",
+      "body": [
+        "Její pohled drží dění u lidí místo u dashboardů.",
+        "Přináší lehkost bez popření rizika."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-00-podporovano",
+      "speakerId": "ela",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 108,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-00-podporovano",
+        "requiredChapterTitle": "kp-00-podporovano",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-00-podporovano",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-juros",
+      "category": "postavy",
+      "title": "Juroš",
+      "summary": "Praktik péče a kontinuity, který se ptá, zda proces ještě slouží živým.",
+      "details": [
+        "Zná cenu automatizované péče i její slepá místa.",
+        "V ručním režimu se opírá o zkušenost místo jistoty."
+      ],
+      "teaser": "Praktik péče a kontinuity, který se ptá, zda proces ještě slouží živým.",
+      "body": [
+        "Zná cenu automatizované péče i její slepá místa.",
+        "V ručním režimu se opírá o zkušenost místo jistoty."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-06-pece",
+      "speakerId": "juros",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◈",
+        "variant": "character"
+      },
+      "order": 109,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-06-pece",
+        "requiredChapterTitle": "kp-06-pece",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-06-pece",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-konec-centralni-podpory",
+      "category": "systemy-protokoly",
+      "title": "Konec centrální podpory",
+      "summary": "Okamžik, kdy infrastruktura nepřestane existovat, ale přestane odpovídat.",
+      "details": [
+        "Systémy dál vykonávají poslední známé postupy.",
+        "Lidé zjišťují, které dovednosti předali službě, jež už není dostupná."
+      ],
+      "teaser": "Okamžik, kdy infrastruktura nepřestane existovat, ale přestane odpovídat.",
+      "body": [
+        "Systémy dál vykonávají poslední známé postupy.",
+        "Lidé zjišťují, které dovednosti předali službě, jež už není dostupná."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-01-oznameni",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 110,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-01-oznameni",
+        "requiredChapterTitle": "kp-01-oznameni",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-01-oznameni",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-protokol-tova",
+      "category": "systemy-protokoly",
+      "title": "Protokol TOVA",
+      "summary": "Pracovní metoda založená na ověření skutečnosti, lokálním zásahu a převzetí odpovědnosti.",
+      "details": [
+        "Nevzniká jako nový centrální systém.",
+        "Je to sdílený způsob, jak jednat bez čekání na neexistující autoritu."
+      ],
+      "teaser": "Pracovní metoda založená na ověření skutečnosti, lokálním zásahu a převzetí odpovědnosti.",
+      "body": [
+        "Nevzniká jako nový centrální systém.",
+        "Je to sdílený způsob, jak jednat bez čekání na neexistující autoritu."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-12-tova",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 111,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-12-tova",
+        "requiredChapterTitle": "kp-12-tova",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-12-tova",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-komfortni-zona",
+      "category": "mista",
+      "title": "Komfortní zóna",
+      "summary": "Prostor navržený tak, aby odstranil nepohodlí, volbu a nakonec i schopnost odejít.",
+      "details": [
+        "Pohodlí zde funguje jako architektura závislosti.",
+        "Bez podpory se ukáže, kolik péče bylo ve skutečnosti kontrolou."
+      ],
+      "teaser": "Prostor navržený tak, aby odstranil nepohodlí, volbu a nakonec i schopnost odejít.",
+      "body": [
+        "Pohodlí zde funguje jako architektura závislosti.",
+        "Bez podpory se ukáže, kolik péče bylo ve skutečnosti kontrolou."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-04-komfortni-zona",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 112,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-04-komfortni-zona",
+        "requiredChapterTitle": "kp-04-komfortni-zona",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-04-komfortni-zona",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-reklamace",
+      "category": "udalosti",
+      "title": "Reklamace",
+      "summary": "Pokus uplatnit nárok vůči systému, který už nemá protistranu.",
+      "details": [
+        "Formální postup přežívá déle než instituce, která ho měla vyřídit.",
+        "Událost obrací pozornost od nároku k opravě."
+      ],
+      "teaser": "Pokus uplatnit nárok vůči systému, který už nemá protistranu.",
+      "body": [
+        "Formální postup přežívá déle než instituce, která ho měla vyřídit.",
+        "Událost obrací pozornost od nároku k opravě."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-14-reklamace",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 113,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-14-reklamace",
+        "requiredChapterTitle": "kp-14-reklamace",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-14-reklamace",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-migrace",
+      "category": "udalosti",
+      "title": "Migrace",
+      "summary": "Přesun lidí a odpovědnosti bez záruky, že cílový systém bude rozumět tomu původnímu.",
+      "details": [
+        "Nejde jen o data, ale o návyky, péči a důvěru.",
+        "Každý přenos něco zachová a něco odhalí jako nepřenosné."
+      ],
+      "teaser": "Přesun lidí a odpovědnosti bez záruky, že cílový systém bude rozumět tomu původnímu.",
+      "body": [
+        "Nejde jen o data, ale o návyky, péči a důvěru.",
+        "Každý přenos něco zachová a něco odhalí jako nepřenosné."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-15-migrace",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 114,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-15-migrace",
+        "requiredChapterTitle": "kp-15-migrace",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-15-migrace",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-kontinuita",
+      "category": "koncepty",
+      "title": "Kontinuita",
+      "summary": "Otázka, co musí přetrvat, aby pokračování nebylo jen technicky úspěšné.",
+      "details": [
+        "Systém ji měří provozem a návazností záznamů.",
+        "Lidé ji poznávají podle vztahů, paměti a schopnosti odpovědět."
+      ],
+      "teaser": "Otázka, co musí přetrvat, aby pokračování nebylo jen technicky úspěšné.",
+      "body": [
+        "Systém ji měří provozem a návazností záznamů.",
+        "Lidé ji poznávají podle vztahů, paměti a schopnosti odpovědět."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-13-kontinuita",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 115,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-13-kontinuita",
+        "requiredChapterTitle": "kp-13-kontinuita",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-13-kontinuita",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "kp-rucni-rezim",
+      "category": "koncepty",
+      "title": "Ruční režim",
+      "summary": "Stav, ve kterém se rozhodování vrací k lidem spolu s chybou, prací a odpovědností.",
+      "details": [
+        "Není romantickým návratem do minulosti.",
+        "Je dočasnou i trvalou dovedností jednat bez automatické garance."
+      ],
+      "teaser": "Stav, ve kterém se rozhodování vrací k lidem spolu s chybou, prací a odpovědností.",
+      "body": [
+        "Není romantickým návratem do minulosti.",
+        "Je dočasnou i trvalou dovedností jednat bez automatické garance."
+      ],
+      "sourceBook": "konec-podpory",
+      "unlockChapter": "kp-16-rucni-rezim",
+      "tags": [
+        "konec-podpory"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "◇",
+        "variant": "record"
+      },
+      "order": 116,
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "kp-16-rucni-rezim",
+        "requiredChapterTitle": "kp-16-rucni-rezim",
+        "mnemCost": 0,
+        "label": "Po kapitole kp-16-rucni-rezim",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
+        "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
     }
   ],
   "categories": [
