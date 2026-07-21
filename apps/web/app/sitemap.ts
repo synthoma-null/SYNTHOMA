@@ -32,7 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: ch.accessPolicy === 'free' ? 0.8 : 0.5,
-      ...localized(`${PUBLIC_SITE_URL}/chapter/${ch.id}`),
+      alternates: { languages: ch.filenameEn
+        ? { cs: `${PUBLIC_SITE_URL}/chapter/${ch.id}`, en: `${PUBLIC_SITE_URL}/chapter/${ch.id}?locale=en`, 'x-default': `${PUBLIC_SITE_URL}/chapter/${ch.id}` }
+        : { cs: `${PUBLIC_SITE_URL}/chapter/${ch.id}`, 'x-default': `${PUBLIC_SITE_URL}/chapter/${ch.id}` } },
     }));
 
   const archivePages: MetadataRoute.Sitemap = getPublicArchive('cs').map((entry) => ({

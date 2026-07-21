@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import archiveCardsCs from '../../../public/data/archiveCards.json';
 import archiveCardsEn from '../../../public/data/archiveCards_en.json';
-import { BOOK_COLLECTION, CHAPTER_CATALOG, getChapterCatalogEntry } from '../../content/catalog';
+import { BOOK_COLLECTIONS, CHAPTER_CATALOG, getBookCollection, getChapterCatalogEntry } from '../../content/catalog';
 import { CYKLUS_CARDS } from '../../game/cyklus/cyklusCards';
 import type { SwipeCard } from '../../game/cyklus/cyklusTypes';
 import { normalizeArchiveCards } from '../../lib/synthoma/archive/normalizeArchiveEntries';
@@ -21,6 +21,7 @@ import {
 
 export interface PublicChapterDocument {
   id: string;
+  bookId: string;
   title: string;
   locale: PublicLocale;
   sourceLocale: PublicLocale;
@@ -40,8 +41,11 @@ export interface PublicChapterDocument {
 export async function getPublicChapterDocument(reference: string, locale: PublicLocale): Promise<PublicChapterDocument | null> {
   const chapter = getChapterCatalogEntry(reference);
   if (!chapter) return null;
+  const collection = getBookCollection(chapter.collection);
+  if (!collection) return null;
   const visibility = resolveChapterPublicVisibility(chapter);
-  const index = CHAPTER_CATALOG.findIndex((entry) => entry.id === chapter.id);
+  const collectionChapters = CHAPTER_CATALOG.filter((entry) => entry.collection === chapter.collection);
+  const index = collectionChapters.findIndex((entry) => entry.id === chapter.id);
   let bodyHtml: string | null = null;
   let text: string | null = null;
   let markdown: string | null = null;
@@ -63,6 +67,7 @@ export async function getPublicChapterDocument(reference: string, locale: Public
 
   return {
     id: chapter.id,
+    bookId: collection.publicId,
     title: locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title,
     locale,
     sourceLocale,
@@ -75,8 +80,8 @@ export async function getPublicChapterDocument(reference: string, locale: Public
     text,
     markdown,
     wordCount,
-    previousId: index > 0 ? CHAPTER_CATALOG[index - 1]?.id ?? null : null,
-    nextId: index >= 0 ? CHAPTER_CATALOG[index + 1]?.id ?? null : null,
+    previousId: index > 0 ? collectionChapters[index - 1]?.id ?? null : null,
+    nextId: index >= 0 ? collectionChapters[index + 1]?.id ?? null : null,
   };
 }
 
@@ -85,19 +90,28 @@ export async function getPublicChapters(locale: PublicLocale): Promise<PublicCha
     .then((entries) => entries.filter((entry): entry is PublicChapterDocument => Boolean(entry)));
 }
 
-export async function getPublicBook(locale: PublicLocale) {
-  const chapters = await getPublicChapters(locale);
+export async function getPublicBook(locale: PublicLocale, reference = 'synthoma-null') {
+  const collection = getBookCollection(reference);
+  if (!collection) return null;
+  const chapters = await Promise.all(
+    CHAPTER_CATALOG
+      .filter((chapter) => chapter.collection === collection.slug)
+      .map((chapter) => getPublicChapterDocument(chapter.id, locale)),
+  ).then((entries) => entries.filter((entry): entry is PublicChapterDocument => Boolean(entry)));
   return {
-    id: 'synthoma-null',
+    id: collection.publicId,
     locale,
-    title: BOOK_COLLECTION.title,
+    title: collection.title,
     canonicalUrl: absolutePublicUrl('/books'),
     updatedAt: PUBLIC_CONTENT_UPDATED_AT,
-    description: locale === 'en'
-      ? 'An interactive glitch-noir book about memory, identity and a system that refuses to forget.'
-      : 'Interaktivni glitch-noir kniha o pameti, identite a systemu, ktery odmita zapomenout.',
+    description: collection.description,
     chapters,
   };
+}
+
+export async function getPublicBooks(locale: PublicLocale) {
+  return Promise.all(BOOK_COLLECTIONS.map((collection) => getPublicBook(locale, collection.publicId)))
+    .then((books) => books.filter((book): book is NonNullable<typeof book> => Boolean(book)));
 }
 
 function archiveSource(locale: PublicLocale): ArchiveCard[] {

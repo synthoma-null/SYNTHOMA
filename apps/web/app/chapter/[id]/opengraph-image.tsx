@@ -1,9 +1,9 @@
 import { ImageResponse } from 'next/og';
 import { notFound } from 'next/navigation';
-import { getChapterCatalogEntry } from '../../../src/content/catalog';
+import { getBookCollection, getChapterCatalogEntry } from '../../../src/content/catalog';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 
-export const alt = 'Kapitola SYNTHOMA-NULL';
+export const alt = 'Kapitola SYNTHOMA';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -13,8 +13,9 @@ export default async function ChapterOpenGraphImage({ params }: { params: Promis
   const { id } = await params;
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
+  const collection = getBookCollection(chapter.collection);
   const presentation = getChapterPresentation(chapter.id);
-  const poster = `${BASE_URL}${presentation?.poster ?? '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png'}`;
+  const poster = `${BASE_URL}${presentation?.poster ?? collection?.cover ?? '/assets/og-synthoma.png'}`;
 
   return new ImageResponse(
     <div
@@ -35,7 +36,7 @@ export default async function ChapterOpenGraphImage({ params }: { params: Promis
           {chapter.title}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '18px', fontSize: 27, color: '#c8cadb' }}>
-          <span>SYNTHOMA-NULL</span><span style={{ color: '#ff4fd8' }}>{'//'}</span><span>INTERAKTIVNÍ ROMÁN</span>
+          <span>{collection?.title ?? 'SYNTHOMA'}</span><span style={{ color: '#ff4fd8' }}>{'//'}</span><span>INTERAKTIVNÍ ROMÁN</span>
         </div>
       </div>
     </div>,

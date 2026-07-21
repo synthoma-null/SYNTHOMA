@@ -188,6 +188,158 @@
     "packageIds": []
   },
   {
+    "key": "chapter:kp-00-podporovano",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html"
+  },
+  {
+    "key": "chapter:kp-01-oznameni",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html"
+  },
+  {
+    "key": "chapter:kp-02-volny-pad",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html"
+  },
+  {
+    "key": "chapter:kp-03-podpora",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html"
+  },
+  {
+    "key": "chapter:kp-04-komfortni-zona",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html"
+  },
+  {
+    "key": "chapter:kp-05-objizdka",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html"
+  },
+  {
+    "key": "chapter:kp-06-pece",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html"
+  },
+  {
+    "key": "chapter:kp-07-zasilka",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html"
+  },
+  {
+    "key": "chapter:kp-08-domov",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html"
+  },
+  {
+    "key": "chapter:kp-09-neopravneny-uzivatel",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html"
+  },
+  {
+    "key": "chapter:kp-10-ticho",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html"
+  },
+  {
+    "key": "chapter:kp-11-beta",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html"
+  },
+  {
+    "key": "chapter:kp-12-tova",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html"
+  },
+  {
+    "key": "chapter:kp-13-kontinuita",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html"
+  },
+  {
+    "key": "chapter:kp-14-reklamace",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html"
+  },
+  {
+    "key": "chapter:kp-15-migrace",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html"
+  },
+  {
+    "key": "chapter:kp-16-rucni-rezim",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html"
+  },
+  {
+    "key": "chapter:kp-17-zadna-odpoved",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html"
+  },
+  {
+    "key": "chapter:kp-18-konec-podpory",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html"
+  },
+  {
     "key": "package:single-fragment",
     "availability": "published",
     "accessPolicy": "entitlement",

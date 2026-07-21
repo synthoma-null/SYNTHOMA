@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CHAPTER_CATALOG, type ChapterCatalogEntry } from '../../../src/content/catalog';
+import { CHAPTER_CATALOG, getBookCollection, type ChapterCatalogEntry } from '../../../src/content/catalog';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 import ChapterBackground from '../../../src/components/reader/ChapterBackground';
 import ChapterReadingProgress from '../../../src/components/reader/ChapterReadingProgress';
@@ -26,11 +26,16 @@ export default function ChapterReaderArticle({
   bodyHtml,
   publicMachineLinks = false,
 }: Props) {
-  const published = CHAPTER_CATALOG.filter((entry) => entry.availability === 'published');
+  const published = CHAPTER_CATALOG.filter((entry) =>
+    entry.availability === 'published' && entry.collection === chapter.collection,
+  );
   const index = published.findIndex((entry) => entry.id === chapter.id);
   const previous = index > 0 ? published[index - 1] : undefined;
   const next = index >= 0 ? published[index + 1] : undefined;
   const presentation = getChapterPresentation(chapter.id);
+  const collection = getBookCollection(chapter.collection);
+  const isKonecPodpory = collection?.slug === 'konec-podpory';
+  const chapterCode = String(chapter.order ?? 0).padStart(2, '0');
   const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
   const copy = locale === 'en'
     ? { library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
@@ -38,6 +43,7 @@ export default function ChapterReaderArticle({
 
   return (
     <main className="chapter-reader" id="main-content">
+      {collection?.stylesheet ? <link rel="stylesheet" href={collection.stylesheet} /> : null}
       {presentation ? <ChapterBackground presentation={presentation} /> : null}
       <ChapterReadingProgress
         chapterId={chapter.id}
@@ -56,9 +62,11 @@ export default function ChapterReaderArticle({
           <span>{title}</span>
         </span>
         <div className="chapter-reader__command-end">
-          <Link className="chapter-reader__command" href={`${chapter.route}${locale === 'en' ? '' : '?locale=en'}`} hrefLang={locale === 'en' ? 'cs' : 'en'}>
-            {locale === 'en' ? 'CS' : 'EN'}
-          </Link>
+          {chapter.filenameEn ? (
+            <Link className="chapter-reader__command" href={`${chapter.route}${locale === 'en' ? '' : '?locale=en'}`} hrefLang={locale === 'en' ? 'cs' : 'en'}>
+              {locale === 'en' ? 'CS' : 'EN'}
+            </Link>
+          ) : null}
           <ReaderCommandUtilities articleId="chapter-reader-article" locale={locale} />
         </div>
       </header>
@@ -71,8 +79,10 @@ export default function ChapterReaderArticle({
         tabIndex={-1}
       >
         <div
-          className="chapter-content reader-decisions-pending"
+          className={`chapter-content reader-decisions-pending${isKonecPodpory ? ' kp-chapter' : ''}`}
           id="chapter-reader-decisions"
+          data-book={isKonecPodpory ? 'konec-podpory' : undefined}
+          data-chapter={isKonecPodpory ? chapterCode : undefined}
           data-reader-decisions="pending"
           aria-busy="true"
           inert

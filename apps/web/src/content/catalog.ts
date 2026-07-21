@@ -98,15 +98,64 @@ type ArchiveCard = {
   };
 };
 
-export const BOOK_COLLECTION = {
+export interface BookCollectionDefinition {
+  slug: string;
+  publicId: string;
+  directory: string;
+  title: string;
+  shortTitle: string;
+  description: string;
+  cover?: string;
+  stylesheet?: string;
+  language: 'cs';
+  order: number;
+  status: 'complete' | 'ongoing';
+}
+
+export const BOOK_COLLECTION: BookCollectionDefinition = {
   slug: 'SYNTHOMA-NULL',
+  publicId: 'synthoma-null',
+  directory: 'SYNTHOMA-NULL',
   title: 'SYNTHOMA-NULL',
+  shortTitle: 'SYNTHOMA-NULL',
+  description: 'Interaktivní glitch-noir kniha o paměti, identitě a systému, který odmítá zapomenout.',
   cover: '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png',
-} as const;
+  language: 'cs',
+  order: 0,
+  status: 'ongoing',
+};
+
+export const KONEC_PODPORY_COLLECTION: BookCollectionDefinition = {
+  slug: 'konec-podpory',
+  publicId: 'konec-podpory',
+  directory: 'SYNTHOMA-KONEC_PODPORY',
+  title: 'SYNTHOMA: KONEC PODPORY',
+  shortTitle: 'KONEC PODPORY',
+  description: 'Ve světě, který přenechal systému péči, dopravu, identitu i vlastní rozhodování, skončí centrální podpora. Tova Neonová a ostatní musí zjistit, zda lidé ještě dokážou fungovat bez platformy, která je měla chránit a mezitím je naučila bezmocnosti.',
+  stylesheet: '/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css',
+  language: 'cs',
+  order: 1,
+  status: 'complete',
+};
+
+export const BOOK_COLLECTIONS: readonly BookCollectionDefinition[] = [
+  BOOK_COLLECTION,
+  KONEC_PODPORY_COLLECTION,
+];
+
+export function getBookCollection(reference: string): BookCollectionDefinition | undefined {
+  const normalized = reference.toLowerCase();
+  return BOOK_COLLECTIONS.find((collection) =>
+    collection.slug.toLowerCase() === normalized
+    || collection.publicId.toLowerCase() === normalized
+    || collection.directory.toLowerCase() === normalized,
+  );
+}
 
 interface CanonicalChapterDefinition {
   id: string;
   title: string;
+  collection?: string;
   filename?: string;
   filenameEn?: string;
   order: number;
@@ -271,6 +320,101 @@ const CANONICAL_CHAPTER_DEFINITIONS: CanonicalChapterDefinition[] = [
     id: '0-20-genesis', title: '0-20 [GENESIS]', order: 21, status: 'draft',
     backgroundVideo: '/video/SYNTHOMA31.webm', summary: 'Začátek, který je zároveň koncem. Smyčka se uzavírá.',
   },
+  {
+    id: 'kp-00-podporovano', title: '00. PODPOROVÁNO', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html', order: 0, status: 'final', free: true,
+    aliases: ['konec-podpory-00', 'podporovano'],
+  },
+  {
+    id: 'kp-01-oznameni', title: '01. OZNÁMENÍ', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html', order: 1, status: 'final', free: true,
+    aliases: ['konec-podpory-01', 'oznameni'],
+  },
+  {
+    id: 'kp-02-volny-pad', title: '02. VOLNÝ PÁD', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html', order: 2, status: 'final', free: true,
+    aliases: ['konec-podpory-02', 'volny-pad'],
+  },
+  {
+    id: 'kp-03-podpora', title: '03. PODPORA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_03_PODPORA.html', order: 3, status: 'final', free: true,
+    aliases: ['konec-podpory-03'],
+  },
+  {
+    id: 'kp-04-komfortni-zona', title: '04. KOMFORTNÍ ZÓNA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html', order: 4, status: 'final', free: true,
+    aliases: ['konec-podpory-04', 'komfortni-zona'],
+  },
+  {
+    id: 'kp-05-objizdka', title: '05. OBJÍŽĎKA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html', order: 5, status: 'final', free: true,
+    aliases: ['konec-podpory-05', 'objizdka'],
+  },
+  {
+    id: 'kp-06-pece', title: '06. PÉČE', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_06_PECE.html', order: 6, status: 'final', free: true,
+    aliases: ['konec-podpory-06', 'pece'],
+  },
+  {
+    id: 'kp-07-zasilka', title: '07. ZÁSILKA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html', order: 7, status: 'final', free: true,
+    aliases: ['konec-podpory-07', 'zasilka'],
+  },
+  {
+    id: 'kp-08-domov', title: '08. DOMOV', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_08_DOMOV.html', order: 8, status: 'final', free: true,
+    aliases: ['konec-podpory-08'],
+  },
+  {
+    id: 'kp-09-neopravneny-uzivatel', title: '09. NEOPRÁVNĚNÝ UŽIVATEL', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html', order: 9, status: 'final', free: true,
+    aliases: ['konec-podpory-09', 'neopravneny-uzivatel'],
+  },
+  {
+    id: 'kp-10-ticho', title: '10. TICHO', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_10_TICHO.html', order: 10, status: 'final', free: true,
+    aliases: ['konec-podpory-10'],
+  },
+  {
+    id: 'kp-11-beta', title: '11. BETA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_11_BETA.html', order: 11, status: 'final', free: true,
+    aliases: ['konec-podpory-11'],
+  },
+  {
+    id: 'kp-12-tova', title: '12. TOVA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_12_TOVA.html', order: 12, status: 'final', free: true,
+    aliases: ['konec-podpory-12', 'tova'],
+  },
+  {
+    id: 'kp-13-kontinuita', title: '13. KONTINUITA', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html', order: 13, status: 'final', free: true,
+    aliases: ['konec-podpory-13'],
+  },
+  {
+    id: 'kp-14-reklamace', title: '14. REKLAMACE', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html', order: 14, status: 'final', free: true,
+    aliases: ['konec-podpory-14'],
+  },
+  {
+    id: 'kp-15-migrace', title: '15. MIGRACE', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html', order: 15, status: 'final', free: true,
+    aliases: ['konec-podpory-15'],
+  },
+  {
+    id: 'kp-16-rucni-rezim', title: '16. RUČNÍ REŽIM', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html', order: 16, status: 'final', free: true,
+    aliases: ['konec-podpory-16', 'rucni-rezim'],
+  },
+  {
+    id: 'kp-17-zadna-odpoved', title: '17. ŽÁDNÁ ODPOVĚĎ', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html', order: 17, status: 'final', free: true,
+    aliases: ['konec-podpory-17', 'zadna-odpoved'],
+  },
+  {
+    id: 'kp-18-konec-podpory', title: '18. KONEC PODPORY', collection: 'konec-podpory',
+    filename: 'SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html', order: 18, status: 'final', free: true,
+    aliases: ['konec-podpory-18'],
+  },
 ];
 
 function optional<T>(value: T | undefined): T | undefined {
@@ -278,6 +422,8 @@ function optional<T>(value: T | undefined): T | undefined {
 }
 
 function chapterCatalogEntry(chapter: CanonicalChapterDefinition): ChapterCatalogEntry {
+  const collection = getBookCollection(chapter.collection ?? BOOK_COLLECTION.slug);
+  if (!collection) throw new Error(`Unknown book collection: ${chapter.collection}`);
   const filename = chapter.filename ?? `${chapter.title}.html`;
   const published = chapter.status === 'final';
   const free = published && chapter.free === true;
@@ -285,10 +431,10 @@ function chapterCatalogEntry(chapter: CanonicalChapterDefinition): ChapterCatalo
     id: chapter.id,
     type: 'chapter',
     title: chapter.title,
-    collection: BOOK_COLLECTION.slug,
+    collection: collection.slug,
     filename,
     ...(chapter.filenameEn ? { filenameEn: chapter.filenameEn } : {}),
-    publicPath: `/books/${BOOK_COLLECTION.slug}/${filename}`,
+    publicPath: `/books/${collection.directory}/${filename}`,
     availability: published ? 'published' : 'unavailable',
     accessPolicy: free ? 'free' : 'entitlement',
     mnemCost: free ? 0 : published ? chapter.mnemCost ?? 64 : null,
@@ -298,8 +444,8 @@ function chapterCatalogEntry(chapter: CanonicalChapterDefinition): ChapterCatalo
     route: `/chapter/${chapter.id}`,
     ...(published ? {
       sourcePath: free
-        ? `public/books/${BOOK_COLLECTION.slug}/${filename}`
-        : `src/content/protected/${BOOK_COLLECTION.slug}/${filename}`,
+        ? `public/books/${collection.directory}/${filename}`
+        : `src/content/protected/${collection.directory}/${filename}`,
     } : {}),
     ...(chapter.track ? { track: chapter.track } : {}),
     ...(chapter.backgroundVideo ? { backgroundVideo: chapter.backgroundVideo } : {}),
@@ -317,7 +463,10 @@ function chapterCatalogEntry(chapter: CanonicalChapterDefinition): ChapterCatalo
 
 export const CHAPTER_CATALOG: readonly ChapterCatalogEntry[] = CANONICAL_CHAPTER_DEFINITIONS
   .map(chapterCatalogEntry)
-  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  .sort((a, b) => {
+    const collectionOrder = (getBookCollection(a.collection)?.order ?? 0) - (getBookCollection(b.collection)?.order ?? 0);
+    return collectionOrder || (a.order ?? 0) - (b.order ?? 0);
+  });
 
 const packageEntries: CatalogEntry[] = PACKAGES.map((item) => ({
   id: item.id,
@@ -515,8 +664,11 @@ export function getChapterCatalogEntry(reference: string): ChapterCatalogEntry |
 export function getNextChapter(reference: string): ChapterCatalogEntry | undefined {
   const id = resolveChapterId(reference);
   if (!id) return undefined;
-  const index = CHAPTER_CATALOG.findIndex((chapter) => chapter.id === id);
-  return index >= 0 ? optional(CHAPTER_CATALOG[index + 1]) : undefined;
+  const current = CHAPTER_CATALOG.find((chapter) => chapter.id === id);
+  if (!current) return undefined;
+  const collectionChapters = CHAPTER_CATALOG.filter((chapter) => chapter.collection === current.collection);
+  const index = collectionChapters.findIndex((chapter) => chapter.id === id);
+  return index >= 0 ? optional(collectionChapters[index + 1]) : undefined;
 }
 
 export function getPackageChapterIds(packageId: string): readonly string[] {

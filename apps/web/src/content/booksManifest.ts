@@ -271,6 +271,196 @@ export const CHAPTERS: Chapter[] = [
     "teaser": "„Archiv se otevřel. To, co vypadalo jako konec, byl jen vstupní protokol.\"",
     "teaser_en": "\"The archive opened. What looked like an ending was just an entry protocol.\"",
     "estimatedMinutes": 30
+  },
+  {
+    "id": "kp-00-podporovano",
+    "title": "00. PODPOROVÁNO",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 0,
+    "packageIds": []
+  },
+  {
+    "id": "kp-01-oznameni",
+    "title": "01. OZNÁMENÍ",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 1,
+    "packageIds": []
+  },
+  {
+    "id": "kp-02-volny-pad",
+    "title": "02. VOLNÝ PÁD",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 2,
+    "packageIds": []
+  },
+  {
+    "id": "kp-03-podpora",
+    "title": "03. PODPORA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 3,
+    "packageIds": []
+  },
+  {
+    "id": "kp-04-komfortni-zona",
+    "title": "04. KOMFORTNÍ ZÓNA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 4,
+    "packageIds": []
+  },
+  {
+    "id": "kp-05-objizdka",
+    "title": "05. OBJÍŽĎKA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 5,
+    "packageIds": []
+  },
+  {
+    "id": "kp-06-pece",
+    "title": "06. PÉČE",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 6,
+    "packageIds": []
+  },
+  {
+    "id": "kp-07-zasilka",
+    "title": "07. ZÁSILKA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 7,
+    "packageIds": []
+  },
+  {
+    "id": "kp-08-domov",
+    "title": "08. DOMOV",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 8,
+    "packageIds": []
+  },
+  {
+    "id": "kp-09-neopravneny-uzivatel",
+    "title": "09. NEOPRÁVNĚNÝ UŽIVATEL",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 9,
+    "packageIds": []
+  },
+  {
+    "id": "kp-10-ticho",
+    "title": "10. TICHO",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 10,
+    "packageIds": []
+  },
+  {
+    "id": "kp-11-beta",
+    "title": "11. BETA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 11,
+    "packageIds": []
+  },
+  {
+    "id": "kp-12-tova",
+    "title": "12. TOVA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 12,
+    "packageIds": []
+  },
+  {
+    "id": "kp-13-kontinuita",
+    "title": "13. KONTINUITA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 13,
+    "packageIds": []
+  },
+  {
+    "id": "kp-14-reklamace",
+    "title": "14. REKLAMACE",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 14,
+    "packageIds": []
+  },
+  {
+    "id": "kp-15-migrace",
+    "title": "15. MIGRACE",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 15,
+    "packageIds": []
+  },
+  {
+    "id": "kp-16-rucni-rezim",
+    "title": "16. RUČNÍ REŽIM",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 16,
+    "packageIds": []
+  },
+  {
+    "id": "kp-17-zadna-odpoved",
+    "title": "17. ŽÁDNÁ ODPOVĚĎ",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 17,
+    "packageIds": []
+  },
+  {
+    "id": "kp-18-konec-podpory",
+    "title": "18. KONEC PODPORY",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 18,
+    "packageIds": []
   }
 ];
 // </content:generated-chapters>

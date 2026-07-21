@@ -30,9 +30,10 @@ export async function GET(
   if (!current) {
     return NextResponse.json({ error: 'CHAPTER_NOT_FOUND' }, { status: 404 });
   }
-  const index = CHAPTER_CATALOG.findIndex((chapter) => chapter.id === current.id);
-  const previous = index > 0 ? CHAPTER_CATALOG[index - 1] : undefined;
-  const next = index >= 0 ? CHAPTER_CATALOG[index + 1] : undefined;
+  const collectionChapters = CHAPTER_CATALOG.filter((chapter) => chapter.collection === current.collection);
+  const index = collectionChapters.findIndex((chapter) => chapter.id === current.id);
+  const previous = index > 0 ? collectionChapters[index - 1] : undefined;
+  const next = index >= 0 ? collectionChapters[index + 1] : undefined;
   const session = await auth();
   const adjacent = [previous, next].filter((chapter): chapter is ChapterCatalogEntry => Boolean(chapter));
   let snapshot = null;

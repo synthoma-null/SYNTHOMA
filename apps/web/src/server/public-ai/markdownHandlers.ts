@@ -22,9 +22,11 @@ export async function archiveMarkdownRoute(localeValue: string): Promise<Respons
   return locale instanceof Response ? locale : publicMarkdown(await archiveMarkdown(locale));
 }
 
-export async function bookMarkdownRoute(localeValue: string): Promise<Response> {
+export async function bookMarkdownRoute(localeValue: string, id = 'synthoma-null'): Promise<Response> {
   const locale = localeOrResponse(localeValue);
-  return locale instanceof Response ? locale : publicMarkdown(await bookMarkdown(locale));
+  if (locale instanceof Response) return locale;
+  const markdown = await bookMarkdown(locale, id);
+  return markdown ? publicMarkdown(markdown) : publicMarkdown('# Unknown book\n', 404);
 }
 
 export async function chapterMarkdownRoute(localeValue: string, path: string[]): Promise<Response> {

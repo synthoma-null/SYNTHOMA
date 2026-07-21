@@ -29,7 +29,8 @@ describe('chapter SEO contracts', () => {
       const chapter = published[index]!;
       expect(entry.description).toBeTruthy();
       expect(entry.alternates?.canonical).toBe(`https://www.synthoma.cz/chapter/${chapter.id}`);
-      expect(entry.alternates?.languages).toMatchObject({ cs: expect.any(String), en: expect.any(String), 'x-default': expect.any(String) });
+      expect(entry.alternates?.languages).toMatchObject({ cs: expect.any(String), 'x-default': expect.any(String) });
+      if (chapter.filenameEn) expect(entry.alternates?.languages).toMatchObject({ en: expect.any(String) });
       const images = entry.openGraph?.images;
       const firstImage = Array.isArray(images) ? images[0] : images;
       expect(firstImage).toMatchObject({ url: `https://www.synthoma.cz/chapter/${chapter.id}/opengraph-image` });
@@ -47,6 +48,8 @@ describe('chapter SEO contracts', () => {
   it('keeps sitemap and robots on canonical public routes', () => {
     const urls = sitemap().map((entry) => entry.url);
     expect(urls).toContain('https://www.synthoma.cz/chapter/0-inf-restart');
+    expect(urls).toContain('https://www.synthoma.cz/chapter/kp-00-podporovano');
+    expect(urls).toContain('https://www.synthoma.cz/chapter/kp-18-konec-podpory');
     expect(urls).not.toContain('https://www.synthoma.cz/chapter/0-12-conflict');
     expect(urls.some((url) => url.includes('/reader'))).toBe(false);
 

@@ -14,8 +14,9 @@ export async function llmsIndex(): Promise<string> {
 - [Start Cyklus](${absolutePublicUrl('/cyklus')})
 - [Understand the world](${absolutePublicUrl('/archive')})
 
-## Free book
-- [Book index](${absolutePublicUrl('/ai/en/books/synthoma-null.md')})
+## Free books
+- [SYNTHOMA-NULL index](${absolutePublicUrl('/ai/en/books/synthoma-null.md')})
+- [SYNTHOMA: KONEC PODPORY index](${absolutePublicUrl('/ai/en/books/konec-podpory.md')})
 ${chapters.map((chapter) => `- [${chapter.title}](${absolutePublicUrl(`/ai/en/chapters/${chapter.id}.md`)})`).join('\n')}
 
 ## Archive

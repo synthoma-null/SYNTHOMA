@@ -69,6 +69,8 @@ describe('public discovery contracts', () => {
     expect(cycle).not.toContain('cyklus-public-intro');
     expect(cycle).not.toContain('cyklus-ai-discovery');
     expect(archive.indexOf('archive-public-content')).toBeLessThan(archive.indexOf('<SynthomaArchive'));
+    expect(archive).toContain('getLibraryCatalog');
+    expect(archive).toContain('KNIHY V ARCHIVU');
     expect(books.indexOf('<noscript>')).toBeLessThan(books.indexOf('<SynthomaLibrary'));
   });
 

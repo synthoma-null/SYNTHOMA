@@ -4,6 +4,7 @@ import {
   getPublicArchiveEntry,
   getPublicAuthor,
   getPublicBook,
+  getPublicBooks,
   getPublicChapterDocument,
   getPublicChapters,
 } from './contentService';
@@ -47,30 +48,30 @@ export async function authorApi(request: Request): Promise<Response> {
 export async function booksApi(request: Request): Promise<Response> {
   const locale = localeOrError(request);
   if (locale instanceof Response) return locale;
-  const book = await getPublicBook(locale);
+  const books = await getPublicBooks(locale);
   return publicJson(request, publicEnvelope({
     id: 'books', locale, title: locale === 'cs' ? 'Knihovna' : 'Library', canonicalUrl: absolutePublicUrl('/books'), visibility: 'publicFull',
-    data: { items: [{ id: book.id, title: book.title, description: book.description, chapterCount: book.chapters.length }] },
-    links: { self: absolutePublicUrl(`/api/public/v1/books?locale=${locale}`), human: absolutePublicUrl('/books'), markdown: absolutePublicUrl(`/ai/${locale}/books/synthoma-null.md`) },
+    data: { items: books.map((book) => ({ id: book.id, title: book.title, description: book.description, chapterCount: book.chapters.length })) },
+    links: { self: absolutePublicUrl(`/api/public/v1/books?locale=${locale}`), human: absolutePublicUrl('/books') },
   }));
 }
 
 export async function bookApi(request: Request, id: string): Promise<Response> {
   const locale = localeOrError(request);
   if (locale instanceof Response) return locale;
-  if (id !== 'synthoma-null') return publicError(request, 404, 'NOT_FOUND', 'Unknown public book.');
-  const book = await getPublicBook(locale);
+  const book = await getPublicBook(locale, id);
+  if (!book) return publicError(request, 404, 'NOT_FOUND', 'Unknown public book.');
   return publicJson(request, publicEnvelope({
     id: book.id, locale, title: book.title, canonicalUrl: book.canonicalUrl, visibility: 'publicFull', updatedAt: book.updatedAt,
     data: { description: book.description, chapters: book.chapters.map(chapterMetadata) },
-    links: { self: absolutePublicUrl(`/api/public/v1/books/${book.id}?locale=${locale}`), human: book.canonicalUrl, markdown: absolutePublicUrl(`/ai/${locale}/books/synthoma-null.md`) },
+    links: { self: absolutePublicUrl(`/api/public/v1/books/${book.id}?locale=${locale}`), human: book.canonicalUrl, markdown: absolutePublicUrl(`/ai/${locale}/books/${book.id}.md`) },
   }));
 }
 
 function chapterMetadata(chapter: Awaited<ReturnType<typeof getPublicChapterDocument>> & {}) {
   if (!chapter) return null;
   return {
-    id: chapter.id, title: chapter.title, status: chapter.status, visibility: chapter.visibility,
+    id: chapter.id, bookId: chapter.bookId, title: chapter.title, status: chapter.status, visibility: chapter.visibility,
     summary: chapter.summary, canonicalUrl: chapter.canonicalUrl, wordCount: chapter.wordCount,
   };
 }
@@ -84,7 +85,7 @@ export async function chaptersApi(request: Request): Promise<Response> {
   return publicJson(request, publicEnvelope({
     id: 'chapters', locale, title: locale === 'cs' ? 'Kapitoly' : 'Chapters', canonicalUrl: absolutePublicUrl('/books'), visibility: 'publicFull',
     data: page,
-    links: { self: request.url, human: absolutePublicUrl('/books'), book: absolutePublicUrl(`/api/public/v1/books/synthoma-null?locale=${locale}`) },
+    links: { self: request.url, human: absolutePublicUrl('/books') },
   }));
 }
 
@@ -102,6 +103,7 @@ export async function chapterApi(request: Request, id: string): Promise<Response
     links: {
       self: absolutePublicUrl(`/api/public/v1/chapters/${chapter.id}?locale=${locale}`), human: chapter.canonicalUrl,
       markdown: absolutePublicUrl(`/ai/${locale}/chapters/${chapter.id}.md`),
+      book: absolutePublicUrl(`/api/public/v1/books/${chapter.bookId}?locale=${locale}`),
       previous: chapter.previousId ? absolutePublicUrl(`/chapter/${chapter.previousId}`) : null,
       next: chapter.nextId ? absolutePublicUrl(`/chapter/${chapter.nextId}`) : null,
     },

@@ -21,9 +21,15 @@ export interface LibraryChapter {
 
 export interface LibraryCollection {
   slug: string;
+  publicId?: string | undefined;
   title: string;
+  shortTitle?: string | undefined;
   cover?: string | undefined;
   description?: string | undefined;
+  stylesheet?: string | undefined;
+  language?: string | undefined;
+  order?: number | undefined;
+  status?: 'complete' | 'ongoing' | undefined;
   chapters: LibraryChapter[];
   availableCount: number;
   totalCount: number;

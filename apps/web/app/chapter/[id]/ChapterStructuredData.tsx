@@ -1,4 +1,4 @@
-import type { ChapterCatalogEntry } from '../../../src/content/catalog';
+import { getBookCollection, type ChapterCatalogEntry } from '../../../src/content/catalog';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 import { PUBLIC_CONTENT_UPDATED_AT } from '../../../src/server/public-ai/config';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
@@ -13,13 +13,18 @@ interface Props {
 }
 
 export default function ChapterStructuredData({ chapter, locale, accessibleForFree, wordCount }: Props) {
+  const collection = getBookCollection(chapter.collection);
+  const bookTitle = collection?.title ?? chapter.collection;
   const canonical = `${BASE_URL}${chapter.route}${locale === 'en' ? '?locale=en' : ''}`;
   const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
+  const englishFallback = collection?.publicId === 'synthoma-null'
+    ? `Read ${title}, a chapter of the interactive psychological novel SYNTHOMA-NULL.`
+    : `Read ${title}, a chapter of ${bookTitle}.`;
   const description = locale === 'en'
-    ? (chapter.metadata?.teaserEn ?? `Read ${title}, a chapter of the interactive psychological novel SYNTHOMA-NULL.`)
+    ? (chapter.metadata?.teaserEn ?? englishFallback)
     : (chapter.metadata?.teaser ?? chapter.summary ?? '');
   const presentation = getChapterPresentation(chapter.id);
-  const image = `${BASE_URL}${presentation?.poster ?? '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png'}`;
+  const image = `${BASE_URL}${presentation?.poster ?? collection?.cover ?? '/assets/og-synthoma.png'}`;
   const data = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -29,7 +34,7 @@ export default function ChapterStructuredData({ chapter, locale, accessibleForFr
         name: title,
         position: (chapter.order ?? 0) + 1,
         author: { '@type': 'Person', name: 'Tomáš Valíček', url: `${BASE_URL}/autor` },
-        isPartOf: { '@type': 'Book', '@id': `${BASE_URL}/books#book`, name: 'SYNTHOMA-NULL', url: `${BASE_URL}/books` },
+        isPartOf: { '@type': 'Book', '@id': `${BASE_URL}/books#${collection?.publicId ?? chapter.collection}`, name: bookTitle, url: `${BASE_URL}/books` },
         inLanguage: locale,
         isAccessibleForFree: accessibleForFree,
         description,
@@ -45,14 +50,14 @@ export default function ChapterStructuredData({ chapter, locale, accessibleForFr
         description,
         image,
         inLanguage: locale,
-        isPartOf: { '@id': `${BASE_URL}/books#book` },
+        isPartOf: { '@id': `${BASE_URL}/books#${collection?.publicId ?? chapter.collection}` },
         url: canonical,
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'SYNTHOMA', item: BASE_URL },
-          { '@type': 'ListItem', position: 2, name: 'SYNTHOMA-NULL', item: `${BASE_URL}/books` },
+          { '@type': 'ListItem', position: 2, name: bookTitle, item: `${BASE_URL}/books` },
           { '@type': 'ListItem', position: 3, name: title, item: canonical },
         ],
       },

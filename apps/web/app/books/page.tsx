@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildPublicMetadata({
     locale,
     path: '/books',
-    title: locale === 'en' ? 'SYNTHOMA-NULL Library | SYNTHOMA' : 'Knihovna SYNTHOMA-NULL | SYNTHOMA',
-    description: locale === 'en' ? 'Read SYNTHOMA-NULL, an interactive psychological novel. The opening chapters are free without registration.' : 'Čti interaktivní psychologický román SYNTHOMA-NULL. Úvodní kapitoly jsou zdarma bez registrace.',
-    imageAlt: locale === 'en' ? 'SYNTHOMA-NULL interactive novel library' : 'Knihovna interaktivního románu SYNTHOMA-NULL',
+    title: locale === 'en' ? 'SYNTHOMA Library' : 'Knihovna SYNTHOMA',
+    description: locale === 'en' ? 'Read the interactive psychological books of SYNTHOMA. Free chapters are available without registration.' : 'Čti interaktivní psychologické knihy SYNTHOMA. Bezplatné kapitoly jsou dostupné bez registrace.',
+    imageAlt: locale === 'en' ? 'SYNTHOMA interactive book library' : 'Knihovna interaktivních knih SYNTHOMA',
   });
 }
 
@@ -23,7 +23,7 @@ function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>)
     '@type': 'Book',
     'name': col.title || col.slug,
     'url': 'https://www.synthoma.cz/books',
-    'inLanguage': 'cs',
+    'inLanguage': col.language ?? 'cs',
     'author': { '@type': 'Person', 'name': 'Tomáš Valíček' },
     'hasPart': col.chapters.map((ch, idx) => ({
       '@type': 'Chapter',

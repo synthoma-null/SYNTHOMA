@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { auth } from '../../../auth';
-import { getChapterCatalogEntry, type ContentAccess } from '../../../src/content/catalog';
+import { getBookCollection, getChapterCatalogEntry, type ContentAccess } from '../../../src/content/catalog';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 import { readChapterDocument } from '../../../src/server/chapters/chapterDocument';
 import { getContentAccess } from '../../../src/server/economy';
@@ -23,14 +23,19 @@ export async function generateMetadata(
   const locale = (await searchParams)?.locale === 'en' ? 'en' : 'cs';
   const chapter = getChapterCatalogEntry(id);
   if (!chapter) notFound();
+  const collection = getBookCollection(chapter.collection);
+  if (!collection) notFound();
 
   const chapterTitle = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
-  const title = `${chapterTitle} | SYNTHOMA-NULL`;
+  const title = `${chapterTitle} | ${collection.title}`;
   const teaser = locale === 'en' ? chapter.metadata?.teaserEn : chapter.metadata?.teaser;
+  const englishFallback = collection.publicId === 'synthoma-null'
+    ? `Read ${chapterTitle}, a chapter of the interactive psychological novel SYNTHOMA-NULL.`
+    : `Read ${chapterTitle}, a chapter of ${collection.title}.`;
   const description = typeof teaser === 'string'
     ? teaser.replace(/^„|"$/g, '').trim()
     : locale === 'en'
-      ? `Read ${chapterTitle}, a chapter of the interactive psychological novel SYNTHOMA-NULL.`
+      ? englishFallback
       : chapter.summary ?? `Kapitola ${chapter.title} z interaktivního glitch-noir příběhu SYNTHOMA.`;
   const chapterUrl = `${BASE_URL}${chapter.route}`;
   const canonicalUrl = `${chapterUrl}${locale === 'en' ? '?locale=en' : ''}`;
@@ -45,14 +50,16 @@ export async function generateMetadata(
     description,
     alternates: {
       canonical: canonicalUrl,
-      languages: { cs: chapterUrl, en: `${chapterUrl}?locale=en`, 'x-default': chapterUrl },
+      languages: chapter.filenameEn
+        ? { cs: chapterUrl, en: `${chapterUrl}?locale=en`, 'x-default': chapterUrl }
+        : { cs: chapterUrl, 'x-default': chapterUrl },
     },
     robots: { index: indexable, follow: indexable },
     openGraph: {
       type: 'article', url: canonicalUrl, title, description, siteName: 'SYNTHOMA',
       locale: locale === 'en' ? 'en_US' : 'cs_CZ',
-      alternateLocale: locale === 'en' ? ['cs_CZ'] : ['en_US'],
-      images: [{ url: image, alt: `${chapterTitle} — SYNTHOMA-NULL` }],
+      alternateLocale: chapter.filenameEn ? (locale === 'en' ? ['cs_CZ'] : ['en_US']) : undefined,
+      images: [{ url: image, alt: `${chapterTitle} — ${collection.title}` }],
     },
     twitter: { card: 'summary_large_image', title, description, images: [image] },
   };

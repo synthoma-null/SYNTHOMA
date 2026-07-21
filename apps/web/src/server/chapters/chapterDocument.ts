@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { CHAPTER_CATALOG, type ChapterCatalogEntry } from '../../content/catalog';
+import { CHAPTER_CATALOG, getBookCollection, type ChapterCatalogEntry } from '../../content/catalog';
 import { canonicalHtmlToText, countWords, sanitizeCanonicalHtml } from '../public-ai/htmlContent';
 
 export type ChapterLocale = 'cs' | 'en';
@@ -13,9 +13,11 @@ export interface ChapterReaderDocument {
 }
 
 function chapterDirectory(chapter: ChapterCatalogEntry): string {
+  const collection = getBookCollection(chapter.collection);
+  if (!collection) throw new Error(`Unknown chapter collection: ${chapter.collection}`);
   return chapter.accessPolicy === 'free'
-    ? path.join(process.cwd(), 'public', 'books', chapter.collection)
-    : path.join(process.cwd(), 'src', 'content', 'protected', chapter.collection);
+    ? path.join(process.cwd(), 'public', 'books', collection.directory)
+    : path.join(process.cwd(), 'src', 'content', 'protected', collection.directory);
 }
 
 function safeFilename(filename: string): string {

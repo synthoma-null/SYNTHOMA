@@ -1,4 +1,4 @@
-import { BOOK_COLLECTION, CHAPTER_CATALOG, getChapterCatalogEntry } from './catalog';
+import { BOOK_COLLECTION, CHAPTER_CATALOG, getBookCollection, getChapterCatalogEntry } from './catalog';
 
 export interface ChapterVideoSource {
   src: string;
@@ -17,7 +17,7 @@ export interface ChapterPresentation {
   accessibilityLabel: string;
 }
 
-const DEFAULT_POSTER = BOOK_COLLECTION.cover;
+const DEFAULT_POSTER = BOOK_COLLECTION.cover ?? '/assets/og-synthoma.png';
 
 const PUBLISHED_POSTERS: Readonly<Record<string, string>> = {
   '0-inf-restart': '/chapters/posters/0-inf-restart.webp',
@@ -36,7 +36,8 @@ const PUBLISHED_POSTERS: Readonly<Record<string, string>> = {
 };
 
 function createPresentation(chapter: (typeof CHAPTER_CATALOG)[number]): ChapterPresentation {
-  const poster = PUBLISHED_POSTERS[chapter.id] ?? DEFAULT_POSTER;
+  const collection = getBookCollection(chapter.collection);
+  const poster = PUBLISHED_POSTERS[chapter.id] ?? collection?.cover ?? '/assets/og-synthoma.png';
   return {
     chapterId: chapter.id,
     video: chapter.backgroundVideo
@@ -76,7 +77,7 @@ export function validateChapterPresentations(
     }
     const paths = [presentation.poster, presentation.fallbackImage, ...(presentation.video?.sources.map((source) => source.src) ?? [])];
     return paths.flatMap((publicPath) => {
-      if (!/^\/(?:video|chapters\/posters|books)\//.test(publicPath)) {
+      if (!/^\/(?:video|chapters\/posters|books|assets)\//.test(publicPath)) {
         return [`${chapter.id}: asset is outside approved public media roots (${publicPath})`];
       }
       if (assetExists && !assetExists(publicPath)) {

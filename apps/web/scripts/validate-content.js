@@ -122,12 +122,18 @@ function validate() {
     }
   }
 
-  const publicChapters = (books.collections || []).flatMap((collection) => collection.chapters || []);
+  const publicCollections = books.collections || [];
+  const publicChapters = publicCollections.flatMap((collection) => collection.chapters || []);
+  for (const slug of duplicateValues(publicCollections.map((collection) => collection.slug))) {
+    fail(`Duplicate public manifest collection slug: ${slug}`);
+  }
   for (const id of duplicateValues(publicChapters.map((chapter) => chapter.id))) {
     fail(`Duplicate public manifest chapter ID: ${id}`);
   }
-  for (const order of duplicateValues(publicChapters.map((chapter) => chapter.chapterOrder))) {
-    fail(`Duplicate public manifest chapter order: ${order}`);
+  for (const collection of publicCollections) {
+    for (const order of duplicateValues((collection.chapters || []).map((chapter) => chapter.chapterOrder))) {
+      fail(`Duplicate public manifest chapter order in ${collection.slug}: ${order}`);
+    }
   }
 
   if (publicChapters.length !== chapters.length) {
@@ -146,6 +152,12 @@ function validate() {
     }
     if (chapter.order !== publicChapter.chapterOrder) {
       fail(`Order mismatch for ${chapter.id}: catalog=${chapter.order}, manifest=${publicChapter.chapterOrder}.`);
+    }
+    const publicCollection = publicCollections.find((collection) =>
+      (collection.chapters || []).some((candidate) => candidate.id === publicChapter.id),
+    );
+    if (publicCollection?.slug !== chapter.collection) {
+      fail(`Collection mismatch for ${chapter.id}: catalog=${chapter.collection}, manifest=${publicCollection?.slug}.`);
     }
     const expectedFree = chapter.availability === 'published' && chapter.accessPolicy === 'free';
     if (publicChapter.free !== expectedFree) {

@@ -1,13 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { CHAPTER_CATALOG } from '../catalog';
+import { CHAPTER_CATALOG, getBookCollection } from '../catalog';
 import { getReaderDecisionContract } from '../readerDecisionCatalog';
 
 function sourceDirectory(accessPolicy: string, collection: string): string {
+  const directory = getBookCollection(collection)?.directory ?? collection;
   return path.join(
     process.cwd(),
     accessPolicy === 'free' ? 'public/books' : 'src/content/protected',
-    collection,
+    directory,
   );
 }
 

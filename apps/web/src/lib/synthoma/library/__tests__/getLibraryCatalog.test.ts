@@ -1,11 +1,18 @@
 import { getLibraryCatalog } from '../getLibraryCatalog';
 
 describe('getLibraryCatalog', () => {
-  it('loads the SYNTHOMA-NULL collection with 22 chapters', async () => {
+  it('loads both collections in canonical order', async () => {
     const catalog = await getLibraryCatalog();
-    expect(catalog.collections).toHaveLength(1);
+    expect(catalog.collections).toHaveLength(2);
     expect(catalog.collections[0]?.slug).toBe('SYNTHOMA-NULL');
     expect(catalog.collections[0]?.chapters.length).toBe(22);
+    expect(catalog.collections[1]).toMatchObject({
+      slug: 'konec-podpory',
+      title: 'SYNTHOMA: KONEC PODPORY',
+      availableCount: 19,
+      totalCount: 19,
+      status: 'complete',
+    });
   });
 
   it('marks the first chapter as free', async () => {

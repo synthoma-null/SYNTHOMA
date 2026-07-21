@@ -20,6 +20,21 @@ function publicChapterTitle(title) {
   return title.replace(/^0-(?=∞|\d)/, '0 - ');
 }
 
+function publicCollection(collection) {
+  return {
+    slug: collection.slug,
+    publicId: collection.publicId,
+    title: collection.title,
+    shortTitle: collection.shortTitle,
+    description: collection.description,
+    ...(collection.cover ? { cover: collection.cover } : {}),
+    ...(collection.stylesheet ? { stylesheet: collection.stylesheet } : {}),
+    language: collection.language,
+    order: collection.order,
+    status: collection.status,
+  };
+}
+
 function legacyChapter(chapter) {
   return {
     id: chapter.id,
@@ -57,11 +72,11 @@ function replaceGeneratedChapterBlock(source, chapters) {
 
 function buildGeneratedOutputs(catalogModule) {
   const chapters = [...catalogModule.CHAPTER_CATALOG];
-  const collection = catalogModule.BOOK_COLLECTION;
+  const collections = [...catalogModule.BOOK_COLLECTIONS];
   const booksManifest = {
-    collections: [{
-      ...collection,
-      chapters: chapters.map((chapter) => ({
+    collections: collections.map((collection) => ({
+      ...publicCollection(collection),
+      chapters: chapters.filter((chapter) => chapter.collection === collection.slug).map((chapter) => ({
         title: publicChapterTitle(chapter.title),
         path: chapter.publicPath,
         free: chapter.availability === 'published' && chapter.accessPolicy === 'free',
@@ -72,12 +87,14 @@ function buildGeneratedOutputs(catalogModule) {
         ...(chapter.summary ? { summary: chapter.summary } : {}),
         status: chapter.status,
       })),
-    }],
+    })),
   };
   const libraryCatalog = {
-    collections: [{
-      ...collection,
-      chapters: chapters.map((chapter) => ({
+    collections: collections.map((collection) => {
+      const collectionChapters = chapters.filter((chapter) => chapter.collection === collection.slug);
+      return {
+      ...publicCollection(collection),
+      chapters: collectionChapters.map((chapter) => ({
         id: chapter.id,
         title: chapter.title,
         path: chapter.publicPath,
@@ -99,9 +116,10 @@ function buildGeneratedOutputs(catalogModule) {
         ...(typeof chapter.metadata?.teaser === 'string' ? { teaser: chapter.metadata.teaser } : {}),
         ...(typeof chapter.metadata?.unlocks === 'string' ? { unlocks: chapter.metadata.unlocks } : {}),
       })),
-      availableCount: chapters.filter((chapter) => chapter.accessPolicy === 'free').length,
-      totalCount: chapters.length,
-    }],
+      availableCount: collectionChapters.filter((chapter) => chapter.accessPolicy === 'free').length,
+      totalCount: collectionChapters.length,
+    };
+    }),
   };
   const readerChapterIndex = chapters.map((chapter) => ({
     id: chapter.id,

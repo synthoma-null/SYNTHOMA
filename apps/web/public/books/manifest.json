@@ -2,8 +2,14 @@
   "collections": [
     {
       "slug": "SYNTHOMA-NULL",
+      "publicId": "synthoma-null",
       "title": "SYNTHOMA-NULL",
+      "shortTitle": "SYNTHOMA-NULL",
+      "description": "Interaktivní glitch-noir kniha o paměti, identitě a systému, který odmítá zapomenout.",
       "cover": "/books/SYNTHOMA-NULL/SYNTHOMA_cover.png",
+      "language": "cs",
+      "order": 0,
+      "status": "ongoing",
       "chapters": [
         {
           "title": "0 - ∞ [RESTART]",
@@ -226,6 +232,171 @@
           "chapterOrder": 21,
           "summary": "Začátek, který je zároveň koncem. Smyčka se uzavírá.",
           "status": "draft"
+        }
+      ]
+    },
+    {
+      "slug": "konec-podpory",
+      "publicId": "konec-podpory",
+      "title": "SYNTHOMA: KONEC PODPORY",
+      "shortTitle": "KONEC PODPORY",
+      "description": "Ve světě, který přenechal systému péči, dopravu, identitu i vlastní rozhodování, skončí centrální podpora. Tova Neonová a ostatní musí zjistit, zda lidé ještě dokážou fungovat bez platformy, která je měla chránit a mezitím je naučila bezmocnosti.",
+      "stylesheet": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "language": "cs",
+      "order": 1,
+      "status": "complete",
+      "chapters": [
+        {
+          "title": "00. PODPOROVÁNO",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+          "free": true,
+          "id": "kp-00-podporovano",
+          "chapterOrder": 0,
+          "status": "final"
+        },
+        {
+          "title": "01. OZNÁMENÍ",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+          "free": true,
+          "id": "kp-01-oznameni",
+          "chapterOrder": 1,
+          "status": "final"
+        },
+        {
+          "title": "02. VOLNÝ PÁD",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+          "free": true,
+          "id": "kp-02-volny-pad",
+          "chapterOrder": 2,
+          "status": "final"
+        },
+        {
+          "title": "03. PODPORA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+          "free": true,
+          "id": "kp-03-podpora",
+          "chapterOrder": 3,
+          "status": "final"
+        },
+        {
+          "title": "04. KOMFORTNÍ ZÓNA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+          "free": true,
+          "id": "kp-04-komfortni-zona",
+          "chapterOrder": 4,
+          "status": "final"
+        },
+        {
+          "title": "05. OBJÍŽĎKA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+          "free": true,
+          "id": "kp-05-objizdka",
+          "chapterOrder": 5,
+          "status": "final"
+        },
+        {
+          "title": "06. PÉČE",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+          "free": true,
+          "id": "kp-06-pece",
+          "chapterOrder": 6,
+          "status": "final"
+        },
+        {
+          "title": "07. ZÁSILKA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+          "free": true,
+          "id": "kp-07-zasilka",
+          "chapterOrder": 7,
+          "status": "final"
+        },
+        {
+          "title": "08. DOMOV",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+          "free": true,
+          "id": "kp-08-domov",
+          "chapterOrder": 8,
+          "status": "final"
+        },
+        {
+          "title": "09. NEOPRÁVNĚNÝ UŽIVATEL",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+          "free": true,
+          "id": "kp-09-neopravneny-uzivatel",
+          "chapterOrder": 9,
+          "status": "final"
+        },
+        {
+          "title": "10. TICHO",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+          "free": true,
+          "id": "kp-10-ticho",
+          "chapterOrder": 10,
+          "status": "final"
+        },
+        {
+          "title": "11. BETA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+          "free": true,
+          "id": "kp-11-beta",
+          "chapterOrder": 11,
+          "status": "final"
+        },
+        {
+          "title": "12. TOVA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+          "free": true,
+          "id": "kp-12-tova",
+          "chapterOrder": 12,
+          "status": "final"
+        },
+        {
+          "title": "13. KONTINUITA",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+          "free": true,
+          "id": "kp-13-kontinuita",
+          "chapterOrder": 13,
+          "status": "final"
+        },
+        {
+          "title": "14. REKLAMACE",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+          "free": true,
+          "id": "kp-14-reklamace",
+          "chapterOrder": 14,
+          "status": "final"
+        },
+        {
+          "title": "15. MIGRACE",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+          "free": true,
+          "id": "kp-15-migrace",
+          "chapterOrder": 15,
+          "status": "final"
+        },
+        {
+          "title": "16. RUČNÍ REŽIM",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+          "free": true,
+          "id": "kp-16-rucni-rezim",
+          "chapterOrder": 16,
+          "status": "final"
+        },
+        {
+          "title": "17. ŽÁDNÁ ODPOVĚĎ",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+          "free": true,
+          "id": "kp-17-zadna-odpoved",
+          "chapterOrder": 17,
+          "status": "final"
+        },
+        {
+          "title": "18. KONEC PODPORY",
+          "path": "/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+          "free": true,
+          "id": "kp-18-konec-podpory",
+          "chapterOrder": 18,
+          "status": "final"
         }
       ]
     }

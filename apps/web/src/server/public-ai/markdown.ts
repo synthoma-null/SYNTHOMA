@@ -1,6 +1,6 @@
 import { absolutePublicUrl, PUBLIC_CONTENT_UPDATED_AT, type PublicLocale } from './config';
 import type { PublicChapterDocument } from './contentService';
-import { getPublicArchive, getPublicAuthor, getPublicBook, getPublicChapters } from './contentService';
+import { getPublicArchive, getPublicAuthor, getPublicBook, getPublicBooks, getPublicChapters } from './contentService';
 
 function frontMatter(values: Record<string, string>): string {
   return ['---', ...Object.entries(values).map(([key, value]) => `${key}: ${JSON.stringify(value)}`), '---', ''].join('\n');
@@ -17,6 +17,7 @@ ${cs
 ## ${cs ? 'Verejny obsah' : 'Public content'}
 
 - [${cs ? 'Kniha SYNTHOMA-NULL' : 'SYNTHOMA-NULL book'}](${absolutePublicUrl(`/ai/${locale}/books/synthoma-null.md`)})
+- [SYNTHOMA: KONEC PODPORY](${absolutePublicUrl(`/ai/${locale}/books/konec-podpory.md`)})
 - [${cs ? 'Archiv' : 'Archive'}](${absolutePublicUrl(`/ai/${locale}/archive.md`)})
 - [${cs ? 'Autor' : 'Author'}](${absolutePublicUrl(`/ai/${locale}/author.md`)})
 - [Cyklus cards](${absolutePublicUrl(`/ai/${locale}/cards/index.md`)})
@@ -40,15 +41,22 @@ export async function archiveMarkdown(locale: PublicLocale): Promise<string> {
   return `${frontMatter({ id: 'archive', locale, status: 'public', canonical: absolutePublicUrl('/archive'), updatedAt: PUBLIC_CONTENT_UPDATED_AT })}# ${locale === 'cs' ? 'Archiv SYNTHOMA' : 'SYNTHOMA Archive'}\n\n${sections.join('\n\n')}\n`;
 }
 
-export async function bookMarkdown(locale: PublicLocale): Promise<string> {
-  const book = await getPublicBook(locale);
+export async function bookMarkdown(locale: PublicLocale, id = 'synthoma-null'): Promise<string | null> {
+  const book = await getPublicBook(locale, id);
+  if (!book) return null;
   const chapters = book.chapters.map((chapter) => `- [${chapter.title}](${absolutePublicUrl(`/ai/${locale}/chapters/${chapter.id}.md`)}) - ${chapter.status}`).join('\n');
   return `${frontMatter({ id: book.id, locale, status: 'public', canonical: book.canonicalUrl, updatedAt: book.updatedAt })}# ${book.title}\n\n${book.description}\n\n## ${locale === 'cs' ? 'Kapitoly' : 'Chapters'}\n\n${chapters}\n`;
+}
+
+export async function bookIndexMarkdown(locale: PublicLocale): Promise<string> {
+  const books = await getPublicBooks(locale);
+  return books.map((book) => `- [${book.title}](${absolutePublicUrl(`/ai/${locale}/books/${book.id}.md`)})`).join('\n');
 }
 
 export function chapterMarkdown(chapter: PublicChapterDocument): string {
   const metadata = frontMatter({
     id: chapter.id,
+    bookId: chapter.bookId,
     locale: chapter.locale,
     sourceLocale: chapter.sourceLocale,
     status: chapter.status,

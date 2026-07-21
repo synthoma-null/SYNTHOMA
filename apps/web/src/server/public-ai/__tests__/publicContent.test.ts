@@ -1,7 +1,7 @@
 /** @jest-environment node */
 
 import { CYKLUS_CARDS } from '../../../game/cyklus/cyklusCards';
-import { chapterApi, chaptersApi } from '../apiHandlers';
+import { bookApi, booksApi, chapterApi, chaptersApi } from '../apiHandlers';
 import { cardApi, cardsApi } from '../cardHandlers';
 import { getPublicArchive, getPublicAuthor, getPublicCard, getPublicCards, getPublicChapterDocument, getPublicChapters } from '../contentService';
 import { archiveMarkdown, authorMarkdown, bookMarkdown, chapterMarkdown, siteMarkdown } from '../markdown';
@@ -79,6 +79,18 @@ describe('public content visibility', () => {
 
     const cached = await chaptersApi(request('/api/public/v1/chapters?locale=cs&limit=2', { 'If-None-Match': etag }));
     expect(cached.status).toBe(304);
+  });
+
+  it('publishes both books and the complete KONEC PODPORY chapter index', async () => {
+    const books = await booksApi(request('/api/public/v1/books?locale=cs'));
+    expect((await books.json()).data.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'synthoma-null' }),
+      expect.objectContaining({ id: 'konec-podpory', chapterCount: 19 }),
+    ]));
+    const book = await bookApi(request('/api/public/v1/books/konec-podpory?locale=cs'), 'konec-podpory');
+    const payload = await book.json();
+    expect(payload.data.chapters).toHaveLength(19);
+    expect(payload.data.chapters[0]).toMatchObject({ id: 'kp-00-podporovano', status: 'free' });
   });
 
   it('never exposes locked chapter text or hidden cards through detail APIs', async () => {
