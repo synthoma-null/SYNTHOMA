@@ -26,6 +26,7 @@ describe('chapter presentation registry', () => {
     ]);
     expect(getChapterPresentation('0-11-orgie')?.video).toBeNull();
     expect(getChapterPresentation('0-11-orgie')?.poster).toBe('/books/SYNTHOMA-NULL/SYNTHOMA_cover.png');
+    expect(getChapterPresentation('kp-00-podporovano')?.poster).toBe('/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KP_cover.png');
   });
 
   it('reports unknown mappings, missing assets and paths outside public media roots', () => {

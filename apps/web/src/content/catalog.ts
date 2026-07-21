@@ -132,6 +132,7 @@ export const KONEC_PODPORY_COLLECTION: BookCollectionDefinition = {
   title: 'SYNTHOMA: KONEC PODPORY',
   shortTitle: 'KONEC PODPORY',
   description: 'Ve světě, který přenechal systému péči, dopravu, identitu i vlastní rozhodování, skončí centrální podpora. Tova Neonová a ostatní musí zjistit, zda lidé ještě dokážou fungovat bez platformy, která je měla chránit a mezitím je naučila bezmocnosti.',
+  cover: '/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KP_cover.png',
   stylesheet: '/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css',
   language: 'cs',
   order: 1,
