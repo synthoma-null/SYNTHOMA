@@ -3,7 +3,6 @@ import { auth } from '../../../../../auth';
 import prisma from '../../../../../src/lib/prisma';
 import { PLAYER_COLORS } from '../../../../../src/game/constants';
 import type { GameState } from '../../../../../src/game/types';
-import { createGameState } from '../../../../../src/game/setup';
 
 function hashToken(token: string): string {
   let h = 0;

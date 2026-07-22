@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getConsent, saveConsent, type ConsentState } from '../../lib/consent';
+import { getConsent, saveConsent } from '../../lib/consent';
 import { useLang } from '../../lib/LangContext';
 
 type Prefs = {

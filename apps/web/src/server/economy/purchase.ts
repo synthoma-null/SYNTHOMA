@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client';
 import { getCatalogEntry, type ContentType } from '../../content/catalog';
-import prisma from '../../lib/prisma';
 import { getAccessSnapshot, getAccessSnapshotWithClient, type AccessSnapshot } from './access';
 import { grantEntitlement } from './entitlements';
 import { EconomyError } from './errors';

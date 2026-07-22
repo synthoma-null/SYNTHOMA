@@ -1,13 +1,4 @@
 import { useState, useCallback, useRef } from 'react'
-import { readReaderResume, saveReaderResume, saveLastChapterPath } from '../lib/readerState'
-import { 
-  extractVisibleTextLength, 
-  getTypewriterDurationMs, 
-  normalizeChoicesToPlainText, 
-  renderTypingHtml, 
-  sanitizeHTML, 
-  transformChoicesToButtons 
-} from '../lib/typewriterContent'
 
 export interface TypewriterState {
   error: string | null
@@ -29,7 +20,7 @@ export interface TypewriterActions {
   scoreFromNode: (node: Element | null) => void
 }
 
-export function useTypewriterReader(srcUrl: string, autoStart: boolean = true) {
+export function useTypewriterReader(_srcUrl: string, _autoStart: boolean = true) {
   const [state, setState] = useState<TypewriterState>({
     error: null,
     isLoading: true,

@@ -2,7 +2,6 @@ import type {
   AccessReason,
   CatalogEntry,
   ContentAccess,
-  ContentType,
 } from '../../content/catalog';
 
 export type AccessFacts = {

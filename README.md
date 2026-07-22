@@ -31,7 +31,8 @@ npm run dev
   _Legacy způsob (stále funkční):_ `http://localhost:3000/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
 - **Archiv**: [http://localhost:3000/archive](http://localhost:3000/archive)
 - **Landing**: [http://localhost:3000/landing-intro](http://localhost:3000/landing-intro)
-- **Manifest knih**: `apps/web/public/books/manifest.json` ← zdroj pravdy
+- **Katalog obsahu**: `apps/web/src/content/catalog.ts` ← zdroj pravdy pro knihy a kapitoly
+- **Generovaný manifest knih**: `apps/web/public/books/manifest.json` ← needitovat ručně
 - **Verze balíčků**: `apps/web/package.json` ← aktuální dependencies
 
 ---
@@ -281,11 +282,13 @@ Ano, i tvoje babička to přečte. A když ne, glitch efekt ji hypnotizuje, tak�
 
 - Kapitoly jsou statické HTML soubory pod `apps/web/public/books/<kolekce>/...`. Příklad cesty:
   - `/public/books/SYNTHOMA-NULL/0-∞ [RESTART].html`
-- Manifest knih pod `/public/books/manifest.json` definuje kolekce, názvy kapitol a volitelná metadata (např. vybraná hudba pro kapitolu).
+- `apps/web/src/content/catalog.ts` definuje kolekce, kapitoly a jejich metadata. `public/books/manifest.json` je generovaný výstup.
 
 ### 2.1) Manifest – přehled
 
-- Umístění: `apps/web/public/books/manifest.json`
+- Umístění výstupu: `apps/web/public/books/manifest.json`
+- Generátor: `npm run content:generate`
+- Kanonický vstup: `apps/web/src/content/catalog.ts`
 - Struktura (zjednodušeně):
 
 ```jsonc
@@ -314,17 +317,18 @@ Když vytváříš novou kapitolu, projdi tento checklist:
    - ⚠️ **Filename past**: Používáš mezery/závorky? URL bude potřebovat encoding (`%20`, `%5B`, `%5D`)
    - Preferuj manifest linky před ručním linkováním!
 
-2. **Přidej do manifestu**
-   - Edituj `apps/web/public/books/manifest.json`
-   - Přidej nový objekt do `chapters[]` s `title`, `path`, `free`, `track` (volitelné), `backgroundVideo` (volitelné)
-   - **Kontrola**: `path` MUSÍ začínat `/books/...`
+2. **Přidej kapitolu do katalogu**
+   - Edituj `apps/web/src/content/catalog.ts`
+   - Přidej položku do `CHAPTER_CATALOG` včetně názvu, filename, přístupu a volitelných médií
+   - Spusť `npm run content:generate`; `public/books/manifest.json` a indexy v `src/content/generated/` needituj ručně
 
 3. **Testuj v čtečce**
    - Otevři `/reader?chapter=<id>` (kde `id` je klíč v `CHAPTERS` v `booksManifest.ts`)
    - Legacy: `/reader?u=<cesta-s-encodingem>`
    - Zkontroluj, že se načte obsah, styly, a případná media
 
-4. **Validuj**
+4. **Generuj a validuj**
+   - Spusť `npm run content:generate && npm run content:validate`
    - Spusť `npm run validate:chapters`
    - Zkontroluj odkazy v manifestu vs. skutečné soubory
 

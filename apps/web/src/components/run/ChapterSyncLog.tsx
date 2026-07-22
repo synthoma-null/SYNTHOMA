@@ -41,7 +41,7 @@ function DeltaValue({ before, after, label }: { before: number; after: number; l
   );
 }
 
-export default function ChapterSyncLog({ chapterId, chapterTitle, delta, onClose }: Props) {
+export default function ChapterSyncLog({ chapterId: _chapterId, chapterTitle, delta, onClose }: Props) {
   const { t } = useLang();
   const [visible, setVisible] = useState(false);
 

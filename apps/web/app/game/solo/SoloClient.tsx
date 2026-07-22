@@ -5,7 +5,7 @@ import type { RunState, RunType } from '../../../src/game/run/runTypes';
 import type { PlayerActionId } from '../../../src/game/encounter/encounterTypes';
 import { createRun, dispatchRunAction, getRunModifiers } from '../../../src/game/run/runEngine';
 import { saveRunLocal, loadRunLocal, clearRunLocal } from '../../../src/game/run/runStorage';
-import { loadRunHistory, recordRunCompleted, recordRunStarted, type RunHistory } from '../../../src/game/run/runHistory';
+import { loadRunHistory, recordRunCompleted, type RunHistory } from '../../../src/game/run/runHistory';
 import { RUN_CARDS } from '../../../src/game/run/runCards';
 import RunHUD from '../../../src/components/game/run/RunHUD';
 import RunMapView from '../../../src/components/game/run/RunMapView';

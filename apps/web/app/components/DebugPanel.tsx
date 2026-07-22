@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { readStorage, writeStorage, removeStorage } from '../../src/lib/browser'
+import { readStorage, writeStorage } from '../../src/lib/browser'
 
 interface DebugInfo {
   url: string

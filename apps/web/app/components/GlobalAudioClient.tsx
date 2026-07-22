@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 /**
  * GlobalAudioClient
@@ -9,8 +8,6 @@ import { usePathname } from "next/navigation";
  * - Automaticky nespouští hudbu na každé stránce - hudba se přehraje jen jednou a dohraje.
  */
 export default function GlobalAudioClient() {
-  const pathname = usePathname();
-
   useEffect(() => {
     // Při změně viditelnosti záložky jen zajistíme, aby hudba nezastavila, pokud už hraje
     const onVisibility = () => {

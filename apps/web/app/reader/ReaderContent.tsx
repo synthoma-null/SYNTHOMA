@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import { useSession } from 'next-auth/react';
 import TypewriterReader from '../../src/components/TypewriterReader';
 import styles from './ReaderContent.module.css';
-import { readBooleanStorage, readStorage, writeStorage } from '../../src/lib/browser';
+import { readBooleanStorage, writeStorage } from '../../src/lib/browser';
 import { attachGlitchHeading } from '../../src/lib/glitchHeading';
 import { saveLastChapterPath, saveReadingProgress } from '../../src/lib/readerState';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -283,7 +283,6 @@ export default function ReaderContent() {
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
     if (!bookId || !chapterId) return;
-    const key = `readingProgress:${bookId}`;
     let rafId: number | null = null;
     let lastSaved = -1;
     let lastServerSaved = -1;

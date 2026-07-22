@@ -10,9 +10,9 @@ Statické soubory servírované Next.js na `/`.
 - `/fonts/` → webfonty (woff2)
 - `/audio/` → hudba a zvukové efekty pro kapitoly
 - `/video/` → background videa pro čtečku a stránky
-- `/books/` → kapitoly v HTML formátu + manifest.json
+- `/books/` → kapitoly v HTML formátu + generovaný manifest.json
   - `/books/SYNTHOMA-NULL/` → kapitoly první kolekce
-  - `/books/manifest.json` → konfigurace kolekcí a kapitol
+  - `/books/manifest.json` → generovaný výstup z `src/content/catalog.ts`; needitovat ručně
   - `/books/mbti.js` → MBTI interaktivní skripty pro kapitoly
   - `/books/glitch-toggle.js` → glitch toggle funkce
 - `/data/` → archivní data a obsahové soubory

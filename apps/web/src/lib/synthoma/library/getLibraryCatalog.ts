@@ -1,5 +1,5 @@
 import generatedLibraryCatalog from '../../../content/generated/libraryCatalog.json';
-import type { LibraryCatalog, LibraryChapter, LibraryCollection } from './libraryTypes';
+import type { LibraryCatalog, LibraryCollection } from './libraryTypes';
 
 export async function getLibraryCatalog(): Promise<LibraryCatalog> {
   return generatedLibraryCatalog as LibraryCatalog;

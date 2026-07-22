@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -7,19 +6,6 @@ const iconsDir = path.join(root, 'public', 'icons');
 const sourceDir = path.join(iconsDir, 'source');
 const master = path.join(sourceDir, 'synthoma-pwa-master.png');
 const monoMaster = path.join(sourceDir, 'synthoma-pwa-monochrome-master.png');
-
-await fs.mkdir(sourceDir, { recursive: true });
-
-async function ensureSource(target, fallback) {
-  try {
-    await fs.access(target);
-  } catch {
-    await fs.copyFile(path.join(root, 'public', 'assets', fallback), target);
-  }
-}
-
-await ensureSource(master, 'icon.png');
-await ensureSource(monoMaster, 'icon_mono.png');
 
 async function colorIcon(size, destination) {
   await sharp(master)

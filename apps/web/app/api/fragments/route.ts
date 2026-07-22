@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../auth';
-import { FRAGMENTS, COSMETICS, PROFILE_REPORTS } from '../../../src/content/booksManifest';
+import { FRAGMENTS, PROFILE_REPORTS } from '../../../src/content/booksManifest';
 import { getAccessSnapshot, isEconomyError, purchaseWithMnems } from '../../../src/server/economy';
 
 export async function GET(req: NextRequest) {

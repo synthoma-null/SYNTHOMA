@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import type { Artifact, Mission } from '../../content/booksManifest';
 import { useLang } from '../../lib/LangContext';
 
 interface UserRun {
