@@ -66,4 +66,12 @@ describe('chapter route guard', () => {
     );
     expect(unknown.headers.get('location')).toBe('https://www.synthoma.cz/books');
   });
+
+  it('keeps the whitelisted SYNTHOMAINFO document in the interactive reader', () => {
+    const response = middleware(routeRequest('/reader?u=%2Fdata%2FSYNTHOMAINFO.html'));
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('location')).toBeNull();
+    expect(response.headers.get('x-middleware-next')).toBe('1');
+  });
 });

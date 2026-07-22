@@ -23,6 +23,7 @@ export default function ReaderDecisionController({ rootId, chapterId, collection
       return bindReaderDecisions({
         root,
         chapterId,
+        collection,
         locale,
         onCommitted: (option) => scoreFromNode(option),
         onNavigate: (href) => {
@@ -48,7 +49,7 @@ export default function ReaderDecisionController({ rootId, chapterId, collection
         option.removeAttribute('href');
       });
     }
-  }, [chapterId, locale, rootId, router, scoreFromNode]);
+  }, [chapterId, collection, locale, rootId, router, scoreFromNode]);
 
   return null;
 }

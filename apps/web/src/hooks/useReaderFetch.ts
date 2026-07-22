@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CHAPTERS } from '../content/booksManifest';
+import { validateReaderFlowDocument } from '../lib/typewriterContent';
 
 function softFail(scope: string, err: unknown): void {
   if (process.env.NODE_ENV !== "production") {
@@ -29,6 +31,10 @@ function encodePathPreserve(url: string): string {
 }
 
 const STYLESHEET_WHITELIST = ["/styles.css", "/synth-gate.css"];
+const VALID_CHAPTER_IDS = new Set(CHAPTERS.map((chapter) => chapter.id));
+const VALID_CHAPTER_FILENAMES = new Set(
+  CHAPTERS.flatMap((chapter) => [chapter.filename, chapter.filename_en].filter((name): name is string => Boolean(name))),
+);
 
 function attachStylesheets(doc: Document) {
   try {
@@ -83,6 +89,13 @@ export function useReaderFetch(srcUrl: string, onFetchError?: (status: number) =
         const raw = await res.text();
         const parser = new DOMParser();
         const parsedDoc = parser.parseFromString(raw, "text/html");
+        const flowErrors = validateReaderFlowDocument(parsedDoc, {
+          validChapterIds: VALID_CHAPTER_IDS,
+          validChapterFilenames: VALID_CHAPTER_FILENAMES,
+        });
+        if (flowErrors.length) {
+          throw new Error(`Reader flow validation failed: ${flowErrors.join(' ')}`);
+        }
         attachStylesheets(parsedDoc);
         const cacheEl = parsedDoc.querySelector("#story-cache") as HTMLElement | null;
         const cache = cacheEl ? cacheEl.innerHTML : "";

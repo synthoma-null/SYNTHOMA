@@ -56,7 +56,7 @@ export function splitNextSegment(html: string): {
   const doc = parser.parseFromString(`<div class="content">${html}</div>`, "text/html");
   const root = (doc.querySelector(".content") as HTMLElement) || doc.body;
   const cutoff = root.querySelector("#story-cache");
-  const firstCh = root.querySelector("p.choice, .choice-link");
+  const firstCh = root.querySelector("p.choice");
   let preHtml = "";
   let choiceBlockHtml = "";
   let remainderHtml = "";
@@ -215,9 +215,6 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
 
   try {
     segment.innerHTML = sanitizeHTML(renderTypingHtml(typingHtml, 0));
-    // Make choice buttons visible immediately while the typewriter reveals text,
-    // instead of hiding them until typing finishes.
-    revealChoicesStagger(segment);
   } catch {
     segment.innerHTML = "";
   }

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type RefObject, type Dispatch, type SetStateAction } from "react";
 import { renderReaderSegment } from "../lib/readerSegmentRenderer";
+import type { ReaderFlowState } from "../lib/readerDecisionController";
 
 export type TypewriterPlaybackHelpers = {
   cleanupChoices: (container: HTMLElement | null) => void;
@@ -14,6 +15,7 @@ export type UseTypewriterPlaybackOptions = {
   hostRef: RefObject<HTMLElement | null>;
   helpers: TypewriterPlaybackHelpers;
   setChoicesShownRef: RefObject<Dispatch<SetStateAction<boolean>>>;
+  onFlowStateChange: (state: ReaderFlowState) => void;
 };
 
 /**
@@ -22,7 +24,7 @@ export type UseTypewriterPlaybackOptions = {
  * a new segment without creating a circular hook dependency.
  */
 export function useTypewriterPlayback(options: UseTypewriterPlaybackOptions) {
-  const { hostRef, helpers, setChoicesShownRef } = options;
+  const { hostRef, helpers, setChoicesShownRef, onFlowStateChange } = options;
   const { cleanupChoices, revealChoicesStagger, restoreScrollSoon, announce } = helpers;
 
   const [isTyping, setIsTyping] = useState(false);
@@ -33,6 +35,7 @@ export function useTypewriterPlayback(options: UseTypewriterPlaybackOptions) {
   const bindChoiceHandlersRef = useRef<() => void>(() => {});
   const renderSegmentRef = useRef<(html: string, mode: "typed" | "instant") => void>(() => {});
   const setContinuationRef = useRef<(html: string) => void>(() => {});
+  const renderedSegmentRef = useRef(false);
 
   useEffect(() => {
     isTypingRef.current = isTyping;
@@ -57,6 +60,8 @@ export function useTypewriterPlayback(options: UseTypewriterPlaybackOptions) {
       const host = hostRef.current;
       const box = ensureTypedBox();
       if (!host || !box) return { cancel: () => {} };
+      onFlowStateChange(renderedSegmentRef.current ? 'TYPING_CONTINUATION' : 'TYPING');
+      renderedSegmentRef.current = true;
       if (mode === "typed") setIsTyping(true);
 
       const helpers: import("../lib/readerSegmentRenderer").RenderReaderSegmentHelpers = {
@@ -77,12 +82,14 @@ export function useTypewriterPlayback(options: UseTypewriterPlaybackOptions) {
           setIsTyping(false);
           setChoicesShownRef.current(true);
           setContinuationRef.current(remainderHtml);
+          const waitingForChoice = Boolean(box.lastElementChild?.querySelector('.choice-link'));
+          onFlowStateChange(waitingForChoice ? 'WAITING_FOR_CHOICE' : 'CHAPTER_COMPLETE');
         },
       });
       cancelRef.current = cancel;
       return { cancel };
     },
-    [hostRef, ensureTypedBox, cleanupChoices, revealChoicesStagger, restoreScrollSoon, announce, setIsTyping, setChoicesShownRef]
+    [hostRef, ensureTypedBox, cleanupChoices, revealChoicesStagger, restoreScrollSoon, announce, setIsTyping, setChoicesShownRef, onFlowStateChange]
   );
 
   const setContinuation = useCallback((html: string) => {
@@ -93,6 +100,13 @@ export function useTypewriterPlayback(options: UseTypewriterPlaybackOptions) {
     continueRef.current = () => {
       renderSegmentRef.current(html, "typed");
     };
+  }, []);
+
+  const resetPlaybackFlow = useCallback(() => {
+    renderedSegmentRef.current = false;
+    continueRef.current = null;
+    cancelRef.current?.();
+    cancelRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -112,5 +126,6 @@ export function useTypewriterPlayback(options: UseTypewriterPlaybackOptions) {
     setContinuationRef,
     renderSegment,
     setContinuation,
+    resetPlaybackFlow,
   };
 }

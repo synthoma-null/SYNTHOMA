@@ -19,6 +19,11 @@ import { useReaderResume } from "../hooks/useReaderResume";
 import { useChoiceTracking } from "../hooks/useChoiceTracking";
 import { useChoiceHandlers } from "../hooks/useChoiceHandlers";
 import { useTypewriterPlayback } from "../hooks/useTypewriterPlayback";
+import {
+  READER_FLOW_EVENT,
+  type ReaderFlowEventDetail,
+  type ReaderFlowState,
+} from "../lib/readerDecisionController";
 
 // Dev-only diagnostic helper — silent in production
 function softFail(scope: string, err: unknown): void {
@@ -41,6 +46,7 @@ export interface TypewriterReaderProps {
 
 export default function TypewriterReader({ srcUrl, className = '', ariaLabel = 'Čtečka', autoStart = true, id, instantMode = false, onFetchError, chapterId: chapterIdProp, collection: collectionProp }: TypewriterReaderProps) {
   const router = useRouter();
+  const readerRootRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const liveRef = useRef<HTMLDivElement>(null);
   const lastUserScrollRef = useRef<number>(Date.now());
@@ -52,8 +58,22 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
   const { pendingResume, saveResume, clearResume } = useReaderResume();
   const { scoreFromNode } = useChoiceTracking(chapterIdProp, collectionProp);
   const [choicesShown, setChoicesShown] = useState(false);
+  const [flowState, setFlowStateValue] = useState<ReaderFlowState>('TYPING');
   const setChoicesShownRef = useRef(setChoicesShown);
   useEffect(() => { setChoicesShownRef.current = setChoicesShown; }, [setChoicesShown]);
+
+  const setFlowState = useCallback((state: ReaderFlowState) => {
+    setFlowStateValue(state);
+    const root = readerRootRef.current;
+    if (!root) return;
+    root.dataset.readerFlowState = state;
+    const detail: ReaderFlowEventDetail = {
+      chapterId: chapterIdProp ?? srcUrl,
+      state,
+      complete: state === 'CHAPTER_COMPLETE',
+    };
+    root.dispatchEvent(new CustomEvent<ReaderFlowEventDetail>(READER_FLOW_EVENT, { bubbles: true, detail }));
+  }, [chapterIdProp, srcUrl]);
 
   // Prevent viewport jumping by restoring scroll after DOM mutations
   const restoreScrollSoon = useCallback(() => {
@@ -84,6 +104,8 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     });
     mo.observe(host, { subtree: true, childList: true, characterData: true });
     return () => { try { mo.disconnect(); } catch {}; window.removeEventListener('scroll', onScroll as any); };
+    // The ref is stable for the component lifetime and is initialized before this effect runs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [restoreScrollSoon]);
 
   // Nicely reveal choices after the typing completes: apply appear class and then show sequentially
@@ -167,14 +189,28 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       })();
       const chosenText = (node.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
       const dataNextRaw = node.getAttribute('data-next') || '';
+      const href = node.getAttribute('href') || node.getAttribute('data-href') || '';
+      const tags = (node.getAttribute('data-tags') || node.closest<HTMLElement>('p.choice')?.dataset.tags || '')
+        .split(/[\s,]+/)
+        .map((tag) => tag.trim())
+        .filter(Boolean);
       const existing = saved.findIndex(s => s.groupKey === groupKey);
-      const entry: import('../lib/readerState').ChoiceGroupState = dataNextRaw
-        ? { groupKey, chosenIdx, chosenText, dataNext: dataNextRaw }
-        : { groupKey, chosenIdx, chosenText };
+      const entry: import('../lib/readerState').ChoiceGroupState = {
+        groupKey,
+        chosenIdx,
+        chosenText,
+        chapterId: chapterIdProp ?? srcUrl,
+        collection: collectionProp ?? 'SYNTHOMA-NULL',
+        choiceId: node.dataset.choiceId || `${groupKey}:${chosenIdx}`,
+        tags,
+        selectedAt: Date.now(),
+        ...(dataNextRaw ? { dataNext: dataNextRaw } : {}),
+        ...(href ? { href } : {}),
+      };
       if (existing >= 0) { saved[existing] = entry; } else { saved.push(entry); }
       saveChoicesState(srcUrl, saved);
     } catch {}
-  }, [srcUrl]);
+  }, [chapterIdProp, collectionProp, srcUrl]);
 
   // Ensure any choices in the given container are fully interactive and not faded/disabled
   const cleanupChoices = useCallback((container: HTMLElement | null) => {
@@ -190,12 +226,13 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         node.style.removeProperty('pointer-events');
         if (node instanceof HTMLButtonElement) { node.disabled = false; }
         node.removeAttribute('aria-disabled');
-        // restore href on anchors if it was parked in data-href during typing
         if (node.tagName.toLowerCase() === 'a') {
           const a = node as HTMLAnchorElement;
-          const parked = a.getAttribute('data-href');
-          if (parked && !a.getAttribute('href')) { a.setAttribute('href', parked); }
-          a.removeAttribute('data-href');
+          const href = a.getAttribute('href');
+          if (href) a.setAttribute('data-href', href);
+          a.removeAttribute('href');
+          a.setAttribute('role', 'button');
+          a.tabIndex = 0;
         }
       });
       // Mark visible state via React state (not just classList) so React re-renders
@@ -216,6 +253,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     bindChoiceHandlersRef,
     renderSegmentRef,
     setContinuationRef,
+    resetPlaybackFlow,
   } = useTypewriterPlayback({
     hostRef,
     helpers: {
@@ -225,6 +263,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       announce,
     },
     setChoicesShownRef,
+    onFlowStateChange: setFlowState,
   });
 
   // Single helper: lock a choice group visually after a selection
@@ -312,14 +351,16 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
     persistChoiceState,
     announce,
     renderNextSegment,
+    setFlowState,
   });
-  useEffect(() => { bindChoiceHandlersRef.current = bindChoiceHandlers; }, [bindChoiceHandlers]);
+  useEffect(() => { bindChoiceHandlersRef.current = bindChoiceHandlers; }, [bindChoiceHandlers, bindChoiceHandlersRef]);
   const { glitchCleanupRef } = useGlitching(hostRef, isTypingRef);
   useEchoGhost(hostRef);
 
   useEffect(() => {
     const host = hostRef.current;
     if (!host || !doc) return;
+    resetPlaybackFlow();
     const contentEl = (doc.querySelector('.content') as HTMLElement) || (doc.body as HTMLElement);
     contentEl.setAttribute('aria-live', 'polite');
     const {
@@ -407,6 +448,7 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
         setContinuationFromRemainder(initialRemainderHtml);
       }
       tryRestoreResume();
+      setFlowState(typedBox.querySelector('.choice-link') ? 'WAITING_FOR_CHOICE' : 'CHAPTER_COMPLETE');
     } else {
       // Pass the full content so renderSegment's onDone receives the real remainder
       // and sets up continuation for the next choice group. Passing only segHtml
@@ -422,15 +464,17 @@ export default function TypewriterReader({ srcUrl, className = '', ariaLabel = '
       glitchCleanupRef.current.forEach(fn => { try { fn(); } catch {} });
       glitchCleanupRef.current = [];
     };
-  }, [doc, srcUrl, autoStart, instantMode, pendingResume, clearResume, announce, restoreChoiceVisuals, cleanupChoices, bindChoiceHandlers, revealChoicesStagger, cancelRef, glitchCleanupRef, renderSegmentRef, setContinuationRef, setIsTyping, typedBoxRef]);
+  }, [doc, srcUrl, autoStart, instantMode, pendingResume, clearResume, announce, restoreChoiceVisuals, cleanupChoices, bindChoiceHandlers, revealChoicesStagger, cancelRef, glitchCleanupRef, renderSegmentRef, setContinuationRef, setIsTyping, typedBoxRef, resetPlaybackFlow, setFlowState]);
 
   return (
     <div
+      ref={readerRootRef}
       id={id}
       className={`SYNTHOMAREADER ${isTyping ? 'typing' : ''} ${choicesShown ? 'choices-shown' : ''} ${className || ''}`.trim()}
       aria-label={ariaLabel}
       data-chapter-id={chapterIdProp ?? ''}
       data-collection={collectionProp ?? 'SYNTHOMA-NULL'}
+      data-reader-flow-state={flowState}
     >
       <div className={"chapter-content not-prose"}>
         <div ref={hostRef} className="reader-host not-prose" />

@@ -4,6 +4,71 @@ export type TypewriterSegment = {
   remainderHtml: string;
 };
 
+export type ReaderFlowValidationOptions = {
+  validChapterIds?: ReadonlySet<string>;
+  validChapterFilenames?: ReadonlySet<string>;
+};
+
+export function validateReaderFlowDocument(
+  doc: Document,
+  options: ReaderFlowValidationOptions = {},
+): string[] {
+  const errors: string[] = [];
+  const storyBlocks = Array.from(doc.querySelectorAll<HTMLElement>('.story-block[id]'));
+  const storyIds = new Set<string>();
+  storyBlocks.forEach((block) => {
+    if (storyIds.has(block.id)) errors.push(`Duplicate story-block id: ${block.id}`);
+    storyIds.add(block.id);
+  });
+
+  doc.querySelectorAll<HTMLElement>('[data-next]').forEach((choice) => {
+    const target = (choice.dataset.next ?? '').trim();
+    if (!target || !storyIds.has(target)) errors.push(`Missing story-block target: ${target || '(empty)'}`);
+  });
+
+  const rows = Array.from(doc.querySelectorAll<HTMLElement>('p.choice'));
+  rows.forEach((row) => {
+    if (row.previousElementSibling?.matches('p.choice')) return;
+    const group: HTMLElement[] = [];
+    let cursor: Element | null = row;
+    while (cursor instanceof HTMLElement && cursor.matches('p.choice')) {
+      group.push(cursor);
+      cursor = cursor.nextElementSibling;
+    }
+    if (!group.some((option) => Boolean(option.textContent?.trim()))) {
+      errors.push('Choice group has no readable option.');
+      return;
+    }
+    const hasLinearContinuation = Boolean(cursor && !cursor.closest('#story-cache'));
+    group.forEach((option, index) => {
+      const targetNode = option.querySelector<HTMLElement>('.choice-link') ?? option;
+      const dataNext = targetNode.dataset.next ?? option.dataset.next ?? '';
+      const href = targetNode.getAttribute('href') ?? '';
+      const action = targetNode.dataset.action ?? option.dataset.action ?? '';
+      if (!dataNext && !href && !action && !hasLinearContinuation) {
+        errors.push(`Choice ${index + 1} in final group has no target.`);
+      }
+      if (href.startsWith('#') && !doc.getElementById(href.slice(1))) {
+        errors.push(`Missing internal href target: ${href}`);
+      }
+      if (href.startsWith('/chapter/')) {
+        const chapterId = decodeURIComponent(href.slice('/chapter/'.length).split(/[?#]/)[0] ?? '');
+        if (options.validChapterIds && !options.validChapterIds.has(chapterId)) {
+          errors.push(`Unknown chapter href: ${href}`);
+        }
+      }
+      if (/\.html(?:[?#].*)?$/i.test(href)) {
+        const filename = decodeURIComponent(href.split(/[?#]/)[0]?.split('/').pop() ?? '');
+        if (options.validChapterFilenames && !options.validChapterFilenames.has(filename)) {
+          errors.push(`Unknown legacy chapter href: ${href}`);
+        }
+      }
+    });
+  });
+
+  return [...new Set(errors)];
+}
+
 export function sanitizeHTML(html: string): string {
   try {
     const root = document.createElement("div");
@@ -195,7 +260,7 @@ export function extractVisibleTextLength(html: string): number {
 
 export function splitContentAtChoices(doc: Document, root: HTMLElement): TypewriterSegment {
   const cutoffNode = root.querySelector("#story-cache");
-  const firstChoice = root.querySelector("p.choice, .choice-link");
+  const firstChoice = root.querySelector("p.choice");
   let preHtml = "";
   let choiceBlockHtml = "";
   let remainderHtml = "";

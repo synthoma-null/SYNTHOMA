@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { resolveChapterId } from './src/content/catalog';
+import { isReaderInfoPath } from './src/content/readerInfo';
 
 const LOCALE_COOKIE = 'synthoma_locale';
 
@@ -26,6 +27,7 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === '/reader') {
     const reference = request.nextUrl.searchParams.get('chapter')
       ?? request.nextUrl.searchParams.get('u');
+    if (isReaderInfoPath(reference)) return nextWithLocale(request, locale);
     const chapterId = reference ? resolveChapterId(reference) : undefined;
     const target = new URL(chapterId ? `/chapter/${encodeURIComponent(chapterId)}` : '/books', request.url);
 

@@ -10,7 +10,11 @@ import {
   transformChoicesToButtons,
   extractVisibleTextLength,
   normalizeChoicesToPlainText,
+  validateReaderFlowDocument,
 } from '../typewriterContent';
+import fs from 'node:fs';
+import path from 'node:path';
+import { CHAPTERS } from '../../content/booksManifest';
 
 // ─── sanitizeHTML ────────────────────────────────────────────────────
 
@@ -232,5 +236,48 @@ describe('normalizeChoicesToPlainText', () => {
     const result = normalizeChoicesToPlainText(html);
     expect(result).toContain('disabled');
     expect(result).toContain('aria-disabled="true"');
+  });
+});
+
+describe('validateReaderFlowDocument', () => {
+  function parse(html: string): Document {
+    return new DOMParser().parseFromString(html, 'text/html');
+  }
+
+  it('accepts a valid data-next branch and internal chapter href', () => {
+    const doc = parse(`
+      <p class="choice" data-next="left">Left</p>
+      <p class="choice"><a class="choice-link" href="/chapter/next">Next</a></p>
+      <div id="story-cache"><section class="story-block" id="left"><p>Branch</p></section></div>
+    `);
+    expect(validateReaderFlowDocument(doc, { validChapterIds: new Set(['next']) })).toEqual([]);
+  });
+
+  it('reports missing and duplicate story targets', () => {
+    const doc = parse(`
+      <p class="choice" data-next="missing">Continue</p>
+      <div id="story-cache">
+        <section class="story-block" id="same"></section>
+        <section class="story-block" id="same"></section>
+      </div>
+    `);
+    expect(validateReaderFlowDocument(doc)).toEqual(expect.arrayContaining([
+      'Missing story-block target: missing',
+      'Duplicate story-block id: same',
+    ]));
+  });
+
+  it('rejects a final choice without a target', () => {
+    const doc = parse('<p class="choice">Nowhere</p>');
+    expect(validateReaderFlowDocument(doc)).toContain('Choice 1 in final group has no target.');
+  });
+
+  it.each(['SYNTHOMAINFO.html', 'SYNTHOMAINFO_en.html'])('validates the real %s branch graph', (filename) => {
+    const source = fs.readFileSync(path.join(process.cwd(), 'public', 'data', filename), 'utf8');
+    const validChapterIds = new Set(CHAPTERS.map((chapter) => chapter.id));
+    const validChapterFilenames = new Set(
+      CHAPTERS.flatMap((chapter) => [chapter.filename, chapter.filename_en].filter((name): name is string => Boolean(name))),
+    );
+    expect(validateReaderFlowDocument(parse(source), { validChapterIds, validChapterFilenames })).toEqual([]);
   });
 });

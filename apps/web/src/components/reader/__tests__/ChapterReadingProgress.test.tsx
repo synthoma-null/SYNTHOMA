@@ -2,6 +2,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import ChapterReadingProgress from '../ChapterReadingProgress';
 import { LangProvider } from '../../../lib/LangContext';
 import { readReadingProgress, saveReadingProgress } from '../../../lib/readerState';
+import { READER_FLOW_EVENT } from '../../../lib/readerDecisionController';
 
 jest.mock('../../../lib/readerState', () => ({
   readReadingProgress: jest.fn(),
@@ -54,6 +55,28 @@ describe('ChapterReadingProgress', () => {
     Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } });
     render(<ChapterReadingProgress {...props} />);
     await waitFor(() => expect(scrollTo).toHaveBeenCalledWith({ top: 250, behavior: 'auto' }));
+  });
+
+  it('does not complete a chapter with decisions before the final choice', async () => {
+    const { getByRole } = render(<ChapterReadingProgress {...props} hasDecisions />);
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 500 });
+    fireEvent.scroll(window);
+
+    await waitFor(() => expect(getByRole('progressbar')).toHaveAttribute('aria-valuenow', '97'));
+    expect(saveReadingProgress).toHaveBeenLastCalledWith(expect.objectContaining({
+      percent: 97,
+      completed: false,
+    }));
+
+    document.dispatchEvent(new CustomEvent(READER_FLOW_EVENT, {
+      detail: { chapterId: props.chapterId, state: 'CHAPTER_COMPLETE', complete: true },
+    }));
+
+    await waitFor(() => expect(getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100'));
+    expect(saveReadingProgress).toHaveBeenLastCalledWith(expect.objectContaining({
+      percent: 100,
+      completed: true,
+    }));
   });
 
   it('localizes the progressbar label', () => {

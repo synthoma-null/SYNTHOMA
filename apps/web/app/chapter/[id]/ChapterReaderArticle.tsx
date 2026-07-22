@@ -8,6 +8,7 @@ import ReaderDecisionController from '../../../src/components/reader/ReaderDecis
 import ChapterRail from '../../../src/components/reader/ChapterRail';
 import ReaderDialogController from '../../../src/components/reader/ReaderDialogController';
 import ReaderOnboarding from '../../../src/components/reader/ReaderOnboarding';
+import { getReaderDecisionContract } from '../../../src/content/readerDecisionCatalog';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 
 interface Props {
@@ -39,6 +40,7 @@ export default function ChapterReaderArticle({
   const collection = getBookCollection(chapter.collection);
   const isKonecPodpory = collection?.slug === 'konec-podpory';
   const chapterCode = chapter.ordinal;
+  const hasDecisions = getReaderDecisionContract(chapter.id).length > 0;
   const title = locale === 'en' ? chapter.titleEn ?? chapter.displayTitle : chapter.displayTitle;
   const accessibleTitle = locale === 'en' ? chapter.titleEn ?? chapter.fullTitle : chapter.fullTitle;
   const copy = locale === 'en'
@@ -54,6 +56,7 @@ export default function ChapterReaderArticle({
         chapterTitle={title}
         collection={chapter.collection}
         chapterPath={chapter.route}
+        hasDecisions={hasDecisions}
       />
       <ChapterRail
         book={collection?.shortTitle ?? collection?.title ?? 'SYNTHOMA'}
@@ -77,7 +80,13 @@ export default function ChapterReaderArticle({
               {locale === 'en' ? 'CS' : 'EN'}
             </Link>
           ) : null}
-          <ReaderCommandUtilities articleId="chapter-reader-article" locale={locale} />
+          <ReaderCommandUtilities
+            articleId="chapter-reader-article"
+            locale={locale}
+            chapterId={chapter.id}
+            collection={chapter.collection}
+            hasDecisions={hasDecisions}
+          />
         </div>
       </header>
 

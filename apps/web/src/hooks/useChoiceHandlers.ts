@@ -4,6 +4,7 @@ import { useCallback, type RefObject } from "react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { saveLastChapterPath, saveReaderResume } from "../lib/readerState";
 import { CHAPTERS } from "../content/booksManifest";
+import type { ReaderFlowState } from "../lib/readerDecisionController";
 
 function canonicalChapterRoute(reference: string): string | null {
   try {
@@ -20,10 +21,8 @@ function canonicalChapterRoute(reference: string): string | null {
   }
 }
 
-function softFail(scope: string, err: unknown): void {
-  if (process.env.NODE_ENV !== "production") {
-    console.warn(`[useChoiceHandlers:${scope}]`, err);
-  }
+function softFail(scope: string, error: unknown): void {
+  if (process.env.NODE_ENV !== "production") console.warn(`[useChoiceHandlers:${scope}]`, error);
 }
 
 function findTargetInCache(cacheHtml: string, id: string): HTMLElement | null {
@@ -31,18 +30,30 @@ function findTargetInCache(cacheHtml: string, id: string): HTMLElement | null {
     const parser = new DOMParser();
     const doc = parser.parseFromString(`<div id="_cache">${cacheHtml}</div>`, "text/html");
     const holder = doc.getElementById("_cache");
-    return holder ? (holder.querySelector(`#${CSS.escape(id)}`) as HTMLElement | null) : null;
+    return holder?.querySelector<HTMLElement>(`#${CSS.escape(id)}`) ?? null;
   } catch {
     return null;
   }
+}
+
+function showMissingTarget(host: HTMLElement | null, target: string): void {
+  console.error(`[TypewriterReader] Missing choice target: ${target}`);
+  if (!host || host.querySelector('[data-reader-flow-error="missing-target"]')) return;
+  const message = document.createElement('p');
+  message.className = 'reader-decision-status reader-decision-status--error';
+  message.dataset.readerFlowError = 'missing-target';
+  message.setAttribute('role', 'alert');
+  message.textContent = 'LOG [CHOICE_TARGET_MISSING]: Pokračování nebylo nalezeno.';
+  host.appendChild(message);
 }
 
 export type ChoiceHandlerActions = {
   lockChoiceGroup: (chosen: HTMLElement, root: HTMLElement) => void;
   scoreFromNode: (node: Element | null) => void;
   persistChoiceState: (node: HTMLElement, container: HTMLElement) => void;
-  announce: (msg: string) => void;
+  announce: (message: string) => void;
   renderNextSegment: (html: string, mode: "typed" | "instant") => void;
+  setFlowState: (state: ReaderFlowState) => void;
 };
 
 export type UseChoiceHandlersOptions = {
@@ -53,11 +64,6 @@ export type UseChoiceHandlersOptions = {
   srcUrl: string;
 } & ChoiceHandlerActions;
 
-/**
- * Bind click/touch handlers to choice links and data-action elements inside the reader host.
- * Delegates rendering to the provided `renderNextSegment` action so the same segment renderer
- * is used for data-next, continuation, and fallback section jumps.
- */
 export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
   const {
     hostRef,
@@ -70,34 +76,28 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
     persistChoiceState,
     announce,
     renderNextSegment,
+    setFlowState,
   } = options;
 
   const bindChoiceHandlersLocal = useCallback(() => {
     const root = hostRef.current;
     if (!root) return;
 
-    // EchoGhost refresh is the single source of truth for echo-ghost effects
     try {
       (window as any).EchoGhost?.refresh(root);
     } catch {}
 
-    // data-action navigation helpers
-    root.querySelectorAll<HTMLElement>("[data-action]").forEach((el) => {
-      if (el.dataset.boundAction === "1") return;
-      el.dataset.boundAction = "1";
-      el.addEventListener("click", (e: Event) => {
-        const action = el.dataset.action;
-        if (action === "open-profile") {
-          e.preventDefault();
-          try {
-            document.dispatchEvent(new CustomEvent("synthoma:open-profile"));
-          } catch {}
-        }
+    root.querySelectorAll<HTMLElement>("[data-action]").forEach((element) => {
+      if (element.dataset.boundAction === "1") return;
+      element.dataset.boundAction = "1";
+      element.addEventListener("click", (event: Event) => {
+        if (element.dataset.action !== "open-profile") return;
+        event.preventDefault();
+        document.dispatchEvent(new CustomEvent("synthoma:open-profile"));
       });
     });
 
-    root.querySelectorAll<HTMLElement>(".choice-link").forEach((el) => {
-      const node = el as HTMLElement;
+    root.querySelectorAll<HTMLElement>(".choice-link").forEach((node) => {
       if (node.dataset.boundGeneral === "1") return;
 
       node.addEventListener("focus", () => {
@@ -105,137 +105,106 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
         if (label) announce(`Fokus na volbu: ${label}`);
       });
 
-      node.addEventListener("click", (e: Event) => {
-        const h = hostRef.current;
-        if (h) lockChoiceGroup(node, h);
-        const href =
-          node.getAttribute("href") ||
-          node.getAttribute("data-href") ||
-          node.getAttribute("data-next") ||
-          "";
+      node.addEventListener("click", (event: Event) => {
+        event.preventDefault();
+        if (node.dataset.action) return;
+        const group = node.closest<HTMLElement>('[data-choice-group], .choices, .choice-group');
+        if (group?.classList.contains('choices-locked') || node.dataset.readerResolving === 'true') return;
 
-        // data-next: in-cache section jump
-        try {
-          const dataNext = node.getAttribute("data-next") || "";
-          if (dataNext && storyCacheRef.current) {
-            const target = findTargetInCache(storyCacheRef.current, dataNext);
-            if (target) {
-              e.preventDefault();
-              scoreFromNode(node);
-              try {
-                const host2 = hostRef.current;
-                if (host2) persistChoiceState(node, host2);
-              } catch {}
-              try {
-                saveReaderResume({ chapterPath: srcUrl, dataNext });
-              } catch {}
-              renderNextSegment(target.innerHTML, "typed");
-              return;
-            }
+        const href = node.getAttribute("href") || node.getAttribute("data-href") || "";
+        const dataNext = node.getAttribute("data-next") || "";
+        const commitChoice = () => {
+          const host = hostRef.current;
+          if (host) {
+            lockChoiceGroup(node, host);
+            persistChoiceState(node, host);
           }
-        } catch {}
-
-        // pending continuation segment (e.g. next MBTI group in the same chapter)
-        if (continueRef.current) {
-          e.preventDefault();
-          const h2 = hostRef.current;
-          if (h2) lockChoiceGroup(node, h2);
           scoreFromNode(node);
-          try {
-            const host2 = hostRef.current;
-            if (host2) persistChoiceState(node, host2);
-          } catch {}
-          try {
-            const dn = node.getAttribute("data-next") || "";
-            if (dn) saveReaderResume({ chapterPath: srcUrl, dataNext: dn });
-          } catch {}
-          const label = (node.textContent || "").replace(/\s+/g, " ").trim();
-          if (label) announce(`Zvoleno: ${label}. Pokračuji…`);
-          const fn = continueRef.current;
-          continueRef.current = null;
-          fn && fn();
-          return;
-        }
-
-        e.preventDefault();
-        if (!href) {
-          scoreFromNode(node);
-          try {
-            const host2 = hostRef.current;
-            if (host2) persistChoiceState(node, host2);
-          } catch {}
-          try {
-            const dn = node.getAttribute("data-next") || "";
-            if (dn) {
-              saveReaderResume({ chapterPath: srcUrl, dataNext: dn });
-            } else {
-              const par = node.closest("p.choice") as HTMLElement | null;
-              const pid = par?.id || "";
-              if (pid) saveReaderResume({ chapterPath: srcUrl, hash: `#${pid}` });
-            }
-          } catch {}
           const label = (node.textContent || "").replace(/\s+/g, " ").trim();
           if (label) announce(`Zvoleno: ${label}.`);
-          return;
-        }
+        };
 
-        if (href.startsWith("http")) {
-          window.open(href, "_blank");
-        } else if (href.startsWith("#")) {
-          const section = document.querySelector(href);
-          section?.scrollIntoView({ behavior: "smooth" });
-          const h2 = hostRef.current;
-          if (h2) lockChoiceGroup(node, h2);
-          scoreFromNode(node);
-          try {
-            const host2 = hostRef.current;
-            if (host2) persistChoiceState(node, host2);
-          } catch {}
-          try {
-            saveReaderResume({ chapterPath: srcUrl, hash: href });
-          } catch {}
-          const label = (node.textContent || "").replace(/\s+/g, " ").trim();
-          if (label) announce(`Zvoleno: ${label}.`);
-        } else {
-          // Site route
-          if (href.startsWith("/")) {
-            if (/^\/books\/.+\.html(\?.*)?(#.*)?$/i.test(href)) {
-              const chapterRoute = canonicalChapterRoute(href);
-              if (chapterRoute) {
-                scoreFromNode(node);
-                try {
-                  const host2 = hostRef.current;
-                  if (host2) persistChoiceState(node, host2);
-                } catch {}
-                saveLastChapterPath(chapterRoute);
-                router.push(chapterRoute);
-                return;
-              }
-              router.push("/books");
-            } else {
-              router.push(href);
-            }
+        if (dataNext) {
+          const target = findTargetInCache(storyCacheRef.current, dataNext);
+          if (!target) {
+            showMissingTarget(hostRef.current, dataNext);
+            setFlowState('WAITING_FOR_CHOICE');
             return;
           }
-          // Fallback: in-document section jump using story-cache
+          node.dataset.readerResolving = 'true';
+          setFlowState('RESOLVING_CHOICE');
+          commitChoice();
           try {
-            const cacheHtml = storyCacheRef.current || "";
-            if (cacheHtml && href) {
-              const target = findTargetInCache(cacheHtml, href);
-              if (target) {
-                e.preventDefault();
-                renderNextSegment(target.innerHTML, "typed");
-                return;
-              }
-            }
-          } catch {}
-          // Fallback: resolve relative legacy chapter filenames through the catalog.
-          let path = href;
-          if (!(path.startsWith("/") || path.startsWith("http") || path.startsWith("#"))) {
-            path = "/" + path;
+            saveReaderResume({ chapterPath: srcUrl, dataNext });
+          } catch (error) {
+            softFail('resume-data-next', error);
           }
-          router.push(canonicalChapterRoute(path) ?? "/books");
+          renderNextSegment(target.innerHTML, "typed");
+          return;
         }
+
+        if (href) {
+          node.dataset.readerResolving = 'true';
+          setFlowState('RESOLVING_CHOICE');
+          commitChoice();
+
+          if (href.startsWith("#")) {
+            document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+            try {
+              saveReaderResume({ chapterPath: srcUrl, hash: href });
+            } catch (error) {
+              softFail('resume-hash', error);
+            }
+            setFlowState('CHAPTER_COMPLETE');
+            return;
+          }
+
+          let destination = href;
+          const legacyChapter = /^\/books\/.+\.html(\?.*)?(#.*)?$/i.test(href)
+            || (!href.startsWith('/') && !href.startsWith('http'));
+          if (legacyChapter) {
+            const path = href.startsWith('/') ? href : `/${href}`;
+            destination = canonicalChapterRoute(path) ?? '/books';
+          }
+          if (destination.startsWith('/chapter/')) saveLastChapterPath(destination);
+          setFlowState('CHAPTER_COMPLETE');
+          window.setTimeout(() => {
+            if (destination.startsWith('/')) router.push(destination);
+            else window.location.assign(destination);
+          }, 350);
+          return;
+        }
+
+        if (continueRef.current) {
+          node.dataset.readerResolving = 'true';
+          setFlowState('RESOLVING_CHOICE');
+          commitChoice();
+          const continuation = continueRef.current;
+          continueRef.current = null;
+          continuation();
+          return;
+        }
+
+        setFlowState('RESOLVING_CHOICE');
+        commitChoice();
+        setFlowState('CHAPTER_COMPLETE');
+      });
+
+      node.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          node.click();
+          return;
+        }
+        if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(event.key)) return;
+        const group = node.closest<HTMLElement>('[data-choice-group], .choices, .choice-group');
+        if (!group || group.classList.contains('choices-locked')) return;
+        const choices = Array.from(group.querySelectorAll<HTMLElement>('.choice-link'));
+        const current = choices.indexOf(node);
+        if (current < 0 || choices.length < 2) return;
+        event.preventDefault();
+        const direction = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1 : -1;
+        choices[(current + direction + choices.length) % choices.length]?.focus();
       });
 
       node.dataset.boundGeneral = "1";
@@ -251,6 +220,7 @@ export function useChoiceHandlers(options: UseChoiceHandlersOptions) {
     persistChoiceState,
     announce,
     renderNextSegment,
+    setFlowState,
   ]);
 
   return { bindChoiceHandlers: bindChoiceHandlersLocal };

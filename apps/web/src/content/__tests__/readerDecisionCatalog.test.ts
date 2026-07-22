@@ -2,6 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { CHAPTER_CATALOG, getBookCollection } from '../catalog';
 import { getReaderDecisionContract } from '../readerDecisionCatalog';
+import { validateReaderFlowDocument } from '../../lib/typewriterContent';
+
+const validChapterIds = new Set(CHAPTER_CATALOG.map((chapter) => chapter.id));
+const validChapterFilenames = new Set(
+  CHAPTER_CATALOG.flatMap((chapter) => [chapter.filename, chapter.filenameEn].filter((name): name is string => Boolean(name))),
+);
 
 function sourceDirectory(accessPolicy: string, collection: string): string {
   const directory = getBookCollection(collection)?.directory ?? collection;
@@ -41,6 +47,8 @@ describe('Reader decision catalog', () => {
         expect(choiceSignatures(source)).toEqual(
           contract.map((question) => question.choices.map((choice) => choice.sourceTag)),
         );
+        const document = new DOMParser().parseFromString(source, 'text/html');
+        expect(validateReaderFlowDocument(document, { validChapterIds, validChapterFilenames })).toEqual([]);
       });
     });
   });
@@ -51,6 +59,19 @@ describe('Reader decision catalog', () => {
       expect(new Set(contract.map((question) => question.questionId)).size).toBe(contract.length);
       contract.forEach((question) => {
         expect(new Set(question.choices.map((choice) => choice.choiceId)).size).toBe(question.choices.length);
+      });
+    });
+  });
+
+  it('keeps published decision groups as top-level chapter nodes for flow segmentation', () => {
+    CHAPTER_CATALOG.filter((chapter) => chapter.availability === 'published').forEach((chapter) => {
+      const source = fs.readFileSync(
+        path.join(sourceDirectory(chapter.accessPolicy, chapter.collection), chapter.filename),
+        'utf8',
+      );
+      const document = new DOMParser().parseFromString(source, 'text/html');
+      document.querySelectorAll('p.choice').forEach((row) => {
+        expect(row.parentElement).toBe(document.body);
       });
     });
   });

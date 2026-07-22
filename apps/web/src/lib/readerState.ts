@@ -21,6 +21,12 @@ export type ChoiceGroupState = {
   chosenText: string; // text zvolené volby
   chosenIdx: number;  // index v rámci skupiny
   dataNext?: string;  // data-next atribut zvolené volby (pokud existuje)
+  chapterId?: string;
+  collection?: string;
+  choiceId?: string;
+  tags?: string[];
+  href?: string;
+  selectedAt?: number;
 };
 
 export function getChoicesStateKey(srcUrl: string): string {

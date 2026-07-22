@@ -7,6 +7,20 @@ import {
 } from './readerDecisions';
 
 export type ReaderDecisionLocale = 'cs' | 'en';
+export type ReaderFlowState =
+  | 'TYPING'
+  | 'WAITING_FOR_CHOICE'
+  | 'RESOLVING_CHOICE'
+  | 'TYPING_CONTINUATION'
+  | 'CHAPTER_COMPLETE';
+
+export const READER_FLOW_EVENT = 'synthoma:reader-flow-state';
+
+export interface ReaderFlowEventDetail {
+  chapterId: string;
+  state: ReaderFlowState;
+  complete: boolean;
+}
 
 export interface ReaderDecisionCopy {
   groupLabel: (position: number) => string;
@@ -16,6 +30,7 @@ export interface ReaderDecisionCopy {
   recording: string;
   error: string;
   retry: string;
+  missingTarget: string;
 }
 
 export function getReaderDecisionCopy(locale: ReaderDecisionLocale): ReaderDecisionCopy {
@@ -28,6 +43,7 @@ export function getReaderDecisionCopy(locale: ReaderDecisionLocale): ReaderDecis
         recording: 'Recording decision...',
         error: 'The decision could not be saved.',
         retry: 'Try again',
+        missingTarget: 'LOG [CHOICE_TARGET_MISSING]: Continuation was not found.',
       }
     : {
         groupLabel: (position) => `Rozhodnutí ${position}`,
@@ -37,21 +53,26 @@ export function getReaderDecisionCopy(locale: ReaderDecisionLocale): ReaderDecis
         recording: 'Ukládám rozhodnutí...',
         error: 'Rozhodnutí se nepodařilo uložit.',
         retry: 'Zkusit znovu',
+        missingTarget: 'LOG [CHOICE_TARGET_MISSING]: Pokračování nebylo nalezeno.',
       };
 }
 
 export interface BindReaderDecisionOptions {
   root: HTMLElement;
   chapterId: string;
+  collection?: string;
   locale: ReaderDecisionLocale;
   contract?: ReaderDecisionQuestionContract[];
   persistence?: ReaderDecisionPersistence;
+  navigationDelayMs?: number;
   onCommitted?: (option: HTMLElement, record: ReaderDecisionRecord) => void;
   onNavigate?: (href: string) => void;
+  onFlowStateChange?: (state: ReaderFlowState) => void;
 }
 
 function choiceRows(root: HTMLElement): HTMLElement[][] {
-  const rows = Array.from(root.querySelectorAll<HTMLElement>('p.choice'));
+  const rows = Array.from(root.querySelectorAll<HTMLElement>('p.choice'))
+    .filter((row) => !row.closest('#story-cache'));
   const blocks: HTMLElement[][] = [];
   rows.forEach((row) => {
     if (row.previousElementSibling?.matches('p.choice')) return;
@@ -124,7 +145,7 @@ function prepareGroups(
     group.className = 'reader-decision-group';
     group.dataset.readerDecisionGroup = question.questionId;
     group.dataset.questionId = question.questionId;
-    group.dataset.state = 'idle';
+    group.dataset.state = 'queued';
     group.setAttribute('role', 'group');
     group.setAttribute('aria-label', copy.groupLabel(groupIndex + 1));
 
@@ -139,10 +160,16 @@ function prepareGroups(
       option.dataset.questionId = question.questionId;
       option.dataset.choiceId = choice.choiceId;
       option.dataset.blockId = question.questionId;
-      option.dataset.state = 'idle';
+      option.dataset.state = 'queued';
       option.setAttribute('aria-pressed', 'false');
+      option.setAttribute('aria-disabled', 'true');
+      option.tabIndex = -1;
       const href = option.getAttribute('href');
-      if (href) option.dataset.readerHref = href;
+      if (href) {
+        option.dataset.readerHref = href;
+        option.removeAttribute('href');
+        option.setAttribute('role', 'button');
+      }
       group.appendChild(row);
     });
 
@@ -209,6 +236,16 @@ function setLockedState(
   }
 }
 
+function setIdleState(group: HTMLElement): void {
+  group.dataset.state = 'idle';
+  group.querySelectorAll<HTMLElement>('.choice-link').forEach((option) => {
+    option.dataset.state = 'idle';
+    option.setAttribute('aria-disabled', 'false');
+    option.tabIndex = 0;
+    if (option instanceof HTMLButtonElement) option.disabled = false;
+  });
+}
+
 function setSubmittingState(group: HTMLElement, copy: ReaderDecisionCopy): void {
   group.dataset.state = 'submitting';
   group.querySelectorAll<HTMLElement>('.choice-link').forEach((option) => {
@@ -236,30 +273,116 @@ function setErrorState(group: HTMLElement, copy: ReaderDecisionCopy): void {
   }
 }
 
+function detachContinuations(root: HTMLElement, groups: HTMLElement[]): DocumentFragment[] {
+  if (groups.some((group) => group.parentElement !== root)) {
+    throw new Error('Reader decision groups must be top-level chapter nodes.');
+  }
+  const nodes = Array.from(root.childNodes);
+  const groupPositions = groups.map((group) => nodes.indexOf(group));
+  const continuations = groups.map((group, index) => {
+    const fragment = document.createDocumentFragment();
+    const start = groupPositions[index]! + 1;
+    const end = index + 1 < groups.length ? groupPositions[index + 1]! + 1 : nodes.length;
+    for (let nodeIndex = start; nodeIndex < end; nodeIndex += 1) {
+      const node = nodes[nodeIndex];
+      if (node) fragment.appendChild(node);
+    }
+    return fragment;
+  });
+  return continuations;
+}
+
+function focusFirstChoice(group: HTMLElement): void {
+  const first = group.querySelector<HTMLElement>('.choice-link');
+  if (!first) return;
+  try {
+    first.focus({ preventScroll: true });
+  } catch {
+    first.focus();
+  }
+}
+
+function renderMissingTarget(root: HTMLElement, copy: ReaderDecisionCopy, target: string): void {
+  console.error(`[ReaderDecisionController] Missing choice target: ${target}`);
+  const message = document.createElement('p');
+  message.className = 'reader-decision-status reader-decision-status--error';
+  message.setAttribute('role', 'alert');
+  message.textContent = copy.missingTarget;
+  root.appendChild(message);
+}
+
 export function bindReaderDecisions(options: BindReaderDecisionOptions): () => void {
   const {
     root,
     chapterId,
+    collection = 'SYNTHOMA-NULL',
     locale,
     persistence = readerDecisionPersistence,
+    navigationDelayMs = 350,
     onCommitted,
     onNavigate,
+    onFlowStateChange,
   } = options;
   const contract = options.contract ?? getReaderDecisionContract(chapterId);
   const copy = getReaderDecisionCopy(locale);
+  const storyCache = root.querySelector<HTMLElement>('#story-cache');
+  const storyTargets = new Set(
+    Array.from(storyCache?.querySelectorAll<HTMLElement>('.story-block[id]') ?? []).map((block) => block.id),
+  );
+  storyCache?.remove();
   const groups = prepareGroups(root, chapterId, contract, copy);
+  const continuations = detachContinuations(root, groups);
+  const timers = new Set<ReturnType<typeof setTimeout>>();
 
-  groups.forEach((group) => {
-    const questionId = group.dataset.questionId;
-    if (!questionId) return;
-    const stored = persistence.read(chapterId, questionId);
-    if (stored) setLockedState(group, stored.choiceId, copy, false);
+  const setFlowState = (state: ReaderFlowState) => {
+    root.dataset.readerFlowState = state;
+    root.dataset.readerChapterId = chapterId;
+    onFlowStateChange?.(state);
+    root.dispatchEvent(new CustomEvent<ReaderFlowEventDetail>(READER_FLOW_EVENT, {
+      bubbles: true,
+      detail: { chapterId, state, complete: state === 'CHAPTER_COMPLETE' },
+    }));
+  };
+
+  const stored = groups.map((group) => {
+    const groupId = group.dataset.questionId;
+    return groupId ? persistence.read(chapterId, groupId, collection) : null;
   });
+  stored.forEach((record, index) => {
+    if (record) setLockedState(groups[index]!, record.choiceId, copy, false);
+  });
+
+  let activeIndex = stored.findIndex((record) => !record);
+  if (activeIndex < 0) activeIndex = groups.length;
+  for (let index = 0; index < activeIndex; index += 1) {
+    root.appendChild(continuations[index]!);
+  }
+
+  if (groups.length === 0 || activeIndex >= groups.length) {
+    setFlowState('CHAPTER_COMPLETE');
+  } else {
+    setIdleState(groups[activeIndex]!);
+    setFlowState('WAITING_FOR_CHOICE');
+  }
 
   root.dataset.readerDecisions = 'ready';
   root.classList.remove('reader-decisions-pending');
   root.removeAttribute('inert');
   root.setAttribute('aria-busy', 'false');
+
+  const revealContinuation = (groupIndex: number) => {
+    setFlowState('TYPING_CONTINUATION');
+    root.appendChild(continuations[groupIndex]!);
+    activeIndex = groupIndex + 1;
+    if (activeIndex < groups.length) {
+      const next = groups[activeIndex]!;
+      setIdleState(next);
+      setFlowState('WAITING_FOR_CHOICE');
+      focusFirstChoice(next);
+      return;
+    }
+    setFlowState('CHAPTER_COMPLETE');
+  };
 
   const resolve = (option: HTMLElement, event: Event) => {
     const group = option.closest<HTMLElement>('[data-reader-decision-group]');
@@ -268,24 +391,38 @@ export function bindReaderDecisions(options: BindReaderDecisionOptions): () => v
     if (!group || !questionId || !choiceId) return;
     event.preventDefault();
 
-    const stored = persistence.read(chapterId, questionId);
-    if (stored) {
-      if (group.dataset.state !== 'locked') setLockedState(group, stored.choiceId, copy, false);
+    const groupIndex = groups.indexOf(group);
+    if (groupIndex !== activeIndex || group.dataset.state !== 'idle') return;
+    const existing = persistence.read(chapterId, questionId, collection);
+    if (existing) {
+      setLockedState(group, existing.choiceId, copy, false);
+      revealContinuation(groupIndex);
       return;
     }
-    if (group.dataset.state === 'submitting' || group.dataset.state === 'locked') return;
 
     const href = option.dataset.readerHref ?? option.getAttribute('href') ?? '';
+    const nextBlockId = option.dataset.next ?? option.getAttribute('data-next') ?? '';
+    const tags = (option.dataset.tags ?? '')
+      .split(/[\s,]+/)
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+    setFlowState('RESOLVING_CHOICE');
     setSubmittingState(group, copy);
     const record: ReaderDecisionRecord = {
       chapterId,
+      collection,
+      groupId: questionId,
       questionId,
       choiceId,
-      selectedAt: new Date().toISOString(),
+      tags,
+      selectedAt: Date.now(),
+      ...(nextBlockId ? { nextBlockId } : {}),
+      ...(href ? { href } : {}),
     };
     const result = persistence.commit(record);
     if (result.status === 'error') {
       setErrorState(group, copy);
+      setFlowState('WAITING_FOR_CHOICE');
       option.focus();
       return;
     }
@@ -293,7 +430,28 @@ export function bindReaderDecisions(options: BindReaderDecisionOptions): () => v
     setLockedState(group, result.record.choiceId, copy, result.status === 'committed');
     if (result.status !== 'committed') return;
     onCommitted?.(option, result.record);
-    if (href) onNavigate?.(href);
+
+    if (nextBlockId) {
+      if (!storyTargets.has(nextBlockId)) {
+        renderMissingTarget(root, copy, nextBlockId);
+        setFlowState('WAITING_FOR_CHOICE');
+        return;
+      }
+      revealContinuation(groupIndex);
+      return;
+    }
+
+    if (href) {
+      setFlowState('CHAPTER_COMPLETE');
+      const timer = setTimeout(() => {
+        timers.delete(timer);
+        onNavigate?.(href);
+      }, Math.max(0, navigationDelayMs));
+      timers.add(timer);
+      return;
+    }
+
+    revealContinuation(groupIndex);
   };
 
   const onClick = (event: Event) => {
@@ -301,9 +459,21 @@ export function bindReaderDecisions(options: BindReaderDecisionOptions): () => v
     if (target && root.contains(target)) resolve(target, event);
   };
   const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
     const target = event.target instanceof Element ? event.target.closest<HTMLElement>('.choice-link') : null;
-    if (target && root.contains(target)) resolve(target, event);
+    if (!target || !root.contains(target)) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      resolve(target, event);
+      return;
+    }
+    if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(event.key)) return;
+    const group = target.closest<HTMLElement>('[data-reader-decision-group]');
+    if (!group || group.dataset.state !== 'idle') return;
+    const choices = Array.from(group.querySelectorAll<HTMLElement>('.choice-link'));
+    const current = choices.indexOf(target);
+    if (current < 0 || choices.length < 2) return;
+    event.preventDefault();
+    const direction = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1 : -1;
+    choices[(current + direction + choices.length) % choices.length]?.focus();
   };
 
   root.addEventListener('click', onClick);
@@ -311,5 +481,8 @@ export function bindReaderDecisions(options: BindReaderDecisionOptions): () => v
   return () => {
     root.removeEventListener('click', onClick);
     root.removeEventListener('keydown', onKeyDown);
+    timers.forEach((timer) => clearTimeout(timer));
+    continuations.forEach((fragment) => root.appendChild(fragment));
+    if (storyCache && !storyCache.isConnected) root.appendChild(storyCache);
   };
 }
