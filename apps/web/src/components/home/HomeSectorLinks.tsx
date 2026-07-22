@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { hasActiveCyklusRun } from '../../game/cyklus/cyklusStorage';
 import { useLang } from '../../lib/LangContext';
@@ -13,8 +13,12 @@ const SECTORS = [
 ] as const;
 
 export default function HomeSectorLinks() {
-  const [activeRun] = useState(() => (typeof window !== 'undefined' ? hasActiveCyklusRun() : false));
+  const [activeRun, setActiveRun] = useState(false);
   const { t } = useLang();
+
+  useEffect(() => {
+    setActiveRun(hasActiveCyklusRun());
+  }, []);
 
   return (
     <nav className="synthoma-home__sectors" aria-label={t('home.sectors.aria')}>
@@ -32,14 +36,14 @@ export default function HomeSectorLinks() {
         ].join(' ').trim();
 
         return (
-          <Link className={classes} href={sector.href} key={sector.href}>
+          <Link className={classes} data-home-sector={sector.href.slice(1)} href={sector.href} key={sector.href}>
             <span className="home-sector-link__index">{sector.index}</span>
             <span className="home-sector-link__copy"><strong>{t(sector.labelKey as TKey)}</strong><span>{detail}</span></span>
             <span className="home-sector-link__marker">{marker}</span>
           </Link>
         );
       })}
-      <Link className="home-sector-link home-sector-link--author" href="/autor">
+      <Link className="home-sector-link home-sector-link--author" data-home-sector="autor" href="/autor">
         <span className="home-sector-link__index">04</span>
         <span className="home-sector-link__copy"><strong>{t('home.autor.title')}</strong><span>{t('home.autor.teaser')}</span></span>
         <span className="home-sector-link__marker">{t('action.open')}</span>

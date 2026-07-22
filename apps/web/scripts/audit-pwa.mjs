@@ -24,12 +24,14 @@ const swPath = path.join(root, 'public', 'sw.js');
 const sw = await fs.readFile(swPath, 'utf8');
 const stat = await fs.stat(swPath);
 const requiredMarkers = [
-  'synthoma-static-1.0.0-pwa.1',
-  'synthoma-fonts-1.0.0-pwa.1',
-  'synthoma-covers-1.0.0-pwa.1',
-  'synthoma-reader-1.0.0-pwa.1',
-  'synthoma-pages-1.0.0-pwa.1',
-  'SKIP_WAITING',
+  'synthoma-static-1.0.0-pwa.2-',
+  'synthoma-fonts-1.0.0-pwa.2-',
+  'synthoma-images-1.0.0-pwa.2-',
+  'synthoma-reader-1.0.0-pwa.2-',
+  'synthoma-pages-1.0.0-pwa.2-',
+  'PWA_UPDATED',
+  'text/x-component',
+  '_rsc',
   '/offline',
   '/api/',
 ];
@@ -38,7 +40,7 @@ for (const marker of requiredMarkers) {
 }
 
 const precacheStart = sw.indexOf('[{url:');
-const precacheEnd = sw.indexOf(']),function(t){const e=rt', precacheStart);
+const precacheEnd = sw.indexOf('}]),function(t){const e=', precacheStart);
 const precacheBlock = precacheStart >= 0 && precacheEnd > precacheStart ? sw.slice(precacheStart, precacheEnd) : '';
 const precacheEntries = precacheBlock.match(/\{url:/g) ?? [];
 const report = {

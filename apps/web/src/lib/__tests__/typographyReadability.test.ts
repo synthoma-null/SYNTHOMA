@@ -45,7 +45,8 @@ describe('typography readability browser audit', () => {
     expect(tokens).toMatch(/@media \(min-width: 1024px\)[\s\S]*?--text-card:\s*1\.125rem;[\s\S]*?--text-reader:\s*1\.25rem;/);
     expect(library).toMatch(/\.library-book-card__description\s*\{[^}]*font-size:\s*var\(--text-card\)/);
     expect(library).toMatch(/\.archive-record-card__teaser\s*\{[^}]*font-size:\s*var\(--text-card\)/);
-    expect(library).toMatch(/\.archive-record-card__source\s*\{[^}]*color:\s*var\(--os-text-muted\)/);
+    expect(library).toMatch(/\.archive-record-card__source\s*\{[^}]*color:\s*var\(--os-text-blue\)/);
+    expect(library).toMatch(/\.archive-record-card__teaser\s*\{[^}]*color:\s*var\(--os-text-secondary\)/);
     expect(reader).toMatch(/@media \(min-width: 1024px\)[\s\S]*?\.chapter-reader__command,[\s\S]*?font-size:\s*var\(--text-caption\)/);
   });
 });

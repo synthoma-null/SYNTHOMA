@@ -490,6 +490,8 @@
 }
 
 .archive-record-card {
+  --archive-category-accent: var(--os-text-cyan);
+  --archive-card-accent: var(--card-accent, var(--archive-category-accent));
   display: grid;
   gap: var(--os-space-2);
   width: 100%;
@@ -499,11 +501,28 @@
   color: var(--os-text);
   transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.archive-record-card.os-surface { border: 0; border-left: 3px solid var(--os-border); }
+.archive-record-card.os-surface { border: 0; border-left: 3px solid var(--archive-card-accent); }
 
 .archive-record-card[style*="--card-accent"] {
   border-left-color: var(--card-accent);
 }
+
+.archive-record-card[data-archive-category="zaklad"],
+.archive-record-card[data-archive-category="základ"] { --archive-category-accent: var(--os-text-cyan); }
+.archive-record-card[data-archive-category="postavy"] { --archive-category-accent: var(--os-text-violet); }
+.archive-record-card[data-archive-category="mechaniky"] { --archive-category-accent: var(--os-text-yellow); }
+.archive-record-card[data-archive-category="lokace"],
+.archive-record-card[data-archive-category="mista"] { --archive-category-accent: var(--os-text-blue); }
+.archive-record-card[data-archive-category="udalosti"] { --archive-category-accent: var(--os-text-magenta); }
+.archive-record-card[data-archive-category="systemy-protokoly"] { --archive-category-accent: var(--os-text-red); }
+.archive-record-card[data-archive-category="fragmenty"],
+.archive-record-card[data-archive-category="tajemstvi"],
+.archive-record-card[data-archive-category="shadow"],
+.archive-record-card[data-archive-category="foreign_memory"] { --archive-category-accent: var(--os-text-violet); }
+.archive-record-card[data-archive-category="memory"],
+.archive-record-card[data-archive-category="echo"] { --archive-category-accent: var(--os-text-cyan); }
+.archive-record-card[data-archive-category="log"] { --archive-category-accent: var(--os-text-magenta); }
+.archive-record-card[data-archive-category="unsent"] { --archive-category-accent: var(--os-text-amber); }
 
 .archive-record-card--interactive {
   cursor: pointer;
@@ -511,9 +530,9 @@
 
 .archive-record-card--interactive:hover {
   transform: translateY(-2px);
-  border-left-color: var(--card-accent, var(--os-accent-primary));
+  border-left-color: var(--archive-card-accent);
   background: var(--os-surface-raised);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 16px color-mix(in srgb, var(--card-accent, var(--os-accent-primary)) 10%, transparent);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 16px color-mix(in srgb, var(--archive-card-accent) 10%, transparent);
 }
 
 .archive-record-card--interactive:hover .archive-record-card__header::before {
@@ -521,7 +540,7 @@
   position: absolute;
   inset: -1px auto auto -1px;
   width: 18px;
-  border-top: 2px solid var(--card-accent, var(--os-accent-primary));
+  border-top: 2px solid var(--archive-card-accent);
   pointer-events: none;
 }
 
@@ -535,7 +554,6 @@
 }
 
 .archive-record-card--locked {
-  filter: saturate(0.35);
   border-left-style: dashed;
   border-left-color: var(--os-text-muted);
   background: color-mix(in srgb, var(--os-surface) 88%, black);
@@ -595,6 +613,7 @@
   grid-row: 1;
   min-width: 0;
   overflow-wrap: break-word;
+  color: var(--archive-card-accent);
 }
 
 .archive-record-card__category {
@@ -602,7 +621,7 @@
   grid-row: 2;
   min-width: 0;
   font-size: var(--os-font-size-xs);
-  color: var(--os-text-muted);
+  color: color-mix(in srgb, var(--archive-category-accent) 72%, var(--os-text-soft));
   font-family: var(--os-font-mono, monospace);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -614,12 +633,12 @@
   grid-row: 1 / span 3;
   flex-shrink: 0;
   padding: 3px 6px;
-  border: 1px solid var(--os-accent-primary);
-  color: var(--os-accent-primary);
+  border: 1px solid var(--os-text-green);
+  color: var(--os-text-green);
   font: 700 var(--os-font-size-xs)/1 var(--font-mono, monospace);
 }
 
-.archive-record-card__badge--locked { border-color: var(--os-text-muted); color: var(--os-text-muted); }
+.archive-record-card__badge--locked { border-color: var(--os-text-yellow); color: var(--os-text-yellow); }
 
 .archive-record-card__teaser {
   display: block;
@@ -651,10 +670,10 @@
 
 .archive-record-card__quote {
   font-style: italic;
-  border-left: 2px solid var(--os-accent-primary);
+  border-left: 2px solid var(--archive-card-accent);
   padding-left: var(--os-space-2);
   margin: 0;
-  color: var(--os-text-muted);
+  color: color-mix(in srgb, var(--archive-card-accent) 52%, var(--os-text-secondary));
 }
 
 .archive-record-card__body .text {
@@ -674,6 +693,10 @@
   border: var(--os-border-width) solid var(--os-border);
   border-radius: var(--os-corner);
 }
+
+.archive-record-card__tag:nth-child(3n + 1) { border-color: var(--os-text-cyan); color: var(--os-text-cyan); }
+.archive-record-card__tag:nth-child(3n + 2) { border-color: var(--os-text-violet); color: var(--os-text-violet); }
+.archive-record-card__tag:nth-child(3n) { border-color: var(--os-text-amber); color: var(--os-text-amber); }
 
 /* Archive whispers */
 .synthoma-archive__filters {
@@ -1039,12 +1062,17 @@ body.synthoma-dialog-lock { overflow: hidden; }
   grid-column: 2;
   grid-row: 3;
   min-width: 0;
-  color: var(--os-text-muted);
+  color: var(--os-text-blue);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-label, 0.7rem);
   letter-spacing: 0.06em;
 }
 
 .archive-record-card[data-source-book="konec-podpory"] {
-  border-left: 3px solid var(--card-accent, #00eaff);
+  border-left-color: var(--archive-card-accent);
+  box-shadow: inset 1px 0 0 var(--os-text-magenta);
+}
+
+.archive-record-card[data-source-book="konec-podpory"] .archive-record-card__source {
+  color: var(--os-text-magenta);
 }

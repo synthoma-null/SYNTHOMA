@@ -42,6 +42,8 @@ export class PurchaseRequestError extends Error {
 }
 
 type AccessContextValue = {
+  authenticated: boolean;
+  sessionStatus: 'loading' | 'authenticated' | 'unauthenticated';
   balance: number;
   version: string | null;
   resolving: boolean;
@@ -116,6 +118,11 @@ export function AccessProvider({ children }: PropsWithChildren) {
       unique.set(key, request);
       requestedRef.current.set(key, request);
     }
+    if (status !== 'authenticated') {
+      return [...unique.keys()]
+        .map((key) => cacheRef.current.get(key))
+        .filter((access): access is ContentAccess => Boolean(access));
+    }
     const toFetch = [...unique.entries()]
       .filter(([key]) => force || !cacheRef.current.has(key))
       .map(([, request]) => request);
@@ -144,7 +151,7 @@ export function AccessProvider({ children }: PropsWithChildren) {
     } finally {
       if (serial === requestSerial.current) setResolving(false);
     }
-  }, [applySnapshot]);
+  }, [applySnapshot, status]);
 
   const refresh = useCallback(async () => {
     const requests = [...requestedRef.current.values()];
@@ -156,6 +163,9 @@ export function AccessProvider({ children }: PropsWithChildren) {
     contentId: string,
     idempotencyKey = makeIdempotencyKey(),
   ): Promise<ClientAccessSnapshot> => {
+    if (status !== 'authenticated') {
+      throw new PurchaseRequestError('Před nákupem se přihlas.', 401, 'AUTH_REQUIRED');
+    }
     const response = await fetch('/api/me/purchases', {
       method: 'POST',
       headers: {
@@ -181,19 +191,21 @@ export function AccessProvider({ children }: PropsWithChildren) {
     }
     applySnapshot(payload.snapshot, true);
     return payload.snapshot;
-  }, [applySnapshot]);
+  }, [applySnapshot, status]);
 
   useEffect(() => {
     cacheRef.current = new Map();
     setCache(new Map());
     setBalance(0);
     setVersion(null);
-    if (status !== 'loading' && requestedRef.current.size) void refresh();
+    if (status === 'authenticated' && requestedRef.current.size) void refresh();
   }, [sessionUserId, status, refresh]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const invalidate = () => void refresh();
+    const invalidate = () => {
+      if (status === 'authenticated') void refresh();
+    };
     const onStorage = (event: StorageEvent) => {
       if (event.key === ACCESS_STORAGE_KEY) invalidate();
     };
@@ -214,13 +226,15 @@ export function AccessProvider({ children }: PropsWithChildren) {
       broadcastRef.current?.close();
       broadcastRef.current = null;
     };
-  }, [applySnapshot, refresh, sessionUserId]);
+  }, [applySnapshot, refresh, sessionUserId, status]);
 
   const getCachedAccess = useCallback(
     (contentType: ContentType, contentId: string) => cache.get(keyOf(contentType, contentId)),
     [cache],
   );
   const value = useMemo<AccessContextValue>(() => ({
+    authenticated: status === 'authenticated',
+    sessionStatus: status,
     balance,
     version,
     resolving,
@@ -229,7 +243,7 @@ export function AccessProvider({ children }: PropsWithChildren) {
     refresh,
     purchase,
     applySnapshot,
-  }), [balance, version, resolving, getCachedAccess, resolve, refresh, purchase, applySnapshot]);
+  }), [balance, version, resolving, getCachedAccess, resolve, refresh, purchase, applySnapshot, status]);
 
   return <AccessContext.Provider value={value}>{children}</AccessContext.Provider>;
 }
@@ -243,22 +257,22 @@ export function useAccess(): AccessContextValue {
 export function useContentAccess(contentType: ContentType, contentId: string) {
   const accessContext = useAccess();
   const access = accessContext.getCachedAccess(contentType, contentId);
-  const { resolve, purchase, refresh, balance } = accessContext;
+  const { authenticated, sessionStatus, resolve, purchase, refresh, balance } = accessContext;
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!contentId || access) return;
+    if (!contentId || access || sessionStatus !== 'authenticated') return;
     let active = true;
     void resolve([{ contentType, contentId }]).catch((reason: unknown) => {
       if (active) setError(reason instanceof Error ? reason.message : 'Přístup se nepodařilo ověřit.');
     });
     return () => { active = false; };
-  }, [access, contentId, contentType, resolve]);
+  }, [access, contentId, contentType, resolve, sessionStatus]);
 
   return {
     access,
     balance,
-    loading: !access && !error,
+    loading: sessionStatus === 'loading' || (authenticated && !access && !error),
     error,
     purchase: (idempotencyKey?: string) =>
       purchase(contentType, contentId, idempotencyKey),

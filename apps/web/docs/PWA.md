@@ -8,7 +8,7 @@ The implementation uses Workbox `generateSW`. The current requirements are limit
 
 ## Version
 
-Current PWA version: `1.0.0-pwa.1`.
+Current PWA version: `1.0.0-pwa.2`.
 
 The version is declared in:
 
@@ -41,13 +41,15 @@ Cache groups:
 | Workbox precache | Precache | offline route, icons, essential fonts, built CSS |
 | `synthoma-static-*` | CacheFirst | `/_next/static/*` |
 | `synthoma-fonts-*` | CacheFirst | same-origin fonts |
-| `synthoma-covers-*` | StaleWhileRevalidate | same-origin images and covers |
+| `synthoma-images-*` | StaleWhileRevalidate | same-origin images and covers |
 | `synthoma-reader-*` | NetworkFirst / CacheFirst | chapter navigations and reader CSS |
 | `synthoma-pages-*` | NetworkFirst | public page navigations |
 
 Navigation uses a three-second network timeout and falls back to the visited page or `/offline`. A visited canonical chapter can therefore be reopened offline. The worker does not download future chapters automatically.
 
 All `/api/*` requests and the Profile, Admin, Login, Register and Purchase surfaces are `NetworkOnly`. POST, PATCH, PUT and DELETE requests do not enter runtime caching. Authentication, MNEM, entitlements, user profile, whispers and private API responses are never stored in Cache Storage.
+
+Next.js RSC and Flight requests are explicitly `NetworkOnly`. Requests with `_rsc`, `RSC`, `Next-Router-Prefetch` or `Next-Router-State-Tree` markers are bypassed, and responses with `text/x-component` or an already consumed body are rejected by the cache plugin. This prevents streamed server output from being mixed between builds.
 
 ## Installation
 
@@ -57,7 +59,9 @@ The system splash is driven by the manifest background color, theme color, app n
 
 ## Updates
 
-The provider detects a waiting worker and offers an explicit update. `AKTUALIZOVAT` sends `{ type: "SKIP_WAITING" }`; the page reloads only after `controllerchange`. Update UI is deferred while the user is in Reader, Cyklus, authentication or purchase flows.
+Workers claim clients immediately so the recovery release can replace the incompatible production worker. Activation removes older `synthoma-*` cache generations and sends `PWA_UPDATED` with the public build identifier and removed-cache count. The provider then offers one explicit safe reload. Update UI is deferred while the user is in Reader, Cyklus, authentication or purchase flows.
+
+For an ordinary waiting worker, `AKTUALIZOVAT` sends `{ type: "SKIP_WAITING" }`; the page reloads only after `controllerchange`. Cache cleanup failures are contained and do not replace a valid network response with an application failure.
 
 `/sw.js` and `/manifest.webmanifest` use `Cache-Control: public, max-age=0, must-revalidate`. Registration also uses `updateViaCache: "none"`.
 
@@ -66,6 +70,10 @@ The provider detects a waiting worker and offers an explicit update. `AKTUALIZOV
 `/offline` is precached and listens for `online` and `offline` events. It offers retry, Library, and the last chapter only when that chapter is actually present in Cache Storage. Reconnecting never forces a reload during reading.
 
 Clearing offline data removes only cache names beginning with `synthoma-`. It does not clear localStorage, IndexedDB, cookies, reading progress, choices, UI settings, Cyklus state or authentication.
+
+Anonymous readers keep progress and free theme choices locally. Client code waits for the session state and does not call `/api/me/progress`, `/api/me/themes` or other user synchronization endpoints unless the session is authenticated.
+
+`/install?debug=1` shows manifest, worker, controller, standalone, prompt, connectivity, build and cache-version status. It contains no token or user data. The same core status and maintenance actions are available under Settings > Application.
 
 ## Local Verification
 

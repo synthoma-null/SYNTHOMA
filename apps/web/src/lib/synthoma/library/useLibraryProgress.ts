@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { readReadingProgress } from '../../readerState';
 import type { LibraryChapter, LibraryCollection, LibraryReadingProgress } from './libraryTypes';
 
@@ -21,10 +22,17 @@ function getFilenameFromPath(path: string): string {
 }
 
 export function useLibraryProgress(collections: LibraryCollection[]) {
+  const { status } = useSession();
   const [serverProgress, setServerProgress] = useState<Array<{ chapterId: string; completed: boolean; progressPercent?: number; updatedAt?: string }>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (status === 'loading') return;
+    if (status !== 'authenticated') {
+      setServerProgress([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     fetch('/api/me/progress', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
@@ -33,7 +41,7 @@ export function useLibraryProgress(collections: LibraryCollection[]) {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [status]);
 
   const snapshot = useMemo<LibraryProgressSnapshot>(() => {
     const byChapterId: Record<string, LibraryProgressRecord> = {};

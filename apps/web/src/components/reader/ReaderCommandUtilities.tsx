@@ -23,8 +23,8 @@ export default function ReaderCommandUtilities({
   const [speaking, setSpeaking] = useState(false);
   const preferences = useUiPreferences();
   const copy = locale === 'en'
-    ? { settings: 'SETTINGS', audio: 'AUDIO', focus: 'FOCUS', focusExit: 'EXIT FOCUS', help: 'HELP', share: 'SHARE' }
-    : { settings: 'NASTAVENÍ', audio: 'AUDIO', focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', help: 'NÁPOVĚDA', share: 'SDÍLET' };
+    ? { settings: 'PANEL', audio: 'AUDIO', focus: 'FOCUS', focusExit: 'EXIT FOCUS', help: 'HELP', share: 'SHARE' }
+    : { settings: 'PANEL', audio: 'AUDIO', focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', help: 'NÁPOVĚDA', share: 'SDÍLET' };
 
   useEffect(() => () => window.speechSynthesis?.cancel(), []);
   useEffect(() => {

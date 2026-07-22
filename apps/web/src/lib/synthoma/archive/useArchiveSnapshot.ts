@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import {
   loadEarnedFindings,
   loadMetaUnlocks,
@@ -8,6 +9,7 @@ import { hasActiveCyklusRun, loadCyklusRunHistory } from '../../../game/cyklus/c
 import type { ArchiveCard, ArchiveSnapshot, ArchiveWhisper } from './archiveTypes';
 
 export function useArchiveSnapshot(cards: ArchiveCard[], filter = 'all', sort = 'random') {
+  const { status: sessionStatus } = useSession();
   const [snapshot, setSnapshot] = useState<ArchiveSnapshot>(() => ({
     cards,
     progress: [],
@@ -28,9 +30,10 @@ export function useArchiveSnapshot(cards: ArchiveCard[], filter = 'all', sort = 
 
   const load = useCallback(async () => {
     if (typeof window === 'undefined') return;
+    const authenticated = sessionStatus === 'authenticated';
     const [progressRes, profileRes, whispersRes] = await Promise.all([
-      fetch('/api/me/progress', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-      fetch('/api/me/profile', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      authenticated ? fetch('/api/me/progress', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null) : Promise.resolve(null),
+      authenticated ? fetch('/api/me/profile', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null) : Promise.resolve(null),
       (() => {
         const params = new URLSearchParams({ placement: 'archive', sort, limit: '30' });
         if (filter !== 'all') params.set('type', filter);
@@ -65,7 +68,7 @@ export function useArchiveSnapshot(cards: ArchiveCard[], filter = 'all', sort = 
       loading: false,
       error: null,
     });
-  }, [cards, filter, sort]);
+  }, [cards, filter, sessionStatus, sort]);
 
   useEffect(() => {
     load();

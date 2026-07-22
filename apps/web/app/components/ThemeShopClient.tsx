@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useSession } from 'next-auth/react';
 import { UI_THEMES, isThemeUnlocked } from '../../src/lib/themes';
 import type { UiTheme } from '../../src/lib/themes';
 import { useLang } from '../../src/lib/LangContext';
@@ -32,6 +33,7 @@ function applyTheme(theme: string) {
 }
 
 export default function ThemeShopClient() {
+  const { status: sessionStatus } = useSession();
   const { lang } = useLang();
   const copy = COPY[lang];
   const { applySnapshot } = useAccess();
@@ -49,6 +51,14 @@ export default function ThemeShopClient() {
     const saved = readTheme();
     applyTheme(saved);
     setCurrentTheme(saved);
+
+    if (sessionStatus === 'loading') return;
+    if (sessionStatus !== 'authenticated') {
+      setThemes(UI_THEMES.map((theme) => ({ ...theme, unlocked: isThemeUnlocked(theme) })));
+      setBalance(null);
+      setLoading(false);
+      return;
+    }
 
     fetch('/api/me/themes')
       .then(async (res) => {
@@ -68,7 +78,7 @@ export default function ThemeShopClient() {
         clearTimeout(previewTimeoutRef.current);
       }
     };
-  }, []);
+  }, [sessionStatus]);
 
   const activate = useCallback((theme: Theme) => {
     applyTheme(theme.id);
@@ -78,6 +88,10 @@ export default function ThemeShopClient() {
 
   const buy = useCallback(async (theme: Theme) => {
     if (buying) return;
+    if (sessionStatus !== 'authenticated') {
+      setError(lang === 'cs' ? 'Před nákupem se přihlas.' : 'Sign in before purchasing.');
+      return;
+    }
     setBuying(theme.id);
     setError(null);
     try {
@@ -104,7 +118,7 @@ export default function ThemeShopClient() {
     } finally {
       setBuying(null);
     }
-  }, [buying, activate, applySnapshot, copy.error, copy.purchaseError]);
+  }, [buying, activate, applySnapshot, copy.error, copy.purchaseError, lang, sessionStatus]);
 
   const startPreview = useCallback((theme: Theme) => {
     if (previewTimeoutRef.current) {

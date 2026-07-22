@@ -8,6 +8,7 @@ import sitemap from '../sitemap';
 import { generateMetadata } from './[id]/page';
 
 jest.mock('../../auth', () => ({ auth: jest.fn() }));
+jest.mock('next-auth/react', () => ({ useSession: () => ({ data: null, status: 'unauthenticated' }) }));
 jest.mock('../../src/server/economy', () => ({ getContentAccess: jest.fn() }));
 jest.mock('../../src/server/runtimeDatabase', () => ({
   reportRuntimeDatabaseError: jest.fn(() => ({ correlationId: 'seo-test' })),

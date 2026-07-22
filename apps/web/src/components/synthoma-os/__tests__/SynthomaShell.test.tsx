@@ -94,6 +94,7 @@ describe('SynthomaShell', () => {
     { route: '/game', variant: 'utility' },
     { route: '/reader', variant: 'quiet' },
     { route: '/chapter/0-0-null', variant: 'quiet' },
+    { route: '/autor', variant: 'quiet' },
   ])('renders correct shell variant for $route ($variant)', ({ route, variant }) => {
     usePathname.mockReturnValue(route);
     const { container } = renderWithHeader(<SynthomaShell><p>CONTENT</p></SynthomaShell>);

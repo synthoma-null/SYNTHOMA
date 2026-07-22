@@ -1,5 +1,9 @@
 import type { NextConfig } from 'next';
 
+const pwaBuildId = (process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'local')
+  .replace(/[^a-zA-Z0-9.-]/g, '-')
+  .slice(0, 16);
+
 function getSecurityHeaders() {
   const isDev = process.env.NODE_ENV !== 'production';
   const base: Array<{ key: string; value: string }> = [
@@ -35,6 +39,9 @@ function getSecurityHeaders() {
 }
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_SYNTHOMA_BUILD_ID: pwaBuildId,
+  },
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: false,

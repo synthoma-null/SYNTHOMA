@@ -44,10 +44,11 @@ describe('ControlCenterClient', () => {
   it('shows PWA status and cache actions in the application tab', async () => {
     renderCenter();
     fireEvent.click(await screen.findByRole('tab', { name: 'Aplikace' }));
-    expect(screen.getByText('STAV')).toBeInTheDocument();
+    expect(screen.getByText('REŽIM')).toBeInTheDocument();
     expect(screen.getByText('VERZE')).toBeInTheDocument();
+    expect(screen.getByText('OFFLINE PAMĚŤ')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'ZKONTROLOVAT AKTUALIZACI' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'VYMAZAT OFFLINE CACHE' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VYČISTIT CACHE APLIKACE' })).toBeInTheDocument();
   });
 
   it('confirms replacement of custom values and applies a preset atomically', async () => {

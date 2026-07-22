@@ -15,6 +15,16 @@
   --os-text: var(--text-primary, #c0faff);
   --os-text-secondary: color-mix(in srgb, var(--os-text) 86%, var(--os-bg));
   --os-text-muted: color-mix(in srgb, var(--os-text) 72%, var(--os-bg));
+  --os-text-primary: #d8f6ff;
+  --os-text-soft: #a8d9df;
+  --os-text-cyan: #00eaff;
+  --os-text-magenta: #ff3ebf;
+  --os-text-yellow: #f6ff00;
+  --os-text-red: #ff4057;
+  --os-text-green: #69ff9f;
+  --os-text-violet: #bd82ff;
+  --os-text-amber: #ffc66d;
+  --os-text-blue: #6aaeff;
 
   --text-caption: 0.8125rem;
   --text-label: 0.875rem;

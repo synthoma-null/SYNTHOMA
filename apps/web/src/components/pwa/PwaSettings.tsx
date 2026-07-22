@@ -18,10 +18,10 @@ export default function PwaSettings({ lang }: { lang: 'cs' | 'en' }) {
 
   return <div className="pwa-settings">
     <dl className="pwa-status-grid">
-      <div><dt>{cs ? 'STAV' : 'STATUS'}</dt><dd>{pwa.installed ? (cs ? 'NAINSTALOVÁNO' : 'INSTALLED') : 'WEB'}</dd></div>
-      <div><dt>{cs ? 'REŽIM' : 'MODE'}</dt><dd>{pwa.online ? 'ONLINE' : 'OFFLINE'}</dd></div>
+      <div><dt>{cs ? 'REŽIM' : 'MODE'}</dt><dd>{pwa.installed ? (cs ? 'NAINSTALOVANÁ APLIKACE' : 'INSTALLED APP') : 'WEB'}</dd></div>
       <div><dt>{cs ? 'VERZE' : 'VERSION'}</dt><dd>{PWA_VERSION}</dd></div>
-      <div><dt>CACHE</dt><dd>{pwa.cacheStatus === 'ready' ? (cs ? 'PŘIPRAVENA' : 'READY') : pwa.cacheStatus === 'partial' ? (cs ? 'ČÁSTEČNÁ' : 'PARTIAL') : (cs ? 'NEDOSTUPNÁ' : 'UNAVAILABLE')}</dd></div>
+      <div><dt>{cs ? 'PŘIPOJENÍ' : 'CONNECTION'}</dt><dd>{pwa.online ? 'ONLINE' : 'OFFLINE'}</dd></div>
+      <div><dt>{cs ? 'OFFLINE PAMĚŤ' : 'OFFLINE MEMORY'}</dt><dd>{pwa.serviceWorkerState === 'error' ? (cs ? 'CHYBA' : 'ERROR') : pwa.cacheStatus === 'ready' ? (cs ? 'PŘIPRAVENA' : 'READY') : pwa.cacheStatus === 'partial' ? (cs ? 'ČÁSTEČNÁ' : 'PARTIAL') : (cs ? 'NEDOSTUPNÁ' : 'UNAVAILABLE')}</dd></div>
     </dl>
     <div className="pwa-settings__actions">
       {!pwa.installed ? pwa.canPromptInstall
@@ -30,7 +30,7 @@ export default function PwaSettings({ lang }: { lang: 'cs' | 'en' }) {
         : null}
       <button type="button" disabled={busy} onClick={() => void run(pwa.checkForUpdate)}>{cs ? 'ZKONTROLOVAT AKTUALIZACI' : 'CHECK FOR UPDATE'}</button>
       <button type="button" disabled={busy} onClick={() => void run(pwa.refreshOfflineData)}>{cs ? 'OBNOVIT OFFLINE DATA' : 'REFRESH OFFLINE DATA'}</button>
-      <button type="button" disabled={busy} onClick={() => setConfirmClear(true)}>{cs ? 'VYMAZAT OFFLINE CACHE' : 'CLEAR OFFLINE CACHE'}</button>
+      <button type="button" disabled={busy} onClick={() => setConfirmClear(true)}>{cs ? 'VYČISTIT CACHE APLIKACE' : 'CLEAR APP CACHE'}</button>
     </div>
     {pwa.updateAvailable ? <p className="pwa-settings__notice" role="status">{cs ? 'Nová verze čeká na bezpečný okamžik.' : 'A new version is waiting for a safe moment.'}</p> : null}
     {confirmClear ? <div className="pwa-settings__confirm" role="alertdialog" aria-modal="true" aria-labelledby="pwa-clear-title">

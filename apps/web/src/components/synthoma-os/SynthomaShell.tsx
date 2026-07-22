@@ -8,7 +8,7 @@ import { useHeader, type HeaderMode } from './HeaderContext';
 
 function getHeaderMode(pathname: string): HeaderMode {
   if (pathname === '/landing-intro') return 'site';
-  if (pathname === '/reader' || pathname.startsWith('/chapter/')) return 'reader';
+  if (pathname === '/reader' || pathname.startsWith('/chapter/') || pathname === '/autor') return 'reader';
   if (pathname.startsWith('/cyklus')) return 'cyklus';
   if (pathname.startsWith('/admin') || pathname === '/game' || pathname.startsWith('/game/')) return 'utility';
   return 'site';
@@ -31,7 +31,7 @@ export default function SynthomaShell({ children }: PropsWithChildren) {
 
   if (pathname === '/landing-intro') return children;
 
-  const quiet = pathname === '/reader' || pathname.startsWith('/chapter/');
+  const quiet = pathname === '/reader' || pathname.startsWith('/chapter/') || pathname === '/autor';
   const utility = pathname.startsWith('/admin') || pathname === '/game' || pathname.startsWith('/game/');
   const cyklus = pathname === '/cyklus' || pathname.startsWith('/cyklus/');
   const cyklusGame = pathname === '/cyklus';

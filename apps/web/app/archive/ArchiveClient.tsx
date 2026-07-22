@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 
 const WhisperCard = dynamic(() => import('../../src/components/whispers/WhisperCard'), { ssr: false });
@@ -102,6 +103,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
   const glitchRootRef = useRef<HTMLHeadingElement | null>(null);
   const videoRef = useVideoVisibility();
   const motionAllowed = useBackgroundMotionAllowed();
+  const { status: sessionStatus } = useSession();
   const [completedChapterIds, setCompletedChapterIds] = useState<Set<string>>(new Set());
   const [mnemBalance, setMnemBalance] = useState<number>(0);
   const [accessLoaded, setAccessLoaded] = useState(false);
@@ -116,6 +118,13 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
   }, [lang]);
 
   useEffect(() => {
+    if (sessionStatus === 'loading') return;
+    if (sessionStatus !== 'authenticated') {
+      setCompletedChapterIds(new Set());
+      setMnemBalance(0);
+      setAccessLoaded(true);
+      return;
+    }
     Promise.all([
       fetch('/api/me/progress').then(r => r.ok ? r.json() : null).catch(() => null),
       fetch('/api/me/profile').then(r => r.ok ? r.json() : null).catch(() => null),
@@ -133,7 +142,7 @@ export default function ArchiveClient({ cards: initialCards }: { cards: ArchiveC
       }
       setAccessLoaded(true);
     }).catch(() => setAccessLoaded(true));
-  }, []);
+  }, [sessionStatus]);
 
   useEffect(() => {
     const prefersReduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;

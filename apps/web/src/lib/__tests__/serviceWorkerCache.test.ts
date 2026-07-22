@@ -10,13 +10,14 @@ describe('PWA service worker contract', () => {
   it('generates one versioned Workbox worker with explicit runtime caches', () => {
     expect(worker).toContain('workbox:core');
     expect(worker).toContain('/offline');
-    expect(worker).toContain('SKIP_WAITING');
-    for (const cache of ['synthoma-static-', 'synthoma-fonts-', 'synthoma-covers-', 'synthoma-reader-', 'synthoma-pages-']) {
+    expect(worker).toContain('PWA_UPDATED');
+    for (const cache of ['synthoma-static-', 'synthoma-fonts-', 'synthoma-images-', 'synthoma-reader-', 'synthoma-pages-']) {
       expect(worker).toContain(cache);
     }
     expect(buildSource).toContain("swDest: 'public/sw.js'");
     expect(buildSource).toContain('cleanupOutdatedCaches: true');
     expect(buildSource).toContain('navigationPreload: true');
+    expect(buildSource).toContain('skipWaiting: true');
   });
 
   it('keeps private routes and every API response network-only', () => {
@@ -26,6 +27,26 @@ describe('PWA service worker contract', () => {
     }
     expect(buildSource).toContain("handler: 'NetworkOnly'");
     expect(buildSource).not.toContain("method: 'POST'");
+  });
+
+  it('bypasses Next.js streams and rejects consumed or Flight responses from cache', () => {
+    for (const marker of ["url.searchParams.has('_rsc')", "request.headers.has('RSC')", "request.headers.has('Next-Router-Prefetch')", "request.headers.has('Next-Router-State-Tree')"]) {
+      expect(buildSource).toContain(marker);
+    }
+    expect(buildSource).toContain("contentType.includes('text/x-component')");
+    expect(buildSource).toContain('response.bodyUsed');
+    expect(worker).toContain('text/x-component');
+  });
+
+  it('clones the Workbox network response before the asynchronous cache write', () => {
+    expect(worker).toMatch(/await this\.fetch\(t\),s=e\.clone\(\);return this\.waitUntil\(this\.cachePut\(t,s\)\),e/);
+  });
+
+  it('deletes incompatible SYNTHOMA caches and notifies controlled clients', () => {
+    expect(worker).toContain('name.startsWith("synthoma-")');
+    expect(worker).toContain('!name.includes(self.__SYNTHOMA_PWA_BUILD__)');
+    expect(worker).toContain('includeUncontrolled:true');
+    expect(worker).toContain('PWA_UPDATED');
   });
 
   it('registers exactly one root-scoped worker only in production', () => {

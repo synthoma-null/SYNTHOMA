@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type PropsWithChildren } from 'react';
 import {
   PWA_CACHE_PREFIX,
+  PWA_BUILD_ID,
   PWA_INSTALL_DISMISSED_KEY,
   PWA_VISIT_COUNT_KEY,
   PWA_VISIT_SESSION_KEY,
@@ -16,6 +17,7 @@ import {
 
 type InstallOutcome = 'accepted' | 'dismissed' | 'unavailable';
 export type PwaCacheStatus = 'unavailable' | 'partial' | 'ready';
+export type PwaServiceWorkerState = 'unsupported' | 'installing' | 'ready' | 'error';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -23,11 +25,14 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 type PwaContextValue = {
+  hydrated: boolean;
+  buildId: string;
   installed: boolean;
   online: boolean;
   cacheStatus: PwaCacheStatus;
   canPromptInstall: boolean;
   updateAvailable: boolean;
+  serviceWorkerState: PwaServiceWorkerState;
   install: () => Promise<InstallOutcome>;
   dismissInstall: () => void;
   checkForUpdate: () => Promise<void>;
@@ -38,11 +43,14 @@ type PwaContextValue = {
 
 const noopAsync = async () => {};
 const PwaContext = createContext<PwaContextValue>({
+  hydrated: false,
+  buildId: PWA_BUILD_ID,
   installed: false,
   online: true,
   cacheStatus: 'unavailable',
   canPromptInstall: false,
   updateAvailable: false,
+  serviceWorkerState: 'unsupported',
   install: async () => 'unavailable',
   dismissInstall: () => {},
   checkForUpdate: noopAsync,
@@ -57,6 +65,7 @@ export function usePwa(): PwaContextValue {
 
 export default function PwaProvider({ children }: PropsWithChildren) {
   const pathname = usePathname() ?? '/';
+  const [hydrated, setHydrated] = useState(false);
   const [installed, setInstalled] = useState(false);
   const [online, setOnline] = useState(true);
   const [cacheStatus, setCacheStatus] = useState<PwaCacheStatus>('unavailable');
@@ -64,6 +73,7 @@ export default function PwaProvider({ children }: PropsWithChildren) {
   const [installEligible, setInstallEligible] = useState(false);
   const [installPromptVisible, setInstallPromptVisible] = useState(false);
   const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [serviceWorkerState, setServiceWorkerState] = useState<PwaServiceWorkerState>('unsupported');
   const [updateDismissed, setUpdateDismissed] = useState(false);
   const [installedNotice, setInstalledNotice] = useState(false);
   const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
@@ -80,6 +90,7 @@ export default function PwaProvider({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
+    setHydrated(true);
     setInstalled(isStandaloneDisplay());
     setOnline(navigator.onLine);
     void refreshCacheStatus();
@@ -135,9 +146,13 @@ export default function PwaProvider({ children }: PropsWithChildren) {
   }, [criticalInteraction, deferredInstall, installEligible, installed]);
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production' || !('serviceWorker' in navigator)) return;
+    if (process.env.NODE_ENV !== 'production' || !('serviceWorker' in navigator)) {
+      setServiceWorkerState('unsupported');
+      return;
+    }
 
     let disposed = false;
+    setServiceWorkerState('installing');
     const stateListeners = new Map<ServiceWorker, () => void>();
     let updateFoundListener: (() => void) | null = null;
 
@@ -163,9 +178,13 @@ export default function PwaProvider({ children }: PropsWithChildren) {
         updateFoundListener = () => inspectInstallingWorker(registration);
         registration.addEventListener('updatefound', updateFoundListener);
         await registration.update();
-        void navigator.serviceWorker.ready.then(refreshCacheStatus);
+        void navigator.serviceWorker.ready.then(() => {
+          if (!disposed) setServiceWorkerState('ready');
+          return refreshCacheStatus();
+        });
         await refreshCacheStatus();
       } catch (error) {
+        if (!disposed) setServiceWorkerState('error');
         console.error('PWA registration failed:', error);
       }
     };
@@ -174,6 +193,13 @@ export default function PwaProvider({ children }: PropsWithChildren) {
       if (reloadingRef.current) window.location.reload();
     };
     navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+    const onWorkerMessage = (event: MessageEvent) => {
+      if (event.data?.type !== 'PWA_UPDATED') return;
+      setUpdateAvailable(true);
+      setUpdateDismissed(false);
+      void refreshCacheStatus();
+    };
+    navigator.serviceWorker.addEventListener('message', onWorkerMessage);
 
     if (document.readyState === 'complete') void register();
     else window.addEventListener('load', register, { once: true });
@@ -182,6 +208,7 @@ export default function PwaProvider({ children }: PropsWithChildren) {
       disposed = true;
       window.removeEventListener('load', register);
       navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+      navigator.serviceWorker.removeEventListener('message', onWorkerMessage);
       if (updateFoundListener && registrationRef.current) registrationRef.current.removeEventListener('updatefound', updateFoundListener);
       for (const [worker, listener] of stateListeners) worker.removeEventListener('statechange', listener);
     };
@@ -218,10 +245,14 @@ export default function PwaProvider({ children }: PropsWithChildren) {
 
   const applyUpdate = useCallback(() => {
     const waiting = registrationRef.current?.waiting;
-    if (!waiting || criticalInteraction) return;
-    reloadingRef.current = true;
-    activateWaitingServiceWorker(waiting);
-  }, [criticalInteraction]);
+    if (criticalInteraction) return;
+    if (waiting) {
+      reloadingRef.current = true;
+      activateWaitingServiceWorker(waiting);
+      return;
+    }
+    if (updateAvailable) window.location.reload();
+  }, [criticalInteraction, updateAvailable]);
 
   const refreshOfflineData = useCallback(async () => {
     await checkForUpdate();
@@ -239,18 +270,21 @@ export default function PwaProvider({ children }: PropsWithChildren) {
   }, [refreshCacheStatus]);
 
   const value = useMemo<PwaContextValue>(() => ({
+    hydrated,
+    buildId: PWA_BUILD_ID,
     installed,
     online,
     cacheStatus,
     canPromptInstall: Boolean(deferredInstall) && !installed,
     updateAvailable,
+    serviceWorkerState,
     install,
     dismissInstall,
     checkForUpdate,
     applyUpdate,
     refreshOfflineData,
     clearOfflineCache,
-  }), [applyUpdate, cacheStatus, checkForUpdate, clearOfflineCache, deferredInstall, dismissInstall, install, installed, online, refreshOfflineData, updateAvailable]);
+  }), [applyUpdate, cacheStatus, checkForUpdate, clearOfflineCache, deferredInstall, dismissInstall, hydrated, install, installed, online, refreshOfflineData, serviceWorkerState, updateAvailable]);
 
   return <PwaContext.Provider value={value}>
     {children}

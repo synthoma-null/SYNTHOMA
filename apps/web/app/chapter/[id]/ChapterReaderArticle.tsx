@@ -44,8 +44,8 @@ export default function ChapterReaderArticle({
   const title = locale === 'en' ? chapter.titleEn ?? chapter.displayTitle : chapter.displayTitle;
   const accessibleTitle = locale === 'en' ? chapter.titleEn ?? chapter.fullTitle : chapter.fullTitle;
   const copy = locale === 'en'
-    ? { library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
-    : { library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ', next: 'DALŠÍ' };
+    ? { back: 'BACK', library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
+    : { back: 'ZPĚT', library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ', next: 'DALŠÍ' };
 
   return (
     <main className="chapter-reader" id="main-content" data-book={collection?.publicId ?? 'synthoma-null'}>
@@ -66,13 +66,17 @@ export default function ChapterReaderArticle({
       />
       <header className="chapter-reader__command-bar">
         <div className="chapter-reader__route-commands">
-          <Link className="chapter-reader__command" href={locale === 'en' ? '/books?locale=en' : '/books'}>{copy.library}</Link>
+          <Link className="chapter-reader__command chapter-reader__back" href={locale === 'en' ? '/books?locale=en' : '/books'}>
+            <span className="chapter-reader__back-mobile">{copy.back}</span>
+            <span className="chapter-reader__back-desktop">{copy.library}</span>
+          </Link>
+          <span className="chapter-reader__brand" aria-hidden="true">SYNTHOMA</span>
           {previous ? <Link className="chapter-reader__command" rel="prev" href={localizedRoute(previous, locale)}>{copy.previous}</Link> : null}
           {next ? <Link className="chapter-reader__command" rel="next" href={localizedRoute(next, locale)}>{copy.next}</Link> : null}
         </div>
         <span className="chapter-reader__identity" aria-current="page">
-          <span className="chapter-reader__sequence">{chapter.ordinal}</span>
-          <span>{title}</span>
+          <span className="chapter-reader__identity-meta">{collection?.shortTitle ?? collection?.title ?? 'SYNTHOMA'} · <span className="chapter-reader__sequence">{chapter.ordinal}</span></span>
+          <span className="chapter-reader__identity-title">{title}</span>
         </span>
         <div className="chapter-reader__command-end">
           {chapter.filenameEn ? (
@@ -104,7 +108,7 @@ export default function ChapterReaderArticle({
           data-chapter={chapterCode}
           data-reader-decisions="pending"
           aria-busy="true"
-          inert
+          {...({ inert: '' } as Record<string, string>)}
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
         <ReaderDecisionController

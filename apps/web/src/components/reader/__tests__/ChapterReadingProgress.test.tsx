@@ -3,6 +3,9 @@ import ChapterReadingProgress from '../ChapterReadingProgress';
 import { LangProvider } from '../../../lib/LangContext';
 import { readReadingProgress, saveReadingProgress } from '../../../lib/readerState';
 import { READER_FLOW_EVENT } from '../../../lib/readerDecisionController';
+import { useSession } from 'next-auth/react';
+
+jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
 
 jest.mock('../../../lib/readerState', () => ({
   readReadingProgress: jest.fn(),
@@ -27,6 +30,7 @@ describe('ChapterReadingProgress', () => {
     Object.defineProperty(window, 'requestAnimationFrame', { configurable: true, value: (callback: FrameRequestCallback) => { callback(0); return 1; } });
     Object.defineProperty(window, 'cancelAnimationFrame', { configurable: true, value: jest.fn() });
     global.fetch = jest.fn().mockResolvedValue({ ok: true }) as jest.Mock;
+    (useSession as jest.Mock).mockReturnValue({ data: { user: { id: 'reader-1' } }, status: 'authenticated' });
   });
 
   it('autosaves local and server progress and marks completion monotonically', async () => {
@@ -87,5 +91,13 @@ describe('ChapterReadingProgress', () => {
     );
 
     expect(getByRole('progressbar', { name: 'Chapter reading progress' })).toBeInTheDocument();
+  });
+
+  it('keeps anonymous progress local without requesting /api/me/progress', async () => {
+    (useSession as jest.Mock).mockReturnValue({ data: null, status: 'unauthenticated' });
+    render(<ChapterReadingProgress {...props} />);
+
+    await waitFor(() => expect(saveReadingProgress).toHaveBeenCalled());
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 });

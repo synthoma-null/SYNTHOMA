@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useSession } from 'next-auth/react';
 import { useLang } from '../../lib/LangContext';
 import { READER_FLOW_EVENT, type ReaderFlowEventDetail } from '../../lib/readerDecisionController';
 import { readReadingProgress, saveLastChapterPath, saveReadingProgress } from '../../lib/readerState';
@@ -21,6 +22,7 @@ function pageProgress(): number {
 
 export default function ChapterReadingProgress({ chapterId, chapterTitle, collection, chapterPath, hasDecisions = false }: Props) {
   const { t } = useLang();
+  const { status: sessionStatus } = useSession();
   const [progress, setProgress] = useState(0);
   const lastServerProgress = useRef(-5);
   const startedAt = useRef(Date.now());
@@ -59,6 +61,7 @@ export default function ChapterReadingProgress({ chapterId, chapterTitle, collec
       });
       setProgress(monotonic);
 
+      if (sessionStatus !== 'authenticated') return;
       if (!completed && monotonic - lastServerProgress.current < 5) return;
       lastServerProgress.current = monotonic;
       void fetch('/api/me/progress', {
@@ -106,7 +109,7 @@ export default function ChapterReadingProgress({ chapterId, chapterTitle, collec
       window.removeEventListener('resize', update);
       document.removeEventListener(READER_FLOW_EVENT, onReaderFlow);
     };
-  }, [chapterId, chapterPath, chapterTitle, collection, hasDecisions]);
+  }, [chapterId, chapterPath, chapterTitle, collection, hasDecisions, sessionStatus]);
 
   const style = { '--chapter-progress': `${progress}%` } as CSSProperties;
   return (

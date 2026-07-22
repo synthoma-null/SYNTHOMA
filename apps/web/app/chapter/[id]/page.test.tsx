@@ -6,6 +6,7 @@ import { getContentAccess } from '../../../src/server/economy';
 import { notFound } from 'next/navigation';
 
 jest.mock('../../../auth', () => ({ auth: jest.fn() }));
+jest.mock('next-auth/react', () => ({ useSession: () => ({ data: null, status: 'unauthenticated' }) }));
 jest.mock('../../../src/server/economy', () => ({ getContentAccess: jest.fn() }));
 jest.mock('../../../src/server/runtimeDatabase', () => ({
   reportRuntimeDatabaseError: jest.fn(() => ({ correlationId: 'chapter-page-correlation-1' })),
@@ -68,10 +69,10 @@ describe('/chapter/[id] server route contract', () => {
     const renderedEnglish = render(englishChapter);
     expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveAttribute('lang', 'en');
     expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveTextContent('No one in Synthoma knows exactly');
-    expect(screen.getByRole('link', { name: 'LIBRARY' })).toHaveAttribute('href', '/books?locale=en');
+    expect(screen.getByRole('link', { name: 'BACK LIBRARY' })).toHaveAttribute('href', '/books?locale=en');
     expect(screen.getByRole('link', { name: 'PREVIOUS' })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
     expect(screen.getByRole('link', { name: 'NEXT' })).toHaveAttribute('href', '/chapter/0-1-start?locale=en');
-    expect(screen.getByRole('button', { name: 'Settings' })).toHaveTextContent('SETTINGS');
+    expect(screen.getByRole('button', { name: 'Settings' })).toHaveTextContent('PANEL');
     renderedEnglish.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'owned', canAccess: true, canPurchase: false }));

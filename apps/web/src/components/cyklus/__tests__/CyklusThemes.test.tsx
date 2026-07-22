@@ -8,6 +8,7 @@ import { UI_THEMES } from '../../../lib/themes';
 import { LangProvider } from '../../../lib/LangContext';
 
 jest.mock('next/navigation', () => ({ usePathname: () => '/', useRouter: () => ({ replace: jest.fn() }) }));
+jest.mock('next-auth/react', () => ({ useSession: () => ({ data: { user: { id: 'theme-user' } }, status: 'authenticated' }) }));
 jest.mock('../../access/AccessProvider', () => ({
   useAccess: () => ({ applySnapshot: jest.fn() }),
 }));

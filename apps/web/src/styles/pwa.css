@@ -80,6 +80,13 @@
 .pwa-page__status strong { color: var(--os-accent-primary, #00eaff); }
 .pwa-page__panel > .os-command { display: inline-grid; min-height: 48px; place-items: center; margin: 4px 4px 4px 0; padding-inline: 18px; text-decoration: none; }
 .pwa-page__instructions, .pwa-page__installed { margin: 18px 0; padding: 14px; border-left: 3px solid var(--os-accent-primary, #00eaff); background: var(--os-surface-2, #09131c); }
+.pwa-page__reason { padding-left: 12px; border-left: 3px solid var(--os-accent-secondary, #ff19c7); }
+.pwa-debug { margin: 22px 0; padding: 16px; border: 1px solid var(--os-border, #153443); background: var(--os-surface-2, #09131c); }
+.pwa-debug h2 { margin-top: 0; color: var(--os-accent-primary, #00eaff); }
+.pwa-debug dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 0; background: var(--os-border, #153443); }
+.pwa-debug dl div { display: grid; gap: 4px; min-width: 0; padding: 9px; background: var(--os-bg-deep, #020509); }
+.pwa-debug dt { color: var(--os-text-muted, #7f98a3); }
+.pwa-debug dd { margin: 0; overflow-wrap: anywhere; color: var(--os-text, #e7faff); }
 
 .pwa-offline__badge { display: inline-block; margin-bottom: 18px; padding: 6px 9px; border: 1px solid var(--os-warning, #efff36); color: var(--os-warning, #efff36); font: 800 var(--os-text-micro, 0.75rem)/1.2 var(--os-font-mono, monospace); }
 
@@ -101,6 +108,7 @@
 @media (max-width: 520px) {
   .pwa-dialog__actions { grid-template-columns: 1fr; }
   .pwa-status-grid { grid-template-columns: 1fr; }
+  .pwa-debug dl { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

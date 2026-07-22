@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import { useSession } from 'next-auth/react';
 import TypewriterReader from '../../src/components/TypewriterReader';
 import styles from './ReaderContent.module.css';
 import { readBooleanStorage, readStorage, writeStorage } from '../../src/lib/browser';
@@ -20,6 +21,7 @@ import type { ContentAccess } from '../../src/content/catalog';
 // Duplicated transform and reveal logic removed in favor of TypewriterReader
 
 export default function ReaderContent() {
+  const { status: sessionStatus } = useSession();
   const router = useRouter();
   const { setStatus, setActions } = useHeader();
   const { t, lang } = useLang();
@@ -238,6 +240,7 @@ export default function ReaderContent() {
   useEffect(() => {
     if (!chapterId || scrollPercent < 95 || completionFiredRef.current) return;
     completionFiredRef.current = true;
+    if (sessionStatus !== 'authenticated') return;
 
     (async () => {
       try {
@@ -275,7 +278,7 @@ export default function ReaderContent() {
         });
       } catch {}
     })();
-  }, [scrollPercent, chapterId, chapterMeta?.title]);
+  }, [scrollPercent, chapterId, chapterMeta?.title, sessionStatus]);
 
   // Persist reading progress continuously based on scroll (consolidated)
   useEffect(() => {
@@ -292,7 +295,7 @@ export default function ReaderContent() {
       saveReadingProgress({ bookId, path: chapterPath, percent: rounded, updatedAt: Date.now() });
       // Throttled server persistence so ReadingProgressPanel shows real progress
       const now = Date.now();
-      if (!completionFiredRef.current && rounded !== lastServerSaved && now - lastServerSaveTime >= 5000) {
+      if (sessionStatus === 'authenticated' && !completionFiredRef.current && rounded !== lastServerSaved && now - lastServerSaveTime >= 5000) {
         lastServerSaved = rounded;
         lastServerSaveTime = now;
         const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';
@@ -322,7 +325,7 @@ export default function ReaderContent() {
       window.removeEventListener('beforeunload', compute as any);
       try { compute(); } catch {}
     };
-  }, [bookId, chapterId, chapterPath, chapterMeta?.title]);
+  }, [bookId, chapterId, chapterPath, chapterMeta?.title, sessionStatus]);
 
   // Render content
   return (
