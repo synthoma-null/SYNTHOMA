@@ -26,6 +26,8 @@ function getSecurityHeaders() {
     // HMR/websockets in dev
     isDev ? "connect-src 'self' ws: https:" : "connect-src 'self' https://api.stripe.com",
     "frame-src https://js.stripe.com https://hooks.stripe.com",
+    "worker-src 'self'",
+    "manifest-src 'self'",
     "frame-ancestors 'self'",
   ];
   base.push({ key: 'Content-Security-Policy', value: cspDirectives.join('; ') });
@@ -46,6 +48,19 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        source: '/sw.js',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+          { key: 'Service-Worker-Allowed', value: '/' },
+        ],
+      },
+      {
+        source: '/manifest.webmanifest',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+        ],
+      },
       {
         source: '/:path*',
         headers: getSecurityHeaders(),

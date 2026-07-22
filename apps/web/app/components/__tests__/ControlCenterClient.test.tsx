@@ -36,8 +36,18 @@ describe('ControlCenterClient', () => {
     expect(screen.getByRole('tab', { name: 'Vzhled' })).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'Čtení' })).not.toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Zvuk' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Aplikace' })).toBeInTheDocument();
     expect(screen.getByRole('slider', { name: 'PRŮHLEDNOST ČTECÍ PLOCHY' })).toBeEnabled();
     expect(screen.getByRole('slider', { name: 'Rozostření skla' })).toBeDisabled();
+  });
+
+  it('shows PWA status and cache actions in the application tab', async () => {
+    renderCenter();
+    fireEvent.click(await screen.findByRole('tab', { name: 'Aplikace' }));
+    expect(screen.getByText('STAV')).toBeInTheDocument();
+    expect(screen.getByText('VERZE')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'ZKONTROLOVAT AKTUALIZACI' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VYMAZAT OFFLINE CACHE' })).toBeInTheDocument();
   });
 
   it('confirms replacement of custom values and applies a preset atomically', async () => {

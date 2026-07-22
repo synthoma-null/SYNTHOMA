@@ -13,7 +13,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "dev": "next dev -p 3000",
-    "build": "npm run content:generate && npm run content:validate && prisma generate && next build",
+    "build": "npm run content:generate && npm run content:validate && npm run pwa:icons && prisma generate && next build && npm run pwa:build",
     "start": "next start -p 3000",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -24,7 +24,11 @@
     "dialogs:audit": "node scripts/migrate-book-dialogs.js",
     "content:generate": "node scripts/generate-content.js",
     "content:validate": "node scripts/validate-content.js",
-    "entitlements:backfill": "node scripts/backfill-content-entitlements.js"
+    "entitlements:backfill": "node scripts/backfill-content-entitlements.js",
+    "pwa:build": "node scripts/build-pwa.mjs",
+    "pwa:icons": "node scripts/generate-pwa-icons.mjs",
+    "pwa:test": "jest --testPathPatterns=pwa|serviceWorker|manifest --runInBand --no-coverage",
+    "pwa:audit": "node scripts/audit-pwa.mjs"
   },
   "keywords": [
     "synthoma",
@@ -64,6 +68,7 @@
     "eslint-config-next": "^15.5.3",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.4.1",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "workbox-build": "^7.3.0"
   }
 }

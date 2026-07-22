@@ -8,13 +8,14 @@ import { useLang } from '../../src/lib/LangContext';
 import { applyUiPreferencePreset, getEffectiveMotionMode, getMatchingUiPreferencePreset, resetUiPreferences, updateUiPreferences, type MotionMode, type ReaderLineHeight, type ReaderWidth, type TextEffectsMode, type TypewriterSpeed, type UiPreferencePresetId } from '../../src/lib/uiPreferences';
 import ThemeShopClient from './ThemeShopClient';
 import ControlCenterAudio from './ControlCenterAudio';
+import PwaSettings from '../../src/components/pwa/PwaSettings';
 
-type TabId = 'display' | 'motion' | 'reading' | 'sound';
+type TabId = 'display' | 'motion' | 'reading' | 'sound' | 'app';
 
 const TEXT = {
   cs: {
     title: 'OVLÁDACÍ CENTRUM', close: 'Zavřít nastavení', done: 'Hotovo', reset: 'Obnovit výchozí',
-    display: 'Vzhled', motion: 'Pohyb', reading: 'Čtení', sound: 'Zvuk', language: 'Jazyk', theme: 'Motiv',
+    display: 'Vzhled', motion: 'Pohyb', reading: 'Čtení', sound: 'Zvuk', app: 'Aplikace', language: 'Jazyk', theme: 'Motiv',
     font: 'Velikost textu', opacity: 'PRŮHLEDNOST ČTECÍ PLOCHY', glass: 'Skleněný efekt', blur: 'Rozostření skla',
     motionMode: 'Režim pohybu', background: 'Pohyblivé pozadí', glitch: 'Glitch textu', noise: 'Šum', scanlines: 'Řádkování obrazovky', textEffects: 'Textové efekty',
     typewriter: 'Rychlost psaní', focus: 'Režim soustředění', tts: 'Čtení nahlas', readerWidth: 'Šířka textu', readerLineHeight: 'Řádkování', effectIntensity: 'Intenzita efektů',
@@ -23,7 +24,7 @@ const TEXT = {
   },
   en: {
     title: 'CONTROL CENTER', close: 'Close settings', done: 'Done', reset: 'Restore defaults',
-    display: 'Display', motion: 'Motion', reading: 'Reading', sound: 'Sound', language: 'Language', theme: 'Theme',
+    display: 'Display', motion: 'Motion', reading: 'Reading', sound: 'Sound', app: 'Application', language: 'Language', theme: 'Theme',
     font: 'Text size', opacity: 'Reader surface opacity', glass: 'Glass effect', blur: 'Glass blur',
     motionMode: 'Motion mode', background: 'Moving background', glitch: 'Text glitch', noise: 'Noise', scanlines: 'Scanlines', textEffects: 'Text effects',
     typewriter: 'Typing speed', focus: 'Focus mode', tts: 'Read aloud', readerWidth: 'Text width', readerLineHeight: 'Line spacing', effectIntensity: 'Effect intensity',
@@ -119,7 +120,7 @@ export default function ControlCenterClient() {
 
   if (!open) return null;
 
-  const tabs: TabId[] = readingContext ? ['display', 'motion', 'reading', 'sound'] : ['display', 'motion', 'sound'];
+  const tabs: TabId[] = readingContext ? ['display', 'motion', 'reading', 'sound', 'app'] : ['display', 'motion', 'sound', 'app'];
 
   return <>
     <button className="control-center__backdrop is-visible" type="button" aria-label={copy.close} onClick={() => close()} />
@@ -156,6 +157,7 @@ export default function ControlCenterClient() {
           <Toggle label={copy.tts} pressed={preferences.ttsEnabled} onChange={(ttsEnabled) => updateUiPreferences({ ttsEnabled })} />
         </section> : null}
         {tab === 'sound' ? <section id="control-tabpanel-sound" role="tabpanel" aria-labelledby="control-tab-sound"><ControlCenterAudio /></section> : null}
+        {tab === 'app' ? <section id="control-tabpanel-app" role="tabpanel" aria-labelledby="control-tab-app"><PwaSettings lang={lang} /></section> : null}
       </div>
       <footer className="control-center__footer"><button type="button" onClick={() => setConfirmReset(true)}>{copy.reset}</button><button type="button" className="control-center__done" onClick={() => close()}>{copy.done}</button></footer>
     </div>

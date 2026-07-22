@@ -17,6 +17,7 @@ import "../src/styles/cyklus.css";
 import "../src/styles/control-panel-os.css";
 import "../src/styles/audio-panel.css";
 import "../src/styles/motion-contract.css";
+import "../src/styles/pwa.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";
@@ -45,7 +46,7 @@ import { LangProvider } from "../src/lib/LangContext";
 import { AccessProvider } from "../src/components/access/AccessProvider";
 
 
-import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
+import PwaProvider from "../src/components/pwa/PwaProvider";
 import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRuntime";
 import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 import { SYNTHOMA_DESCRIPTOR } from "../src/lib/publicMetadata";
@@ -90,7 +91,7 @@ export const metadata: Metadata = {
 
   },
 
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
 
   metadataBase: new URL("https://www.synthoma.cz"),
 
@@ -169,9 +170,12 @@ export const metadata: Metadata = {
 };
 
 export const generateViewport = (): Viewport => ({
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-    { media: "(prefers-color-scheme: light)", color: "#0b0b0c" },
+    { media: "(prefers-color-scheme: dark)", color: "#000d1a" },
+    { media: "(prefers-color-scheme: light)", color: "#000d1a" },
   ],
 });
 
@@ -274,6 +278,8 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
         <AccessProvider>
 
+        <PwaProvider>
+
         <MBTIProviderClient>
 
           {/* Retro Arcade pixelation canvas overlay (controlled by CSS vars in themes.css) */}
@@ -300,8 +306,6 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
           <ScrollGuardClient />
 
-          <ServiceWorkerRegister />
-
           <DebugPanel />
 
           {/* MBTI HUD (fixed, non-intrusive) */}
@@ -313,6 +317,8 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           <CookieConsent />
 
         </MBTIProviderClient>
+
+        </PwaProvider>
 
         </AccessProvider>
 
