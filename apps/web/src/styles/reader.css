@@ -687,6 +687,7 @@
   min-height: 100vh;
   padding: 5rem clamp(1rem, 4vw, 3rem) 3rem;
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 .chapter-reader__command-bar,
@@ -732,14 +733,14 @@
 
 .chapter-reader__command-bar {
   position: sticky;
-  top: .75rem;
+  top: 0;
   display: grid;
-  grid-template-columns: minmax(5rem, 1fr) minmax(0, 2fr) minmax(3rem, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 1rem;
+  gap: .65rem .8rem;
   width: min(100%, 68rem);
   margin: 0 auto 2rem;
-  padding: .65rem .8rem;
+  padding: max(.65rem, env(safe-area-inset-top)) .8rem .65rem;
   border: 1px solid var(--border-secondary);
   background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
   -webkit-backdrop-filter: blur(12px);
@@ -758,7 +759,7 @@
 .chapter-reader__brand,
 .chapter-reader__back-mobile { display: none; }
 
-.chapter-reader__command-end { justify-content: flex-end; min-width: 0; }
+.chapter-reader__command-end { display: flex; justify-content: flex-end; min-width: 0; gap: .55rem; flex-wrap: wrap; }
 
 .chapter-reader__utilities button {
   border: 0;
@@ -821,9 +822,10 @@ html[data-reader-focus="on"] .synthoma-shell--quiet .synthoma-shell__content { p
 .chapter-reader__command:last-child { text-align: right; }
 
 .chapter-reader__identity {
-  display: flex;
-  justify-content: center;
-  gap: .65rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: .25rem .5rem;
   min-width: 0;
   overflow: hidden;
   color: var(--text-primary);
@@ -834,8 +836,8 @@ html[data-reader-focus="on"] .synthoma-shell--quiet .synthoma-shell__content { p
 }
 
 .chapter-reader__sequence { color: var(--accent-secondary); }
-.chapter-reader__identity-meta { color: var(--text-secondary); }
-.chapter-reader__identity-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.chapter-reader__identity-meta { min-width: 0; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; }
+.chapter-reader__identity-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .chapter-reader__article.SYNTHOMAREADER {
   width: min(100%, 48rem);
@@ -945,29 +947,31 @@ html[data-reader-glass="on"] .chapter-reader__article.SYNTHOMAREADER {
 @media (max-width: 640px) {
   .chapter-reader { padding: 4rem .65rem 2rem; }
   .chapter-reader__command-bar {
-    top: max(.35rem, var(--pwa-safe-top, 0px));
+    top: 0;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas: "route actions" "identity identity";
     gap: .45rem .65rem;
     max-width: 100%;
     margin-bottom: 1rem;
-    padding: .55rem .65rem;
+    padding: max(.55rem, env(safe-area-inset-top)) .65rem .55rem;
     overflow: hidden;
   }
-  .chapter-reader__route-commands { grid-area: route; min-width: 0; overflow: hidden; }
+  .chapter-reader__route-commands { grid-area: route; display: flex; min-width: 0; overflow: hidden; }
   .chapter-reader__command-end { grid-area: actions; }
   .chapter-reader__identity {
     grid-area: identity;
     display: grid;
-    justify-content: stretch;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
     gap: .12rem;
     width: 100%;
     font-size: .68rem;
     text-align: left;
     white-space: normal;
   }
-  .chapter-reader__identity-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chapter-reader__identity-meta { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chapter-reader__identity-title {
+    min-width: 0;
     display: -webkit-box;
     overflow: hidden;
     font-size: .78rem;
@@ -978,15 +982,15 @@ html[data-reader-glass="on"] .chapter-reader__article.SYNTHOMAREADER {
   .chapter-reader__brand { display: inline; overflow: hidden; color: var(--text-primary); text-overflow: ellipsis; white-space: nowrap; }
   .chapter-reader__back-mobile { display: inline; }
   .chapter-reader__back-desktop { display: none; }
-  .chapter-reader__route-commands .chapter-reader__command:not(:first-child),
   .chapter-reader__command-end > .chapter-reader__command,
   .chapter-reader__utilities button { display: none; }
-  .chapter-reader__utilities { gap: .25rem; }
+  .chapter-reader__utilities { display: flex; gap: .25rem; flex-wrap: wrap; justify-content: flex-end; }
   .chapter-reader__utilities button:first-child { display: inline-flex; min-height: 40px; align-items: center; padding: .25rem .4rem; font-size: .62rem; }
   .chapter-reader__article.SYNTHOMAREADER { padding: 1rem .85rem; }
   .chapter-reader__article.SYNTHOMAREADER .chapter-content p { line-height: 1.62; }
-  .chapter-reader__navigation { gap: .5rem; }
+  .chapter-reader__navigation { gap: .5rem; grid-template-columns: 1fr; }
   .chapter-reader__navigation a { padding: .75rem; font-size: .78rem; }
+  .chapter-reader__navigation a:only-child { grid-column: 1 / -1; }
 }
 
 @media (min-width: 1024px) {

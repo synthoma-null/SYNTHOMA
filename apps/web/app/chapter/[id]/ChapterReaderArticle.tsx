@@ -35,7 +35,6 @@ export default function ChapterReaderArticle({
   );
   const index = published.findIndex((entry) => entry.id === chapter.id);
   const previous = index > 0 ? published[index - 1] : undefined;
-  const next = index >= 0 ? published[index + 1] : undefined;
   const presentation = getChapterPresentation(chapter.id);
   const collection = getBookCollection(chapter.collection);
   const isKonecPodpory = collection?.slug === 'konec-podpory';
@@ -44,8 +43,8 @@ export default function ChapterReaderArticle({
   const title = locale === 'en' ? chapter.titleEn ?? chapter.displayTitle : chapter.displayTitle;
   const accessibleTitle = locale === 'en' ? chapter.titleEn ?? chapter.fullTitle : chapter.fullTitle;
   const copy = locale === 'en'
-    ? { back: 'BACK', library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
-    : { back: 'ZPĚT', library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ', next: 'DALŠÍ' };
+    ? { back: 'BACK', library: 'LIBRARY', previous: 'PREVIOUS' }
+    : { back: 'ZPĚT', library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ' };
 
   return (
     <main className="chapter-reader" id="main-content" data-book={collection?.publicId ?? 'synthoma-null'}>
@@ -72,7 +71,6 @@ export default function ChapterReaderArticle({
           </Link>
           <span className="chapter-reader__brand" aria-hidden="true">SYNTHOMA</span>
           {previous ? <Link className="chapter-reader__command" rel="prev" href={localizedRoute(previous, locale)}>{copy.previous}</Link> : null}
-          {next ? <Link className="chapter-reader__command" rel="next" href={localizedRoute(next, locale)}>{copy.next}</Link> : null}
         </div>
         <span className="chapter-reader__identity" aria-current="page">
           <span className="chapter-reader__identity-meta">{collection?.shortTitle ?? collection?.title ?? 'SYNTHOMA'} · <span className="chapter-reader__sequence">{chapter.ordinal}</span></span>
@@ -126,12 +124,6 @@ export default function ChapterReaderArticle({
           <Link rel="prev" href={localizedRoute(previous, locale)}>
             <span>{locale === 'en' ? 'Previous' : 'Předchozí'}</span>
             <strong>{locale === 'en' ? previous.titleEn ?? previous.displayTitle : previous.displayTitle}</strong>
-          </Link>
-        ) : <span />}
-        {next ? (
-          <Link rel="next" href={localizedRoute(next, locale)}>
-            <span>{locale === 'en' ? 'Next' : 'Další'}</span>
-            <strong>{locale === 'en' ? next.titleEn ?? next.displayTitle : next.displayTitle}</strong>
           </Link>
         ) : <span />}
       </nav>

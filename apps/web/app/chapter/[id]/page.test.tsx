@@ -71,7 +71,8 @@ describe('/chapter/[id] server route contract', () => {
     expect(screen.getByRole('article', { name: '0-0 [NULL]' })).toHaveTextContent('No one in Synthoma knows exactly');
     expect(screen.getByRole('link', { name: 'BACK LIBRARY' })).toHaveAttribute('href', '/books?locale=en');
     expect(screen.getByRole('link', { name: 'PREVIOUS' })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
-    expect(screen.getByRole('link', { name: 'NEXT' })).toHaveAttribute('href', '/chapter/0-1-start?locale=en');
+    expect(screen.queryByRole('link', { name: 'NEXT' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Další' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Settings' })).toHaveTextContent('PANEL');
     renderedEnglish.unmount();
 

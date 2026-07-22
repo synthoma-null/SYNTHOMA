@@ -21,4 +21,8 @@ describe('NextChapterAction', () => {
       lockedAccess,
     )).toBe('purchase');
   });
+
+  it('does not offer any action when there is no next chapter', () => {
+    expect(resolveNextChapterAction(null, lockedAccess)).toBe('none');
+  });
 });
