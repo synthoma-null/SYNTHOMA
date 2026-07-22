@@ -1,0 +1,181 @@
+{
+  "sharpAvailable": true,
+  "imageCount": 164,
+  "pairs": [
+    {
+      "a": "apps/web/public/assets/icon.png",
+      "b": "apps/web/public/icons/apple-touch-icon-180x180.png",
+      "distance": 3,
+      "dimensionsA": "1254x1254",
+      "dimensionsB": "180x180"
+    },
+    {
+      "a": "apps/web/public/assets/icon.png",
+      "b": "apps/web/public/icons/pwa-192x192.png",
+      "distance": 1,
+      "dimensionsA": "1254x1254",
+      "dimensionsB": "192x192"
+    },
+    {
+      "a": "apps/web/public/assets/icon.png",
+      "b": "apps/web/public/icons/pwa-512x512.png",
+      "distance": 1,
+      "dimensionsA": "1254x1254",
+      "dimensionsB": "512x512"
+    },
+    {
+      "a": "apps/web/public/cards/archive_key_warms.png",
+      "b": "apps/web/public/cards/cyklus/pebble_with_glasses.webp",
+      "distance": 10,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/black_folder.png",
+      "b": "apps/web/public/cards/cyklus/mirror_shard_hums.webp",
+      "distance": 9,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/black_folder_rustles.png",
+      "b": "apps/web/public/cards/cyklus/choose_memory_sandbox.webp",
+      "distance": 9,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/cards/cache_of_pain.png",
+      "b": "apps/web/public/cards/cyklus/hard_restart.webp",
+      "distance": 7,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/childhood_spade_digs.png",
+      "b": "apps/web/public/cards/cyklus/choose_archive.webp",
+      "distance": 10,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/acid_filter.webp",
+      "b": "apps/web/public/cards/glitch_pebble.png",
+      "distance": 9,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/auto_repair_patch.webp",
+      "b": "apps/web/public/cards/emergency_calibration.png",
+      "distance": 5,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/black_folder_rustles.webp",
+      "b": "apps/web/public/cards/glitch_pebble_multiplies.png",
+      "distance": 6,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/cache_of_pain.webp",
+      "b": "apps/web/public/cards/noise_filter.png",
+      "distance": 5,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/childhood_spade_digs.webp",
+      "b": "apps/web/public/cards/noise_clump.png",
+      "distance": 10,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/choose_acid_yellow.webp",
+      "b": "apps/web/public/cards/sarkasma_returns.png",
+      "distance": 8,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/choose_glitchka_nest.webp",
+      "b": "apps/web/public/cards/wrong_map_leads.png",
+      "distance": 9,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/gravity_outage.webp",
+      "b": "apps/web/public/cards/overclock.png",
+      "distance": 5,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/mirror_shard.webp",
+      "b": "apps/web/public/cards/incoming_message.png",
+      "distance": 10,
+      "dimensionsA": "941x1672",
+      "dimensionsB": "941x1672"
+    },
+    {
+      "a": "apps/web/public/cards/cyklus/noise_filter.webp",
+      "b": "apps/web/public/cards/first_boot.png",
+      "distance": 8,
+      "dimensionsA": "1024x1536",
+      "dimensionsB": "1024x1536"
+    },
+    {
+      "a": "apps/web/public/icons/apple-touch-icon-180x180.png",
+      "b": "apps/web/public/icons/pwa-192x192.png",
+      "distance": 4,
+      "dimensionsA": "180x180",
+      "dimensionsB": "192x192"
+    },
+    {
+      "a": "apps/web/public/icons/apple-touch-icon-180x180.png",
+      "b": "apps/web/public/icons/pwa-512x512.png",
+      "distance": 2,
+      "dimensionsA": "180x180",
+      "dimensionsB": "512x512"
+    },
+    {
+      "a": "apps/web/public/icons/apple-touch-icon-180x180.png",
+      "b": "apps/web/public/icons/source/synthoma-pwa-master.png",
+      "distance": 3,
+      "dimensionsA": "180x180",
+      "dimensionsB": "1254x1254"
+    },
+    {
+      "a": "apps/web/public/icons/pwa-192x192.png",
+      "b": "apps/web/public/icons/pwa-512x512.png",
+      "distance": 2,
+      "dimensionsA": "192x192",
+      "dimensionsB": "512x512"
+    },
+    {
+      "a": "apps/web/public/icons/pwa-192x192.png",
+      "b": "apps/web/public/icons/source/synthoma-pwa-master.png",
+      "distance": 1,
+      "dimensionsA": "192x192",
+      "dimensionsB": "1254x1254"
+    },
+    {
+      "a": "apps/web/public/icons/pwa-512x512.png",
+      "b": "apps/web/public/icons/source/synthoma-pwa-master.png",
+      "distance": 1,
+      "dimensionsA": "512x512",
+      "dimensionsB": "1254x1254"
+    },
+    {
+      "a": "apps/web/public/icons/pwa-maskable-192x192.png",
+      "b": "apps/web/public/icons/pwa-maskable-512x512.png",
+      "distance": 1,
+      "dimensionsA": "192x192",
+      "dimensionsB": "512x512"
+    }
+  ]
+}

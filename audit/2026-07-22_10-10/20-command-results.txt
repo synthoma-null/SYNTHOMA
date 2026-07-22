@@ -1,0 +1,63 @@
+SYNTHOMA FORENSIC AUDIT COMMAND RESULTS
+Audit started: 2026-07-22 10:10 CEST
+Branch: refactor/mnem-entitlement-core
+HEAD: 3ce9615e10cbe96e849537141e665fd5da6e4216
+Initial git status: clean
+Final source status: application source unchanged; only audit/ is untracked
+
+git inventory
+PASS - 1009 tracked, 0 pre-existing untracked, 45459 ignored
+PASS - origin/HEAD resolves to main
+HOLD - Vercel production branch/deployment not locally discoverable
+
+content
+PASS - npm run content:generate: 0 files updated
+PASS - npm run content:validate: 131 entries, 41 chapters
+PASS - npm run dialogs:audit: 6770 dialogs, 39 speakers, 0 unknown classes
+
+static checks
+PASS - npm run lint: exit 0
+WARN - BooksClient.tsx useEffect missing bgVideoRef dependency
+WARN - GameShell.tsx useEffect missing state dependency
+WARN - next lint is deprecated for Next 16 migration
+PASS - npm run typecheck
+FAIL (advisory) - one-off noUnusedLocals/noUnusedParameters found cleanup candidates; not a configured baseline
+PASS - npx prisma validate
+PASS - npm run pwa:audit: worker 28424 B, 24 precache, 5 runtime caches, 6 icons
+
+tests
+PASS - full Jest: 118 passed suites, 1 skipped; 790 passed, 21 skipped, 811 total; 162.452 s
+PASS - coverage run
+COVERAGE - statements 70.96%; branches 61.71%; functions 70.03%; lines 74.68%
+SKIP - PostgreSQL integration when no explicit test connection string
+SKIP - heavy Cyklus simulation without RUN_SLOW_SIM=1
+
+build
+PASS - npm run build; Next 15.5.19; 265 static pages; approximately 29.6 s
+PASS - content generation produced no changes
+PASS - production first-load highlights: /archive ~380 KB, /cyklus ~397 KB, /cyklus/void ~344 KB, shared ~103 KB
+PASS - middleware ~72.3 KB
+
+local production runtime on http://localhost:3210
+PASS - primary public pages and 41/41 canonical chapter pages responded
+PASS - free API 200; locked API 403; unavailable API 409; unknown chapter 404
+PASS - legacy reader redirects 308 to canonical chapter
+PASS - private profile/admin signed-out 401
+FAIL - /api/whispers 500; Prisma whisper.findMany; EACCES; empty response
+WARN - Auth.js UntrustedHost referenced localhost:3000 because audit server used 3210
+PASS - internal crawl checked 500 URLs, discovered 857 links, found 0 broken
+
+security/dependencies
+HOLD - npm audit could not access registry; escalation rejected by environment usage limit
+WARN - public AI rate limiter stores state in a process-local Map
+WARN - CSP permits unsafe-inline scripts/styles and selected external script CDNs
+PASS - private/service-worker cache exclusions verified statically
+
+browser/production
+HOLD - browser policy rejected access to https://www.synthoma.cz
+NOT RUN - computed typography, visual screenshots, console/hydration/network, PWA install/update/offline, authenticated owned chapter
+No alternate browser or policy workaround was attempted.
+
+extended route sweep
+HOLD - a second all-route production-server sweep was stopped by the environment approval usage limit before requests ran
+PASS - no listener remained on port 3210 after the rejected attempt

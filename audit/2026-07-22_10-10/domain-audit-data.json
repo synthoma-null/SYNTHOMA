@@ -1,0 +1,3085 @@
+{
+  "catalog": {
+    "entries": 131,
+    "chapters": 41,
+    "collections": [
+      {
+        "slug": "SYNTHOMA-NULL",
+        "title": "SYNTHOMA-NULL",
+        "chapters": 22,
+        "published": 13,
+        "free": 5
+      },
+      {
+        "slug": "konec-podpory",
+        "title": "SYNTHOMA: KONEC PODPORY",
+        "chapters": 19,
+        "published": 19,
+        "free": 19
+      }
+    ],
+    "contentTypes": {
+      "chapter": 41,
+      "package": 4,
+      "fragment": 15,
+      "artifact": 10,
+      "archive_record": 41,
+      "cosmetic": 16,
+      "profile_report": 4
+    },
+    "missingSources": [],
+    "orphanHtml": [
+      "public/books/efekty.html",
+      "public/books/SYNTHOMA-NULL/0-0 [NULL]_en.html",
+      "public/books/SYNTHOMA-NULL/0-1 [START]_en.html",
+      "public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html",
+      "public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM]_en.html",
+      "public/books/SYNTHOMA-NULL/0-∞ [RESTART]_en.html",
+      "public/books/SYNTHOMA-NULL/SYNTHOMA.html"
+    ],
+    "exactLocaleDuplicates": [
+      {
+        "id": "0-2-run",
+        "cs": "public/books/SYNTHOMA-NULL/0-2 [RUN].html",
+        "en": "public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html"
+      }
+    ]
+  },
+  "reader": {
+    "chapterFiles": 39,
+    "totalWords": 168231,
+    "inlineStyles": 0,
+    "scripts": 81,
+    "choices": 443,
+    "dialogs": 8041,
+    "imagesWithoutAlt": 0,
+    "duplicateIdFiles": [],
+    "suspiciousEncodingFiles": [],
+    "emptyOrVeryShort": [],
+    "missingLang": [
+      "public/books/efekty.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+      "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+      "public/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "public/books/SYNTHOMA-NULL/0-0 [NULL]_en.html",
+      "public/books/SYNTHOMA-NULL/0-1 [START].html",
+      "public/books/SYNTHOMA-NULL/0-1 [START]_en.html",
+      "public/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html",
+      "public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM]_en.html",
+      "public/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
+      "public/books/SYNTHOMA-NULL/0-∞ [RESTART]_en.html",
+      "public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "src/content/protected/SYNTHOMA-NULL/0-10 [REST].html",
+      "src/content/protected/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "src/content/protected/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "src/content/protected/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "src/content/protected/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "src/content/protected/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "src/content/protected/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "src/content/protected/SYNTHOMA-NULL/0-9 [SECTOR].html"
+    ]
+  },
+  "htmlAudit": [
+    {
+      "path": "public/books/efekty.html",
+      "bytes": 3890,
+      "words": 194,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 13,
+      "inlineStyles": 0,
+      "scriptTags": 0,
+      "externalScripts": [],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 0,
+      "dialogs": 2,
+      "buttons": 0,
+      "anchors": 0,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+      "bytes": 60352,
+      "words": 3244,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 139,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+      "bytes": 100888,
+      "words": 5251,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 259,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+      "bytes": 100027,
+      "words": 4710,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 287,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+      "bytes": 111886,
+      "words": 4309,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 351,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+      "bytes": 126909,
+      "words": 4853,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 410,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+      "bytes": 101006,
+      "words": 4092,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 316,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+      "bytes": 108144,
+      "words": 5718,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 8,
+      "dialogs": 286,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+      "bytes": 95807,
+      "words": 4230,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 285,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+      "bytes": 110983,
+      "words": 5426,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 5,
+      "dialogs": 310,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+      "bytes": 95828,
+      "words": 4491,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 259,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+      "bytes": 67908,
+      "words": 3946,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 169,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+      "bytes": 84082,
+      "words": 4124,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 231,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+      "bytes": 85525,
+      "words": 3853,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 243,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+      "bytes": 98951,
+      "words": 4722,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 269,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+      "bytes": 76503,
+      "words": 3325,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 209,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+      "bytes": 78370,
+      "words": 3532,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 224,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+      "bytes": 95538,
+      "words": 3938,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 266,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+      "bytes": 107014,
+      "words": 4574,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 288,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+      "bytes": 79438,
+      "words": 3087,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 1,
+      "externalScripts": [
+        "/books/mbti.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css"
+      ],
+      "choices": 4,
+      "dialogs": 215,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "bytes": 37259,
+      "words": 2353,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 14,
+      "dialogs": 60,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-0 [NULL]_en.html",
+      "bytes": 37508,
+      "words": 2837,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 14,
+      "dialogs": 60,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-1 [START].html",
+      "bytes": 42879,
+      "words": 1903,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 109,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-1 [START]_en.html",
+      "bytes": 43108,
+      "words": 2234,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 109,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "bytes": 62325,
+      "words": 3288,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 16,
+      "dialogs": 142,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html",
+      "bytes": 62325,
+      "words": 3288,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 16,
+      "dialogs": 142,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "bytes": 46273,
+      "words": 2731,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 82,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM]_en.html",
+      "bytes": 46376,
+      "words": 3208,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 82,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
+      "bytes": 54019,
+      "words": 3247,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 94,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/0-∞ [RESTART]_en.html",
+      "bytes": 54726,
+      "words": 4017,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 94,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "bytes": 417095,
+      "words": 35514,
+      "lang": "",
+      "title": "",
+      "h1": 13,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 26,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js",
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css",
+        "/styles.css"
+      ],
+      "choices": 148,
+      "dialogs": 1268,
+      "buttons": 0,
+      "anchors": 26,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-10 [REST].html",
+      "bytes": 42302,
+      "words": 2271,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 96,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "bytes": 58236,
+      "words": 3060,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 8,
+      "dialogs": 134,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "bytes": 43418,
+      "words": 2344,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 10,
+      "dialogs": 82,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "bytes": 39473,
+      "words": 2100,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 10,
+      "dialogs": 81,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "bytes": 53877,
+      "words": 3128,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 12,
+      "dialogs": 117,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "bytes": 54110,
+      "words": 3070,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 10,
+      "dialogs": 106,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "bytes": 46798,
+      "words": 3194,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 10,
+      "dialogs": 73,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    },
+    {
+      "path": "src/content/protected/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "bytes": 46908,
+      "words": 2825,
+      "lang": "",
+      "title": "",
+      "h1": 1,
+      "h2": 0,
+      "inlineStyles": 0,
+      "scriptTags": 2,
+      "externalScripts": [
+        "/books/mbti.js",
+        "/books/glitch-toggle.js"
+      ],
+      "stylesheets": [
+        "/styles.css"
+      ],
+      "choices": 10,
+      "dialogs": 92,
+      "buttons": 0,
+      "anchors": 2,
+      "images": 0,
+      "imagesWithoutAlt": 0,
+      "duplicateIds": [],
+      "suspiciousEncoding": false
+    }
+  ],
+  "archive": [
+    {
+      "path": "public/data/archiveCards.json",
+      "count": 41,
+      "ids": [
+        "kanonicke-jadro",
+        "null-1",
+        "prazdnota",
+        "beh",
+        "restart",
+        "t-ai",
+        "sarkasma",
+        "glitchka",
+        "glitchena",
+        "logy",
+        "fyzika-ontologie",
+        "mechaniky-sveta",
+        "mnemosynteza",
+        "perzistence-predmety",
+        "metriky",
+        "fragmenty-identity",
+        "sektory",
+        "biomy",
+        "casoprostor-smycky",
+        "frakce",
+        "velka-tajemstvi-fragmenty",
+        "cerny-box",
+        "barevny-kod",
+        "design-zasady",
+        "ton-dramaturgie",
+        "kp-tova-neonova",
+        "kp-boris",
+        "kp-milo",
+        "kp-mina",
+        "kp-vanta",
+        "kp-sara",
+        "kp-radim",
+        "kp-ela",
+        "kp-juros",
+        "kp-konec-centralni-podpory",
+        "kp-protokol-tova",
+        "kp-komfortni-zona",
+        "kp-reklamace",
+        "kp-migrace",
+        "kp-kontinuita",
+        "kp-rucni-rezim"
+      ],
+      "categories": {
+        "zaklad": 3,
+        "postavy": 14,
+        "lokace": 3,
+        "mechaniky": 7,
+        "fragmenty": 1,
+        "tajemstvi": 3,
+        "design": 3,
+        "systemy-protokoly": 2,
+        "mista": 1,
+        "udalosti": 2,
+        "koncepty": 2
+      },
+      "missingTitle": [],
+      "missingDescription": [],
+      "accents": [
+        {
+          "id": "kanonicke-jadro",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "null-1",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "prazdnota",
+          "accent": "#1a1a2e"
+        },
+        {
+          "id": "beh",
+          "accent": "#00ff88"
+        },
+        {
+          "id": "restart",
+          "accent": "#f6ff00"
+        },
+        {
+          "id": "t-ai",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "sarkasma",
+          "accent": "#ff0033"
+        },
+        {
+          "id": "glitchka",
+          "accent": "#ff66cc"
+        },
+        {
+          "id": "glitchena",
+          "accent": "#990022"
+        },
+        {
+          "id": "logy",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "fyzika-ontologie",
+          "accent": "#ff6600"
+        },
+        {
+          "id": "mechaniky-sveta",
+          "accent": "#888888"
+        },
+        {
+          "id": "mnemosynteza",
+          "accent": "#ff66ff"
+        },
+        {
+          "id": "perzistence-predmety",
+          "accent": "#00ffcc"
+        },
+        {
+          "id": "metriky",
+          "accent": "#ffaa00"
+        },
+        {
+          "id": "fragmenty-identity",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "sektory",
+          "accent": "#00aaff"
+        },
+        {
+          "id": "biomy",
+          "accent": "#00aaff"
+        },
+        {
+          "id": "casoprostor-smycky",
+          "accent": "#9966ff"
+        },
+        {
+          "id": "frakce",
+          "accent": "#ff0000"
+        },
+        {
+          "id": "velka-tajemstvi-fragmenty",
+          "accent": "#ff00ff"
+        },
+        {
+          "id": "cerny-box",
+          "accent": "#000000"
+        },
+        {
+          "id": "barevny-kod",
+          "accent": "#ff00ff"
+        },
+        {
+          "id": "design-zasady",
+          "accent": "#666666"
+        },
+        {
+          "id": "ton-dramaturgie",
+          "accent": "#9966cc"
+        }
+      ],
+      "invalidRelated": []
+    },
+    {
+      "path": "public/data/archiveCards_en.json",
+      "count": 41,
+      "ids": [
+        "kanonicke-jadro",
+        "null-1",
+        "prazdnota",
+        "beh",
+        "restart",
+        "t-ai",
+        "sarkasma",
+        "glitchka",
+        "glitchena",
+        "logy",
+        "fyzika-ontologie",
+        "mechaniky-sveta",
+        "mnemosynteza",
+        "perzistence-predmety",
+        "metriky",
+        "fragmenty-identity",
+        "sektory",
+        "biomy",
+        "casoprostor-smycky",
+        "frakce",
+        "velka-tajemstvi-fragmenty",
+        "cerny-box",
+        "barevny-kod",
+        "design-zasady",
+        "ton-dramaturgie",
+        "kp-tova-neonova",
+        "kp-boris",
+        "kp-milo",
+        "kp-mina",
+        "kp-vanta",
+        "kp-sara",
+        "kp-radim",
+        "kp-ela",
+        "kp-juros",
+        "kp-konec-centralni-podpory",
+        "kp-protokol-tova",
+        "kp-komfortni-zona",
+        "kp-reklamace",
+        "kp-migrace",
+        "kp-kontinuita",
+        "kp-rucni-rezim"
+      ],
+      "categories": {
+        "zaklad": 3,
+        "postavy": 14,
+        "lokace": 3,
+        "mechaniky": 7,
+        "fragmenty": 1,
+        "tajemstvi": 3,
+        "design": 3,
+        "systemy-protokoly": 2,
+        "mista": 1,
+        "udalosti": 2,
+        "koncepty": 2
+      },
+      "missingTitle": [],
+      "missingDescription": [],
+      "accents": [
+        {
+          "id": "kanonicke-jadro",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "null-1",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "prazdnota",
+          "accent": "#1a1a2e"
+        },
+        {
+          "id": "beh",
+          "accent": "#00ff88"
+        },
+        {
+          "id": "restart",
+          "accent": "#f6ff00"
+        },
+        {
+          "id": "t-ai",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "sarkasma",
+          "accent": "#ff0033"
+        },
+        {
+          "id": "glitchka",
+          "accent": "#ff66cc"
+        },
+        {
+          "id": "glitchena",
+          "accent": "#990022"
+        },
+        {
+          "id": "logy",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "fyzika-ontologie",
+          "accent": "#ff6600"
+        },
+        {
+          "id": "mechaniky-sveta",
+          "accent": "#888888"
+        },
+        {
+          "id": "mnemosynteza",
+          "accent": "#ff66ff"
+        },
+        {
+          "id": "perzistence-predmety",
+          "accent": "#00ffcc"
+        },
+        {
+          "id": "metriky",
+          "accent": "#ffaa00"
+        },
+        {
+          "id": "fragmenty-identity",
+          "accent": "#00ffff"
+        },
+        {
+          "id": "sektory",
+          "accent": "#00aaff"
+        },
+        {
+          "id": "biomy",
+          "accent": "#00aaff"
+        },
+        {
+          "id": "casoprostor-smycky",
+          "accent": "#9966ff"
+        },
+        {
+          "id": "frakce",
+          "accent": "#ff0000"
+        },
+        {
+          "id": "velka-tajemstvi-fragmenty",
+          "accent": "#ff00ff"
+        },
+        {
+          "id": "cerny-box",
+          "accent": "#000000"
+        },
+        {
+          "id": "barevny-kod",
+          "accent": "#ff00ff"
+        },
+        {
+          "id": "design-zasady",
+          "accent": "#666666"
+        },
+        {
+          "id": "ton-dramaturgie",
+          "accent": "#9966cc"
+        }
+      ],
+      "invalidRelated": []
+    }
+  ],
+  "cyklus": {
+    "loadError": null,
+    "cards": 349,
+    "uniqueCardIds": 349,
+    "missingPackId": [],
+    "missingRole": [],
+    "missingTone": [],
+    "missingChoices": [],
+    "roles": {
+      "resolution": 33,
+      "entry": 142,
+      "object": 49,
+      "escalation": 41,
+      "echo": 29,
+      "temptation": 25,
+      "twist": 15,
+      "bill": 15
+    },
+    "tones": {
+      "tragic": 289,
+      "horror": 32,
+      "absurd": 25,
+      "tender": 56,
+      "comic": 35,
+      "romantic": 14,
+      "erotic_symbolic": 12,
+      "brutal": 11
+    },
+    "typeExports": 5,
+    "orderedIds": 241,
+    "artFiles": 66,
+    "cardsWithArt": 66,
+    "missingArtFiles": [],
+    "orphanArtFiles": []
+  },
+  "cardAssets": {
+    "files": 132,
+    "bytes": 158241545,
+    "unreferenced": [
+      {
+        "path": "public/cards/acid_filter.png",
+        "bytes": 1936321,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/admin_access.png",
+        "bytes": 2105320,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/archive_compression.png",
+        "bytes": 2338464,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/archive_key.png",
+        "bytes": 2110874,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/archive_key_warms.png",
+        "bytes": 2101929,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/auto_repair_patch.png",
+        "bytes": 2326347,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/black_folder.png",
+        "bytes": 2141220,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/black_folder_rustles.png",
+        "bytes": 2453864,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/blank_form.png",
+        "bytes": 2007313,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cache_of_pain.png",
+        "bytes": 2404528,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/childhood_spade.png",
+        "bytes": 1944826,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/childhood_spade_digs.png",
+        "bytes": 2114582,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_acid_yellow.png",
+        "bytes": 2268031,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_archive.png",
+        "bytes": 2069032,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_form_office.png",
+        "bytes": 2082838,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_glitchka_nest.png",
+        "bytes": 2008227,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_market.png",
+        "bytes": 2044264,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_memory_sandbox.png",
+        "bytes": 1967543,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_mirror.png",
+        "bytes": 2316082,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_residuum.png",
+        "bytes": 2034428,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_sarkasma_terminal.png",
+        "bytes": 2040442,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_tai_core.png",
+        "bytes": 2001690,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/confession_challenge.png",
+        "bytes": 2163776,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_bond_abandonment.png",
+        "bytes": 2108589,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_bond_suffocation.png",
+        "bytes": 2020848,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_control_breakdown.png",
+        "bytes": 2104773,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_control_tyranny.png",
+        "bytes": 2503445,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_energy_depletion.png",
+        "bytes": 2175788,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_energy_overload.png",
+        "bytes": 2171513,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_memory_flood.png",
+        "bytes": 2126360,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_memory_loss.png",
+        "bytes": 2105667,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/acid_filter.webp",
+        "bytes": 224452,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/admin_access.webp",
+        "bytes": 243200,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/archive_key.webp",
+        "bytes": 220704,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/archive_key_warms.webp",
+        "bytes": 192626,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/auto_repair_patch.webp",
+        "bytes": 282652,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/black_folder.webp",
+        "bytes": 188592,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/black_folder_rustles.webp",
+        "bytes": 228396,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/blank_form.webp",
+        "bytes": 194178,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/childhood_spade.webp",
+        "bytes": 205762,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/childhood_spade_digs.webp",
+        "bytes": 207318,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_acid_yellow.webp",
+        "bytes": 249460,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_archive.webp",
+        "bytes": 229626,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_form_office.webp",
+        "bytes": 223290,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_glitchka_nest.webp",
+        "bytes": 281660,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_market.webp",
+        "bytes": 220944,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_memory_sandbox.webp",
+        "bytes": 277296,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_mirror.webp",
+        "bytes": 202080,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_residuum.webp",
+        "bytes": 196050,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_sarkasma_terminal.webp",
+        "bytes": 233732,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_tai_core.webp",
+        "bytes": 248242,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/confession_challenge.webp",
+        "bytes": 245074,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_bond_abandonment.webp",
+        "bytes": 182654,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_bond_suffocation.webp",
+        "bytes": 213470,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_control_breakdown.webp",
+        "bytes": 215870,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_control_tyranny.webp",
+        "bytes": 244626,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_energy_depletion.webp",
+        "bytes": 189810,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_memory_flood.webp",
+        "bytes": 256172,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_memory_loss.webp",
+        "bytes": 200606,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/disconnect_peripherals.webp",
+        "bytes": 238592,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_archive.webp",
+        "bytes": 253490,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_form.webp",
+        "bytes": 255952,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_glitchka.webp",
+        "bytes": 271258,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_sarkasma.webp",
+        "bytes": 218506,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_tai.webp",
+        "bytes": 223178,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/faulty_update.webp",
+        "bytes": 265416,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/forbidden_log.webp",
+        "bytes": 217172,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/glitch_pebble.webp",
+        "bytes": 209700,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/glitch_pebble_multiplies.webp",
+        "bytes": 190802,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/gravity_outage.webp",
+        "bytes": 229706,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/hard_restart.webp",
+        "bytes": 274092,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/incoming_message.webp",
+        "bytes": 220372,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/manual_mode.webp",
+        "bytes": 238298,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/mirror_shard.webp",
+        "bytes": 215160,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/mirror_shard_hums.webp",
+        "bytes": 229510,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/noise_clump.webp",
+        "bytes": 197292,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/noise_pet_calls.webp",
+        "bytes": 195290,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/observer_mode.webp",
+        "bytes": 199936,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/overclock.webp",
+        "bytes": 245136,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/pebble_with_glasses.webp",
+        "bytes": 232442,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/power_save.webp",
+        "bytes": 143962,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_1.webp",
+        "bytes": 225442,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_2.webp",
+        "bytes": 228562,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_3.webp",
+        "bytes": 202982,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_4.webp",
+        "bytes": 231848,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_5.webp",
+        "bytes": 260968,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/rusty_token.webp",
+        "bytes": 248218,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/rusty_token_whispers.webp",
+        "bytes": 185212,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/sarkasma_account.webp",
+        "bytes": 180234,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/sarkasma_returns.webp",
+        "bytes": 227942,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/unknown_process.webp",
+        "bytes": 269356,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/wrong_map.webp",
+        "bytes": 222720,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/wrong_map_leads.webp",
+        "bytes": 247180,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/disconnect_peripherals.png",
+        "bytes": 1845684,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/emergency_calibration.png",
+        "bytes": 2364912,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/faulty_update.png",
+        "bytes": 2300299,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/first_boot.png",
+        "bytes": 2311674,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/forbidden_log.png",
+        "bytes": 2223105,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/glitch_pebble.png",
+        "bytes": 2184882,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/glitch_pebble_multiplies.png",
+        "bytes": 2197389,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/gravity_outage.png",
+        "bytes": 2284822,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/hard_restart.png",
+        "bytes": 2077246,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/heart_diagnostic.png",
+        "bytes": 2168372,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/incoming_message.png",
+        "bytes": 2242898,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/manual_mode.png",
+        "bytes": 2280339,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/mirror_shard.png",
+        "bytes": 2010456,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/mirror_shard_hums.png",
+        "bytes": 2223973,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/noise_clump.png",
+        "bytes": 2054712,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/noise_filter.png",
+        "bytes": 2084056,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/noise_pet_calls.png",
+        "bytes": 2123520,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/observer_mode.png",
+        "bytes": 2291307,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/overclock.png",
+        "bytes": 2333726,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/pebble_with_glasses.png",
+        "bytes": 2322984,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/power_save.png",
+        "bytes": 2054291,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_0.png",
+        "bytes": 2398518,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_1.png",
+        "bytes": 2520904,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_2.png",
+        "bytes": 2169334,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_3.png",
+        "bytes": 2482862,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_4.png",
+        "bytes": 2439848,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/rubber_seal.png",
+        "bytes": 1978583,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/rusty_token.png",
+        "bytes": 2018116,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/rusty_token_whispers.png",
+        "bytes": 2169255,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/sarkasma_account.png",
+        "bytes": 1993108,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/sarkasma_returns.png",
+        "bytes": 2171458,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/silent_mode.png",
+        "bytes": 2200045,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/unknown_process.png",
+        "bytes": 2117478,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/wrong_map.png",
+        "bytes": 2053292,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/wrong_map_leads.png",
+        "bytes": 2320165,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      }
+    ],
+    "all": [
+      {
+        "path": "public/cards/acid_filter.png",
+        "bytes": 1936321,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/admin_access.png",
+        "bytes": 2105320,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/archive_compression.png",
+        "bytes": 2338464,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/archive_key.png",
+        "bytes": 2110874,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/archive_key_warms.png",
+        "bytes": 2101929,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/auto_repair_patch.png",
+        "bytes": 2326347,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/black_folder.png",
+        "bytes": 2141220,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/black_folder_rustles.png",
+        "bytes": 2453864,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/blank_form.png",
+        "bytes": 2007313,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cache_of_pain.png",
+        "bytes": 2404528,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/childhood_spade.png",
+        "bytes": 1944826,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/childhood_spade_digs.png",
+        "bytes": 2114582,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_acid_yellow.png",
+        "bytes": 2268031,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_archive.png",
+        "bytes": 2069032,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_form_office.png",
+        "bytes": 2082838,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_glitchka_nest.png",
+        "bytes": 2008227,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_market.png",
+        "bytes": 2044264,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_memory_sandbox.png",
+        "bytes": 1967543,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_mirror.png",
+        "bytes": 2316082,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_residuum.png",
+        "bytes": 2034428,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_sarkasma_terminal.png",
+        "bytes": 2040442,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/choose_tai_core.png",
+        "bytes": 2001690,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/confession_challenge.png",
+        "bytes": 2163776,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_bond_abandonment.png",
+        "bytes": 2108589,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_bond_suffocation.png",
+        "bytes": 2020848,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_control_breakdown.png",
+        "bytes": 2104773,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_control_tyranny.png",
+        "bytes": 2503445,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_energy_depletion.png",
+        "bytes": 2175788,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_energy_overload.png",
+        "bytes": 2171513,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_memory_flood.png",
+        "bytes": 2126360,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/crisis_memory_loss.png",
+        "bytes": 2105667,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/acid_filter.webp",
+        "bytes": 224452,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/admin_access.webp",
+        "bytes": 243200,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/archive_key.webp",
+        "bytes": 220704,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/archive_key_warms.webp",
+        "bytes": 192626,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/auto_repair_patch.webp",
+        "bytes": 282652,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/black_folder.webp",
+        "bytes": 188592,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/black_folder_rustles.webp",
+        "bytes": 228396,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/blank_form.webp",
+        "bytes": 194178,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/cache_of_pain.webp",
+        "bytes": 216826,
+        "referenceCount": 2,
+        "recommendation": "referenced"
+      },
+      {
+        "path": "public/cards/cyklus/childhood_spade.webp",
+        "bytes": 205762,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/childhood_spade_digs.webp",
+        "bytes": 207318,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_acid_yellow.webp",
+        "bytes": 249460,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_archive.webp",
+        "bytes": 229626,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_form_office.webp",
+        "bytes": 223290,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_glitchka_nest.webp",
+        "bytes": 281660,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_market.webp",
+        "bytes": 220944,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_memory_sandbox.webp",
+        "bytes": 277296,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_mirror.webp",
+        "bytes": 202080,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_residuum.webp",
+        "bytes": 196050,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_sarkasma_terminal.webp",
+        "bytes": 233732,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/choose_tai_core.webp",
+        "bytes": 248242,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/confession_challenge.webp",
+        "bytes": 245074,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_bond_abandonment.webp",
+        "bytes": 182654,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_bond_suffocation.webp",
+        "bytes": 213470,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_control_breakdown.webp",
+        "bytes": 215870,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_control_tyranny.webp",
+        "bytes": 244626,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_energy_depletion.webp",
+        "bytes": 189810,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_memory_flood.webp",
+        "bytes": 256172,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/crisis_memory_loss.webp",
+        "bytes": 200606,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/disconnect_peripherals.webp",
+        "bytes": 238592,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_archive.webp",
+        "bytes": 253490,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_form.webp",
+        "bytes": 255952,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_glitchka.webp",
+        "bytes": 271258,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_sarkasma.webp",
+        "bytes": 218506,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/entity_tai.webp",
+        "bytes": 223178,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/faulty_update.webp",
+        "bytes": 265416,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/forbidden_log.webp",
+        "bytes": 217172,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/glitch_pebble.webp",
+        "bytes": 209700,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/glitch_pebble_multiplies.webp",
+        "bytes": 190802,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/gravity_outage.webp",
+        "bytes": 229706,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/hard_restart.webp",
+        "bytes": 274092,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/incoming_message.webp",
+        "bytes": 220372,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/manual_mode.webp",
+        "bytes": 238298,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/mirror_shard.webp",
+        "bytes": 215160,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/mirror_shard_hums.webp",
+        "bytes": 229510,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/noise_clump.webp",
+        "bytes": 197292,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/noise_filter.webp",
+        "bytes": 262114,
+        "referenceCount": 2,
+        "recommendation": "referenced"
+      },
+      {
+        "path": "public/cards/cyklus/noise_pet_calls.webp",
+        "bytes": 195290,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/observer_mode.webp",
+        "bytes": 199936,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/overclock.webp",
+        "bytes": 245136,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/pebble_with_glasses.webp",
+        "bytes": 232442,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/power_save.webp",
+        "bytes": 143962,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_0.webp",
+        "bytes": 234778,
+        "referenceCount": 2,
+        "recommendation": "referenced"
+      },
+      {
+        "path": "public/cards/cyklus/restart_1.webp",
+        "bytes": 225442,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_2.webp",
+        "bytes": 228562,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_3.webp",
+        "bytes": 202982,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_4.webp",
+        "bytes": 231848,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/restart_5.webp",
+        "bytes": 260968,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/rubber_seal.webp",
+        "bytes": 220822,
+        "referenceCount": 2,
+        "recommendation": "referenced"
+      },
+      {
+        "path": "public/cards/cyklus/rusty_token.webp",
+        "bytes": 248218,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/rusty_token_whispers.webp",
+        "bytes": 185212,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/sarkasma_account.webp",
+        "bytes": 180234,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/sarkasma_returns.webp",
+        "bytes": 227942,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/unknown_process.webp",
+        "bytes": 269356,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/wrong_map.webp",
+        "bytes": 222720,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/cyklus/wrong_map_leads.webp",
+        "bytes": 247180,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/disconnect_peripherals.png",
+        "bytes": 1845684,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/emergency_calibration.png",
+        "bytes": 2364912,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/faulty_update.png",
+        "bytes": 2300299,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/first_boot.png",
+        "bytes": 2311674,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/forbidden_log.png",
+        "bytes": 2223105,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/glitch_pebble.png",
+        "bytes": 2184882,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/glitch_pebble_multiplies.png",
+        "bytes": 2197389,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/gravity_outage.png",
+        "bytes": 2284822,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/hard_restart.png",
+        "bytes": 2077246,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/heart_diagnostic.png",
+        "bytes": 2168372,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/incoming_message.png",
+        "bytes": 2242898,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/manual_mode.png",
+        "bytes": 2280339,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/mirror_shard.png",
+        "bytes": 2010456,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/mirror_shard_hums.png",
+        "bytes": 2223973,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/noise_clump.png",
+        "bytes": 2054712,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/noise_filter.png",
+        "bytes": 2084056,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/noise_pet_calls.png",
+        "bytes": 2123520,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/observer_mode.png",
+        "bytes": 2291307,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/overclock.png",
+        "bytes": 2333726,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/pebble_with_glasses.png",
+        "bytes": 2322984,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/power_save.png",
+        "bytes": 2054291,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_0.png",
+        "bytes": 2398518,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_1.png",
+        "bytes": 2520904,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_2.png",
+        "bytes": 2169334,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_3.png",
+        "bytes": 2482862,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/restart_4.png",
+        "bytes": 2439848,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/rubber_seal.png",
+        "bytes": 1978583,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/rusty_token.png",
+        "bytes": 2018116,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/rusty_token_whispers.png",
+        "bytes": 2169255,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/sarkasma_account.png",
+        "bytes": 1993108,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/sarkasma_returns.png",
+        "bytes": 2171458,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/silent_mode.png",
+        "bytes": 2200045,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/unknown_process.png",
+        "bytes": 2117478,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/wrong_map.png",
+        "bytes": 2053292,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      },
+      {
+        "path": "public/cards/wrong_map_leads.png",
+        "bytes": 2320165,
+        "referenceCount": 0,
+        "recommendation": "review source/master or unused asset"
+      }
+    ]
+  }
+}

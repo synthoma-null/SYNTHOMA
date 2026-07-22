@@ -1,0 +1,2425 @@
+{
+  "productionFiles": 424,
+  "cycles": [
+    [
+      "apps/web/src/game/run/runTypes.ts",
+      "apps/web/src/game/encounter/encounterTypes.ts",
+      "apps/web/src/game/run/runTypes.ts"
+    ],
+    [
+      "apps/web/scripts/validate-content.js",
+      "apps/web/scripts/generate-content.js",
+      "apps/web/scripts/validate-content.js"
+    ]
+  ],
+  "orphanCandidates": [
+    {
+      "path": "apps/web/app/books/BooksClient.tsx",
+      "lines": 297,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/app/components/FirstVisitRedirectClient.tsx",
+      "lines": 21,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/app/game/solo/SoloClient.tsx",
+      "lines": 367,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/jest.config.js",
+      "lines": 24,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/jest.setup.js",
+      "lines": 51,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/next-env.d.ts",
+      "lines": 7,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/public/books/echo-ghost.js",
+      "lines": 295,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/public/books/glitch-toggle.js",
+      "lines": 11,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/public/books/mbti.js",
+      "lines": 182,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "lines": 5,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/components/cyklus/CyklusMobileHud.tsx",
+      "lines": 87,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/components/cyklus/cyklusStorage.ts",
+      "lines": 256,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/components/profile/SettingsPanel.tsx",
+      "lines": 129,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/presentation.ts",
+      "lines": 2,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/game/cyklus/testUtils/cyklusSimRunner.ts",
+      "lines": 880,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/game/encounter/actionTexts.ts",
+      "lines": 78,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/game/storage.ts",
+      "lines": 48,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/hooks/useTypewriterReader.ts",
+      "lines": 177,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/lib/cinematicTitle.ts",
+      "lines": 22,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    },
+    {
+      "path": "apps/web/src/types/synthoma-window.d.ts",
+      "lines": 10,
+      "caveat": "No static inbound import. Runtime lookup, public HTML, Next convention or external consumer may still apply."
+    }
+  ],
+  "packageAudit": [
+    {
+      "name": "@prisma/adapter-pg",
+      "version": "^7.8.0",
+      "importCount": 2,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "@prisma/client",
+      "version": "^7.8.0",
+      "importCount": 10,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "bcryptjs",
+      "version": "^3.0.3",
+      "importCount": 4,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "html2canvas",
+      "version": "^1.4.1",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "jose",
+      "version": "^6.2.3",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "jspdf",
+      "version": "^4.2.1",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "next",
+      "version": "^15.5.3",
+      "importCount": 150,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "next-auth",
+      "version": "^5.0.0-beta.31",
+      "importCount": 21,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "pg",
+      "version": "^8.22.0",
+      "importCount": 2,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "prisma",
+      "version": "^7.8.0",
+      "importCount": 1,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "react",
+      "version": "^18.3.1",
+      "importCount": 105,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "react-dom",
+      "version": "^18.3.1",
+      "importCount": 2,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "stripe",
+      "version": "^22.3.0",
+      "importCount": 2,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "zod",
+      "version": "^4.4.3",
+      "importCount": 6,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "@testing-library/jest-dom",
+      "version": "^6.9.1",
+      "importCount": 1,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "@testing-library/react",
+      "version": "^16.3.2",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@testing-library/user-event",
+      "version": "^14.6.1",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@types/bcryptjs",
+      "version": "^2.4.6",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@types/jest",
+      "version": "^30.0.0",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@types/node",
+      "version": "24.3.0",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@types/pg",
+      "version": "^8.20.0",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@types/react",
+      "version": "^19.1.12",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "^19.1.9",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "eslint",
+      "version": "^9.34.0",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "eslint-config-next",
+      "version": "^15.5.3",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "jest",
+      "version": "^30.3.0",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "jest-environment-jsdom",
+      "version": "^30.4.1",
+      "importCount": 0,
+      "recommendation": "verify unused before removal"
+    },
+    {
+      "name": "typescript",
+      "version": "^5.9.2",
+      "importCount": 1,
+      "recommendation": "keep/review runtime role"
+    },
+    {
+      "name": "workbox-build",
+      "version": "^7.3.0",
+      "importCount": 1,
+      "recommendation": "keep/review runtime role"
+    }
+  ],
+  "externalUsage": {
+    "@prisma/adapter-pg": 2,
+    "@prisma/client": 10,
+    "@testing-library/jest-dom": 1,
+    "bcryptjs": 4,
+    "child_process": 1,
+    "crypto": 5,
+    "dotenv": 2,
+    "fs": 7,
+    "next": 150,
+    "next-auth": 21,
+    "path": 8,
+    "pg": 2,
+    "postcss": 1,
+    "prisma": 1,
+    "react": 105,
+    "react-dom": 2,
+    "sharp": 2,
+    "stripe": 2,
+    "typescript": 1,
+    "workbox-build": 1,
+    "zod": 6
+  },
+  "largestModules": [
+    {
+      "path": "apps/web/src/game/cyklus/cyklusProgression.ts",
+      "lines": 2112
+    },
+    {
+      "path": "apps/web/src/components/cyklus/CyklusClient.tsx",
+      "lines": 2059
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/followup.cards.ts",
+      "lines": 1609
+    },
+    {
+      "path": "apps/web/src/content/booksManifest.ts",
+      "lines": 1152
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/pokecGlitchka.ts",
+      "lines": 995
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/terapieSarkasma.ts",
+      "lines": 986
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusEngine.ts",
+      "lines": 947
+    },
+    {
+      "path": "apps/web/src/game/cyklus/testUtils/cyklusSimRunner.ts",
+      "lines": 880
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/sandboxAbsurdPack.ts",
+      "lines": 859
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusStory.ts",
+      "lines": 853
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/romanceResiduumPack.ts",
+      "lines": 843
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/special.cards.ts",
+      "lines": 799
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/system.cards.ts",
+      "lines": 774
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/desireOrgiePack.ts",
+      "lines": 750
+    },
+    {
+      "path": "apps/web/src/game/encounter/encounterEngine.ts",
+      "lines": 734
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/detektivkaSynthPack.ts",
+      "lines": 731
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/brutalBlackboxPack.ts",
+      "lines": 705
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusFindings.ts",
+      "lines": 703
+    },
+    {
+      "path": "apps/web/app/components/admin/AdminDashboard.tsx",
+      "lines": 699
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusCardPicker.ts",
+      "lines": 699
+    },
+    {
+      "path": "apps/web/src/content/catalog.ts",
+      "lines": 693
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/dvanactnikMytnicePack.ts",
+      "lines": 675
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/entity.cards.ts",
+      "lines": 665
+    },
+    {
+      "path": "apps/web/src/lib/i18n.ts",
+      "lines": 661
+    },
+    {
+      "path": "apps/web/src/game/engine.ts",
+      "lines": 608
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/tutorial.cards.ts",
+      "lines": 588
+    },
+    {
+      "path": "apps/web/src/game/storyEvents.ts",
+      "lines": 583
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/memory.cards.ts",
+      "lines": 558
+    },
+    {
+      "path": "apps/web/app/reader/ReaderContent.tsx",
+      "lines": 541
+    },
+    {
+      "path": "apps/web/src/components/cyklus/CyklusVoidHub.tsx",
+      "lines": 501
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/crisis.cards.ts",
+      "lines": 500
+    },
+    {
+      "path": "apps/web/src/components/TypewriterReader.tsx",
+      "lines": 499
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusItemMood.ts",
+      "lines": 490
+    },
+    {
+      "path": "apps/web/src/lib/readerDecisionController.ts",
+      "lines": 489
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/object.cards.ts",
+      "lines": 477
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusTypes.ts",
+      "lines": 476
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusPoolCatalog.ts",
+      "lines": 472
+    },
+    {
+      "path": "apps/web/app/archive/ArchiveClient.tsx",
+      "lines": 442
+    },
+    {
+      "path": "apps/web/scripts/migrate-konec-podpory.js",
+      "lines": 438
+    },
+    {
+      "path": "apps/web/src/game/encounter/enemies.ts",
+      "lines": 422
+    },
+    {
+      "path": "apps/web/src/components/run/RunDashboard.tsx",
+      "lines": 415
+    },
+    {
+      "path": "apps/web/src/components/cyklus/CyklusCardPoster.tsx",
+      "lines": 412
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusSummary.ts",
+      "lines": 412
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "lines": 408
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/path.cards.ts",
+      "lines": 408
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "lines": 405
+    },
+    {
+      "path": "apps/web/src/lib/access.ts",
+      "lines": 370
+    },
+    {
+      "path": "apps/web/app/game/solo/SoloClient.tsx",
+      "lines": 367
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusItems.ts",
+      "lines": 360
+    },
+    {
+      "path": "apps/web/src/lib/pdfExport.ts",
+      "lines": 355
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "lines": 337
+    },
+    {
+      "path": "apps/web/src/game/cards.ts",
+      "lines": 337
+    },
+    {
+      "path": "apps/web/app/api/me/profile/route.ts",
+      "lines": 335
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusEnding.ts",
+      "lines": 333
+    },
+    {
+      "path": "apps/web/src/game/run/runEngine.ts",
+      "lines": 332
+    },
+    {
+      "path": "apps/web/src/components/archive/SynthomaArchive.tsx",
+      "lines": 325
+    },
+    {
+      "path": "apps/web/src/components/pwa/PwaProvider.tsx",
+      "lines": 325
+    },
+    {
+      "path": "apps/web/src/lib/typewriterContent.ts",
+      "lines": 325
+    },
+    {
+      "path": "apps/web/app/components/SynthomaAudioPanel.tsx",
+      "lines": 324
+    },
+    {
+      "path": "apps/web/src/lib/uiPreferences.ts",
+      "lines": 322
+    },
+    {
+      "path": "apps/web/src/game/encounter/encounters.ts",
+      "lines": 318
+    },
+    {
+      "path": "apps/web/app/books/BooksClient.tsx",
+      "lines": 297
+    },
+    {
+      "path": "apps/web/public/books/echo-ghost.js",
+      "lines": 295
+    },
+    {
+      "path": "apps/web/src/components/profile/ProfileDashboard.tsx",
+      "lines": 290
+    },
+    {
+      "path": "apps/web/app/components/DebugPanel.tsx",
+      "lines": 289
+    },
+    {
+      "path": "apps/web/scripts/backfill-content-entitlements.js",
+      "lines": 289
+    },
+    {
+      "path": "apps/web/src/game/run/effectResolver.ts",
+      "lines": 289
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusExport.ts",
+      "lines": 288
+    },
+    {
+      "path": "apps/web/src/game/types.ts",
+      "lines": 288
+    },
+    {
+      "path": "apps/web/src/components/access/AccessProvider.tsx",
+      "lines": 282
+    },
+    {
+      "path": "apps/web/src/components/cyklus/StatDock.tsx",
+      "lines": 277
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cards/index.ts",
+      "lines": 272
+    },
+    {
+      "path": "apps/web/src/components/cyklus/cyklusStorage.ts",
+      "lines": 256
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusStorage.ts",
+      "lines": 256
+    },
+    {
+      "path": "apps/web/src/components/cyklus/CyklusVoidHubClient.tsx",
+      "lines": 255
+    },
+    {
+      "path": "apps/web/src/hooks/useGlitching.ts",
+      "lines": 248
+    },
+    {
+      "path": "apps/web/app/components/ThemeShopClient.tsx",
+      "lines": 243
+    },
+    {
+      "path": "apps/web/scripts/validate-content.js",
+      "lines": 241
+    },
+    {
+      "path": "apps/web/src/game/run/runMapGenerator.ts",
+      "lines": 236
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusUnlocks.ts",
+      "lines": 230
+    },
+    {
+      "path": "apps/web/src/hooks/useChoiceHandlers.ts",
+      "lines": 228
+    },
+    {
+      "path": "apps/web/src/lib/readerSegmentRenderer.ts",
+      "lines": 226
+    },
+    {
+      "path": "apps/web/app/api/me/cyklus/sync-profile/route.ts",
+      "lines": 219
+    },
+    {
+      "path": "apps/web/scripts/validate-books.js",
+      "lines": 204
+    },
+    {
+      "path": "apps/web/src/components/access/ContentPurchaseDialog.tsx",
+      "lines": 203
+    },
+    {
+      "path": "apps/web/src/game/encounter/textPools.ts",
+      "lines": 203
+    },
+    {
+      "path": "apps/web/src/server/public-ai/contentService.ts",
+      "lines": 199
+    },
+    {
+      "path": "apps/web/src/components/whispers/WhisperForm.tsx",
+      "lines": 196
+    },
+    {
+      "path": "apps/web/src/server/economy/access.ts",
+      "lines": 196
+    },
+    {
+      "path": "apps/web/src/components/game/run/EncounterPanel.tsx",
+      "lines": 194
+    },
+    {
+      "path": "apps/web/src/lib/typewriter.ts",
+      "lines": 194
+    },
+    {
+      "path": "apps/web/scripts/generate-content.js",
+      "lines": 190
+    },
+    {
+      "path": "apps/web/src/game/run/runTypes.ts",
+      "lines": 190
+    },
+    {
+      "path": "apps/web/src/components/game/BoardMap.tsx",
+      "lines": 189
+    },
+    {
+      "path": "apps/web/public/books/mbti.js",
+      "lines": 182
+    },
+    {
+      "path": "apps/web/src/game/cyklus/cyklusLocalProfile.ts",
+      "lines": 181
+    },
+    {
+      "path": "apps/web/src/game/cyklus/content/packs/basePack.ts",
+      "lines": 177
+    },
+    {
+      "path": "apps/web/src/hooks/useTypewriterReader.ts",
+      "lines": 177
+    },
+    {
+      "path": "apps/web/src/lib/glitchHeading.ts",
+      "lines": 177
+    },
+    {
+      "path": "apps/web/src/components/whispers/WhisperSubmitPanel.tsx",
+      "lines": 173
+    }
+  ],
+  "literalLinks": [
+    {
+      "path": "AUDIT-REPORT.md",
+      "target": "/styles.css",
+      "line": 374
+    },
+    {
+      "path": "AUDIT-REPORT.md",
+      "target": "/styles.css",
+      "line": 390
+    },
+    {
+      "path": "README.md",
+      "target": "/styles.css",
+      "line": 243
+    },
+    {
+      "path": "README.md",
+      "target": "/styles.css",
+      "line": 247
+    },
+    {
+      "path": "apps/web/app/ai-policy/page.tsx",
+      "target": "/ai/api",
+      "line": 16
+    },
+    {
+      "path": "apps/web/app/ai-policy/page.tsx",
+      "target": "/autor",
+      "line": 16
+    },
+    {
+      "path": "apps/web/app/ai/api/page.tsx",
+      "target": "/api/public/v1/cyklus",
+      "line": 12
+    },
+    {
+      "path": "apps/web/app/ai/api/page.tsx",
+      "target": "/api/public/openapi.json",
+      "line": 13
+    },
+    {
+      "path": "apps/web/app/ai/api/page.tsx",
+      "target": "/api/public/openapi.yaml",
+      "line": 13
+    },
+    {
+      "path": "apps/web/app/ai/api/page.tsx",
+      "target": "/ai-policy",
+      "line": 13
+    },
+    {
+      "path": "apps/web/app/archive/ArchiveClient.tsx",
+      "target": "/",
+      "line": 435
+    },
+    {
+      "path": "apps/web/app/archive/[id]/page.tsx",
+      "target": "/archive",
+      "line": 40
+    },
+    {
+      "path": "apps/web/app/books/BooksClient.tsx",
+      "target": "/",
+      "line": 289
+    },
+    {
+      "path": "apps/web/app/cards/[id]/page.tsx",
+      "target": "/cards",
+      "line": 31
+    },
+    {
+      "path": "apps/web/app/components/auth/LoginForm.tsx",
+      "target": "/register",
+      "line": 88
+    },
+    {
+      "path": "apps/web/app/components/auth/LoginForm.tsx",
+      "target": "/",
+      "line": 91
+    },
+    {
+      "path": "apps/web/app/components/auth/RegisterForm.tsx",
+      "target": "/terms",
+      "line": 136
+    },
+    {
+      "path": "apps/web/app/components/auth/RegisterForm.tsx",
+      "target": "/privacy",
+      "line": 140
+    },
+    {
+      "path": "apps/web/app/components/auth/RegisterForm.tsx",
+      "target": "/login",
+      "line": 156
+    },
+    {
+      "path": "apps/web/app/components/auth/RegisterForm.tsx",
+      "target": "/",
+      "line": 159
+    },
+    {
+      "path": "apps/web/app/cyklus/page.test.tsx",
+      "target": "/api/public/openapi.json",
+      "line": 33
+    },
+    {
+      "path": "apps/web/app/cyklus/page.test.tsx",
+      "target": "/api/public/v1/cyklus/rules",
+      "line": 34
+    },
+    {
+      "path": "apps/web/app/cyklus/page.test.tsx",
+      "target": "/ai/api",
+      "line": 35
+    },
+    {
+      "path": "apps/web/app/game/GameClient.tsx",
+      "target": "/cyklus",
+      "line": 76
+    },
+    {
+      "path": "apps/web/app/game/solo/SoloClient.tsx",
+      "target": "/game",
+      "line": 269
+    },
+    {
+      "path": "apps/web/app/install/InstallClient.tsx",
+      "target": "/",
+      "line": 80
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "target": "/assets/og-synthoma.png",
+      "line": 142
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "target": "/api/public/openapi.json",
+      "line": 239
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "target": "/api/public/v1/cyklus/rules",
+      "line": 241
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "target": "/ai/api",
+      "line": 243
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "target": "/books",
+      "line": 269
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "target": "/books",
+      "line": 269
+    },
+    {
+      "path": "apps/web/app/manifest.test.ts",
+      "target": "/",
+      "line": 13
+    },
+    {
+      "path": "apps/web/app/manifest.ts",
+      "target": "/",
+      "line": 23
+    },
+    {
+      "path": "apps/web/app/manifest.ts",
+      "target": "/books",
+      "line": 40
+    },
+    {
+      "path": "apps/web/app/manifest.ts",
+      "target": "/archive",
+      "line": 41
+    },
+    {
+      "path": "apps/web/app/manifest.ts",
+      "target": "/cyklus",
+      "line": 42
+    },
+    {
+      "path": "apps/web/app/manifest.ts",
+      "target": "/resume",
+      "line": 43
+    },
+    {
+      "path": "apps/web/app/not-found.tsx",
+      "target": "/",
+      "line": 10
+    },
+    {
+      "path": "apps/web/app/not-found.tsx",
+      "target": "/books",
+      "line": 10
+    },
+    {
+      "path": "apps/web/app/offline/OfflineClient.tsx",
+      "target": "/books",
+      "line": 37
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/profile",
+      "line": 164
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/profile",
+      "line": 165
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/",
+      "line": 206
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/terms",
+      "line": 207
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/profile",
+      "line": 356
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/profile",
+      "line": 357
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/",
+      "line": 397
+    },
+    {
+      "path": "apps/web/app/privacy/PrivacyClient.tsx",
+      "target": "/terms",
+      "line": 398
+    },
+    {
+      "path": "apps/web/app/purchase/success/page.tsx",
+      "target": "/profile",
+      "line": 65
+    },
+    {
+      "path": "apps/web/app/purchase/success/page.tsx",
+      "target": "/books",
+      "line": 66
+    },
+    {
+      "path": "apps/web/app/purchase/success/page.tsx",
+      "target": "/books",
+      "line": 67
+    },
+    {
+      "path": "apps/web/app/reader/ReaderContent.tsx",
+      "target": "/books",
+      "line": 452
+    },
+    {
+      "path": "apps/web/app/reader/ReaderContent.tsx",
+      "target": "/login",
+      "line": 460
+    },
+    {
+      "path": "apps/web/app/reader/ReaderContent.tsx",
+      "target": "/books",
+      "line": 461
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "target": "/privacy",
+      "line": 195
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "target": "/",
+      "line": 217
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "target": "/privacy",
+      "line": 218
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "target": "/privacy",
+      "line": 379
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "target": "/",
+      "line": 400
+    },
+    {
+      "path": "apps/web/app/terms/TermsClient.tsx",
+      "target": "/privacy",
+      "line": 401
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+      "target": "/chapter/kp-01-oznameni",
+      "line": 788
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+      "target": "/chapter/kp-01-oznameni",
+      "line": 794
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+      "target": "/chapter/kp-02-volny-pad",
+      "line": 1238
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+      "target": "/chapter/kp-02-volny-pad",
+      "line": 1244
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+      "target": "/chapter/kp-03-podpora",
+      "line": 867
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+      "target": "/chapter/kp-03-podpora",
+      "line": 873
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+      "target": "/chapter/kp-04-komfortni-zona",
+      "line": 976
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+      "target": "/chapter/kp-04-komfortni-zona",
+      "line": 982
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+      "target": "/chapter/kp-05-objizdka",
+      "line": 910
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+      "target": "/chapter/kp-05-objizdka",
+      "line": 916
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+      "target": "/chapter/kp-06-pece",
+      "line": 806
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+      "target": "/chapter/kp-06-pece",
+      "line": 812
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+      "target": "/chapter/kp-07-zasilka",
+      "line": 804
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+      "target": "/chapter/kp-07-zasilka",
+      "line": 810
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+      "target": "/chapter/kp-08-domov",
+      "line": 722
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+      "target": "/chapter/kp-08-domov",
+      "line": 728
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+      "target": "/chapter/kp-09-neopravneny-uzivatel",
+      "line": 903
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+      "target": "/chapter/kp-09-neopravneny-uzivatel",
+      "line": 909
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+      "target": "/chapter/kp-10-ticho",
+      "line": 860
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+      "target": "/chapter/kp-10-ticho",
+      "line": 866
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+      "target": "/chapter/kp-11-beta",
+      "line": 598
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+      "target": "/chapter/kp-11-beta",
+      "line": 604
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+      "target": "/chapter/kp-12-tova",
+      "line": 648
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+      "target": "/chapter/kp-12-tova",
+      "line": 654
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+      "target": "/chapter/kp-13-kontinuita",
+      "line": 777
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+      "target": "/chapter/kp-13-kontinuita",
+      "line": 783
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+      "target": "/chapter/kp-14-reklamace",
+      "line": 1235
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+      "target": "/chapter/kp-14-reklamace",
+      "line": 1241
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+      "target": "/chapter/kp-15-migrace",
+      "line": 1001
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+      "target": "/chapter/kp-15-migrace",
+      "line": 1007
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+      "target": "/chapter/kp-16-rucni-rezim",
+      "line": 1028
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+      "target": "/chapter/kp-16-rucni-rezim",
+      "line": 1034
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+      "target": "/chapter/kp-17-zadna-odpoved",
+      "line": 1631
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+      "target": "/chapter/kp-17-zadna-odpoved",
+      "line": 1637
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+      "target": "/chapter/kp-18-konec-podpory",
+      "line": 2326
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+      "target": "/chapter/kp-18-konec-podpory",
+      "line": 2332
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+      "target": "/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css",
+      "line": 3
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+      "target": "/chapter/kp-00-podporovano",
+      "line": 2005
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+      "target": "/chapter/kp-00-podporovano",
+      "line": 2011
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 1025
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 1029
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-0 [NULL]_en.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-0 [NULL]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 1025
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-0 [NULL]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 1029
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-1 [START].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-1 [START].html",
+      "target": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "line": 1123
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-1 [START].html",
+      "target": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "line": 1127
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-1 [START]_en.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-1 [START]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "line": 1123
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-1 [START]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "line": 1127
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "target": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "line": 1338
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "target": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "line": 1342
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "line": 1338
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-2 [RUN]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "line": 1342
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "target": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "line": 1216
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "target": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "line": 1219
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM]_en.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "line": 1216
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "line": 1219
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
+      "target": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "line": 1407
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-∞ [RESTART].html",
+      "target": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "line": 1411
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-∞ [RESTART]_en.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-∞ [RESTART]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "line": 1409
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/0-∞ [RESTART]_en.html",
+      "target": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "line": 1413
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "line": 1407
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-0 [NULL].html",
+      "line": 1411
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 1417
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 2440
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 2444
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 2451
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "line": 3572
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-2 [RUN].html",
+      "line": 3576
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 3583
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "line": 4919
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-3 [DISCONTINUUM].html",
+      "line": 4923
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 4930
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "line": 6144
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "line": 6147
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 6154
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "line": 7357
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "line": 7360
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 7367
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "line": 8456
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "line": 8459
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 8466
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "line": 9598
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "line": 9601
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 9608
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "line": 11005
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "line": 11008
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 11015
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "line": 12209
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "line": 12212
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 12219
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-10 [REST].html",
+      "line": 13194
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-10 [REST].html",
+      "line": 13197
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 13204
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "line": 14155
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "line": 14158
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/styles.css",
+      "line": 14165
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
+      "line": 15672
+    },
+    {
+      "path": "apps/web/public/books/SYNTHOMA-NULL/SYNTHOMA.html",
+      "target": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
+      "line": 15675
+    },
+    {
+      "path": "apps/web/public/books/efekty.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAAUTOR.html",
+      "target": "/books",
+      "line": 571
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAAUTOR.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 577
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAAUTOR_en.html",
+      "target": "/books",
+      "line": 571
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAAUTOR_en.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 577
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/styles.css",
+      "line": 14
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/synth-gate.css",
+      "line": 15
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 94
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/books",
+      "line": 100
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 163
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 211
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 412
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/styles.css",
+      "line": 14
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/synth-gate.css",
+      "line": 15
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 94
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/books",
+      "line": 100
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 163
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 211
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMAINFO_en.html",
+      "target": "/chapter/0-inf-restart",
+      "line": 412
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/books",
+      "line": 26
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/archive",
+      "line": 32
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/books",
+      "line": 197
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/books",
+      "line": 514
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/books",
+      "line": 537
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/books",
+      "line": 728
+    },
+    {
+      "path": "apps/web/public/data/SYNTHOMA_GATEWAY_QUEST_DRAFT.html.html",
+      "target": "/books",
+      "line": 751
+    },
+    {
+      "path": "apps/web/public/data/efekty.md",
+      "target": "/books/SYNTHOMA-NULL/0-1 [START].html",
+      "line": 1233
+    },
+    {
+      "path": "apps/web/public/data/efekty.md",
+      "target": "/books",
+      "line": 1254
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/02be911f61a51f1c.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/20054b12c21170d1.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/2396664cf29b77a8.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/30f00fb0f90d7f49.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/34e81bcd48e0e4c5.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/563900b690e1f2c8.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/68046c68161a35f2.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/793a63dcf4c73a61.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/8bf6dfd5291f741a.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/a88b2880bed46d13.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/e550fa0330e0028a.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/ed6e4dc61492245d.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/f7da016af73b6ba6.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/fa6f221e618b776c.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/_next/static/css/fff0de096d40a9ed.css",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/offline",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/icons/pwa-192x192.png",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/icons/pwa-512x512.png",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/icons/pwa-maskable-192x192.png",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/icons/pwa-maskable-512x512.png",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/icons/apple-touch-icon-180x180.png",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/fonts/VT323-Regular.ttf",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/fonts/Handjet.ttf",
+      "line": 4
+    },
+    {
+      "path": "apps/web/public/sw.js",
+      "target": "/fonts/astronboy/astronbw.ttf",
+      "line": 4
+    },
+    {
+      "path": "apps/web/src/components/access/ContentPurchaseDialog.tsx",
+      "target": "/register",
+      "line": 160
+    },
+    {
+      "path": "apps/web/src/components/archive/SynthomaArchive.tsx",
+      "target": "/cyklus",
+      "line": 244
+    },
+    {
+      "path": "apps/web/src/components/cyklus/CyklusCommandRail.tsx",
+      "target": "/",
+      "line": 21
+    },
+    {
+      "path": "apps/web/src/components/home/HomeFirstContact.tsx",
+      "target": "/chapter/0-inf-restart",
+      "line": 9
+    },
+    {
+      "path": "apps/web/src/components/home/HomeFirstContact.tsx",
+      "target": "/cyklus",
+      "line": 14
+    },
+    {
+      "path": "apps/web/src/components/home/HomeFirstContact.tsx",
+      "target": "/archive",
+      "line": 19
+    },
+    {
+      "path": "apps/web/src/components/home/HomeFirstContact.tsx",
+      "target": "/login",
+      "line": 56
+    },
+    {
+      "path": "apps/web/src/components/home/HomeFirstContact.tsx",
+      "target": "/register",
+      "line": 57
+    },
+    {
+      "path": "apps/web/src/components/home/HomeMemorySignal.tsx",
+      "target": "/ai/api",
+      "line": 14
+    },
+    {
+      "path": "apps/web/src/components/home/HomeMemorySignal.tsx",
+      "target": "/terms",
+      "line": 17
+    },
+    {
+      "path": "apps/web/src/components/home/HomeMemorySignal.tsx",
+      "target": "/privacy",
+      "line": 19
+    },
+    {
+      "path": "apps/web/src/components/home/HomePrimaryAction.tsx",
+      "target": "/cyklus",
+      "line": 17
+    },
+    {
+      "path": "apps/web/src/components/home/HomeSectorLinks.tsx",
+      "target": "/books",
+      "line": 10
+    },
+    {
+      "path": "apps/web/src/components/home/HomeSectorLinks.tsx",
+      "target": "/archive",
+      "line": 11
+    },
+    {
+      "path": "apps/web/src/components/home/HomeSectorLinks.tsx",
+      "target": "/cyklus",
+      "line": 12
+    },
+    {
+      "path": "apps/web/src/components/home/HomeSectorLinks.tsx",
+      "target": "/autor",
+      "line": 46
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/terms",
+      "line": 13
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/privacy",
+      "line": 14
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/chapter/0-inf-restart",
+      "line": 24
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/cyklus",
+      "line": 25
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/archive",
+      "line": 26
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/chapter/0-inf-restart",
+      "line": 28
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/login",
+      "line": 28
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/archive",
+      "line": 29
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/register",
+      "line": 29
+    },
+    {
+      "path": "apps/web/src/components/home/__tests__/SynthomaHomeSsr.test.tsx",
+      "target": "/chapter/0-inf-restart",
+      "line": 42
+    },
+    {
+      "path": "apps/web/src/components/profile/LocalSubjectProfile.tsx",
+      "target": "/login",
+      "line": 75
+    },
+    {
+      "path": "apps/web/src/components/profile/PrivacyPanel.tsx",
+      "target": "/api/me/export",
+      "line": 48
+    },
+    {
+      "path": "apps/web/src/components/profile/PrivacyPanel.tsx",
+      "target": "/",
+      "line": 58
+    },
+    {
+      "path": "apps/web/src/components/profile/ProfileDashboard.tsx",
+      "target": "/",
+      "line": 188
+    },
+    {
+      "path": "apps/web/src/components/profile/ProfileDashboard.tsx",
+      "target": "/admin",
+      "line": 273
+    },
+    {
+      "path": "apps/web/src/components/pwa/PwaProvider.tsx",
+      "target": "/install",
+      "line": 306
+    },
+    {
+      "path": "apps/web/src/components/pwa/PwaSettings.tsx",
+      "target": "/install",
+      "line": 29
+    },
+    {
+      "path": "apps/web/src/components/run/RunDashboard.tsx",
+      "target": "/login",
+      "line": 114
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaCommandHeader.tsx",
+      "target": "/",
+      "line": 11
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaCommandHeader.tsx",
+      "target": "/books",
+      "line": 12
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaCommandHeader.tsx",
+      "target": "/archive",
+      "line": 13
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaCommandHeader.tsx",
+      "target": "/cyklus",
+      "line": 14
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaCommandHeader.tsx",
+      "target": "/",
+      "line": 37
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaMobileNavigation.tsx",
+      "target": "/",
+      "line": 10
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaMobileNavigation.tsx",
+      "target": "/books",
+      "line": 11
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaMobileNavigation.tsx",
+      "target": "/archive",
+      "line": 12
+    },
+    {
+      "path": "apps/web/src/components/synthoma-os/SynthomaMobileNavigation.tsx",
+      "target": "/cyklus",
+      "line": 13
+    },
+    {
+      "path": "apps/web/src/components/whispers/WhisperForm.tsx",
+      "target": "/login",
+      "line": 90
+    },
+    {
+      "path": "apps/web/src/components/whispers/WhisperSubmitPanel.tsx",
+      "target": "/login",
+      "line": 55
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-10 [REST].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-10 [REST].html",
+      "target": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "line": 953
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-10 [REST].html",
+      "target": "/books/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "line": 956
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "target": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
+      "line": 1509
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-11 [ORGIE].html",
+      "target": "/books/SYNTHOMA-NULL/0-12 [CONFLICT].html",
+      "line": 1512
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "target": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "line": 1205
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-4 [DEFRAGMENTATION].html",
+      "target": "/books/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "line": 1208
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "target": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "line": 1091
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-5 [PAUSE].html",
+      "target": "/books/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "line": 1094
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "target": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "line": 1134
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-6 [SEARCHING].html",
+      "target": "/books/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "line": 1137
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "target": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "line": 1399
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-7 [RUINS].html",
+      "target": "/books/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "line": 1402
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "target": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "line": 1196
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-8 [REZIDUUM].html",
+      "target": "/books/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "line": 1199
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "target": "/styles.css",
+      "line": 2
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "target": "/books/SYNTHOMA-NULL/0-10 [REST].html",
+      "line": 977
+    },
+    {
+      "path": "apps/web/src/content/protected/SYNTHOMA-NULL/0-9 [SECTOR].html",
+      "target": "/books/SYNTHOMA-NULL/0-10 [REST].html",
+      "line": 980
+    },
+    {
+      "path": "apps/web/src/hooks/__tests__/useChoiceHandlers.test.tsx",
+      "target": "/chapter/next",
+      "line": 75
+    },
+    {
+      "path": "apps/web/src/lib/__tests__/typewriterContent.test.ts",
+      "target": "/books/chapter1.html",
+      "line": 72
+    },
+    {
+      "path": "apps/web/src/lib/__tests__/typewriterContent.test.ts",
+      "target": "/books/chapter1.html",
+      "line": 74
+    },
+    {
+      "path": "apps/web/src/lib/__tests__/typewriterContent.test.ts",
+      "target": "/ch2",
+      "line": 181
+    },
+    {
+      "path": "apps/web/src/lib/__tests__/typewriterContent.test.ts",
+      "target": "/ch2",
+      "line": 226
+    },
+    {
+      "path": "apps/web/src/lib/__tests__/typewriterContent.test.ts",
+      "target": "/ch2",
+      "line": 229
+    },
+    {
+      "path": "apps/web/src/lib/__tests__/typewriterContent.test.ts",
+      "target": "/chapter/next",
+      "line": 250
+    },
+    {
+      "path": "apps/web/src/server/public-ai/__tests__/publicDiscovery.test.ts",
+      "target": "/api/public/v1/cyklus/run",
+      "line": 28
+    },
+    {
+      "path": "apps/web/src/server/public-ai/__tests__/publicDiscovery.test.ts",
+      "target": "/api/public/v1/cyklus/choice",
+      "line": 29
+    },
+    {
+      "path": "apps/web/src/server/public-ai/discovery.ts",
+      "target": "/api/public/v1/cyklus/run",
+      "line": 34
+    },
+    {
+      "path": "apps/web/src/server/public-ai/discovery.ts",
+      "target": "/api/public/v1/cyklus/choice",
+      "line": 35
+    },
+    {
+      "path": "apps/web/src/server/public-ai/openapi.ts",
+      "target": "/api/public/v1/cyklus/run",
+      "line": 35
+    },
+    {
+      "path": "apps/web/src/server/public-ai/openapi.ts",
+      "target": "/api/public/v1/cyklus/choice",
+      "line": 35
+    }
+  ]
+}

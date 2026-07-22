@@ -1,0 +1,751 @@
+{
+  "generatedAt": "2026-07-22T08:37:39.914Z",
+  "root": "C:/SYNTHOMA",
+  "files": 46468,
+  "tracked": 1009,
+  "ignored": 45459,
+  "generated": 45460,
+  "totalBytes": 1879372547,
+  "duplicateGroups": 13,
+  "duplicateFiles": 33,
+  "nearDuplicatePairs": 25,
+  "sharpAvailable": true,
+  "byExtension": {
+    ".pack": {
+      "count": 46,
+      "bytes": 410245717
+    },
+    ".node": {
+      "count": 4,
+      "bytes": 298866688
+    },
+    ".js": {
+      "count": 22967,
+      "bytes": 255808544
+    },
+    ".png": {
+      "count": 90,
+      "bytes": 169547781
+    },
+    ".map": {
+      "count": 6874,
+      "bytes": 142369287
+    },
+    ".mp3": {
+      "count": 14,
+      "bytes": 109460948
+    },
+    ".gz": {
+      "count": 107,
+      "bytes": 109083420
+    },
+    ".wasm": {
+      "count": 22,
+      "bytes": 59839702
+    },
+    ".ts": {
+      "count": 8643,
+      "bytes": 54300646
+    },
+    ".webm": {
+      "count": 29,
+      "bytes": 43788058
+    },
+    ".mjs": {
+      "count": 835,
+      "bytes": 41062349
+    },
+    ".cjs": {
+      "count": 557,
+      "bytes": 27084734
+    },
+    "[none]": {
+      "count": 1344,
+      "bytes": 23660482
+    },
+    ".json": {
+      "count": 1989,
+      "bytes": 23131074
+    },
+    ".exe": {
+      "count": 1,
+      "bytes": 20978176
+    },
+    ".old": {
+      "count": 5,
+      "bytes": 20074341
+    },
+    ".dll": {
+      "count": 2,
+      "bytes": 19420672
+    },
+    ".webp": {
+      "count": 87,
+      "bytes": 16266796
+    },
+    ".data": {
+      "count": 2,
+      "bytes": 10578218
+    },
+    ".md": {
+      "count": 1366,
+      "bytes": 8257804
+    },
+    ".html": {
+      "count": 65,
+      "bytes": 3249783
+    },
+    ".ttf": {
+      "count": 19,
+      "bytes": 2400168
+    },
+    ".css": {
+      "count": 88,
+      "bytes": 2275756
+    },
+    ".cts": {
+      "count": 238,
+      "bytes": 2025689
+    },
+    ".mts": {
+      "count": 371,
+      "bytes": 1485303
+    },
+    ".tsx": {
+      "count": 229,
+      "bytes": 1129399
+    },
+    ".tsbuildinfo": {
+      "count": 22,
+      "bytes": 1110243
+    },
+    ".flow": {
+      "count": 4,
+      "bytes": 509794
+    },
+    ".txt": {
+      "count": 72,
+      "bytes": 271854
+    },
+    ".woff2": {
+      "count": 8,
+      "bytes": 175944
+    },
+    ".cc": {
+      "count": 7,
+      "bytes": 171323
+    },
+    ".body": {
+      "count": 3,
+      "bytes": 147925
+    },
+    ".lock": {
+      "count": 1,
+      "bytes": 103956
+    },
+    ".log": {
+      "count": 3,
+      "bytes": 80164
+    },
+    ".yml": {
+      "count": 148,
+      "bytes": 80124
+    },
+    ".jst": {
+      "count": 25,
+      "bytes": 50043
+    },
+    ".ps1": {
+      "count": 47,
+      "bytes": 38039
+    },
+    ".markdown": {
+      "count": 7,
+      "bytes": 36279
+    },
+    ".sql": {
+      "count": 7,
+      "bytes": 30416
+    },
+    ".h": {
+      "count": 6,
+      "bytes": 27647
+    },
+    ".prisma": {
+      "count": 2,
+      "bytes": 25640
+    },
+    ".def": {
+      "count": 5,
+      "bytes": 16762
+    },
+    ".cmd": {
+      "count": 47,
+      "bytes": 15326
+    },
+    ".ico": {
+      "count": 2,
+      "bytes": 15086
+    },
+    ".closure-compiler": {
+      "count": 1,
+      "bytes": 11358
+    },
+    ".gyp": {
+      "count": 1,
+      "bytes": 10568
+    },
+    ".go": {
+      "count": 1,
+      "bytes": 6067
+    },
+    ".bnf": {
+      "count": 9,
+      "bytes": 5571
+    },
+    ".bsd": {
+      "count": 4,
+      "bytes": 5065
+    },
+    ".php": {
+      "count": 1,
+      "bytes": 4613
+    },
+    ".coffee": {
+      "count": 11,
+      "bytes": 4573
+    },
+    ".py": {
+      "count": 1,
+      "bytes": 3773
+    },
+    ".hash-wasm": {
+      "count": 2,
+      "bytes": 3260
+    },
+    ".xml": {
+      "count": 5,
+      "bytes": 2986
+    },
+    ".1": {
+      "count": 1,
+      "bytes": 2888
+    },
+    ".sh": {
+      "count": 4,
+      "bytes": 2469
+    },
+    ".ejs": {
+      "count": 1,
+      "bytes": 2444
+    },
+    ".mdown": {
+      "count": 1,
+      "bytes": 2337
+    },
+    ".esprima": {
+      "count": 1,
+      "bytes": 1231
+    },
+    ".gif": {
+      "count": 1,
+      "bytes": 1209
+    },
+    ".license": {
+      "count": 1,
+      "bytes": 1061
+    },
+    ".local": {
+      "count": 1,
+      "bytes": 921
+    },
+    ".meta": {
+      "count": 3,
+      "bytes": 671
+    },
+    ".iml": {
+      "count": 1,
+      "bytes": 458
+    },
+    ".example": {
+      "count": 1,
+      "bytes": 323
+    },
+    ".snap": {
+      "count": 1,
+      "bytes": 243
+    },
+    ".sha256": {
+      "count": 2,
+      "bytes": 128
+    },
+    ".toml": {
+      "count": 1,
+      "bytes": 128
+    },
+    ".opts": {
+      "count": 1,
+      "bytes": 90
+    },
+    ".bin": {
+      "count": 1,
+      "bytes": 12
+    }
+  },
+  "byTop": {
+    "apps": {
+      "count": 46421,
+      "bytes": 1879048782
+    },
+    "docs": {
+      "count": 36,
+      "bytes": 230649
+    },
+    "AUDIT-REPORT.md": {
+      "count": 1,
+      "bytes": 30508
+    },
+    "README.md": {
+      "count": 1,
+      "bytes": 25300
+    },
+    "updates.md": {
+      "count": 1,
+      "bytes": 20060
+    },
+    "CHANGELOG.md": {
+      "count": 1,
+      "bytes": 6216
+    },
+    "FINAL-IMPROVEMENTS.md": {
+      "count": 1,
+      "bytes": 5585
+    },
+    "CONTRIBUTING.md": {
+      "count": 1,
+      "bytes": 4126
+    },
+    ".next": {
+      "count": 1,
+      "bytes": 513
+    },
+    "setup.sh": {
+      "count": 1,
+      "bytes": 499
+    },
+    ".gitignore": {
+      "count": 1,
+      "bytes": 306
+    },
+    ".nvmrc": {
+      "count": 1,
+      "bytes": 3
+    },
+    ".devin": {
+      "count": 1,
+      "bytes": 0
+    }
+  },
+  "largestFiles": [
+    {
+      "path": "apps/web/node_modules/@next/swc-win32-x64-msvc/next-swc.win32-x64-msvc.node",
+      "sizeBytes": 148372992
+    },
+    {
+      "path": "apps/web/node_modules/@next/.swc-win32-x64-msvc-TLrPbCuE/next-swc.win32-x64-msvc.node",
+      "sizeBytes": 148164608
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/0.pack",
+      "sizeBytes": 93115396
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-production/0.pack",
+      "sizeBytes": 48399744
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/6.pack",
+      "sizeBytes": 47721734
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/14.pack",
+      "sizeBytes": 42639504
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-development/13.pack.gz",
+      "sizeBytes": 34149254
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/7.pack",
+      "sizeBytes": 27702961
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/5.pack",
+      "sizeBytes": 21754781
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/10.pack",
+      "sizeBytes": 21166324
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/engines/node_modules/.cache/prisma/master/3c6e192761c0362d496ed980de936e2f3cebcd3a/windows/schema-engine",
+      "sizeBytes": 20978176
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/engines/schema-engine-windows.exe",
+      "sizeBytes": 20978176
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-production/14.pack",
+      "sizeBytes": 20065833
+    },
+    {
+      "path": "apps/web/node_modules/@img/sharp-win32-x64/lib/libvips-42.dll",
+      "sizeBytes": 19093504
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-development/9.pack.gz",
+      "sizeBytes": 15904525
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/index.pack",
+      "sizeBytes": 14262379
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/index.pack.old",
+      "sizeBytes": 14261194
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/2.pack",
+      "sizeBytes": 13072891
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/studio-core/dist/ui/index.cjs",
+      "sizeBytes": 12777707
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/studio-core/dist/ui/index.js",
+      "sizeBytes": 12661728
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-development/11.pack.gz",
+      "sizeBytes": 12477164
+    },
+    {
+      "path": "apps/web/public/audio/SynthBachmoff.mp3",
+      "sizeBytes": 12029613
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/edge-server-production/2.pack",
+      "sizeBytes": 11419297
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-production/4.pack",
+      "sizeBytes": 10071261
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-production/4.pack",
+      "sizeBytes": 9954133
+    },
+    {
+      "path": "apps/web/public/audio/Touha.mp3",
+      "sizeBytes": 9880500
+    },
+    {
+      "path": "apps/web/public/audio/Sector.mp3",
+      "sizeBytes": 9306824
+    },
+    {
+      "path": "apps/web/node_modules/typescript/lib/typescript.js",
+      "sizeBytes": 9111680
+    },
+    {
+      "path": "apps/web/public/audio/Searching.mp3",
+      "sizeBytes": 8967156
+    },
+    {
+      "path": "apps/web/public/assets/og-synthoma.png",
+      "sizeBytes": 8759212
+    },
+    {
+      "path": "apps/web/node_modules/@electric-sql/pglite/dist/pglite.wasm",
+      "sizeBytes": 8740135
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/dev/dist/runtime-assets/pglite.wasm",
+      "sizeBytes": 8740135
+    },
+    {
+      "path": "apps/web/public/audio/Synthoma_landing.mp3",
+      "sizeBytes": 8198688
+    },
+    {
+      "path": "apps/web/public/audio/Orgie.mp3",
+      "sizeBytes": 8182334
+    },
+    {
+      "path": "apps/web/public/audio/SoulSynth.mp3",
+      "sizeBytes": 8103212
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-development/7.pack.gz",
+      "sizeBytes": 8072948
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-development/13.pack.gz",
+      "sizeBytes": 8027226
+    },
+    {
+      "path": "apps/web/public/audio/Nuova.mp3",
+      "sizeBytes": 7364318
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-development/12.pack.gz",
+      "sizeBytes": 7163489
+    },
+    {
+      "path": "apps/web/node_modules/jspdf/dist/jspdf.umd.js.map",
+      "sizeBytes": 6863998
+    },
+    {
+      "path": "apps/web/public/audio/Run.mp3",
+      "sizeBytes": 6855592
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-development/8.pack.gz",
+      "sizeBytes": 6740957
+    },
+    {
+      "path": "apps/web/public/audio/Discontinuum.mp3",
+      "sizeBytes": 6540985
+    },
+    {
+      "path": "apps/web/public/audio/SYNTHOMA1.mp3",
+      "sizeBytes": 6512891
+    },
+    {
+      "path": "apps/web/public/audio/Comet.mp3",
+      "sizeBytes": 6448659
+    },
+    {
+      "path": "apps/web/node_modules/typescript/lib/_tsc.js",
+      "sizeBytes": 6211917
+    },
+    {
+      "path": "apps/web/public/audio/SynthAm.mp3",
+      "sizeBytes": 5905594
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/schema_engine_bg.wasm",
+      "sizeBytes": 5698846
+    },
+    {
+      "path": "apps/web/node_modules/@electric-sql/pglite/dist/pglite.data",
+      "sizeBytes": 5289109
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/dev/dist/runtime-assets/pglite.data",
+      "sizeBytes": 5289109
+    },
+    {
+      "path": "apps/web/node_modules/jspdf/dist/jspdf.node.js.map",
+      "sizeBytes": 5218755
+    },
+    {
+      "path": "apps/web/public/audio/SynthJazzoko.mp3",
+      "sizeBytes": 5164582
+    },
+    {
+      "path": "apps/web/public/video/SYNTHOMA13.webm",
+      "sizeBytes": 5095282
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.sqlserver.wasm-base64.js",
+      "sizeBytes": 5026619
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.sqlserver.wasm-base64.mjs",
+      "sizeBytes": 5026609
+    },
+    {
+      "path": "apps/web/node_modules/jspdf/dist/jspdf.es.js.map",
+      "sizeBytes": 5019517
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/query-plan-executor/dist/index.js",
+      "sizeBytes": 5008761
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.cockroachdb.wasm-base64.js",
+      "sizeBytes": 4973831
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.cockroachdb.wasm-base64.mjs",
+      "sizeBytes": 4973821
+    },
+    {
+      "path": "apps/web/node_modules/.prisma/client/query_compiler_fast_bg.wasm-base64.js",
+      "sizeBytes": 4903679
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.js",
+      "sizeBytes": 4903679
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs",
+      "sizeBytes": 4903669
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.mysql.wasm-base64.js",
+      "sizeBytes": 4837631
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.mysql.wasm-base64.mjs",
+      "sizeBytes": 4837621
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-production/index.pack",
+      "sizeBytes": 4736030
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-production/index.pack.old",
+      "sizeBytes": 4735582
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.sqlite.wasm-base64.js",
+      "sizeBytes": 4722779
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_fast_bg.sqlite.wasm-base64.mjs",
+      "sizeBytes": 4722769
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/server-development/6.pack.gz",
+      "sizeBytes": 4521545
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/server/capsize-font-metrics.json",
+      "sizeBytes": 4301622
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/amphtml-validator/validator_wasm.js",
+      "sizeBytes": 4012235
+    },
+    {
+      "path": "apps/web/public/video/SYNTHOMA5.webm",
+      "sizeBytes": 4001870
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page-turbo-experimental.runtime.dev.js.map",
+      "sizeBytes": 3808501
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.dev.js.map",
+      "sizeBytes": 3803308
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/query_compiler_fast_bg.sqlserver.wasm",
+      "sizeBytes": 3769930
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/query_compiler_fast_bg.cockroachdb.wasm",
+      "sizeBytes": 3730340
+    },
+    {
+      "path": "apps/web/node_modules/.prisma/client/query_compiler_fast_bg.wasm",
+      "sizeBytes": 3677725
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/query_compiler_fast_bg.postgresql.wasm",
+      "sizeBytes": 3677725
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js.map",
+      "sizeBytes": 3640469
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js.map",
+      "sizeBytes": 3635285
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/query_compiler_fast_bg.mysql.wasm",
+      "sizeBytes": 3628189
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/query_compiler_fast_bg.sqlite.wasm",
+      "sizeBytes": 3542050
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/edge-server-production/3.pack",
+      "sizeBytes": 3450200
+    },
+    {
+      "path": "apps/web/node_modules/jspdf/dist/jspdf.umd.min.js.map",
+      "sizeBytes": 3421589
+    },
+    {
+      "path": "apps/web/node_modules/rollup/dist/rollup.browser.js.map",
+      "sizeBytes": 3410323
+    },
+    {
+      "path": "apps/web/.next/cache/webpack/client-production/15.pack",
+      "sizeBytes": 3068784
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/prisma_schema_build_bg.wasm",
+      "sizeBytes": 2894641
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js.map",
+      "sizeBytes": 2795511
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page-turbo-experimental.runtime.prod.js.map",
+      "sizeBytes": 2794922
+    },
+    {
+      "path": "apps/web/node_modules/jspdf/dist/jspdf.node.min.js.map",
+      "sizeBytes": 2743681
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/studio-core/dist/metafile-cjs.json",
+      "sizeBytes": 2717150
+    },
+    {
+      "path": "apps/web/node_modules/jspdf/dist/jspdf.es.min.js.map",
+      "sizeBytes": 2714658
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js.map",
+      "sizeBytes": 2709493
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/next-server/app-page-turbo.runtime.prod.js.map",
+      "sizeBytes": 2708899
+    },
+    {
+      "path": "apps/web/node_modules/prisma/build/index.js",
+      "sizeBytes": 2662793
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/studio-core/dist/metafile-esm.json",
+      "sizeBytes": 2638908
+    },
+    {
+      "path": "apps/web/node_modules/next/dist/compiled/webpack/bundle5.js",
+      "sizeBytes": 2582639
+    },
+    {
+      "path": "apps/web/public/cards/restart_1.png",
+      "sizeBytes": 2520904
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_small_bg.cockroachdb.wasm-base64.js",
+      "sizeBytes": 2505271
+    },
+    {
+      "path": "apps/web/node_modules/@prisma/client/runtime/query_compiler_small_bg.cockroachdb.wasm-base64.mjs",
+      "sizeBytes": 2505261
+    }
+  ]
+}
