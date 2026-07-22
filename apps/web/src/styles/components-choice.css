@@ -176,7 +176,7 @@ p.choice[data-tags]:not(:has(> .choice-link))::before {
 /* Jemný průjezd světla přes tlačítko */
 p.choice[data-tags] > .choice-link span,
 p.choice[data-tags]:not(:has(> .choice-link)) > span {
-  color: var(--choice-accent);
+  color: var(--text-primary);
   text-shadow:
     0 0 6px var(--choice-accent),
     0 0 14px color-mix(in oklab, var(--choice-accent) 40%, transparent);

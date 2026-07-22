@@ -357,7 +357,7 @@
 }
 
 .cyklus-menu__button--primary > .os-button__label {
-  color: var(--cy-magenta-soft);
+  color: var(--cy-text);
 }
 
 .cyklus-menu__button--secondary {
