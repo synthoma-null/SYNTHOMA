@@ -888,6 +888,10 @@ html[data-reader-glass="on"] .chapter-reader__article.SYNTHOMAREADER {
   user-select: none;
 }
 
+.chapter-reader__article.SYNTHOMAREADER .choice-link > span {
+  color: var(--text-primary);
+}
+
 .chapter-reader__article ::selection {
   color: var(--bg-primary);
   background: var(--accent-secondary);

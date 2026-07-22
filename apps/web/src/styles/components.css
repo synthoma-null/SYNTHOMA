@@ -3501,12 +3501,14 @@
 }
 
 @media (min-width: 1024px) {
+  .whisper-submit-title { font-size: var(--text-label, 0.9375rem); }
   .whisper-submit-text,
   .whisper-submit-textarea { font-family: var(--font-family-primary), system-ui, sans-serif; font-size: var(--text-small, 1rem); line-height: var(--line-ui, 1.55); letter-spacing: normal; }
   .whisper-submit-counter,
   .whisper-submit-status { font-size: var(--text-caption, 0.875rem); color: var(--os-text-muted, rgba(207, 207, 227, 0.76)); }
   .whisper-submit-select { min-height: 44px; font-size: var(--text-label, 0.9375rem); letter-spacing: 0.04em; }
   .whisper-submit-btn { min-height: 44px; font-size: var(--text-ui, 1.0625rem); letter-spacing: 0.06em; }
+  .whisper-submit-panel--auth .btn-sm { min-height: 44px; font-size: var(--text-ui, 1.0625rem); letter-spacing: 0.06em; }
 }
 
 @media (max-width: 640px) {

@@ -356,6 +356,10 @@
   color: var(--cy-magenta);
 }
 
+.cyklus-menu__button--primary > .os-button__label {
+  color: var(--cy-magenta-soft);
+}
+
 .cyklus-menu__button--secondary {
   background: color-mix(in srgb, var(--cy-surface-1) 72%, transparent);
   color: var(--cy-text-soft);
