@@ -18,6 +18,8 @@ describe('PWA service worker contract', () => {
     expect(buildSource).toContain('cleanupOutdatedCaches: true');
     expect(buildSource).toContain('navigationPreload: true');
     expect(buildSource).toContain('skipWaiting: true');
+    expect(buildSource).toContain("const PWA_VERSION = '1.0.0-pwa.3'");
+    expect(worker).toContain('1.0.0-pwa.3');
   });
 
   it('keeps private routes and every API response network-only', () => {
@@ -35,6 +37,7 @@ describe('PWA service worker contract', () => {
     }
     expect(buildSource).toContain("contentType.includes('text/x-component')");
     expect(buildSource).toContain('response.bodyUsed');
+    expect(buildSource).toContain('response.clone()');
     expect(worker).toContain('text/x-component');
   });
 

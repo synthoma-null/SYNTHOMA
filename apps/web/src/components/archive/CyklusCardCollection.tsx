@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import CyklusCardPoster from '../cyklus/CyklusCardPoster';
 import CyklusPortalScope from '../cyklus/CyklusPortalScope';
 import { loadDiscovery, mergeDiscovery, saveDiscovery, saveDiscoveryWithSync } from '../../game/cyklus/cyklusDiscovery';
-import { loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { loadServerCyklusRun, setServerSyncEnabled } from '../../game/cyklus/cyklusStorage';
 import { getCyklusCardArtworkCatalog } from '../../game/cyklus/cyklusCardCollection';
 import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
@@ -19,7 +19,7 @@ function formatDate(timestamp: number, lang: 'cs' | 'en'): string {
 
 export default function CyklusCardCollection() {
   const { t, lang } = useLang();
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [discovery, setDiscovery] = useState(() => loadDiscovery());
   const [filter, setFilter] = useState<CollectionFilter>('all');
   const [category, setCategory] = useState<string>('all');
@@ -28,6 +28,10 @@ export default function CyklusCardCollection() {
   const [syncError, setSyncError] = useState(false);
   const [syncNonce, setSyncNonce] = useState(0);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    setServerSyncEnabled(sessionStatus === 'authenticated');
+  }, [sessionStatus]);
 
   useEffect(() => {
     const refresh = () => setDiscovery(loadDiscovery());

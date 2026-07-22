@@ -8,7 +8,7 @@ The implementation uses Workbox `generateSW`. The current requirements are limit
 
 ## Version
 
-Current PWA version: `1.0.0-pwa.2`.
+Current PWA version: `1.0.0-pwa.3`.
 
 The version is declared in:
 

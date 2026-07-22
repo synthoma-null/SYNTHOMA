@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useSession } from 'next-auth/react';
 import { createCyklusRun, resolveChoice, getCardById, computeProfile, computeEnding, summarizeRun, analyzeDeath, computeStabilizationProgress, getSectorIntroText, composeCycleSummary, composeBehavioralAnalysis, computeStabilizationVariant, composeCycleForecast, exportRunLog, getNearestExtreme, generateRunCodename, activateItem, getStabilizationBuildProgress, getActiveContracts, getComboHint, rerollRunGoals, applyMetaProgressionPreviewHint, type BuildVariantProgress } from '../../game/cyklus/cyklusEngine';
 import { evaluateFindings, saveNewFindings, loadEarnedFindings, getDeathUnlocks, saveMetaUnlocks, addFreshMetaPools, type EarnedFinding, type MetaUnlock } from '../../game/cyklus/cyklusFindings';
-import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun } from '../../game/cyklus/cyklusStorage';
+import { saveCyklusRun, loadCyklusRun, clearCyklusRun, loadCyklusRunHistory, appendCyklusRunSummary, isTutorialSeen, setTutorialV2Seen, clearTutorialSeen, loadServerCyklusRun, setServerSyncEnabled, syncCyklusProfile } from '../../game/cyklus/cyklusStorage';
 import { recordLocalCyklusDecision } from '../../game/cyklus/cyklusLocalProfile';
 import { loadRecentCyklusComments, saveRecentCyklusComment } from '../../game/cyklus/cyklusCommentPool';
 import { computeRunRewards, awardRunRewards, loadSubjectProgression, SUBJECT_UPGRADES, SUBJECT_SCARS, CURRENCY_LABELS, getLoadoutLimits, MATERIAL_LABELS, CRAFT_RECIPES, VOID_ROOMS, type RunReward, type SubjectProgression, type CyklusVoidHubActions } from '../../game/cyklus/cyklusProgression';
@@ -189,7 +189,7 @@ import CyklusPortalScope from './CyklusPortalScope';
 
 export default function CyklusClient() {
   const { setStatus, setActions } = useHeader();
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const mobileGameplayLayout = useCyklusMobileLayout();
   const backgroundMotionAllowed = useBackgroundMotionAllowed();
   const [state, setState] = useState<CyklusRunState | null>(null);
@@ -313,6 +313,10 @@ export default function CyklusClient() {
     }
     setCurrentTraceOpen(true);
   }, [closeCurrentTrace, currentTraceOpen]);
+
+  useEffect(() => {
+    setServerSyncEnabled(sessionStatus === 'authenticated');
+  }, [sessionStatus]);
 
   useEffect(() => {
     if (!currentTraceOpen) return;
@@ -520,24 +524,15 @@ export default function CyklusClient() {
       const updatedStory = updateStoryAfterRun(story, current);
       saveStoryProgression(updatedStory);
       await saveCyklusRun(current);
-      // Sync game profile to web identity
-      try {
-        await fetch('/api/me/cyklus/sync-profile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            profile: current.profile,
-            entityRelations: current.entityRelations,
-            stats: current.stats,
-            status: current.status,
-            cycle: current.cycle,
-            deathStat: reward.deathStat,
-            profileMastery: reward.profileMastery,
-          }),
-        });
-      } catch {
-        // ignore — web identity sync is best-effort
-      }
+      await syncCyklusProfile({
+        profile: current.profile,
+        entityRelations: current.entityRelations,
+        stats: current.stats,
+        status: current.status,
+        cycle: current.cycle,
+        deathStat: reward.deathStat,
+        profileMastery: reward.profileMastery,
+      });
     }
     finalize().catch(() => { /* ignore */ });
   }, [state]);

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { CyklusVoidHub } from './CyklusVoidHub';
 import { createCyklusRun } from '../../game/cyklus/cyklusEngine';
 import {
@@ -30,6 +31,7 @@ import {
   loadCyklusRun,
   saveCyklusRun,
   serverSaveProgression,
+  setServerSyncEnabled,
 } from '../../game/cyklus/cyklusStorage';
 import type { CyklusRunFocus, CyklusRunState } from '../../game/cyklus/cyklusTypes';
 
@@ -75,11 +77,16 @@ export function CyklusVoidHubClient({
   recentReward = null,
 }: Props) {
   const router = useRouter();
+  const { status: sessionStatus } = useSession();
   const [progression, setProgression] = useState<SubjectProgression>(() => getEmptyProgression());
   const [run, setRun] = useState<CyklusRunState | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<Notice>({ kind: 'info', text: initialNotice });
+
+  useEffect(() => {
+    setServerSyncEnabled(sessionStatus === 'authenticated');
+  }, [sessionStatus]);
 
   const refreshLocal = useCallback(() => {
     const nextProgression = loadSubjectProgression();

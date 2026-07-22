@@ -23,12 +23,15 @@ for (const [name, expected] of requiredIcons) {
 const swPath = path.join(root, 'public', 'sw.js');
 const sw = await fs.readFile(swPath, 'utf8');
 const stat = await fs.stat(swPath);
+const pwaSource = await fs.readFile(path.join(root, 'src', 'lib', 'pwa.ts'), 'utf8');
+const pwaVersion = pwaSource.match(/PWA_VERSION = '([^']+)'/)?.[1];
+if (!pwaVersion) throw new Error('PWA version could not be read from src/lib/pwa.ts');
 const requiredMarkers = [
-  'synthoma-static-1.0.0-pwa.2-',
-  'synthoma-fonts-1.0.0-pwa.2-',
-  'synthoma-images-1.0.0-pwa.2-',
-  'synthoma-reader-1.0.0-pwa.2-',
-  'synthoma-pages-1.0.0-pwa.2-',
+  `synthoma-static-${pwaVersion}-`,
+  `synthoma-fonts-${pwaVersion}-`,
+  `synthoma-images-${pwaVersion}-`,
+  `synthoma-reader-${pwaVersion}-`,
+  `synthoma-pages-${pwaVersion}-`,
   'PWA_UPDATED',
   'text/x-component',
   '_rsc',

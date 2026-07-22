@@ -1,6 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { auth } from '../../../auth';
 import prisma from '../../../src/lib/prisma';
+import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
 
 const FILTER_PATTERNS = [
   /\b\d{9,}\b/,
@@ -49,48 +51,68 @@ export async function GET(req: NextRequest) {
       ? { approvedAt: 'desc' }
       : { createdAt: 'asc' };
 
-  let whispers: PublicWhisper[] = await prisma.whisper.findMany({
-    where,
-    orderBy,
-    take: sort === 'random' ? 200 : limit,
-    select: {
-      id: true,
-      publicMode: true,
-      type: true,
-      text: true,
-      placement: true,
-      chapterId: true,
-      resonanceCount: true,
-      displayCount: true,
-      boostedUntil: true,
-      approvedAt: true,
-    },
-  });
-
-  if (sort === 'random') {
-    whispers = whispers.sort(() => Math.random() - 0.5).slice(0, limit);
-  }
-
-  await prisma.whisper.updateMany({
-    where: { id: { in: whispers.map((w: PublicWhisper) => w.id) } },
-    data: { displayCount: { increment: 1 } },
-  });
-
-  const session = await auth();
-  const userId = session?.user?.id;
-  let resonatedIds = new Set<string>();
-
-  if (userId) {
-    const resonances = await prisma.whisperResonance.findMany({
-      where: { userId, whisperId: { in: whispers.map((w: PublicWhisper) => w.id) } },
-      select: { whisperId: true },
+  try {
+    let whispers: PublicWhisper[] = await prisma.whisper.findMany({
+      where,
+      orderBy,
+      take: sort === 'random' ? 200 : limit,
+      select: {
+        id: true,
+        publicMode: true,
+        type: true,
+        text: true,
+        placement: true,
+        chapterId: true,
+        resonanceCount: true,
+        displayCount: true,
+        boostedUntil: true,
+        approvedAt: true,
+      },
     });
-    resonatedIds = new Set(resonances.map((r: { whisperId: string }) => r.whisperId));
-  }
 
-  return NextResponse.json(
-    whispers.map((w: PublicWhisper) => ({ ...w, resonated: resonatedIds.has(w.id) })),
-  );
+    if (sort === 'random') {
+      whispers = whispers.sort(() => Math.random() - 0.5).slice(0, limit);
+    }
+
+    if (whispers.length > 0) {
+      await prisma.whisper.updateMany({
+        where: { id: { in: whispers.map((w: PublicWhisper) => w.id) } },
+        data: { displayCount: { increment: 1 } },
+      });
+    }
+
+    let resonatedIds = new Set<string>();
+
+    if (whispers.length > 0) {
+      const session = await auth();
+      const userId = session?.user?.id;
+      if (!userId) {
+        return NextResponse.json(
+          whispers.map((w: PublicWhisper) => ({ ...w, resonated: false })),
+        );
+      }
+      const resonances = await prisma.whisperResonance.findMany({
+        where: { userId, whisperId: { in: whispers.map((w: PublicWhisper) => w.id) } },
+        select: { whisperId: true },
+      });
+      resonatedIds = new Set(resonances.map((r: { whisperId: string }) => r.whisperId));
+    }
+
+    return NextResponse.json(
+      whispers.map((w: PublicWhisper) => ({ ...w, resonated: resonatedIds.has(w.id) })),
+    );
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('whispers-get', error);
+    return NextResponse.json(
+      {
+        error: 'WHISPERS_DATABASE_UNAVAILABLE',
+        message: 'Kanál šepotů teď není dostupný.',
+        correlationId: report.correlationId,
+        retryable: true,
+      },
+      { status: 503, headers: { 'Cache-Control': 'private, no-store' } },
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {

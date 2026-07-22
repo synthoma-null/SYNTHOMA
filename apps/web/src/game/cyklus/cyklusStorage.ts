@@ -6,10 +6,23 @@ const STORAGE_KEY = 'synthoma_cyklus_run_v1';
 const HISTORY_KEY = 'synthoma_cyklus_history_v1';
 const MAX_HISTORY = 50;
 
-let serverSyncEnabled = true;
+let serverSyncEnabled = false;
 
 export function setServerSyncEnabled(enabled: boolean): void {
   serverSyncEnabled = enabled;
+}
+
+export async function syncCyklusProfile(payload: Record<string, unknown>): Promise<void> {
+  if (!serverSyncEnabled || typeof window === 'undefined') return;
+  try {
+    await fetch('/api/me/cyklus/sync-profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    // Local Cyklus data remains authoritative when identity sync is unavailable.
+  }
 }
 
 function migrateState(parsed: Partial<CyklusRunState>): CyklusRunState {

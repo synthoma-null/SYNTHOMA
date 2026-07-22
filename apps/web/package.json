@@ -27,7 +27,7 @@
     "entitlements:backfill": "node scripts/backfill-content-entitlements.js",
     "pwa:build": "node scripts/build-pwa.mjs",
     "pwa:icons": "node scripts/generate-pwa-icons.mjs",
-    "pwa:test": "jest --testPathPatterns=pwa|serviceWorker|manifest --runInBand --no-coverage",
+    "pwa:test": "jest \"--testPathPatterns=pwa|serviceWorker|manifest\" --runInBand --no-coverage",
     "pwa:audit": "node scripts/audit-pwa.mjs"
   },
   "keywords": [

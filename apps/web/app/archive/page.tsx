@@ -7,7 +7,6 @@ import { normalizeArchiveCards } from '../../src/lib/synthoma/archive/normalizeA
 import { getPublicArchive } from '../../src/server/public-ai/contentService';
 import { buildPublicMetadata, requestLocale } from '../../src/lib/publicMetadata';
 import { getLibraryCatalog } from '../../src/lib/synthoma/library/getLibraryCatalog';
-import ArchivePublicFallback from '../../src/components/archive/ArchivePublicFallback';
 import '../../src/styles/library-archive.css';
 
 export const revalidate = 3600;
@@ -59,7 +58,11 @@ export default async function ArchivePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <noscript>
-        <ArchivePublicFallback cards={publicCards} locale={locale} />
+        <div className="archive-public-fallback">
+          <h1>{locale === 'en' ? 'Living Archive' : 'Živý archiv'}</h1>
+          <p>{locale === 'en' ? 'The complete public archive is included in this page.' : 'Kompletní veřejný archiv je součástí této stránky.'}</p>
+          <p><a href={locale === 'en' ? '/books?locale=en' : '/books'}>{locale === 'en' ? 'Open the library' : 'Otevřít knihovnu'}</a></p>
+        </div>
       </noscript>
       <SynthomaArchive initialCards={normalized} library={library} />
     </>

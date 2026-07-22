@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { useSession } from "next-auth/react";
 import { readStorageJSON, writeStorageJSON } from "../lib/browser";
 
 function softFail(scope: string, err: unknown): void {
@@ -23,6 +24,7 @@ function queueLocalTrace(payload: Record<string, unknown>): void {
  * or network failures so choices are never silently lost.
  */
 export function useChoiceTracking(chapterIdProp?: string, collectionProp?: string) {
+  const { status: sessionStatus } = useSession();
   const applyMbtiScore = useCallback((node: Element | null): string => {
     const tagsAttr = (node?.getAttribute("data-tags") || "").trim();
     if (!node || !tagsAttr) return "";
@@ -134,6 +136,11 @@ export function useChoiceTracking(chapterIdProp?: string, collectionProp?: strin
         return;
       }
 
+      if (sessionStatus !== "authenticated") {
+        queueLocalTrace(payload);
+        return;
+      }
+
       try {
         const res = await fetch("/api/me/choices", {
           method: "POST",
@@ -152,7 +159,7 @@ export function useChoiceTracking(chapterIdProp?: string, collectionProp?: strin
     } catch (err) {
       softFail("trackChoiceEvent", err);
     }
-  }, [chapterIdProp, collectionProp]);
+  }, [chapterIdProp, collectionProp, sessionStatus]);
 
   const scoreFromNode = useCallback((node: Element | null) => {
     const tagsAttr = applyMbtiScore(node);

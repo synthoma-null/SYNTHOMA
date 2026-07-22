@@ -21,4 +21,22 @@ describe('anonymous public route sync contract', () => {
     expect(source).toContain("'AUTH_REQUIRED'");
     expect(source).toContain("status === 'authenticated' && requestedRef.current.size");
   });
+
+  it('keeps reader choice tracking local until a session is authenticated', () => {
+    const source = fs.readFileSync(path.join(process.cwd(), 'src/hooks/useChoiceTracking.ts'), 'utf8');
+    const anonymousGuard = source.indexOf('sessionStatus !== "authenticated"');
+    const privateRequest = source.indexOf('fetch("/api/me/choices"');
+    expect(anonymousGuard).toBeGreaterThan(-1);
+    expect(anonymousGuard).toBeLessThan(privateRequest);
+  });
+
+  it('keeps Cyklus server sync disabled until an authenticated client enables it', () => {
+    const storage = fs.readFileSync(path.join(process.cwd(), 'src/game/cyklus/cyklusStorage.ts'), 'utf8');
+    const client = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8');
+    const voidHub = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusVoidHubClient.tsx'), 'utf8');
+    expect(storage).toContain('let serverSyncEnabled = false');
+    expect(storage).toContain("if (!serverSyncEnabled || typeof window === 'undefined') return");
+    expect(client).toContain("setServerSyncEnabled(sessionStatus === 'authenticated')");
+    expect(voidHub).toContain("setServerSyncEnabled(sessionStatus === 'authenticated')");
+  });
 });
