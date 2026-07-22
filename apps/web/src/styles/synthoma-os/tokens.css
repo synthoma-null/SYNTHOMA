@@ -13,8 +13,20 @@
   --os-danger: var(--accent-error, #ff3d4f);
   --os-success: var(--accent-success, #7bed9f);
   --os-text: var(--text-primary, #c0faff);
-  --os-text-secondary: var(--text-secondary, color-mix(in srgb, var(--os-text) 78%, var(--os-bg)));
-  --os-text-muted: var(--text-tertiary, color-mix(in srgb, var(--os-text) 60%, var(--os-bg)));
+  --os-text-secondary: color-mix(in srgb, var(--os-text) 86%, var(--os-bg));
+  --os-text-muted: color-mix(in srgb, var(--os-text) 72%, var(--os-bg));
+
+  --text-caption: 0.8125rem;
+  --text-label: 0.875rem;
+  --text-small: 0.9375rem;
+  --text-ui: 1rem;
+  --text-body: 1.0625rem;
+  --text-card: 1.0625rem;
+  --text-reader: 1.1875rem;
+  --line-caption: 1.45;
+  --line-ui: 1.55;
+  --line-body: 1.7;
+  --line-reader: 1.8;
 
   --os-space-1: 0.25rem;
   --os-space-2: 0.5rem;
@@ -43,4 +55,25 @@
   --os-z-modal: 90;
   --os-z-portal: 110;
   --os-z-critical: 120;
+}
+
+@media (min-width: 1024px) {
+  :root,
+  [data-theme] {
+    --text-caption: 0.875rem;
+    --text-label: 0.9375rem;
+    --text-small: 1rem;
+    --text-ui: 1.0625rem;
+    --text-body: 1.125rem;
+    --text-card: 1.125rem;
+    --text-reader: 1.25rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  :root,
+  [data-theme] {
+    --text-body: 1.15625rem;
+    --text-reader: 1.3125rem;
+  }
 }

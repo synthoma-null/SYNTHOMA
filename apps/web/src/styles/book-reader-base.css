@@ -1,9 +1,9 @@
 :root {
-  --font-size-body: 1rem;
-  --font-size-ui: 0.875rem;
-  --font-size-small: 0.78rem;
-  --font-size-label: 0.7rem;
-  --font-size-reader: 1.15rem;
+  --font-size-body: var(--text-body, 1.0625rem);
+  --font-size-ui: var(--text-ui, 1rem);
+  --font-size-small: var(--text-small, 0.9375rem);
+  --font-size-label: var(--text-label, 0.875rem);
+  --font-size-reader: var(--text-reader, 1.1875rem);
   --book-reader-measure: 68ch;
   --book-reader-leading: 1.76;
   --reader-effect-intensity: 0.75;
@@ -15,16 +15,6 @@ html[data-reader-width="wide"] { --book-reader-measure: 76ch; }
 html[data-reader-line-height="compact"] { --book-reader-leading: 1.58; }
 html[data-reader-line-height="comfortable"] { --book-reader-leading: 1.76; }
 html[data-reader-line-height="airy"] { --book-reader-leading: 1.9; }
-
-@media (min-width: 900px) {
-  :root {
-    --font-size-body: 1.1rem;
-    --font-size-ui: 0.96rem;
-    --font-size-small: 0.86rem;
-    --font-size-label: 0.77rem;
-    --font-size-reader: 1.27rem;
-  }
-}
 
 body { font-size: var(--font-size-body); }
 

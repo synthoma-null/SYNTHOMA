@@ -10,7 +10,6 @@
 @import "./cyklus/overlays.css";
 @import "./cyklus/responsive.css";
 @import "./cyklus/effects.css";
-@import "./cyklus/readability-theme.css";
 @import "./cyklus/interactions.css";
 @import "./cyklus/compact-mobile.css";
 @import "./cyklus/feedback-header.css";
@@ -19,3 +18,4 @@
 @import "./cyklus/card-overlay.css";
 @import "./cyklus/menu-polish.css";
 @import "./cyklus/trace-panel.css";
+@import "./cyklus/readability-theme.css";

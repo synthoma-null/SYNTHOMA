@@ -9,8 +9,8 @@
   --cy-surface-3: color-mix(in srgb, var(--cy-surface-1) 80%, var(--text-primary, #d9fbff) 20%);
 
   --cy-text: var(--text-primary, #d9fbff);
-  --cy-text-soft: var(--text-secondary, color-mix(in srgb, var(--cy-text) 78%, var(--cy-bg)));
-  --cy-text-dim: var(--text-tertiary, color-mix(in srgb, var(--cy-text) 64%, var(--cy-bg)));
+  --cy-text-soft: color-mix(in srgb, var(--cy-text) 84%, var(--cy-bg));
+  --cy-text-dim: color-mix(in srgb, var(--cy-text) 70%, var(--cy-bg));
   --cy-text-inverse: var(--bg-primary, #020306);
 
   --cy-line: var(--border-secondary, color-mix(in srgb, var(--cy-text) 28%, transparent));
@@ -47,6 +47,17 @@
   --cy-font-body: 0.875rem;
   --cy-font-control: 0.8125rem;
   --cy-font-value: 0.875rem;
+}
+
+@media (min-width: 1024px) {
+  :root,
+  [data-theme] {
+    --cy-font-micro: var(--text-caption, 0.875rem);
+    --cy-font-small: var(--text-small, 1rem);
+    --cy-font-body: var(--text-body, 1.125rem);
+    --cy-font-control: var(--text-ui, 1.0625rem);
+    --cy-font-value: var(--text-label, 0.9375rem);
+  }
 }
 
 .cyklus-page,

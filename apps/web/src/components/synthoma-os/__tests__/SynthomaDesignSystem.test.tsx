@@ -14,7 +14,10 @@ describe('Synthoma OS design foundation', () => {
   it('defines one bounded shared token and layer contract', () => {
     const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/tokens.css'), 'utf8');
     const typography = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/typography.css'), 'utf8');
-    expect(typography).toContain('--os-text-micro: var(--font-size-label, 0.75rem)');
+    expect(typography).toContain('--os-text-micro: var(--text-caption, 0.8125rem)');
+    expect(css).toContain('--text-body: 1.0625rem');
+    expect(css).toContain('--text-reader: 1.1875rem');
+    expect(css).toMatch(/@media \(min-width: 1024px\)[\s\S]*?--text-body:\s*1\.125rem;[\s\S]*?--text-reader:\s*1\.25rem;/);
     expect(css).toContain('--os-command-height: 56px');
     expect(css).toContain('--os-tap: 44px');
     expect(css).toContain('--os-z-critical: 120');

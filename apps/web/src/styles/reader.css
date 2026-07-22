@@ -945,6 +945,24 @@ html[data-reader-glass="on"] .chapter-reader__article.SYNTHOMAREADER {
   .chapter-reader__navigation a { padding: .75rem; font-size: .78rem; }
 }
 
+@media (min-width: 1024px) {
+  .chapter-reader__progress-label {
+    color: var(--os-text-secondary);
+    font-size: var(--text-caption);
+  }
+
+  .chapter-reader__command,
+  .chapter-reader__utilities button {
+    color: var(--os-text-secondary);
+    font-size: var(--text-caption);
+  }
+
+  .chapter-reader__identity { font-size: var(--text-label); }
+  .chapter-reader__navigation a { font-size: var(--text-ui); }
+  .chapter-reader__navigation span { color: var(--os-text-secondary); font-size: var(--text-caption); }
+  .chapter-reader__machine-links { color: var(--os-text-secondary); font-size: var(--text-caption); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .chapter-reader__progress-bar { transition: none; }
   .chapter-background__video { transition: none; }

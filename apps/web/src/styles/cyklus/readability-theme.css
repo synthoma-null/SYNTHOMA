@@ -173,3 +173,89 @@
     font-weight: 500;
   }
 }
+
+@media (min-width: 1024px) {
+  .cyklus-page :is(
+    .cyklus-card-scene,
+    .cyklus-outcome__story,
+    .cyklus-active-objective__text,
+    .cyklus-active-objective__hint,
+    .cyklus-end-summary__text,
+    .cyklus-end-summary__muted,
+    .cyklus-end-summary__steps,
+    .cyklus-reward__flavor,
+    .cyklus-death-analysis__comment,
+    .cyklus-behavioral__pattern,
+    .cyklus-pocket__item-text,
+    .cyklus-pocket__item-hint,
+    .cyklus-build__next-step,
+    .cyklus-goal__desc,
+    .cyklus-contract__row,
+    .cyklus-discovery__row,
+    .cyklus-history__details,
+    .cyklus-stat-popup__body
+  ),
+  .cyklus-void-page :is(
+    .void-hub-hero p,
+    .void-hub-return-summary p,
+    .void-hub-next-action p,
+    .void-hub-focus p,
+    .void-hub-section-header p,
+    .cyklus-dashboard-hero p,
+    .cyklus-pocket-panel p,
+    .pocket-item-row p,
+    .craft-recipe-row p,
+    .void-room-row p,
+    .loadout-entry p,
+    .cyklus-empty-note,
+    .pocket-ambient-text
+  ) {
+    font-family: var(--font-family-primary), system-ui, sans-serif;
+    font-size: var(--text-body);
+    line-height: var(--line-body);
+    letter-spacing: normal;
+  }
+
+  .cyklus-page :is(
+    .cyklus-active-objective__label,
+    .cyklus-card__category,
+    .cyklus-card__context,
+    .cyklus-outcome__label,
+    .cyklus-end__system-label,
+    .cyklus-end__section-label,
+    .cyklus-end-summary__eyebrow,
+    .cyklus-end-summary__label,
+    .cyklus-reward__system-label,
+    .cyklus-reward__section-label,
+    .cyklus-stat-chip__label,
+    .cyklus-footer__label,
+    .cyklus-build__intro-label
+  ),
+  .cyklus-void-page :is(
+    .cyklus-panel-kicker,
+    .void-hub-status-rail small,
+    .void-hub-tab > small,
+    .void-hub-focus__button > small,
+    .cyklus-void-client-status
+  ) {
+    font-size: var(--text-caption);
+  }
+
+  .cyklus-page :is(.cyklus-btn__label, .cyklus-bottom-nav__label, .cyklus-terminal-action),
+  .cyklus-void-page :is(.void-hub-action-button, .void-hub-tab > span) {
+    font-size: var(--text-ui);
+    letter-spacing: min(0.06em, 1px);
+  }
+
+  .cyklus-menu__bootbar { font-size: var(--text-caption); letter-spacing: 0.1em; }
+  .cyklus-menu__restart-line { font-size: var(--text-caption); }
+  .cyklus-menu__intro-line,
+  .cyklus-menu__intro-line:first-child,
+  .cyklus-menu__intro-line--dim { font-size: var(--text-body); line-height: var(--line-body); }
+  .cyklus-menu__subtitle span { font-size: var(--text-caption); }
+  .cyklus-menu__subtitle strong { font-size: var(--text-small); }
+  .cyklus-menu__action-index { font-size: var(--text-caption); }
+  .cyklus-menu__button,
+  .cyklus-menu__button--primary,
+  .cyklus-menu__button--tertiary { font-size: var(--text-ui); letter-spacing: 0.06em; }
+}

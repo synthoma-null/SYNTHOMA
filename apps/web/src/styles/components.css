@@ -2723,6 +2723,16 @@
 .cc-toggle input:checked + .cc-toggle-slider { background: var(--accent-primary, #7c5cff); border-color: var(--accent-primary, #7c5cff); }
 .cc-toggle input:checked + .cc-toggle-slider::after { left: 18px; background: #fff; }
 
+@media (min-width: 1024px) {
+  .cc-log { font-size: var(--text-caption, 0.875rem); line-height: var(--line-caption, 1.45); }
+  .cc-body { font-family: var(--font-family-primary), system-ui, sans-serif; font-size: var(--text-body, 1.125rem); line-height: var(--line-body, 1.7); letter-spacing: normal; }
+  .cc-flavor { font-size: var(--text-small, 1rem); opacity: 1; }
+  .cc-btn { min-height: 44px; font-size: var(--text-ui, 1.0625rem); letter-spacing: 0.06em; }
+  .cc-cat-name,
+  .cc-cat-desc { font-size: var(--text-small, 1rem); }
+  .cc-cat-badge { font-size: var(--text-caption, 0.875rem); }
+}
+
 /* ── lib-link locked state ──────────────────────────────────────────────── */
 /* ChapterLockModal uses paywall-* classes defined above */
 .lib-link--locked {
@@ -3488,6 +3498,15 @@
   font-size: .85rem;
   letter-spacing: .18em;
   color: var(--accent-primary, #7c5cff);
+}
+
+@media (min-width: 1024px) {
+  .whisper-submit-text,
+  .whisper-submit-textarea { font-family: var(--font-family-primary), system-ui, sans-serif; font-size: var(--text-small, 1rem); line-height: var(--line-ui, 1.55); letter-spacing: normal; }
+  .whisper-submit-counter,
+  .whisper-submit-status { font-size: var(--text-caption, 0.875rem); color: var(--os-text-muted, rgba(207, 207, 227, 0.76)); }
+  .whisper-submit-select { min-height: 44px; font-size: var(--text-label, 0.9375rem); letter-spacing: 0.04em; }
+  .whisper-submit-btn { min-height: 44px; font-size: var(--text-ui, 1.0625rem); letter-spacing: 0.06em; }
 }
 
 @media (max-width: 640px) {

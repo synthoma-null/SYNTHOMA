@@ -14,6 +14,16 @@ describe('Cyklus typography scale contract', () => {
     expect(tokens).toMatch(/--cy-font-body:\s*0\.875rem;/);
     expect(tokens).toMatch(/--cy-font-control:\s*0\.8125rem;/);
     expect(tokens).toMatch(/--cy-font-value:\s*0\.875rem;/);
+    expect(tokens).toMatch(/@media \(min-width: 1024px\)[\s\S]*?--cy-font-micro:\s*var\(--text-caption/);
+    expect(tokens).toMatch(/@media \(min-width: 1024px\)[\s\S]*?--cy-font-body:\s*var\(--text-body/);
+  });
+
+  it('raises important desktop copy and controls without changing compact mobile geometry', () => {
+    const readability = readStyle('src/styles/cyklus/readability-theme.css');
+
+    expect(readability).toMatch(/@media \(min-width: 1024px\)[\s\S]*?\.cyklus-card-scene[\s\S]*?font-size:\s*var\(--text-body\)/);
+    expect(readability).toMatch(/@media \(min-width: 1024px\)[\s\S]*?\.cyklus-menu__bootbar\s*\{[^}]*font-size:\s*var\(--text-caption\)/);
+    expect(readability).toMatch(/@media \(min-width: 1024px\)[\s\S]*?\.cyklus-menu__button--tertiary\s*\{[^}]*font-size:\s*var\(--text-ui\)/);
   });
 
   it('uses shared tokens across control surfaces without freezing the scale', () => {

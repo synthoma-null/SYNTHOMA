@@ -683,3 +683,21 @@
   .control-center__segments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .control-center__range { grid-template-columns: minmax(0, 1fr) 88px 40px; gap: 6px; }
 }
+
+@media (min-width: 1024px) {
+  #control-panel.control-center { font-size: var(--text-ui, 1.0625rem); }
+  .control-center__header p,
+  .control-center__kicker,
+  .control-center__body h3,
+  .control-center__presets h3,
+  .control-center__presets > div:first-child span,
+  .control-center__toggle span:last-child { font-size: var(--text-caption, 0.875rem); }
+  .control-center__tabs button,
+  .control-center__segments button,
+  .control-center__footer button,
+  .control-center__presets button,
+  .control-center__font-steps button,
+  .control-audio__transport button { font-size: var(--text-ui, 1.0625rem); }
+  .control-center__range output { font-size: var(--text-label, 0.9375rem); }
+  #control-panel .theme-cost { font-size: var(--text-caption, 0.875rem); }
+}

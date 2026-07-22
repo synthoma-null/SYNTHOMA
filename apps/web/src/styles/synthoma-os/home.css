@@ -38,8 +38,8 @@
 .synthoma-home__primary { grid-column: 1; align-self: center; padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem); }
 .synthoma-home__brand { margin: 0; display: inline-block; }
 .synthoma-home__designation { margin: var(--os-space-4) 0 0; color: var(--os-accent-primary); font: 700 var(--os-text-small)/1.4 var(--os-font-mono); }
-.synthoma-home__statement { max-width: 42rem; margin: var(--os-space-5) 0 0; color: var(--os-text-secondary); font: 500 clamp(0.95rem, 1.5vw, 1.1rem)/1.6 var(--os-font-body); }
-.synthoma-home__format { max-width: 40rem; margin: var(--os-space-3) 0 0; color: var(--os-text); font: 650 var(--os-text-small)/1.55 var(--os-font-body); }
+.synthoma-home__statement { max-width: 42rem; margin: var(--os-space-5) 0 0; color: var(--os-text-secondary); font: 500 var(--text-body)/var(--line-body) var(--os-font-body); letter-spacing: normal; }
+.synthoma-home__format { max-width: 40rem; margin: var(--os-space-3) 0 0; color: var(--os-text); font: 600 var(--text-body)/var(--line-body) var(--os-font-body); letter-spacing: normal; }
 
 .home-primary-action { display: grid; gap: var(--os-space-2); width: min(100%, 440px); margin-top: var(--os-space-6); padding: var(--os-space-4) var(--os-space-5); color: var(--os-text); text-decoration: none; box-shadow: inset 4px 0 0 var(--os-accent-primary); }
 .home-primary-action.os-surface { background: color-mix(in srgb, var(--os-surface) 88%, transparent); border-color: var(--os-accent-primary); }
@@ -65,7 +65,7 @@
 .home-first-contact__guest p { margin: 4px 0 0; color: var(--os-text-secondary); font: 500 var(--os-text-small)/1.45 var(--os-font-body); }
 .home-first-contact__guest small { display: block; margin-top: 4px; color: var(--os-text-muted); font: 500 var(--os-text-micro)/1.4 var(--os-font-body); }
 .home-first-contact__guest nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--os-space-2); }
-.home-first-contact__guest a { min-height: 36px; padding: 10px var(--os-space-2); color: var(--os-text-muted); font: 700 var(--os-text-micro)/1 var(--os-font-mono); text-decoration: none; }
+.home-first-contact__guest a { min-height: 44px; padding: 10px var(--os-space-2); color: var(--os-text-secondary); font: 700 var(--os-text-control)/1.2 var(--os-font-mono); text-decoration: none; }
 .home-first-contact__guest a:hover { color: var(--os-accent-primary); }
 
 .synthoma-home__sectors { grid-column: 2; align-self: center; display: grid; border-top: 1px solid var(--os-border-strong); }
