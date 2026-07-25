@@ -18,8 +18,17 @@ describe('PWA service worker contract', () => {
     expect(buildSource).toContain('cleanupOutdatedCaches: true');
     expect(buildSource).toContain('navigationPreload: true');
     expect(buildSource).toContain('skipWaiting: true');
-    expect(buildSource).toContain("const PWA_VERSION = '1.0.0-pwa.3'");
-    expect(worker).toContain('1.0.0-pwa.3');
+    expect(buildSource).toContain("const PWA_VERSION = '1.0.0-pwa.4'");
+    expect(worker).toContain('1.0.0-pwa.4');
+    for (const asset of [
+      '/assets/background_logo.png',
+      '/assets/favicon.ico',
+      '/assets/og-synthoma.png',
+      '/assets/icon_512.png',
+      '/assets/icon_1024.png',
+    ]) {
+      expect(buildSource).toContain(`{ url: '${asset}', revision: suffix }`);
+    }
   });
 
   it('keeps private routes and every API response network-only', () => {

@@ -21,6 +21,8 @@ describe('Synthoma Home server HTML', () => {
     const descriptor = 'SYNTHOMA je interaktivní psychologický román, diagnostická karetní hra a živý archiv uvnitř rozbitého terapeutického systému.';
 
     expect(html).toContain(descriptor);
+    expect(html).toContain('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.');
+    expect(html).toContain('href="/landing-intro?replay=1"');
     expect(html).toContain('href="/chapter/0-inf-restart"');
     expect(html).toContain('href="/cyklus"');
     expect(html).toContain('href="/archive"');

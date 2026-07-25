@@ -6,11 +6,11 @@
 /* Glitchka dialog – modrorůžový gradient */
 .dialogG {
   position: relative;
-  background: linear-gradient(90deg, #a78bff 0%, #f472d0 50%, #67e8f9 100%);
+  background: linear-gradient(90deg, var(--speaker-glitchka) 0%, var(--speaker-glitchka-secondary) 50%, var(--text-accent-primary) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #f472d0;
+  color: var(--speaker-glitchka);
   text-shadow: none;
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
@@ -24,7 +24,7 @@ p.dialogG::before {
   top: 0; bottom: 0; height: auto;
   border-radius: 2px;
   background: transparent;
-  box-shadow: -1px 0 4px 0px #ff69c8, 1px 0 8px 0px #ff00aa, 0px 0 12px 0px #ff69c8;
+  box-shadow: -1px 0 4px var(--speaker-glitchka), 1px 0 8px var(--speaker-glitchka-secondary), 0 0 12px var(--speaker-glitchka);
 
   z-index: 2;
   pointer-events: none;
@@ -105,8 +105,8 @@ p.dialogG::before {
 
 .dialogS {
   position: relative;
-  color: #ff2244;
-  text-shadow: 0 0 4px #ff2244, 0 0 8px #cc0022;
+  color: var(--speaker-sarkasma);
+  text-shadow: 0 0 4px var(--speaker-sarkasma), 0 0 8px var(--speaker-sarkasma-secondary);
   font-family: 'Text03i', monospace;
   font-weight: 700; font-style: italic;
   font-size: calc(1.15rem * var(--font-size-multiplier));
@@ -120,7 +120,7 @@ p.dialogS::before {
   top: 0; bottom: 0; height: auto;
   border-radius: 2px;
   background: transparent;
-  box-shadow: -1px 0 4px 0px #ff2244, 1px 0 8px 0px #cc0022, 0px 0 12px 0px #ff2244;
+  box-shadow: -1px 0 4px var(--speaker-sarkasma), 1px 0 8px var(--speaker-sarkasma-secondary), 0 0 12px var(--speaker-sarkasma);
 
   z-index: 2;
   pointer-events: none;
@@ -144,7 +144,7 @@ p.dialogN::before {
   top: 0; bottom: 0; height: auto;
   border-radius: 2px;
   background: transparent;
-  box-shadow: -1px 0 4px 0px #00f, 1px 0 8px 0px var(--accent-primary, #f0f), 0px 0 12px 0px var(--accent-secondary, #0ff);
+  box-shadow: -1px 0 4px var(--speaker-null), 1px 0 8px var(--speaker-null-secondary), 0 0 12px var(--speaker-null);
 
   z-index: 2;
   pointer-events: none;

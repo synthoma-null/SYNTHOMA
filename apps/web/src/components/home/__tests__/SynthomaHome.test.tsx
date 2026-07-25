@@ -30,6 +30,8 @@ describe('Synthoma Home', () => {
     expect(within(sectors).getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
     expect(screen.getByRole('link', { name: 'PŘÍSTUP PRO AI' })).toHaveAttribute('href', '/ai/api');
     expect(screen.getByText(/SYNTHOMA je interaktivní psychologický román/)).toBeInTheDocument();
+    expect(screen.getByText('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.')).toBeVisible();
+    expect(screen.getByRole('link', { name: 'SPUSTIT INTRO' })).toHaveAttribute('href', '/landing-intro?replay=1');
     expect(screen.getByRole('heading', { name: 'PRVNÍ NÁVŠTĚVA' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ZAČÍT PŘÍBĚH/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
     expect(screen.getByRole('link', { name: /SPUSTIT CYKLUS/ })).toHaveAttribute('href', '/cyklus');
@@ -63,6 +65,7 @@ describe('Synthoma Home', () => {
     expect(video).toHaveAttribute('aria-hidden', 'true');
     expect(video).toHaveProperty('muted', true);
     expect(document.querySelector('.synthoma-media-layer__fallback')).toBeInTheDocument();
+    expect(document.querySelectorAll('.synthoma-media-layer__brand-art')).toHaveLength(2);
   });
 
   it('keeps one footer, the main routes and the corrected Czech Cyklus CTA', () => {

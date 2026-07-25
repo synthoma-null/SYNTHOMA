@@ -22,8 +22,24 @@
 }
 
 .synthoma-media-layer__fallback {
-  background: var(--os-bg-deep);
+  background-color: var(--os-bg-deep);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: var(--synthoma-media-theme-filter, none);
 }
+
+.synthoma-media-layer__brand-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+
+.synthoma-media-layer__brand-art--title { object-fit: contain; opacity: 0.14; }
 
 .synthoma-local-scrim {
   background: linear-gradient(90deg, var(--os-scrim-strong) 0 58%, var(--os-scrim-soft) 76%, transparent 100%);

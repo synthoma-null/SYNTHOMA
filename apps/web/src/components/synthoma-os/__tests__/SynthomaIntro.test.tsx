@@ -3,8 +3,8 @@ import LandingIntroPage from '../../../../app/landing-intro/page';
 import FirstVisitRedirectClient from '../../../../app/components/FirstVisitRedirectClient';
 import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../../lib/intro';
 
-jest.mock('next/navigation', () => ({ useRouter: jest.fn() }));
-const { useRouter } = require('next/navigation');
+jest.mock('next/navigation', () => ({ useRouter: jest.fn(), usePathname: jest.fn() }));
+const { useRouter, usePathname } = require('next/navigation');
 
 describe('Synthoma intro', () => {
   const replace = jest.fn();
@@ -15,6 +15,7 @@ describe('Synthoma intro', () => {
     store = {};
     replace.mockClear();
     useRouter.mockReturnValue({ replace });
+    usePathname.mockReturnValue('/');
     (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
       matches: false, media: query, addEventListener: jest.fn(), removeEventListener: jest.fn(),
     }));
@@ -62,11 +63,27 @@ describe('Synthoma intro', () => {
   it('enters only after the final manual action and never creates audio', () => {
     render(<LandingIntroPage />);
     expect(document.querySelectorAll('audio')).toHaveLength(0);
-    expect(screen.queryByRole('button', { name: 'PŘESKOČIT' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'PŘESKOČIT' })).toBeEnabled();
     finishAutomaticSequence();
     fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' }));
     expect(store[SYNTHOMA_INTRO_STORAGE_KEY]).toBe(SYNTHOMA_INTRO_VERSION);
     expect(replace).toHaveBeenCalledWith('/');
+  });
+
+  it('can skip immediately and records the versioned completion key', () => {
+    render(<LandingIntroPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'PŘESKOČIT' }));
+    expect(store[SYNTHOMA_INTRO_STORAGE_KEY]).toBe(SYNTHOMA_INTRO_VERSION);
+    expect(replace).toHaveBeenCalledWith('/');
+  });
+
+  it('can replay the canonical sequence after reaching its final state', () => {
+    render(<LandingIntroPage />);
+    finishAutomaticSequence();
+    fireEvent.click(screen.getByRole('button', { name: 'SPUSTIT ZNOVU' }));
+    expect(screen.getByText('Subjekt detekován.')).toBeInTheDocument();
+    expect(screen.queryByText('SYNTHOMA čeká.')).not.toBeInTheDocument();
+    expect(replace).not.toHaveBeenCalled();
   });
 
   it('supports keyboard entry only after the automatic sequence', () => {

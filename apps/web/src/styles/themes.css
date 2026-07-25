@@ -18,10 +18,10 @@
   --bg-surface: var(--bg-secondary);
 
   /* Effect and utility palette used in effects.css */
-  --c-neon-cyan: #00ffff;
-  --c-glitch-magenta: #ff00ff;
-  --c-acid-yellow: #f6ff00;
-  --c-ghost-white: #f8faff;
+  --c-neon-cyan: var(--text-accent-primary, #00ffff);
+  --c-glitch-magenta: var(--text-accent-secondary, #ff00ff);
+  --c-acid-yellow: var(--text-warning, #f6ff00);
+  --c-ghost-white: var(--text-primary, #f8faff);
   --noise-opacity: 0.35;
 }
 

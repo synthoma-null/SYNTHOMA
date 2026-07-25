@@ -9,14 +9,14 @@ describe('semantic color roles', () => {
   it('defines a restrained shared palette with distinct status accents', () => {
     const tokens = read('src/styles/synthoma-os/tokens.css');
 
-    expect(tokens).toContain('--os-text-primary: #d8f6ff');
-    expect(tokens).toContain('--os-text-cyan: #00eaff');
-    expect(tokens).toContain('--os-text-magenta: #ff3ebf');
-    expect(tokens).toContain('--os-text-yellow: #f6ff00');
-    expect(tokens).toContain('--os-text-red: #ff4057');
-    expect(tokens).toContain('--os-text-green: #69ff9f');
-    expect(tokens).toContain('--os-text-violet: #bd82ff');
-    expect(tokens).toContain('--os-text-amber: #ffc66d');
+    expect(tokens).toContain('--os-text-primary: var(--text-primary');
+    expect(tokens).toContain('--os-text-cyan: var(--text-accent-primary)');
+    expect(tokens).toContain('--os-text-magenta: var(--text-accent-secondary)');
+    expect(tokens).toContain('--os-text-yellow: var(--text-warning)');
+    expect(tokens).toContain('--os-text-red: var(--text-danger)');
+    expect(tokens).toContain('--os-text-green: var(--text-success)');
+    expect(tokens).toContain('--os-text-violet: var(--text-accent-tertiary)');
+    expect(tokens).toContain('--os-text-amber: color-mix');
   });
 
   it('assigns meaning to Home sectors while keeping body copy neutral', () => {

@@ -10,6 +10,8 @@ export interface SpeakerDefinition {
   cssClass: string;
   color: string;
   secondaryColor?: string;
+  themeToken?: string;
+  secondaryThemeToken?: string;
   defaultTone: string;
   role: string;
   archiveEntryId?: string;
@@ -36,7 +38,9 @@ export function getSpeakerByClasses(classes: Iterable<string>): SpeakerDefinitio
 
 export function getSpeakerCssProperties(speaker: SpeakerDefinition): Record<string, string> {
   return {
-    '--speaker-color': speaker.color,
-    '--speaker-secondary': speaker.secondaryColor ?? speaker.color,
+    '--speaker-color': speaker.themeToken ? `var(${speaker.themeToken}, ${speaker.color})` : speaker.color,
+    '--speaker-secondary': speaker.secondaryThemeToken
+      ? `var(${speaker.secondaryThemeToken}, ${speaker.secondaryColor ?? speaker.color})`
+      : (speaker.secondaryColor ?? speaker.color),
   };
 }

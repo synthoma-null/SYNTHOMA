@@ -55,7 +55,7 @@ Next.js RSC and Flight requests are explicitly `NetworkOnly`. Requests with `_rs
 
 Chromium installability is captured from `beforeinstallprompt`. The automatic SYNTHOMA prompt appears only after the second browser session, never in standalone/fullscreen mode, and never during Reader, Cyklus, login, registration or purchase interactions. Dismissal has a fourteen-day cooldown. A manual entry remains available at `/install` and under Settings > Application.
 
-The system splash is driven by the manifest background color, theme color, app name and maskable icon. No additional blocking logo intro is used because the server-rendered shell already provides an immediate first paint.
+The system splash is driven by the manifest background color, theme color, app name and maskable icon. Installed standalone/fullscreen launches then show a short non-blocking `PwaBootSplash` using `/assets/background_logo.png`; a normal browser tab does not.
 
 ## Updates
 

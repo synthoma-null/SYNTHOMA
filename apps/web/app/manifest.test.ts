@@ -24,14 +24,15 @@ describe('SYNTHOMA web app manifest', () => {
   });
 
   it.each([
-    ['pwa-192x192.png', 192],
-    ['pwa-512x512.png', 512],
-    ['pwa-maskable-192x192.png', 192],
-    ['pwa-maskable-512x512.png', 512],
-    ['pwa-monochrome-512x512.png', 512],
-    ['apple-touch-icon-180x180.png', 180],
+    ['generated/icon-192.png', 192],
+    ['icon_512.png', 512],
+    ['icon_1024.png', 1024],
+    ['generated/maskable-icon-192.png', 192],
+    ['generated/maskable-icon-512.png', 512],
+    ['generated/monochrome-icon-512.png', 512],
+    ['generated/apple-touch-icon-180.png', 180],
   ])('ships a valid %s icon', async (filename, size) => {
-    const iconPath = path.join(process.cwd(), 'public', 'icons', filename);
+    const iconPath = path.join(process.cwd(), 'public', 'assets', filename);
     expect(fs.existsSync(iconPath)).toBe(true);
     const metadata = await sharp(iconPath).metadata();
     expect(metadata).toMatchObject({ width: size, height: size, format: 'png' });

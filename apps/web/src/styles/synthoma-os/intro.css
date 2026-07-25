@@ -71,6 +71,8 @@
 .synthoma-intro__actions { display: flex; min-height: 44px; justify-content: flex-end; gap: var(--os-space-3); }
 .synthoma-intro__actions button { padding-inline: var(--os-space-4); }
 .synthoma-intro__enter { border-color: var(--os-accent-primary); }
+.synthoma-intro__skip { margin-right: auto; color: var(--os-text-muted); }
+.synthoma-intro__replay { color: var(--text-memory); }
 
 @media (max-width: 480px) {
   .synthoma-intro__terminal { width: 100%; height: 100dvh; padding: calc(var(--os-space-4) + env(safe-area-inset-top)) var(--os-space-4) calc(var(--os-space-4) + env(safe-area-inset-bottom)); }
@@ -80,7 +82,9 @@
   .synthoma-intro__log { grid-template-columns: 1fr; }
   .synthoma-intro__log-label { grid-row: auto; }
   .synthoma-intro__actions { align-items: stretch; }
-  .synthoma-intro__enter { width: 100%; }
+  .synthoma-intro__actions { flex-wrap: wrap; }
+  .synthoma-intro__actions button { flex: 1 1 9rem; }
+  .synthoma-intro__skip { margin-right: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -26,10 +26,10 @@ body { font-size: var(--font-size-body); }
 }
 
 .chapter-reader[data-book="konec-podpory"] {
-  --book-accent: #00eaff;
-  --book-secondary: #ff78d8;
-  --book-warning: #f6ff00;
-  --book-background: #03080b;
+  --book-accent: var(--text-accent-primary);
+  --book-secondary: var(--text-accent-secondary);
+  --book-warning: var(--text-warning);
+  --book-background: var(--bg-primary, #03080b);
 }
 
 .chapter-reader__article.SYNTHOMAREADER {

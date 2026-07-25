@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { PUBLIC_SITE_URL, type PublicLocale } from '../server/public-ai/config';
+import { SYNTHOMA_ASSETS } from './brandAssets';
 
 export const SYNTHOMA_DESCRIPTOR = {
   cs: 'SYNTHOMA je interaktivní psychologický román, diagnostická karetní hra a živý archiv uvnitř rozbitého terapeutického systému.',
@@ -35,7 +36,7 @@ export function buildPublicMetadata(input: {
   const canonical = localizedUrl(input.path, input.locale);
   const czech = localizedUrl(input.path, 'cs');
   const english = localizedUrl(input.path, 'en');
-  const image = `${PUBLIC_SITE_URL}/assets/og-synthoma.png`;
+  const image = `${PUBLIC_SITE_URL}${SYNTHOMA_ASSETS.openGraph}`;
   return {
     title: input.title,
     description: input.description,

@@ -24,6 +24,37 @@ describe('Synthoma OS design foundation', () => {
     expect(css).not.toMatch(/z-index:\s*999/);
   });
 
+  it('maps every available theme to semantic text and speaker roles', () => {
+    const legacyThemes = fs.readFileSync(path.join(process.cwd(), 'src/styles/themes.css'), 'utf8');
+    const tokens = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/tokens.css'), 'utf8');
+    const themeIds = ['synthoma', 'green-matrix', 'neon-hellfire', 'cyber-dystopia', 'acid-glitch', 'retro-arcade', 'mono', 'mono-light'];
+    for (const themeId of themeIds) {
+      const block = legacyThemes.match(new RegExp(`\\[data-theme=${themeId}\\] \\{([\\s\\S]*?)\\n\\}`))?.[1] ?? '';
+      expect(block).toContain('--text-primary:');
+      expect(block).toContain('--accent-primary:');
+      expect(block).toContain('--accent-secondary:');
+      expect(block).toContain('--accent-warning:');
+    }
+    for (const token of ['--text-accent-primary', '--text-accent-secondary', '--text-warning', '--speaker-sarkasma', '--speaker-glitchka', '--speaker-null']) {
+      expect(tokens).toContain(`${token}:`);
+    }
+  });
+
+  it('keeps key presentation surfaces on semantic tokens instead of fixed text colors', () => {
+    const files = [
+      'src/styles/synthoma-os/home.css',
+      'src/styles/synthoma-os/intro.css',
+      'src/styles/library-archive.css',
+      'src/styles/book-reader-base.css',
+    ];
+    const source = files.map((file) => fs.readFileSync(path.join(process.cwd(), file), 'utf8')).join('\n');
+    expect(source).toContain('var(--text-accent-primary)');
+    expect(source).toContain('var(--speaker-color)');
+    expect(source).not.toContain('color: #00eaff');
+    expect(source).not.toContain('color: #ff3ebf');
+    expect(source).not.toContain('color: #f6ff00');
+  });
+
   it('propagates theme, scale, density and reduced-effects state without remounting content', async () => {
     render(<SynthomaPortalRoot><span data-testid="portal-child">SIGNAL</span></SynthomaPortalRoot>);
     const child = screen.getByTestId('portal-child');

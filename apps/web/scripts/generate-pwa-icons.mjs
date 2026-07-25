@@ -1,11 +1,14 @@
 import path from 'node:path';
+import { mkdir } from 'node:fs/promises';
 import sharp from 'sharp';
 
 const root = process.cwd();
-const iconsDir = path.join(root, 'public', 'icons');
-const sourceDir = path.join(iconsDir, 'source');
-const master = path.join(sourceDir, 'synthoma-pwa-master.png');
-const monoMaster = path.join(sourceDir, 'synthoma-pwa-monochrome-master.png');
+const iconsDir = path.join(root, 'public', 'assets', 'generated');
+const sourceDir = path.join(root, 'public', 'assets');
+const master = path.join(sourceDir, 'icon_1024.png');
+const monoMaster = path.join(sourceDir, 'icon_mono_1024.png');
+
+await mkdir(iconsDir, { recursive: true });
 
 async function colorIcon(size, destination) {
   await sharp(master)
@@ -40,16 +43,15 @@ async function monochromeIcon() {
   }
   await sharp(rgba, { raw: { width: info.width, height: info.height, channels: 4 } })
     .png({ compressionLevel: 9 })
-    .toFile(path.join(iconsDir, 'pwa-monochrome-512x512.png'));
+    .toFile(path.join(iconsDir, 'monochrome-icon-512.png'));
 }
 
 await Promise.all([
-  colorIcon(192, 'pwa-192x192.png'),
-  colorIcon(512, 'pwa-512x512.png'),
-  colorIcon(180, 'apple-touch-icon-180x180.png'),
-  maskableIcon(192, 'pwa-maskable-192x192.png'),
-  maskableIcon(512, 'pwa-maskable-512x512.png'),
+  colorIcon(192, 'icon-192.png'),
+  colorIcon(180, 'apple-touch-icon-180.png'),
+  maskableIcon(192, 'maskable-icon-192.png'),
+  maskableIcon(512, 'maskable-icon-512.png'),
   monochromeIcon(),
 ]);
 
-console.log('PWA icons generated from public/icons/source/synthoma-pwa-master.png.');
+console.log('PWA icons generated from public/assets/icon_1024.png and icon_mono_1024.png.');

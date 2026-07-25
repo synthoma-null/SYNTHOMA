@@ -50,6 +50,8 @@ import PwaProvider from "../src/components/pwa/PwaProvider";
 import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRuntime";
 import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 import { SYNTHOMA_DESCRIPTOR } from "../src/lib/publicMetadata";
+import { SYNTHOMA_ASSETS } from "../src/lib/brandAssets";
+import FirstVisitRedirectClient from "./components/FirstVisitRedirectClient";
 
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
@@ -85,9 +87,9 @@ export const metadata: Metadata = {
 
   icons: {
 
-    icon: "/assets/favicon.ico",
+    icon: SYNTHOMA_ASSETS.favicon,
 
-    apple: "/assets/icon-152x152.png",
+    apple: SYNTHOMA_ASSETS.generated.appleTouchIcon180,
 
   },
 
@@ -139,7 +141,7 @@ export const metadata: Metadata = {
 
       {
 
-        url: "/assets/og-synthoma.png",
+        url: SYNTHOMA_ASSETS.openGraph,
 
         width: 1200,
 
@@ -163,7 +165,7 @@ export const metadata: Metadata = {
 
     description: SYNTHOMA_DESCRIPTOR.cs,
 
-    images: ["/assets/og-synthoma.png"],
+    images: [SYNTHOMA_ASSETS.openGraph],
 
   },
 
@@ -275,6 +277,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <SessionProviderClient>
 
         <LangProvider initialLang={initialLang}>
+        <FirstVisitRedirectClient />
 
         <AccessProvider>
 

@@ -20,7 +20,12 @@ export default function SynthomaHome() {
           <SynthomaWordmark id="synthoma-home-title" context="home" className="synthoma-home__brand" />
           <p className="synthoma-home__designation">{t('home.designation')}</p>
           <p className="synthoma-home__statement">{t('home.statement')}</p>
+          <blockquote className="home-light-quote">
+            <span className="home-light-quote__beam" aria-hidden="true" />
+            <span className="home-light-quote__text">Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.</span>
+          </blockquote>
           <p className="synthoma-home__format">{t('home.format')}</p>
+          <a className="home-intro-link os-command" href="/landing-intro?replay=1">SPUSTIT INTRO</a>
           <HomeFirstContact />
           <HomePrimaryAction />
         </section>

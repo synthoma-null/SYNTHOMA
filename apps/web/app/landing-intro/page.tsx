@@ -13,6 +13,7 @@ interface IntroLog {
   label: string;
   lines: readonly [string, string];
 }
+type IntroState = 'playing' | 'waiting-for-input' | 'completed' | 'skipped';
 
 const INTRO_STEP_MS = 1400;
 const REDUCED_MOTION_LOGS = [0, 4, 8] as const;
@@ -23,6 +24,8 @@ const INTRO_COPY = {
     channel: 'OS // ROZHRANÍ ČERNÉ PAMĚTI',
     motto: 'Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.',
     enter: 'VSTOUPIT DO SYNTHOMY',
+    skip: 'PŘESKOČIT',
+    replay: 'SPUSTIT ZNOVU',
     logs: [
       { label: 'PROBUZENÍ', lines: ['Subjekt detekován.', 'Vědomí zatím nepotvrzeno.'] },
       { label: 'PAMĚŤ', lines: ['Obnova zahájena.', 'Některé chyby se přihlásily samy.'] },
@@ -40,6 +43,8 @@ const INTRO_COPY = {
     channel: 'OS // BLACK MEMORY INTERFACE',
     motto: 'Darkness is never real. It is only light that has surrendered its meaning.',
     enter: 'ENTER SYNTHOMA',
+    skip: 'SKIP',
+    replay: 'PLAY AGAIN',
     logs: [
       { label: 'AWAKENING', lines: ['Subject detected.', 'Consciousness not yet confirmed.'] },
       { label: 'MEMORY', lines: ['Recovery started.', 'Some errors signed themselves in.'] },
@@ -60,25 +65,39 @@ export default function LandingIntroPage() {
   const copy = INTRO_COPY[lang];
   const mottoRef = useRef<HTMLParagraphElement>(null);
   const [step, setStep] = useState(0);
+  const [introState, setIntroState] = useState<IntroState>('playing');
   const [reducedMotion, setReducedMotion] = useState(false);
   const repeatVisit = useMemo(() => readStorage(SYNTHOMA_INTRO_STORAGE_KEY, null) === SYNTHOMA_INTRO_VERSION, []);
 
-  const enterSYNTHOMA = useCallback(() => {
+  const enterSYNTHOMA = useCallback((outcome: 'completed' | 'skipped' = 'completed') => {
+    setIntroState(outcome);
     writeStorage(SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION);
     router.replace('/');
   }, [router]);
 
+  const replay = useCallback(() => {
+    setStep(0);
+    setIntroState('playing');
+  }, []);
+
   useEffect(() => {
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     setReducedMotion(reduced);
-    if (reduced) setStep(copy.logs.length - 1);
+    if (reduced) {
+      setStep(copy.logs.length - 1);
+      setIntroState('waiting-for-input');
+    }
   }, [copy.logs.length]);
 
   useEffect(() => {
-    if (reducedMotion || step >= copy.logs.length - 1) return;
+    if (reducedMotion || introState !== 'playing') return;
+    if (step >= copy.logs.length - 1) {
+      setIntroState('waiting-for-input');
+      return;
+    }
     const timer = window.setTimeout(() => setStep((current) => current + 1), INTRO_STEP_MS);
     return () => window.clearTimeout(timer);
-  }, [copy.logs.length, reducedMotion, step]);
+  }, [copy.logs.length, introState, reducedMotion, step]);
 
   useEffect(() => {
     const host = mottoRef.current;
@@ -91,13 +110,13 @@ export default function LandingIntroPage() {
     return () => { try { cancel(); } catch {} };
   }, [copy.motto, repeatVisit]);
 
-  const isLastStep = step >= copy.logs.length - 1;
+  const isLastStep = introState === 'waiting-for-input';
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!isLastStep || (event.key !== 'Enter' && event.key !== ' ')) return;
       event.preventDefault();
-      enterSYNTHOMA();
+      enterSYNTHOMA('completed');
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -111,7 +130,7 @@ export default function LandingIntroPage() {
     <main className="synthoma-intro" aria-label={copy.ariaLabel}>
       <SynthomaMediaLayer src="/video/SYNTHOMA1.webm" />
       <div className="synthoma-intro__scrim" aria-hidden="true" />
-      <section className="synthoma-intro__terminal" aria-labelledby="synthoma-intro-title">
+      <section className="synthoma-intro__terminal" aria-labelledby="synthoma-intro-title" data-intro-state={introState}>
         <header>
           <SynthomaWordmark id="synthoma-intro-title" context="intro" className="synthoma-intro__brand" />
           <p className="synthoma-intro__channel">{copy.channel}</p>
@@ -132,8 +151,16 @@ export default function LandingIntroPage() {
           ))}
         </div>
         <div className="synthoma-intro__actions">
+          <button className="os-command synthoma-intro__skip" type="button" onClick={() => enterSYNTHOMA('skipped')} aria-label={copy.skip}>
+            {copy.skip}
+          </button>
           {isLastStep && (
-            <button className="os-command synthoma-intro__enter" type="button" onClick={enterSYNTHOMA}>
+            <button className="os-command synthoma-intro__replay" type="button" onClick={replay}>
+              {copy.replay}
+            </button>
+          )}
+          {isLastStep && (
+            <button className="os-command synthoma-intro__enter" type="button" onClick={() => enterSYNTHOMA('completed')}>
               {copy.enter}
             </button>
           )}

@@ -15,7 +15,7 @@ describe('canonical Reader mobile header contract', () => {
   });
 
   it('bounds long titles and respects the PWA safe area without a fixed content offset', () => {
-    expect(css).toContain('top: max(.35rem, var(--pwa-safe-top, 0px))');
+    expect(css).toContain('padding: max(.55rem, env(safe-area-inset-top))');
     expect(css).toContain('-webkit-line-clamp: 2');
     expect(css).toContain('max-width: 100%');
     expect(css).toContain('overflow: hidden');

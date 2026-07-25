@@ -1,7 +1,7 @@
 import { generateSW } from 'workbox-build';
 import fs from 'node:fs/promises';
 
-const PWA_VERSION = '1.0.0-pwa.3';
+const PWA_VERSION = '1.0.0-pwa.4';
 const buildId = (process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'local')
   .replace(/[^a-z0-9.-]/gi, '-')
   .slice(0, 16)
@@ -40,11 +40,17 @@ const { count, size, warnings } = await generateSW({
   modifyURLPrefix: { '': '/_next/static/' },
   additionalManifestEntries: [
     { url: '/offline', revision: suffix },
-    { url: '/icons/pwa-192x192.png', revision: suffix },
-    { url: '/icons/pwa-512x512.png', revision: suffix },
-    { url: '/icons/pwa-maskable-192x192.png', revision: suffix },
-    { url: '/icons/pwa-maskable-512x512.png', revision: suffix },
-    { url: '/icons/apple-touch-icon-180x180.png', revision: suffix },
+    { url: '/assets/background.png', revision: suffix },
+    { url: '/assets/background_circle.png', revision: suffix },
+    { url: '/assets/background_logo.png', revision: suffix },
+    { url: '/assets/background_title.png', revision: suffix },
+    { url: '/assets/favicon.ico', revision: suffix },
+    { url: '/assets/og-synthoma.png', revision: suffix },
+    { url: '/assets/icon_512.png', revision: suffix },
+    { url: '/assets/icon_1024.png', revision: suffix },
+    { url: '/assets/generated/icon-192.png', revision: suffix },
+    { url: '/assets/generated/maskable-icon-512.png', revision: suffix },
+    { url: '/assets/generated/apple-touch-icon-180.png', revision: suffix },
     { url: '/fonts/VT323-Regular.ttf', revision: suffix },
     { url: '/fonts/Handjet.ttf', revision: suffix },
     { url: '/fonts/astronboy/astronbw.ttf', revision: suffix },

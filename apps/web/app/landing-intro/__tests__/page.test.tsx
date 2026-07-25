@@ -52,11 +52,11 @@ describe('LandingIntroPage', () => {
     expect(screen.getByText('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.')).toBeInTheDocument();
   });
 
-  it('does not render skip or continuation controls during narration', () => {
+  it('keeps narration skippable without showing the final continuation early', () => {
     render(<LandingIntroPage />);
-    expect(screen.queryByRole('button', { name: 'PŘESKOČIT' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'POKRAČOVAT' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'PŘESKOČIT' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'SPUSTIT ZNOVU' })).not.toBeInTheDocument();
   });
 
   it('renders all nine Czech logs and the final entry after about eleven seconds', () => {
