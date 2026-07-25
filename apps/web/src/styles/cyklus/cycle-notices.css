@@ -217,7 +217,7 @@
 
 @media (max-width: 767px) {
   .cyklus-page > .cyklus-root--playing {
-    grid-template-rows: 44px 52px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+    grid-template-rows: 44px 52px minmax(0, 1fr);
   }
 
   .cyklus-stat-dock {

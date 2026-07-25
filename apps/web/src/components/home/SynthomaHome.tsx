@@ -22,7 +22,12 @@ export default function SynthomaHome() {
           <p className="synthoma-home__statement">{t('home.statement')}</p>
           <blockquote className="home-light-quote">
             <span className="home-light-quote__beam" aria-hidden="true" />
-            <span className="home-light-quote__text">Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.</span>
+            <span
+              className="home-light-quote__text"
+              data-text="Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu."
+            >
+              Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.
+            </span>
           </blockquote>
           <p className="synthoma-home__format">{t('home.format')}</p>
           <a className="home-intro-link os-command" href="/landing-intro?replay=1">SPUSTIT INTRO</a>

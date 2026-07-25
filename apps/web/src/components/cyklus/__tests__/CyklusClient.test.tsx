@@ -608,38 +608,37 @@ describe('CyklusClient', () => {
     document.removeEventListener('synthoma:identity-toggle', identityToggle);
   });
 
-  it('renders one route-owned mobile utility dock after the choice controls', async () => {
+  it('keeps one compact pocket control in the game header on mobile', async () => {
     mockMobileViewport(true);
     await renderFirstBootRun();
-    const utilityDock = await screen.findByRole('toolbar', { name: 'Herní utility' });
+    const header = screen.getByTestId('cyklus-command-rail');
     const choiceDock = document.querySelector('[data-cyklus-choice-dock]') as HTMLElement;
 
     expect(document.querySelector('.synthoma-mobile-nav')).not.toBeInTheDocument();
-    expect(document.querySelector('[data-cyklus-pocket-dock]')).not.toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'KAPSA, 0 předmětů' })).toHaveLength(1);
-    expect(choiceDock.compareDocumentPosition(utilityDock) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(within(utilityDock).queryByText('UZEL')).not.toBeInTheDocument();
-    expect(within(utilityDock).queryByText('ARCHIV')).not.toBeInTheDocument();
+    expect(document.querySelector('.cyklus-mobile-utility-dock')).not.toBeInTheDocument();
+    expect(within(header).getAllByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toHaveLength(1);
+    expect(header.querySelector('[data-cyklus-pocket-dock]')).toBeInTheDocument();
+    expect(choiceDock.closest('.cyklus-card')).toBeInTheDocument();
   });
 
-  it('opens one pocket dock directly below the stat dock', async () => {
+  it('opens one accessible pocket panel from the game header', async () => {
     await renderFirstBootRun();
-    const trigger = screen.getByRole('button', { name: 'KAPSA, 0 předmětů' });
-    const statDock = document.querySelector('.cyklus-stat-dock') as HTMLElement;
+    const header = screen.getByTestId('cyklus-command-rail');
+    const trigger = within(header).getByRole('button', { name: 'Otevřít kapsu, 0 předmětů' });
     const pocketDock = document.querySelector('[data-cyklus-pocket-dock]') as HTMLElement;
-    const cardStage = document.querySelector('.cyklus-stage') as HTMLElement;
 
     expect(trigger.querySelector('svg')).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'KAPSA, 0 předmětů' })).toHaveLength(1);
+    expect(screen.getAllByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toHaveLength(1);
+    expect(trigger).toHaveAttribute('title', 'Otevřít kapsu');
     expect(trigger).toHaveAttribute('aria-controls', 'cyklus-pocket-panel');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(statDock.compareDocumentPosition(pocketDock) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(pocketDock.compareDocumentPosition(cardStage) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(header).toContainElement(pocketDock);
     fireEvent.click(trigger);
 
     expect(screen.getByText('Kapsa je prázdná. Nic tu nečeká.')).toBeVisible();
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getAllByRole('button', { name: 'KAPSA, 0 předmětů' })).toHaveLength(1);
+    expect(trigger).toHaveAccessibleName('Zavřít kapsu, 0 předmětů');
+    expect(trigger).toHaveAttribute('title', 'Zavřít kapsu');
   });
 });
 
@@ -743,7 +742,7 @@ describe('Cyklus choice feedback', () => {
     expect(card).toContainElement(overlay as HTMLElement);
     expect(card).toHaveAttribute('data-gameplay-surface', 'fixed');
     expect(card.querySelector('[data-card-scroll-region]')).toBeInTheDocument();
-    expect(document.querySelector('[data-cyklus-choice-dock] [data-card-actions]')).toBeInTheDocument();
+    expect(document.querySelector('[data-cyklus-choice-dock][data-card-actions]')).toBeInTheDocument();
     const surface = within(dialog).getByText(/Systém se rozběhl/).closest('[data-card-overlay-surface="fill-card"]') as HTMLElement;
     const scrollContent = surface.querySelector('.cyklus-card-overlay__content') as HTMLElement;
     const footer = surface.querySelector('.cyklus-card-overlay__footer') as HTMLElement;

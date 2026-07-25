@@ -1,6 +1,8 @@
 /** @jest-environment node */
 
 import { renderToStaticMarkup } from 'react-dom/server';
+import fs from 'node:fs';
+import path from 'node:path';
 import SynthomaHome from '../SynthomaHome';
 import { LangProvider } from '../../../lib/LangContext';
 
@@ -42,5 +44,14 @@ describe('Synthoma Home server HTML', () => {
     expect(html).toContain('UNDERSTAND THE WORLD');
     expect(html).toContain('without registration');
     expect(html).toContain('href="/chapter/0-inf-restart?locale=en"');
+  });
+
+  it('styles the Czech motto as a theme-aware visual anchor', () => {
+    const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/home.css'), 'utf8');
+
+    expect(css).toMatch(/\.home-light-quote__text\s*\{[^}]*font-family:\s*var\(--os-font-heading\);[^}]*font-size:\s*2\.5rem;/);
+    expect(css).toContain('var(--text-accent-primary)');
+    expect(css).toContain('var(--text-accent-secondary)');
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.home-light-quote__text::after\s*\{[^}]*animation:\s*none;/);
   });
 });

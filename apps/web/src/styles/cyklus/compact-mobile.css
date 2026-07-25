@@ -53,7 +53,7 @@
   }
 
   .cyklus-page > .cyklus-root--playing {
-    grid-template-rows: 44px 44px minmax(0, 1fr) 58px calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+    grid-template-rows: 44px 44px minmax(0, 1fr);
     height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
     min-height: 0;
     padding: env(safe-area-inset-top) 0 0;
@@ -73,15 +73,6 @@
     grid-row: 3;
     min-height: 0;
     padding: 4px 6px;
-  }
-
-  .cyklus-root--playing > .cyklus-mobile-utility-dock {
-    grid-row: 5;
-  }
-
-  .cyklus-root--playing > .cyklus-choice-dock {
-    grid-row: 4;
-    height: 58px;
   }
 
   .cyklus-stat-dock {
@@ -203,55 +194,48 @@
     -webkit-touch-callout: none;
   }
 
-  .cyklus-choice-dock .cyklus-card__preview {
+  .cyklus-card__preview {
     position: relative;
     z-index: 3;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    height: 58px;
-    min-height: 58px;
-    max-height: 58px;
-    padding-top: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    min-height: 0;
+    padding-top: 6px;
+    background: transparent;
   }
 
   .cyklus-preview {
-    display: block;
-    height: 57px;
-    min-height: 57px;
-    max-height: 57px;
-    padding: 0;
+    display: grid;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    grid-template-rows: auto auto auto;
+    gap: 3px;
+    padding: 5px;
   }
 
   .cyklus-preview__hint {
-    position: absolute;
-    top: 5px;
-    right: 7px;
-    left: 7px;
-    z-index: 2;
-    display: -webkit-box;
-    overflow: hidden;
+    position: static;
+    display: block;
+    overflow: visible;
     color: var(--cy-text-dim);
-    font-size: 0.56rem;
-    line-height: 1.15;
+    font-size: 0.62rem;
+    line-height: 1.3;
     pointer-events: none;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
   }
 
   .cyklus-preview__risk {
-    display: none;
+    display: block;
   }
 
   .cyklus-preview .cyklus-btn {
     display: grid;
     width: 100%;
-    height: 57px;
-    min-height: 57px;
-    padding: 17px 7px 4px;
+    height: auto;
+    min-height: 44px;
+    padding: 7px 9px;
     place-items: center;
-    border-top: 0;
-    border-bottom: 0;
-    border-radius: 0;
+    border-radius: var(--cy-radius-sm);
   }
 
   .cyklus-preview--left .cyklus-btn {
@@ -265,12 +249,10 @@
   }
 
   .cyklus-btn__label {
-    display: -webkit-box;
-    overflow: hidden;
-    font-size: 0.63rem;
-    line-height: 1.15;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    display: block;
+    overflow: visible;
+    font-size: 0.68rem;
+    line-height: 1.25;
   }
 
   .cyklus-card--swipe-yes::after,
@@ -355,11 +337,15 @@
 
 @media (max-width: 767px) and (max-height: 600px) and (orientation: landscape) {
   .cyklus-page > .cyklus-root--playing {
-    grid-template-rows: 44px 44px minmax(0, 1fr) calc(var(--cy-bottom-height) + env(safe-area-inset-bottom));
+    grid-template-rows: 44px 44px minmax(0, 1fr);
   }
 
   .cyklus-card {
     padding: 6px 10px;
+  }
+
+  .cyklus-card__preview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cyklus-card.cyklus-card--poster {

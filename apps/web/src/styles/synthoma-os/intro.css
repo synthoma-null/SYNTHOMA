@@ -72,7 +72,6 @@
 .synthoma-intro__actions button { padding-inline: var(--os-space-4); }
 .synthoma-intro__enter { border-color: var(--os-accent-primary); }
 .synthoma-intro__skip { margin-right: auto; color: var(--os-text-muted); }
-.synthoma-intro__replay { color: var(--text-memory); }
 
 @media (max-width: 480px) {
   .synthoma-intro__terminal { width: 100%; height: 100dvh; padding: calc(var(--os-space-4) + env(safe-area-inset-top)) var(--os-space-4) calc(var(--os-space-4) + env(safe-area-inset-bottom)); }

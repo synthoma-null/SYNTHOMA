@@ -20,6 +20,7 @@ export interface CyklusPocketDockProps {
   state: CyklusRunState;
   open: boolean;
   highlighted: boolean | undefined;
+  placement?: 'standalone' | 'header';
   confirmActivateId: string | null;
   onToggle: () => void;
   onClose: () => void;
@@ -82,6 +83,7 @@ export default function CyklusPocketDock({
   state,
   open,
   highlighted,
+  placement = 'standalone',
   confirmActivateId,
   onToggle,
   onClose,
@@ -89,6 +91,7 @@ export default function CyklusPocketDock({
   onActivate,
 }: CyklusPocketDockProps) {
   const panelId = 'cyklus-pocket-panel';
+  const actionLabel = open ? 'Zavřít kapsu' : 'Otevřít kapsu';
   const mood = state.inventory.length > 0 ? getPrimaryMoodItem(state)?.mood ?? 'quiet' : null;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -112,8 +115,9 @@ export default function CyklusPocketDock({
   }, [handleEscape, open]);
 
   return (
-    <section
-      className={`cyklus-pocket cyklus-pocket--standalone${highlighted ? ' cyklus-pocket--highlight' : ''}${mood ? ` cyklus-pocket--mood-${mood}` : ''}`}
+    <div
+      className={`cyklus-pocket cyklus-pocket--${placement}${highlighted ? ' cyklus-pocket--highlight' : ''}${mood ? ` cyklus-pocket--mood-${mood}` : ''}`}
+      role="group"
       aria-label="Kapsa"
       data-cyklus-pocket-dock
     >
@@ -124,13 +128,22 @@ export default function CyklusPocketDock({
         onClick={onToggle}
         aria-controls={panelId}
         aria-expanded={open}
-        aria-label={`KAPSA, ${state.inventory.length} předmětů`}
+        aria-label={`${actionLabel}, ${state.inventory.length} předmětů`}
+        title={actionLabel}
       >
         <span className="cyklus-pocket-trigger__icon"><PocketIcon /></span>
         <span className="cyklus-pocket-trigger__label cyklus-footer__label">KAPSA</span>
         <span className="cyklus-pocket-trigger__count cyklus-pocket__count">{state.inventory.length}</span>
       </button>
-      <div ref={panelRef} id={panelId} className="cyklus-pocket__panel cyklus-no-select" hidden={!open} tabIndex={-1}>
+      <div
+        ref={panelRef}
+        id={panelId}
+        className="cyklus-pocket__panel cyklus-no-select"
+        hidden={!open}
+        role="region"
+        aria-label={`Obsah kapsy, ${state.inventory.length} předmětů`}
+        tabIndex={-1}
+      >
         <CyklusPocketContents
           state={state}
           confirmActivateId={confirmActivateId}
@@ -138,6 +151,6 @@ export default function CyklusPocketDock({
           onActivate={onActivate}
         />
       </div>
-    </section>
+    </div>
   );
 }

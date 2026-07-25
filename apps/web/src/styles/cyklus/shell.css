@@ -114,6 +114,10 @@
   stroke-linejoin: round;
 }
 
+.cyklus-game-header:has(.cyklus-pocket--header .cyklus-pocket__toggle[aria-expanded='true']) {
+  z-index: var(--cy-z-sheet);
+}
+
 .cyklus-loading {
   min-height: 100dvh;
   background: var(--cy-bg);
@@ -426,7 +430,7 @@
   letter-spacing: 0.12em;
 }
 
-.cyklus-pocket__toggle[aria-pressed='true'] {
+.cyklus-pocket__toggle[aria-expanded='true'] {
   border-color: var(--cy-accent-primary);
   background: var(--cy-button-active);
   box-shadow: inset 0 -2px 0 var(--cy-accent-primary);
@@ -450,6 +454,56 @@
   min-width: 0;
   width: 100%;
   margin: 0;
+}
+
+.cyklus-pocket--header {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.cyklus-pocket--header .cyklus-pocket__toggle {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  grid-template-columns: 1fr;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.cyklus-pocket--header .cyklus-pocket-trigger__label {
+  display: none;
+}
+
+.cyklus-pocket--header .cyklus-pocket-trigger__count {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  pointer-events: none;
+}
+
+.cyklus-pocket--header .cyklus-pocket__panel {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 45px);
+  right: max(8px, env(safe-area-inset-right));
+  left: auto;
+  width: min(360px, calc(100vw - 16px));
+  max-height: min(62dvh, 420px);
+  border: 1px solid var(--cy-line-strong);
+  background: var(--cy-panel-solid);
+  box-shadow: var(--cy-shadow);
+}
+
+.cyklus-pocket--header .cyklus-pocket__empty {
+  color: var(--cy-text-soft);
+  font-size: 0.75rem;
+  font-style: normal;
 }
 
 .cyklus-bottom-nav {
@@ -547,7 +601,7 @@
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-    grid-template-rows: 44px auto auto minmax(0, 1fr) auto;
+    grid-template-rows: 44px auto minmax(0, 1fr);
     gap: var(--cy-space-4);
     align-items: start;
     padding-inline: clamp(1rem, 3vw, 2.5rem);
@@ -563,24 +617,14 @@
     grid-row: 2;
   }
 
-  .cyklus-root--playing > .cyklus-pocket--standalone {
-    grid-column: 1 / -1;
-    grid-row: 3;
-  }
-
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
     grid-column: 1;
-    grid-row: 4;
-  }
-
-  .cyklus-root--playing > .cyklus-choice-dock {
-    grid-column: 1;
-    grid-row: 5;
+    grid-row: 3;
   }
 
   .cyklus-desktop-top__right {
     grid-column: 2;
-    grid-row: 4 / span 2;
+    grid-row: 3;
   }
 
   .cyklus-root--ended > .cyklus-stage {
@@ -596,15 +640,13 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
-    grid-template-rows: 44px auto auto minmax(0, 1fr) auto;
+    grid-template-rows: 44px auto minmax(0, 1fr);
     max-width: 1024px;
     padding-inline: var(--cy-space-4);
   }
 
   .cyklus-root--playing > .cyklus-stat-dock { grid-row: 2; }
-  .cyklus-root--playing > .cyklus-pocket--standalone { grid-row: 3; }
-  .cyklus-root--playing > .cyklus-stage { grid-row: 4; }
-  .cyklus-root--playing > .cyklus-choice-dock { grid-row: 5; }
+  .cyklus-root--playing > .cyklus-stage { grid-row: 3; }
   .cyklus-root--ended > .cyklus-stage { grid-row: 2 / -1; }
 
   .cyklus-desktop-top__right {
@@ -612,7 +654,6 @@
   }
 
   .cyklus-card,
-  .cyklus-choice-dock,
   .cyklus-end {
     max-width: 100%;
   }
@@ -626,7 +667,7 @@
 
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
-    grid-template-rows: 44px auto minmax(0, 1fr) auto auto;
+    grid-template-rows: 44px auto minmax(0, 1fr);
     width: 100%;
     height: 100%;
     min-height: 0;
@@ -642,14 +683,6 @@
     grid-row: 3;
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-mobile-utility-dock {
-    grid-row: 5;
-  }
-
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-choice-dock {
-    grid-row: 4;
-  }
-
   .cyklus-desktop-top__right {
     display: none;
   }
@@ -661,8 +694,8 @@
 
   .cyklus-game-header__brand { font-size: 0.68rem; }
   .cyklus-game-header__status { font-size: var(--cy-font-micro); }
-  .cyklus-game-header__commands { grid-auto-columns: 40px; }
-  .cyklus-game-header__commands .os-command { width: 40px; height: 40px; }
+  .cyklus-game-header__commands { grid-auto-columns: 44px; }
+  .cyklus-game-header__commands .os-command { width: 44px; height: 44px; }
   .cyklus-game-status__sector,
   .cyklus-game-status > span[aria-hidden='true'] { display: none; }
 

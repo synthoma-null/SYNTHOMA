@@ -249,18 +249,6 @@
   .cyklus-root--playing > .cyklus-stat-dock .cyklus-stat-chip__status {
     display: none;
   }
-
-  .cyklus-root--playing > .cyklus-pocket--standalone {
-    height: 38px;
-    min-height: 38px;
-    padding-top: 0;
-    overflow: visible;
-  }
-
-  .cyklus-root--playing > .cyklus-pocket--standalone > .cyklus-pocket__toggle {
-    height: 38px;
-    min-height: 38px;
-  }
 }
 
 @media (min-width: 600px) {

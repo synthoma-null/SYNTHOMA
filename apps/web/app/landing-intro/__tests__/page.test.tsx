@@ -66,6 +66,7 @@ describe('LandingIntroPage', () => {
     expect(screen.getByText('Bezpečí se nepodařilo načíst.')).toBeInTheDocument();
     expect(screen.getByText('Používán převážně v propagačních materiálech.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'SPUSTIT ZNOVU' })).not.toBeInTheDocument();
     expect(replace).not.toHaveBeenCalled();
   });
 

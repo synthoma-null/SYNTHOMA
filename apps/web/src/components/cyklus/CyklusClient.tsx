@@ -15,7 +15,6 @@ import StatDock from './StatDock';
 import { CyklusVoidHub } from './CyklusVoidHub';
 import CyklusVoidHubClient from './CyklusVoidHubClient';
 import CyklusPocketDock from './CyklusPocketDock';
-import CyklusMobileUtilityDock from './CyklusMobileUtilityDock';
 import CyklusCommandRail from './CyklusCommandRail';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
@@ -869,7 +868,21 @@ export default function CyklusClient() {
       outcomeVisible ? 'cyklus-root--outcome-visible' : '',
       posterViewerOpen ? 'cyklus-root--poster-active' : '',
     ].filter(Boolean).join(' ')}>
-      <CyklusCommandRail />
+      <CyklusCommandRail
+        pocketControl={!ending ? (
+          <CyklusPocketDock
+            state={state}
+            open={showPocket}
+            highlighted={tutorialHighlight?.pocket}
+            placement="header"
+            confirmActivateId={confirmActivateId}
+            onToggle={() => setShowPocket((value) => !value)}
+            onClose={() => setShowPocket(false)}
+            onConfirmActivate={setConfirmActivateId}
+            onActivate={handleActivateItem}
+          />
+        ) : undefined}
+      />
       {showSkipConfirm && (
         <div className="cyklus-no-select cyklus-overlay cyklus-overlay--warning">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu" />
@@ -914,18 +927,6 @@ export default function CyklusClient() {
               </div>
             );
           })() : undefined}
-        />
-      )}
-      {!ending && !mobileGameplayLayout && (
-        <CyklusPocketDock
-          state={state}
-          open={showPocket}
-          highlighted={tutorialHighlight?.pocket}
-          confirmActivateId={confirmActivateId}
-          onToggle={() => setShowPocket((value) => !value)}
-          onClose={() => setShowPocket(false)}
-          onConfirmActivate={setConfirmActivateId}
-          onActivate={handleActivateItem}
         />
       )}
       <main className="cyklus-stage">
@@ -1153,6 +1154,19 @@ export default function CyklusClient() {
               {card.category === 'restart' && (
                 <div className="cyklus-card__restart-badge">[RESTART]</div>
               )}
+              <div
+                data-card-actions
+                data-cyklus-choice-dock
+                className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}
+              >
+                {getCardChoiceOrder(card).map((choice, index) => {
+                  const side: PhysicalCardSide = index === 0 ? 'left' : 'right';
+                  const outcome = card[choice];
+                  const label = choice === 'yes' ? card.yesLabel : card.noLabel;
+                  const fly = side === 'right' ? 'yes' : 'no';
+                  return directionPreview(state, card, outcome.preview, choice, side, shouldLimitPreview(card), label, () => handleChoice(choice, fly), outcomeVisible, side);
+                })}
+              </div>
               {outcomeVisible && state.lastOutcomeText && (
                 <OutcomePanel state={state} onDismiss={dismissOutcome} />
               )}
@@ -1176,40 +1190,6 @@ export default function CyklusClient() {
           <div className="cyklus-empty">Karta nenalezena.</div>
         )}
       </main>
-
-      {!ending && card && !showCardPoster && (
-        <div
-          className="cyklus-choice-dock"
-          data-cyklus-choice-dock
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerCancel}
-          onClickCapture={onCardClickCapture}
-        >
-          <div data-card-actions className={`cyklus-card__preview ${tutorialHighlight?.actions ? 'cyklus-card__preview--highlight' : ''}`}>
-            {getCardChoiceOrder(card).map((choice, index) => {
-              const side: PhysicalCardSide = index === 0 ? 'left' : 'right';
-              const outcome = card[choice];
-              const label = choice === 'yes' ? card.yesLabel : card.noLabel;
-              const fly = side === 'right' ? 'yes' : 'no';
-              return directionPreview(state, card, outcome.preview, choice, side, shouldLimitPreview(card), label, () => handleChoice(choice, fly), outcomeVisible, side);
-            })}
-          </div>
-        </div>
-      )}
-
-      {!ending && mobileGameplayLayout && (
-        <CyklusMobileUtilityDock
-          state={state}
-          open={showPocket}
-          confirmActivateId={confirmActivateId}
-          onToggle={() => setShowPocket((value) => !value)}
-          onClose={() => setShowPocket(false)}
-          onConfirmActivate={setConfirmActivateId}
-          onActivate={handleActivateItem}
-        />
-      )}
 
       {!ending && (
         <div className="cyklus-desktop-top__right">
