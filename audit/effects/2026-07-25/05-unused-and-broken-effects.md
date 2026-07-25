@@ -1,0 +1,394 @@
+# Unused & Broken Effects
+
+## Used but not defined in CSS (likely typos / generated at runtime)
+
+- `.([^` — 1× in src\content\__tests__\speakerDialogMigration.test.ts
+- `.[^` — 1× in src\content\__tests__\konecPodpory.test.ts
+- `.admin-detail` — 1× in app\components\admin\AdminDashboard.tsx
+- `.archive-memory-section` — 1× in src\components\archive\SynthomaArchive.tsx
+- `.author-reader` — 1× in app\autor\AutorClient.tsx
+- `.author-reader__command-bar` — 1× in app\autor\AutorClient.tsx
+- `.chapter-access-gate` — 2× in app\chapter\[id]\ChapterAccessGate.tsx, app\chapter\[id]\page.tsx
+- `.chapter-reader__back` — 1× in app\chapter\[id]\ChapterReaderArticle.tsx
+- `.content` — 1× in src\lib\readerSegmentRenderer.ts
+- `.cyklus-behavioral__list` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-build` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-choice-dock` — 1× in src\components\cyklus\__tests__\CyklusGameplayGeometry.test.tsx
+- `.cyklus-death-analysis__contributors` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-discovery__label` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-discovery__value` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-game-shell` — 3× in app\cyklus\page.test.tsx, app\cyklus\page.tsx, app\publicDiscovery.test.ts
+- `.cyklus-game-status__cycle` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-game-status__progress` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-menu__content--brand-safe` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-reward__active-scar-label` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-stabilization__label` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.enemy-card__armor-label` — 1× in src\components\game\run\EnemyCard.tsx
+- `.h-6` — 1× in app\reader\ReaderContent.tsx
+- `.home-sector-link--author` — 1× in src\components\home\HomeSectorLinks.tsx
+- `.kp-chapter--00` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html
+- `.kp-chapter--01` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html
+- `.kp-chapter--02` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html
+- `.kp-chapter--03` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_03_PODPORA.html
+- `.kp-chapter--04` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html
+- `.kp-chapter--05` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html
+- `.kp-chapter--06` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_06_PECE.html
+- `.kp-chapter--07` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html
+- `.kp-chapter--08` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_08_DOMOV.html
+- `.kp-chapter--09` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html
+- `.kp-chapter--10` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_10_TICHO.html
+- `.kp-chapter--11` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_11_BETA.html
+- `.kp-chapter--12` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_12_TOVA.html
+- `.kp-chapter--13` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html
+- `.kp-chapter--14` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html
+- `.kp-chapter--15` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html
+- `.kp-chapter--16` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html
+- `.kp-chapter--17` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html
+- `.kp-chapter--18` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html
+- `.kp-chapter--comfort` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html
+- `.kp-chapter--detour` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html
+- `.kp-chapter--home` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_08_DOMOV.html
+- `.kp-chapter--support` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_03_PODPORA.html
+- `.kp-supported` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html
+- `.legal-table` — 2× in app\privacy\PrivacyClient.tsx
+- `.legal-table-wrap` — 2× in app\privacy\PrivacyClient.tsx
+- `.library-cover-dialog` — 1× in src\components\library\LibraryCoverDialog.tsx
+- `.lobby-header` — 1× in src\components\game\RoomLobby.tsx
+- `.lobby-player-slot` — 1× in src\components\game\RoomLobby.tsx
+- `.mnem-package-btn` — 1× in src\components\profile\MnemAccessPanel.tsx
+- `.mnem-redeem-btn` — 1× in src\components\profile\MnemAccessPanel.tsx
+- `.not-prose` — 1× in src\components\TypewriterReader.tsx
+- `.os-command--primary` — 4× in app\install\InstallClient.tsx, app\offline\OfflineClient.tsx, src\components\pwa\PwaProvider.tsx
+- `.os-command__label` — 2× in src\components\library\LibraryCollectionHeader.tsx, src\components\library\LibraryResume.tsx
+- `.os-status__reference` — 1× in app\chapter\[id]\ChapterAccessGate.tsx
+- `.privacy-export-btn` — 1× in src\components\profile\PrivacyPanel.tsx
+- `.profile-decisions` — 1× in src\components\profile\DecisionTimeline.tsx
+- `.profile-mnem-history` — 1× in src\components\profile\MnemHistoryPanel.tsx
+- `.profile-overview` — 1× in src\components\profile\ProfileDashboard.tsx
+- `.progression-crafts-card` — 1× in src\components\cyklus\CyklusProgressionDashboard.tsx
+- `.progression-rooms-card` — 1× in src\components\cyklus\CyklusProgressionDashboard.tsx
+- `.pwa-offline` — 1× in app\offline\OfflineClient.tsx
+- `.reader-header-status` — 1× in app\reader\ReaderContent.tsx
+- `.reader-next-action` — 1× in src\components\reader\NextChapterAction.tsx
+- `.run-end-report__profile` — 1× in src\components\game\run\RunEndReport.tsx
+- `.run-end-report__relics` — 1× in src\components\game\run\RunEndReport.tsx
+- `.settings-error` — 2× in src\components\profile\PrivacyPanel.tsx, src\components\profile\SettingsPanel.tsx
+- `.settings-grid` — 1× in src\components\profile\SettingsPanel.tsx
+- `.settings-label` — 4× in src\components\profile\SettingsPanel.tsx
+- `.settings-panel` — 1× in src\components\profile\SettingsPanel.tsx
+- `.settings-row` — 4× in src\components\profile\SettingsPanel.tsx
+- `.settings-save` — 2× in src\components\profile\PrivacyPanel.tsx, src\components\profile\SettingsPanel.tsx
+- `.settings-select` — 2× in src\components\profile\SettingsPanel.tsx
+- `.settings-toggle` — 1× in src\components\profile\SettingsPanel.tsx
+- `.subtitle` — 8× in app\privacy\PrivacyClient.tsx
+- `.synthoma-home__background` — 1× in src\components\home\HomeBackground.tsx
+- `.synthoma-library__collection-detail` — 1× in src\components\library\SynthomaLibrary.tsx
+- `.tiny-action` — 1× in src\lib\__tests__\typographyReadability.test.ts
+- `.tiny-copy` — 1× in src\lib\__tests__\typographyReadability.test.ts
+- `.top-anchor` — 1× in app\archive\ArchiveClient.tsx
+- `.w-6` — 1× in app\reader\ReaderContent.tsx
+
+## Defined but unused
+
+- `.action-bar__btn` — in src\styles\game.css
+- `.action-bar__btn--attack` — in src\styles\game.css
+- `.action-bar__btn--dash` — in src\styles\game.css
+- `.action-bar__btn--defend` — in src\styles\game.css
+- `.action-bar__btn--hack` — in src\styles\game.css
+- `.action-bar__btn--hint-strong` — in src\styles\game.css
+- `.action-bar__btn--hint-weak` — in src\styles\game.css
+- `.action-bar__btn--sarcasm` — in src\styles\game.css
+- `.action-bar__card` — in src\styles\game.css
+- `.action-bar__card--attack` — in src\styles\game.css
+- `.action-bar__card--defense` — in src\styles\game.css
+- `.action-bar__card--hack` — in src\styles\game.css
+- `.action-bar__card--movement` — in src\styles\game.css
+- `.action-bar__card--sabotage` — in src\styles\game.css
+- `.action-bar__card--void` — in src\styles\game.css
+- `.admin-badge--admin` — in src\styles\components.css
+- `.admin-badge--user` — in src\styles\components.css
+- `.admin-btn--active` — in src\styles\components.css
+- `.admin-grid` — in src\styles\components.css
+- `.admin-neg` — in src\styles\components.css
+- `.admin-overview-value--warn` — in src\styles\components.css
+- `.admin-panel--overview` — in src\styles\components.css
+- `.admin-pos` — in src\styles\components.css
+- `.admin-result--ok` — in src\styles\components.css
+- `.admin-tab-btn` — in src\styles\components.css
+- `.admin-tab-btn--active` — in src\styles\components.css
+- `.admin-table-row--active` — in src\styles\components.css
+- `.admin-warning` — in src\styles\components.css
+- `.allow-alarm` — in src\styles\reader.css
+- `.animations-off` — in src\styles\components.css
+- `.appear` — in src\styles\components.css, src\styles\reader.css
+- `.archive-card` — in src\styles\components.css
+- `.archive-page` — in src\styles\components.css
+- `.archive-public-card` — in src\styles\library-archive.css
+- `.archive-public-card--locked` — in src\styles\library-archive.css
+- `.archive-record-card` — in src\styles\library-archive.css
+- `.archive-record-card--interactive` — in src\styles\library-archive.css
+- `.archive-record-card--locked` — in src\styles\library-archive.css
+- `.archive-record-card--teaser` — in src\styles\library-archive.css
+- `.archive-record-card__badge` — in src\styles\library-archive.css
+- `.archive-record-card__badge--locked` — in src\styles\library-archive.css
+- `.archive-record-card__body` — in src\styles\library-archive.css
+- `.archive-record-card__quote` — in src\styles\library-archive.css
+- `.archive-record-card__tag` — in src\styles\library-archive.css
+- `.archive-record-card__tags` — in src\styles\library-archive.css
+- `.audio-buttons` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.audioBadge` — in app\reader\ReaderContent.module.css
+- `.autor-fallback` — in app\autor\autor.module.css
+- `.autor-panel` — in src\styles\reader.css
+- `.back-top` — in src\styles\components.css
+- `.badge` — in src\styles\components.css
+- `.badge-accent` — in src\styles\components.css
+- `.badge-grid` — in src\styles\components.css
+- `.badge-item` — in src\styles\components.css
+- `.badge-item--earned` — in src\styles\components.css
+- `.badge-item--locked` — in src\styles\components.css
+- `.badge-item-icon` — in src\styles\components.css
+- `.badge-space` — in src\styles\components.css
+- `.badgeSpace` — in app\books\books.module.css
+- `.bg-lines` — in public\styles.css
+- `.bg-overlay` — in src\styles\components.css
+- `.bg-video` — in src\styles\components.css
+- `.bgHost` — in app\reader\ReaderContent.module.css
+- `.blink` — in public\synth-gate.css, src\styles\synth-gate.css
+- `.book-link` — in src\styles\reader.css
+- `.bookCard` — in app\books\books.module.css
+- `.btn-ghost` — in src\styles\components.css
+- `.btn-neon` — in public\styles.css
+- `.btn-secondary` — in src\styles\components.css
+- `.btn-start` — in src\styles\game.css
+- `.btn-start--disabled` — in src\styles\game.css
+- `.cant-afford` — in src\styles\components.css
+- `.card-actions` — in src\styles\components.css
+- `.card-close` — in src\styles\components.css
+- `.card-toggle` — in src\styles\components.css
+- `.cardBody` — in app\books\books.module.css
+- `.cardButton` — in app\books\books.module.css
+- `.chapter-background__video` — in src\styles\motion-contract.css, src\styles\reader.css
+- `.chapter-bg-audio` — in src\styles\reader.css
+- `.chapter-bg-video` — in src\styles\reader.css
+- `.chapter-container` — in src\styles\reader.css
+- `.chapter-item` — in src\styles\reader.css
+- `.chapter-link` — in src\styles\reader.css
+- `.chapter-loaded` — in src\styles\reader.css
+- `.chapter-media` — in src\styles\reader.css
+- `.chapter-reader--focus` — in src\styles\reader.css
+- `.chapter-title` — in src\styles\reader.css
+- `.chapterNav` — in app\reader\ReaderContent.module.css
+- `.chapterNavArrow` — in app\reader\ReaderContent.module.css
+- `.chapterNavBtn` — in app\reader\ReaderContent.module.css
+- `.chapterNavBtnNext` — in app\reader\ReaderContent.module.css
+- `.chapterNavLabel` — in app\reader\ReaderContent.module.css
+- `.chip` — in src\styles\components.css
+- `.chip-accent` — in src\styles\components.css
+- `.chip-muted` — in src\styles\components.css
+- `.chip-sm` — in src\styles\components.css
+- `.choice-appear` — in src\styles\components.css
+- `.choice-box` — in src\styles\components.css, src\styles\reader.css
+- `.choice-empty` — in src\styles\components.css
+- `.choice-group` — in src\styles\components.css
+- `.choices` — in src\styles\components.css
+- `.choices-locked` — in src\styles\base.css, src\styles\components-choice.css
+- `.chosen` — in src\styles\base.css, src\styles\components-choice.css
+- `.cinematic-title` — in src\styles\reader.css
+- `.continue-btn` — in src\styles\components.css
+- `.continue-hint` — in src\styles\components.css
+- `.controls-grid` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.coverHero` — in app\books\books.module.css
+- `.coverImg` — in app\books\books.module.css
+- `.coverThumb` — in app\books\books.module.css
+- `.cp-btn-col` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.cp-close` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.cp-header` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.cp-heading` — in src\styles\control-panel-os.css
+- `.cp-kicker` — in src\styles\control-panel-os.css
+- `.cp-row--full` — in src\styles\components.css
+- `.cp-row--half` — in src\styles\components.css
+- `.cp-section` — in src\styles\control-panel-os.css
+- `.cp-section-header` — in src\styles\control-panel-os.css
+- `.cp-status` — in src\styles\control-panel-os.css
+- `.cp-title` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.craft-recipe-row` — in src\styles\cyklus\legacy.css, src\styles\cyklus\overlays.css
+- `.crt` — in src\styles\base.css, src\styles\components.css
+- `.css` — in app\reader\ReaderContent.module.css, public\synth-gate.css
+- `.ctaRow` — in app\books\books.module.css
+- `.cy-corner-frame` — in src\styles\cyklus\foundation.css
+- `.cy-data-row` — in src\styles\cyklus\foundation.css
+- `.cy-frame` — in src\styles\cyklus\foundation.css
+- `.cy-frame--cyan` — in src\styles\cyklus\foundation.css
+- `.cy-frame--magenta` — in src\styles\cyklus\foundation.css
+- `.cy-frame--yellow` — in src\styles\cyklus\foundation.css
+- `.cy-kicker` — in src\styles\cyklus\foundation.css
+- `.cy-scroll-region` — in src\styles\cyklus\foundation.css
+- `.cy-status-dot` — in src\styles\cyklus\foundation.css
+- `.cy-system-label` — in src\styles\cyklus\foundation.css
+- `.cy-terminal-button` — in src\styles\cyklus\foundation.css
+- `.cy-terminal-button--danger` — in src\styles\cyklus\foundation.css
+- `.cy-terminal-button--ghost` — in src\styles\cyklus\foundation.css
+- `.cy-terminal-button--primary` — in src\styles\cyklus\foundation.css
+- `.cyklus-active-objective--mobile-compact` — in src\styles\cyklus\hud.css
+- `.cyklus-active-objective--mobile-expanded` — in src\styles\cyklus\hud.css
+- `.cyklus-active-objective__details` — in src\styles\cyklus\hud.css
+- `.cyklus-active-objective__summary` — in src\styles\cyklus\hud.css, src\styles\cyklus\interactions.css
+- `.cyklus-behavioral__text` — in src\styles\cyklus\end-report.css
+- `.cyklus-bottom-nav` — in src\styles\cyklus\compact-mobile.css, src\styles\cyklus\hud.css
+- `.cyklus-bottom-nav--dimmed` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-bottom-nav__badge` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-bottom-nav__btn` — in src\styles\cyklus\compact-mobile.css, src\styles\cyklus\hud.css
+- `.cyklus-btn--no` — in src\styles\cyklus\legacy.css
+- `.cyklus-btn--yes` — in src\styles\cyklus\legacy.css, src\styles\cyklus\overlays.css
+- `.cyklus-btn__hint` — in src\styles\cyklus\legacy.css
+- `.cyklus-build__hint` — in src\styles\cyklus\legacy.css
+- `.cyklus-build__req` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-build__req--met` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-build__variant--close` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-card` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\card.css
+- `.cyklus-card--category-bond` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-control` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-crisis` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-energy` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-entity` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-followup` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-imprint` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-item_trigger` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-memory` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-object` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-path` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-restart` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-silent` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-system` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-trap` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-tutorial` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--category-unlock` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--fly-no` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--fly-yes` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card--outcome` — in src\styles\cyklus\legacy.css
+- `.cyklus-card--poster` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-card--swipe-no` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-card--swipe-yes` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-card-art` — in src\styles\cyklus\card.css
+- `.cyklus-card-art--fullscreen` — in src\styles\cyklus\card.css
+- `.cyklus-card-overlay` — in src\styles\cyklus\card-overlay.css
+- `.cyklus-card-overlay--outcome` — in src\styles\cyklus\card-overlay.css
+- `.cyklus-card-overlay--summary` — in src\styles\cyklus\card-overlay.css
+- `.cyklus-card-overlay--warning` — in src\styles\cyklus\card-overlay.css
+- `.cyklus-card-overlay__panel` — in src\styles\cyklus\card-overlay.css
+- `.cyklus-card-overlay__surface` — in src\styles\cyklus\card-overlay.css
+- `.cyklus-card-scene` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\card.css
+- `.cyklus-card__preview` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\card.css
+- `.cyklus-card__preview--highlight` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-card__rarity` — in src\styles\cyklus\legacy.css
+- `.cyklus-card__scene` — in src\styles\cyklus\legacy.css
+- `.cyklus-chapter` — in src\styles\cyklus\legacy.css
+- `.cyklus-chapter__number` — in src\styles\cyklus\legacy.css
+- `.cyklus-chapter__subtitle` — in src\styles\cyklus\legacy.css
+- `.cyklus-chapter__title` — in src\styles\cyklus\legacy.css
+- `.cyklus-collection-card` — in src\styles\library-archive.css
+- `.cyklus-collection-card--discovered` — in src\styles\library-archive.css
+- `.cyklus-collection-card--unknown` — in src\styles\library-archive.css
+- `.cyklus-contract` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-contract--pending` — in src\styles\cyklus\legacy.css
+- `.cyklus-cycle-notice` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\cycle-notices.css
+- `.cyklus-cycle-notice--summary` — in src\styles\cyklus\cycle-notices.css
+- `.cyklus-death-analysis__delta` — in src\styles\cyklus\legacy.css
+- `.cyklus-death-analysis__delta--down` — in src\styles\cyklus\legacy.css
+- `.cyklus-death-analysis__delta--up` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-death-analysis__text` — in src\styles\cyklus\end-report.css
+- `.cyklus-desktop-top` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-diag-drawer__node` — in src\styles\cyklus\legacy.css
+- `.cyklus-diag-drawer__node--current` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-diag-drawer__stab-item` — in src\styles\cyklus\legacy.css
+- `.cyklus-diag-drawer__stab-item--ok` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-end-summary__delta` — in src\styles\cyklus\legacy.css, src\styles\cyklus\responsive.css
+- `.cyklus-end-summary__delta--down` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-end-summary__delta--up` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-end__near-extreme` — in src\styles\cyklus\end-report.css, src\styles\cyklus\legacy.css
+- `.cyklus-end__near-extreme--critical` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-end__stat-value` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-end__stat-value--danger` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-end__stat-value--extreme` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-end__subtitle` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-entity` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-entity--negative` — in src\styles\cyklus\legacy.css
+- `.cyklus-entity--positive` — in src\styles\cyklus\legacy.css
+- `.cyklus-goal` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-goal--completed` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-history__entry` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-history__entry--completed` — in src\styles\cyklus\legacy.css
+- `.cyklus-history__entry--dead` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-menu__button--secondary` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-menu__subtitle` — in src\styles\cyklus\legacy.css, src\styles\cyklus\menu-polish.css
+- `.cyklus-menu__subtitle--saved` — in src\styles\cyklus\menu-polish.css
+- `.cyklus-mobile-hud__risk` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-mobile-hud__risk--critical` — in src\styles\cyklus\effects.css, src\styles\cyklus\hud.css
+- `.cyklus-nav-panel__route-node` — in src\styles\cyklus\legacy.css
+- `.cyklus-nav-panel__route-node--current` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-outcome` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\feedback-header.css
+- `.cyklus-outcome__dismiss-surface` — in src\styles\cyklus\overlays.css
+- `.cyklus-outcome__reward` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-outcome__stat` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-outcome__stat--down` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-outcome__stat--up` — in src\styles\cyklus\legacy.css, src\styles\cyklus\outcome.css
+- `.cyklus-overlay--forecast` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay--sector` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay--summary` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__actions` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__continue` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__forecast-text` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__forecast-title` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__sector-label` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__sector-text` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__summary-text` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__warning-label` — in src\styles\cyklus\legacy.css
+- `.cyklus-overlay__warning-text` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--header` — in src\styles\cyklus\shell.css
+- `.cyklus-pocket--highlight` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--mood-angry` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--mood-asleep` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--mood-ready` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--mood-unstable` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--mood-warm` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--mood-watching` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket--standalone` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-pocket-panel` — in src\styles\cyklus\interactions.css, src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item` — in src\styles\cyklus\legacy.css, src\styles\cyklus\shell.css
+- `.cyklus-pocket__item--angry` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item--asleep` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item--quiet` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item--ready` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item--unstable` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item--warm` — in src\styles\cyklus\legacy.css
+- `.cyklus-pocket__item--watching` — in src\styles\cyklus\legacy.css
+- `.cyklus-poster-lock` — in src\styles\cyklus\card.css
+- `.cyklus-preview` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-preview--choice-no` — in src\styles\cyklus\card.css
+- `.cyklus-preview--choice-yes` — in src\styles\cyklus\card.css
+- `.cyklus-preview--left` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-preview--no` — in src\styles\cyklus\legacy.css
+- `.cyklus-preview--right` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-preview--yes` — in src\styles\cyklus\legacy.css
+- `.cyklus-preview__risk` — in src\styles\cyklus\card.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-preview__risk--high` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-preview__risk--low` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-preview__risk--medium` — in src\styles\cyklus\card.css, src\styles\cyklus\legacy.css
+- `.cyklus-preview__risk--unknown` — in src\styles\cyklus\legacy.css
+- `.cyklus-profile__stability` — in src\styles\cyklus\legacy.css
+- `.cyklus-root--ended` — in src\styles\cyklus\outcome.css, src\styles\cyklus\shell.css
+- `.cyklus-root--outcome-visible` — in src\styles\cyklus\card.css
+- `.cyklus-root--playing` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-root--swiping` — in src\styles\cyklus\card.css
+- `.cyklus-stabilization__item` — in src\styles\cyklus\legacy.css
+- `.cyklus-stabilization__item--ok` — in src\styles\cyklus\legacy.css
+- `.cyklus-stat-chip` — in src\styles\cyklus\card-overlay.css, src\styles\cyklus\compact-mobile.css
+- `.cyklus-stat-chip--bond` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-stat-chip--changed` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-stat-chip--control` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-stat-chip--energy` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+- `.cyklus-stat-chip--high-danger` — in src\styles\cyklus\effects.css, src\styles\cyklus\hud.css
+- `.cyklus-stat-chip--highlight` — in src\styles\cyklus\hud.css, src\styles\cyklus\legacy.css
+
+… and 799 more.

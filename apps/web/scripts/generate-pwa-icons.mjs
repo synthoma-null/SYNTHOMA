@@ -22,7 +22,7 @@ async function maskableIcon(size, destination) {
   const inset = Math.floor((size - safeSize) / 2);
   await sharp(master)
     .resize(safeSize, safeSize, { fit: 'contain' })
-    .extend({ top: inset, bottom: size - safeSize - inset, left: inset, right: size - safeSize - inset, background: '#020509' })
+    .extend({ top: inset, bottom: size - safeSize - inset, left: inset, right: size - safeSize - inset, background: '#02060b' })
     .png({ compressionLevel: 9 })
     .toFile(path.join(iconsDir, destination));
 }

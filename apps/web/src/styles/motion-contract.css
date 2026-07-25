@@ -40,3 +40,48 @@
 :root[data-scanlines="off"] .scanlines {
   display: none !important;
 }
+
+/* Mobile motion budget: drop expensive layers */
+@media (max-width: 768px) {
+  .fx-scanline::after,
+  .fx-noise::after,
+  .reader-scene::before,
+  [data-atmosphere]::before {
+    display: none !important;
+  }
+  .fx-glitch,
+  .fx-flicker,
+  .fx-rainbow {
+    animation-iteration-count: 2 !important;
+  }
+}
+
+/* Contain painted effects to their layer to avoid full-page repaints */
+.fx-glitch,
+.fx-flicker,
+.fx-rainbow,
+.fx-scanline,
+.fx-noise,
+.reader-scene {
+  contain: paint layout;
+}
+
+/* Out-of-viewport freeze: components add .in-viewport when visible */
+.is-viewport-managed.fx-glitch:not(.in-viewport),
+.is-viewport-managed.fx-flicker:not(.in-viewport),
+.is-viewport-managed.fx-rainbow:not(.in-viewport),
+.is-viewport-managed.fx-scanline:not(.in-viewport)::after {
+  animation-play-state: paused !important;
+}
+
+/* Respect reduced motion per user preference and OS */
+@media (prefers-reduced-motion: reduce) {
+  .fx-glitch,
+  .fx-flicker,
+  .fx-rainbow,
+  .fx-scanline::after,
+  .fx-noise::after,
+  .reader-scene::before {
+    animation: none !important;
+  }
+}

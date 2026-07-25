@@ -1,0 +1,236 @@
+/* =========================================================
+   effects-semantic.css
+   Významové efekty — autor přemýšlí „co se děje“, ne „jak to blikat".
+   ========================================================= */
+
+/* ---------- fx-memory-bleed ----------
+   Za textem se na okamžik objeví slabší, opožděná kopie.
+   <span class="fx-memory-bleed" data-memory="promiň">nic se nestalo</span>
+*/
+.fx-memory-bleed {
+  position: relative;
+  display: inline;
+  color: var(--text-primary);
+}
+
+.fx-memory-bleed.is-revealing {
+  animation: memoryBleedEntry 0.85s ease-out both;
+}
+
+.fx-memory-bleed::after {
+  content: attr(data-memory);
+  position: absolute;
+  left: 0; top: 0;
+  opacity: 0;
+  color: var(--fx-memory-primary);
+  filter: blur(0.4px);
+  transform: translate(0.08em, 0.04em);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.fx-memory-bleed.is-revealing::after {
+  animation: memoryBleedGhost 0.85s ease-out both;
+}
+
+@keyframes memoryBleedEntry {
+  0% { opacity: .7; color: var(--accent-secondary); }
+  40% { opacity: .85; color: var(--text-primary); }
+  100% { opacity: 1; color: var(--text-primary); }
+}
+
+@keyframes memoryBleedGhost {
+  0% { opacity: 0; transform: translate(0.2em, 0.08em); }
+  30% { opacity: .55; }
+  60% { opacity: .35; }
+  100% { opacity: .15; transform: translate(0.08em, 0.04em); }
+}
+
+/* ---------- fx-identity-split ----------
+   Text se při odhalení rozdělí na cyanovou a magentovou polovinu.
+   <span class="fx-identity-split" data-copy="NULL-1">NULL-1</span>
+*/
+.fx-identity-split {
+  position: relative;
+  display: inline;
+  color: currentColor;
+}
+
+.fx-identity-split.is-revealing {
+  animation: identitySplitEntry 0.7s steps(6, end) both;
+}
+
+.fx-identity-split::before,
+.fx-identity-split::after {
+  content: attr(data-copy);
+  position: absolute;
+  left: 0; top: 0;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.fx-identity-split::before { color: var(--fx-memory-primary); }
+.fx-identity-split::after { color: var(--fx-memory-secondary); }
+
+.fx-identity-split.is-revealing::before {
+  animation: identitySplitCyan 0.7s ease-out both;
+}
+
+.fx-identity-split.is-revealing::after {
+  animation: identitySplitMagenta 0.7s ease-out both;
+}
+
+@keyframes identitySplitEntry {
+  0% { opacity: .6; }
+  100% { opacity: 1; }
+}
+
+@keyframes identitySplitCyan {
+  0% { opacity: 0; transform: translate(-0.18em, 0); }
+  40% { opacity: .7; transform: translate(-0.08em, 0); }
+  100% { opacity: .18; transform: translate(-0.02em, 0); }
+}
+
+@keyframes identitySplitMagenta {
+  0% { opacity: 0; transform: translate(0.18em, 0); }
+  40% { opacity: .7; transform: translate(0.08em, 0); }
+  100% { opacity: .18; transform: translate(0.02em, 0); }
+}
+
+/* ---------- fx-support-expired ----------
+   Systémový cyan vybledne do šedi; poslední část ztratí glow.
+   <span class="fx-support-expired">SLUŽBA JE STÁLE DOSTUPNÁ</span>
+*/
+.fx-support-expired {
+  display: inline;
+  color: var(--fx-memory-primary);
+  text-shadow: 0 0 6px var(--glow-secondary);
+}
+
+.fx-support-expired.is-revealing {
+  animation: supportExpired 1.4s ease-in both;
+}
+
+@keyframes supportExpired {
+  0% { color: var(--accent-secondary); text-shadow: 0 0 8px var(--glow-secondary); opacity: 1; }
+  60% {
+    color: var(--fx-memory-primary);
+    opacity: .84;
+  }
+  100% { color: var(--text-muted); text-shadow: none; opacity: .72; }
+}
+
+/* ---------- fx-denied ----------
+   Text se krátce zobrazí celý, pak část zakryje systémová vrstva.
+   <span class="fx-denied" data-denied="PŘÍSTUP ODEPŘEN">Sára Neonová</span>
+*/
+.fx-denied {
+  position: relative;
+  display: inline;
+  color: var(--text-primary);
+}
+
+.fx-denied.is-revealing {
+  animation: deniedEntry 0.7s steps(4, end) both;
+}
+
+.fx-denied::after {
+  content: attr(data-denied);
+  position: absolute;
+  left: 0; top: 0;
+  opacity: 0;
+  color: var(--fx-danger);
+  background: var(--bg-primary, #050510);
+  padding: 0 0.2em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.fx-denied.is-revealing::after {
+  animation: deniedOverlay 0.7s steps(4, end) both;
+}
+
+@keyframes deniedEntry {
+  0%, 40% { opacity: 1; }
+  100% { opacity: .25; }
+}
+
+@keyframes deniedOverlay {
+  0%, 40% { opacity: 0; }
+  60% { opacity: .8; }
+  100% { opacity: 1; }
+}
+
+/* ---------- fx-observer ----------
+   Za odstavcem se na okamžik objeví tenká vertikální linka nebo bod.
+   <span class="fx-observer"></span> nebo <p data-fx-observer>
+*/
+.fx-observer {
+  position: relative;
+  display: inline;
+}
+
+.fx-observer::after {
+  content: '';
+  position: absolute;
+  left: calc(100% + 0.6em);
+  top: 0.1em;
+  width: 1px;
+  height: 1em;
+  background: var(--fx-memory-primary);
+  opacity: 0;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.fx-observer.is-revealing::after {
+  animation: observerMark 0.5s ease-out 0.3s both;
+}
+
+@keyframes observerMark {
+  0% { opacity: 0; transform: scaleY(0); }
+  40% { opacity: .8; transform: scaleY(1.1); }
+  100% { opacity: .25; transform: scaleY(1); }
+}
+
+/* ---------- fx-silence ----------
+   Po intenzivní sekvenci: vypnout glow, scanlines, šum — ponechat čistý světlý text.
+   <p class="text fx-silence">Tova se nevrátila.</p>
+*/
+.fx-silence,
+.fx-silence .fx-neon,
+.fx-silence .fx-glow-magenta,
+.fx-silence .fx-flicker,
+.fx-silence .fx-scanline,
+.fx-silence .fx-noise,
+.fx-silence .fx-glitch,
+.fx-silence .fx-rainbow {
+  animation: none !important;
+  text-shadow: none !important;
+  background: none !important;
+  -webkit-text-stroke: 0 !important;
+  color: var(--text-primary) !important;
+}
+
+.fx-silence {
+  display: block;
+  margin: 1.6em 1.2em;
+  padding: 1em;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  opacity: .92;
+  transition: opacity 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-memory-bleed.is-revealing,
+  .fx-identity-split.is-revealing,
+  .fx-support-expired.is-revealing,
+  .fx-denied.is-revealing,
+  .fx-observer.is-revealing,
+  .fx-silence.is-revealing {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,296 @@
+# Animations & Keyframes
+
+**Total @keyframes:** 273
+
+## Duplicate keyframe names
+
+- `@alarmPulse` — 2 definitions in src\styles\components.css, src\styles\reader.css
+- `@checkPop` — 2 definitions in src\styles\components.css, src\styles\reader.css
+- `@cyklus-fade-in` — 3 definitions in src\styles\cyklus\legacy.css
+- `@glitch` — 2 definitions in public\styles.css, src\styles\components.css
+- `@synthBlink` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthButtonSweep` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthGateGridDrift` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthGateRotate` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthGlitchBottom` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthGlitchTop` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthNoiseDrift` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthOrbitBreathe` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthPulse` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+- `@synthRailFlow` — 2 definitions in public\synth-gate.css, src\styles\synth-gate.css
+
+## All keyframes
+
+- `alarm-blink` — src\styles\components.css
+- `alarm-glitch` — src\styles\components.css
+- `alarmPulse` — src\styles\components.css, src\styles\reader.css
+- `audio-level` — src\styles\audio-panel.css
+- `biosBlink` — src\styles\effects.css
+- `border-glow` — src\styles\components.css
+- `caret` — src\styles\effects.css
+- `caretBlink` — src\styles\components.css
+- `char-glitch-1` — src\styles\components.css
+- `char-glitch-2` — src\styles\components.css
+- `checkPop` — src\styles\components.css, src\styles\reader.css
+- `choiceCheckPop` — public\styles.css
+- `corruptJitter` — src\styles\effects.css
+- `crtFlicker` — src\styles\effects.css
+- `cyklus-actions-highlight` — src\styles\cyklus\legacy.css
+- `cyklus-card-fly-no` — src\styles\cyklus\legacy.css
+- `cyklus-card-fly-yes` — src\styles\cyklus\legacy.css
+- `cyklus-card-pulse` — src\styles\cyklus\legacy.css
+- `cyklus-chip-flash` — src\styles\cyklus\legacy.css
+- `cyklus-fade-in` — src\styles\cyklus\legacy.css
+- `cyklus-os-boot-flicker` — src\styles\cyklus\effects.css
+- `cyklus-os-choice-pulse` — src\styles\cyklus\card.css
+- `cyklus-os-critical-pulse` — src\styles\cyklus\effects.css
+- `cyklus-os-modal-in` — src\styles\cyklus\overlays.css
+- `cyklus-os-portal` — src\styles\cyklus\shell.css
+- `cyklus-os-report-in` — src\styles\cyklus\outcome.css
+- `cyklus-os-scan-drift` — src\styles\cyklus\effects.css
+- `cyklus-os-sheet-in` — src\styles\cyklus\overlays.css
+- `cyklus-overload-pulse` — src\styles\cyklus\legacy.css
+- `cyklus-pocket-angry` — src\styles\cyklus\legacy.css
+- `cyklus-pocket-highlight` — src\styles\cyklus\legacy.css
+- `cyklus-pocket-pulse` — src\styles\cyklus\legacy.css
+- `cyklus-risk-blink` — src\styles\cyklus\legacy.css
+- `cyklus-stat-danger-pulse` — src\styles\cyklus\legacy.css
+- `cyklus-stat-flash` — src\styles\cyklus\legacy.css
+- `cyklus-stat-flash-light` — src\styles\cyklus\legacy.css
+- `cyklus-stat-highlight` — src\styles\cyklus\legacy.css
+- `cyklus-void-fade-in` — src\styles\cyklus\legacy.css
+- `cyklus-void-message-in` — src\styles\cyklus\legacy.css
+- `cyklus-void-panel-in` — src\styles\cyklus\legacy.css
+- `danger-pulse` — src\styles\game.css
+- `datastreamShimmer` — src\styles\effects.css
+- `dvanactnikGlow` — src\styles\components-dialog.css
+- `errorShake` — src\styles\components.css
+- `fadeInDelayed` — src\styles\components.css
+- `flicker` — src\styles\components.css
+- `fogNoise` — src\styles\effects.css
+- `frag-warn-pulse` — src\styles\game.css
+- `fx-flicker` — src\styles\components.css
+- `fx-rainbow` — src\styles\components.css
+- `fx-wave` — src\styles\components.css
+- `fxGlitchPulse` — src\styles\components.css
+- `game-blink` — src\styles\game.css
+- `ghostDrift` — src\styles\components.css
+- `glitch` — public\styles.css, src\styles\components.css
+- `glitch-char-flicker` — src\styles\components.css
+- `glitch-shift` — src\styles\components.css
+- `glitchIntro` — src\styles\components.css
+- `glitchIntroFade` — src\styles\components.css
+- `glitchLayer1` — src\styles\components.css
+- `glitchLayer2` — src\styles\components.css
+- `glitchWordPulse` — src\styles\components.css
+- `glitchenaGlow` — src\styles\components-dialog.css
+- `glitchenaPulse` — src\styles\components-dialog.css
+- `glitchjump` — src\styles\components.css
+- `heatHaze` — src\styles\effects.css
+- `home-light-fade` — src\styles\synthoma-os\home.css
+- `home-light-glitch` — src\styles\synthoma-os\home.css
+- `kernelBlink` — src\styles\effects.css
+- `kpBook-00-Conflict` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-00-MarkWake` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-00-SensorDeny` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-00-ShaftDrop` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-00-ToolFade` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-BlackoutSweep` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-ConsentReject` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-CountCorrupt` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-DropFlash` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-FallLine` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-ProtocolWake` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-RouteMove` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-01-SupportDim` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-BridgeEast` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-BridgeWest` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-BusDistance` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-CrossConflict` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-FallLine` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-FoamRise` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-GapGrow` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-GoalCelebrate` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-TicketsRise` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-TovaFragment` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-02-WaitBlink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-ArchivePower` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-AuditRun` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-CallWave` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-ComfortBreathe` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-ComfortDrift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-Knock` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-03-TrainingBlink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-BusStraight` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-ChairApproach` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-ComfortBreath` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-ComfortPulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-CutLine` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-DoorUnlock` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-HazeDrift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-Knock` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-MirrorBlink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-PacketGlitch` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-04-Restraint` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-05-DrillTurn` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-05-DrillVibrate` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-05-FragmentWarm` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-05-ImpactShake` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-05-RoundaboutSpin` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-05-RouteLies` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-BadWheel` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-BedAttack` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-BlueLineScan` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-CountdownPulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-DoorsOpen` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-FogDrift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-HeartDraw` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-HospitalPulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-06-SwitchDecision` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-07-Breath` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-07-CargoFlow` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-07-Crusher` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-07-Drones` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-07-Fragment` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-07-WeightScan` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-DoorBreathe` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-DronesForm` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-FamilyScroll` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-FragmentPulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-HomePulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-Leak` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-MirrorBreathe` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-08-VansArrive` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-BarrierDrop` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-BarrierRise` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-CorePulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-LineTighten` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-ProfileDelete` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-RingTurn` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-TargetRotate` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-09-TowerBlink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-AudioDrift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-Breath` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-CutOpen` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-Darken` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-FirstNeon` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-SignalsFade` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-TextFade` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-10-TowerBlink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-11-block-shift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-11-city-vein` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-11-contact-pulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-11-cooling-fail` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-11-cursor-blink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-11-orbit` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-cooling-pulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-cursor-blink` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-node-pulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-pump-run` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-pump-vibrate` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-ring-breathe` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-steam-rise` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-valve-stuck` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-12-wait-fill` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-13-body-status` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-13-bulkhead-close` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-13-core-pulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-13-damage-flicker` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-13-descent-lights` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-13-stream-flow` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-14-approved` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-14-countdown-pulse` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-14-flicker` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-14-global-expand` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-14-pressure` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-15-counter` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-15-island` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-15-node-breathe` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-15-offer-shift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-15-prime` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-15-restraint` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-afterdark` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-belt` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-bulb` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-bus-shake` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-drones` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-flicker` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-gate-pressure` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-impact` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-lever-wait` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-16-voltage` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-17-delayed` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-17-map-drift` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-17-pump` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-17-radio` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-17-wait` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-crack-open` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-label-cycle` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-letter-float` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-line-draw` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-timer-hand` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-transfer-spin` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-vanta-stabilize` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `kpBook-18-void-breathe` — public\books\SYNTHOMA-KONEC_PODPORY\konec-podpory.css
+- `leakFlow` — src\styles\effects.css
+- `line-appear` — src\styles\reader.css
+- `map-node-pulse` — src\styles\game.css
+- `neon-noising` — src\styles\components.css
+- `neonFlicker` — src\styles\effects.css
+- `neonNoising` — src\styles\effects.css
+- `neonPulse` — src\styles\effects.css
+- `neonShine` — src\styles\effects.css
+- `noVideoDrift` — src\styles\components.css
+- `os-boot-reveal` — src\styles\synthoma-os\motion.css
+- `os-signal-pulse` — src\styles\synthoma-os\motion.css
+- `profile-pulse` — src\styles\profile.css
+- `profilePanelFadeIn` — src\styles\components.css
+- `progressShine` — src\styles\components.css
+- `pulse` — public\styles.css
+- `pulseWave` — src\styles\effects.css
+- `puzzleUnlock` — src\styles\components.css
+- `quantumBlur` — src\styles\effects.css
+- `rainbow-pulse` — src\styles\reader.css
+- `reader-decision-commit` — src\styles\components-choice.css
+- `redactBlink` — src\styles\effects.css
+- `retro-flicker` — src\styles\themes.css
+- `reveal` — src\styles\effects.css
+- `riftGlow` — src\styles\effects.css
+- `run-hud-pulse` — src\styles\game.css
+- `scanlineShift` — src\styles\components.css
+- `shine` — src\styles\components.css
+- `skeletonScanline` — src\styles\components.css
+- `skeletonShimmer` — src\styles\components.css
+- `spin` — src\styles\components.css
+- `staticDrift` — src\styles\effects.css
+- `synthBlink` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthButtonSweep` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthGateGridDrift` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthGateRotate` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthGlitchBottom` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthGlitchTop` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthNoiseDrift` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthOrbitBreathe` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthPulse` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthRailFlow` — public\synth-gate.css, src\styles\synth-gate.css
+- `synthoma-wordmark-breathe` — src\styles\synthoma-wordmark.css
+- `synthoma-wordmark-glitch-1` — src\styles\synthoma-wordmark.css
+- `synthoma-wordmark-glitch-2` — src\styles\synthoma-wordmark.css
+- `synthoma-wordmark-glitch-jump` — src\styles\synthoma-wordmark.css
+- `themeDialogFadeIn` — src\styles\components.css
+- `themeDialogSlideIn` — src\styles\components.css
+- `twBlip` — src\styles\effects.css
+- `twGlitchIn` — src\styles\effects.css
+- `twSplit` — src\styles\effects.css
+- `type-in` — src\styles\game.css
+- `v1-fade-in` — src\styles\game-v1.css
+- `v1-float-up` — src\styles\game-v1.css
+- `v1-map-pulse` — src\styles\game-v1.css
+- `v1-pulse-glow` — src\styles\game-v1.css
+- `v1-slide-in-left` — src\styles\game-v1.css
+- `v1-slide-in-right` — src\styles\game-v1.css
+- `void-flicker` — src\styles\game.css
+- `void-pulse` — src\styles\game.css
+- `warningBlink` — src\styles\components.css
+- `whisperFadeIn` — src\styles\components.css
+- `whisperFadeOut` — src\styles\components.css

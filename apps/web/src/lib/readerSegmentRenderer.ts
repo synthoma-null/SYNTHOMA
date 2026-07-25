@@ -132,6 +132,34 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
 
   let cancelled = false;
   let frameId = 0;
+  const effectTimers: number[] = [];
+
+  const FX_CLASSES = [
+    '.fx-corrupt', '.fx-glitch', '.fx-flicker', '.fx-scanline',
+    '.fx-memory-bleed', '.fx-identity-split', '.fx-support-expired',
+    '.fx-denied', '.fx-observer', '.fx-silence', '.null-memory-leak',
+    '.null-prototype-instability', '.kp-support-expired', '.kp-queue-delay',
+    '.kp-signal-dropout', '.kp-mechanical-pulse', '.n0-neon-ignition',
+    '.n0-first-signal', '.n0-observer-presence'
+  ];
+
+  const triggerEffectReveals = (container: HTMLElement) => {
+    try {
+      const selector = FX_CLASSES.join(', ');
+      const nodes = Array.from(container.querySelectorAll<HTMLElement>(selector));
+      nodes.forEach((node, index) => {
+        const startTimer = window.setTimeout(() => {
+          if (cancelled) return;
+          node.classList.add('is-revealing');
+          const settleTimer = window.setTimeout(() => {
+            node.classList.remove('is-revealing');
+          }, 1500);
+          effectTimers.push(settleTimer);
+        }, index * 500);
+        effectTimers.push(startTimer);
+      });
+    } catch {}
+  };
 
   const prefersInstant = () => {
     const preferences = readUiPreferences();
@@ -140,13 +168,14 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
       || preferences.typewriterSpeed === 'instant';
   };
 
-  const finish = () => {
+  const finish = (revealEffects: boolean) => {
     if (cancelled) return;
     if (frameId) cancelAnimationFrame(frameId);
     document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
     try {
       segment.innerHTML = sanitizeHTML(transformed);
     } catch {}
+    if (revealEffects) triggerEffectReveals(segment);
     cleanupChoices(segment);
     bindChoiceHandlers();
     revealChoicesStagger(segment);
@@ -174,7 +203,7 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
   };
 
   const onPreferencesChanged = () => {
-    if (prefersInstant()) finish();
+    if (prefersInstant()) finish(false);
   };
 
   if (mode === "instant" || textLength === 0 || prefersInstant()) {
@@ -194,6 +223,7 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
   const cancel = () => {
     cancelled = true;
     if (frameId) cancelAnimationFrame(frameId);
+    effectTimers.forEach((timer) => window.clearTimeout(timer));
     document.removeEventListener(UI_PREFERENCES_CHANGED_EVENT, onPreferencesChanged);
   };
 
@@ -207,7 +237,7 @@ export function renderReaderSegment(options: RenderReaderSegmentOptions): Render
       segment.innerHTML = sanitizeHTML(renderTypingHtml(typingHtml, typedCount));
     } catch {}
     if (progress >= 1) {
-      finish();
+      finish(true);
       return;
     }
     frameId = requestAnimationFrame(tick);

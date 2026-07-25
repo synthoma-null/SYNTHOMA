@@ -1,0 +1,83 @@
+/* =========================================================
+   effects-atmosphere.css
+   Scénické atmosféry ovlivňují reader-segment jako celek.
+   Použití: <section class="reader-scene" data-atmosphere="memory-collapse">
+   ========================================================= */
+
+.reader-scene {
+  --scene-glow: 1;
+  --scene-scanline: 1;
+  --scene-tint: transparent;
+  position: relative;
+  transition: --scene-glow 0.8s ease, --scene-scanline 0.8s ease;
+}
+
+.reader-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--scene-tint);
+  opacity: .08;
+  z-index: 0;
+}
+
+.reader-scene[data-atmosphere="stable"] {
+  --scene-glow: 0.6;
+  --scene-scanline: 0.5;
+  --scene-tint: transparent;
+}
+
+.reader-scene[data-atmosphere="observed"] {
+  --scene-glow: 0.9;
+  --scene-scanline: 0.8;
+  --scene-tint: var(--fx-memory-primary);
+}
+
+.reader-scene[data-atmosphere="memory-fog"] {
+  --scene-glow: 0.35;
+  --scene-scanline: 1.2;
+  --scene-tint: color-mix(in oklab, var(--accent-secondary) 20%, transparent);
+  filter: contrast(0.95) blur(0.3px);
+}
+
+.reader-scene[data-atmosphere="support-failing"] {
+  --scene-glow: 0.8;
+  --scene-scanline: 1.5;
+  --scene-tint: color-mix(in oklab, var(--accent-warning) 15%, transparent);
+}
+
+.reader-scene[data-atmosphere="identity-collapse"] {
+  --scene-glow: 1.3;
+  --scene-scanline: 1.8;
+  --scene-tint: color-mix(in oklab, var(--accent-primary) 18%, transparent);
+}
+
+.reader-scene[data-atmosphere="false-comfort"] {
+  --scene-glow: 0.6;
+  --scene-scanline: 1;
+  --scene-tint: color-mix(in oklab, var(--accent-success) 12%, transparent);
+}
+
+.reader-scene[data-atmosphere="void"] {
+  --scene-glow: 0;
+  --scene-scanline: 0;
+  --scene-tint: transparent;
+  filter: contrast(0.9);
+}
+
+.reader-scene[data-atmosphere="recovery"] {
+  --scene-glow: 0.7;
+  --scene-scanline: 0.6;
+  --scene-tint: color-mix(in oklab, var(--accent-secondary) 10%, transparent);
+  filter: contrast(1.05);
+}
+
+/* Link atmosphere variables to child effects */
+.reader-scene * {
+  --fx-glow-strength: var(--scene-glow);
+}
+
+.reader-scene .fx-scanline::after {
+  opacity: calc(0.35 * var(--scene-scanline, 1));
+}

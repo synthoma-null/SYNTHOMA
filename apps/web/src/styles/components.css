@@ -263,91 +263,8 @@
   .ff-text01 { font-family: 'Text01', monospace !important; }
   .popup-tip { cursor: help; text-decoration: underline dotted; text-underline-offset: 2px; }
   
-  /* =========================
-     TEXT FX (utilities) – sjednoceno, bez duplicit.
-     ========================= */
-  .fx-neon {
-    color: var(--text-primary);
-    text-shadow: 0 0 6px var(--glow-primary), 0 0 12px var(--glow-primary), 0 0 18px var(--glow-secondary);
-  }
-  
-  .fx-glow-magenta { text-shadow: 0 0 4px var(--accent-primary, #f0f), 0 0 10px var(--accent-primary, #f0f), 0 0 18px var(--accent-primary, #f0f); }
-  
-  .fx-shadow-lg { text-shadow: 0 2px 0 rgba(0,0,0,.35), 0 4px 12px rgba(0,0,0,.5); }
-  
-  .fx-outline {
-    text-shadow:
-      -1px -1px 0 color-mix(in oklab, currentColor 18%, transparent),
-       1px -1px 0 color-mix(in oklab, currentColor 18%, transparent),
-      -1px  1px 0 color-mix(in oklab, currentColor 18%, transparent),
-       1px  1px 0 color-mix(in oklab, currentColor 18%, transparent);
-    color: transparent;
-    -webkit-text-stroke: 0.6px color-mix(in oklab, currentColor 35%, transparent);
-    opacity: .65;
-    transition: color .18s ease, text-shadow .18s ease, opacity .18s ease, -webkit-text-stroke-color .18s ease, -webkit-text-stroke-width .18s ease;
-    display: inline;
-  }
-  
-  .fx-outline.is-lit {
-    display: inline; /* preserve inline spacing */
-    vertical-align: baseline;
-    color: var(--text-primary);
-    -webkit-text-stroke: 0.5px color-mix(in oklab, var(--text-primary) 55%, transparent);
-    text-shadow:
-      1px 0 0 color-mix(in oklab, var(--text-primary) 55%, transparent),
-      -1px 0 0 color-mix(in oklab, var(--text-primary) 55%, transparent),
-      0 1px 0 color-mix(in oklab, var(--text-primary) 55%, transparent),
-      0 -1px 0 color-mix(in oklab, var(--text-primary) 55%, transparent);
-  }
-  
-  .fx-outline:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
-  
-  .fx-scanline { position: relative; }
-  .fx-scanline::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: repeating-linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 1px, transparent 1px, transparent 3px);
-    mix-blend-mode: overlay; opacity: .35;
-  }
-  
-  .fx-flicker { animation: fx-flicker 2.2s infinite; }
-  @keyframes fx-flicker {
-    0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; text-shadow: 0 0 8px var(--glow-primary), 0 0 16px var(--glow-secondary); }
-    20%, 22% { opacity: .4; text-shadow: none; }
-    81% { opacity: .85; }
-  }
-  
-  .fx-wave { display: inline-block; animation: fx-wave 1.8s ease-in-out infinite; }
-  @keyframes fx-wave { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-2px) } }
-  
-  .fx-gradient {
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    text-shadow: none;
-    display: inline;
-  }
-  
-  .fx-rainbow {
-    background: linear-gradient(90deg, #ff004c, #ffbf00, #00ff95, #00b3ff, #c300ff, #ff004c);
-    background-size: 300% 100%;
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: fx-rainbow 6s linear infinite;
-  }
-  @keyframes fx-rainbow { 0%{ background-position: 0% 50% } 100%{ background-position: 100% 50% } }
-  
-  .fx-noise { position: relative; }
-  .fx-noise::after {
-    content: ""; position: absolute; inset: -2px; mix-blend-mode: overlay; pointer-events: none; opacity: .35;
-    background-image:
-      radial-gradient(circle at 15% 20%, rgba(255,255,255,.07) 2px, transparent 2px),
-      radial-gradient(circle at 40% 80%, rgba(255,255,255,.05) 1.5px, transparent 1.5px),
-      radial-gradient(circle at 75% 35%, rgba(255,255,255,.06) 1px, transparent 1px),
-      radial-gradient(circle at 90% 60%, rgba(255,255,255,.04) 1px, transparent 1px),
-      radial-gradient(circle at 25% 55%, rgba(255,255,255,.05) 1.5px, transparent 1.5px);
-    background-size: 8px 8px, 10px 10px, 12px 12px, 14px 14px, 16px 16px;
-    background-repeat: repeat;
-    filter: contrast(1.12) brightness(1.04);
-  }
-  
+    /* TEXT FX primitives moved to effects-primitives.css */
+
   .fx-uppercase-wide { text-transform: uppercase; letter-spacing: .12em; }
   
   .fx-underline {
@@ -1678,68 +1595,6 @@
     letter-spacing: .06em;
     color: var(--text-primary);
   }
-  /* Outline effect (stroke + glow). Combine with .is-lit for extra glow. */
-  .fx-outline {
-    position: relative;
-    /* Primary outline on WebKit */
-    -webkit-text-stroke: 1px var(--accent-primary, #0ff);
-    -webkit-text-fill-color: currentColor;
-    /* Fallback outline via shadow ring for engines bez -webkit-text-stroke */
-    text-shadow:
-      1px 0 0 var(--accent-primary, #0ff),
-      -1px 0 0 var(--accent-primary, #0ff),
-      0 1px 0 var(--accent-primary, #0ff),
-      0 -1px 0 var(--accent-primary, #0ff),
-      1px 1px 0 var(--accent-primary, #0ff),
-      1px -1px 0 var(--accent-primary, #0ff),
-      -1px 1px 0 var(--accent-primary, #0ff),
-      -1px -1px 0 var(--accent-primary, #0ff);
-    color: currentColor;
-  }
-  .fx-outline.is-lit {
-    text-shadow:
-      1px 0 0 var(--accent-primary, #0ff),
-      -1px 0 0 var(--accent-primary, #0ff),
-      0 1px 0 var(--accent-primary, #0ff),
-      0 -1px 0 var(--accent-primary, #0ff),
-      1px 1px 0 var(--accent-primary, #0ff),
-      1px -1px 0 var(--accent-primary, #0ff),
-      -1px 1px 0 var(--accent-primary, #0ff),
-      -1px -1px 0 var(--accent-primary, #0ff),
-      0 0 6px var(--glow-primary, rgba(255,0,255,.6)),
-      0 0 12px var(--glow-secondary, rgba(0,255,255,.6));
-  }
-  /* Stronger specificity when someone adds .text on the same span */
-  .text.fx-outline {
-    -webkit-text-stroke: 1px var(--accent-primary, #0ff);
-    -webkit-text-fill-color: currentColor;
-    text-shadow:
-      1px 0 0 var(--accent-primary, #0ff),
-      -1px 0 0 var(--accent-primary, #0ff),
-      0 1px 0 var(--accent-primary, #0ff),
-      0 -1px 0 var(--accent-primary, #0ff),
-      1px 1px 0 var(--accent-primary, #0ff),
-      1px -1px 0 var(--accent-primary, #0ff),
-      -1px 1px 0 var(--accent-primary, #0ff),
-      -1px -1px 0 var(--accent-primary, #0ff);
-  }
-  .text.fx-outline.is-lit {
-    display: inline; /* preserve inline spacing */
-    vertical-align: baseline;
-    text-shadow:
-      1px 0 0 var(--accent-primary, #0ff),
-      -1px 0 0 var(--accent-primary, #0ff),
-      0 1px 0 var(--accent-primary, #0ff),
-      0 -1px 0 var(--accent-primary, #0ff),
-      1px 1px 0 var(--accent-primary, #0ff),
-      1px -1px 0 var(--accent-primary, #0ff),
-      -1px 1px 0 var(--accent-primary, #0ff),
-      -1px -1px 0 var(--accent-primary, #0ff),
-      0 0 6px var(--glow-primary, rgba(255,0,255,.6)),
-      0 0 12px var(--glow-secondary, rgba(0,255,255,.6));
-  }
-  /* Outline hollow variant */
-  .fx-outline.hollow { color: transparent; -webkit-text-fill-color: transparent; }
 
   /* Echo ghost – append echo inline on the same line and make it clickable */
   .echo-ghost {
@@ -1852,43 +1707,11 @@
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: none; }
   }
-  /* Scanline overlay effect */
-  .fx-scanline { position: relative; display: inline-block; vertical-align: baseline; }
-  /* Add a hair space before scanline tokens when not first child to avoid perceived eaten space */
-  .fx-scanline:not(:first-child) { margin-left: 0.08em; }
-  .fx-scanline::after {
-    content: '';
-    position: absolute; inset: -1px 0; /* tiny bleed to avoid 1px seam */
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,.08) 0px,
-      rgba(255,255,255,.08) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    mix-blend-mode: overlay;
-    opacity: .5;
-    animation: scanlineShift 2.2s linear infinite;
-  }
-  @keyframes scanlineShift { from { transform: translateY(0); } to { transform: translateY(4px); } }
-  @media (prefers-reduced-motion: reduce) {
-    .fx-scanline::after { animation: none !important; }
-  }
+
+
   #glitch-name { display: inline-block; color: var(--text-primary); text-shadow: 0 0 5px var(--glow-secondary), 0 0 10px var(--glow-primary); }
   
-  .fx-glitch {
-    display: inline; /* inline flow – zachová předešlou mezeru */
-    position: relative;
-    overflow: visible; /* allow overlay to extend outside line box */
-    vertical-align: baseline;
-    color: currentColor;
-    text-shadow: 0 0 6px var(--glow-secondary), 0 0 12px var(--glow-primary);
-    animation: fxGlitchPulse 1.1s steps(2,end) infinite;
-    cursor: pointer;
-    z-index: 2; /* ensure stacking above paragraph decorations */
-  }
-  /* Overlay text like echo-ghost, driven by data-glitch */
+
   .fx-glitch::after {
     content: attr(data-glitch);
     position: absolute;
@@ -1920,11 +1743,6 @@
     text-shadow: inherit;
     animation: none;
   }
-  @keyframes fxGlitchPulse {
-    0%, 100% { transform: translate(0,0); filter: none; }
-    50% { transform: translate(0.4px, -0.4px); filter: hue-rotate(8deg) saturate(1.1); }
-  }
-  
   .alarm-emote {
     display: inline;
     vertical-align: baseline;

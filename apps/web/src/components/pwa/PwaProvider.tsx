@@ -14,7 +14,6 @@ import {
   isPwaCriticalPath,
   isStandaloneDisplay,
 } from '../../lib/pwa';
-import PwaBootSplash from './PwaBootSplash';
 
 type InstallOutcome = 'accepted' | 'dismissed' | 'unavailable';
 export type PwaCacheStatus = 'unavailable' | 'partial' | 'ready';
@@ -288,7 +287,6 @@ export default function PwaProvider({ children }: PropsWithChildren) {
   }), [applyUpdate, cacheStatus, checkForUpdate, clearOfflineCache, deferredInstall, dismissInstall, hydrated, install, installed, online, refreshOfflineData, serviceWorkerState, updateAvailable]);
 
   return <PwaContext.Provider value={value}>
-    <PwaBootSplash />
     {children}
     {installPromptVisible ? <InstallPrompt onInstall={install} onDismiss={dismissInstall} /> : null}
     {updateAvailable && !updateDismissed && !criticalInteraction ? <UpdatePrompt onApply={applyUpdate} onDismiss={() => setUpdateDismissed(true)} /> : null}

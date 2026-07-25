@@ -1,4 +1,10 @@
 ﻿import "../src/styles/base.css";
+import "../src/styles/effects-primitives.css";
+import "../src/styles/effects-semantic.css";
+import "../src/styles/effects-atmosphere.css";
+import "../src/styles/effects-books/null.css";
+import "../src/styles/effects-books/konec-podpory.css";
+import "../src/styles/effects-books/neon-0.css";
 import "../src/styles/components.css";
 import "../src/styles/components-dialog.css";
 import "../src/styles/components-choice.css";
@@ -47,6 +53,7 @@ import { AccessProvider } from "../src/components/access/AccessProvider";
 
 
 import PwaProvider from "../src/components/pwa/PwaProvider";
+import PwaBootSplash from "../src/components/pwa/PwaBootSplash";
 import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRuntime";
 import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 import { SYNTHOMA_DESCRIPTOR } from "../src/lib/publicMetadata";
@@ -256,6 +263,12 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
       <body suppressHydrationWarning>
 
+        <PwaBootSplash />
+        <div id="pwa-boot-splash" aria-hidden="true">
+          <img src="/assets/background_logo.png" alt="" />
+        </div>
+
+        <div id="app-shell">
         <UiPreferencesRuntime />
 
         <SynthomaSkipLink label={initialLang === 'en' ? 'Skip to content' : 'Přeskočit na obsah'} />
@@ -328,6 +341,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         </LangProvider>
 
         </SessionProviderClient>
+        </div>
 
       </body>
 

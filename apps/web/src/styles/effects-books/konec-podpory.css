@@ -1,0 +1,77 @@
+/* =========================================================
+   effects-books/konec-podpory.css
+   Vizuální dialekt pro SYNTHOMA: KONEC PODPORY.
+   Charakter: systém stále funguje, ale už nikomu nepomáhá.
+   Technická infrastruktura se rozpadá provozně.
+   Pohyb přesnější, hranatější, více steps(), méně snového rozmazání.
+   ========================================================= */
+
+/* Support / queue / denial states */
+[data-book="konec-podpory"] .kp-support-expired {
+  display: inline;
+  color: var(--fx-memory-primary);
+  text-shadow: 0 0 4px var(--glow-secondary);
+  animation: kpSupportFade 1.6s steps(8, end) forwards;
+  animation-play-state: paused;
+}
+
+[data-book="konec-podpory"] .kp-support-expired.is-revealing {
+  animation-play-state: running;
+}
+
+@keyframes kpSupportFade {
+  0% { color: var(--accent-secondary); text-shadow: 0 0 6px var(--glow-secondary); opacity: 1; }
+  50% { color: #7ba8b3; }
+  100% { color: var(--text-muted); text-shadow: none; opacity: .6; }
+}
+
+[data-book="konec-podpory"] .kp-queue-delay {
+  display: inline;
+  color: var(--fx-warning);
+  animation: kpQueueBlink 1s steps(2, end) 3;
+  animation-play-state: paused;
+}
+
+[data-book="konec-podpory"] .kp-queue-delay.is-revealing {
+  animation-play-state: running;
+}
+
+@keyframes kpQueueBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
+
+[data-book="konec-podpory"] .kp-signal-dropout {
+  display: inline;
+  color: var(--fx-memory-primary);
+  animation: kpDropout 0.55s steps(4, end);
+  animation-play-state: paused;
+}
+
+[data-book="konec-podpory"] .kp-signal-dropout.is-revealing {
+  animation-play-state: running;
+}
+
+@keyframes kpDropout {
+  0% { opacity: 1; }
+  25% { opacity: .2; }
+  50% { opacity: .7; transform: translateX(-1px); }
+  75% { opacity: .3; }
+  100% { opacity: 1; transform: none; }
+}
+
+[data-book="konec-podpory"] .kp-mechanical-pulse {
+  display: inline;
+  color: var(--fx-danger);
+  animation: kpMechPulse 0.8s steps(3, end) infinite;
+  animation-play-state: paused;
+}
+
+[data-book="konec-podpory"] .kp-mechanical-pulse.is-revealing {
+  animation-play-state: running;
+}
+
+@keyframes kpMechPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .45; }
+}

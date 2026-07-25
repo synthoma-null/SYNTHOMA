@@ -13,18 +13,23 @@ describe('SYNTHOMA web app manifest', () => {
       start_url: '/',
       scope: '/',
       display: 'standalone',
-      background_color: '#020509',
-      theme_color: '#000d1a',
+      background_color: '#02060b',
+      theme_color: '#02060b',
     });
     expect(value.display_override).toEqual(['fullscreen', 'standalone']);
     expect(value.shortcuts?.map((shortcut) => shortcut.url)).toEqual(['/books', '/archive', '/cyklus', '/resume']);
     expect(value.icons?.some((icon) => icon.sizes === '192x192' && icon.purpose === 'any')).toBe(true);
+    expect(value.icons?.some((icon) => icon.src === '/assets/icon_256.png' && icon.sizes === '256x256')).toBe(true);
+    expect(value.icons?.some((icon) => icon.src === '/assets/icon_512.png' && icon.sizes === '512x512')).toBe(true);
+    expect(value.icons?.some((icon) => icon.src === '/assets/icon_1024.png' && icon.sizes === '1024x1024')).toBe(true);
     expect(value.icons?.some((icon) => icon.sizes === '512x512' && icon.purpose === 'maskable')).toBe(true);
+    expect(value.icons?.some((icon) => icon.src === '/assets/favicon.ico')).toBe(false);
     expect(value.screenshots).toHaveLength(3);
   });
 
   it.each([
     ['generated/icon-192.png', 192],
+    ['icon_256.png', 256],
     ['icon_512.png', 512],
     ['icon_1024.png', 1024],
     ['generated/maskable-icon-192.png', 192],

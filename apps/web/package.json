@@ -20,6 +20,7 @@
     "format": "prettier --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
     "validate:chapters": "node scripts/validate-books.js",
+    "validate:effects": "node scripts/validate-effects.js",
     "dialogs:migrate": "node scripts/migrate-book-dialogs.js --apply",
     "dialogs:audit": "node scripts/migrate-book-dialogs.js",
     "content:generate": "node scripts/generate-content.js",

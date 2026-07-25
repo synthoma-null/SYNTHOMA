@@ -1,0 +1,73 @@
+/* =========================================================
+   effects-books/null.css
+   Vizuální dialekt pro SYNTHOMA: NULL.
+   Charakter: rozpad identity, ozvěna, prázdnota, nečitelná paměť.
+   Pohyb organický, pomalý, nejistý.
+   ========================================================= */
+
+/* Slow, organic memory artefacts */
+[data-book="synthoma-null"] .null-memory-leak {
+  color: var(--fx-memory-primary);
+  text-shadow: 0 0 6px var(--glow-secondary);
+  animation: nullLeak 4.2s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+[data-book="synthoma-null"] .null-memory-leak.is-revealing {
+  animation-play-state: running;
+}
+
+@keyframes nullLeak {
+  0%, 100% { opacity: .75; transform: translateX(0); }
+  25% { opacity: .55; transform: translateX(-1px); }
+  50% { opacity: .9; transform: translateX(1px); }
+  75% { opacity: .65; transform: translateX(-0.5px); }
+}
+
+[data-book="synthoma-null"] .null-quantum-blur {
+  display: inline;
+  color: var(--text-primary);
+  filter: blur(1.2px);
+  opacity: .55;
+  transition: filter 1.2s ease, opacity 1.2s ease;
+}
+
+[data-book="synthoma-null"] .null-quantum-blur.is-revealing {
+  filter: blur(0.2px);
+  opacity: .9;
+}
+
+[data-book="synthoma-null"] .null-static-noise {
+  position: relative;
+  display: inline;
+}
+
+[data-book="synthoma-null"] .null-static-noise::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  opacity: .25;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,.06) 1px, transparent 1px),
+    radial-gradient(circle at 70% 80%, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 4px 4px, 6px 6px;
+  animation: nullStaticDrift 0.8s steps(3) infinite;
+  animation-play-state: paused;
+}
+
+[data-book="synthoma-null"] .null-static-noise.is-revealing::after {
+  animation-play-state: running;
+}
+
+@keyframes nullStaticDrift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(1px, -1px); }
+  100% { transform: translate(-1px, 1px); }
+}
+
+[data-book="synthoma-null"] .null-identity-split {
+  display: inline;
+  color: var(--fx-memory-primary);
+  text-shadow: -0.08em 0 0 var(--glow-secondary);
+}

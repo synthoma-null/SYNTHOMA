@@ -1,0 +1,143 @@
+# SYNTHOMA Effects Audit — Summary
+
+- **Audit date:** `2026-07-25T20:39:32.681019`
+- **CSS files scanned:** 63
+- **Code/HTML files scanned:** 565
+- **Unique class tokens found:** 3262
+- **Effect-class candidates:** 1129
+- **Defined in CSS:** 3177
+- **Used in project:** 2163
+- **Defined but unused:** 1099
+- **Used but not defined (broken/unknown):** 85
+- **@keyframes found:** 273
+- **Duplicate keyframes:** 14
+
+## Quick problem list
+
+### Broken / unknown (sample)
+
+- `.([^` — 1× in src\content\__tests__\speakerDialogMigration.test.ts
+- `.[^` — 1× in src\content\__tests__\konecPodpory.test.ts
+- `.admin-detail` — 1× in app\components\admin\AdminDashboard.tsx
+- `.archive-memory-section` — 1× in src\components\archive\SynthomaArchive.tsx
+- `.author-reader` — 1× in app\autor\AutorClient.tsx
+- `.author-reader__command-bar` — 1× in app\autor\AutorClient.tsx
+- `.chapter-access-gate` — 2× in app\chapter\[id]\ChapterAccessGate.tsx, app\chapter\[id]\page.tsx
+- `.chapter-reader__back` — 1× in app\chapter\[id]\ChapterReaderArticle.tsx
+- `.content` — 1× in src\lib\readerSegmentRenderer.ts
+- `.cyklus-behavioral__list` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-build` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-choice-dock` — 1× in src\components\cyklus\__tests__\CyklusGameplayGeometry.test.tsx
+- `.cyklus-death-analysis__contributors` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-discovery__label` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-discovery__value` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-game-shell` — 3× in app\cyklus\page.test.tsx, app\cyklus\page.tsx, app\publicDiscovery.test.ts
+- `.cyklus-game-status__cycle` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-game-status__progress` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-menu__content--brand-safe` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-reward__active-scar-label` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.cyklus-stabilization__label` — 1× in src\components\cyklus\CyklusClient.tsx
+- `.enemy-card__armor-label` — 1× in src\components\game\run\EnemyCard.tsx
+- `.h-6` — 1× in app\reader\ReaderContent.tsx
+- `.home-sector-link--author` — 1× in src\components\home\HomeSectorLinks.tsx
+- `.kp-chapter--00` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html
+- `.kp-chapter--01` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html
+- `.kp-chapter--02` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html
+- `.kp-chapter--03` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_03_PODPORA.html
+- `.kp-chapter--04` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html
+- `.kp-chapter--05` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html
+- `.kp-chapter--06` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_06_PECE.html
+- `.kp-chapter--07` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html
+- `.kp-chapter--08` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_08_DOMOV.html
+- `.kp-chapter--09` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html
+- `.kp-chapter--10` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_10_TICHO.html
+- `.kp-chapter--11` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_11_BETA.html
+- `.kp-chapter--12` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_12_TOVA.html
+- `.kp-chapter--13` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html
+- `.kp-chapter--14` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html
+- `.kp-chapter--15` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html
+- `.kp-chapter--16` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html
+- `.kp-chapter--17` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html
+- `.kp-chapter--18` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html
+- `.kp-chapter--comfort` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html
+- `.kp-chapter--detour` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html
+- `.kp-chapter--home` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_08_DOMOV.html
+- `.kp-chapter--support` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_03_PODPORA.html
+- `.kp-supported` — 1× in public\books\SYNTHOMA-KONEC_PODPORY\SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html
+- `.legal-table` — 2× in app\privacy\PrivacyClient.tsx
+- `.legal-table-wrap` — 2× in app\privacy\PrivacyClient.tsx
+- `.library-cover-dialog` — 1× in src\components\library\LibraryCoverDialog.tsx
+- `.lobby-header` — 1× in src\components\game\RoomLobby.tsx
+- `.lobby-player-slot` — 1× in src\components\game\RoomLobby.tsx
+- `.mnem-package-btn` — 1× in src\components\profile\MnemAccessPanel.tsx
+- `.mnem-redeem-btn` — 1× in src\components\profile\MnemAccessPanel.tsx
+- `.not-prose` — 1× in src\components\TypewriterReader.tsx
+- `.os-command--primary` — 4× in app\install\InstallClient.tsx, app\offline\OfflineClient.tsx, src\components\pwa\PwaProvider.tsx
+- `.os-command__label` — 2× in src\components\library\LibraryCollectionHeader.tsx, src\components\library\LibraryResume.tsx
+- `.os-status__reference` — 1× in app\chapter\[id]\ChapterAccessGate.tsx
+- `.privacy-export-btn` — 1× in src\components\profile\PrivacyPanel.tsx
+- … and 25 more
+
+### Defined but unused (sample)
+
+- `.action-bar__btn` — in src\styles\game.css
+- `.action-bar__btn--attack` — in src\styles\game.css
+- `.action-bar__btn--dash` — in src\styles\game.css
+- `.action-bar__btn--defend` — in src\styles\game.css
+- `.action-bar__btn--hack` — in src\styles\game.css
+- `.action-bar__btn--hint-strong` — in src\styles\game.css
+- `.action-bar__btn--hint-weak` — in src\styles\game.css
+- `.action-bar__btn--sarcasm` — in src\styles\game.css
+- `.action-bar__card` — in src\styles\game.css
+- `.action-bar__card--attack` — in src\styles\game.css
+- `.action-bar__card--defense` — in src\styles\game.css
+- `.action-bar__card--hack` — in src\styles\game.css
+- `.action-bar__card--movement` — in src\styles\game.css
+- `.action-bar__card--sabotage` — in src\styles\game.css
+- `.action-bar__card--void` — in src\styles\game.css
+- `.admin-badge--admin` — in src\styles\components.css
+- `.admin-badge--user` — in src\styles\components.css
+- `.admin-btn--active` — in src\styles\components.css
+- `.admin-grid` — in src\styles\components.css
+- `.admin-neg` — in src\styles\components.css
+- `.admin-overview-value--warn` — in src\styles\components.css
+- `.admin-panel--overview` — in src\styles\components.css
+- `.admin-pos` — in src\styles\components.css
+- `.admin-result--ok` — in src\styles\components.css
+- `.admin-tab-btn` — in src\styles\components.css
+- `.admin-tab-btn--active` — in src\styles\components.css
+- `.admin-table-row--active` — in src\styles\components.css
+- `.admin-warning` — in src\styles\components.css
+- `.allow-alarm` — in src\styles\reader.css
+- `.animations-off` — in src\styles\components.css
+- `.appear` — in src\styles\components.css, src\styles\reader.css
+- `.archive-card` — in src\styles\components.css
+- `.archive-page` — in src\styles\components.css
+- `.archive-public-card` — in src\styles\library-archive.css
+- `.archive-public-card--locked` — in src\styles\library-archive.css
+- `.archive-record-card` — in src\styles\library-archive.css
+- `.archive-record-card--interactive` — in src\styles\library-archive.css
+- `.archive-record-card--locked` — in src\styles\library-archive.css
+- `.archive-record-card--teaser` — in src\styles\library-archive.css
+- `.archive-record-card__badge` — in src\styles\library-archive.css
+- `.archive-record-card__badge--locked` — in src\styles\library-archive.css
+- `.archive-record-card__body` — in src\styles\library-archive.css
+- `.archive-record-card__quote` — in src\styles\library-archive.css
+- `.archive-record-card__tag` — in src\styles\library-archive.css
+- `.archive-record-card__tags` — in src\styles\library-archive.css
+- `.audio-buttons` — in src\styles\components.css, src\styles\control-panel-os.css
+- `.audioBadge` — in app\reader\ReaderContent.module.css
+- `.autor-fallback` — in app\autor\autor.module.css
+- `.autor-panel` — in src\styles\reader.css
+- `.back-top` — in src\styles\components.css
+- `.badge` — in src\styles\components.css
+- `.badge-accent` — in src\styles\components.css
+- `.badge-grid` — in src\styles\components.css
+- `.badge-item` — in src\styles\components.css
+- `.badge-item--earned` — in src\styles\components.css
+- `.badge-item--locked` — in src\styles\components.css
+- `.badge-item-icon` — in src\styles\components.css
+- `.badge-space` — in src\styles\components.css
+- `.badgeSpace` — in app\books\books.module.css
+- `.bg-lines` — in public\styles.css
+- … and 1039 more

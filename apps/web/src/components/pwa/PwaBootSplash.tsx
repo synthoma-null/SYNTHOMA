@@ -1,35 +1,60 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { SYNTHOMA_ASSETS } from '../../lib/brandAssets';
-import { isStandaloneDisplay } from '../../lib/pwa';
+import { useEffect } from 'react';
 
-const MIN_VISIBLE_MS = 850;
-const MAX_VISIBLE_MS = 2500;
+export const PWA_SPLASH_MIN_VISIBLE_MS = 750;
+export const PWA_SPLASH_MAX_VISIBLE_MS = 2000;
 
 export default function PwaBootSplash() {
-  const [visible, setVisible] = useState(false);
-
   useEffect(() => {
-    if (!isStandaloneDisplay()) return;
-    setVisible(true);
-    const startedAt = Date.now();
-    let hideTimer = 0;
-    const readyTimer = window.setTimeout(() => {
-      const remaining = Math.max(0, MIN_VISIBLE_MS - (Date.now() - startedAt));
-      hideTimer = window.setTimeout(() => setVisible(false), remaining);
-    }, 0);
-    const safetyTimer = window.setTimeout(() => setVisible(false), MAX_VISIBLE_MS);
+    const root = document.documentElement;
+    if (root.dataset.pwaLaunch !== 'true') return;
+
+    const image = document.querySelector<HTMLImageElement>('#pwa-boot-splash img');
+    let minimumElapsed = false;
+    let imageReady = !image;
+    let finished = false;
+
+    const revealApp = () => {
+      if (finished || !minimumElapsed || !imageReady) return;
+      finished = true;
+      root.classList.add('pwa-ready');
+    };
+    const forceRevealApp = () => {
+      if (finished) return;
+      finished = true;
+      root.classList.add('pwa-ready');
+    };
+
+    const minimumTimer = window.setTimeout(() => {
+      minimumElapsed = true;
+      revealApp();
+    }, PWA_SPLASH_MIN_VISIBLE_MS);
+    const safetyTimer = window.setTimeout(forceRevealApp, PWA_SPLASH_MAX_VISIBLE_MS);
+
+    const markImageReady = () => {
+      imageReady = true;
+      revealApp();
+    };
+
+    if (image) {
+      if (typeof image.decode === 'function') {
+        void image.decode().catch(() => undefined).then(markImageReady);
+      } else if (image.complete) {
+        markImageReady();
+      } else {
+        image.addEventListener('load', markImageReady, { once: true });
+        image.addEventListener('error', markImageReady, { once: true });
+      }
+    }
+
     return () => {
-      window.clearTimeout(readyTimer);
-      window.clearTimeout(hideTimer);
+      window.clearTimeout(minimumTimer);
       window.clearTimeout(safetyTimer);
+      image?.removeEventListener('load', markImageReady);
+      image?.removeEventListener('error', markImageReady);
     };
   }, []);
 
-  return (
-    <div className="pwa-boot-splash" data-visible={visible ? 'true' : 'false'} aria-hidden="true">
-      <img src={SYNTHOMA_ASSETS.logo} alt="" />
-    </div>
-  );
+  return null;
 }

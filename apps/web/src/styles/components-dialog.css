@@ -195,6 +195,9 @@ p.dialogD::before {
   }
 }
 
+/* Glitchena speaker style.
+   Use .dialogGlitchena in new content; .dialog.fx-gradient is kept as legacy alias. */
+.dialogGlitchena,
 .dialog.fx-gradient {
   color: var(--accent-error, #ff1744);
   text-shadow: 
@@ -211,6 +214,7 @@ p.dialogD::before {
   animation: glitchenaPulse 3s ease-in-out infinite;
 }
 
+p.dialogGlitchena::before,
 p.dialog.fx-gradient::before {
   content: '';
   position: absolute;

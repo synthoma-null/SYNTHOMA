@@ -1,7 +1,7 @@
 import { generateSW } from 'workbox-build';
 import fs from 'node:fs/promises';
 
-const PWA_VERSION = '1.0.0-pwa.4';
+const PWA_VERSION = '1.0.0-pwa.5';
 const buildId = (process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'local')
   .replace(/[^a-z0-9.-]/gi, '-')
   .slice(0, 16)
@@ -46,6 +46,7 @@ const { count, size, warnings } = await generateSW({
     { url: '/assets/background_title.png', revision: suffix },
     { url: '/assets/favicon.ico', revision: suffix },
     { url: '/assets/og-synthoma.png', revision: suffix },
+    { url: '/assets/icon_256.png', revision: suffix },
     { url: '/assets/icon_512.png', revision: suffix },
     { url: '/assets/icon_1024.png', revision: suffix },
     { url: '/assets/generated/icon-192.png', revision: suffix },

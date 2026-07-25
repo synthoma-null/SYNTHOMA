@@ -1,0 +1,983 @@
+# Theme Compatibility
+
+Classes with explicit theme references (var(...)) and classes using hard-coded colors.
+
+## Classes using CSS variables (theme-aware)
+
+- `.action-bar__btn` — transition, transform
+- `.action-bar__card` — transition, transform
+- `.action-bar__hand-label` — transform
+- `.active` — box-shadow
+- `.admin-input` — transition
+- `.appear` — filter, transform
+- `.archive-card` — box-shadow, transform
+- `.archive-detail-dialog__category` — transform
+- `.archive-detail-dialog__locked` — color-mix
+- `.archive-page` — filter, backdrop-filter
+- `.archive-record-card` — box-shadow, transition, transform
+- `.archive-record-card--interactive` — box-shadow, transform, color-mix
+- `.archive-record-card--locked` — color-mix
+- `.archive-record-card__category` — transform, color-mix
+- `.archive-record-card__quote` — color-mix
+- `.audio-buttons` — box-shadow
+- `.auth-home-panel` — box-shadow, filter, backdrop-filter
+- `.auth-input` — transition
+- `.autor-panel` — box-shadow, filter, backdrop-filter
+- `.badge` — color-mix
+- `.badge-accent` — color-mix
+- `.badge-item--earned` — box-shadow
+- `.bg-video` — filter
+- `.bgHost` — filter
+- `.bios-warning` — box-shadow, animation, color-mix
+- `.book-link` — animation, transform
+- `.bright` — text-shadow
+- `.btn` — box-shadow, transition, transform
+- `.btn-copy` — transition
+- `.btn-end-turn` — transition, color-mix
+- `.btn-event-choice` — transition
+- `.btn-event-confirm` — transition, color-mix
+- `.btn-game-primary` — box-shadow, transition, transform
+- `.btn-game-secondary` — color-mix
+- `.btn-ghost` — color-mix
+- `.btn-neon` — box-shadow
+- `.btn-outline` — color-mix
+- `.btn-play-again` — box-shadow, transition
+- `.btn-roll` — transition
+- `.btn-secondary` — color-mix
+- `.btn-share` — transition
+- `.btn-start` — box-shadow, transition
+- `.card-title` — text-shadow
+- `.cc-btn` — box-shadow, transition, transform
+- `.cc-btn-primary` — box-shadow
+- `.cc-panel` — box-shadow, filter, backdrop-filter
+- `.cc-toggle-slider` — transition
+- `.chapter-content` — animation, transition, transform
+- `.chapter-rail` — transform
+- `.chapter-rail__book` — transform, color-mix
+- `.chapter-rail__signal` — box-shadow
+- `.chapter-reader--focus` — animation, transition
+- `.chapter-reader__article` — text-shadow, box-shadow, color-mix
+- `.chapter-reader__command-bar` — filter, backdrop-filter, color-mix
+- `.chapter-reader__navigation` — color-mix
+- `.chapter-reader__progress-bar` — box-shadow, transition
+- `.chip` — color-mix
+- `.chip-accent` — color-mix
+- `.choice` — box-shadow
+- `.choice-box` — box-shadow, transform
+- `.choice-label` — —
+- `.choice-link` — box-shadow, color-mix
+- `.choice-text` — —
+- `.choices-locked` — box-shadow
+- `.choices-shown` — transform
+- `.chosen` — box-shadow
+- `.continue-btn` — box-shadow, transition, transform, color-mix
+- `.control-center__backdrop` — transition
+- `.control-center__body` — transform
+- `.control-center__confirm` — box-shadow
+- `.control-center__presets` — box-shadow
+- `.control-center__segments` — box-shadow
+- `.control-center__tabs` — box-shadow
+- `.control-center__toggle` — box-shadow
+- `.control-panel` — transform
+- `.corrupt` — text-shadow, animation
+- `.cp-close` — transition
+- `.cp-kicker` — transform
+- `.cp-section-header` — transform
+- `.cp-status` — transform
+- `.craft-recipe-row` — filter
+- `.craft-status-pill` — box-shadow
+- `.crt` — filter
+- `.css` — text-shadow, text-clip/gradient
+- `.cy-kicker` — transform
+- `.cy-system-label` — transform
+- `.cy-terminal-button` — box-shadow, transition, transform
+- `.cy-terminal-button--danger` — color-mix
+- `.cy-terminal-button--primary` — color-mix
+- `.cyklus-active-objective` — color-mix
+- `.cyklus-active-objective--popover` — box-shadow
+- `.cyklus-active-objective__body` — color-mix
+- `.cyklus-active-objective__focus` — transform
+- `.cyklus-active-objective__summary` — color-mix
+- `.cyklus-behavioral` — box-shadow
+- `.cyklus-behavioral__text` — transform
+- `.cyklus-behavioral__title` — transform
+- `.cyklus-bottom-nav` — box-shadow, color-mix
+- `.cyklus-bottom-nav__btn` — transform
+- `.cyklus-bottom-sheet` — box-shadow, animation
+- `.cyklus-bottom-sheet__backdrop` — filter, backdrop-filter
+- `.cyklus-bottom-sheet__dismiss` — filter, backdrop-filter, color-mix
+- `.cyklus-btn` — transition, transform
+- `.cyklus-btn--primary` — color-mix
+- `.cyklus-btn--yes` — box-shadow
+- `.cyklus-btn__label` — transform
+- `.cyklus-build__bar` — color-mix
+- `.cyklus-build__fill` — transition
+- `.cyklus-build__title` — transform
+- `.cyklus-build__toggle` — color-mix
+- `.cyklus-build__variant` — box-shadow
+- `.cyklus-card` — box-shadow
+- `.cyklus-card--swipe-no` — box-shadow, color-mix
+- `.cyklus-card--swipe-yes` — box-shadow, transition, transform
+- `.cyklus-card-art__footer` — color-mix
+- `.cyklus-card-art__image` — filter, transition
+- `.cyklus-card-art__reveal` — box-shadow, transform, color-mix
+- `.cyklus-card-art__transform-layer` — transform
+- `.cyklus-card-overlay` — box-shadow, transform
+- `.cyklus-card-overlay--outcome` — box-shadow
+- `.cyklus-card-overlay--summary` — box-shadow
+- `.cyklus-card-overlay--warning` — box-shadow
+- `.cyklus-card-overlay__backdrop` — filter, backdrop-filter, color-mix
+- `.cyklus-card-overlay__panel` — box-shadow, transform
+- `.cyklus-card-overlay__surface` — box-shadow, transform
+- `.cyklus-card-scene` — color-mix
+- `.cyklus-card__category` — box-shadow
+- `.cyklus-card__context` — transform
+- `.cyklus-card__overload` — animation
+- `.cyklus-card__preview--highlight` — animation
+- `.cyklus-card__restart-badge` — color-mix
+- `.cyklus-card__title` — text-shadow, transform, color-mix
+- `.cyklus-chapter__number` — transform
+- `.cyklus-chapter__title` — transform
+- `.cyklus-collection-card__art` — color-mix
+- `.cyklus-collection-card__scan` — filter, color-mix
+- `.cyklus-contract` — box-shadow
+- `.cyklus-cycle-forecast` — transform
+- `.cyklus-cycle-forecast__glyph` — text-shadow
+- `.cyklus-cycle-forecast__signal` — transform
+- `.cyklus-cycle-notice` — box-shadow, transform
+- `.cyklus-cycle-notice--summary` — box-shadow
+- `.cyklus-cycle-notice__header` — transform
+- `.cyklus-cycle-summary__metrics` — transform
+- `.cyklus-cycle-summary__sectors` — transform
+- `.cyklus-cycle-summary__stat` — transform
+- `.cyklus-dashboard-hero` — text-shadow
+- `.cyklus-death-analysis` — box-shadow
+- `.cyklus-death-analysis__text` — transform
+- `.cyklus-diag-drawer` — box-shadow, color-mix
+- `.cyklus-diag-drawer__label` — transform
+- `.cyklus-discovery__bar` — color-mix
+- `.cyklus-discovery__fill` — transition
+- `.cyklus-discovery__row` — box-shadow
+- `.cyklus-discovery__title` — transform
+- `.cyklus-end` — box-shadow, animation
+- `.cyklus-end-summary` — transform
+- `.cyklus-end-summary__actions` — color-mix
+- `.cyklus-end-summary__eyebrow` — transform
+- `.cyklus-end-summary__label` — transform
+- `.cyklus-end-summary__muted` — transform
+- `.cyklus-end-summary__row` — transform
+- `.cyklus-end-summary__steps` — transform
+- `.cyklus-end-summary__text` — transform
+- `.cyklus-end__codename` — transform
+- `.cyklus-end__diagnostics` — box-shadow
+- `.cyklus-end__diagnostics-body` — box-shadow
+- `.cyklus-end__diagnostics-summary` — transform
+- `.cyklus-end__findings` — box-shadow
+- `.cyklus-end__header` — color-mix
+- `.cyklus-end__imprints` — box-shadow
+- `.cyklus-end__meta-unlocks` — box-shadow
+- `.cyklus-end__near-extreme` — box-shadow
+- `.cyklus-end__near-extreme-note` — transform
+- `.cyklus-end__profile` — box-shadow
+- `.cyklus-end__route` — box-shadow
+- `.cyklus-end__section-label` — transform
+- `.cyklus-end__stats-snapshot` — box-shadow
+- `.cyklus-end__subtitle` — transform
+- `.cyklus-end__survival-reasons` — transform
+- `.cyklus-end__survival-type` — box-shadow
+- `.cyklus-end__system-label` — transform
+- `.cyklus-end__text` — transform
+- `.cyklus-end__title` — transform
+- `.cyklus-end__verdict-text` — transform
+- `.cyklus-finding__desc` — transform
+- `.cyklus-footer` — filter, backdrop-filter
+- `.cyklus-footer__button` — transform
+- `.cyklus-footer__label` — transform
+- `.cyklus-game-header` — color-mix
+- `.cyklus-goal` — box-shadow
+- `.cyklus-goal__title` — transform
+- `.cyklus-goals__reroll` — transform
+- `.cyklus-loading` — transform
+- `.cyklus-menu__bootbar` — transform
+- `.cyklus-menu__brand` — animation
+- `.cyklus-menu__button` — transition, transform
+- `.cyklus-menu__button--primary` — color-mix
+- `.cyklus-menu__button--secondary` — color-mix
+- `.cyklus-menu__content` — color-mix
+- `.cyklus-menu__portal` — box-shadow, animation, color-mix
+- `.cyklus-menu__portal-core` — box-shadow, color-mix
+- `.cyklus-menu__subtitle` — transform
+- `.cyklus-menu__title` — text-shadow
+- `.cyklus-menu__video` — filter
+- `.cyklus-meta-unlock__reason` — transform
+- `.cyklus-mobile-hud` — color-mix
+- `.cyklus-mobile-hud__risk` — color-mix
+- `.cyklus-mobile-utility-dock` — box-shadow, color-mix
+- `.cyklus-mobile-utility-dock__pocket` — box-shadow, color-mix
+- `.cyklus-nav-panel` — filter, backdrop-filter
+- `.cyklus-nav-panel__label` — transform
+- `.cyklus-outcome` — box-shadow, animation, filter, backdrop-filter
+- `.cyklus-outcome__content` — box-shadow, color-mix
+- `.cyklus-outcome__continue` — color-mix
+- `.cyklus-outcome__label` — transform
+- `.cyklus-outcome__reward` — transform
+- `.cyklus-outcome__story` — transform
+- `.cyklus-overlay` — animation
+- `.cyklus-overlay--build` — box-shadow
+- `.cyklus-overlay--discovery` — box-shadow
+- `.cyklus-overlay--void-hub` — color-mix
+- `.cyklus-overlay__backdrop` — filter, backdrop-filter, color-mix
+- `.cyklus-overlay__continue` — transform
+- `.cyklus-overlay__forecast-title` — transform
+- `.cyklus-overlay__panel` — box-shadow
+- `.cyklus-overlay__sector-label` — transform
+- `.cyklus-page` — box-shadow, transition, transform
+- `.cyklus-panel-header` — text-shadow
+- `.cyklus-panel-kicker` — transform
+- `.cyklus-pocket--header` — box-shadow
+- `.cyklus-pocket--standalone` — box-shadow
+- `.cyklus-pocket-column` — text-shadow
+- `.cyklus-pocket-panel` — text-shadow
+- `.cyklus-pocket-trigger` — box-shadow
+- `.cyklus-pocket__activate` — transform
+- `.cyklus-pocket__count` — animation
+- `.cyklus-pocket__item` — color-mix
+- `.cyklus-pocket__item-mood` — transform
+- `.cyklus-pocket__panel` — box-shadow
+- `.cyklus-pocket__toggle` — transition
+- `.cyklus-preview` — transition
+- `.cyklus-preview__risk` — transform
+- `.cyklus-progression-dashboard` — text-shadow
+- `.cyklus-reward` — box-shadow
+- `.cyklus-reward__advice` — transform
+- `.cyklus-reward__flavor` — transform
+- `.cyklus-reward__reason` — transform
+- `.cyklus-reward__residuum-value` — text-shadow
+- `.cyklus-reward__section-label` — transform
+- `.cyklus-reward__system-label` — transform
+- `.cyklus-root--menu` — color-mix
+- `.cyklus-stage` — box-shadow
+- `.cyklus-stat-chip` — box-shadow
+- `.cyklus-stat-chip--changed` — animation
+- `.cyklus-stat-chip--high-danger` — box-shadow
+- `.cyklus-stat-chip--highlight` — box-shadow, animation
+- `.cyklus-stat-chip--low-danger` — color-mix
+
+## Classes with hard-coded colors / !important
+
+- `.action-bar__btn`
+- `.action-bar__card`
+- `.active`
+- `.admin-input`
+- `.admin-tab-btn`
+- `.alarm-emote`
+- `.allow-alarm`
+- `.animations-off`
+- `.archive-card`
+- `.archive-page`
+- `.archive-record-card--interactive`
+- `.audioBadge`
+- `.auth-home-panel`
+- `.auth-home-title`
+- `.auth-input`
+- `.autor-fallback`
+- `.autor-panel`
+- `.badge-item--earned`
+- `.bgHost`
+- `.bios-warning`
+- `.blink`
+- `.bookCard`
+- `.books-fallback`
+- `.btn`
+- `.btn-neon`
+- `.btn-outline`
+- `.card-close`
+- `.card-title`
+- `.cc-btn`
+- `.cc-btn-primary`
+- `.cc-panel`
+- `.cc-toggle-slider`
+- `.chapter-background__video`
+- `.chapter-container`
+- `.chapter-content`
+- `.chapter-reader--focus`
+- `.chapter-reader__article`
+- `.chapter-title`
+- `.choice`
+- `.choice-box`
+- `.choice-empty`
+- `.choice-group`
+- `.choice-link`
+- `.choices-locked`
+- `.choices-shown`
+- `.chosen`
+- `.control-center__backdrop`
+- `.control-panel`
+- `.corrupt`
+- `.coverHero`
+- `.coverThumb`
+- `.craft-recipe-row`
+- `.craft-status-pill`
+- `.crt`
+- `.css`
+- `.cyklus-behavioral`
+- `.cyklus-bottom-nav`
+- `.cyklus-bottom-sheet__backdrop`
+- `.cyklus-btn`
+- `.cyklus-btn--no`
+- `.cyklus-btn--primary`
+- `.cyklus-btn--yes`
+- `.cyklus-build__fill`
+- `.cyklus-card`
+- `.cyklus-card--swipe-no`
+- `.cyklus-card--swipe-yes`
+- `.cyklus-card-scene`
+- `.cyklus-card__category`
+- `.cyklus-card__overload`
+- `.cyklus-card__preview--highlight`
+- `.cyklus-card__restart-badge`
+- `.cyklus-contract`
+- `.cyklus-death-analysis`
+- `.cyklus-discovery__fill`
+- `.cyklus-end`
+- `.cyklus-end__findings`
+- `.cyklus-end__meta-unlocks`
+- `.cyklus-end__near-extreme`
+- `.cyklus-end__stats-snapshot`
+- `.cyklus-end__survival-reasons`
+- `.cyklus-end__survival-type`
+- `.cyklus-footer`
+- `.cyklus-footer__button`
+- `.cyklus-goals__reroll`
+- `.cyklus-menu__button`
+- `.cyklus-menu__button--primary`
+- `.cyklus-menu__button--secondary`
+- `.cyklus-menu__title`
+- `.cyklus-menu__video`
+- `.cyklus-mobile-hud`
+- `.cyklus-mobile-hud__risk`
+- `.cyklus-mobile-hud__risk--critical`
+- `.cyklus-outcome`
+- `.cyklus-outcome__label`
+- `.cyklus-overlay`
+- `.cyklus-overlay--build`
+- `.cyklus-overlay--discovery`
+- `.cyklus-overlay--void-hub`
+- `.cyklus-overlay__panel`
+- `.cyklus-page`
+- `.cyklus-panel-kicker`
+- `.cyklus-pocket--highlight`
+- `.cyklus-pocket--mood-angry`
+- `.cyklus-pocket--mood-ready`
+- `.cyklus-pocket--mood-unstable`
+- `.cyklus-pocket--mood-warm`
+- `.cyklus-pocket--mood-watching`
+- `.cyklus-pocket-column`
+- `.cyklus-pocket-panel`
+- `.cyklus-pocket__activate`
+- `.cyklus-pocket__count`
+- `.cyklus-pocket__item--angry`
+- `.cyklus-pocket__item--unstable`
+- `.cyklus-pocket__toggle`
+- `.cyklus-preview__risk`
+- `.cyklus-progression-dashboard`
+- `.cyklus-reward__advice`
+- `.cyklus-reward__reason`
+- `.cyklus-reward__residuum-value`
+- `.cyklus-stage`
+- `.cyklus-stat-chip`
+- `.cyklus-stat-chip--high-danger`
+- `.cyklus-stat-chip--highlight`
+- `.cyklus-stat-chip--low-danger`
+- `.cyklus-stat-chip__fill`
+- `.cyklus-stat-dock`
+- `.cyklus-stat-dock--highlighted`
+- `.cyklus-stat-popup`
+- `.cyklus-stat-popup-overlay`
+- `.cyklus-stat-popup__danger--critical-high`
+- `.cyklus-stat-popup__danger--critical-low`
+- `.cyklus-suggestion-box`
+- `.cyklus-void-button`
+- `.cyklus-void-button--danger`
+- `.cyklus-void-button--primary`
+- `.cyklus-void-card`
+- `.cyklus-void-card--available`
+- `.cyklus-void-card--equipped`
+- `.cyklus-void-card--locked`
+- `.cyklus-void-card--maxed`
+- `.cyklus-void-card__value`
+- `.cyklus-void-client-toolbar`
+- `.cyklus-void-flavour`
+- `.cyklus-void-hub`
+- `.cyklus-void-hub__frame`
+- `.cyklus-void-hub__title`
+- `.cyklus-void-page`
+- `.cyklus-void-section__title`
+- `.cyklus-void-stat`
+- `.cyklus-void-tab`
+- `.cyklus-void-tab--active`
+- `.datastream`
+- `.dialog`
+- `.dialog-line`
+- `.dialog1024`
+- `.dialogAudit`
+- `.dialogBoris`
+- `.dialogBot`
+- `.dialogBuilding`
+- `.dialogBus`
+- `.dialogCare`
+- `.dialogCivil`
+- `.dialogCore`
+- `.dialogD`
+- `.dialogDril`
+- `.dialogE`
+- `.dialogG`
+- `.dialogGlitchka`
+- `.dialogHelena`
+- `.dialogHestia`
+- `.dialogHome`
+- `.dialogJuros`
+- `.dialogLogistics`
+- `.dialogMilo`
+- `.dialogMina`
+- `.dialogN`
+- `.dialogNeon`
+- `.dialogNull`
+- `.dialogNurse`
+- `.dialogOracle`
+- `.dialogPassenger`
+- `.dialogPatient`
+- `.dialogR`
+- `.dialogResident`
+- `.dialogS`
+- `.dialogSara`
+- `.dialogSarkasma`
+- `.dialogSecurity`
+- `.dialogSobotka`
+- `.dialogSystem`
+- `.dialogT`
+- `.dialogVanta`
+- `.dialogVoice`
+- `.dialogWorker`
+- `.disabled`
+- `.echo-ghost`
+- `.echo-picker`
+- `.echo-picker-opt`
+- `.effect-crtTerminal`
+- `.effect-fogNoise`
+- `.effect-pulseWave`
+- `.effect-riftGlow`
+- `.encounter-panel__choice-btn`
+- `.encounter-panel__reward-btn`
+- `.encounter-panel__reward-type`
+- `.encounter-panel__skip-btn`
+- `.enemy-card`
+- `.enemy-card--danger`
+- `.enemy-card__dead-overlay`
+- `.enemy-card__hp-fill`
+- `.enemy-card__phase`
+- `.error`
+- `.error-overlay`
+- `.faded`
+- `.flickering`
+- `.flickering-off`
+- `.fog`
+- `.force-shine`
+- `.fragment-card`
+- `.fragment-card-type`
+- `.fx-glitch`
+- `.fx-glow-magenta`
+- `.fx-gradient`
+- `.fx-neon`
+- `.fx-noise`
+- `.fx-outline`
+- `.fx-rainbow`
+- `.fx-scanline`
+- `.fx-shadow-lg`
+- `.fx-underline`
+- `.game-action-bar`
+- `.game-ap-dot--empty`
+- `.game-bar`
+- `.game-card`
+- `.game-card--action`
+- `.game-card--event`
+- `.game-card--glitch`
+- `.game-card--intrigue`
+- `.game-card--memory`
+- `.game-card--relic`
+- `.game-card--selected`
+- `.game-card--stabilization`
+- `.game-card--unit`
+- `.game-card--void`
+- `.game-card__flavor`
+- `.game-end-report__player`
+- `.game-end-report__profile-pill`
+- `.game-hand`
+- `.game-log__entry`
+- `.game-player-panel`
+- `.game-setup__label`
+- `.game-setup__mode-btn`
+- `.game-setup__mode-btn--active`
+- `.game-setup__name-input`
+- `.game-shell__sidebar`
+- `.game-shell__sidebar--right`
+- `.game-solo-banner--cyklus`
+- `.game-solo-banner__title`
+- `.game-void-track`
+- `.game-void-track__event-tag`
+- `.glass`
+- `.glitch`
+- `.glitch-bg`
+- `.glitch-button`
+- `.glitch-char`
+- `.glitch-fake1`
+- `.glitch-fake2`
+- `.glitch-intense`
+- `.glitch-master`
+- `.glitch-minimal`
+- `.glitch-real`
+- `.glitch-word`
+- `.glitch-word2`
+- `.glitching`
+- `.glitching-char`
+- `.glitchy`
+- `.halo`
+- `.helpModalButton`
+- `.helpModalCloseButton`
+- `.hero-intro`
+- `.home-page`
+- `.html`
+- `.id-panel-btn`
+- `.id-panel-home`
+- `.id-panel-name`
+- `.id-panel-popup`
+- `.intro-title`
+- `.is-active`
+- `.is-available`
+- `.is-craftable`
+- `.is-crafted`
+- `.is-danger`
+- `.is-equipped`
+- `.is-lit`
+- `.is-locked`
+- `.is-maxed`
+- `.is-modal`
+- `.is-open`
+- `.is-pocket-room`
+- `.is-selected`
+- `.is-stable`
+- `.kp-access-timer`
+- `.kp-anchor-road`
+- `.kp-audio-line`
+- `.kp-audit-meter`
+- `.kp-audit-step`
+- `.kp-authority--danger`
+- `.kp-axiom`
+- `.kp-barrier-clash`
+- `.kp-barrier-field`
+- `.kp-bed`
+- `.kp-black-core`
+- `.kp-black-screen`
+- `.kp-black-vans`
+- `.kp-blackout`
+- `.kp-block`
+- `.kp-blue-line`
+- `.kp-body-city`
+- `.kp-boundary-door`
+- `.kp-breath`
+- `.kp-bridge`
+- `.kp-building-chorus`
+- `.kp-bulb`
+- `.kp-bus-lock`
+- `.kp-bus-run`
+- `.kp-bus-shadow`
+- `.kp-call-wave`
+- `.kp-care-fog`
+- `.kp-careline`
+- `.kp-cart`
+- `.kp-chair`
+- `.kp-chapter`
+- `.kp-choice-core`
+- `.kp-city-fall`
+- `.kp-city-grid`
+- `.kp-city-map`
+- `.kp-claim-approved`
+- `.kp-clinical-depth`
+- `.kp-clock`
+- `.kp-cold-store`
+- `.kp-comfort-field`
+- `.kp-comfort-incursion`
+- `.kp-cone`
+- `.kp-consent`
+- `.kp-contact`
+- `.kp-contact-terms`
+- `.kp-control-tower`
+- `.kp-conveyor`
+- `.kp-cooling-bar`
+- `.kp-core`
+- `.kp-core-home`
+- `.kp-corridor`
+- `.kp-countdown`
+- `.kp-crack`
+- `.kp-crossing`
+- `.kp-crown`
+- `.kp-crusher`
+- `.kp-cursor`
+- `.kp-dark-buttons`
+- `.kp-delayed`
+- `.kp-descent`
+- `.kp-directive`
+- `.kp-door`
+- `.kp-door-choice`
+- `.kp-door-open`
+- `.kp-door-sequence`
+- `.kp-drill-pit`
+- `.kp-drone-dot`
+- `.kp-drone-ring`
+- `.kp-drone-sky`
+- `.kp-drone-swarm`
+- `.kp-drones`
+- `.kp-falling-tool`
+- `.kp-family-signal`
+- `.kp-final-line`
+- `.kp-final-voice`
+- `.kp-flatline`
+- `.kp-foam`
+- `.kp-fork-arms`
+- `.kp-fox-object`
+- `.kp-fragment`
+- `.kp-fragment-circle`
+- `.kp-freefall`
+- `.kp-gap-meter`
+- `.kp-gate`
+- `.kp-glass-wall`
+- `.kp-global-fix`
+- `.kp-handprint`
+- `.kp-home-cluster`
+- `.kp-hospital`
+- `.kp-id`
+- `.kp-impact`
+- `.kp-island-map`
+- `.kp-key`
+- `.kp-keyring`
+- `.kp-knock`
+- `.kp-label-card`
+- `.kp-leak-pulse`
+- `.kp-legacy-core`
+- `.kp-legacy-figures`
+- `.kp-letter`
+- `.kp-lift-offer`
+- `.kp-live-text`
+- `.kp-logistics-belt`
+- `.kp-logistics-yard`
+- `.kp-manual-switch`
+- `.kp-manual-witness`
+- `.kp-map`
+- `.kp-mechanical-timer`
+- `.kp-memory-video`
+- `.kp-migration`
+- `.kp-migration-counter`
+- `.kp-migration-timer`
+- `.kp-milo-arm`
+- `.kp-milo-cart`
+- `.kp-milo-crushed`
+- `.kp-milo-damage`
+- `.kp-milo-entry`
+- `.kp-milo-mark`
+- `.kp-milo-repair`
+- `.kp-mirror-strip`
+- `.kp-n2-signal`
+- `.kp-neon-zero`
+- `.kp-neon0-card`
+- `.kp-neutralized`
+- `.kp-node-awake`
+- `.kp-null-half`
+- `.kp-null-thread`
+- `.kp-offer`
+- `.kp-offer--vanta`
+- `.kp-old-house`
+- `.kp-old-line`
+- `.kp-old-line--critical`
+- `.kp-open-case`
+- `.kp-open-doors`
+- `.kp-open-house`
+- `.kp-packet-corrupt`
+- `.kp-perfect-home`
+- `.kp-physical-half`
+- `.kp-preserved-count`
+- `.kp-pressure-lock`
+- `.kp-prime-mirror`
+- `.kp-profile-window`
+- `.kp-propaganda`
+- `.kp-pump`
+- `.kp-pump__motor`
+- `.kp-question`
+- `.kp-radio-room`
+- `.kp-red-pulls`
+- `.kp-remedy`
+- `.kp-remedy-countdown`
+- `.kp-restraint`
+- `.kp-restraint-bed`
+- `.kp-restraint-line`
+- `.kp-result`
+- `.kp-return-lights`
+- `.kp-risk-map`
+- `.kp-road-bus`
+- `.kp-road-split`
+- `.kp-roundabout`
+- `.kp-route`
+- `.kp-route-bus`
+- `.kp-route-drift`
+- `.kp-route-line`
+- `.kp-route-void`
+- `.kp-scent-haze`
+- `.kp-scratch`
+- `.kp-sensor-denial`
+- `.kp-service-freeze`
+- `.kp-service-unit`
+- `.kp-shaft`
+- `.kp-shoe`
+- `.kp-shrinkwrap`
+- `.kp-silence-field`
+- `.kp-simple-route`
+- `.kp-site`
+- `.kp-smartband`
+- `.kp-stairs`
+- `.kp-stairwell`
+- `.kp-steam`
+- `.kp-stop-timer`
+- `.kp-streams`
+- `.kp-substation`
+- `.kp-support-desk`
+- `.kp-support-expired`
+- `.kp-synthoma-influx`
+- `.kp-synthoma-mark`
+- `.kp-terminal`
+- `.kp-ticket-storm`
+- `.kp-tova-fragment`
+- `.kp-tova-protocol`
+- `.kp-tova-ring`
+- `.kp-tower`
+- `.kp-tower-ring`
+- `.kp-training-loop`
+- `.kp-transfer`
+- `.kp-truth-broadcast`
+- `.kp-tunnel`
+- `.kp-uniform-light`
+- `.kp-user-1024`
+- `.kp-valve`
+- `.kp-vanta-face`
+- `.kp-vanta-suite`
+- `.kp-verification`
+- `.kp-void`
+- `.kp-wait`
+- `.kp-waiting`
+- `.kp-wall`
+- `.kp-weight-scan`
+- `.kp-whisper`
+- `.kp-white-room`
+- `.kp-window-message`
+- `.kp-workshop`
+- `.kp-world-nodes`
+- `.kp-yellow-lever`
+- `.kp-yellow-line`
+- `.kp-yellow-route`
+- `.landing-intro-page`
+- `.lib-badge--locked`
+- `.lib-bg-video`
+- `.lib-bg-vignette`
+- `.lib-link`
+- `.lib-link--locked`
+- `.lib-link-title`
+- `.lib-section`
+- `.library-article`
+- `.library-book-card`
+- `.library-page`
+- `.loading-chapter`
+- `.loading-overlay`
+- `.loading-spinner`
+- `.loadout-entry`
+- `.log`
+- `.manifest`
+- `.manifest-wrapper`
+- `.mbti-aura`
+- `.mbti-axis-fill`
+- `.mbti-chip`
+- `.mbti-panel`
+- `.modal-content`
+- `.neon-blood`
+- `.neon-char`
+- `.neon-reader`
+- `.neon-text`
+- `.no-animations`
+- `.no-video-bg`
+- `.noising`
+- `.noising-burst`
+- `.noising-char`
+- `.noising-static`
+- `.noising-text`
+- `.os-motion`
+- `.os-surface`
+- `.os-surface--glass`
+- `.panel`
+- `.panel-section-title`
+- `.paywall`
+- `.paywall-overlay`
+- `.paywall-package`
+- `.paywall-package--primary`
+- `.paywall-package-badge--sub`
+- `.paywall-package-btn--primary`
+- `.pdfBtn`
+- `.playlist`
+- `.pocket-item-row`
+- `.primary`
+- `.profile-panel-backdrop`
+- `.profile-panel-close`
+- `.profile-panel-popup`
+- `.profile-panel-title`
+- `.progress`
+- `.progressFill`
+- `.progression-card`
+- `.public-ai-kicker`
+- `.public-card-grid`
+- `.puzzle-complete`
+- `.pwa-boot-splash`
+- `.pwa-dialog`
+- `.pwa-page__panel`
+- `.reader-controls`
+- `.reader-decision-group`
+- `.reader-decision-marker`
+- `.reader-dialog-status`
+- `.reader-onboarding`
+- `.reader-page`
+- `.reader-skeleton__line`
+- `.reader-skeleton__scanline`
+- `.readerBackground`
+- `.readerContent`
+- `.readerHelpButton`
+- `.readerMain`
+- `.readingProgressBar`
+- `.redacted`
+- `.related-chip`
+- `.retry-button`
+- `.run-end-report__btn`
+- `.run-end-report__relic-name`
+- `.run-end-report__status`
+- `.run-fragment-slot--found`
+- `.run-hud--void-critical`
+- `.run-hud__bar-fill--hp-low`
+- `.run-hud__bar-fill--noise-critical`
+- `.run-hud__bar-fill--void`
+- `.run-hud__bar-row--void`
+- `.run-hud__fragmentation`
+- `.run-hud__fragmentation--stack2`
+- `.run-map__node-circle`
+- `.run-nav-btn`
+- `.scanline`
+- `.sector-tile`
+- `.sector-tile--active-player`
+- `.sector-tile--corrupted`
+- `.sector-tile--hidden`
+- `.sector-tile--revealed`
+- `.sector-tile--stable`
+- `.selected`
+- `.shinning`
+- `.skip-to-content`
+- `.slider-value`
+- `.solo-menu__btn`
+- `.solo-menu__btn--continue`
+- `.solo-menu__btn--help`
+- `.solo-menu__btn--start`
+- `.solo-menu__help-modal`
+- `.solo-menu__input`
+- `.solo-menu__run-type-btn`
+- `.solo-menu__run-type-btn--selected`
+- `.solo-run__help-btn`
+- `.sync-overlay`
+- `.sync-panel`
+- `.synth-gate-chip`
+- `.synth-gate-corner`
+- `.synth-gate-grid`
+- `.synth-gate-help`
+- `.synth-gate-noise`
+- `.synth-gate-orbit`
+- `.synth-gate-primary`
+- `.synth-gate-pulse`
+- `.synth-gate-ritual`
+- `.synth-gate-subtitle`
+- `.synth-gate-terminal`
+- `.synth-gate-title`
+- `.synth-gate-warning`
+- `.synth-gateway-shell`
+- `.synthoma-detail-dialog`
+- `.synthoma-detail-overlay`
+- `.synthoma-intro__motto`
+- `.synthoma-media-layer__video`
+- `.synthoma-wordmark`
+- `.synthoma-wordmark__char`
+- `.synthoma-wordmark__layer--cyan`
+- `.synthoma-wordmark__layer--magenta`
+- `.synthoma-wordmark__text`
+- `.SYNTHOMAREADER`
+- `.tag-chip`
+- `.text`
+- `.textV`
+- `.theme-button`
+- `.theme-dialog`
+- `.theme-dialog-overlay`
+- `.title`
+- `.title-sm`
+- `.tw-line`
+- `.typewriter`
+- `.typing`
+- `.typing-cursor`
+- `.uncertain`
+- `.v1-action-card`
+- `.v1-action-card--selected`
+- `.v1-badge`
+- `.v1-btn`
+- `.v1-btn--primary`
+- `.v1-enemy-card`
+- `.v1-enemy-card--targeted`
+- `.v1-enemy-card__hp-fill`
+- `.v1-hud-bar`
+- `.v1-hud-bar__fill--hp`
+- `.v1-hud-bar__fill--void`
+- `.v1-map-edge`
+- `.v1-map-node--available`
+- `.v1-map-node--clickable`
+- `.v1-map-node--current`
+- `.v1-map-node-circle`
+- `.v1-map-node-label`
+- `.v1-menu-title`
+- `.v1-panel`
+- `.v1-panel-strong`
+- `.v1-scanlines`
+- `.video-background`
+- `.void-collapse`
+- `.void-critical`
+- `.void-hub-action-button`
+- `.void-hub-action-with-note`
+- `.void-hub-focus`
+- `.void-hub-focus__button`
+- `.void-hub-hero`
+- `.void-hub-hero__role`
+- `.void-hub-next-action`
+- `.void-hub-return-summary`
+- `.void-hub-section-header`
+- `.void-hub-tab`
+- `.void-hub-tab-panel`
+- `.void-room-badge`
+- `.void-room-row`
+- `.whisper-boost-btn`
+- `.whisper-card`
+- `.whisper-card--boosted`
+- `.whisper-chip`
+- `.whisper-float-item`
+- `.whisper-form-textarea`
+- `.whisper-resonate-btn`
+- `.whisper-submit-section`
+- `.whisper-submit-section-title`
+- `.whisper-submit-select`
+- `.whisper-submit-textarea`
+- `.whisper-submit-title`
