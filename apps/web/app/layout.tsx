@@ -239,6 +239,52 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
       <head>
 
+        <style
+          id="pwa-splash-critical-css"
+          dangerouslySetInnerHTML={{ __html: `
+            #pwa-boot-splash {
+              display: none;
+              position: fixed;
+              inset: 0;
+              z-index: 2147483647;
+              background: #02060b;
+              place-items: center;
+              overflow: hidden;
+            }
+            #pwa-boot-splash img {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+              object-position: center;
+            }
+            @media (display-mode: standalone), (display-mode: fullscreen) {
+              html:not(.pwa-ready) #pwa-boot-splash { display: grid; }
+              html:not(.pwa-ready) #app-shell { visibility: hidden; }
+            }
+            html.pwa-ready #app-shell { visibility: visible; }
+            html.pwa-ready #pwa-boot-splash {
+              opacity: 0;
+              visibility: hidden;
+              pointer-events: none;
+              transition: opacity 250ms ease, visibility 0s linear 250ms;
+            }
+          ` }}
+        />
+
+        <link rel="preload" href={SYNTHOMA_ASSETS.logo} as="image" type="image/png" />
+
+        <script
+          id="pwa-standalone-detect"
+          dangerouslySetInnerHTML={{ __html: `
+            (function(){
+              var standalone = window.matchMedia('(display-mode: standalone)').matches
+                || window.matchMedia('(display-mode: fullscreen)').matches
+                || window.navigator.standalone === true;
+              if (standalone) document.documentElement.dataset.pwaLaunch = "true";
+            })();
+          ` }}
+        />
+
         <Script
           id="synthoma-ui-preferences-bootstrap"
           strategy="beforeInteractive"

@@ -20,8 +20,8 @@ describe('PWA service worker contract', () => {
     expect(buildSource).toContain('cleanupOutdatedCaches: true');
     expect(buildSource).toContain('navigationPreload: true');
     expect(buildSource).toContain('skipWaiting: true');
-    expect(buildSource).toContain("const PWA_VERSION = '1.0.0-pwa.5'");
-    expect(worker).toContain('1.0.0-pwa.5');
+    expect(buildSource).toContain("const PWA_VERSION = '1.0.0-pwa.6'");
+    expect(worker).toContain('1.0.0-pwa.6');
     for (const asset of [
       '/assets/background_logo.png',
       '/assets/favicon.ico',
@@ -78,9 +78,10 @@ describe('PWA service worker contract', () => {
     expect(layoutSource).toContain('<div id="pwa-boot-splash" aria-hidden="true">');
     expect(layoutSource).toContain('<div id="app-shell">');
     expect(layoutSource).toContain('<link rel="preload" href={SYNTHOMA_ASSETS.logo} as="image" type="image/png" />');
-    expect(pwaCss).toContain('html[data-pwa-launch="true"] #app-shell');
-    expect(pwaCss).toContain('html.pwa-ready #app-shell');
-    expect(pwaCss).toContain('background: #02060b');
+    expect(layoutSource).toContain('html:not(.pwa-ready) #pwa-boot-splash { display: grid; }');
+    expect(layoutSource).toContain('html:not(.pwa-ready) #app-shell { visibility: hidden; }');
+    expect(layoutSource).toContain('html.pwa-ready #app-shell { visibility: visible; }');
+    expect(layoutSource).toContain('background: #02060b');
   });
 
   it('forces revalidation headers without weakening CSP', () => {

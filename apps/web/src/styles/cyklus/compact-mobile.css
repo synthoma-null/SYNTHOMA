@@ -197,8 +197,8 @@
   .cyklus-card__preview {
     position: relative;
     z-index: 3;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
     min-height: 0;
     padding-top: 6px;
     background: transparent;
@@ -231,10 +231,13 @@
   .cyklus-preview .cyklus-btn {
     display: grid;
     width: 100%;
+    min-width: 0;
     height: auto;
     min-height: 44px;
-    padding: 7px 9px;
+    padding: 0.65rem 0.5rem;
     place-items: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
     border-radius: var(--cy-radius-sm);
   }
 
@@ -250,9 +253,12 @@
 
   .cyklus-btn__label {
     display: block;
+    min-width: 0;
     overflow: visible;
     font-size: 0.68rem;
     line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .cyklus-card--swipe-yes::after,
@@ -332,6 +338,20 @@
   .cyklus-card-scene {
     font-size: 0.86rem;
     line-height: 1.48;
+  }
+
+  .cyklus-card__preview {
+    gap: 0.4rem;
+  }
+
+  .cyklus-preview .cyklus-btn {
+    padding: 0.45rem 0.35rem;
+    min-height: 40px;
+  }
+
+  .cyklus-btn__label {
+    font-size: 0.62rem;
+    line-height: 1.2;
   }
 }
 

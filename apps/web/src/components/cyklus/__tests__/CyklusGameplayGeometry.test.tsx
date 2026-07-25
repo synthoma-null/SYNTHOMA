@@ -64,8 +64,9 @@ describe('Cyklus gameplay geometry contract', () => {
     expect(card).toMatch(/\.cyklus-card-scene\s*\{[\s\S]*?min-height:\s*0;[\s\S]*?overflow-y:\s*auto;[\s\S]*?overscroll-behavior:\s*contain;[\s\S]*?scrollbar-gutter:\s*stable;[\s\S]*?touch-action:\s*pan-y;/);
     expect(client).toMatch(/<CyklusCardScene card=\{card\} \/>[\s\S]*?data-cyklus-choice-dock[\s\S]*?<OutcomePanel/);
     expect(cardOverlay).toMatch(/grid-template-areas:[\s\S]*?"scene"[\s\S]*?"choices";/);
-    expect(compact).toMatch(/\.cyklus-card__preview\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\);[\s\S]*?min-height:\s*0;/);
+    expect(compact).toMatch(/\.cyklus-card__preview\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);[\s\S]*?min-height:\s*0;/);
     expect(compact).toMatch(/\.cyklus-preview \{[\s\S]*?height:\s*auto;[\s\S]*?max-height:\s*none;/);
+    expect(compact).toMatch(/\.cyklus-preview\s+\.cyklus-btn\s*\{[\s\S]*?white-space:\s*normal;[\s\S]*?overflow-wrap:\s*anywhere;/);
     expect(client).not.toContain('className="cyklus-choice-dock"');
   });
 

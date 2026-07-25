@@ -1,4 +1,4 @@
-export const PWA_VERSION = '1.0.0-pwa.5';
+export const PWA_VERSION = '1.0.0-pwa.6';
 export const PWA_BUILD_ID = process.env.NEXT_PUBLIC_SYNTHOMA_BUILD_ID || 'local';
 export const PWA_CACHE_PREFIX = 'synthoma-';
 export const PWA_INSTALL_DISMISSED_KEY = 'synthoma_pwa_install_dismissed_at';
