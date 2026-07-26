@@ -23,7 +23,7 @@ export interface ArchiveCard {
   body: string[];
   summary?: string | undefined;
   details?: string[] | undefined;
-  sourceBook?: 'synthoma-null' | 'konec-podpory' | undefined;
+  sourceBook?: 'synthoma-null' | 'konec-podpory' | 'neon-0' | undefined;
   unlockChapter?: string | undefined;
   speakerId?: string | undefined;
   tags?: string[] | undefined;

@@ -18,8 +18,9 @@ describe('AutorClient', () => {
 
     expect(screen.getByRole('main')).toHaveAttribute('data-content-kind', 'author');
     expect(screen.getByRole('article', { name: 'O autorovi' })).toHaveClass('chapter-reader__article');
-    expect(screen.getByRole('link', { name: 'UZEL' })).toHaveAttribute('href', '/');
-    expect(screen.getByRole('link', { name: 'KNIHOVNA' })).toHaveAttribute('href', '/books');
+    expect(screen.queryByRole('link', { name: 'UZEL' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'KNIHOVNA' })).not.toBeInTheDocument();
+    expect(screen.getByRole('toolbar', { name: 'Nástroje autora' })).toHaveTextContent('AUTOR');
     expect(screen.getByTestId('reader-utilities')).toBeInTheDocument();
     expect(container.querySelector('.chapter-reader__progress')).not.toBeInTheDocument();
     expect(container.querySelector('.chapter-reader__navigation')).not.toBeInTheDocument();

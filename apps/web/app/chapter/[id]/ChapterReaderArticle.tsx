@@ -35,16 +35,18 @@ export default function ChapterReaderArticle({
   );
   const index = published.findIndex((entry) => entry.id === chapter.id);
   const previous = index > 0 ? published[index - 1] : undefined;
+  const next = index >= 0 && index < published.length - 1 ? published[index + 1] : undefined;
   const presentation = getChapterPresentation(chapter.id);
   const collection = getBookCollection(chapter.collection);
-  const isKonecPodpory = collection?.slug === 'konec-podpory';
+  const bookScope = collection?.publicId ?? 'synthoma-null';
+  const isKonecPodpory = bookScope === 'konec-podpory';
   const chapterCode = chapter.ordinal;
   const hasDecisions = getReaderDecisionContract(chapter.id).length > 0;
   const title = locale === 'en' ? chapter.titleEn ?? chapter.displayTitle : chapter.displayTitle;
   const accessibleTitle = locale === 'en' ? chapter.titleEn ?? chapter.fullTitle : chapter.fullTitle;
   const copy = locale === 'en'
-    ? { back: 'BACK', library: 'LIBRARY', previous: 'PREVIOUS' }
-    : { back: 'ZPĚT', library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ' };
+    ? { back: 'BACK', library: 'LIBRARY', previous: 'PREVIOUS', next: 'NEXT' }
+    : { back: 'ZPĚT', library: 'KNIHOVNA', previous: 'PŘEDCHOZÍ', next: 'DALŠÍ' };
 
   return (
     <main className="chapter-reader" id="main-content" data-book={collection?.publicId ?? 'synthoma-null'}>
@@ -63,7 +65,7 @@ export default function ChapterReaderArticle({
         position={index + 1}
         total={published.length}
       />
-      <header className="chapter-reader__command-bar">
+      <div className="chapter-reader__command-bar" role="toolbar" aria-label={locale === 'en' ? 'Reader tools' : 'Nástroje čtečky'}>
         <div className="chapter-reader__route-commands">
           <Link className="chapter-reader__command chapter-reader__back" href={locale === 'en' ? '/books?locale=en' : '/books'}>
             <span className="chapter-reader__back-mobile">{copy.back}</span>
@@ -90,7 +92,7 @@ export default function ChapterReaderArticle({
             hasDecisions={hasDecisions}
           />
         </div>
-      </header>
+      </div>
 
       <article
         className="chapter-reader__article SYNTHOMAREADER choices-shown typewriter-instant"
@@ -102,7 +104,7 @@ export default function ChapterReaderArticle({
         <div
           className={`chapter-content reader-decisions-pending${isKonecPodpory ? ' kp-chapter' : ''}`}
           id="chapter-reader-decisions"
-          data-book={isKonecPodpory ? 'konec-podpory' : 'synthoma-null'}
+          data-book={bookScope}
           data-chapter={chapterCode}
           data-reader-decisions="pending"
           aria-busy="true"
@@ -124,6 +126,12 @@ export default function ChapterReaderArticle({
           <Link rel="prev" href={localizedRoute(previous, locale)}>
             <span>{locale === 'en' ? 'Previous' : 'Předchozí'}</span>
             <strong>{locale === 'en' ? previous.titleEn ?? previous.displayTitle : previous.displayTitle}</strong>
+          </Link>
+        ) : <span />}
+        {next ? (
+          <Link rel="next" href={localizedRoute(next, locale)}>
+            <span>{copy.next}</span>
+            <strong>{locale === 'en' ? next.titleEn ?? next.displayTitle : next.displayTitle}</strong>
           </Link>
         ) : <span />}
       </nav>

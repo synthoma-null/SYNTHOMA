@@ -19,27 +19,31 @@ describe('versioned UI preferences', () => {
     localStorage.setItem('glassMode', 'true');
     localStorage.setItem('glassBlur', '18');
 
-    expect(readUiPreferences()).toMatchObject({ version: 3, motionMode: 'off', fontScale: 1.2, readerOpacity: 0.7, glassEnabled: true, glassBlur: 18 });
+    expect(readUiPreferences()).toMatchObject({ version: 4, motionMode: 'off', fontScale: 1.2, readerOpacity: 0.7 });
+    expect(readUiPreferences()).not.toHaveProperty('glassEnabled');
+    expect(localStorage.getItem('glassMode')).toBeNull();
+    expect(localStorage.getItem('glassBlur')).toBeNull();
     const migrated = localStorage.getItem('synthoma_ui_preferences');
     readUiPreferences();
     expect(localStorage.getItem('synthoma_ui_preferences')).toBe(migrated);
   });
 
   it('repairs invalid values and clamps numeric preferences', () => {
-    localStorage.setItem('synthoma_ui_preferences', JSON.stringify({ version: 3, motionMode: 'shake', fontScale: 9, readerOpacity: -4, glassBlur: 100, audioVolume: -1 }));
-    expect(readUiPreferences()).toMatchObject({ motionMode: 'system', fontScale: 1.4, readerOpacity: 0.4, glassBlur: 24, audioVolume: 0 });
+    localStorage.setItem('synthoma_ui_preferences', JSON.stringify({ version: 4, motionMode: 'shake', fontScale: 9, readerOpacity: -4, glassBlur: 100, audioVolume: -1 }));
+    expect(readUiPreferences()).toMatchObject({ motionMode: 'system', fontScale: 1.4, readerOpacity: 0.4, audioVolume: 0 });
+    expect(readUiPreferences()).not.toHaveProperty('glassBlur');
   });
 
-  it('applies the Reader surface contract independently from glass blur', () => {
-    const preferences = updateUiPreferences({ readerOpacity: 0.8, glassEnabled: false, glassBlur: 24 });
+  it('applies the solid Reader surface contract and removes legacy glass state', () => {
+    document.documentElement.dataset.readerGlass = 'on';
+    document.documentElement.style.setProperty('--reader-glass-blur', '24px');
+    document.body.classList.add('glass-mode');
+    const preferences = updateUiPreferences({ readerOpacity: 0.8 });
     applyUiPreferencesToDocument(preferences);
-    expect(document.documentElement).toHaveAttribute('data-reader-glass', 'off');
+    expect(document.documentElement).not.toHaveAttribute('data-reader-glass');
     expect(document.documentElement.style.getPropertyValue('--reader-surface-opacity')).toBe('80%');
-    expect(document.documentElement.style.getPropertyValue('--reader-glass-blur')).toBe('24px');
-
-    applyUiPreferencesToDocument(updateUiPreferences({ glassEnabled: true }));
-    expect(document.documentElement).toHaveAttribute('data-reader-glass', 'on');
-    expect(document.documentElement.style.getPropertyValue('--reader-surface-opacity')).toBe('80%');
+    expect(document.documentElement.style.getPropertyValue('--reader-glass-blur')).toBe('');
+    expect(document.body).not.toHaveClass('glass-mode');
   });
 
   it('persists Reader width, line spacing and effect intensity', () => {

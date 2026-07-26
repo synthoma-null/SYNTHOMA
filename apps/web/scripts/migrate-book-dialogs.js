@@ -10,6 +10,7 @@ const roots = [
   path.join(ROOT, 'public/books/SYNTHOMA-NULL'),
   path.join(ROOT, 'src/content/protected/SYNTHOMA-NULL'),
   path.join(ROOT, 'public/books/SYNTHOMA-KONEC_PODPORY'),
+  path.join(ROOT, 'public/books/SYNTHOMA-NEON-0'),
 ];
 
 const files = roots.flatMap((root) => fs.readdirSync(root)

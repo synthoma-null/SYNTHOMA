@@ -7,13 +7,12 @@ import SynthomaHome from '../SynthomaHome';
 import { LangProvider } from '../../../lib/LangContext';
 
 describe('Synthoma Home server HTML', () => {
-  it('renders one semantic footer with crawlable canonical legal links', () => {
+  it('leaves canonical legal links to the global shell footer', () => {
     const html = renderToStaticMarkup(<SynthomaHome />);
 
-    expect(html.match(/<footer\b/g)).toHaveLength(1);
-    expect(html).toContain('<nav class="synthoma-home__legal" aria-label="Právní informace">');
-    expect(html).toContain('<a href="/terms">PODMÍNKY POUŽITÍ A PRODEJE</a>');
-    expect(html).toContain('<a href="/privacy">OCHRANA OSOBNÍCH ÚDAJŮ</a>');
+    expect(html.match(/<footer\b/g)).toBeNull();
+    expect(html).not.toContain('synthoma-home__legal');
+    expect(html).not.toContain('SUBJECT_CONTACT');
     expect(html).not.toContain('SPOUSTIT');
     expect(html).toContain('SPUSTIT');
   });

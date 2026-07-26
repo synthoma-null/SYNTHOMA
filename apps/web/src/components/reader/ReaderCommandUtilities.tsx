@@ -23,8 +23,8 @@ export default function ReaderCommandUtilities({
   const [speaking, setSpeaking] = useState(false);
   const preferences = useUiPreferences();
   const copy = locale === 'en'
-    ? { settings: 'PANEL', audio: 'AUDIO', focus: 'FOCUS', focusExit: 'EXIT FOCUS', help: 'HELP', share: 'SHARE' }
-    : { settings: 'PANEL', audio: 'AUDIO', focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', help: 'NÁPOVĚDA', share: 'SDÍLET' };
+    ? { focus: 'FOCUS', focusExit: 'EXIT FOCUS', help: 'HELP', share: 'SHARE' }
+    : { focus: 'FOKUS', focusExit: 'UKONČIT SOUSTŘEDĚNÍ', help: 'NÁPOVĚDA', share: 'SDÍLET' };
 
   useEffect(() => () => window.speechSynthesis?.cancel(), []);
   useEffect(() => {
@@ -83,8 +83,6 @@ export default function ReaderCommandUtilities({
 
   return (
     <div className="chapter-reader__utilities" aria-label={locale === 'en' ? 'Reader tools' : 'Nástroje čtečky'}>
-      <button type="button" aria-label={locale === 'en' ? 'Settings' : 'Nastavení'} onClick={() => document.getElementById('toggle-panel-btn')?.click()}>{copy.settings}</button>
-      <button type="button" aria-label={locale === 'en' ? 'Audio' : 'Hudba'} onClick={() => document.dispatchEvent(new CustomEvent('synthoma:audio-toggle'))}>{copy.audio}</button>
       <button type="button" aria-label={locale === 'en' ? 'Read chapter aloud' : 'Přečíst kapitolu nahlas'} aria-pressed={speaking} onClick={toggleSpeech}>TTS</button>
       <button
         type="button"

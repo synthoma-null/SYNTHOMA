@@ -1,0 +1,300 @@
+@layer reset, tokens, base, shell, layout, components, modules, books, effects, utilities, overrides;
+
+/*
+ * Final adapter layer for routes that predate SYNTHOMA OS. New components
+ * should use the scoped .synthoma-* or .os-* contracts directly.
+ */
+
+html,
+body {
+  min-width: 320px;
+  background: var(--syn-black-050);
+  color: var(--os-text);
+}
+
+body {
+  overflow-x: clip;
+}
+
+.synthoma-shell {
+  isolation: isolate;
+}
+
+.synthoma-shell__content > #main-content {
+  min-width: 0;
+  min-height: inherit;
+}
+
+:where(
+  .synthoma-home,
+  .synthoma-library,
+  .synthoma-archive,
+  .public-ai-page,
+  .profile-page,
+  .admin-page,
+  .legal-page,
+  .pwa-page,
+  .synthoma-system-state,
+  .auth-page-wrap
+) {
+  position: relative;
+  z-index: 1;
+}
+
+.synthoma-shell[data-module="node"] :where(.synthoma-home, .public-ai-page, .profile-page, .pwa-page, .synthoma-system-state),
+.synthoma-shell[data-module="library"] .synthoma-library,
+.synthoma-shell[data-module="archive"] .synthoma-archive,
+.synthoma-shell[data-module="author"] .author-reader,
+.synthoma-shell[data-module="auth"] .auth-page-wrap {
+  background: transparent;
+}
+
+:where(
+  .synthoma-library__content,
+  .synthoma-archive__content,
+  .public-ai-page,
+  .profile-page,
+  .admin-page,
+  .legal-page,
+  .pwa-page
+) {
+  width: min(calc(100% - 2rem), var(--os-content-width));
+  margin-inline: auto;
+}
+
+:where(
+  .synthoma-library__header,
+  .synthoma-archive__header,
+  .public-ai-page > header,
+  .profile-page > header,
+  .admin-page > header
+) {
+  padding-block: clamp(2rem, 6vw, 5rem) var(--os-space-5);
+  border-bottom: 1px solid var(--os-border);
+}
+
+:where(
+  .synthoma-library__title,
+  .synthoma-archive__title,
+  .public-ai-page h1,
+  .profile-page h1,
+  .admin-page h1,
+  .legal-page h1,
+  .auth-home-title
+) {
+  color: var(--os-text);
+  font-family: var(--os-font-heading);
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+:where(
+  .os-surface,
+  .os-surface--glass,
+  .auth-home-panel,
+  .profile-card,
+  .admin-panel,
+  .public-ai-page article,
+  .chapter-access-gate > section,
+  .synthoma-system-state__panel
+) {
+  border-radius: var(--os-corner);
+  background: color-mix(in srgb, var(--syn-panel-solid) 96%, var(--os-bg));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow:
+    0 18px 50px rgb(0 0 0 / 0.45),
+    inset 0 0 0 1px rgb(255 255 255 / 0.025);
+}
+
+:where(
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  a
+):focus-visible {
+  outline: 2px solid var(--os-focus-ring);
+  outline-offset: 3px;
+}
+
+:where(button, [role="button"], input, select, textarea) {
+  font: inherit;
+}
+
+:where(
+  .btn,
+  .os-command,
+  .os-button,
+  .chapter-reader__command,
+  .auth-form button,
+  .legal-page a
+) {
+  border-radius: var(--os-corner);
+}
+
+:where(
+  .auth-form input,
+  .auth-form select,
+  .auth-form textarea,
+  .profile-page input,
+  .admin-page input,
+  .admin-page select,
+  .public-ai-page input
+) {
+  min-height: var(--os-tap);
+  border: 1px solid var(--os-border);
+  border-radius: var(--os-corner);
+  background: var(--syn-black-100);
+  color: var(--os-text);
+}
+
+.auth-page-wrap {
+  display: grid;
+  min-height: calc(100dvh - var(--os-command-height));
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.auth-home-main {
+  width: min(100%, 34rem);
+}
+
+.legal-page {
+  max-width: var(--os-reader-width);
+  padding-block: clamp(2rem, 5vw, 5rem);
+  font-family: var(--os-font-body);
+  font-size: var(--os-text-body);
+  line-height: var(--line-body);
+}
+
+.legal-page :where(p, li, td, th) {
+  text-shadow: none;
+}
+
+.public-ai-page {
+  padding-block: clamp(2rem, 5vw, 5rem);
+}
+
+.public-ai-page :where(pre, code) {
+  max-width: 100%;
+  overflow-x: auto;
+  font-family: var(--os-font-mono);
+}
+
+.chapter-reader__command-bar {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.chapter-reader {
+  padding-top: 2rem;
+}
+
+.chapter-reader__command-bar::before {
+  content: "CONTEXT // READER";
+  position: absolute;
+  inset: auto auto -1px 1rem;
+  padding-inline: .35rem;
+  background: var(--syn-panel-solid);
+  color: var(--os-accent-primary);
+  font: 700 .625rem/1.4 var(--os-font-mono);
+}
+
+.synthoma-shell[data-module="author"] .chapter-reader__command-bar::before {
+  content: "CONTEXT // AUTHOR";
+}
+
+.author-reader__command-bar {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.author-reader__command-bar .chapter-reader__identity {
+  color: var(--os-text);
+}
+
+.author-reader__article {
+  background: color-mix(in srgb, var(--syn-panel-solid) 96%, var(--os-bg));
+}
+
+.author-reader__article .autor-semantic-content :where(p, li) {
+  color: var(--os-text-secondary);
+  font-family: var(--os-font-body);
+  font-size: var(--os-text-body);
+  line-height: var(--line-body);
+  text-shadow: none;
+}
+
+.synthoma-shell[data-module="library"] {
+  --os-accent-primary: var(--syn-cyan);
+  --os-accent-secondary: var(--syn-magenta);
+}
+
+.synthoma-shell[data-module="archive"] {
+  --os-accent-primary: var(--syn-magenta-soft);
+  --os-accent-secondary: var(--syn-cyan);
+}
+
+.synthoma-shell[data-module="protocol"] {
+  --os-media-opacity: 0.16;
+}
+
+.synthoma-shell[data-module="auth"] {
+  --os-media-opacity: 0.34;
+}
+
+html[data-motion="reduced"] .synthoma-global-background__noise,
+html[data-motion="off"] .synthoma-global-background__noise,
+html[data-motion="off"] .synthoma-global-background__grid {
+  display: none;
+}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  scroll-behavior: auto !important;
+}
+
+@media (max-width: 767px) {
+  :where(
+    .synthoma-library__content,
+    .synthoma-archive__content,
+    .public-ai-page,
+    .profile-page,
+    .admin-page,
+    .legal-page,
+    .pwa-page
+  ) {
+    width: min(calc(100% - 1.25rem), var(--os-content-width));
+  }
+
+  .chapter-reader {
+    padding-top: 1rem;
+  }
+
+  .chapter-reader__command-bar {
+    position: relative;
+    top: auto;
+  }
+
+  .synthoma-command-header__status {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 359px) {
+  .synthoma-command-header__status {
+    display: none;
+  }
+
+  .synthoma-command-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .synthoma-global-background__noise {
+    display: none;
+  }
+}

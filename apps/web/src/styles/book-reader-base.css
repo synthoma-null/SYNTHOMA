@@ -32,6 +32,13 @@ body { font-size: var(--font-size-body); }
   --book-background: var(--bg-primary, #03080b);
 }
 
+.chapter-reader[data-book="neon-0"] {
+  --book-accent: #7beeff;
+  --book-secondary: #ff7de8;
+  --book-warning: #f4ff46;
+  --book-background: #03070b;
+}
+
 .chapter-reader__article.SYNTHOMAREADER {
   width: min(100%, var(--book-reader-measure));
   max-width: var(--book-reader-measure);

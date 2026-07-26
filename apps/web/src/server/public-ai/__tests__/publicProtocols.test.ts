@@ -21,6 +21,7 @@ describe('public AI discovery protocols', () => {
     const urls = sitemap().map((entry) => entry.url);
     expect(urls).toEqual(expect.arrayContaining([
       'https://www.synthoma.cz/books', 'https://www.synthoma.cz/chapter/0-0-null',
+      'https://www.synthoma.cz/chapter/n0-01-bourka',
       'https://www.synthoma.cz/chapter/kp-00-podporovano',
       'https://www.synthoma.cz/archive', 'https://www.synthoma.cz/cards',
       'https://www.synthoma.cz/cards/acid_filter',
@@ -39,6 +40,7 @@ describe('public AI discovery protocols', () => {
     expect(index).toContain('/api/public/v1/cyklus/choice');
     expect(index).toContain('/ai/api');
     expect(index).toContain('/ai/en/books/konec-podpory.md');
+    expect(index).toContain('/ai/en/books/neon-0.md');
     expect(full).toContain('### 00. PODPOROVÁNO');
     expect(full).toContain('## Free chapters');
     expect(full).not.toContain('### 0-4 [DEFRAGMENTATION]');

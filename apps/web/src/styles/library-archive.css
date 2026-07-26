@@ -1076,3 +1076,12 @@ body.synthoma-dialog-lock { overflow: hidden; }
 .archive-record-card[data-source-book="konec-podpory"] .archive-record-card__source {
   color: var(--os-text-magenta);
 }
+
+.archive-record-card[data-source-book="neon-0"] {
+  --card-accent: var(--book-accent, var(--accent-secondary));
+  border-color: color-mix(in srgb, var(--card-accent) 42%, var(--os-border));
+}
+
+.archive-record-card[data-source-book="neon-0"] .archive-record-card__source {
+  color: color-mix(in srgb, var(--accent-secondary) 72%, var(--accent-primary));
+}

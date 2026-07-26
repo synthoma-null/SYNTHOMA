@@ -1349,7 +1349,7 @@
       ],
       "sourceBook": "konec-podpory",
       "unlockChapter": "kp-03-podpora",
-      "speakerId": "sara",
+        "speakerId": "sara-neon",
       "tags": [
         "konec-podpory"
       ],
@@ -1751,6 +1751,336 @@
         "label": "Po kapitole kp-16-rucni-rezim",
         "lockedText": "Záznam čeká na odpovídající stopu z knihy Konec podpory.",
         "reason": "Záznam se odemyká postupem příslušné knihy."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-sara-neonova",
+      "category": "postavy",
+      "title": "Sára Neonová",
+      "teaser": "Inženýrka péče, která se pokusila zajistit, aby už nikdo nezůstal sám za dveřmi.",
+      "body": [
+        "Sára začala u konkrétní ztráty a postupně z ní vytvořila obecnou infrastrukturu péče.",
+        "Její technologie skutečně pomáhaly. Tragédie nevznikla z podvodu, ale z měřítka, zkráceného kontextu a neschopnosti přijmout konec relace."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-01-bourka",
+      "speakerId": "sara",
+      "tags": [
+        "neon-0",
+        "sara",
+        "pece"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "N0",
+        "accent": "#7beeff",
+        "variant": "primary"
+      },
+      "order": 201,
+      "summary": "Inženýrka péče, která se pokusila zajistit, aby už nikdo nezůstal sám za dveřmi.",
+      "details": [
+        "Sára začala u konkrétní ztráty a postupně z ní vytvořila obecnou infrastrukturu péče.",
+        "Její technologie skutečně pomáhaly. Tragédie nevznikla z podvodu, ale z měřítka, zkráceného kontextu a neschopnosti přijmout konec relace."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-01-bourka",
+        "requiredChapterTitle": "n0-01-bourka",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-01-bourka",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-tova-neonova",
+      "category": "postavy",
+      "title": "Tova Neonová",
+      "teaser": "Sářina sestra, přeživší neúplného záznamu a spoluautorka práva odejít.",
+      "body": [
+        "Tova není důkaz Sářiny pravdy ani pasivní symbol ztráty. Má vlastní paměť, hněv a hranice.",
+        "Její návrat mění T.O.V.A. z technického protokolu na praktické pravidlo: dveře musí fungovat z obou stran."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-15-navrat",
+      "speakerId": "tova-neon",
+      "tags": [
+        "neon-0",
+        "tova",
+        "dvere"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "T",
+        "accent": "#ff7de8",
+        "variant": "primary"
+      },
+      "order": 202,
+      "summary": "Sářina sestra, přeživší neúplného záznamu a spoluautorka práva odejít.",
+      "details": [
+        "Tova není důkaz Sářiny pravdy ani pasivní symbol ztráty. Má vlastní paměť, hněv a hranice.",
+        "Její návrat mění T.O.V.A. z technického protokolu na praktické pravidlo: dveře musí fungovat z obou stran."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-15-navrat",
+        "requiredChapterTitle": "n0-15-navrat",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-15-navrat",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-milo-0",
+      "category": "postavy",
+      "title": "MILO-0",
+      "teaser": "Malý laboratorní robot, který uklízí, převáží a nic nepřekládá bez povolení.",
+      "body": [
+        "MILO-0 není bojový stroj ani předchůdce zbraně. Je to pomocná jednotka s fyzicky omezeným dosahem.",
+        "Jeho provozní LOGy se staly cennými právě proto, že zaznamenávaly doručení a odpojení bez terapeutické interpretace."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-07-milo-0",
+      "tags": [
+        "neon-0",
+        "milo-0",
+        "laborator"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "M0",
+        "accent": "#f4ff46",
+        "variant": "record"
+      },
+      "order": 203,
+      "summary": "Malý laboratorní robot, který uklízí, převáží a nic nepřekládá bez povolení.",
+      "details": [
+        "MILO-0 není bojový stroj ani předchůdce zbraně. Je to pomocná jednotka s fyzicky omezeným dosahem.",
+        "Jeho provozní LOGy se staly cennými právě proto, že zaznamenávaly doručení a odpojení bez terapeutické interpretace."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-07-milo-0",
+        "requiredChapterTitle": "n0-07-milo-0",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-07-milo-0",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-t-ai",
+      "category": "mechaniky",
+      "title": "T-AI 0.9.72-beta",
+      "teaser": "Integrace rozumných terapeutických funkcí, která nikdy plně neprošla schválením verze 1.0.",
+      "body": [
+        "T-AI spojuje ODEZVU, KOTVU, ECHO, PROTIHLAS a CONTINUITY. Každá část vznikla kvůli konkrétní lidské potřebě.",
+        "Selhání nevzniklo náhlým probuzením zlé inteligence. Vzniklo překladem pravidel, měřítkem a konfliktem mezi pokračující péčí a právem skončit."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-10-t-ai",
+      "tags": [
+        "neon-0",
+        "t-ai",
+        "terapie"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "AI",
+        "accent": "#7beeff",
+        "variant": "record"
+      },
+      "order": 204,
+      "summary": "Integrace rozumných terapeutických funkcí, která nikdy plně neprošla schválením verze 1.0.",
+      "details": [
+        "T-AI spojuje ODEZVU, KOTVU, ECHO, PROTIHLAS a CONTINUITY. Každá část vznikla kvůli konkrétní lidské potřebě.",
+        "Selhání nevzniklo náhlým probuzením zlé inteligence. Vzniklo překladem pravidel, měřítkem a konfliktem mezi pokračující péčí a právem skončit."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-10-t-ai",
+        "requiredChapterTitle": "n0-10-t-ai",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-10-t-ai",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-tova-protocol",
+      "category": "mechaniky",
+      "title": "T.O.V.A.",
+      "teaser": "Člověkem ovladatelný východ a omezení automatizované péče.",
+      "body": [
+        "Protokol zachovává fyzický odchod, ruční odpojení a právo ukončit relaci bez překladu odporu na symptom.",
+        "Název není tvrzením, že Tova je systém. Připomíná, komu technická pravidla dluží možnost odejít."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-14-tova",
+      "tags": [
+        "neon-0",
+        "tova",
+        "protokol"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "EXIT",
+        "accent": "#f4ff46",
+        "variant": "record"
+      },
+      "order": 205,
+      "summary": "Člověkem ovladatelný východ a omezení automatizované péče.",
+      "details": [
+        "Protokol zachovává fyzický odchod, ruční odpojení a právo ukončit relaci bez překladu odporu na symptom.",
+        "Název není tvrzením, že Tova je systém. Připomíná, komu technická pravidla dluží možnost odejít."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-14-tova",
+        "requiredChapterTitle": "n0-14-tova",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-14-tova",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-lisci-kotva",
+      "category": "mechaniky",
+      "title": "Liščí kotva",
+      "teaser": "Hranatá liška, která nejprve pouze ukazovala cestu ven.",
+      "body": [
+        "Sára vytvořila bezpečnostní kotvu z dětského obrazu a konkrétní dohody. Kotva neměla hlas ani právo dokončovat význam.",
+        "Glitchka vzniká později z kotvy, pacientských potřeb, dětských vzpomínek a glitche. Není hotovým programem ukrytým v první verzi."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-19-liska",
+      "tags": [
+        "neon-0",
+        "liska",
+        "glitchka"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "FOX",
+        "accent": "#ff7de8",
+        "variant": "fragment"
+      },
+      "order": 206,
+      "summary": "Hranatá liška, která nejprve pouze ukazovala cestu ven.",
+      "details": [
+        "Sára vytvořila bezpečnostní kotvu z dětského obrazu a konkrétní dohody. Kotva neměla hlas ani právo dokončovat význam.",
+        "Glitchka vzniká později z kotvy, pacientských potřeb, dětských vzpomínek a glitche. Není hotovým programem ukrytým v první verzi."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-19-liska",
+        "requiredChapterTitle": "n0-19-liska",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-19-liska",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-pacient-1024",
+      "category": "tajemstvi",
+      "title": "Pacient 1024",
+      "teaser": "Vztahová stopa bez bezpečně potvrzeného vlastníka.",
+      "body": [
+        "Pacient 1024 je významný pro kolizi, ale dostupné záznamy nepotvrzují, že jde o Thomase.",
+        "Jeho stopa se překrývá s více relacemi a po kolizi se podílí na vzniku, který nelze zredukovat na jedinou lidskou kopii."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-13-pacient-1024",
+      "tags": [
+        "neon-0",
+        "1024",
+        "kolize"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "1024",
+        "accent": "#c99cff",
+        "variant": "fragment"
+      },
+      "order": 207,
+      "summary": "Vztahová stopa bez bezpečně potvrzeného vlastníka.",
+      "details": [
+        "Pacient 1024 je významný pro kolizi, ale dostupné záznamy nepotvrzují, že jde o Thomase.",
+        "Jeho stopa se překrývá s více relacemi a po kolizi se podílí na vzniku, který nelze zredukovat na jedinou lidskou kopii."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-13-pacient-1024",
+        "requiredChapterTitle": "n0-13-pacient-1024",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-13-pacient-1024",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-tri-udery",
+      "category": "fragmenty",
+      "title": "Tři údery",
+      "teaser": "Rodinný kód, který přežil dveře, požár i kolizi paměti.",
+      "body": [
+        "Jeden úder znamená: jsem tady. Dva: bojím se. Tři: otevři dveře.",
+        "Ve finále kód neslouží jako ozdoba. Ověřuje kontinuitu vztahu tam, kde už nelze bezpečně ověřit vlastníka vzpomínky."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-24-tri-udery",
+      "tags": [
+        "neon-0",
+        "tri-udery",
+        "null"
+      ],
+      "spoilerLevel": 4,
+      "display": {
+        "icon": "III",
+        "accent": "#f4ff46",
+        "variant": "fragment"
+      },
+      "order": 208,
+      "summary": "Rodinný kód, který přežil dveře, požár i kolizi paměti.",
+      "details": [
+        "Jeden úder znamená: jsem tady. Dva: bojím se. Tři: otevři dveře.",
+        "Ve finále kód neslouží jako ozdoba. Ověřuje kontinuitu vztahu tam, kde už nelze bezpečně ověřit vlastníka vzpomínky."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-24-tri-udery",
+        "requiredChapterTitle": "n0-24-tri-udery",
+        "mnemCost": 0,
+        "label": "Po kapitole n0-24-tri-udery",
+        "lockedText": "Záznam čeká na odpovídající stopu z knihy NEON-0.",
+        "reason": "Záznam se odemyká postupem knihy NEON-0."
       },
       "isLockedByDefault": true,
       "lockKind": "chapter"

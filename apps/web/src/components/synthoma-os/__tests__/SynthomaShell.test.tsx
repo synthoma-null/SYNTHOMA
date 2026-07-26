@@ -29,8 +29,9 @@ describe('SynthomaShell', () => {
     expect(document.querySelectorAll('#toggle-panel-btn')).toHaveLength(1);
     expect(document.querySelectorAll('#toggle-audio-panel-btn')).toHaveLength(1);
     const shell = container.querySelector('.synthoma-shell')!;
-    expect(shell.firstElementChild).toHaveClass('synthoma-shell__content');
-    expect(shell.children[1]).toHaveAttribute('data-testid', 'synthoma-command-header');
+    expect(shell.querySelectorAll('.synthoma-global-background')).toHaveLength(1);
+    expect(shell.querySelectorAll('.synthoma-shell__content')).toHaveLength(1);
+    expect(shell.querySelectorAll('[data-testid="synthoma-command-header"]')).toHaveLength(1);
   });
 
   it('uses the existing panel events', () => {
@@ -66,20 +67,24 @@ describe('SynthomaShell', () => {
     expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 
-  it('does not duplicate the specialized Cyklus shell', () => {
+  it('keeps one global header around the specialized Cyklus shell', () => {
     usePathname.mockReturnValue('/cyklus');
     renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
     expect(screen.getByText('CYKLUS CONTENT')).toBeInTheDocument();
-    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('synthoma-command-header')).toHaveLength(1);
     expect(screen.queryByRole('group', { name: 'Jazyk rozhraní' })).not.toBeInTheDocument();
   });
 
-  it.each(['/cyklus', '/cyklus/void', '/cyklus/archive'])('keeps the global mobile navigation out of %s', (route) => {
+  it.each([
+    ['/cyklus', false],
+    ['/cyklus/void', true],
+    ['/cyklus/archive', true],
+  ] as const)('uses the shared shell navigation contract on %s', (route, hasMobileNavigation) => {
     usePathname.mockReturnValue(route);
     const { container } = renderWithHeader(<SynthomaShell><p>CYKLUS CONTENT</p></SynthomaShell>);
     expect(container.querySelector('.synthoma-shell--cyklus')).toBeInTheDocument();
-    expect(container.querySelector('.synthoma-command-header')).not.toBeInTheDocument();
-    expect(container.querySelector('.synthoma-mobile-nav')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('.synthoma-command-header')).toHaveLength(1);
+    expect(Boolean(container.querySelector('.synthoma-mobile-nav'))).toBe(hasMobileNavigation);
   });
 
   it.each([
@@ -101,11 +106,11 @@ describe('SynthomaShell', () => {
     const shell = container.firstChild as HTMLElement;
     if (variant === 'quiet') {
       expect(shell).toHaveClass('synthoma-shell--quiet');
-      expect(screen.queryByRole('navigation', { name: 'Hlavní sektory' })).not.toBeInTheDocument();
-      expect(screen.queryByRole('navigation', { name: 'Mobilní sektory' })).not.toBeInTheDocument();
+      expect(screen.getByRole('navigation', { name: 'Hlavní sektory' })).toBeInTheDocument();
+      expect(screen.getByRole('navigation', { name: 'Mobilní sektory' })).toBeInTheDocument();
     } else if (variant === 'utility') {
       expect(shell).toHaveClass('synthoma-shell--utility');
-      expect(screen.queryByRole('navigation', { name: 'Mobilní sektory' })).not.toBeInTheDocument();
+      expect(screen.getByRole('navigation', { name: 'Mobilní sektory' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Identita' })).toBeInTheDocument();
     } else {
       expect(shell).not.toHaveClass('synthoma-shell--quiet');
@@ -114,7 +119,7 @@ describe('SynthomaShell', () => {
     }
   });
 
-  it('hides the global shell for the intro sequence and Cyklus', () => {
+  it('hides the global shell only for the intro sequence', () => {
     usePathname.mockReturnValue('/landing-intro');
     const { container: introContainer } = renderWithHeader(<SynthomaShell><p>INTRO</p></SynthomaShell>);
     expect(introContainer.firstChild).toHaveTextContent('INTRO');
@@ -123,7 +128,7 @@ describe('SynthomaShell', () => {
     usePathname.mockReturnValue('/cyklus/void');
     const { container: cyklusContainer } = renderWithHeader(<SynthomaShell><p>CYKLUS</p></SynthomaShell>);
     expect(cyklusContainer.firstChild).toHaveTextContent('CYKLUS');
-    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+    expect(screen.getByTestId('synthoma-command-header')).toBeInTheDocument();
   });
 
   it('locks only the gameplay route to the viewport', () => {

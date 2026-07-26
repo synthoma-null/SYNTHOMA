@@ -89,7 +89,7 @@
   letter-spacing: 0.06em;
 }
 
-.cyklus-page :is(.cyklus-card__title, .cyklus-end__title, .cyklus-menu__brand),
+.cyklus-page :is(.cyklus-card__title, .cyklus-end__title),
 .cyklus-void-page .void-hub-hero h2 {
   font-weight: 700;
 }

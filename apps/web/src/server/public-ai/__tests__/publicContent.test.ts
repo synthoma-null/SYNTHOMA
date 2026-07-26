@@ -81,12 +81,15 @@ describe('public content visibility', () => {
     expect(cached.status).toBe(304);
   });
 
-  it('publishes both books and the complete KONEC PODPORY chapter index', async () => {
+  it('publishes the trilogy and both complete 24/19 chapter indexes', async () => {
     const books = await booksApi(request('/api/public/v1/books?locale=cs'));
     expect((await books.json()).data.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'neon-0', chapterCount: 24 }),
       expect.objectContaining({ id: 'synthoma-null' }),
       expect.objectContaining({ id: 'konec-podpory', chapterCount: 19 }),
     ]));
+    const neon = await bookApi(request('/api/public/v1/books/neon-0?locale=cs'), 'neon-0');
+    expect((await neon.json()).data.chapters).toHaveLength(24);
     const book = await bookApi(request('/api/public/v1/books/konec-podpory?locale=cs'), 'konec-podpory');
     const payload = await book.json();
     expect(payload.data.chapters).toHaveLength(19);

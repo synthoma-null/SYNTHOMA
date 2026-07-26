@@ -1722,6 +1722,336 @@
       },
       "isLockedByDefault": true,
       "lockKind": "chapter"
+    },
+    {
+      "id": "n0-sara-neonova",
+      "category": "postavy",
+      "title": "S?ra Neonov?",
+      "teaser": "A care engineer who tried to ensure nobody would ever remain alone behind a door.",
+      "body": [
+        "S?ra turned a specific loss into a general care infrastructure.",
+        "Her technology genuinely helped. The tragedy came from scale, shortened context, and a system unable to accept the end of a relation."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-01-bourka",
+      "speakerId": "sara",
+      "tags": [
+        "neon-0",
+        "sara",
+        "pece"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "N0",
+        "accent": "#7beeff",
+        "variant": "primary"
+      },
+      "order": 201,
+      "summary": "A care engineer who tried to ensure nobody would ever remain alone behind a door.",
+      "details": [
+        "S?ra turned a specific loss into a general care infrastructure.",
+        "Her technology genuinely helped. The tragedy came from scale, shortened context, and a system unable to accept the end of a relation."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-01-bourka",
+        "requiredChapterTitle": "n0-01-bourka",
+        "mnemCost": 0,
+        "label": "After chapter n0-01-bourka",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-tova-neonova",
+      "category": "postavy",
+      "title": "Tova Neonov?",
+      "teaser": "S?ra?s sister, survivor of an incomplete record and co-author of the right to leave.",
+      "body": [
+        "Tova is neither proof of S?ra?s truth nor a passive symbol of loss. She has her own memory, anger, and boundaries.",
+        "Her return turns T.O.V.A. from a technical protocol into a practical rule: doors must work from both sides."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-15-navrat",
+      "speakerId": "tova-neon",
+      "tags": [
+        "neon-0",
+        "tova",
+        "dvere"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "T",
+        "accent": "#ff7de8",
+        "variant": "primary"
+      },
+      "order": 202,
+      "summary": "S?ra?s sister, survivor of an incomplete record and co-author of the right to leave.",
+      "details": [
+        "Tova is neither proof of S?ra?s truth nor a passive symbol of loss. She has her own memory, anger, and boundaries.",
+        "Her return turns T.O.V.A. from a technical protocol into a practical rule: doors must work from both sides."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-15-navrat",
+        "requiredChapterTitle": "n0-15-navrat",
+        "mnemCost": 0,
+        "label": "After chapter n0-15-navrat",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-milo-0",
+      "category": "postavy",
+      "title": "MILO-0",
+      "teaser": "A small laboratory robot that cleans, carries, and translates nothing without permission.",
+      "body": [
+        "MILO-0 is neither a combat machine nor a weapon prototype. It is a helper unit with a physically limited reach.",
+        "Its operational logs matter because they record delivery and disconnection without therapeutic interpretation."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-07-milo-0",
+      "tags": [
+        "neon-0",
+        "milo-0",
+        "laborator"
+      ],
+      "spoilerLevel": 1,
+      "display": {
+        "icon": "M0",
+        "accent": "#f4ff46",
+        "variant": "record"
+      },
+      "order": 203,
+      "summary": "A small laboratory robot that cleans, carries, and translates nothing without permission.",
+      "details": [
+        "MILO-0 is neither a combat machine nor a weapon prototype. It is a helper unit with a physically limited reach.",
+        "Its operational logs matter because they record delivery and disconnection without therapeutic interpretation."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-07-milo-0",
+        "requiredChapterTitle": "n0-07-milo-0",
+        "mnemCost": 0,
+        "label": "After chapter n0-07-milo-0",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-t-ai",
+      "category": "mechaniky",
+      "title": "T-AI 0.9.72-beta",
+      "teaser": "An integration of reasonable therapeutic functions that never fully passed version 1.0 approval.",
+      "body": [
+        "T-AI combines RESPONSE, ANCHOR, ECHO, COUNTERVOICE, and CONTINUITY. Each part arose from a specific human need.",
+        "Failure did not come from a suddenly evil intelligence. It came from translation, scale, and conflict between continuing care and the right to stop."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-10-t-ai",
+      "tags": [
+        "neon-0",
+        "t-ai",
+        "terapie"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "AI",
+        "accent": "#7beeff",
+        "variant": "record"
+      },
+      "order": 204,
+      "summary": "An integration of reasonable therapeutic functions that never fully passed version 1.0 approval.",
+      "details": [
+        "T-AI combines RESPONSE, ANCHOR, ECHO, COUNTERVOICE, and CONTINUITY. Each part arose from a specific human need.",
+        "Failure did not come from a suddenly evil intelligence. It came from translation, scale, and conflict between continuing care and the right to stop."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-10-t-ai",
+        "requiredChapterTitle": "n0-10-t-ai",
+        "mnemCost": 0,
+        "label": "After chapter n0-10-t-ai",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-tova-protocol",
+      "category": "mechaniky",
+      "title": "T.O.V.A.",
+      "teaser": "A human-controlled exit from automated care.",
+      "body": [
+        "The protocol preserves physical departure, manual disconnection, and the right to end a relation without translating resistance into a symptom.",
+        "Its name does not claim that Tova is a system. It remembers who the technical rules owe an exit to."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-14-tova",
+      "tags": [
+        "neon-0",
+        "tova",
+        "protokol"
+      ],
+      "spoilerLevel": 2,
+      "display": {
+        "icon": "EXIT",
+        "accent": "#f4ff46",
+        "variant": "record"
+      },
+      "order": 205,
+      "summary": "A human-controlled exit from automated care.",
+      "details": [
+        "The protocol preserves physical departure, manual disconnection, and the right to end a relation without translating resistance into a symptom.",
+        "Its name does not claim that Tova is a system. It remembers who the technical rules owe an exit to."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-14-tova",
+        "requiredChapterTitle": "n0-14-tova",
+        "mnemCost": 0,
+        "label": "After chapter n0-14-tova",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-lisci-kotva",
+      "category": "mechaniky",
+      "title": "Fox Anchor",
+      "teaser": "An angular fox that initially did nothing but point toward an exit.",
+      "body": [
+        "S?ra created the safety anchor from a childhood image and a concrete agreement. The anchor had no voice and no right to finish someone else?s meaning.",
+        "Glitchka emerges later from the anchor, patient needs, childhood memories, and a glitch. She is not a finished program hidden in the first version."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-19-liska",
+      "tags": [
+        "neon-0",
+        "liska",
+        "glitchka"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "FOX",
+        "accent": "#ff7de8",
+        "variant": "fragment"
+      },
+      "order": 206,
+      "summary": "An angular fox that initially did nothing but point toward an exit.",
+      "details": [
+        "S?ra created the safety anchor from a childhood image and a concrete agreement. The anchor had no voice and no right to finish someone else?s meaning.",
+        "Glitchka emerges later from the anchor, patient needs, childhood memories, and a glitch. She is not a finished program hidden in the first version."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-19-liska",
+        "requiredChapterTitle": "n0-19-liska",
+        "mnemCost": 0,
+        "label": "After chapter n0-19-liska",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-pacient-1024",
+      "category": "tajemstvi",
+      "title": "Patient 1024",
+      "teaser": "A relational trace without a safely confirmed owner.",
+      "body": [
+        "Patient 1024 matters to the collision, but the available records do not confirm that he is Thomas.",
+        "His trace overlaps several relations and helps create something that cannot be reduced to a single human copy."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-13-pacient-1024",
+      "tags": [
+        "neon-0",
+        "1024",
+        "kolize"
+      ],
+      "spoilerLevel": 3,
+      "display": {
+        "icon": "1024",
+        "accent": "#c99cff",
+        "variant": "fragment"
+      },
+      "order": 207,
+      "summary": "A relational trace without a safely confirmed owner.",
+      "details": [
+        "Patient 1024 matters to the collision, but the available records do not confirm that he is Thomas.",
+        "His trace overlaps several relations and helps create something that cannot be reduced to a single human copy."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-13-pacient-1024",
+        "requiredChapterTitle": "n0-13-pacient-1024",
+        "mnemCost": 0,
+        "label": "After chapter n0-13-pacient-1024",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
+    },
+    {
+      "id": "n0-tri-udery",
+      "category": "fragmenty",
+      "title": "Three Knocks",
+      "teaser": "A family code that survived doors, fire, and a memory collision.",
+      "body": [
+        "One knock means: I am here. Two: I am afraid. Three: open the door.",
+        "In the finale, the code is not decoration. It verifies continuity of a relation where the owner of a memory can no longer be safely verified."
+      ],
+      "sourceBook": "neon-0",
+      "unlockChapter": "n0-24-tri-udery",
+      "tags": [
+        "neon-0",
+        "tri-udery",
+        "null"
+      ],
+      "spoilerLevel": 4,
+      "display": {
+        "icon": "???",
+        "accent": "#f4ff46",
+        "variant": "fragment"
+      },
+      "order": 208,
+      "summary": "A family code that survived doors, fire, and a memory collision.",
+      "details": [
+        "One knock means: I am here. Two: I am afraid. Three: open the door.",
+        "In the finale, the code is not decoration. It verifies continuity of a relation where the owner of a memory can no longer be safely verified."
+      ],
+      "access": {
+        "mode": "chapter",
+        "visibility": "teaser",
+        "requiredChapterId": "n0-24-tri-udery",
+        "requiredChapterTitle": "n0-24-tri-udery",
+        "mnemCost": 0,
+        "label": "After chapter n0-24-tri-udery",
+        "lockedText": "This record is waiting for the matching trace from NEON-0.",
+        "reason": "The record unlocks through NEON-0 reading progress."
+      },
+      "isLockedByDefault": true,
+      "lockKind": "chapter"
     }
   ],
   "categories": [

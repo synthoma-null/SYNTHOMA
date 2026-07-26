@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import SynthomaMediaLayer from '../synthoma-os/SynthomaMediaLayer';
 import LibraryCollectionHeader from './LibraryCollectionHeader';
 import LibraryChapterList from './LibraryChapterList';
 import LibraryResume from './LibraryResume';
@@ -64,7 +63,6 @@ export default function SynthomaLibrary({ catalog }: SynthomaLibraryProps) {
 
   return (
     <main className="synthoma-library" id="main-content">
-      <SynthomaMediaLayer src="/video/SYNTHOMA7.webm" className="synthoma-library__media" />
       <div className="synthoma-library__content">
         <header className="synthoma-library__header">
           <span className="os-status__code">{t('home.library.title').toLocaleUpperCase()} {'//'} {t('books.available').toLocaleUpperCase()}</span>

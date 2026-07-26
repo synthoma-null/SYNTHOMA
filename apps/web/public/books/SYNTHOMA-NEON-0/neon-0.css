@@ -1,0 +1,227 @@
+.chapter-reader[data-book="neon-0"] {
+  --neon-cyan: var(--book-accent, #7beeff);
+  --neon-magenta: var(--book-secondary, #ff7de8);
+  --neon-yellow: var(--book-warning, #f4ff46);
+  --neon-paper: color-mix(in srgb, var(--text-primary, #e8fbff) 94%, var(--neon-cyan));
+  --neon-muted: color-mix(in srgb, var(--text-secondary, #9eb2ba) 82%, var(--neon-cyan));
+  --neon-panel: color-mix(in srgb, var(--book-background, #03070b) 92%, var(--neon-cyan));
+  --neon-border: color-mix(in srgb, var(--neon-cyan) 35%, transparent);
+}
+
+.chapter-content[data-book="neon-0"] {
+  color: var(--neon-paper);
+  text-wrap: pretty;
+}
+
+.chapter-content[data-book="neon-0"][data-chapter="01"],
+.chapter-content[data-book="neon-0"][data-chapter="02"],
+.chapter-content[data-book="neon-0"][data-chapter="03"],
+.chapter-content[data-book="neon-0"][data-chapter="04"],
+.chapter-content[data-book="neon-0"][data-chapter="05"] {
+  --neon-cyan: color-mix(in srgb, var(--book-accent) 72%, #ffd9b0);
+  --neon-panel: color-mix(in srgb, var(--book-background) 88%, #6d493a);
+}
+
+.chapter-content[data-book="neon-0"][data-chapter="06"],
+.chapter-content[data-book="neon-0"][data-chapter="07"],
+.chapter-content[data-book="neon-0"][data-chapter="08"],
+.chapter-content[data-book="neon-0"][data-chapter="09"],
+.chapter-content[data-book="neon-0"][data-chapter="10"],
+.chapter-content[data-book="neon-0"][data-chapter="11"],
+.chapter-content[data-book="neon-0"][data-chapter="12"],
+.chapter-content[data-book="neon-0"][data-chapter="13"],
+.chapter-content[data-book="neon-0"][data-chapter="14"],
+.chapter-content[data-book="neon-0"][data-chapter="15"],
+.chapter-content[data-book="neon-0"][data-chapter="16"] {
+  --neon-panel: color-mix(in srgb, var(--book-background) 89%, var(--neon-cyan));
+}
+
+.chapter-content[data-book="neon-0"][data-chapter="17"],
+.chapter-content[data-book="neon-0"][data-chapter="18"],
+.chapter-content[data-book="neon-0"][data-chapter="19"],
+.chapter-content[data-book="neon-0"][data-chapter="20"],
+.chapter-content[data-book="neon-0"][data-chapter="21"] {
+  --neon-border: color-mix(in srgb, var(--neon-magenta) 48%, var(--neon-cyan));
+  --neon-panel: color-mix(in srgb, var(--book-background) 88%, var(--neon-magenta));
+}
+
+.chapter-content[data-book="neon-0"][data-chapter="22"],
+.chapter-content[data-book="neon-0"][data-chapter="23"],
+.chapter-content[data-book="neon-0"][data-chapter="24"] {
+  --neon-border: color-mix(in srgb, var(--neon-yellow) 42%, var(--neon-magenta));
+  --neon-panel: color-mix(in srgb, var(--book-background) 84%, var(--neon-magenta));
+}
+
+.chapter-content[data-book="neon-0"] .neon-title {
+  margin: 0 0 clamp(1.5rem, 5vw, 3.4rem);
+  color: var(--neon-paper);
+  font-family: var(--font-family-heading, Text03b, system-ui, sans-serif);
+  font-size: clamp(1.65rem, 7vw, 3.4rem);
+  font-weight: 760;
+  letter-spacing: 0;
+  text-shadow:
+    0 0 0.7rem color-mix(in srgb, var(--neon-cyan) 30%, transparent),
+    0.08em 0 color-mix(in srgb, var(--neon-magenta) 20%, transparent);
+}
+
+.chapter-content[data-book="neon-0"] .neon-bridge,
+.chapter-content[data-book="neon-0"] .neon-axiom {
+  margin: 0 0 clamp(1.8rem, 5vw, 3rem);
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--neon-cyan);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--neon-cyan) 10%, transparent), transparent);
+  color: color-mix(in srgb, var(--neon-paper) 88%, var(--neon-cyan));
+  font-size: 1.03em;
+}
+
+.chapter-content[data-book="neon-0"] > div,
+.chapter-content[data-book="neon-0"] > section:not(.neon-canonical-coda) {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: clamp(1.25rem, 4vw, 2.5rem) 0;
+  padding: clamp(0.8rem, 3vw, 1.25rem);
+  overflow: hidden;
+  border: 1px solid var(--neon-border);
+  border-radius: 3px;
+  background: var(--neon-panel);
+  color: var(--neon-muted);
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  font-size: 0.79em;
+  line-height: 1.58;
+  overflow-wrap: anywhere;
+}
+
+.chapter-content[data-book="neon-0"] > div[aria-label]:empty {
+  min-height: clamp(3.8rem, 12vw, 7rem);
+  background:
+    linear-gradient(90deg, transparent 0 9%, color-mix(in srgb, var(--neon-cyan) 22%, transparent) 9% 10%, transparent 10% 100%),
+    linear-gradient(0deg, color-mix(in srgb, var(--neon-magenta) 10%, transparent), transparent 55%),
+    var(--neon-panel);
+}
+
+.chapter-content[data-book="neon-0"] > div[aria-label]:empty::after {
+  content: attr(aria-label);
+  display: block;
+  max-width: 54ch;
+  color: color-mix(in srgb, var(--neon-muted) 78%, transparent);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.chapter-content[data-book="neon-0"] :where(
+  .archive-log,
+  .system-log,
+  .tai-log,
+  .milo-log,
+  .patient-log,
+  .continuity-log,
+  .incident-log,
+  .decision-log,
+  .final-signal
+) {
+  border-left: 3px solid var(--neon-yellow);
+  white-space: normal;
+}
+
+.chapter-content[data-book="neon-0"] :where(
+  [class^="dialog"],
+  [class*=" dialog"]
+) {
+  margin-block: 1rem;
+}
+
+.chapter-content[data-book="neon-0"] .dialogSara { --speaker-color: var(--neon-cyan); --speaker-secondary: #dffbff; }
+.chapter-content[data-book="neon-0"] .dialogTova { --speaker-color: var(--neon-magenta); --speaker-secondary: #ffe0f8; }
+.chapter-content[data-book="neon-0"] .dialogMother { --speaker-color: #ffd5a6; --speaker-secondary: #fff1dc; }
+.chapter-content[data-book="neon-0"] .dialogFather { --speaker-color: #d7f0bd; --speaker-secondary: #efffdf; }
+.chapter-content[data-book="neon-0"] .dialogMilo { --speaker-color: var(--neon-yellow); --speaker-secondary: #fdffc5; }
+.chapter-content[data-book="neon-0"] :where(.dialogSystem, .dialogSynthoma, .dialogEcho, .dialogVoice) {
+  --speaker-color: var(--neon-cyan);
+  --speaker-secondary: var(--neon-yellow);
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+}
+
+.chapter-content[data-book="neon-0"] .neon-canonical-coda {
+  margin: clamp(2.5rem, 8vw, 5rem) 0 0;
+  padding: clamp(1.1rem, 4vw, 1.7rem);
+  border-top: 1px solid var(--neon-border);
+  border-bottom: 1px solid var(--neon-border);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--neon-cyan) 8%, transparent), transparent 55%),
+    linear-gradient(315deg, color-mix(in srgb, var(--neon-magenta) 7%, transparent), transparent 65%);
+}
+
+.chapter-content[data-book="neon-0"] :where(.final-line, .final-question, .final-rule) {
+  margin-block: clamp(2rem, 7vw, 4rem);
+  color: var(--neon-paper);
+  font-size: 1.08em;
+}
+
+.chapter-content[data-book="neon-0"] a {
+  color: var(--neon-cyan);
+  text-decoration-color: color-mix(in srgb, var(--neon-cyan) 55%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.chapter-content[data-book="neon-0"] :where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--neon-yellow);
+  outline-offset: 4px;
+}
+
+@media (min-width: 56rem) {
+  .chapter-content[data-book="neon-0"][data-chapter="22"] .neon-title,
+  .chapter-content[data-book="neon-0"][data-chapter="23"] .neon-title,
+  .chapter-content[data-book="neon-0"][data-chapter="24"] .neon-title {
+    text-shadow:
+      -0.06em 0 var(--neon-magenta),
+      0.06em 0 var(--neon-cyan),
+      0 0 1rem color-mix(in srgb, var(--neon-yellow) 24%, transparent);
+  }
+}
+
+@media (max-width: 40rem) {
+  .chapter-content[data-book="neon-0"] .neon-title {
+    font-size: clamp(1.55rem, 9vw, 2.4rem);
+  }
+
+  .chapter-content[data-book="neon-0"] > div,
+  .chapter-content[data-book="neon-0"] > section {
+    margin-inline: 0;
+    padding: 0.82rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="reduced"]):not([data-motion="off"])
+    .chapter-content[data-book="neon-0"][data-chapter="23"] .neon-title,
+  html:not([data-motion="reduced"]):not([data-motion="off"])
+    .chapter-content[data-book="neon-0"][data-chapter="24"] .neon-title {
+    animation: neon-zero-signal 5.4s steps(1, end) infinite;
+  }
+}
+
+@keyframes neon-zero-signal {
+  0%, 91%, 94%, 100% { transform: translateX(0); }
+  92% { transform: translateX(0.035em); }
+  93% { transform: translateX(-0.025em); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-content[data-book="neon-0"] *,
+  .chapter-content[data-book="neon-0"] *::before,
+  .chapter-content[data-book="neon-0"] *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html[data-motion="reduced"] .chapter-content[data-book="neon-0"] *,
+html[data-motion="off"] .chapter-content[data-book="neon-0"] *,
+html[data-motion="reduced"] .chapter-content[data-book="neon-0"] *::before,
+html[data-motion="off"] .chapter-content[data-book="neon-0"] *::before,
+html[data-motion="reduced"] .chapter-content[data-book="neon-0"] *::after,
+html[data-motion="off"] .chapter-content[data-book="neon-0"] *::after {
+  animation: none !important;
+  transition-duration: 0.01ms !important;
+}

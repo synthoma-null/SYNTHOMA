@@ -24,6 +24,7 @@ import "../src/styles/control-panel-os.css";
 import "../src/styles/audio-panel.css";
 import "../src/styles/motion-contract.css";
 import "../src/styles/pwa.css";
+import "../src/styles/site-unification.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";
@@ -396,4 +397,3 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   );
 
 }
-

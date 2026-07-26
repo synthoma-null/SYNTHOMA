@@ -60,6 +60,7 @@
 }
 
 .cyklus-stat-dock {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
@@ -71,6 +72,12 @@
   border-radius: var(--cy-radius);
   background: var(--cy-line-dim);
   box-shadow: none;
+}
+
+.cyklus-stat-dock--with-pocket {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(44px, 52px);
+  max-width: 736px;
+  overflow: visible;
 }
 
 .cyklus-stat-dock__climate,

@@ -33,7 +33,7 @@ export type ArchiveCardData = {
   body: string[];
   summary?: string;
   details?: string[];
-  sourceBook?: 'synthoma-null' | 'konec-podpory';
+  sourceBook?: 'synthoma-null' | 'konec-podpory' | 'neon-0';
   unlockChapter?: string;
   speakerId?: string;
   tags?: string[];

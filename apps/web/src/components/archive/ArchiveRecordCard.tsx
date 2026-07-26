@@ -44,7 +44,11 @@ export default function ArchiveRecordCard({ card, visibility, isOpen, onOpen }: 
         {icon && <span className="archive-record-card__icon">{icon}</span>}
         <span className="archive-record-card__title">{card.title}</span>
         <span className="archive-record-card__category">{getArchiveCategoryLabel(card.category, lang)}</span>
-        <span className="archive-record-card__source">{card.sourceBook === 'konec-podpory' ? 'KONEC PODPORY' : 'SYNTHOMA-NULL'}</span>
+        <span className="archive-record-card__source">
+          {card.sourceBook === 'konec-podpory'
+            ? 'KONEC PODPORY'
+            : card.sourceBook === 'neon-0' ? 'NEON-0' : 'SYNTHOMA-NULL'}
+        </span>
         <span className={`archive-record-card__badge${isLocked ? ' archive-record-card__badge--locked' : ''}`}>{stateLabel}</span>
       </span>
       <span className="archive-record-card__teaser">{card.teaser}</span>

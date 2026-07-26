@@ -15,6 +15,42 @@
   height: 100%;
 }
 
+.synthoma-global-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--syn-line-muted);
+  opacity: 0.42;
+}
+
+.synthoma-global-background__grid,
+.synthoma-global-background__noise,
+.synthoma-global-background__vignette,
+.synthoma-global-background__scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.synthoma-global-background__grid {
+  background-image:
+    linear-gradient(var(--syn-line-muted) 1px, transparent 1px),
+    linear-gradient(90deg, var(--syn-line-muted) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.16;
+}
+
+.synthoma-global-background__noise {
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgb(216 246 255 / 0.025) 3px 4px);
+}
+
+.synthoma-global-background__vignette {
+  background: radial-gradient(circle at 50% 38%, transparent 20%, rgb(0 0 0 / 0.72) 100%);
+}
+
+.synthoma-global-background__scrim {
+  background: linear-gradient(180deg, rgb(2 3 5 / 0.5), rgb(2 3 5 / 0.78));
+}
+
 .synthoma-media-layer__video {
   object-fit: cover;
   opacity: var(--os-media-opacity);

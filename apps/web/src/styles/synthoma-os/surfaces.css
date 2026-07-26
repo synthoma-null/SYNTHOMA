@@ -7,9 +7,11 @@
 }
 
 .os-surface--glass {
-  background: var(--bg-glass, rgba(255,255,255,.04));
+  background: color-mix(in srgb, var(--os-surface) 96%, var(--os-bg));
   border-color: var(--os-border);
-  border-radius: 10px;
+  border-radius: var(--os-corner);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .os-surface::before {

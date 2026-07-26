@@ -73,7 +73,8 @@ describe('/chapter/[id] server route contract', () => {
     expect(screen.getByRole('link', { name: 'PREVIOUS' })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
     expect(screen.queryByRole('link', { name: 'NEXT' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Další' })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Settings' })).toHaveTextContent('PANEL');
+    expect(screen.queryByRole('button', { name: 'Settings' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Read chapter aloud' })).toHaveTextContent('TTS');
     renderedEnglish.unmount();
 
     (getContentAccess as jest.Mock).mockResolvedValue(access({ state: 'owned', canAccess: true, canPurchase: false }));

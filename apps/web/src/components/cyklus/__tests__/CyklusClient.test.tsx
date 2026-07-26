@@ -259,6 +259,7 @@ describe('CyklusClient', () => {
 
     const brand = await screen.findByTestId('cyklus-menu-brand');
     expect(brand).toHaveTextContent('SYNTHOMA');
+    expect(brand).toHaveClass('synthoma-wordmark--home');
     expect(brand.querySelector('br')).toBeNull();
     expect(brand.parentElement).toHaveClass('cyklus-menu__title');
     expect(brand.closest('.cyklus-menu__content')).toHaveClass('cyklus-menu__content--brand-safe');
@@ -299,76 +300,26 @@ describe('CyklusClient', () => {
     expect(skipBtn?.tagName).toBe('BUTTON');
   });
 
-  it('keeps the desktop current trace closed until its sole trigger is used', async () => {
-    render(<HeaderProvider><SynthomaShell><CyklusClient /></SynthomaShell></HeaderProvider>);
+  it('replaces the STOPA utility with one pocket control inside the stat bar', async () => {
+    await renderFirstBootRun();
+    const statDock = document.querySelector('.cyklus-stat-dock') as HTMLElement;
+    const pocket = statDock.querySelector('[data-cyklus-pocket-dock]') as HTMLElement;
 
-    const triggers = await screen.findAllByRole('button', { name: 'Otevřít aktuální stopu' });
-    const trigger = triggers[0]!;
-    expect(triggers).toHaveLength(1);
-    expect(trigger).not.toHaveAttribute('aria-controls');
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('heading', { name: 'AKTUÁLNÍ STOPA' })).not.toBeInTheDocument();
-
-    fireEvent.click(trigger);
-
-    expect(screen.getByRole('heading', { name: 'AKTUÁLNÍ STOPA' })).toBeInTheDocument();
-    expect(trigger).toHaveAttribute('aria-controls', 'cyklus-current-trace-panel');
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText(/Nauč se přežít volbu/)).toBeInTheDocument();
+    expect(statDock).toHaveClass('cyklus-stat-dock--with-pocket');
+    expect(within(statDock).getByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toBeInTheDocument();
+    expect(pocket).toHaveClass('cyklus-pocket--stat');
+    expect(screen.queryByRole('button', { name: 'Otevřít aktuální stopu' })).not.toBeInTheDocument();
+    expect(screen.queryByText('STOPA')).not.toBeInTheDocument();
   });
 
-  it('shows a short stat rule hint at the start', async () => {
-    render(<HeaderProvider><SynthomaShell><CyklusClient /></SynthomaShell></HeaderProvider>);
-    fireEvent.click(await screen.findByRole('button', { name: 'Otevřít aktuální stopu' }));
-    const hint = await screen.findByTestId('cyklus-stat-rule-hint');
-    expect(hint).toHaveTextContent('Cíl není mít všechno vysoko. Cíl je nespadnout z obou stran.');
-    expect(hint.textContent?.length ?? 0).toBeLessThan(90);
-    expect(hint).not.toHaveTextContent(/debug|localStorage|VOID_META|JSON/i);
-  });
-
-  it('closes the trace with Escape or the trigger and restores trigger focus without changing gameplay geometry', async () => {
-    const card = await renderFirstBootRun();
-    const trigger = screen.getByRole('button', { name: 'Otevřít aktuální stopu' });
-    const cardRect = { x: 10, y: 20, width: 640, height: 480, top: 20, right: 650, bottom: 500, left: 10, toJSON: () => ({}) } as DOMRect;
-    jest.spyOn(card, 'getBoundingClientRect').mockReturnValue(cardRect);
-
-    const beforeOpen = card.getBoundingClientRect();
-    fireEvent.click(trigger);
-
-    const panel = screen.getByRole('region', { name: 'AKTUÁLNÍ STOPA' });
-    expect(panel).toHaveAttribute('data-cyklus-trace-panel');
-    expect(screen.getByRole('button', { name: 'Zavřít aktuální stopu' })).toHaveFocus();
-    expect(card.getBoundingClientRect()).toEqual(beforeOpen);
-    expect(document.querySelector('[data-cyklus-choice-dock]')).toBeInTheDocument();
-
-    fireEvent.keyDown(window, { key: 'Escape' });
-    await waitFor(() => expect(screen.queryByRole('region', { name: 'AKTUÁLNÍ STOPA' })).not.toBeInTheDocument());
-    await waitFor(() => expect(trigger).toHaveFocus());
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
-
-    fireEvent.click(trigger);
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    fireEvent.click(screen.getByRole('button', { name: 'Zavřít aktuální stopu' }));
-    await waitFor(() => expect(screen.queryByRole('region', { name: 'AKTUÁLNÍ STOPA' })).not.toBeInTheDocument());
-    await waitFor(() => expect(trigger).toHaveFocus());
-
-    fireEvent.click(trigger);
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    fireEvent.click(trigger);
-    await waitFor(() => expect(screen.queryByRole('region', { name: 'AKTUÁLNÍ STOPA' })).not.toBeInTheDocument());
-    await waitFor(() => expect(trigger).toHaveFocus());
-  });
-
-  it('does not add the desktop trace trigger or panel to the mobile gameplay layout', async () => {
+  it('keeps the pocket in the stat bar on mobile without covering card choices', async () => {
     mockMobileViewport(true);
     await renderFirstBootRun();
 
-    await waitFor(() => {
-      expect(screen.queryByRole('button', { name: 'Otevřít aktuální stopu' })).not.toBeInTheDocument();
-    });
-    expect(screen.queryByRole('region', { name: 'AKTUÁLNÍ STOPA' })).not.toBeInTheDocument();
-    expect(document.querySelector('.cyklus-stat-dock')).toBeInTheDocument();
+    const statDock = document.querySelector('.cyklus-stat-dock') as HTMLElement;
+    expect(within(statDock).getByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toBeInTheDocument();
     expect(document.querySelector('[data-cyklus-choice-dock]')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toHaveLength(1);
   });
 
   it('keeps desktop focus guidance but marks the objective hidden on mobile', () => {
@@ -462,7 +413,7 @@ describe('CyklusClient', () => {
     expect(screen.queryByText('0 [RESTART]')).not.toBeInTheDocument();
   });
 
-  it('renders active focus with a human label and without internal QA terms', async () => {
+  it('keeps a focused run playable without exposing internal QA terms', async () => {
     const state = {
       ...createCyklusRun(true, {
         type: 'sector',
@@ -478,10 +429,7 @@ describe('CyklusClient', () => {
 
     render(<HeaderProvider><SynthomaShell><CyklusClient /></SynthomaShell></HeaderProvider>);
     await continueStoredRun();
-    fireEvent.click(await screen.findByRole('button', { name: 'Otevřít aktuální stopu' }));
 
-    expect(await screen.findByText(/Tento běh se drží oblasti: Archiv/)).toBeInTheDocument();
-    expect(screen.getByText('Archiv')).toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/strictness|payload|matcher|fallback|archive_pool/i);
     expect(document.querySelector('.cyklus-root--playing')).toBeInTheDocument();
     expect(document.querySelector('.cyklus-root--playing')).toHaveClass('cyklus-no-select');
@@ -542,7 +490,7 @@ describe('CyklusClient', () => {
     expect(poster).toBeInTheDocument();
     expect(root).toHaveClass('cyklus-root--poster-active');
     expect(document.body).toHaveClass('cyklus-poster-lock');
-    expect(screen.getByTestId('cyklus-command-rail')).toBeInTheDocument();
+    expect(document.querySelector('.cyklus-stat-dock--with-pocket')).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Navigace' })).not.toBeInTheDocument();
     expect(document.querySelectorAll('.cyklus-card-art__image')).toHaveLength(1);
     const portal = document.querySelector('.cyklus-poster-portal') as HTMLElement;
@@ -568,7 +516,7 @@ describe('CyklusClient', () => {
     await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Zvětšený obrázek karty Šumový filtr' })).not.toBeInTheDocument());
     expect(root).not.toHaveClass('cyklus-root--poster-active');
     expect(document.body).not.toHaveClass('cyklus-poster-lock');
-    expect(screen.getByTestId('cyklus-command-rail')).toBeInTheDocument();
+    expect(document.querySelector('.cyklus-stat-dock--with-pocket')).toBeInTheDocument();
     await waitFor(() => expect(screen.getByRole('button', { name: 'Zvětšit obrázek' })).toHaveFocus());
   });
 
@@ -586,12 +534,12 @@ describe('CyklusClient', () => {
     expect(dialog).toHaveTextContent(getCardById('noise_filter')!.no.resultText);
   });
 
-  it('renders the route-owned command rail with real run status and accessible controls', async () => {
+  it('renders run status and global controls in the shared command header', async () => {
     const identityToggle = jest.fn();
     document.addEventListener('synthoma:identity-toggle', identityToggle);
 
     await renderFirstBootRun();
-    const header = screen.getByTestId('cyklus-command-rail');
+    const header = screen.getByTestId('synthoma-command-header');
     const headerQueries = within(header);
 
     expect(headerQueries.getByText('Prázdnota')).toBeInTheDocument();
@@ -602,29 +550,30 @@ describe('CyklusClient', () => {
     expect(identityToggle).toHaveBeenCalledTimes(1);
     expect(headerQueries.getByRole('button', { name: 'Nastavení' })).toHaveAttribute('aria-controls', 'control-panel');
     expect(headerQueries.getByRole('button', { name: /Hudba/ })).toHaveAttribute('aria-controls', 'synthoma-audio-panel');
-    expect(screen.queryByTestId('synthoma-command-header')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('synthoma-command-header')).toHaveLength(1);
+    expect(screen.queryByTestId('cyklus-command-rail')).not.toBeInTheDocument();
     expect(document.querySelector('.cyklus-mobile-hud')).toBeNull();
 
     document.removeEventListener('synthoma:identity-toggle', identityToggle);
   });
 
-  it('keeps one compact pocket control in the game header on mobile', async () => {
+  it('keeps one compact pocket control in the stat bar on mobile', async () => {
     mockMobileViewport(true);
     await renderFirstBootRun();
-    const header = screen.getByTestId('cyklus-command-rail');
+    const statDock = document.querySelector('.cyklus-stat-dock') as HTMLElement;
     const choiceDock = document.querySelector('[data-cyklus-choice-dock]') as HTMLElement;
 
     expect(document.querySelector('.synthoma-mobile-nav')).not.toBeInTheDocument();
     expect(document.querySelector('.cyklus-mobile-utility-dock')).not.toBeInTheDocument();
-    expect(within(header).getAllByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toHaveLength(1);
-    expect(header.querySelector('[data-cyklus-pocket-dock]')).toBeInTheDocument();
+    expect(within(statDock).getAllByRole('button', { name: 'Otevřít kapsu, 0 předmětů' })).toHaveLength(1);
+    expect(statDock.querySelector('[data-cyklus-pocket-dock]')).toBeInTheDocument();
     expect(choiceDock.closest('.cyklus-card')).toBeInTheDocument();
   });
 
-  it('opens one accessible pocket panel from the game header', async () => {
+  it('opens one accessible pocket panel from the stat bar', async () => {
     await renderFirstBootRun();
-    const header = screen.getByTestId('cyklus-command-rail');
-    const trigger = within(header).getByRole('button', { name: 'Otevřít kapsu, 0 předmětů' });
+    const statDock = document.querySelector('.cyklus-stat-dock') as HTMLElement;
+    const trigger = within(statDock).getByRole('button', { name: 'Otevřít kapsu, 0 předmětů' });
     const pocketDock = document.querySelector('[data-cyklus-pocket-dock]') as HTMLElement;
 
     expect(trigger.querySelector('svg')).toBeInTheDocument();
@@ -632,7 +581,7 @@ describe('CyklusClient', () => {
     expect(trigger).toHaveAttribute('title', 'Otevřít kapsu');
     expect(trigger).toHaveAttribute('aria-controls', 'cyklus-pocket-panel');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(header).toContainElement(pocketDock);
+    expect(statDock).toContainElement(pocketDock);
     fireEvent.click(trigger);
 
     expect(screen.getByText('Kapsa je prázdná. Nic tu nečeká.')).toBeVisible();

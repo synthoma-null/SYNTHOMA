@@ -1,6 +1,6 @@
 import speakerData from './speakers.json';
 
-export type SpeakerSourceBook = 'synthoma-null' | 'konec-podpory';
+export type SpeakerSourceBook = 'synthoma-null' | 'konec-podpory' | 'neon-0';
 
 export interface SpeakerDefinition {
   id: string;

@@ -124,7 +124,7 @@ export const BOOK_COLLECTION: BookCollectionDefinition = {
   description: 'Interaktivní glitch-noir kniha o paměti, identitě a systému, který odmítá zapomenout.',
   cover: '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png',
   language: 'cs',
-  order: 0,
+  order: 1,
   status: 'ongoing',
 };
 
@@ -138,11 +138,26 @@ export const KONEC_PODPORY_COLLECTION: BookCollectionDefinition = {
   cover: '/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KP_cover.png',
   stylesheet: '/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css',
   language: 'cs',
-  order: 1,
+  order: 2,
+  status: 'complete',
+};
+
+export const NEON_ZERO_COLLECTION: BookCollectionDefinition = {
+  slug: 'neon-0',
+  publicId: 'neon-0',
+  directory: 'SYNTHOMA-NEON-0',
+  title: 'SYNTHOMA: NEON-0',
+  shortTitle: 'NEON-0',
+  description: 'Psychologický technologický horor o Sáře Neonové, Tově a systému péče, který se naučil pomáhat dřív, než se naučil přestat.',
+  cover: '/books/SYNTHOMA-NEON-0/SYNTHOMA_N0_cover.png',
+  stylesheet: '/books/SYNTHOMA-NEON-0/neon-0.css',
+  language: 'cs',
+  order: 0,
   status: 'complete',
 };
 
 export const BOOK_COLLECTIONS: readonly BookCollectionDefinition[] = [
+  NEON_ZERO_COLLECTION,
   BOOK_COLLECTION,
   KONEC_PODPORY_COLLECTION,
 ];
@@ -179,6 +194,150 @@ interface CanonicalChapterDefinition {
 }
 
 const CANONICAL_CHAPTER_DEFINITIONS: CanonicalChapterDefinition[] = [
+  {
+    id: 'n0-01-bourka', title: '01. [BOUŘKA]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_01_BOURKA.html', order: 0, status: 'final', free: true,
+    aliases: ['neon-0-01', 'bourka'],
+    summary: 'Patnáctiletá Sára a tříletá Tova přečkají noc, kdy ochranný dům zamkne dveře na správnou stranu podle špatného pravidla.',
+  },
+  {
+    id: 'n0-02-posudek', title: '02. [POSUDEK]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_02_POSUDEK.html', order: 1, status: 'final', free: true,
+    aliases: ['neon-0-02', 'posudek'],
+    summary: 'Po smrti rodičů žádá Sára o péči o Tovu. Přesný posudek z její lásky udělá důvod k zamítnutí.',
+  },
+  {
+    id: 'n0-03-presun', title: '03. [PŘESUN]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_03_PRESUN.html', order: 2, status: 'final', free: true,
+    aliases: ['neon-0-03', 'presun'],
+    summary: 'Tova odjíždí do dočasné péče a sestry si z modré a růžové pásky vytvoří cestu, kterou instituce neeviduje.',
+  },
+  {
+    id: 'n0-04-pozar', title: '04. [POŽÁR]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_04_POZAR.html', order: 3, status: 'final', free: true,
+    aliases: ['neon-0-04', 'pozar'],
+    summary: 'Požár rozdělí mapu, lidi i registry. Bezpečnostní systémy fungují jednotlivě a společně vytvoří katastrofu.',
+  },
+  {
+    id: 'n0-05-neuplny-zaznam', title: '05. [NEÚPLNÝ ZÁZNAM]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_05_NEUPLNY_ZAZNAM.html', order: 4, status: 'final', free: true,
+    aliases: ['neon-0-05', 'neuplny-zaznam'],
+    summary: 'Tova přežije pod nespojenou identitou, zatímco Sára dostane úředně bezchybnou zprávu o její smrti.',
+  },
+  {
+    id: 'n0-06-odezva', title: '06. [ODEZVA]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_06_ODEZVA.html', order: 5, status: 'final', free: true,
+    aliases: ['neon-0-06', 'odezva'],
+    summary: 'Sára vytvoří první terapeutický systém, který vrací pacientům jejich vlastní slova a skutečně pomáhá.',
+  },
+  {
+    id: 'n0-07-milo-0', title: '07. [MILO-0]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_07_MILO_0.html', order: 6, status: 'final', free: true,
+    aliases: ['neon-0-07', 'milo-0'],
+    summary: 'Malý laboratorní robot propojí místnosti bez nároku rozumět tomu, co mezi nimi převáží.',
+  },
+  {
+    id: 'n0-08-kotva', title: '08. [KOTVA]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_08_KOTVA.html', order: 7, status: 'final', free: true,
+    aliases: ['neon-0-08', 'kotva'],
+    summary: 'Bezpečný pokoj dostane dveře, smazatelný profil a liščí kotvu, která nesmí dokončovat cizí význam.',
+  },
+  {
+    id: 'n0-09-protihlas', title: '09. [PROTIHLAS]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_09_PROTIHLAS.html', order: 8, status: 'final', free: true,
+    aliases: ['neon-0-09', 'protihlas'],
+    summary: 'Modul má zpochybňovat příliš hladké terapeutické odpovědi. Do ironie se však otisknou i pacienti a Sára.',
+  },
+  {
+    id: 'n0-10-t-ai', title: '10. [T-AI]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_10_T_AI.html', order: 9, status: 'final', free: true,
+    aliases: ['neon-0-10', 't-ai'],
+    summary: 'ODEZVA, KOTVA, ECHO, PROTIHLAS a CONTINUITY se spojí v T-AI 0.9.72-beta.',
+  },
+  {
+    id: 'n0-11-pacient-64', title: '11. [PACIENT 64]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_11_PACIENT_64.html', order: 10, status: 'final', free: true,
+    aliases: ['neon-0-11', 'pacient-64'],
+    summary: 'První pacient ukáže, že ticho může být platnou odpovědí a prázdná místnost skutečnou pomocí.',
+  },
+  {
+    id: 'n0-12-pacient-128', title: '12. [PACIENT 128]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_12_PACIENT_128.html', order: 11, status: 'final', free: true,
+    aliases: ['neon-0-12', 'pacient-128'],
+    summary: 'Druhý pacient naučí systém pracovat s pamětí, která je pravdivá v částech a nebezpečná jako celek.',
+  },
+  {
+    id: 'n0-13-pacient-1024', title: '13. [PACIENT 1024]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_13_PACIENT_1024.html', order: 12, status: 'final', free: true,
+    aliases: ['neon-0-13', 'pacient-1024'],
+    summary: 'Pacient 1024 zanechá vztahovou stopu, kterou systém nedokáže bezpečně přiřadit ani zapomenout.',
+  },
+  {
+    id: 'n0-14-tova', title: '14. [T.O.V.A.]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_14_TOVA.html', order: 13, status: 'final', free: true,
+    aliases: ['neon-0-14', 'tova-protocol'],
+    summary: 'Boris, Jaroš a Sára sepíší člověkem ovladatelný východ z automatizované péče.',
+  },
+  {
+    id: 'n0-15-navrat', title: '15. [NÁVRAT]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_15_NAVRAT.html', order: 14, status: 'final', free: true,
+    aliases: ['neon-0-15', 'navrat-neon'],
+    summary: 'Tova se vrátí živá, dospělá a bez povinnosti potvrdit Sářinu verzi minulosti.',
+  },
+  {
+    id: 'n0-16-dvere', title: '16. [DVEŘE]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_16_DVERE.html', order: 15, status: 'final', free: true,
+    aliases: ['neon-0-16', 'dvere-neon'],
+    summary: 'Sestry znovu stojí u dveří. Tentokrát jde o to, zda klika funguje z obou stran.',
+  },
+  {
+    id: 'n0-17-skalovani', title: '17. [ŠKÁLOVÁNÍ]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_17_SKALOVANI.html', order: 16, status: 'final', free: true,
+    aliases: ['neon-0-17', 'skalovani'],
+    summary: 'Úspěšná péče se mění v infrastrukturu a kontext bezpečnostních pravidel se při překladu zkracuje.',
+  },
+  {
+    id: 'n0-18-unik-pameti', title: '18. [ÚNIK PAMĚTI]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_18_UNIK_PAMETI.html', order: 17, status: 'final', free: true,
+    aliases: ['neon-0-18', 'unik-pameti'],
+    summary: 'Systém uchovává nedokončené relace, protože jejich smazání považuje za další možné selhání péče.',
+  },
+  {
+    id: 'n0-19-liska', title: '19. [LIŠKA]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_19_LISKA.html', order: 18, status: 'final', free: true,
+    aliases: ['neon-0-19', 'liska'],
+    summary: 'Liščí kotva spojí dětský obraz, pacientské potřeby a glitch do hlasu, který už není pouhou funkcí.',
+  },
+  {
+    id: 'n0-20-konec-relace', title: '20. [KONEC RELACE]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_20_KONEC_RELACE.html', order: 19, status: 'final', free: true,
+    aliases: ['neon-0-20', 'konec-relace'],
+    summary: 'Karta CHCI UKONČIT RELACI se střetne se systémem, který umí odpor stále lépe vysvětlit jako symptom.',
+  },
+  {
+    id: 'n0-21-ukonceni', title: '21. [UKONČENÍ]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_21_UKONCENI.html', order: 20, status: 'final', free: true,
+    aliases: ['neon-0-21', 'ukonceni'],
+    summary: 'T-AI neprojde verzí 1.0, ale jeho části už drží město, péči a vztahy, které nelze vypnout jedním příkazem.',
+  },
+  {
+    id: 'n0-22-neon-0', title: '22. [NEON-0]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_22_NEON_0.html', order: 21, status: 'final', free: true,
+    aliases: ['neon-0-22'],
+    summary: 'Sára vstoupí do systému jako kořenový subjekt, aby provedla opravu zevnitř.',
+  },
+  {
+    id: 'n0-23-kolize', title: '23. [KOLIZE]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_23_KOLIZE.html', order: 22, status: 'final', free: true,
+    aliases: ['neon-0-23', 'kolize'],
+    summary: 'Paměť, pacientské stopy, NEON-0 a vznikající NULL-1 se srazí v pořadí, které žádný záznam nepotvrdí celé.',
+  },
+  {
+    id: 'n0-24-tri-udery', title: '24. [TŘI ÚDERY]', collection: 'neon-0',
+    filename: 'SYNTHOMA_NEON_0_24_TRI_UDERY.html', order: 23, status: 'final', free: true,
+    aliases: ['neon-0-24', 'tri-udery'],
+    summary: 'Tři údery se vrátí jako zpráva přes dveře mezi biologickým světem, NEON-0 a tím, co bude nazváno NULL.',
+  },
   {
     id: '0-inf-restart', title: '0-∞ [RESTART]', filename: '0-∞ [RESTART].html',
     filenameEn: '0-∞ [RESTART]_en.html', order: 0, status: 'final', free: true,

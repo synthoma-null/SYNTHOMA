@@ -107,7 +107,10 @@ function validateManifest() {
 
       // Check chapter HTML file
       if (chapter.path) {
-        const filePath = path.join(publicDir, chapter.path);
+        const relativeBookPath = chapter.path.replace(/^\/?books\//, '');
+        const filePath = chapter.free === false
+          ? path.join(ROOT, 'src', 'content', 'protected', relativeBookPath)
+          : path.join(publicDir, chapter.path);
         if (!fs.existsSync(filePath)) {
           const msg = `  [${label}] MISSING chapter: ${chapter.path} (title: "${chapter.title}")`;
           if (isDraft) { console.warn(msg); warnings++; }

@@ -1,5 +1,5 @@
 export const UI_PREFERENCES_KEY = 'synthoma_ui_preferences';
-export const UI_PREFERENCES_VERSION = 3 as const;
+export const UI_PREFERENCES_VERSION = 4 as const;
 export const UI_PREFERENCES_CHANGED_EVENT = 'synthoma:ui-preferences-changed';
 
 export type MotionMode = 'system' | 'full' | 'reduced' | 'off';
@@ -25,8 +25,6 @@ export interface SynthomaUiPreferences {
   readerLineHeight: ReaderLineHeight;
   effectIntensity: number;
   readerOpacity: number;
-  glassEnabled: boolean;
-  glassBlur: number;
   audioEnabled: boolean;
   audioVolume: number;
   focusMode: boolean;
@@ -55,8 +53,6 @@ export const DEFAULT_UI_PREFERENCES: Readonly<SynthomaUiPreferences> = Object.fr
   readerLineHeight: 'comfortable',
   effectIntensity: 0.75,
   readerOpacity: 0.85,
-  glassEnabled: false,
-  glassBlur: 12,
   audioEnabled: true,
   audioVolume: 0.7,
   focusMode: false,
@@ -64,8 +60,8 @@ export const DEFAULT_UI_PREFERENCES: Readonly<SynthomaUiPreferences> = Object.fr
 });
 
 export const UI_PREFERENCE_PRESETS: readonly UiPreferencePreset[] = [
-  { id: 'canon', patch: { theme: 'synthoma', motionMode: 'system', backgroundMotion: 'auto', glitchEffects: true, noiseEffects: true, scanlines: true, textEffects: 'normal', typewriterSpeed: 'normal', glassEnabled: false, readerOpacity: 0.85, focusMode: false } },
-  { id: 'focus', patch: { backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, textEffects: 'reduced', typewriterSpeed: 'instant', glassEnabled: false, readerOpacity: 0.95, focusMode: true, audioEnabled: false } },
+  { id: 'canon', patch: { theme: 'synthoma', motionMode: 'system', backgroundMotion: 'auto', glitchEffects: true, noiseEffects: true, scanlines: true, textEffects: 'normal', typewriterSpeed: 'normal', readerOpacity: 0.85, focusMode: false } },
+  { id: 'focus', patch: { backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, textEffects: 'reduced', typewriterSpeed: 'instant', readerOpacity: 0.95, focusMode: true, audioEnabled: false } },
   { id: 'saver', patch: { motionMode: 'off', backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, scanlines: false, textEffects: 'off', typewriterSpeed: 'instant', audioEnabled: false } },
   { id: 'calm', patch: { motionMode: 'reduced', backgroundMotion: 'off', glitchEffects: false, noiseEffects: false, scanlines: false, textEffects: 'reduced', typewriterSpeed: 'instant', readerOpacity: 0.95 } },
 ] as const;
@@ -136,8 +132,6 @@ export function validateUiPreferences(value: unknown): SynthomaUiPreferences {
     readerLineHeight: enumValue(source.readerLineHeight, READER_LINE_HEIGHTS, DEFAULT_UI_PREFERENCES.readerLineHeight),
     effectIntensity: clamp(source.effectIntensity, 0, 1, DEFAULT_UI_PREFERENCES.effectIntensity),
     readerOpacity: clamp(source.readerOpacity, 0.4, 1, DEFAULT_UI_PREFERENCES.readerOpacity),
-    glassEnabled: booleanValue(source.glassEnabled, DEFAULT_UI_PREFERENCES.glassEnabled),
-    glassBlur: clamp(source.glassBlur, 0, 24, DEFAULT_UI_PREFERENCES.glassBlur),
     audioEnabled: booleanValue(source.audioEnabled, DEFAULT_UI_PREFERENCES.audioEnabled),
     audioVolume: clamp(source.audioVolume, 0, 1, DEFAULT_UI_PREFERENCES.audioVolume),
     focusMode: booleanValue(source.focusMode, DEFAULT_UI_PREFERENCES.focusMode),
@@ -173,11 +167,11 @@ function readLegacyNumber(key: string, fallback: number): number {
 }
 
 function migrateLegacyPreferences(stored: unknown): SynthomaUiPreferences {
-  const previous = isRecord(stored) && (stored.version === 1 || stored.version === 2) ? stored : {};
-  const isV2 = previous.version === 2;
+  const previous = isRecord(stored) && (stored.version === 1 || stored.version === 2 || stored.version === 3) ? stored : {};
+  const hasUnifiedPreferences = previous.version === 2 || previous.version === 3;
   let theme = DEFAULT_UI_PREFERENCES.theme;
   try {
-    theme = isV2 && typeof previous.theme === 'string'
+    theme = hasUnifiedPreferences && typeof previous.theme === 'string'
       ? previous.theme
       : window.localStorage.getItem('theme') ?? theme;
   } catch {}
@@ -185,15 +179,13 @@ function migrateLegacyPreferences(stored: unknown): SynthomaUiPreferences {
     ...DEFAULT_UI_PREFERENCES,
     ...previous,
     theme,
-    motionMode: isV2 ? previous.motionMode : readLegacyBoolean('animationsDisabled', false) ? 'off' : 'system',
+    motionMode: hasUnifiedPreferences ? previous.motionMode : readLegacyBoolean('animationsDisabled', false) ? 'off' : 'system',
     backgroundMotion: previous.version === 1 && previous.movingBackground === false
       ? 'off'
       : previous.backgroundMotion ?? 'auto',
-    fontScale: isV2 ? previous.fontScale : readLegacyNumber('fontSizeMultiplier', DEFAULT_UI_PREFERENCES.fontScale),
-    readerOpacity: isV2 ? previous.readerOpacity : readLegacyNumber('readerBgOpacity', DEFAULT_UI_PREFERENCES.readerOpacity),
-    glassEnabled: isV2 ? previous.glassEnabled : readLegacyBoolean('glassMode', DEFAULT_UI_PREFERENCES.glassEnabled),
-    glassBlur: isV2 ? previous.glassBlur : readLegacyNumber('glassBlur', DEFAULT_UI_PREFERENCES.glassBlur),
-    ttsEnabled: isV2 ? previous.ttsEnabled : readLegacyBoolean('ttsOn', DEFAULT_UI_PREFERENCES.ttsEnabled),
+    fontScale: hasUnifiedPreferences ? previous.fontScale : readLegacyNumber('fontSizeMultiplier', DEFAULT_UI_PREFERENCES.fontScale),
+    readerOpacity: hasUnifiedPreferences ? previous.readerOpacity : readLegacyNumber('readerBgOpacity', DEFAULT_UI_PREFERENCES.readerOpacity),
+    ttsEnabled: hasUnifiedPreferences ? previous.ttsEnabled : readLegacyBoolean('ttsOn', DEFAULT_UI_PREFERENCES.ttsEnabled),
   });
 }
 
@@ -208,6 +200,10 @@ function writeSnapshot(preferences: SynthomaUiPreferences): void {
 
 export function readUiPreferences(): SynthomaUiPreferences {
   if (typeof window === 'undefined') return memorySnapshot;
+  try {
+    window.localStorage.removeItem('glassMode');
+    window.localStorage.removeItem('glassBlur');
+  } catch {}
   const stored = parseJson(window.localStorage.getItem(UI_PREFERENCES_KEY));
   const preferences = isRecord(stored) && stored.version === UI_PREFERENCES_VERSION
     ? validateUiPreferences(stored)
@@ -263,23 +259,23 @@ export function applyUiPreferencesToDocument(preferences: SynthomaUiPreferences 
   root.dataset.noise = preferences.noiseEffects && effectiveMotion === 'full' ? 'on' : 'off';
   root.dataset.scanlines = preferences.scanlines && effectiveMotion !== 'off' ? 'on' : 'off';
   root.dataset.textEffects = effectiveMotion === 'off' ? 'off' : preferences.textEffects;
-  root.dataset.glass = preferences.glassEnabled ? 'on' : 'off';
-  root.dataset.readerGlass = preferences.glassEnabled ? 'on' : 'off';
+  delete root.dataset.glass;
+  delete root.dataset.readerGlass;
   root.dataset.readerFocus = preferences.focusMode ? 'on' : 'off';
   root.dataset.readerWidth = preferences.readerWidth;
   root.dataset.readerLineHeight = preferences.readerLineHeight;
   root.style.setProperty('--font-size-multiplier', String(preferences.fontScale));
   root.style.setProperty('--reader-effect-intensity', String(preferences.effectIntensity));
   root.style.setProperty('--reader-surface-opacity', `${Math.round(preferences.readerOpacity * 100)}%`);
-  root.style.setProperty('--reader-glass-blur', `${preferences.glassBlur}px`);
   root.style.setProperty('--app-bg-opacity', String(preferences.readerOpacity));
   root.style.setProperty('--bg-opacity', String(preferences.readerOpacity));
-  root.style.setProperty('--app-bg-blur', `${preferences.glassBlur}px`);
-  root.style.setProperty('--glass-blur', `${preferences.glassBlur}px`);
+  root.style.removeProperty('--reader-glass-blur');
+  root.style.removeProperty('--app-bg-blur');
+  root.style.removeProperty('--glass-blur');
   if (body) {
     body.dataset.theme = preferences.theme;
     body.classList.toggle('no-animations', effectiveMotion === 'off');
-    body.classList.toggle('glass-mode', preferences.glassEnabled);
+    body.classList.remove('glass-mode');
   }
 }
 

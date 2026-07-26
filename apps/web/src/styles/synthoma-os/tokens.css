@@ -1,5 +1,30 @@
 :root,
 [data-theme] {
+  --syn-black-000: #000000;
+  --syn-black-050: #020305;
+  --syn-black-100: #03070c;
+  --syn-black-150: #050b12;
+  --syn-panel-solid: #06101a;
+  --syn-panel-raised: #081622;
+  --syn-cyan: #00e5ff;
+  --syn-cyan-soft: #68dcf2;
+  --syn-cyan-dim: #17677a;
+  --syn-magenta: #ff00c8;
+  --syn-magenta-soft: #ef5bd1;
+  --syn-magenta-dim: #72205f;
+  --syn-acid: #f4e900;
+  --syn-acid-soft: #fff46a;
+  --syn-red: #ff315d;
+  --syn-red-dark: #8d1733;
+  --syn-text: #d8f6ff;
+  --syn-text-secondary: #9cb9c4;
+  --syn-text-muted: #648894;
+  --syn-text-disabled: #415963;
+  --syn-line: rgb(0 229 255 / 0.32);
+  --syn-line-hot: rgb(255 0 200 / 0.42);
+  --syn-line-muted: rgb(122 177 194 / 0.16);
+  --syn-shadow: rgb(0 0 0 / 0.78);
+
   --os-bg: var(--bg-primary, #020306);
   --os-bg-deep: color-mix(in srgb, var(--os-bg) 94%, #00131a);
   --os-surface: var(--bg-secondary, #050810);

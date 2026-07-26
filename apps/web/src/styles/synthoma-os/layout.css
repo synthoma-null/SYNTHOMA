@@ -1,10 +1,10 @@
 .synthoma-shell { position: relative; min-height: 100dvh; background: var(--os-bg); color: var(--os-text); }
-.synthoma-shell__content { position: relative; z-index: var(--os-z-base); min-height: 100dvh; padding-top: var(--os-command-height); }
-.synthoma-shell--quiet .synthoma-shell__content { padding-top: 44px; }
-.synthoma-shell--cyklus .synthoma-shell__content { padding-top: 0; }
+.synthoma-shell__content { position: relative; z-index: var(--os-z-base); min-height: calc(100dvh - var(--os-command-height)); padding-top: var(--os-command-height); }
+.synthoma-shell--quiet .synthoma-shell__content,
+.synthoma-shell--cyklus .synthoma-shell__content { padding-top: var(--os-command-height); }
 .synthoma-shell--cyklus-game { height: 100dvh; min-height: 100dvh; overflow: hidden; }
 .synthoma-shell--cyklus-game .synthoma-shell__content,
-.synthoma-shell--cyklus-game .synthoma-shell__content > #main-content { height: 100%; min-height: 0; overflow: hidden; }
+.synthoma-shell--cyklus-game .synthoma-shell__content > #main-content { height: calc(100dvh - var(--os-command-height)); min-height: 0; overflow: hidden; }
 .synthoma-portal-root { display: contents; }
 
 .synthoma-command-header {
@@ -18,7 +18,8 @@
   align-items: center;
   gap: var(--os-space-3);
   border-bottom: 1px solid var(--os-border-strong);
-  background: color-mix(in srgb, var(--os-bg) 94%, transparent);
+  background: color-mix(in srgb, var(--syn-black-050) 97%, transparent);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.28);
   color: var(--os-text);
 }
 
@@ -92,6 +93,25 @@
   gap: var(--os-space-2);
 }
 
-.synthoma-command-header--quiet { grid-template-columns: auto minmax(0, 1fr) auto; height: 44px; }
-
 .synthoma-mobile-nav { display: none; }
+
+.synthoma-global-footer {
+  position: relative;
+  z-index: var(--os-z-base);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--os-space-4);
+  min-height: 88px;
+  padding: var(--os-space-5) max(var(--os-space-4), calc((100vw - var(--os-content-width)) / 2));
+  border-top: 1px solid var(--os-border);
+  background: color-mix(in srgb, var(--syn-black-050) 97%, transparent);
+  color: var(--os-text-muted);
+  font: 700 var(--os-text-micro)/1.4 var(--os-font-mono);
+}
+
+.synthoma-global-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--os-space-4); }
+.synthoma-global-footer a { color: var(--os-text-secondary); text-decoration: none; }
+.synthoma-global-footer a:hover,
+.synthoma-global-footer a:focus-visible { color: var(--os-accent-primary); }
+.synthoma-global-footer__signature { text-align: right; }

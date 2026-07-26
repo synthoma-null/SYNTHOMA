@@ -20,7 +20,7 @@ export interface CyklusPocketDockProps {
   state: CyklusRunState;
   open: boolean;
   highlighted: boolean | undefined;
-  placement?: 'standalone' | 'header';
+  placement?: 'standalone' | 'header' | 'stat';
   confirmActivateId: string | null;
   onToggle: () => void;
   onClose: () => void;

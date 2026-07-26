@@ -10,7 +10,6 @@ interface DebugInfo {
   sessionStorage: Record<string, string>
   theme: string
   animations: boolean
-  glass: boolean
   fontSize: string
   opacity: string
   mbtiScores: Record<string, number>
@@ -50,7 +49,6 @@ export default function DebugPanel() {
         sessionStorage: ss,
         theme: readStorage('theme', 'synthoma') || 'synthoma',
         animations: readStorage('animationsDisabled', 'false') !== 'true',
-        glass: readStorage('glassEnabled', 'false') === 'true',
         fontSize: readStorage('fontSize', '1') || '1',
         opacity: readStorage('opacity', '0.8') || '0.8',
         mbtiScores
@@ -240,7 +238,6 @@ export default function DebugPanel() {
               <div style={{ background: 'rgba(0,255,255,0.1)', padding: '10px', marginBottom: '20px' }}>
                 <div><strong>Theme:</strong> {debugInfo.theme}</div>
                 <div><strong>Animations:</strong> {debugInfo.animations ? 'Enabled' : 'Disabled'}</div>
-                <div><strong>Glass:</strong> {debugInfo.glass ? 'Enabled' : 'Disabled'}</div>
                 <div><strong>Font Size:</strong> {debugInfo.fontSize}</div>
                 <div><strong>Opacity:</strong> {debugInfo.opacity}</div>
               </div>

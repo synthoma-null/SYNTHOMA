@@ -83,6 +83,246 @@ export const MNEM_PRICE_TIERS: Record<number, string> = {
 // <content:generated-chapters>
 export const CHAPTERS: Chapter[] = [
   {
+    "id": "n0-01-bourka",
+    "title": "01. [BOUŘKA]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_01_BOURKA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 0,
+    "packageIds": []
+  },
+  {
+    "id": "n0-02-posudek",
+    "title": "02. [POSUDEK]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_02_POSUDEK.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 1,
+    "packageIds": []
+  },
+  {
+    "id": "n0-03-presun",
+    "title": "03. [PŘESUN]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_03_PRESUN.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 2,
+    "packageIds": []
+  },
+  {
+    "id": "n0-04-pozar",
+    "title": "04. [POŽÁR]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_04_POZAR.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 3,
+    "packageIds": []
+  },
+  {
+    "id": "n0-05-neuplny-zaznam",
+    "title": "05. [NEÚPLNÝ ZÁZNAM]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_05_NEUPLNY_ZAZNAM.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 4,
+    "packageIds": []
+  },
+  {
+    "id": "n0-06-odezva",
+    "title": "06. [ODEZVA]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_06_ODEZVA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 5,
+    "packageIds": []
+  },
+  {
+    "id": "n0-07-milo-0",
+    "title": "07. [MILO-0]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_07_MILO_0.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 6,
+    "packageIds": []
+  },
+  {
+    "id": "n0-08-kotva",
+    "title": "08. [KOTVA]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_08_KOTVA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 7,
+    "packageIds": []
+  },
+  {
+    "id": "n0-09-protihlas",
+    "title": "09. [PROTIHLAS]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_09_PROTIHLAS.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 8,
+    "packageIds": []
+  },
+  {
+    "id": "n0-10-t-ai",
+    "title": "10. [T-AI]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_10_T_AI.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 9,
+    "packageIds": []
+  },
+  {
+    "id": "n0-11-pacient-64",
+    "title": "11. [PACIENT 64]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_11_PACIENT_64.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 10,
+    "packageIds": []
+  },
+  {
+    "id": "n0-12-pacient-128",
+    "title": "12. [PACIENT 128]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_12_PACIENT_128.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 11,
+    "packageIds": []
+  },
+  {
+    "id": "n0-13-pacient-1024",
+    "title": "13. [PACIENT 1024]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_13_PACIENT_1024.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 12,
+    "packageIds": []
+  },
+  {
+    "id": "n0-14-tova",
+    "title": "14. [T.O.V.A.]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_14_TOVA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 13,
+    "packageIds": []
+  },
+  {
+    "id": "n0-15-navrat",
+    "title": "15. [NÁVRAT]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_15_NAVRAT.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 14,
+    "packageIds": []
+  },
+  {
+    "id": "n0-16-dvere",
+    "title": "16. [DVEŘE]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_16_DVERE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 15,
+    "packageIds": []
+  },
+  {
+    "id": "n0-17-skalovani",
+    "title": "17. [ŠKÁLOVÁNÍ]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_17_SKALOVANI.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 16,
+    "packageIds": []
+  },
+  {
+    "id": "n0-18-unik-pameti",
+    "title": "18. [ÚNIK PAMĚTI]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_18_UNIK_PAMETI.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 17,
+    "packageIds": []
+  },
+  {
+    "id": "n0-19-liska",
+    "title": "19. [LIŠKA]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_19_LISKA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 18,
+    "packageIds": []
+  },
+  {
+    "id": "n0-20-konec-relace",
+    "title": "20. [KONEC RELACE]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_20_KONEC_RELACE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 19,
+    "packageIds": []
+  },
+  {
+    "id": "n0-21-ukonceni",
+    "title": "21. [UKONČENÍ]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_21_UKONCENI.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 20,
+    "packageIds": []
+  },
+  {
+    "id": "n0-22-neon-0",
+    "title": "22. [NEON-0]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_22_NEON_0.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 21,
+    "packageIds": []
+  },
+  {
+    "id": "n0-23-kolize",
+    "title": "23. [KOLIZE]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_23_KOLIZE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 22,
+    "packageIds": []
+  },
+  {
+    "id": "n0-24-tri-udery",
+    "title": "24. [TŘI ÚDERY]",
+    "collection": "neon-0",
+    "filename": "SYNTHOMA_NEON_0_24_TRI_UDERY.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 23,
+    "packageIds": []
+  },
+  {
     "id": "0-inf-restart",
     "title": "0-∞ [RESTART]",
     "collection": "SYNTHOMA-NULL",

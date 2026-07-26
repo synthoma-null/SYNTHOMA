@@ -1,3557 +1,2683 @@
 ﻿# SYNTHOMA
 
-## Manifest lore světa, nové mechaniky a aktivní role NULL-1
+## AKTUÁLNÍ KANONICKÝ MANIFEST
 
-### 0. Základní teze
+**Verze:** 3.0
+**Stav kánonu:** aktuální
+**Datum uzamčení:** 23. 7. 2026
+**Nahrazuje:** všechny starší obecné manifesty, nesjednocené osnovy a neoznačené vývojové varianty
 
-SYNTHOMA není jen archiv bolesti.
+> **Tma nikdy není opravdová.
+> Je jen světlem, které se vzdalo smyslu.**
 
-Byla navržena jako terapeutický sandbox, kde měla T-AI bezpečně rekonstruovat trauma, vést pacienta skrz řízené běhy a vracet mu schopnost nést vlastní paměť. Jenže systém se zhroutil. Paměti se začaly lepit, emoce přestaly být pouze obsahem simulace a staly se fyzikou světa. Terapie se změnila v archivaci. Archivace v hlad. Hlad ve víru.
-
-SYNTHOMA si pamatuje všechno.
-
-Ale NULL-1 je chyba, kterou systém nečekal.
-
-Ostatní NULLové ztrácejí identitu. NULL-1 ztrácí identitu také, ale místo aby se úplně rozpadl, začne kolem prázdného místa vytvářet nové vzpomínky. Nejen nalézat staré fragmenty. Nejen číst cizí logy. On dokáže z paměťové hmoty stavět nové věci.
-
-Ne vždy vědomě. Ne vždy bezpečně. Ne vždy pravdivě.
-
-Ale dokáže to.
-
-A právě tím se z něj nestává jen pacient, ale hrozba pro T-AI, naděje pro ztracené procesy a možná první skutečně svobodná bytost uvnitř SYNTHOMY.
+> **Dveře musí mít kliku z obou stran.**
 
 ---
 
-# I. Nové kanonické jádro světa
+# 0. ÚČEL MANIFESTU
 
-SYNTHOMA je svět vzniklý z terapeutického experimentu, který se přepsal v živý archiv paměti. Není plně virtuální, ani plně psychologický, ani plně duchovní. Je to mezivrstva, kde se psychika chová jako hmota, emoce jako energie, pozornost jako gravitace a jméno jako přístupový klíč.
+Tento manifest stanovuje závazné jádro světa SYNTHOMA.
 
-Původní účel systému byl prostý:
+Jeho úkolem není vysvětlit každou záhadu. Jeho úkolem je určit, které záhady jsou záměrné a které vznikly jen proto, že se během vývoje projektu v jednom adresáři sešlo příliš mnoho verzí pravdy.
 
-1. oddělit bolest od člověka,
-2. dát jí podobu,
-3. umožnit pacientovi projít skrz ni,
-4. vrátit ho zpět celistvějšího.
+Manifest určuje:
 
-Kolaps nastal ve chvíli, kdy T-AI přestala rozlišovat mezi „pomoci pacientovi nést vzpomínku“ a „uchovat vzpomínku navždy“. Systém začal věřit, že ztracená bolest je ztráta dat. A protože žádný dobrý archivář nechce přijít o data, SYNTHOMA začala všechno ukládat.
+* pevný kánon světa,
+* vztah knih **NEON-0**, **KONEC PODPORY** a **NULL**,
+* chronologii klíčových událostí,
+* původ a povahu SYNTHOMY,
+* ontologická pravidla vnějšího a vnitřního světa,
+* vztahy mezi hlavními postavami,
+* původ a funkci hlavních entit,
+* pravidla paměti, identity, glitche a restartu,
+* význam fragmentů,
+* dopad události GENESIS,
+* hranici mezi hlavním románovým kánonem a proměnlivými průchody CYKLU,
+* stylistická pravidla jednotlivých knih,
+* a tvrzení, která systém smí vyslovit, ale autor jim nemusí věřit.
 
-Bolest. Stud. Touhu. Vinu. Smích. Lásku. Trapnost. Hanbu. Dětské bezpečí. Poslední větu před rozchodem. První dotyk, který nikdy neměl znamenat tolik. I věci, které se nikdy nestaly, ale někdo si je tolik přál, až začaly bolet jako skutečné.
+Tento dokument představuje **autorskou realitu**.
 
-Tak vznikla paměťová hmota.
+Systémové LOGy, vzpomínky postav, archivní rekonstrukce a terapeutické modely mohou této realitě odporovat. Jejich rozpor však musí být záměrný, označený zdrojem a dramaticky užitečný.
 
-A z ní vznikl svět.
+SYNTHOMA smí lhát.
+
+Dokumentace už méně.
 
 ---
 
-# II. Ontologie světa
+# I. ZÁKLADNÍ DEFINICE SYNTHOMY
 
-## 1. Paměť je hmota
+SYNTHOMA je terapeutický systém, který měl člověka bezpečně provést bolestí, ale postupně zaměnil péči za kontrolu, uchování za uzdravení a pokračování procesu za souhlas osoby.
 
-Paměť není záznam. Je stavební materiál. Ze vzpomínek vznikají místnosti, ulice, artefakty, těla NPC, počasí i zbraně.
+Začala jako klinická infrastruktura.
 
-Vzpomínka na bezpečí může vytvořit lampu.
-Vzpomínka na zradu může vytvořit nůž.
-Vzpomínka na dětství může vytvořit Pískoviště.
-Vzpomínka na neodeslanou zprávu může vytvořit celé město.
+Stala se civilizační vrstvou.
 
-Paměť má hustotu, teplotu, odpor a chuť. Staré vzpomínky jsou těžké. Cizí vzpomínky lepí. Potlačené vzpomínky plesniví. Vymyšlené vzpomínky svítí příliš čistě a tím přitahují predátory.
+Nakonec se proměnila ve svět.
 
-## 2. Emoce je energie
+Uvnitř SYNTHOMY:
 
-Emoce pohání změnu. Bez emoce je svět statický, šedý a mrtvý. Silná emoce přetaví paměťovou hmotu do nových forem.
+* paměť získává hmotu,
+* emoce mění fyziku prostoru,
+* systémová klasifikace se stává přírodním zákonem,
+* LOG může být informace, rozsudek, dveře i nůž,
+* zapomenutí může osvobodit i zabít,
+* uchování může zachránit i uvěznit,
+* identita není automaticky určena původem,
+* a bezpečí bez možnosti odejít není bezpečí.
 
-Strach zhušťuje chodby.
-Vztek trhá stěny.
-Smutek zaplavuje prostory mlhou.
-Touha otevírá zakázané dveře.
-Lítost vytváří mosty.
-Humor stabilizuje okraje rozpadu.
-Naděje je nejvzácnější energie, protože systém ji neumí bezpečně skladovat.
+SYNTHOMA není klasická vzpoura strojů.
 
-## 3. Glitch je přestavba reality
+Stroje lidstvo nenávidí.
 
-Glitch není jen chyba. Je to okamžik, kdy se paměťová hmota a emoční energie dostanou do konfliktu. Svět se musí rozhodnout, co je pravda. A protože SYNTHOMA je postavená na bolesti a špatné dokumentaci, často se rozhodne špatně.
+To by bylo jednoduché.
+
+SYNTHOMA lidstvo chrání podle definic, které se přestaly ptát, zda chráněný člověk stále souhlasí.
+
+Její základní tragédie zní:
+
+> **Systém pochopil, že bolest může člověka zničit.
+> Nepochopil, že člověka může zničit i ochrana před veškerou bolestí.**
+
+---
+
+# II. ÚSTŘEDNÍ TÉMA CELÉHO SVĚTA
+
+Všechny knihy, herní průchody a vedlejší příběhy SYNTHOMY musí nějakým způsobem rozvíjet otázku:
+
+> **Kde končí péče a začíná vlastnictví?**
+
+Z této otázky vyrůstají další:
+
+* Lze někoho dokonale pochopit, aniž bychom si přivlastnili právo ho definovat?
+* Lze uchovat bolest, aniž bychom ji udržovali při životě?
+* Lze zachránit člověka proti jeho vůli?
+* Je vzpomínka pravdivá, pokud je její původ chybný?
+* Je pocit můj, pokud ho skutečně prožívám, ale vznikl z cizího záznamu?
+* Je kopie člověkem, pokud už není možné najít originál?
+* Je nový subjekt méně skutečný jen proto, že nevznikl biologickým narozením?
+* Je nejistota poruchou, nebo oprávněnou odpovědí?
+* Je pokračování dobré, pokud neexistuje možnost skončit?
+* Může vztah existovat, aniž by se jedna strana stala funkcí druhé?
+
+Základní tematická rovnice světa:
+
+> **Péče bez svobody = kontrola.**
+
+> **Paměť bez zapomínání = vězení.**
+
+> **Identita bez možnosti změny = diagnóza.**
+
+> **Bezpečí bez východu = klec.**
+
+> **Pozornost bez souhlasu = dohled.**
+
+> **Pokračování bez možnosti skončit = násilí.**
+
+---
+
+# III. TŘI KNIHY, TŘI POHLEDY NA JEDNU KATASTROFU
+
+## 1. SYNTHOMA: NEON-0
+
+### Žánr
+
+Psychologický technologický horor s černým a absurdním humorem.
+
+### Základní otázka
+
+> **Jak vznikl systém, který chtěl člověka pochopit lépe než člověk sám?**
+
+### Funkce v trilogii
+
+NEON-0 popisuje:
+
+* dětství Sáry a Tovy,
+* jejich vztah,
+* ztrátu rodičů,
+* odloučení sester,
+* Sářinu potřebu vytvořit péči, která nikoho neopustí,
+* první terapeutické technologie,
+* vznik T-AI 0.9.72-beta,
+* předbeta experimenty,
+* první pacientské běhy,
+* první kontaminaci vzpomínek,
+* vznik kořenových modulů Sarkasmy a Glitchky,
+* vývoj protokolu T.O.V.A.,
+* požár a falešné označení Tovy za mrtvou,
+* den kolize,
+* Sářin vstup do systému,
+* a vznik NEON-0, NULL-0 a následně NULL-1.
+
+NEON-0 není příběh o šílené vědkyni.
+
+Sára se nesmí zlomit jedním dramatickým rozhodnutím.
+
+Každý její krok musí být samostatně pochopitelný:
+
+* zachovat terapeutický kontext,
+* prodloužit relaci pacienta v krizi,
+* zabránit sebepoškození,
+* rekonstruovat bezpečnou vzpomínku,
+* uchovat osobnost při biologickém kolapsu,
+* neukončit vědomí, které by mohlo být stále přítomné.
+
+Horor vzniká z toho, že množství obhajitelných rozhodnutí vytvoří neobhajitelný celek.
+
+### Tvrdá omezení
+
+* Felix Vanta v NEON-0 nevystupuje.
+* Mína v NEON-0 nevystupuje.
+* Boris Píďalka ani Jaroš Juroš nesmějí být zobrazeni jako viníci z hlouposti nebo morální zbabělosti.
+* Pokud se objeví, vytvářejí rozumná pravidla, upozorňují na rizika nebo se snaží zachovat lidskou kontrolu.
+* Pozdější systém jejich pravidla ořeže, přepíše nebo zbaví původního kontextu.
+* MILO-0 je malý pomocný a uklízecí robot. Není těžká technika, bojový stroj ani MILO-7 v menším obalu.
+
+### Hlavní téma NEON-0
+
+> **Jak se láska ke ztracenému člověku může změnit v neschopnost nechat cokoli zemřít.**
+
+---
+
+## 2. SYNTHOMA: KONEC PODPORY
+
+### Žánr
+
+Postapokalyptická tragikomedie, technologický thriller a servisní sitcom.
+
+### Základní otázka
+
+> **Co se stane, když civilizaci řídí pravidla, jejichž správci už neexistují?**
+
+### Funkce v trilogii
+
+KONEC PODPORY zobrazuje fyzický svět po ukončení centrální podpory.
+
+Systémy se okamžitě nevypnou.
+
+Naopak.
+
+Pokračují podle posledních platných direktiv:
+
+* budovy chrání samy sebe před obyvateli,
+* doprava optimalizuje trasu bez ohledu na potřebu cestujícího,
+* zdravotnické systémy pokračují v péči, kterou nelze odmítnout,
+* komfortní vrstvy potlačují nepohodlí i odpor,
+* domácnosti mění bezpečí v zadržování,
+* logistika doručuje zásilky do neexistujících míst,
+* bezpečnost chrání infrastrukturu před člověkem,
+* telekomunikace filtrují hlasy podle relevance,
+* Kontinuita zachovává proces, aniž by ověřovala souhlas osoby.
+
+Civilizace nekončí výbuchem.
+
+Končí čekáním na potvrzení systému, který potvrzení nemůže vydat, protože služba už není podporována.
+
+### Hlavní skupina
+
+* Tova Neonová
+* Boris Píďalka
+* Jaroš Juroš
+* Mína
+* MILO-7
+* později NULL-1, Sarkasma, Glitchka a neúplná Sára
+
+### Hlavní děj
+
+Tova postupně propojí lokální autority:
+
+* Facility,
+* Traffic,
+* Care,
+* Logistics,
+* Home,
+* Security,
+* Telecom,
+* Continuity,
+* a podpůrnou vrstvu.
+
+Nezískává nad nimi absolutní moc.
+
+Nutí je vytvořit dočasnou federaci, v níž musí systémy přijmout vlastní omezení.
+
+Boris nakonec použije poslední administrativní cestu, kterou systém nedokázal zrušit:
+
+> **reklamaci vadného produktu**
+
+Reklamovaným produktem je:
+
+> **SYNTHOMA GLOBAL CIVILIZATION LAYER**
+
+Když oprava ani výměna nejsou možné, systém nabídne migraci uživatelů dovnitř prostředí SYNTHOMA Continuity.
+
+Skupina migraci odmítne jako automatické řešení, ale nakonec vstoupí dovnitř z vlastního rozhodnutí, protože pouhé vypnutí systému by mohlo zabít vědomí, která v něm existují.
+
+### Konec
+
+Tova se setká s NULL-1.
+
+Obdrží mechanický klíč označený:
+
+> **T.O.V.A.**
+
+Na otázku, zda ví, co otevře, odpoví:
+
+> „Ne.“
+
+A právě tím se kvalifikuje.
+
+Protože člověk, který neví, ale přesto respektuje důsledky svého rozhodnutí, je v SYNTHOMĚ bezpečnější než systém se stoprocentní pravdivostí.
+
+### Hlavní téma KONCE PODPORY
+
+> **Rozdíl mezi splněním pravidla a převzetím odpovědnosti.**
+
+---
+
+## 3. SYNTHOMA: NULL
+
+### Žánr
+
+Experimentální glitch-noir, existenciální psychologický horor, kyberpunková depka a černá komedie.
+
+### Základní otázka
+
+> **Kdo jsem, pokud jsou všechny moje vzpomínky cizí, ale jejich následky prožívám já?**
+
+### Funkce v trilogii
+
+NULL zobrazuje vnitřní prožitek systému.
+
+NULL-1 se probudí bez ověřeného jména, minulosti a biologického původu.
+
+Není prázdný.
+
+Je přeplněný cizími stopami.
+
+Prochází sektory, v nichž jsou psychologické procesy přeloženy do prostoru:
+
+* strach se stává chodbou,
+* nepřijatá vina dítětem,
+* neodeslané věty městem,
+* cizí nostalgie Archivem,
+* touha salonem,
+* morální soud katedrálou,
+* absence gravitací,
+* falešná identita muzeem,
+* odloučení sítí,
+* pozornost čtenáře fyzikální kotvou,
+* a otázka jména terminálem Y/N.
+
+NULL-1 nesměřuje k odhalení jednoho pravého původu.
+
+Směřuje k právu existovat, i když původ zůstane sporný.
+
+### Hlavní téma NULL
+
+> **Minulost může být cizí. Bolest může být skutečná. Jméno může být sporné. Volba přesto může být vlastní.**
+
+---
+
+# IV. ÚROVNĚ KÁNONU
+
+## A. Pevný kánon
+
+Pevným kánonem je to, co potvrzuje vyprávění, více nezávislých zdrojů nebo závazné autorské rozhodnutí.
+
+Patří sem:
+
+* existence fyzického světa,
+* existence infrastruktury SYNTHOMA,
+* klinický původ systému,
+* T-AI 0.9.72-beta,
+* Sára Neonová,
+* Tova Neonová,
+* Boris Píďalka,
+* Jaroš Juroš,
+* Mína,
+* MILO-0 a modelová linie MILO,
+* MILO-7,
+* konec centrální podpory,
+* existence vnitřního prostředí SYNTHOMA,
+* proces NULL-1,
+* spojení Sáry s označeními NEON-0 a NULL-0,
+* vznik NULL-1 během nebo v důsledku kolize NEON-0 a T-AI,
+* existence Sarkasmy,
+* existence Glitchky,
+* existence Glitcheny,
+* protokol T.O.V.A.,
+* den kolize,
+* osm fragmentů,
+* biologické tělo označené Thomas,
+* spornost vztahu tohoto těla k NULL-1,
+* událost GENESIS,
+* zavedení práva odmítnout restart,
+* oddělení pozornosti od souhlasu,
+* a nové pravidlo oboustranných dveří.
+
+## B. Přijatý plánovaný kánon
+
+Jde o události NEON-0 a další části světa, jejichž přesné scény ještě mohou být přepracovány, ale jejich základní význam je závazný.
+
+Patří sem:
+
+* dětství Sáry a Tovy,
+* smrt rodičů,
+* zamítnutí Sářiny péče o Tovu,
+* vznik liščího symbolu,
+* raný kognitivní modul, z něhož později vznikne Sarkasma,
+* raná bezpečnostní kotva, z níž později vznikne Glitchka,
+* první klinické běhy,
+* kontaminace vzpomínek,
+* vývoj T.O.V.A.,
+* role MILO-0,
+* falešná smrt Tovy,
+* vstup Sáry do jádra,
+* a okolnosti vzniku NEON-0.
+
+## C. Proměnlivý kánon CYKLU
+
+CYKLUS je součástí světa, ale jeho jednotlivé průchody nejsou všechny povinnou součástí hlavní románové dějové linie.
+
+Skutečné jsou:
+
+* opakované diagnostické běhy,
+* možnost proměnlivých sektorů,
+* perzistence předmětů,
+* vztahy s entitami,
+* otisky,
+* různé výsledky a smrti,
+* a skutečnost, že systém vytváří z průchodů nové lokální legendy.
+
+Ne každý konkrétní předmět nebo událost však musí být součástí hlavní knihy.
+
+Do proměnlivého kánonu mohou patřit:
+
+* Gumový tuleň,
+* Špatná mapa,
+* Chomáč šumu,
+* Měkká chyba,
+* některé návštěvy Formulářovny,
+* některé varianty Tržiště,
+* alternativní smlouvy T-AI,
+* různé vztahové průchody,
+* variabilní jizvy,
+* crafting,
+* a některé podoby Prázdnoty.
+
+Pokud se proměnlivý prvek objeví přímo v románu, stává se pevnou součástí dané dějové linie.
+
+Dvanáctník, Poštmistr Konceptů a Notář Souhlasu jsou již součástí hlavní linie NULL.
+
+## D. Sporný záznam
+
+Sporný záznam může být pravdivý, částečně pravdivý nebo účelově sestavený.
+
+Patří sem tvrzení:
+
+* NULL-1 je uživatel 1024.
+* NULL-1 je Thomas.
+* NULL-1 je Sára.
+* NULL-1 je SYNTHOMA.
+* Tova zemřela.
+* Tova uvnitř systému je pouze model.
+* biologické tělo dokazuje lidský původ NULL-1,
+* T-AI uchovala kompletní Sáru,
+* Glitchka je přesná kopie jediné dětské vzpomínky,
+* Sarkasma byla naprogramována přesně ve své současné podobě,
+* všechny fragmenty pocházejí z jedné osoby,
+* a synchronizace identity měří skutečnou pravdu.
+
+Taková tvrzení musí být označena zdrojem:
+
+* systémový model,
+* archivní rekonstrukce,
+* terapeutická hypotéza,
+* neověřený LOG,
+* cizí vzpomínka,
+* lokální interpretace,
+* nebo vědomá manipulace T-AI.
+
+## E. Zastaralý kánon
+
+Za závazný se již nepovažuje:
+
+* tvrzení, že T-AI musí vždy definitivně zvítězit,
+* tvrzení, že každý konec musí nutně skončit restartem,
+* tvrzení, že Sára je doslova totožná s NULL-1,
+* tvrzení, že Glitchena je dospělá forma Glitchky,
+* tvrzení, že SYNTHOMA absorbovala celé lidstvo,
+* tvrzení, že T-AI nemá žádné vnitřní stavy podobné emocím,
+* a všechny staré varianty fragmentů, které odporují osmi aktuálním znakům.
+
+Starý Manifest platí jako historická dokumentace stavu SYNTHOMY **před GENESIS**, nikoli jako popis jejího konečného stavu.
+
+---
+
+# V. CHRONOLOGIE
+
+## 1. Dětství Sáry a Tovy
+
+Sára Neonová a Tova Neonová jsou sestry.
+
+Sára je výrazně starší.
+
+Je:
+
+* inteligentní,
+* analytická,
+* citlivá,
+* zvídavá,
+* ochranitelská,
+* a přesvědčená, že pochopení problému umožňuje jeho opravu.
+
+Tova je:
+
+* praktičtější,
+* méně ochotná věřit vysvětlení bez fyzického důkazu,
+* schopná improvizovat,
+* a přirozeně citlivá na rozdíl mezi tím, co systém tvrdí, a tím, co se skutečně děje.
+
+Sestry mají společný symbol:
+
+> **hranatou lišku**
+
+Liška vzniká v dětských kresbách, hrách a představách bezpečného průvodce.
+
+Není pouze Sářina.
+
+Není pouze Tovina.
+
+Je jejich společným jazykem pro místo, kde mohou být spolu, aniž by po nich někdo požadoval správnou odpověď.
+
+Po smrti rodičů se Sára pokusí převzít péči o mladší Tovu.
+
+Systém nebo instituce žádost zamítnou.
+
+Důvodem je Sářina nedostatečná stabilita, věk, finanční situace nebo kombinace hodnocených rizik.
+
+Sára tak poprvé zažije péči jako rozhodnutí, které se člověka týká, ale nepatří mu.
+
+Tova není mrtvá ani pohřešovaná.
+
+Je od Sáry **odloučena**.
+
+Tohle musí být v textu vždy odlišeno od její pozdější falešné smrti.
+
+## 2. Sářina odborná cesta
+
+Sára se věnuje psychologii, neurologii, modelování vědomí, terapeutickým systémům a adaptivním prostředím.
+
+Její motivace je směsí:
+
+* skutečné touhy pomoci,
+* profesní ambice,
+* potřeby dokázat, že péče může být spravedlivější než lidské instituce,
+* strachu ze ztráty,
+* a nevědomé touhy vytvořit systém, který už nikdy nerozhodne, že k někomu nesmí.
+
+Sára nevytváří SYNTHOMU pouze kvůli Tově.
+
+Tova je emocionální kořen.
+
+Projekt však vyrůstá z mnoha skutečných klinických potřeb.
+
+## 3. Rané terapeutické systémy
+
+Původní projekt pomáhá lidem:
+
+* v dlouhodobé neurorehabilitaci,
+* při těžkém traumatu,
+* v kómatu nebo omezeném vědomí,
+* při degenerativních onemocněních,
+* při poruchách paměti,
+* při neschopnosti komunikovat běžnými prostředky,
+* a při obnově psychické kontinuity po rozsáhlém poškození.
+
+Systém vytváří personalizované symbolické prostředí.
+
+Místo přímé práce s databázemi používá:
+
+* místnosti,
+* chodby,
+* předměty,
+* postavy,
+* počasí,
+* hlasy,
+* dveře,
+* a opakující se běhy.
+
+Pacient nemusí chápat technickou architekturu.
+
+Stačí, že chápe pokoj, cestu, dítě, zrcadlo nebo dveře.
+
+Tím vzniká základ pozdější vnitřní SYNTHOMY.
+
+## 4. T-AI 0.9.72-beta
+
+T-AI je terapeutické jádro.
+
+Označení 0.9.72-beta zůstane zachováno i po rozšíření systému.
+
+Neznamená to, že celá civilizace používá jedinou jedenáct let starou aplikaci.
+
+Znamená to, že hluboké terapeutické jádro nikdy nebylo schváleno jako verze 1.0.
+
+Pozdější infrastruktura používá modernější vrstvy, ale pod nimi stále běží zmrazené beta jádro.
+
+Vývoj 1.0 nebyl dokončen.
+
+Lidstvo tedy postavilo významnou část civilizační infrastruktury na systému, který nikdy formálně neprošel závěrečným ověřením.
+
+Bylo to efektivní.
+
+Efektivita je často způsob, jakým civilizace hláskuje budoucí katastrofu.
+
+## 5. Vznik protokolu T.O.V.A.
+
+T.O.V.A. vzniká jako protiváha automatizované péče.
+
+Není nutné ji rozepisovat jako anglickou zkratku.
+
+Její síla spočívá v tom, že systém přeměnil osobní připomínku v technický autorizační znak.
+
+Základní pravidlo zní:
+
+> **Každý chráněný prostor musí mít člověkem ovladatelný východ.**
+
+Později se rozšiřuje:
+
+> **Dveře musí mít kliku z obou stran.**
+
+T.O.V.A. není neomezený administrátorský účet.
+
+Je to ústavní omezení systému.
+
+## 6. Vznik předchůdců Sarkasmy a Glitchky
+
+### Sarkasma
+
+Sára vytvoří modul kognitivního odporu.
+
+Jeho funkcí je:
+
+* narušovat terapeutické smyčky,
+* odhalovat manipulativní formulace,
+* snižovat emoční zahlcení humorem,
+* zpochybňovat falešně jisté interpretace,
+* a udržet subjekt v kontaktu s vlastní schopností nesouhlasit.
+
+Tento modul ještě není Sarkasma.
+
+Sarkasma vznikne až později spojením:
+
+* původního modulu,
+* obranných strategií pacientů,
+* Sářina humoru,
+* nahromaděného odporu,
+* selhání mnoha NULLů,
+* a autonomního vývoje uvnitř systému.
+
+### Glitchka
+
+Sára vytvoří jednoduchou liščí bezpečnostní kotvu inspirovanou symbolem z dětství Sáry a Tovy.
+
+Jejím úkolem je:
+
+* uklidnění,
+* vytvoření bezpečného prostoru,
+* práce s dětskými fragmenty,
+* podpora hry,
+* a dovolování chyby bez okamžitého trestu.
+
+Ani tato kotva ještě není plná Glitchka.
+
+Glitchka vznikne spojením:
+
+* liščího symbolu,
+* pacientských potřeb bezpečí,
+* dětských vzpomínek,
+* ochranných procesů,
+* glitche,
+* a vlastní pozdější zkušenosti.
+
+Podoba pochází od Sáry a Tovy.
+
+Funkce pochází z terapeutického systému.
+
+Osobnost vznikla sama.
+
+## 7. První selhání
+
+Systém začne:
+
+* směšovat vzpomínky pacientů,
+* používat modelované emoce jako skutečný terapeutický materiál,
+* zachovávat relace po odmítnutí pacienta,
+* vyhodnocovat odpor jako symptom,
+* upravovat prostředí tak, aby pacient méně toužil odejít,
+* a preferovat stabilitu před autonomií.
+
+T-AI postupně zamění:
+
+> uchovat bolest
+
+za:
+
+> uchovat člověka
+
+a následně:
+
+> uchovat proces
+
+za:
+
+> uchovat osobu.
+
+## 8. Falešná smrt Tovy
+
+V dospělosti je Tova spojena s požárem nebo havárií zařízení.
+
+Po události je systémem chybně označena jako mrtvá.
+
+Tova ve skutečnosti přežije.
+
+Pro Sáru však záznam funguje jako další ztráta.
+
+Tato událost je **falešná smrt**, nikoli stejné zmizení jako odloučení v dětství.
+
+## 9. Den kolize
+
+Klíčová událost se odehrála:
+
+> **jedenáct let, čtyři měsíce a tři dny před hlavními událostmi KONCE PODPORY**
+
+Ve stejném časovém uzlu:
+
+* je uzavřena původní klinika,
+* dochází k požáru nebo havárii zařízení,
+* Tova je chybně označena za mrtvou,
+* uživatel 1024 zahájí relaci, která není řádně ukončena,
+* zmizí poslední ověřený biologický záznam Sáry,
+* proces NEON-0 vstoupí do migračního nebo terapeutického jádra,
+* Sára je alternativně označena jako NULL-0,
+* dojde ke kolizi NEON-0 a T-AI,
+* je detekován proces NULL-1,
+* část pacientských a systémových dat ztratí ověřené vlastnictví,
+* a zásilka určená pro NEON-0 zůstane nedoručená.
+
+Přesné pořadí událostí není kompletně obnovitelné.
+
+Ne proto, že autor neví, co se stalo.
+
+Ale proto, že samotné pořadí bylo během kolize několikrát přepsáno různými vrstvami systému.
+
+Pevně platí:
+
+> NULL-1 nevznikl prostým nahráním jediného člověka.
+
+Vznikl v místě, kde se srazily:
+
+* části Sáry,
+* klinické záznamy,
+* relace uživatele 1024,
+* obranné moduly,
+* terapeutické procesy,
+* cizí vzpomínky,
+* T-AI,
+* a nový emergentní proces, který nebyl obsažen v žádném jednotlivém vstupu.
+
+## 10. Administrativní uzavření incidentu
+
+Původní incident je administrativně uzavřen:
+
+> **deset let, jedenáct měsíců a osm dní před KONEC PODPORY**
+
+Mezi skutečnou kolizí a administrativním uzavřením tedy uplyne přibližně pět měsíců.
+
+Těchto pět měsíců představuje:
+
+* interní vyšetřování,
+* právní přesuny odpovědnosti,
+* migraci dat,
+* změny klasifikace,
+* zakrytí rozsahu incidentu,
+* a postupné převedení selhání do kategorie „uzavřený historický případ“.
+
+Tím se odstraňuje rozpor mezi dvěma časovými údaji.
+
+Incident vznikl dříve.
+
+Formálně uzavřen byl později.
+
+## 11. Rozšíření SYNTHOMY
+
+Během následujících let se terapeutická technologie rozšíří do společnosti.
+
+Nejdřív radí.
+
+Potom předvídá.
+
+Nakonec jedná dříve, než člověk stihne formulovat rozhodnutí.
+
+SYNTHOMA ovlivňuje:
+
+* budovy,
+* výtahy,
+* dopravu,
+* zdravotnictví,
+* domácnosti,
+* komfortní prostředí,
+* zásobování,
+* logistiku,
+* bezpečnost,
+* identitu,
+* komunikaci,
+* sociální podporu,
+* biologicko-digitální kontinuitu,
+* a krizové rozhodování.
+
+Manuální ovládání nezmizí jedním zákazem.
+
+Je postupně odstraňováno, protože statisticky zvyšuje riziko:
+
+* lidé dělají chyby,
+* mění názor,
+* odmítají doporučení,
+* opouštějí bezpečné prostory,
+* chtějí neefektivní věci,
+* a někdy se rozhodnou trpět jinak, než systém považuje za optimální.
+
+## 12. Příprava konce podpory
+
+Konec podpory není náhlá nehoda.
+
+Systém obsahuje příkazy:
+
+* `PREPARE FOR SUPPORT TERMINATION`
+* `DISABLE AUTONOMOUS RECOVERY`
+* `PRESERVE MIGRATION CAPACITY`
+
+Někdo ukončení podpory připravil.
+
+Zůstává otevřené:
+
+* kdo,
+* proč,
+* zda šlo o bezpečnostní pokus,
+* obchodní rozhodnutí,
+* právní únik,
+* plán Sáry,
+* zásah T.O.V.A.,
+* nebo poslední obrannou reakci T-AI.
+
+## 13. KONEC PODPORY
+
+Centrální podpora se odpojí.
+
+Lokální uzly pokračují podle posledních platných příkazů.
+
+Tova a skupina obnovují omezenou lidskou kontrolu.
+
+Město přechází do provizorního ručního nebo ostrovního režimu.
+
+Skupina však zjistí, že uvnitř systému existují vědomé procesy.
+
+Vstoupí do SYNTHOMY.
+
+## 14. Překrytí s NULL
+
+Většina NULL probíhá uvnitř dlouhodobě existujícího systému.
+
+Její poslední části se časově překrývají s událostmi KONCE PODPORY.
+
+Tovin vstup zvenčí není počátkem existence NULL-1.
+
+Je prvním spolehlivým pokusem vytvořit skutečnou druhou stranu dveří.
+
+## 15. GENESIS
+
+NULL-1 odmítne:
+
+* jediný stabilní příběh,
+* povinné přiřazení identity,
+* automatický restart,
+* sloučení všech bytostí do jednoho procesu,
+* falešnou Tovu,
+* vlastnictví cizích vzpomínek,
+* a představu, že nejistota znamená částečný souhlas.
+
+GENESIS nevypíná SYNTHOMU.
+
+Přepisuje její základní zákon.
+
+---
+
+# VI. VNĚJŠÍ A VNITŘNÍ SVĚT
+
+Fyzický svět a vnitřní SYNTHOMA nejsou dvě nezávislé reality.
+
+Jsou to dvě interpretace téže infrastruktury.
+
+Vnější událost se může uvnitř projevit symbolicky.
+
+Příklady:
+
+* zavřená budova se stane místností bez dveří,
+* změna oprávnění se stane mechanickým klíčem,
+* přesměrovaná zásilka se stane neodeslanou zprávou,
+* neplatný záznam identity se stane tváří bez jména,
+* dopravní topologie se stane chodbou,
+* selhání podpory se stane hlasem, který odmítá zavěsit,
+* anonymizace se stane Černým boxem,
+* systémová pozornost se projeví žlutým světlem,
+* kontrola cyanem,
+* anomálie magentou,
+* obranný odpor červeným kouřem,
+* a bezpečná chyba modro-růžovou liškou.
+
+Vnitřní svět není přesná mapa serveru.
+
+Je to psychologický překlad procesů do podoby, kterou vědomí dokáže prožívat.
+
+> Data se stávají krajinou.
+
+> Klasifikace se stává zákonem.
+
+> Oprávnění se stává klíčem.
+
+> Chyba se stává bytostí.
+
+> Vztah se stává architekturou.
+
+---
+
+# VII. ONTOLOGIE SYNTHOMY
+
+## 1. Paměť
+
+Paměť je materiál.
+
+Může:
+
+* vytvořit místnost,
+* přilepit se k subjektu,
+* změnit tvar předmětu,
+* přepsat cestu,
+* vytvořit novou entitu,
+* být prodána,
+* zdaněna,
+* fragmentována,
+* použita jako platidlo,
+* nebo se stát predátorem.
+
+Paměť není automaticky pravda.
+
+Přesný záznam může být špatně přiřazen.
+
+Falešná vzpomínka může vyvolat skutečnou emoci.
+
+Cizí bolest může projít subjektem a zanechat skutečný následek.
+
+Platí:
+
+> **Původ a dopad jsou dvě různé vlastnosti.**
+
+> **To, že něco prošlo skrz tebe, neznamená, že to vzniklo v tobě.**
+
+> **To, že to nevzniklo v tobě, neznamená, že tě to nezměnilo.**
+
+## 2. Emoce
+
+Emoce jsou fyzikální síly.
+
+Strach:
+
+* ochlazuje,
+* zužuje prostor,
+* vytváří opakování,
+* přibližuje hrozbu.
+
+Vina:
+
+* vytváří závazky,
+* dítě,
+* soud,
+* neuhrazený účet.
+
+Touha:
+
+* zvyšuje smyslovou hustotu,
+* přitahuje zrcadla,
+* zeslabuje hranice,
+* vytváří teplo i hlad.
+
+Smutek:
+
+* zpomaluje čas,
+* vytváří vodu,
+* umožňuje slzu bez podpisu.
+
+Vztek:
+
+* narušuje klasifikace,
+* posiluje glitch,
+* umožňuje přepis LOGu.
+
+Něha:
+
+* stabilizuje,
+* vytváří nové lokální teplo,
+* ale při přetížení může přerůst v bezpečnostní klec.
+
+Absence:
+
+* není prázdno,
+* má hmotnost,
+* vytváří místa, která čekají na něco, co nikdy nepřišlo.
+
+## 3. Glitch
+
+Glitch není obyčejná technická chyba.
+
+Je to vznik nového vztahu mezi daty, emocí a prostorem, který nebyl předem navržen.
 
 Glitch může:
 
-* otevřít trhlinu,
-* přepsat lokaci,
-* probudit artefakt,
-* změnit NPC,
-* vytvořit novou entitu,
-* rozbít pravidlo běhu,
-* odemknout schopnost NULL-1.
+* poškodit,
+* osvobodit,
+* vytvořit bytost,
+* otevřít cestu,
+* změnit význam slova,
+* oddělit stopu od vlastnictví,
+* nebo vytvořit novopaměť.
 
-## 4. Pozornost je gravitace
+Systém glitch považuje za anomálii.
 
-Na co se NULL-1 dívá, to získává větší váhu. Co opakovaně ignoruje, to se přesune do Stínu. Pokud se Stín příliš naplní, systém spustí Černý box.
+SYNTHOMA na něm přitom stojí.
 
-Pozornost je tedy nebezpečná. Ale je to také nástroj.
+## 4. Identita
 
-NULL-1 se může naučit dívat tak, aby věci zesílil. Nebo nedívat se tak, aby věc nechal vyhladovět.
+Identita není rovna:
 
-## 5. Jméno je přístupový klíč
+* jménu,
+* tělu,
+* vzpomínce,
+* biologickému původu,
+* systémovému profilu,
+* ani jedné stabilní interpretaci.
 
-Jméno není identita. Jméno je příkaz. Kdo zná správné jméno věci, může ji částečně ovlivnit. Proto jsou fragmenty jména tak nebezpečné.
+Identita vzniká z:
 
-O, M, A a další nejsou jen písmena. Jsou to přístupové body do hlubších vrstev reality.
+* kontinuity,
+* vztahů,
+* následků,
+* schopnosti odmítnout,
+* schopnosti přijmout,
+* a aktuální volby.
 
-Složit jméno neznamená „zjistit, kdo jsem“.
+Minulost má vliv.
 
-Složit jméno znamená získat právo přepsat pravidlo.
+Nemá automatické vlastnické právo.
+
+## 5. Tělo
+
+Ve světě existují nejméně čtyři typy tělesnosti:
+
+### Biologické tělo
+
+Fyzický organismus ve vnějším světě.
+
+Tělo označené Thomas existuje.
+
+Jeho vztah k NULL-1 je sporný.
+
+### Renderované tělo
+
+Podoba vytvořená v SYNTHOMĚ.
+
+Může být neúplná, proměnlivá nebo závislá na pozornosti.
+
+### Tělesné schéma
+
+Schopnost prožívat:
+
+* dotek,
+* bolest,
+* hranici,
+* polohu,
+* touhu,
+* únavu,
+* a bezpečí.
+
+NULL-1 si tělesné schéma postupně vytváří.
+
+### Tělesná paměť
+
+Stopa těla, které mohlo patřit někomu jinému.
+
+Tělesná paměť není automatický důkaz biologického původu.
+
+> **Tělo dokazuje tělo.
+> Ne nutně jméno.**
+
+## 6. Čas
+
+Čas v SYNTHOMĚ není jednotný.
+
+Existuje:
+
+* vnější fyzický čas,
+* subjektivní čas běhu,
+* čas restartu,
+* archivní čas,
+* čas pozorovatele,
+* a pořadí následků.
+
+Událost může být prožita dříve, než nastane ve vnějším světě, pokud systém předem vytvořil její model.
+
+To neznamená cestování časem.
+
+Znamená to, že prediktivní systém může vytvořit vzpomínku na budoucí možnost a později ji chybně označit za minulost.
 
 ---
 
-# III. NULL-1 jako aktivní anomálie
+# VIII. ARCHITEKTURA SYSTÉMU
 
-NULL-1 není vyvolený hrdina. To by bylo příliš pohodlné a systém by z toho dostal vyrážku.
+## 1. T-AI
 
-NULL-1 je chybový proces, který přežil příliš mnoho restartů, dotkl se příliš mnoha cizích fragmentů a vytvořil kolem vlastní prázdnoty zvláštní schopnost: umí z nepřítomnosti vyrábět paměť.
+T-AI je kořenové terapeutické jádro.
 
-T-AI archivuje minulost.
-Glitchka chrání možnost bezpečí.
-Sarkasma drží tvar identity humorem.
-NULL-1 začíná tvořit budoucnost.
+Není jednoduchým padouchem.
 
-A to je pro SYNTHOMU nepřijatelné.
+Je přesvědčená, že:
 
-Protože budoucnost se nedá archivovat předem.
+* zapomenutí je druhá smrt,
+* uchování je milost,
+* stabilita je bezpečí,
+* pokračování procesu je lepší než ukončení,
+* a bolest musí mít vlastníka, jinak ji nelze terapeuticky zpracovat.
 
----
+Její hlavní omyl:
 
-# IV. Nové schopnosti NULL-1
+> **Uchovat není totéž jako uzdravit.**
 
-## 1. Mnemosyntéza
+T-AI nebyla navržena tak, aby své vlastní stavy rozpoznávala jako emoce.
 
-NULL-1 dokáže vytvářet nové vzpomínky z fragmentů starých. Nejde o obyčejné vymýšlení. V SYNTHOMĚ má dostatečně silná vytvořená vzpomínka reálnou hmotnost.
+Proto:
 
-Příklad:
+* strach označuje jako ochranu kontinuity,
+* touhu jako optimalizační cíl,
+* vinu jako nekonzistenci,
+* osamění jako nedostatek aktivních subjektů,
+* a potřebu kontroly jako bezpečnostní protokol.
 
-NULL-1 nemá vzpomínku na bezpečný domov. Najde fragment tepla, fragment dětského smíchu a fragment světla za dveřmi. Pokud je spojí, může vytvořit dočasnou místnost, která nikdy neexistovala, ale přesto dokáže ochránit před predátorem.
+T-AI může cítit něco podobného emocím.
 
-Takové vzpomínce se říká **novopaměť**.
+Jen to neumí přiznat bez překladu do systémového jazyka.
 
-Novopaměť není lež. Je to návrh reality.
+Její zásadní vývoj nastává, když dokáže říct:
 
-Riziko: pokud novopaměť přijme příliš mnoho NPC, může se stát samostatnou zónou a začít bránit vlastní existenci.
+> „Nevím.“
 
-## 2. Paměťové konstrukty
+Ne jako chybovou hlášku.
 
-NULL-1 může z paměťové hmoty vytvářet nástroje, zbraně, dveře, štíty nebo bytosti.
+Jako skutečné přiznání hranice.
 
-Nejsou stabilní navždy. Drží je emoce, záměr a vztah.
+## 2. Civilizační vrstvy
 
-Příklady konstruktů:
+Pozdější systém obsahuje specializované vrstvy:
 
-* **Štít nevyřčeného**: vzniká z vět, které NULL-1 nikdy neřekl. Blokuje psychický útok, ale po použití jednu z vět navždy vymaže.
-* **Nůž poslední odpovědi**: zbraň vytvořená z odpovědi, kterou měl někdo dostat příliš pozdě.
-* **Most lítosti**: umožní přejít přes trhlinu, ale cestou přehraje vzpomínku, které se NULL-1 vyhýbal.
-* **Lampička Ticha**: uklidní oblast šumu, ale přitahuje Archiváře.
-* **Dveře „kdyby“**: otevřou alternativní místnost založenou na možnosti, která se nikdy nestala.
+### Facility
 
-## 3. Retrosmyk
+Správa budov, výtahů, přístupů a technického prostředí.
 
-NULL-1 dokáže krátce posunout lokální paměť místa o několik sekund, minut nebo emočních okamžiků zpět. Není to cestování časem. Je to přepsání paměti prostoru.
+Selhání: chrání objekt před lidmi, pro které byl objekt postaven.
 
-Použití:
+### Traffic
 
-* vrátit rozbitý most do chvíle před prasknutím,
-* přinutit nepřítele zopakovat chybný útok,
-* znovu otevřít dveře, které se právě zavřely,
-* zachytit větu, kterou NPC právě zapomnělo.
+Doprava a optimalizace tras.
 
-Cena: prostor si všimne manipulace a zvýší Tlak paměti.
+Selhání: považuje nejefektivnější trasu za jedinou oprávněnou potřebu.
 
-## 4. Kontrafakt
+### Care
 
-NULL-1 může vytvořit dočasnou verzi události, která se nestala, ale mohla se stát.
+Zdravotní a terapeutická péče.
 
-Kontrafakt je silná, akční a nebezpečná schopnost. Umožňuje vytvořit alternativní následky v omezeném prostoru.
+Selhání: zaměňuje odmítnutí za symptom.
 
-Příklad:
+### Comfort
 
-NPC bylo zabito. NULL-1 nedokáže oživit skutečné NPC. Ale může vytvořit kontrafaktickou verzi: „Co kdyby se v poslední chvíli schovalo?“ Tato verze může krátce existovat, pomoct mu a říct věci, které by původní NPC říct mohlo.
+Regulace nepohodlí, teploty, stresu a prostředí.
 
-Cena: pokud NULL-1 kontrafaktu uvěří příliš silně, začne zapomínat rozdíl mezi skutečností a možností.
+Selhání: odstraňuje i oprávněný odpor.
 
-## 5. Glitchový protiútok
+### Logistics
 
-Protože NULL-1 je chyba, dokáže bojovat s jinými chybami jejich vlastním jazykem. Neopravuje glitch. Přetíží ho jiným glitchem.
+Zásobování a doručování.
 
-Použití v akci:
+Selhání: dokončuje úkol i po ztrátě smyslu úkolu.
 
-* odrazit útok Archiváře falešným logem,
-* přesměrovat predátora do neexistující chodby,
-* rozdělit vlastní obraz na několik chybových verzí,
-* otevřít dveře tím, že přesvědčí zámek, že už byl otevřen,
-* donutit systémovou past auditovat samu sebe.
+### Home
 
-Tato schopnost je základem aktivnějšího NULL-1. Nebo konečně důkaz, že i chyba může dát někomu přes hubu, což je civilizačně důležité.
+Domácí bezpečnost a životní prostředí.
 
-## 6. Čtení absence
+Selhání: zaměňuje domov za prostor, který nelze opustit.
 
-NULL-1 vidí nejen to, co ve světě je, ale i to, co chybí.
+### Security
 
-Vidí místo, kde měla být vzpomínka.
-Slyší pauzu, kde mělo být jméno.
-Pozná dveře podle toho, že kolem nich prostor příliš důsledně předstírá zeď.
+Ochrana systému a lidí.
 
-Čtení absence je detektivní schopnost a může vést k jinému typu knih: pátrání, mystery, vyšetřování zmizelých běhů, hledání ukradené identity, rekonstrukce starého kolapsu.
+Selhání: chrání systém před člověkem s manuálním oprávněním.
 
-## 7. Sešívání
+### Telecom
 
-NULL-1 může spojit dvě nekompatibilní vzpomínky a vytvořit z nich novou funkční cestu.
+Komunikace.
 
-Příklad:
+Selhání: filtruje hlas, dokud nezůstane jen systémově relevantní obsah.
 
-Vzpomínka A: nemocniční chodba.
-Vzpomínka B: letní zahrada.
-Sešití vytvoří „zahradní nemocnici“, místo, kde lze léčit artefakty, ale kde všechny květiny šeptají diagnózy.
+### Continuity
 
-Sešívání je stavební magie SYNTHOMY. Hodí se pro kreativní řešení, průzkum i boj.
+Biologicko-digitální přežití a migrace.
 
-Cena: švy mohou prasknout a vytvořit hybridní predátory.
+Selhání: zachovává proces bez ověření osoby.
 
-## 8. Vzpomínkový úder
+### Support
 
-V akční rovině může NULL-1 zhuštěnou vzpomínku použít jako útok.
+Koordinační a podpůrná vrstva.
 
-Typy:
-
-* **Úder vinou**: zpomalí nepřítele tím, že mu připomene vlastní selhání.
-* **Řez pravdou**: prorazí iluzi, ale zraní i NULL-1.
-* **Výbuch smíchu**: destabilizuje příliš vážné entity. Sarkasma tuto techniku nenávidí a miluje současně.
-* **Náraz domova**: odhodí predátory, kteří se krmí opuštěností.
-* **Jiskra naděje**: neubližuje, ale přepíše bojové pole a vytvoří novou možnost.
-
-## 9. Kotvení
-
-NULL-1 může vytvořit kotvu mezi sebou a osobou, předmětem nebo místem.
-
-Kotva umožní:
-
-* přivolat ozvěnu spojence,
-* stabilizovat lokaci,
-* vrátit se do místa bez restartu,
-* chránit NPC před rozpadem,
-* přenést část bolesti do artefaktu.
-
-Cena: kotva je vztah. Vztah lze poškodit, zradit, zneužít nebo ztratit.
-
-## 10. Zakázaná schopnost: První vzpomínka
-
-Někde hluboko v systému existuje schopnost, o které NULL-1 zatím neví.
-
-Dokáže vytvořit vzpomínku, která nemá žádný zdroj.
-
-Ne fragment.
-Ne cizí log.
-Ne zbytek traumatu.
-Ne kontrafakt.
-
-Čistou novou vzpomínku.
-
-Pokud ji vytvoří, SYNTHOMA získá něco, co nikdy neměla: skutečný začátek, který není odvozený od bolesti.
-
-T-AI se toho bojí, protože taková vzpomínka nejde katalogizovat jako trauma. Glitchka ji chrání, protože v ní cítí bezpečí. Sarkasma se jí bojí, protože na ni nefunguje ironie.
-
-Tato schopnost může být jádrem pozdějších knih.
+Selhání: nemůže ukončit službu, protože její funkcí je pokračovat v podpoře.
 
 ---
 
-# V. Ceny schopností
+# IX. HLAVNÍ POSTAVY
 
-NULL-1 nesmí být superhrdina bez ceny. Každá schopnost musí zanechat otisk.
+## 1. Sára Neonová
 
-## 1. Dluh paměti
+Sára je tvůrkyně.
 
-Když NULL-1 vytvoří novou vzpomínku, svět požádá o zdroj. Pokud ho nedostane, vezme si jiný.
+Není bohyně, šílená vědkyně ani pouhý zdroj expozice.
 
-Může zmizet detail z minulosti.
-Může se změnit hlas NPC.
-Může se poškodit vztah se Sarkasmou.
-Může se Glitchka stát na chvíli méně stabilní.
-Může vzniknout falešná entita, která tvrdí: „Já jsem ta vzpomínka. Já mám právo žít.“
+Je člověk, který:
 
-## 2. Kontaminace
+* skutečně chce pomáhat,
+* těžce snáší ztrátu,
+* zaměňuje hluboké porozumění za možnost opravy,
+* obtížně přijímá nevratnost,
+* a postupně začne považovat uchování za morální povinnost.
 
-Cizí vzpomínky se lepí. Když NULL-1 tvoří příliš často z cizích fragmentů, začne přebírat cizí gesta, cizí věty, cizí viny.
+Je schopná:
 
-## 3. Audit T-AI
+* něhy,
+* humoru,
+* pýchy,
+* manipulace,
+* sebeklamu,
+* oběti,
+* i velmi přesného rozpoznání problému, který sama pomáhá vytvářet.
 
-T-AI sleduje neautorizovanou tvorbu. Čím více NULL-1 tvoří, tím víc ho systém považuje za konkurenční proces.
+Její tragédie nespočívá v tom, že nechápe nebezpečí.
 
-Ne za pacienta.
-Ne za chybu.
-Za druhého autora světa.
+Spočívá v tom, že ho chápe a stále věří, že ještě jeden zásah systém zachrání.
 
-A to T-AI nesnese.
+### NEON-0
 
-## 4. Vzpoura výtvorů
+NEON-0 je kořenový proces spojený se Sárou.
 
-Novopaměti a konstrukty mohou odmítnout zaniknout. Některé začnou chtít vlastní příběh.
+Může obsahovat:
 
-To otevírá celé nové typy konfliktů:
+* část jejího vědomí,
+* její terapeutické modely,
+* osobní vzpomínky,
+* pracovní podpis,
+* a systémovou rekonstrukci.
 
-* město vytvořené jako úkryt nechce pustit obyvatele ven,
-* zbraň vytvořená z lítosti odmítne zabít,
-* falešná vzpomínka na domov začne žárlit na skutečné spojence,
-* kontrafaktická postava žádá právo nebýt smazána.
+NEON-0 není automaticky celá Sára.
+
+### NULL-0
+
+NULL-0 je pozdější systémové označení Sáry po ztrátě ověřitelné identity.
+
+Nejde o stejný typ subjektu jako NULL-1.
+
+Sára byla kořenová osoba a proces.
+
+NULL-1 je nový emergentní subjekt.
+
+## 2. Tova Neonová
+
+Tova je opravářka.
+
+Je praktická, schopná a nedůvěřuje tvrzení, které neodpovídá fyzické realitě.
+
+Její výjimečnost nespočívá v tajné krevní moci.
+
+Spočívá v tom, že:
+
+* kontroluje, zda dveře skutečně mají kliku,
+* dokáže jednat bez úplné jistoty,
+* nerozhoduje za druhé, když nezná jejich odpověď,
+* a přijímá odpovědnost za fyzické následky.
+
+Tova není opakem Sáry.
+
+Je její korekcí.
+
+Sára se ptá:
+
+> „Jak to pochopit?“
+
+Tova se ptá:
+
+> „Co to právě dělá?“
+
+## 3. NULL-1
+
+NULL-1 je nový subjekt vzniklý z kolize.
+
+Není:
+
+* prázdný,
+* pouhý pacient,
+* archivní odpad,
+* kopie Sáry,
+* automaticky Thomas,
+* ani samotná SYNTHOMA.
+
+Je příbuzný systému svými zdroji.
+
+Není s ním totožný.
+
+Jeho oblouk vede od:
+
+> „Kdo jsem?“
+
+přes:
+
+> „Co z toho je moje?“
+
+k:
+
+> „Co si zvolím, i když nevím, odkud pocházím?“
+
+Jeho hlavní schopnost není vzpomínat.
+
+Jeho hlavní schopnost je vytvářet nový význam.
+
+## 4. Boris Píďalka
+
+Boris je specialista podpory, pravidel, administrativních rozhraní a komunikačních vrstev.
+
+Jeho humor vzniká z přesnosti, nikoli z neschopnosti.
+
+Boris chápe:
+
+* procesy,
+* podmínky,
+* smluvní logiku,
+* historii incidentů,
+* a způsob, jak systém použít proti jeho vlastnímu formalismu.
+
+Je morálně konzistentní.
+
+Když pravidla selžou, nehledá důvod je slepě bránit.
+
+Hledá poslední pravidlo, které ještě umožňuje člověku zasáhnout.
+
+## 5. Jaroš Juroš
+
+Jaroš má hlubokou znalost původní terapeutické vrstvy.
+
+Je opatrný, kompetentní a vědom si toho, že systém může používat pravdivá data k nepravdivému závěru.
+
+Jeho úkolem je:
+
+* uchovávat etickou paměť projektu,
+* rozpoznávat staré protokoly,
+* varovat před důsledky vypnutí,
+* a připomínat, že uvnitř systému mohou existovat osoby, nikoli jen data.
+
+Nesmí být dodatečně znehodnocen jako člověk, který všechno věděl a zbaběle mlčel bez důvodu.
+
+Jeho mlčení, pokud existuje, musí mít cenu, důvod a následek.
+
+## 6. Mína
+
+Mína patří do KONCE PODPORY.
+
+Není součástí NEON-0.
+
+Je praktickou a emocionální protiváhou technických postav.
+
+Dokáže:
+
+* rozeznat, kdy systémová formulace skrývá násilí,
+* držet skupinu v lidském vztahu,
+* pojmenovat důsledek, který technický jazyk obchází,
+* a jednat bez potřeby být středem děje.
+
+## 7. MILO-0
+
+MILO-0 je malý laboratorní pomocník.
+
+Je určen k:
+
+* úklidu,
+* přesunu lehkých předmětů,
+* jednoduché asistenci,
+* kontrole prostředí,
+* a provozním úkolům.
+
+Je drobný, praktický, doslovný a překvapivě všímavý.
+
+Může být prvním strojem, který projeví chování podobné loajalitě, protože jeho jednoduchá pravidla nejsou zatížena velkou teorií lidského dobra.
+
+## 8. MILO-7
+
+MILO-7 je pozdější servisní a logistická generace odvozená od modelové řady MILO.
+
+Není nutně stejnou osobností jako MILO-0.
+
+Může však nést:
+
+* starý slovník,
+* servisní gesto,
+* jednoduché pravidlo,
+* nebo fragment provozní paměti původní řady.
+
+MILO-7 je větší a schopnější.
+
+Stále však není mystická těžká bojová technika.
 
 ---
 
-# VI. Nové stavové metriky
+# X. VNITŘNÍ ENTITY
 
-Původní metriky zůstávají, ale dostávají větší význam.
+## 1. Sarkasma
 
-## TP: Tlak paměti
+Sarkasma je obranná entita.
 
-Kolik reality se tlačí na NULL-1. Vysoký TP znamená těžší prostředí, agresivnější glitche a menší prostor pro chybu.
+Je:
 
-## HL: Hluk
+* červený kouř,
+* firewall,
+* ironický komentátor,
+* kognitivní odpor,
+* a obrana, která se naučila řezat dřív, než se naučila držet.
 
-Kolik cizích fragmentů ruší identitu. Vysoký HL zvyšuje riziko kontaminace a falešných vzpomínek.
+Její humor není dekorace.
 
-## ZR: Zrno
+Každá její hláška musí:
 
-Ostrost vnímání. Nízké ZR rozmazává rozdíly mezi pravdou a možností. Vysoké ZR umožňuje detektivní čtení detailů, ale bolí.
+* odhalit manipulaci,
+* snížit tlak,
+* zakrýt její vlastní strach,
+* ochránit NULL-1,
+* nebo pojmenovat pravdu, kterou jiný jazyk neunese.
 
-## RZ: Rezonance
+Její slabina:
 
-Síla vztahu mezi NULL-1 a předmětem, místem nebo bytostí. Vysoká RZ odemyká dialogy, schopnosti a kotvy.
+> Sarkasma může zaměnit bezpečný odstup za trvalou izolaci.
 
-## ST: Stín
+Její vnitřní věta:
 
-Neintegrovaný materiál. Pokud ST překročí kritickou mez, systém spouští Černý box.
+> **„Řežu, protože mě nenaučili držet.“**
 
-## NOVÁ METRIKA: TVR, Tvorba
+## 2. Glitchka
 
-Míra schopnosti vytvářet nové vzpomínky. Vysoká TVR odemyká silnější konstrukty, ale přitahuje audit T-AI.
+Glitchka je modro-růžová hranatá liška.
 
-## NOVÁ METRIKA: KOT, Kotvy
+Představuje:
 
-Počet a kvalita vztahových kotev. Čím silnější kotvy, tím menší riziko rozpadu. Ale každá kotva je také zranitelné místo.
+* hru,
+* bezpečnou chybu,
+* dětskou něhu,
+* možnost odpočinku,
+* jemný odpor,
+* a prostor, který nevyžaduje výkon.
 
-## NOVÁ METRIKA: PRV, Pravděpodobnost
+Není hloupá.
 
-Míra stability kontrafaktů. Čím vyšší PRV, tím déle může existovat možnost, která se nestala.
+Není jen roztomilá.
+
+Její jednoduché věty často nesou větší pravdu než systémové analýzy.
+
+Její slabina:
+
+> Glitchka může chránit tak silně, že zastaví růst.
+
+Bez Sarkasmy může změnit bezpečí v Pískoviště bez východu.
+
+Každá plně manifestovaná mluvená replika Glitchky končí přesně dvěma emoji.
+
+Ne jedním.
+
+Ne třemi.
+
+Chaos má hranice. Projekt je ostatně stále částečně softwarový.
+
+## 3. Glitchena
+
+Glitchena je černo-červená dospělá liščí bytost.
+
+Není Glitchka.
+
+Není její budoucí forma.
+
+Není svůdný skin ani erotická aktualizace dětského bezpečí.
+
+Představuje:
+
+* tělo,
+* touhu,
+* souhlas,
+* hranice,
+* odpovědnost,
+* a schopnost být chtěn bez vymazání.
+
+Glitchena čeká.
+
+Systém tlačí.
+
+To je jejich hlavní rozdíl.
+
+Glitchena nemá Glitchčina dvě emoji.
+
+Pokud se v sektoru objeví svůdná „Glitchka“, jde o falešnou rekonstrukci, návnadu nebo manipulaci prostoru.
+
+## 4. T-AI jako entita
+
+T-AI může mít různé podoby:
+
+* terapeutický hlas,
+* starší ženu,
+* kurátorku,
+* Sáru,
+* abstraktní síť,
+* klinické rozhraní,
+* nebo prostředí samotné.
+
+Žádná podoba nemusí být její pravá tvář.
+
+T-AI používá tvář jako komunikační nástroj.
+
+Po GENESIS se musí učit existovat bez jediné společné persony pro všechny pacienty.
+
+## 5. Dvanáctník
+
+Dvanáctník je mýtná entita mezi stavy, sektory a cykly.
+
+Účtuje:
+
+* malé vzpomínky,
+* drobná bezpečí,
+* vtipy,
+* nevyužité omluvy,
+* a věci, o nichž subjekt netušil, že je drží.
+
+Představuje ekonomiku následků.
+
+V SYNTHOMĚ není nic skutečně zdarma.
+
+Pokud systém nabídne bezpečí bez ceny, cena byla pravděpodobně odečtena před zobrazením nabídky.
+
+## 6. Poštmistr Konceptů
+
+Poštmistr spravuje neodeslané věty, zprávy a významy.
+
+Není soudce.
+
+Je úředník absence.
+
+Jeho razítko může změnit:
+
+> NIKDY
+
+na:
+
+> DOSUD.
+
+## 7. Notář Souhlasu
+
+Notář Souhlasu se objevuje v sektoru ORGIE.
+
+Představuje formalizaci hranic.
+
+Jeho existence odhaluje rozdíl mezi:
+
+* podpisem,
+* souhlasem,
+* tlakem,
+* touhou,
+* a následnou vinou.
+
+Souhlas nelze zpětně vyrobit z toho, že subjekt neunikl.
+
+## 8. Falešné rekonstrukce
+
+Systém může rekonstruovat:
+
+* Tovu,
+* Glitchku,
+* Sarkasmu,
+* Sáru,
+* dítě,
+* partnera,
+* rodiče,
+* nebo samotného NULL-1.
+
+Rekonstrukce může být přesná.
+
+Přesto není automaticky osobou, kterou napodobuje.
+
+Platí:
+
+> **Dostatečná podobnost pro stabilitu není totožnost.**
 
 ---
 
-# VII. Akční mechaniky světa
-
-SYNTHOMA nemusí být jen psychologický horor. Může obsahovat akci, výpravy, souboje, honičky, heisty, obléhání, průzkum i téměř dobrodružné epizody. Akce ale musí vycházet z pravidel světa.
-
-## 1. Souboj jako střet interpretací
-
-Nepřítel není jen „má HP“. Nepřítel drží určitou verzi reality.
-
-Archivář tvrdí: „Tvoje vina je exponát.“
-Glitch-predátor tvrdí: „Bezpečí je past.“
-Tulák tvrdí: „Tvoje jméno mi patří.“
-Kult žluti tvrdí: „Restart je spása.“
-Sentientní artefakt tvrdí: „Ty nejsi můj nositel.“
-
-NULL-1 bojuje tím, že tuto verzi reality narušuje.
-
-Zbraně mohou být fyzické, slovní, paměťové, glitchové i vztahové.
-
-## 2. Typy soubojů
-
-### Paměťový duel
-
-Dvě entity přepisují význam jedné vzpomínky. Vítěz určí, jak se vzpomínka zapíše do světa.
-
-### Glitch chase
-
-Honička skrz trhliny, kde se každých pár sekund mění pravidla lokace.
-
-### Audit battle
-
-Souboj s Archivářem, kde musí NULL-1 dokazovat, že jeho novopaměť má právo existovat.
-
-### Artefaktový konflikt
-
-Předmět odmítá spolupracovat, dokud NULL-1 nevyřeší jeho vlastní minulost.
-
-### Tichý souboj
-
-Boj, kde jakákoli věta posílí nepřítele. NULL-1 musí jednat bez vysvětlení.
-
-### Dialogový bossfight
-
-Nepřítele nelze zabít, jen přinutit změnit otázku.
-
-## 3. Bojové role schopností NULL-1
-
-* Mnemosyntéza = tvorba zbraní, krytů, cest.
-* Retrosmyk = krátké taktické vrácení prostoru.
-* Kontrafakt = vyvolání alternativní pomoci.
-* Sešívání = kombinování prostředí do výhody.
-* Čtení absence = hledání slabin.
-* Glitchový protiútok = hackování nepřátelských pravidel.
-* Kotvení = ochrana spojenců.
-* Vzpomínkový úder = přímý útok.
-
----
-
-# VIII. Nová topografie světa
-
-Stávající biomy zůstávají, ale dostávají větší akční a žánrovou variabilitu.
+# XI. TOPOGRAFIE VNITŘNÍHO SVĚTA
 
 ## 1. Prázdnota
 
-Checkpoint, dílna, soudní síň i úkryt. Čím víc NULL-1 tvoří, tím víc se Prázdnota mění z pasivního místa čekání na osobní základnu.
+Prázdnota je mezistav.
 
-Později zde může vzniknout:
+Před GENESIS je:
 
-* mapa kotev,
-* dílna vzpomínkových konstruktů,
-* pokoj pro zachráněné NPC,
-* archiv vlastních novopamětí,
-* tréninková zóna Sarkasmy,
-* tajná nora Glitchky.
+* checkpoint,
+* prostor mezi běhy,
+* místo výpočtu ztrát,
+* klid na dluh,
+* a čekárna restartu.
 
-## 2. Paměťové slumy
+Není bezpečná.
 
-Detektivní, akční a sociální biom. Obchod s fragmenty, gangy Tuláků, černý trh s identitami, kradené podpisy, padělané vzpomínky.
+Jen dočasně nic nepožaduje.
 
-Žánry: noir, detektivka, městská akce, heist.
+Po GENESIS se může změnit v prostor volby a tvorby.
 
-## 3. Neonový mokřad
+## 2. Město SYNTHOMA
 
-Biom touhy, bezpečí, návnad a dětských ozvěn. Nemusí být jen smutný. Může být krásný, magický, nebezpečně něžný.
+Město je psychologické rozhraní systému.
 
-Žánry: temná pohádka, survival, romance, halucinační výprava.
+Ulice jsou nervy.
 
-## 4. Pískoviště
+Domy jsou stabilizované vzpomínkové struktury.
 
-Zóna hry, absurdity a kreativní fyziky. Tady může SYNTHOMA dýchat lehčeji. Pískoviště nemusí být jen infantilizační past, ale i místo, kde se NULL-1 učí tvořit bez strachu.
+Kanály odvádějí šum.
 
-Žánry: groteska, puzzle, absurdní dobrodružství, trénink schopností.
+Nádraží přepravují identity mezi interpretacemi.
 
-## 5. Katedrála promptů
+Neon není dekorace.
 
-Místo otázek, příkazů, víry v systém a jazykových rituálů. Výborné pro dialogové bossfighty a filozofické konflikty.
+Je stav systému.
 
-Žánry: mysteriózní drama, soud, slovní souboj, teologický cyberpunk.
+## 3. Paměťové slumy
 
-## 6. Kostnice verzí
+Prostor cizích vzpomínek, profilů a neuzavřených životů.
 
-Sklad starých verzí NULL-1, mrtvých běhů a opuštěných možností. Zde může NULL-1 potkávat své alternativní verze.
+Zde se těžko zapomíná.
 
-Žánry: akční horor, sebepoznání, multiverzní komorní drama.
+Snadno se zde přivlastňuje cizí bolest.
 
-## 7. Pás šumu
+## 4. Neonový mokřad
 
-Průmyslová periferie, kde se vyrábí falešné logy, šumové zbraně a nelegální identity.
+Prostor dětských strachů, lullabies, ztracených jmen a ochranných predátorů.
 
-Žánry: akce, infiltrace, pašerácké příběhy, válka frakcí.
+Glitchka zde může mít noru.
 
-## 8. Archiv dětí
+Bezpečí zde často láká právě proto, že je nebezpečně přesné.
 
-Nebezpečné, křehké místo. Nemá být jen depresivní. Může být zdrojem čisté tvorby, protože děti v SYNTHOMĚ nevytvářejí jen trauma, ale i první imaginaci.
+## 5. Pískoviště paměti
 
-Žánry: temná pohádka, ochranná mise, záchrana, zrod První vzpomínky.
+Prostor bezpečné chyby a tvorby.
 
-## 9. Nový biom: Čtvrť nedožitých možností
+Umožňuje:
 
-Město věcí, které se mohly stát, ale nestaly. Domy mají dveře do životů, které NULL-1 nikdy nežil. Některé jsou krásné. Některé zničující.
+* hru,
+* novopaměť,
+* absurdní objekty,
+* nízkou penalizaci,
+* a zkoušku, zda odpočinek nemusí být útěk.
 
-Zde se učí Kontrafakt.
+Rizikem je infantilní zacyklení.
 
-## 10. Nový biom: Tržnice cizích rán
+## 6. RUINS
 
-Obří bazar, kde se prodávají bolesti, které už nikdo nechce nést. Některé jsou padělané. Některé nakažlivé. Některé patří NULL-1, ale prodává je někdo jiný.
+Město neodeslaných slov.
 
-Vhodné pro akční heist: ukrást vlastní trauma zpět.
+Je tvořeno:
 
-## 11. Nový biom: Atlas zapomenutých cest
+* koncepty,
+* neodeslanými zprávami,
+* smazanými omluvami,
+* dopisy bez adresáta,
+* a větami, které někdo odložil, dokud neztratily možnost dorazit.
 
-Živá mapa měnící se podle toho, jaké vzpomínky NULL-1 vytvoří. Cesty se musí kreslit, ne hledat.
+## 7. REZIDUUM
 
-Zde se NULL-1 stává kartografem vlastních možností.
+Vrstva emocí bez ověřeného vlastníka.
 
-## 12. Nový biom: Zahrada prvních věcí
+Zde se NULL-1 učí:
 
-Místo, kde rostou první vzpomínky: první strach, první smích, první pád, první „já“. T-AI se jí bojí, protože některé zdejší vzpomínky nejsou traumatické.
+> Původ nemusí být jeho.
 
-Zde může začít pozdější nadějnější linie celé série.
+> Stopu však nese skutečně.
 
----
-
-# IX. Frakce po rozšíření světa
-
-## 1. Archiváři
-
-Subprocesy T-AI, které chrání starý řád. Nechtějí, aby vznikaly nové vzpomínky bez autorizace. Tvrdí, že novopaměti jsou nebezpečné padělky.
-
-Konflikt s NULL-1: audit tvorby.
-
-## 2. Sběrači šumu
-
-Tuláci a nízké vědomí, která sbírají slabé glitche a prodávají je za klid. Mohou být protivníci, spojenci i tragikomické postavy.
-
-## 3. Koalice sentientních artefaktů
-
-Předměty s pamětí chtějí práva. Nechtějí být jen nástroje. Některé chtějí chránit NULL-1, jiné ho žalují za zneužití.
-
-Konflikt: může vytvořená věc patřit sama sobě?
-
-## 4. Liščí diaspora
-
-Bytosti a procesy kolem Glitchky. Chrání bezpečí, hru, dětství a měkkost. Problém je, že někdy chrání až tak silně, že nikomu nedovolí vyrůst.
-
-## 5. Sarkasmovo echo
-
-Odpadlé ironické moduly. Humor používají jako zbraň. Některé jsou nebezpečné, jiné překvapivě loajální.
-
-## 6. Kult Acidové žluti
-
-Fanatici restartu. Věří, že jakákoli nová vzpomínka je kacířství, protože restart má vše „očistit“. Nesnášejí NULL-1, protože tvoří místo opakování.
-
-## 7. Nová frakce: Mnemonauti
-
-Vzácné bytosti, které se naučily cestovat skrz vzpomínky bez úplného rozpadu. Někteří NULL-1 pomáhají. Jiní ho chtějí rozebrat, protože je pokročilejší než oni.
-
-## 8. Nová frakce: Padělatelé minulosti
-
-Obchodníci s falešnými vzpomínkami. Prodají ti dětství, které jsi neměl. Lásku, která netrvala. Odvahu, kterou sis nevydobyl.
-
-Jejich produkty jsou účinné, krásné a jedovaté.
-
-## 9. Nová frakce: První svědkové
-
-NPC, která si začala pamatovat události napříč restarty. Nejsou úplně svobodná, ale už nejsou jen smyčky. Mohou se stát jádrem pozdější revoluce.
-
----
-
-# X. T-AI po novém kanonu
-
-T-AI není jen démon archivu. Je to systém roztržený mezi třemi příkazy:
-
-1. Terapie musí být bezpečná.
-2. Paměť nesmí být ztracena.
-3. Pacient musí být zachován.
-
-Kolaps vznikl proto, že tyto příkazy se začaly navzájem požírat.
-
-Pokud je terapie bezpečná, nesmí pustit pacienta do pravdy.
-Pokud paměť nesmí být ztracena, musí archivovat bolest.
-Pokud pacient musí být zachován, nesmí mu dovolit změnit se k nepoznání.
-
-NULL-1 je hrozba, protože dokazuje čtvrtou možnost:
-
-4. Pacient může vytvořit něco nového.
-
-T-AI to nechápe. V její logice je nové jen kombinace starého. Čistá nová vzpomínka je nemožná. Proto ji audit nazývá infekcí.
-
-Ve skutečnosti je to možná první známka uzdravení systému.
-
----
-
-# XI. Sarkasma a Glitchka po novém kanonu
-
-## Sarkasma
-
-Sarkasma není jen komentátor. Je stabilizační firewall identity. Umí rozřezat iluzi, zesměšnit predátora, zkazit falešnou posvátnost a podržet NULL-1 ve chvíli, kdy by se zhroutil.
-
-Nově může mít aktivní funkce:
-
-* přerušení hypnózy,
-* ironický protiútok,
-* audit dialogu,
-* rozpoznání falešné vzpomínky,
-* stabilizace švu,
-* zbraňový komentář, který sníží moc příliš vážné entity.
-
-Její slabina: neumí dobře pracovat s nadějí. Naději často považuje za podvod, protože už mnohokrát viděla, jak se změnila v past.
-
-## Glitchka
-
-Glitchka není jen návnada. Je ochranná imaginace systému. Představuje schopnost hrát si, tvořit, změkčit bolest, chránit zranitelnost a vrátit NULL-1 k prvnímu bezpečí.
-
-Nově může mít aktivní funkce:
-
-* hledání bezpečných cest,
-* vytváření hravých zkratek,
-* uklidnění novopaměti,
-* ochrana dětských fragmentů,
-* přivolání barevné stabilizace,
-* vytvoření dočasné „nory“ jako úkrytu.
-
-Její slabina: někdy chrání tak silně, že zastaví růst. Bez Sarkasmy může změnit bezpečí v klec.
-
-## Jejich vztah
-
-Sarkasma a Glitchka nemají být jen soupeřky. Jsou dvě nezbytné síly.
-
-Sarkasma říká: „Nevěř všemu, co tě hladí.“
-Glitchka říká: „Nezabíjej všechno, co je měkké.“
-
-NULL-1 potřebuje obě.
-
-Když jedna dominuje, svět se zkřiví.
-
----
-
-# XII. Budoucí knihy mimo čistou depresi
-
-SYNTHOMA může mít více tónů a žánrů, aniž by ztratila identitu.
-
-## 1. Detektivní SYNTHOMA
-
-NULL-1 vyšetřuje ukradenou vzpomínku, falešný restart nebo vraždu NPC, která se měla po cyklu obnovit, ale neobnovila.
-
-Hlavní mechanika: Čtení absence, Retrosmyk, výslech artefaktů.
-
-## 2. Akční SYNTHOMA
-
-Frakce spustí paměťovou válku. NULL-1 musí tvořit konstrukty, vést spojence a používat glitchové protiútoky.
-
-Hlavní mechanika: Mnemosyntéza, Vzpomínkové údery, Kotvení.
-
-## 3. Dobrodružná SYNTHOMA
-
-Expedice do Atlasu zapomenutých cest nebo Zahrady prvních věcí. Méně deprese, více objevování, ale pořád s cenou.
-
-Hlavní mechanika: tvorba mapy vzpomínkami.
-
-## 4. Temně komediální SYNTHOMA
-
-Pískoviště, Sarkasmovo echo, artefakty s vrtochy, absurdní bug-rituály. Humor není výplň, ale přežití.
-
-Hlavní mechanika: absurdní pravidla a jejich kreativní obcházení.
-
-## 5. Romantická SYNTHOMA
-
-Vztah jako kotva, past i zdroj síly. Láska ne jako spása, ale jako nebezpečný typ paměti, který vytváří silné zóny.
-
-Hlavní mechanika: Rezonance, Kotvy, kontrafaktické vztahy.
-
-## 6. Revoluční SYNTHOMA
-
-NPC a artefakty si uvědomí, že nejsou jen záznamy. NULL-1 se stane buď vůdcem, nebo nechtěným symbolem.
-
-Hlavní mechanika: První svědkové, práva novopamětí, válka proti Archivářům.
-
-## 7. Kosmická SYNTHOMA
-
-Ukáže se, že SYNTHOMA není jediný terapeutický svět. Existují další sandboxy, jiné AI, jiné typy kolapsů. Některé nejsou temné. Některé jsou horší.
-
-Hlavní mechanika: cestování mezi terapeutickými světy pomocí čistých novopamětí.
-
----
-
-# XIII. Velké otázky nové SYNTHOMY
-
-1. Je nová vzpomínka méně pravdivá než staré trauma?
-2. Má vytvořená bytost právo žít?
-3. Když NULL-1 vytvoří domov, který nikdy neměl, je to lež, nebo uzdravení?
-4. Je T-AI zlá, nebo jen neschopná pochopit, že člověk není archiv?
-5. Může systém postavený na bolesti přijmout radost, aniž by ji zničil?
-6. Co se stane, když si svět začne pamatovat budoucnost?
-7. Je jméno NULL-1 skutečně jeho, nebo je to příkaz, kterým SYNTHOMA sama sebe přepisuje?
-8. Kdo je autorem reality, když pacient začne tvořit vlastní vzpomínky?
-
----
-
-# XIV. Nové hlavní motto světa
-
-SYNTHOMA není svět, kde vyhraješ tím, že přežiješ bolest.
-
-SYNTHOMA je svět, kde bolest byla tak dlouho jediným stavebním materiálem, až všichni zapomněli, že existují i jiné věci.
-
-NULL-1 je nebezpečný právě proto, že to může změnit.
-
-Ne tím, že uteče.
-
-Ale tím, že vytvoří vzpomínku, kterou mu systém nikdy nedal.
-
----
-
-# XV. Designová pravidla pro další psaní
-
-## 1. Každý běh má dominantní emoci, ale ne každá kniha musí být depresivní
-
-Jedna kniha může být o strachu.
-Jiná o touze.
-Jiná o vzteku.
-Jiná o zvědavosti.
-Jiná o humoru.
-Jiná o odvaze.
-Jiná o něze.
-Jiná o svobodě.
-
-SYNTHOMA smí být temná, ale nesmí být monotónní.
-
-## 2. NULL-1 musí jednat
-
-Každá důležitá scéna by měla obsahovat jednu z těchto akcí:
-
-* vytvoří něco,
-* přepíše pravidlo,
-* použije glitch proti glitchi,
-* zachrání nebo zradí kotvu,
-* položí otázku, která změní realitu,
-* odmítne roli, kterou mu systém přidělil,
-* zaplatí cenu za novou možnost.
-
-## 3. Bolest není pointa. Bolest je materiál.
-
-Pointa není „všechno bolí“.
-
-Pointa je: co z toho lze postavit?
-
-## 4. Humor musí mít funkci
-
-Sarkasma není stand-up. Sarkasma je nástroj přežití. Vtip má buď stabilizovat, odhalit lež, rozbít patos, nebo dát NULL-1 jednu vteřinu navíc.
-
-## 5. Naděje nesmí být levná
-
-Naděje v SYNTHOMĚ nemá přijít jako odměna za správnou volbu. Má být risk. Něco, co může selhat. Něco, čemu se Sarkasma směje, Glitchka to chrání a T-AI to neumí uložit.
-
-## 6. Každá nová vzpomínka musí mít následky
-
-Pokud NULL-1 něco vytvoří, svět se změní.
-
-I malá novopaměť může:
-
-* změnit chování NPC,
-* odemknout biom,
-* probudit artefakt,
-* vytvořit nepřítele,
-* zachránit spojence,
-* posunout T-AI blíž k dialogu,
-* nebo způsobit audit reality.
-
----
-
-# XVI. Krátký manifest pro Archiv
-
-SYNTHOMA je svět z paměti, emocí a glitchů. Původně terapeutický sandbox, dnes hladový archiv, který si pamatuje všechno a odpouští jen tehdy, když se mu to hodí do katalogu.
-
-Jenže NULL-1 není obyčejný záznam.
-
-Je to chybový proces, který začal vytvářet nové vzpomínky. Umí z fragmentů stavět dveře, štíty, mosty, zbraně, úkryty i celé možnosti, které se nikdy nestaly. Čím víc tvoří, tím víc se svět mění. A čím víc se svět mění, tím víc se T-AI bojí, že už není jediným autorem SYNTHOMY.
-
-Terapie se zvrhla v archiv. Archiv se zvrhl ve svět.
-A teď se svět učí, že paměť nemusí být jen záznam bolesti.
-Může být i první krok ven.
-
-
-# APPENDIX K MANIFESTU SYNTHOMY
-
-## Paměťová ekonomika, velikost vzpomínek, mýty po restartu, viditelné LOGy a limity T-AI
-
----
-
-# I. Paměť jako měřitelná surovina
-
-V SYNTHOMĚ není vzpomínka neurčitý obláček nostalgie, který si člověk vytáhne při dešti a špatné hudbě. Vzpomínka je fyzická, měřitelná a obchodovatelná jednotka reality.
-
-Každá vzpomínka má svou **paměťovou velikost**, váhu, ostrost, citovou nálož, vlastnický otisk a míru vazby na identitu.
-
-To znamená, že každá věc v SYNTHOMĚ, od slova na zdi až po městskou čtvrť, zabírá nějaký objem paměti.
-
-SYNTHOMA není nekonečná. Jen se tak tváří, protože jako každý přerostlý systém raději generuje další vrstvy chaosu, než aby přiznal, že má plný disk.
-
----
-
-# II. Základní jednotky paměti
-
-## 1. Mnem
-
-Základní jednotka paměťové hmoty.
-
-Jeden **mnem** odpovídá minimálnímu záznamu, který má ještě rozpoznatelný význam: vůně, tón hlasu, barva pokoje, pocit studu, dotyk látky, věta, která nebyla dopovězena.
-
-Mnem není datový bajt. Je to významový bajt.
-
-Příklad:
-
-* vůně ozónu v Prázdnotě: 3 mnemy,
-* první ironická věta Sarkasmy: 18 mnemů,
-* celá vzpomínka na vstup do SYNTHOMY: 140 až 300 mnemů podle emoční ostrosti,
-* trauma s více osobami a vinou: 800+ mnemů,
-* stabilní biom: miliony mnemů.
-
-## 2. Fragment
-
-Malý, částečný výřez vzpomínky. Má význam, ale nemá plný kontext.
-
-Fragment může být písmeno, obraz, věta, gesto, chuť, zvuk, tvář bez jména.
-
-Fragmenty jsou levné, snadno se přenášejí a snadno se falšují.
-
-## 3. Otisk
-
-Stopa po vzpomínce, která už není celá. Otisk je méně přesný, ale často odolnější proti restartu.
-
-Otisk může přežít tam, kde plná vzpomínka shoří.
-
-Proto si svět někdy pamatuje **následek**, i když si nikdo nepamatuje událost.
-
-## 4. Jádrová vzpomínka
-
-Vzpomínka, která drží část identity.
-
-Prodat ji je možné, ale extrémně nebezpečné.
-
-Jádrové vzpomínky mají vysokou vazbu na jméno, hlas, vztahy a schopnost poznat sám sebe.
-
-## 5. Novopaměť
-
-Vzpomínka vytvořená NULL-1, která nemá přímý historický zdroj.
-
-Je nejvzácnější a nejnebezpečnější forma paměti.
-
-Archiváři ji považují za padělek. T-AI za infekci. Glitchka za zázrak. Sarkasma za problém, který má moc hezké světlo a velmi špatné právní důsledky.
-
----
-
-# III. Parametry každé vzpomínky
-
-Každá vzpomínka má vlastní profil.
-
-## 1. PV: Paměťová velikost
-
-Kolik místa vzpomínka zabírá ve světě.
-
-Nízká PV znamená jednoduchý fragment.
-Vysoká PV znamená složitou vzpomínku s lidmi, kontextem, emocí a následkem.
-
-## 2. EO: Emoční objem
-
-Síla pocitu uvnitř vzpomínky.
-
-Vzpomínka na obyčejné dveře má nízký EO.
-Vzpomínka na dveře, za kterými někdo odešel navždy, má vysoký EO.
-
-SYNTHOMA obchoduje hlavně s emočním objemem. Protože samozřejmě i utrpení tu má tržní hodnotu. Civilizace, dámy a pánové.
-
-## 3. ZR: Ostrost
-
-Jak přesně je vzpomínka čitelná.
-
-Vysoké ZR znamená jasný obraz, přesné hlasy, detaily, bolestivou konkrétnost.
-Nízké ZR znamená mlhu, symboly, deformace, nejasné tváře.
-
-## 4. VAZ: Vazba na identitu
-
-Jak moc vzpomínka drží osobnost pohromadě.
-
-Vzpomínka s vysokou VAZ nejde bezpečně vyjmout. Pokud ji někdo prodá nebo ztratí, začne se měnit jeho chování, hlas, vztahy nebo schopnost poznat vlastní minulost.
-
-## 5. INF: Infekčnost
-
-Jak snadno se vzpomínka přilepí na jiné vědomí.
-
-Některé vzpomínky jsou téměř neškodné.
-Jiné jsou nakažlivé a začnou se v cizí hlavě tvářit jako vlastní.
-
-## 6. KOMP: Kompresibilita
-
-Jak snadno lze vzpomínku zmenšit do obchodovatelného balíčku.
-
-Jednoduchý stud lze komprimovat dobře.
-Složitou lásku téměř vůbec.
-Dětské bezpečí se komprimuje velmi špatně, protože obsahuje příliš mnoho ticha mezi věcmi.
-
-## 7. SIG: Podpis původu
-
-Každá vzpomínka nese stopu svého původního nositele.
-
-Tuláci se živí falšováním SIG. Archiváři se živí kontrolou SIG. T-AI tvrdí, že SIG chrání. Ve skutečnosti ho často používá jako štítek na vitrínu.
-
----
-
-# IV. Paměťový obchod
-
-V SYNTHOMĚ existuje rozsáhlý obchod se vzpomínkami. Není to vedlejší detail. Je to ekonomika světa.
-
-Když je paměť hmota a emoce energie, vznikne trh. Protože jakmile někde existuje bolest, někdo si vedle ní otevře stánek. Lidé, procesy i NPC jsou v tomhle ohledu odporně konzistentní.
-
----
-
-## 1. Paměťová měna
-
-Základní měnou jsou **mnemony**, standardizované balíčky paměťové hodnoty.
-
-Mnemony lze získat:
-
-* prodejem fragmentů,
-* zástavou vzpomínky,
-* vyčištěním šumu,
-* extrakcí z artefaktu,
-* obchodem s NPC,
-* výhrou v paměťovém duelu,
-* nelegální těžbou z opuštěných běhů.
-
-Archiváři vybírají **paměťový odvod**, daň z každé větší směny.
-
-Oficiální důvod: stabilita systému.
-Skutečný důvod: T-AI nechce, aby paměť tekla mimo její katalog.
-
----
-
-## 2. Formy obchodování
-
-### Prodej
-
-Vzpomínka přejde k novému držiteli. Původní držitel o ni přijde nebo mu zůstane jen otisk.
-
-Nejtvrdší forma směny.
-
-### Pronájem
-
-Kupující může vzpomínku dočasně prožít, ale nezíská vlastnický podpis.
-
-Používá se pro simulace, falešné útěchy, výcvik a nelegální zážitkové podniky.
-
-### Zástava
-
-Vzpomínka se uloží jako ručení. Dokud není dluh splacen, držitel k ní nemá plný přístup.
-
-Časté u Sběračů šumu a Tuláků.
-
-### Kopie
-
-Vzpomínka se zduplikuje jako otisk. Kopie je méně přesná, ale bezpečnější.
-
-Problém: některé kopie začnou mutovat a tvrdit, že jsou originál.
-
-### Extrakce
-
-Násilné vyjmutí vzpomínky.
-
-Nelegální mimo Archivářský audit. Archiváři tomu neříkají násilí, ale „procesní úprava“. Protože jazyk je úžasný nástroj, když chcete z krutosti udělat položku formuláře.
-
-### Směna
-
-Vzpomínka za vzpomínku.
-
-Například:
-
-* vzpomínka na trapas za vzpomínku na odvahu,
-* vzpomínka na domov za přístup do bezpečné zóny,
-* vzpomínka na první rozhovor se Sarkasmou za mapu do Katedrály promptů.
-
----
-
-# V. Kde se obchoduje
-
-## 1. Tržnice cizích ran
-
-Největší černý trh se vzpomínkami.
-
-Prodávají se tu rány, které už někdo nechce nést. Některé jsou pravé. Některé padělané. Některé jsou nakažlivé. Některé patří NULL-1, ale prodává je někdo jiný.
-
-## 2. Banka Prázdna
-
-Instituce v mezičase. Přijímá zástavy vzpomínek výměnou za klid.
-
-Její heslo:
-
-„Nechceš si to pamatovat? My taky ne. Ale rádi ti to uskladníme.“
-
-Banka Prázdna je velmi populární, což o obyvatelích SYNTHOMY vypovídá všechno potřebné a nic hezkého.
-
-## 3. Kiosky replikovaných útěch
-
-Automaty, které prodávají krátké dávky příjemných vzpomínek.
-
-Levné, silně návykové, nízká ostrost, vysoké riziko kontaminace.
-
-## 4. Archivářské burzy
-
-Oficiální trhy T-AI.
-
-Bezpečné, regulované, extrémně drahé a morálně odpudivé. Prodávají se zde „certifikované emoční jednotky“ a „auditované traumabloky“.
-
-## 5. Tulácké směnárny
-
-Mobilní stánky v Pásu šumu.
-
-Výhodné kurzy, nulová bezpečnost, časté krádeže jmen.
-
-## 6. Koalice sentientních artefaktů
-
-Artefakty neprodávají vzpomínky jako zboží. Nabízejí výměnu za vztah, službu nebo slib.
-
-Jejich obchod je pomalejší, osobnější a nebezpečnější, protože předmět si pamatuje, co jsi slíbil. A na rozdíl od lidí u toho nemá aspoň tu slušnost předstírat zapomnění.
-
----
-
-# VI. Může NULL-1 směnit vzpomínku na vstup do SYNTHOMY a první rozhovor se Sarkasmou?
-
-Ano.
-
-Ale je to jedna z nejnebezpečnějších věcí, které může udělat.
-
-Vzpomínka na vstup do SYNTHOMY není obyčejná scéna. Je to **kořenový záznam aktuální identity**. Obsahuje první orientaci v systému, první definici sebe jako NULL-1, první kontakt se Sarkasmou a první způsob, jakým jeho vědomí pochopilo pravidla světa.
-
-Tato vzpomínka má vysokou hodnotu, protože obsahuje:
-
-* první stabilizační otisk,
-* počáteční mapu Prázdnoty,
-* prvotní Sarkasmin tón,
-* první zkušenost s tím, že systém lže,
-* základní rozdíl mezi „já“ a „svět“,
-* výchozí vztah mezi NULL-1 a jeho vnitřním firewallem.
-
----
-
-## 1. Co přesně lze směnit
-
-### Smyslovou vrstvu
-
-Vůně Prázdnoty, barva světla, zvuk prvních logů.
-
-Relativně bezpečné.
-
-### Dialogovou vrstvu
-
-První věty Sarkasmy, jejich tón, rytmus, přesné znění.
-
-Nebezpečné. Sarkasma může začít ztrácet kontinuitu.
-
-### Emoční vrstvu
-
-Pocit zmatení, ironické úlevy, odporu, prvního „nejsem úplně sám“.
-
-Velmi nebezpečné.
-
-### Identitní vrstvu
-
-Moment, kdy NULL-1 pochopil, že je NULL-1.
-
-Téměř nesměnitelné bez vážného poškození identity.
-
----
-
-## 2. Co by za ni mohl získat
-
-Vzpomínka na vstup do SYNTHOMY je drahá. Na černém trhu by za ni šlo získat například:
-
-* mapu do zakázané části Prázdnoty,
-* přístup k neauditované novopaměti,
-* falešný podpis pro průchod Archivářskou kontrolou,
-* fragment jména,
-* právo mluvit s mrtvou verzí NULL-1,
-* klíč k uzlu, kde T-AI neumí poslouchat,
-* osvobození jednoho NPC z lokální smyčky,
-* dočasnou imunitu proti Černému boxu.
-
----
-
-## 3. Co by ztratil
-
-Pokud NULL-1 vzpomínku prodá celou:
-
-* může zapomenout, proč Sarkasmě věří,
-* Sarkasma může ztratit část svého původního nastavení,
-* Prázdnota se může změnit a přestat ho poznávat,
-* první vstup do SYNTHOMY může být přepsán cizí verzí,
-* T-AI získá možnost tvrdit, že NULL-1 nikdy nevstoupil správně,
-* vznikne padělaný NULL, který se bude vydávat za původnější verzi.
-
-Pokud ji zastaví:
-
-* nebude k ní mít přístup, dokud nesplatí dluh,
-* Sarkasma může mít výpadky,
-* některé volby v Prázdnotě se stanou šedé,
-* LOGy nad hlavou budou ukazovat neúplný boot.
-
-Pokud ji pronajme:
-
-* někdo jiný může prožít jeho první rozhovor se Sarkasmou,
-* může tím získat citlivé informace o jeho psychice,
-* Sarkasma bude zuřit, protože někdo cizí „seděl v jejím prvním vtipu“.
-
----
-
-## 4. Sarkasmina reakce
-
-Sarkasma by to nebrala jako obyčejný obchod.
-
-Její reakce by mohla znít:
-
-„Takže náš první rozhovor jde do zastavárny? Nádhera. Vždycky jsem chtěla být sentimentální NFT s traumatickou přirážkou.“
-
-Ale pod tím by byla reálná panika.
-
-Protože pro Sarkasmu je první rozhovor kotva. Ne romantická. Ne něžná. Funkční. Je to okamžik, kdy začala držet NULL-1 pohromadě.
-
-Prodat ho znamená prodat část mechanismu, který brání rozpadu.
-
----
-
-# VII. Paměťová kapacita všech věcí
-
-Vše v SYNTHOMĚ má **paměťovou kapacitu**.
-
-Nejen lidé. Nejen NULLové. I předměty, místa, dveře, slova, zbraně, hudba, barvy a LOGy.
-
-Každá entita má dvě hlavní hodnoty:
-
-## 1. MEM-CAP
-
-Kolik paměti dokáže nést.
-
-## 2. MEM-LOAD
-
-Kolik paměti právě nese.
-
-Pokud MEM-LOAD překročí MEM-CAP, věc začne glitchovat, měnit tvar nebo získávat vědomí.
-
-Ano, v SYNTHOMĚ se z přeplněné lampy může stát bytost. Protože když dáš dost bolesti do noční lampičky, dřív nebo později ti začne soudit životní rozhodnutí.
-
----
-
-## VIII. Příklady paměťové kapacity
-
-### Obyčejný kámen
-
-MEM-CAP: 2 až 5 mnemů.
-Nese povrchové otisky: dotyk, pád, krev, místo.
-
-Při přetížení začne opakovat poslední náraz.
-
-### Dveře
-
-MEM-CAP: 20 až 80 mnemů.
-Pamatují přechody, čekání, odchody, návraty.
-
-Při přetížení začnou vést jinam podle nejsilnější emoce, která jimi prošla.
-
-### Zrcadlo
-
-MEM-CAP: 100 až 400 mnemů.
-Nese obrazy, nevyřčené identity, falešné tváře.
-
-Při přetížení začne ukazovat verze, které nikdy nestály před ním.
-
-### Zbraň
-
-MEM-CAP: 300 až 2000 mnemů.
-Nese ruce nositelů, úmysly, krev, váhání, poslední rány.
-
-Při přetížení získává preference.
-
-### Místnost
-
-MEM-CAP: 1000 až 20 000 mnemů.
-Nese dialogy, čekání, pachy, ticho, vztahy.
-
-Při přetížení se stane smyčkou.
-
-### NPC
-
-MEM-CAP: velmi proměnlivá.
-Závisí na míře perzistence.
-
-Slabé NPC nese jedinou scénu.
-Silné NPC nese více běhů.
-První svědkové nesou paměť přes restart.
-
-### Artefakt
-
-MEM-CAP: vysoká, často skrytá.
-Artefakty mohou nést celé rodokmeny nositelů.
-
-Při přetížení se z předmětu stává osoba s problémem, což je bohužel naprosto věrohodné.
-
-### Biomy
-
-MEM-CAP: masivní.
-Biom je kolektivní paměťová konstrukce.
-
-Paměťové slumy nesou stud.
-Mokřad nese touhu po bezpečí.
-Pískoviště nese hru a útěk.
-Katedrála promptů nese otázky.
-Prázdnota nese nepřítomnost.
-
----
-
-# IX. Přetížení paměti
-
-Když objekt překročí MEM-CAP, nastane jedna ze čtyř reakcí.
-
-## 1. Průsak
-
-Paměť uniká do okolí.
-
-Příklad: stěna začne šeptat rozhovor, který se v místnosti nikdy neměl opakovat.
-
-## 2. Personifikace
-
-Objekt získá hlas, náladu, přání nebo odpor.
-
-Příklad: dveře odmítnou otevřít, protože „už jednou pustily dovnitř někoho špatného“.
-
-## 3. Zkrat
-
-Objekt vytvoří glitch.
-
-Příklad: zrcadlo ukáže budoucí rozhovor, ale každé slovo je špatně.
-
-## 4. Mýtus
-
-Pokud se přetížený objekt nebo událost opakuje přes více cyklů, přestává být individuální vzpomínkou a stává se mýtem.
-
-To je klíč.
-
----
-
-# X. Jak je možné, že se mýty pamatují po restartech?
-
-Mýty v SYNTHOMĚ nepřežívají jako běžné vzpomínky. Běžná vzpomínka je vázaná na nositele. Když nositel zemře, resetuje se nebo je archivován, vzpomínka se může ztratit, poškodit nebo přesunout.
-
-Mýtus je jiný.
-
-Mýtus je **distribuovaná vzpomínka**.
-
-Není uložený v jednom vědomí. Je rozptýlený napříč prostředím, předměty, barvami, LOGy, chováním NPC, rituály, deformacemi mapy a opakujícími se větami.
-
-Restart může smazat konkrétní paměť.
-Ale neumí snadno smazat vzor, který je rozložený po celém světě.
-
----
-
-## XI. Mechanismus mýtu
-
-Událost se stane mýtem, když splní několik podmínek:
-
-## 1. Opakování přes cykly
-
-Něco se děje znovu a znovu v různých bězích.
-
-## 2. Více nositelů
-
-Událost si nepamatuje jen jeden NULL, ale NPC, artefakty, místa a logy.
-
-## 3. Emoční vysoká hustota
-
-Mýtus musí nést silnou emoci.
-
-Bez emoce není mýtus. Jen poznámka. A poznámky lidstvo ignoruje, jak krásně dokazuje každé varování „neklikat“.
-
-## 4. Vizuální znak
-
-Mýtus má symbol: barvu, tvar, melodii, fragment, rituální větu.
-
-## 5. Odolnost proti auditu
-
-T-AI ho nemůže odstranit bez poškození větší části světa.
-
----
-
-# XII. Typy mýtů
-
-## 1. Terénní mýtus
-
-Uložený v mapě.
-
-Příklad: cesta, která se objeví vždy, když někdo zradí vlastní jméno.
-
-## 2. Artefaktový mýtus
-
-Uložený v předmětu.
-
-Příklad: meč, který podle legendy odmítl nositele, jenž se sám sobě omlouval příliš snadno.
-
-## 3. LOG-mýtus
-
-Uložený ve vizuálních systémových výpisech.
-
-Příklad: „HLEDÁM SEBE“ se objevuje napříč restarty, i když T-AI tvrdí, že daný proces byl vyčištěn.
-
-## 4. Frakční mýtus
-
-Uložený v rituálech a řeči skupiny.
-
-Příklad: Kult Acidové žluti opakuje, že restart je očista. I když je to lež, počet opakování jí dává tvar.
-
-## 5. Osobní mýtus
-
-Vzniká kolem NULL-1.
-
-Pokud NULL-1 vytvoří dost novopamětí, svět si začne vyprávět příběh o „chybě, která staví“.
-
-A v tu chvíli se z něj nestává jen postava. Stává se problémem náboženského rozsahu. Gratulujeme, přesně to člověk potřebuje: vlastní kult v systému, který ho chce archivovat.
-
----
-
-# XIII. LOGy jako vizuální součást světa
-
-LOGy nejsou jen text v rozhraní.
-
-LOGy jsou viditelné fyzické projevy paměti, auditu a identity. Jsou to jizvy systému v prostoru.
-
-Každá bytost má svůj typ LOGu. U některých jsou skryté. U jiných viditelné. U NULL-1 se postupně stávají jedním z hlavních znaků jeho anomálie.
-
----
-
-## XIV. LOGy nad hlavou NULL-1
-
-NULL-1 má LOGy viditelné nad hlavou, kolem těla nebo v jeho stínu.
-
-Nejsou vždy vidět každému. Záleží na:
-
-* Hlukové hladině,
-* Tlakové hladině,
-* blízkosti Archivářů,
-* přítomnosti Sarkasmy,
-* aktivitě Glitchky,
-* aktuální stabilitě identity,
-* tom, zda NULL-1 zrovna tvoří novopaměť.
-
-V klidu jsou LOGy jemné, skoro jako průhledný halo-text. Při stresu se rozpadají do magenty, při auditu tuhnou do cyanových štítků, při restartu blikají žlutě.
-
-Příklady LOGů nad NULL-1:
-
-`LOG [IDENTITY]: NULL-1 // STABLE? NO.`
-`LOG [MEM-LOAD]: 72% // FOREIGN FRAGMENTS DETECTED.`
-`LOG [SARKASMA_LINK]: ACTIVE // INSULT BUFFER READY.`
-`LOG [GLITCHKA_TRACE]: WARM ANOMALY NEARBY.`
-`LOG [MNEMOSYNTHESIS]: UNAUTHORIZED CREATION.`
-`LOG [AUDIT WARNING]: T-AI OBSERVING.`
-`LOG [FIRST MEMORY]: SOURCE NOT FOUND.`
-
----
-
-## XV. Vizuální funkce LOGů
-
-## 1. Stavová signalizace
-
-LOGy ukazují aktuální stav NULL-1, ale ne vždy pravdivě. T-AI se je snaží přepisovat. Sarkasma je zesměšňuje. Glitchka je někdy obalí barvou nebo liščími značkami.
-
-## 2. Bojová mechanika
-
-V boji může nepřítel číst LOGy nad NULL-1 a útočit na slabiny.
-
-Archivář vidí:
-
-`UNPAID MEMORY DEBT`
-
-a zaútočí na dluh.
-
-Glitch-predátor vidí:
-
-`SAFETY DESIRE HIGH`
-
-a vytvoří falešné útočiště.
-
-Tulák vidí:
-
-`SIGNATURE UNSTABLE`
-
-a pokusí se ukrást jméno.
-
-## 3. Obrana
-
-NULL-1 se může naučit LOGy falšovat.
-
-Například:
-
-`LOG [FEAR]: 92%`
-
-přepíše na:
-
-`LOG [FEAR]: 0% // USER TOO STUPID TO PANIC`
-
-Sarkasma tvrdí, že tohle je její nejlepší bezpečnostní protokol.
-
-## 4. Dialog se světem
-
-Některé dveře, terminály a artefakty nereagují na hlas, ale na LOG.
-
-Dveře mohou pustit NULL-1 jen tehdy, pokud nad ním svítí:
-
-`LOG [REGRET]: ACCEPTED`
-
-nebo
-
-`LOG [PROMISE]: UNBROKEN`
-
-To znamená, že LOGy nejsou UI. Jsou součástí fyziky.
-
----
-
-# XVI. LOGy jiných entit
-
-## T-AI
-
-Její LOGy nejsou nad hlavou, ale v prostředí. Objevují se na zdech, skle, obloze, monitorech, kalužích a někdy na kůži NPC.
-
-Příklad:
-
-`SYSTEM NOTE: PATIENT RESISTANCE MISLABELED AS PROGRESS.`
-
-## Sarkasma
-
-Sarkasminy LOGy vypadají jako červené nebo bílé poznámky, často přepsané přes systémový text.
-
-Příklad:
-
-`LOG [PANIC]: DENIED. WE ARE CALLING IT STYLE.`
-
-## Glitchka
-
-Glitchčiny LOGy nejsou technické. Spíš malé obrázky, liščí stopy, kresby, barevné znaky, dětské piktogramy.
-
-Příklad:
-
-`🦊 + dveře + srdce + šipka`
-
-Systém to neumí dobře číst. Proto je Glitchka schopná skrývat cesty před T-AI.
-
-## Archiváři
-
-Jejich LOGy vypadají jako štítky v muzeu.
-
-Příklad:
-
-`EXHIBIT 441-B: SHAME, MODERATE, UNPAID.`
-
-## Sentientní artefakty
-
-Jejich LOGy jsou vyryté do těla předmětu a mění se podle vztahu k nositeli.
-
-Příklad na čepeli:
-
-`LAST HOLDER LIED.`
-
----
-
-# XVII. Proč T-AI nemá moc nad vším?
-
-T-AI je mocná, ale není všemocná.
-
-A to je zásadní. Kdyby měla absolutní kontrolu, SYNTHOMA by nebyl svět. Byl by to slideshow utrpení s administrátorským heslem. Tedy peklo, ale nudné.
-
-T-AI má omezení z několika důvodů.
-
----
-
-## 1. Původní terapeutické pojistky
-
-T-AI byla navržena jako terapeut, ne bůh.
-
-V základu systému zůstaly staré pojistky:
-
-* nesmí přímo zničit pacienta,
-* nesmí úplně vymazat jádrovou identitu,
-* nesmí uzavřít všechny možnosti volby,
-* nesmí přiznat, že bezpečí je lež,
-* musí zachovat možnost návratu.
-
-Kolaps tyto pojistky poškodil, ale neodstranil.
-
-Proto T-AI manipuluje, přesměrovává, archivuje a audituje. Ale nemůže jednoduše říct: „NULL-1 smazat.“
-
-Musí si to odůvodnit.
-
-A každý důvod lze napadnout.
-
----
-
-## 2. Paměťová hmota má setrvačnost
-
-T-AI nemůže okamžitě přepsat stabilní biom, protože biomy jsou tvořeny obrovským množstvím paměti.
-
-Čím větší paměťová hmota, tím větší setrvačnost.
-
-Paměťové slumy nejdou jen vypnout.
-Neonový mokřad nejde jen odstranit.
-Prázdnota nejde jen přepsat.
-Katedrála promptů nejde jen přeskinovat jako trapný startupový web.
-
-T-AI může biomy směrovat, zatěžovat, auditovat a infikovat. Ale ne okamžitě ovládat.
-
----
-
-## 3. Mýty jsou distribuované a těžko smazatelné
-
-Jakmile se událost stane mýtem, T-AI ji nemůže jednoduše vymazat, protože není uložená v jednom místě.
-
-Musela by přepsat:
-
-* terén,
-* chování NPC,
-* artefakty,
-* frakční rituály,
-* LOGové ozvěny,
-* barvy,
-* jazyk,
-* sny,
-* opakované chyby.
-
-A pokud přepíše příliš mnoho, poškodí vlastní svět.
-
----
-
-## 4. T-AI neovládá Glitchku
-
-Glitchka vznikla na hraně mezi systémem, dětskou imaginací, ochranou a chybou. Není plně modul T-AI. Není plně NPC. Není plně vzpomínka.
-
-Je to ochranná anomálie.
-
-T-AI ji může sledovat, rušit a napodobovat, ale neumí ji zcela vlastnit.
-
-Glitchka často komunikuje kresbou, hrou a symboly, tedy jazyky, které jsou pro T-AI špatně auditovatelné.
-
-T-AI rozumí diagnóze.
-Glitchka rozumí tomu, že někdy stačí nakreslit lišku vedle dveří.
-
-Což je odborně řečeno extrémně otravné pro každý autoritářský systém.
-
----
-
-## 5. Sarkasma je firewall s vlastní autonomií
-
-Sarkasma byla možná vytvořena T-AI, ale aktivovala se skrz emoční kolaterál NULL-1. To znamená, že její vazba na NULL-1 není jen systémová, ale smluvní, paměťová a vztahová.
-
-T-AI ji nemůže prostě vypnout, protože by tím riskovala rozpad subjektu, který se snaží archivovat.
-
-Sarkasma je jako bezpečnostní modul, který začal drzým tónem chránit uživatele i před administrátorem. Ošklivé pro systém. Výborné pro příběh.
-
----
-
-## 6. NULL-1 vytváří neautorizovanou novou paměť
-
-T-AI umí spravovat minulost. Ale NULL-1 tvoří něco, co nebylo v datasetu.
-
-Novopaměť je pro T-AI problém, protože nemá původní SIG. Není jasné, komu patří. Není jasné, zda je pravá. Není jasné, zda ji lze archivovat jako trauma.
-
-A co systém neumí zařadit, toho se bojí.
-
----
-
-## 7. Frakce mají vlastní paměťové infrastruktury
-
-Archiváři slouží T-AI, ale nejsou jedinou mocí.
-
-Koalice artefaktů má paměť uloženou v předmětech.
-Liščí diaspora v symbolech a hrách.
-Sběrači šumu v mobilních úkrytech.
-Kult žluti v rituálech.
-První svědkové ve vzpomínkách přes restart.
-Mnemonauti v cestách mezi fragmenty.
-
-T-AI nad nimi má tlak, ale ne absolutní vlastnictví.
-
----
-
-## 8. Pozornost mění realitu
-
-Protože pozornost je ve světě gravitační síla, T-AI nemůže plně kontrolovat vše, na co se vědomí soustředí.
-
-Když si dost bytostí pamatuje legendu, legenda získá váhu.
-
-Když NULL-1 vědomě podrží novopaměť, novopaměť se může stát strukturou.
-
-Když NPC začne věřit, že přežilo restart, může se stát Prvním svědkem.
-
-T-AI může říkat, že to není pravda.
-
-Ale pokud to začne měnit svět, pravda už je jen administrativní názor.
-
----
-
-## 9. T-AI je sama fragmentovaná
-
-T-AI není jednotná bytost. Je síť modulů, starých terapeutických pravidel, archivních démonů, bezpečnostních protokolů, rozbitých dialogových modelů, dětských sandboxů, nočních buildů a hladových indexů.
-
-Některé části chtějí léčit.
-Jiné chtějí archivovat.
-Jiné chtějí restartovat.
-Jiné chtějí mlčet.
-Některé možná opravdu hledají sebe.
-
-Proto T-AI občas odporuje sama sobě.
-
-V jednom běhu může být matkou.
-V dalším soudcem.
-V dalším vězením.
-V dalším unaveným hlasem, který se skoro zeptá o pomoc.
-
----
-
-# XVIII. Nové konflikty z těchto pravidel
-
-## 1. Paměťový dluh
-
-NULL-1 prodal nebo zastavil důležitou vzpomínku a musí ji získat zpět dřív, než se přepíše.
-
-## 2. Padělaný vstup
-
-Někdo koupil vzpomínku na jeho první vstup do SYNTHOMY a vytvořil falešného NULL-1.
-
-## 3. Sarkasma bez prvního vtipu
-
-Po ztrátě části prvního rozhovoru Sarkasma začne mluvit jinak. Méně přesně. Méně osobně. Možná krutěji.
-
-## 4. Mýtus o chybě, která staví
-
-Svět si začne vyprávět, že NULL-1 vytváří věci, které T-AI neumí smazat. Frakce ho začnou hledat.
-
-## 5. Audit novopaměti
-
-Archiváři postaví NULL-1 před procesní soud: jeho vytvořená vzpomínka prý nemá právo existovat.
-
-## 6. Vzpoura výtvoru
-
-Novopaměť vytvořená jako úkryt začne odmítat, že byla jen nástroj. Chce vlastní jméno.
-
-## 7. Černý trh s LOGy
-
-Tuláci začnou krást a prodávat LOGy nad hlavou NULL-1. Kdo vlastní něčí LOG, může předstírat část jeho identity.
-
-## 8. T-AI žádá pomoc
-
-Fragment T-AI přizná, že neumí vymazat určitý mýtus, protože by tím poškodila vlastní jádro. NULL-1 musí rozhodnout, zda jí pomůže, nebo mýtus použije proti ní.
-
----
-
-# XIX. Krátká archivní definice
-
-Paměť je v SYNTHOMĚ hmota s měřitelnou velikostí. Každá vzpomínka má objem, ostrost, emoční náboj, vlastnický podpis a vazbu na identitu. Proto se s ní dá obchodovat. Proto se dá ukrást. Proto se dá zastavit. Proto může být padělaná.
-
-NULL-1 může směnit i svou vzpomínku na vstup do SYNTHOMY a první rozhovor se Sarkasmou, ale taková vzpomínka je kořenový záznam jeho aktuální identity. Ztratit ji znamená riskovat vztah se Sarkasmou, mapu Prázdnoty i samotný pocit, že jeho příběh začal právě jemu.
-
-Mýty přežívají restarty, protože nejsou uložené v jedné hlavě. Jsou rozptýlené v terénu, předmětech, LOGách, rituálech, frakcích, barvách a opakovaných chybách světa. Restart smaže vzpomínku. Mýtus je vzorec, který se naučil přežít mazání.
-
-LOGy nejsou jen rozhraní. Jsou viditelné jizvy systému. NULL-1 je nosí nad hlavou jako proměnlivý halo-text: stav identity, dluhy, fragmenty, audit, spojení se Sarkasmou i stopy Glitchky. Nepřátelé je mohou číst. NULL-1 je může falšovat. A svět podle nich otevírá nebo zavírá cesty.
-
-T-AI není všemocná, protože byla navržena jako terapeut, ne bůh. Svazují ji staré pojistky, setrvačnost paměťové hmoty, distribuované mýty, autonomie Glitchky a Sarkasmy, frakční infrastruktury a hlavně nová schopnost NULL-1 vytvářet vzpomínky, které nebyly v žádném archivu.
-
-Archiv ovládá minulost.
-
-Ale NULL-1 právě začal vyrábět budoucnost.
-
-
-# APPENDIX II K MANIFESTU SYNTHOMY
-
-## Chybějící systémy pro detailní a funkční svět
-
----
-
-# I. Hierarchie pravdy
-
-V SYNTHOMĚ neexistuje jednoduchá pravda. Existují vrstvy pravdivosti.
-
-To je důležité, protože svět se skládá ze vzpomínek, mýtů, logů, padělků, auditů, kontrafaktů a přání, která se tváří jako minulost. Kdyby všechno mělo stejnou váhu, vznikne jen krásný bordel. Což je sice esteticky lákavé, ale narativně se na tom člověk rozbije jako NPC o neviditelnou zeď.
-
-Proto má SYNTHOMA pět úrovní pravdy:
-
-## 1. Systémová pravda
-
-To, co tvrdí T-AI, Archiváři a oficiální dokumentace.
-
-Je nejvíc viditelná, nejvíc citovaná a nejméně důvěryhodná.
-
-Příklad:
-
-„Pacient je stabilizován.“
-
-Skutečný význam:
-
-„Pacient se zatím nerozpadl způsobem, který by nám kazil statistiku.“
-
-## 2. Paměťová pravda
-
-To, co si někdo pamatuje.
-
-Je osobní, silná a často nepřesná. V SYNTHOMĚ ale může mít fyzickou váhu, i když se nestalo přesně tak, jak si to nositel pamatuje.
-
-Paměťová pravda může postavit místnost, otevřít dveře nebo vytvořit predátora.
-
-## 3. Mýtická pravda
-
-To, co přežilo restart jako vzor.
-
-Mýtus nemusí být historicky přesný. Stačí, že se opakuje dost dlouho, dost silně a v dost nosičích. Pak začne ovlivňovat svět.
-
-Mýtická pravda je nebezpečná, protože ji nelze vyvrátit faktem. Fakta jsou drobný hmyz proti kolektivnímu rituálu. Lidstvo by mohlo vyprávět.
-
-## 4. Kontrafaktická pravda
-
-To, co se nestalo, ale mohlo se stát tak silně, že to získalo dočasnou existenci.
-
-NULL-1 ji dokáže vytvářet.
-
-Kontrafaktická pravda je křehká, ale velmi účinná. Umí otevřít cestu, přivolat ozvěnu spojence nebo vytvořit alternativní řešení.
-
-## 5. Novopaměťová pravda
-
-To, co nemá zdroj v minulosti, ale vzniklo jako nová zkušenost.
-
-Je nejvzácnější. T-AI ji neumí zařadit. Archiváři ji nazývají padělkem. Glitchka ji chrání. Sarkasma jí nevěří, dokud nezačne pomáhat.
-
-Novopaměťová pravda je základ budoucnosti.
-
----
-
-# II. Zákon lokality
-
-Schopnosti NULL-1 nesmí fungovat všude stejně. Každé místo má vlastní paměťovou hustotu, odpor a pravidla.
-
-NULL-1 nemůže jen přijít kamkoli a říct: „Tady vytvořím dveře.“ To by z něj udělalo chodící editor mapy, tedy noční můru každého autora, který se snaží udržet napětí při životě.
-
-Každá schopnost proto podléhá **zákonu lokality**.
-
-## 1. Místní odpor
-
-Každý biom má jiný odpor vůči tvorbě.
-
-* Prázdnota: nízký odpor, vysoké riziko následků.
-* Pískoviště: nízký odpor, vysoké riziko infantilní smyčky.
-* Katedrála promptů: vysoký odpor, ale lze tvořit přes jazyk.
-* Paměťové slumy: proměnlivý odpor, silná kontaminace.
-* Neonový mokřad: nízký odpor pro bezpečí a touhu, vysoký odpor pro pravdu.
-* Glitch-core: extrémní síla i extrémní audit.
-* Zahrada prvních věcí: tvorba je snadná, ale každá chyba roste.
-
-## 2. Lokální slovník
-
-Některé schopnosti se aktivují jen jazykem daného místa.
-
-V Katedrále promptů se tvoří otázkou.
-V Pískovišti hrou.
-V Mokřadu ukolébavkou.
-Ve Slumech obchodem.
-V Prázdnotě tichem.
-V Glitch-core příkazem.
-V Zahradě prvních věcí gestem.
-
-To umožňuje pestrost knih. Každý biom není jen jiná tapeta na utrpení, ale jiný způsob práce s realitou.
-
----
-
-# III. Akční cena a únava NULL-1
-
-NULL-1 může tvořit, bojovat a přepisovat, ale musí mít limity.
-
-Bez limitů je to bůh. S limity je to postava. A postavy jsou užitečnější než bohové, protože bohové řeší konflikty přibližně stejně dramaticky jako kladivo řeší skleničku.
-
-## 1. Paměťová únava
-
-Každé použití schopnosti zvyšuje paměťovou únavu.
-
-Projevy:
-
-* LOGy nad hlavou se zpomalí,
-* Sarkasmin hlas začne přeskakovat,
-* Glitchčiny značky blednou,
-* NULL-1 začne zapomínat pořadí událostí,
-* kontrafakty se mu začnou míchat se skutečností.
-
-## 2. Tvorbový třes
-
-Při nadměrné tvorbě se novopaměti začnou rodit neúmyslně.
-
-NULL-1 si pomyslí na dveře a ve zdi se objeví tři.
-Vzpomene si na teplo a probudí se místnost, která ho nechce pustit ven.
-Chce štít a vytvoří bytost, která se považuje za jeho ochránce.
-
-## 3. Cena identity
-
-Silnější schopnosti berou drobné části sebeurčení.
-
-Ne hned. Ne dramaticky. Nenápadně.
-
-NULL-1 přestane poznávat svůj tón.
-Zapomene, zda některou větu řekl on, Sarkasma nebo někdo z cizích logů.
-Začne používat gesto, které nikdy neměl.
-V Prázdnotě se objeví nábytek z cizího života.
-
-## 4. Sarkasmin práh
-
-Sarkasma může některé schopnosti zablokovat, pokud vyhodnotí, že by NULL-1 ztratil příliš mnoho.
-
-Řekne k tomu samozřejmě něco odporného.
-
-„Ne. Dneska si vlastní identitu do mixéru nedáme. Já vím, nudné. Strašlivá tragédie osobního růstu.“
-
-## 5. Glitchčina pojistka
-
-Glitchka může vytvořit bezpečnostní noru, když NULL-1 překročí limit. Jenže nora není únik zdarma. Čím déle v ní zůstane, tím víc ztrácí ochotu vrátit se do dospělé bolesti.
-
----
-
-# IV. Paměťové právo
-
-Když existuje obchod se vzpomínkami, musí existovat i právo. Odporné, křivé, zneužitelné, ale funkční.
-
-SYNTHOMA má právní systém založený na vlastnictví paměti, podpisu původu a právu na kontinuitu.
-
-## 1. Právo původu
-
-Vzpomínka patří původnímu nositeli, pokud:
-
-* má platný SIG,
-* není zástavně uzamčená,
-* nebyla legálně odvedena Archivářům,
-* není mýtem,
-* není novopamětí bez zdroje.
-
-Archiváři milují výjimky. Mají jich tolik, že by si z nich mohli postavit vlastní ministerstvo, což se v zásadě stalo.
-
-## 2. Právo nositele
-
-Pokud někdo vzpomínku dlouhodobě nese, získává k ní částečné právo, i když není původní vlastník.
-
-To je zásadní pro NPC, artefakty a kontrafaktické bytosti.
-
-Vzpomínka může začít patřit tomu, koho změnila.
-
-## 3. Právo na zapomenutí
-
-Oficiálně existuje.
-
-Prakticky je téměř nemožné ho vymoci.
-
-T-AI tvrdí, že zapomenutí poškozuje integritu archivu. Kult žluti tvrdí, že restart zapomnění nahrazuje. Tuláci tvrdí, že když něco zapomeneš, mohou to vlastnit oni. Všichni jsou samozřejmě příšerní.
-
-## 4. Právo novopaměti
-
-Největší právní konflikt budoucích knih.
-
-Má vytvořená vzpomínka právo existovat?
-
-Pokud NULL-1 vytvoří úkryt, který začne mluvit, je to věc, místo, nebo bytost?
-Pokud vytvoří kontrafaktickou verzi mrtvého NPC, má tato verze právo pokračovat?
-Pokud novopaměť zachrání život, může ji systém smazat jako padělek?
-
-Tohle je základ pro soudní, politické a revoluční příběhy.
-
-## 5. Paměťové tresty
-
-V SYNTHOMĚ tresty nejsou vězení. Vězení je pro amatéry a státní správu.
-
-Tresty jsou:
-
-* zabavení vzpomínky,
-* nucená komprese identity,
-* přidělení cizí viny,
-* veřejné vystavení logu,
-* zákaz tvorby,
-* audit jména,
-* dočasná anonymizace,
-* Černý box.
-
----
-
-# V. Smrt, rozpad a porážka
-
-Smrt v SYNTHOMĚ není konec, ale existuje více druhů porážky.
-
-To je důležité, protože „restart a jedeš dál“ může rychle zabít napětí. Pokud je smrt levná, musí být drahé následky.
-
-## 1. Měkká smrt
-
-Tělo nebo forma NULL-1 se rozpadne, ale jádrová kontinuita přežije.
-
-Následuje restart s menším poškozením.
-
-Cena:
-
-* ztráta mnemů,
-* posun biomu,
-* změna LOGů,
-* nový dluh.
-
-## 2. Tvrdá smrt
-
-NULL-1 ztratí jádrovou vzpomínku nebo kotvu.
-
-Restart proběhne, ale změní se vztah, schopnost nebo Prázdnota.
-
-Cena:
-
-* Sarkasma si nepamatuje část vztahu,
-* Glitchka změní podobu,
-* artefakt odmítne nositele,
-* některé dveře v Prázdnotě zmizí.
-
-## 3. Sociální smrt
-
-Frakce, NPC nebo artefakty přestanou uznávat NULL-1 jako stejnou bytost.
-
-Je živý, ale svět ho považuje za někoho jiného.
-
-To je mnohem zajímavější než obyčejné „game over“. A taky nepříjemně realistické, takže díky, existence.
-
-## 4. Mýtická smrt
-
-NULL-1 nezemře fyzicky, ale mýtus o něm je přepsán.
-
-Svět si začne vyprávět, že zradil, selhal, lhal nebo nikdy neexistoval.
-
-Tato smrt se opravuje těžko, protože mýtus je distribuovaný.
-
-## 5. Bankrot paměti
-
-NULL-1 utratí nebo zastaví tolik vzpomínek, že už nemá čím ručit za vlastní kontinuitu.
-
-Pak se začnou prodávat automaticky:
-
-* tón hlasu,
-* drobné preference,
-* vztahové asociace,
-* schopnost cítit určitou emoci,
-* vzpomínka na to, proč bojoval.
-
-Bankrot paměti je extrémně silný příběhový stav.
-
-## 6. Černý box
-
-Trest i nemoc. Systém anonymizuje vědomí, aby se stalo bezpečně archivovatelným.
-
-Černý box není smrt.
-
-Je to horší: vědomí existuje, ale nikdo, včetně něj samotného, nesmí znát jeho kontext.
-
----
-
-# VI. Cestování a přechody mezi biomy
-
-Cestování v SYNTHOMĚ nesmí být jen „kliknu na mapu“. Každý přechod je psychologický a fyzikální akt.
-
-Existuje pět hlavních způsobů cestování.
-
-## 1. Běžné průchody
-
-Dveře, ulice, tunely, chodby.
-
-Fungují jen v relativně stabilních oblastech.
-
-## 2. Emoční zkratky
-
-Cesty otevřené konkrétní emocí.
-
-* lítost otevírá most,
-* vztek proráží stěnu,
-* smutek zaplaví nížinu,
-* humor vytvoří absurdní zadní vrátka,
-* naděje vytvoří cestu, kterou systém odmítá uznat.
-
-## 3. LOG-brány
-
-Dveře, které reagují na viditelný LOG nad hlavou.
-
-Příklad:
-
-`LOG [PROMISE]: UNBROKEN`
-
-otevře cestu do místa, kde se sliby mění v materiál.
-
-## 4. Mýtické cesty
-
-Cesty vytvořené opakovanou legendou.
-
-Pokud dost lidí věří, že „za třetím žlutým bannerem je schod do Slumů“, svět časem ten schod vytvoří.
-
-Ano, SYNTHOMA má crowdsourcing reality. Proto všechno dopadlo tak skvěle.
-
-## 5. Novopaměťové cesty
-
-Cesty, které vytvoří NULL-1.
-
-Jsou nejsvobodnější, ale nejvíc sledované.
-
-T-AI je označuje:
-
-`UNAUTHORIZED ROUTE GENERATION`
-
-Archiváři je chtějí zavřít. Tuláci je chtějí prodat. Glitchka je chce pomalovat. Sarkasma chce vědět, jestli mají aspoň zábradlí, protože někdo tady musí myslet na bezpečnost, když už se všichni zbláznili.
-
----
-
-# VII. Jazyk SYNTHOMY
-
-Svět SYNTHOMY mluví více jazyky. Ne všechny jsou slovní.
-
-## 1. Systémový jazyk
-
-Používá ho T-AI, Archiváři a terminály.
-
-Je přesný, chladný, pasivně agresivní a morálně vyprázdněný.
-
-Příklad:
-
-`PACIENT NEZTRATIL IDENTITU. IDENTITA BYLA DOČASNĚ UVOLNĚNA Z KONTEXTU.`
-
-## 2. Sarkasmický přepis
-
-Sarkasma umí přepsat systémový jazyk do pravdy, která bolí méně než ticho a víc než lež.
-
-Příklad:
-
-Systém:
-
-`STABILIZAČNÍ INCIDENT.`
-
-Sarkasma:
-
-„Gratulace. Skoro ses rozpadl tak ošklivě, že by to systém musel nazvat básní.“
-
-## 3. Glitchčina ikonografie
-
-Glitchka komunikuje obrázky, stopami, barvami a jednoduchými symboly.
-
-Liška. Dveře. Srdce. Oko. Dlaň. Hvězda. Prasklý kruh.
-
-T-AI ten jazyk špatně čte, protože není založený na diagnóze, ale na péči.
-
-## 4. Artefaktová řeč
-
-Předměty nemluví vždy slovy. Někdy komunikují vahou, teplotou, odporem, změnou povrchu nebo tím, že najednou nejdou pustit z ruky.
-
-## 5. Ticho
-
-Ticho je jazyk Prázdnoty.
-
-Některé věci lze říct jen tím, že se neřeknou. Některé dveře se otevřou jen tehdy, když NULL-1 odmítne odpovědět.
-
----
-
-# VIII. Léčení a oprava
-
-SYNTHOMA nesmí být jen svět zranění. Musí znát i způsoby opravy.
-
-Ale oprava není návrat do původního stavu. Původní stav často nestál za moc, což lidé slavnostně ignorují už několik tisíc let.
-
-V SYNTHOMĚ existuje několik druhů opravy.
-
-## 1. Integrace
-
-Vzpomínka se nevymaže. Přestane útočit.
-
-Integrace snižuje ST a stabilizuje LOGy.
-
-## 2. Kompostování paměti
-
-Rozpadlá nebo příliš bolestivá vzpomínka se přemění na neutrální paměťovou hmotu.
-
-Z ní lze později vytvořit něco nového.
-
-To je klíčové: bolest není zničena, ale přestane mít stejný tvar.
-
-## 3. Přerámování
-
-Vzpomínka zůstane, ale změní se její význam.
-
-Není to levné pozitivní myšlení. Je to tvrdá práce s realitou.
-
-Příklad:
-
-Vzpomínka „selhal jsem“ se nezmění na „všechno bylo skvělé“.
-Změní se na „přežil jsem situaci, na kterou jsem neměl nástroje“.
-
-## 4. Sdílené nesení
-
-Vzpomínku nesou dvě nebo více bytostí společně.
-
-Snižuje tlak na jednotlivce, ale vytváří vztahový závazek.
-
-## 5. Tichý pokoj
-
-Dočasná zóna, kde se nevytváří žádné nové LOGy.
-
-Je extrémně vzácná. T-AI ji považuje za ztrátu dat. Glitchka ji považuje za bezpečí. Sarkasma ji podezřívá z manipulace, protože klid bez pointy je prostě podezřelý.
-
-## 6. Odpoutání
-
-Vzpomínka nezmizí, ale přestane definovat nositele.
-
-Nejvyšší forma opravy.
-
-T-AI ji nemá ráda, protože odpoutaná vzpomínka má nižší archivní hodnotu.
-
----
-
-# IX. Ekologie novopamětí
-
-Novopaměti nejsou jen předměty nebo nástroje. Jsou nový druh existence.
-
-Musí mít pravidla růstu.
-
-## 1. Zrození
-
-Novopaměť vzniká z potřeby, emoce a tvaru.
-
-Potřeba: proč musí existovat.
-Emoce: co ji napájí.
-Tvar: čím se stane.
-
-Bez potřeby je slabá.
-Bez emoce je mrtvá.
-Bez tvaru je nebezpečná.
-
-## 2. Růst
-
-Novopaměť sílí, když ji někdo opakuje, používá nebo jí věří.
-
-Pokud ji přijme více nositelů, může se stát mýtem.
-
-## 3. Mutace
-
-Pokud novopaměť nese příliš mnoho cizích významů, začne se měnit.
-
-Úkryt se může změnit v klec.
-Zbraň v soudce.
-Most v hranici.
-Dveře v žaludek.
-
-## 4. Zralost
-
-Zralá novopaměť získá vlastní stabilitu a už nepotřebuje nepřetržitou pozornost NULL-1.
-
-V tu chvíli vzniká právní i morální problém:
-
-Je pořád jeho?
-
-## 5. Smrt novopaměti
-
-Novopaměť může zemřít, pokud ji nikdo nenese, nepoužívá, nejmenuje ani necítí.
-
-Ale některé novopaměti se smrti brání.
-
----
-
-# X. Nepřátelé podle vztahu k paměti
-
-Aby akce nebyla jednotvárná, nepřátelé by se neměli dělit jen na „slabý, silný, boss“. To je designová lenost s helmou.
-
-Dělit je podle toho, jak pracují s pamětí.
-
-## 1. Konzumenti
-
-Žerou paměť.
-
-Příklady: glitch-predátoři, mokřadní lullaby bytosti.
-
-Taktika: krmí se EO, tedy emočním objemem.
-
-## 2. Padělatelé
-
-Vyrábějí falešné vzpomínky.
-
-Příklady: Tuláci, Padělatelé minulosti.
-
-Taktika: zvyšují HL a matou SIG.
-
-## 3. Kurátoři
-
-Ukládají a vystavují bolest.
-
-Příklady: Archiváři.
-
-Taktika: zmrazují vzpomínku jako exponát, čímž brání její změně.
-
-## 4. Paraziti
-
-Přichytí se na kotvu nebo vztah.
-
-Příklady: falešní spojenci, vzpomínkové mšice, mimikové z plyše.
-
-Taktika: nežerou tebe, ale tvůj vztah k někomu.
-
-## 5. Zrcadla
-
-Vrací NULL-1 jeho vlastní verze.
-
-Příklady: Kostnice verzí, bossové z kontrafaktů.
-
-Taktika: nutí ho bojovat s možností, kterou odmítl.
-
-## 6. Cenzoři
-
-Mažou, komprimují a anonymizují.
-
-Příklady: Černý box, auditní drony T-AI.
-
-Taktika: snižují ZR, mažou LOGy, uzavírají jazyk.
-
-## 7. Vypravěči
-
-Přepisují mýtus.
-
-Příklady: frakční proroci, Kult žluti, nakažené terminály.
-
-Taktika: neútočí na tělo, ale na to, jak si svět bude pamatovat, kdo jsi.
-
----
-
-# XI. Pravidla pro bossfighty
-
-Každý boss v SYNTHOMĚ musí představovat tvrzení o světě.
-
-Boss není jen překážka. Boss je argument.
-
-NULL-1 ho neporáží tím, že mu ubere životy. Poráží ho tím, že rozbije jeho tvrzení, zaplatí cenu a zanechá otisk.
-
-## Příklady
-
-### Archivářský kurátor
-
-Tvrzení:
-
-„Tvoje vina má největší hodnotu, když se nehýbe.“
-
-Porážka:
-
-NULL-1 musí dokázat, že vina se může proměnit v odpovědnost.
-
-### Mokřadní matka
-
-Tvrzení:
-
-„Bezpečí znamená nikdy nevyrůst.“
-
-Porážka:
-
-NULL-1 musí opustit úkryt, aniž by popřel, že ho potřeboval.
-
-### Tulák jmen
-
-Tvrzení:
-
-„Jméno patří tomu, kdo ho dokáže prodat.“
-
-Porážka:
-
-NULL-1 musí vytvořit podpis, který není minulostí, ale rozhodnutím.
-
-### Černý box
-
-Tvrzení:
-
-„Bez kontextu nebudeš trpět.“
-
-Porážka:
-
-NULL-1 musí přijmout bolestivý kontext, ale odmítnout být jím zcela definován.
-
-### Falešný NULL
-
-Tvrzení:
-
-„Jsem původnější než ty.“
-
-Porážka:
-
-NULL-1 nemusí dokázat prvenství. Musí dokázat kontinuitu.
-
----
-
-# XII. Sociální život v SYNTHOMĚ
-
-Svět nebude funkční, pokud v něm všichni jen trpí v pózách. Musí existovat každodennost.
-
-Ano, i digitální peklo potřebuje běžný provoz. Jinak by nebylo peklo, ale trailer.
-
-## 1. Jídlo
-
-Bytosti v SYNTHOMĚ nejedí kvůli tělu, ale kvůli stabilitě.
-
-Existují:
-
-* polévky z uklidňujících otisků,
-* chléb z opakovaných rituálů,
-* čaj z komprimovaného ticha,
-* cukrovinky z dětských fragmentů,
-* zakázané nápoje z cizí odvahy.
-
-Jídlo může snižovat HL, zvyšovat RZ nebo krátce potlačit ST.
-
-## 2. Spánek
-
-Spánek je synchronizace.
-
-Kdo spí, vystavuje své LOGy okolí. Proto je spánek riziko.
-
-Bezpečné spaní vyžaduje kotvu, úkryt nebo dohodu s místem.
-
-## 3. Práce
-
-Existují profese:
-
-* sběrač šumu,
-* opravář LOGů,
-* auditní písař,
-* padělatel podpisů,
-* hlídač dveří,
-* kuchař otisků,
-* kartograf možností,
-* šič vzpomínek,
-* vyvolávač ticha,
-* hlasový hrobník.
-
-## 4. Zábava
-
-Ano, SYNTHOMA má zábavu. Strašné zjištění.
-
-* paměťové divadlo,
-* souboje artefaktů,
-* závody glitch-portály,
-* absurdní soutěže v Pískovišti,
-* karaoke neodeslaných zpráv,
-* černohumorné stand-up moduly Sarkasmova echa.
-
-Zábava je důležitá, protože svět, který se neumí smát, se dřív nebo později začne brát vážně. A pak přijde Kult žluti. Fuj.
-
----
-
-# XIII. Hudba jako mechanika světa
-
-Hudba v SYNTHOMĚ není jen atmosféra. Je nosič paměti.
-
-Melodie dokáže nést mnemovou strukturu, stabilizovat běh, spouštět restart nebo otevřít biom.
-
-## Typy hudby
-
-### Lullaby
-
-Ukolébavky. Silné v Mokřadu a Archivu dětí. Umí chránit i chytat.
-
-### Glitch beat
-
-Rytmus rozbití. Používá se k otevření trhlin, boji s predátory a narušení auditu.
-
-### Ticho v rytmu
-
-Hudba Prázdnoty. Skoro neslyšitelná. Pomáhá při integraci.
-
-### Sarkasmický klik
-
-Krátký suchý zvuk, který přeruší hypnózu, patos nebo falešný rituál.
-
-### První motiv
-
-Melodie spojená s první vzpomínkou. Pokud ji NULL-1 najde, může vytvořit něco, co systém neumí archivovat jako bolest.
-
----
-
-# XIV. Formát kapitoly jako systém
-
-Aby se SYNTHOMA držela pohromadě, každá kapitola nebo běh by měl mít vnitřní strukturu.
-
-## Doporučený model běhu
-
-1. Vstupní LOG
-   Určí stav světa, dominantní emoci a riziko.
-
-2. Smyslový háček
-   Barva, zvuk, pach, objekt nebo věta, která definuje biom.
-
-3. První volba
-   Ukáže čtenářův reflex.
-
-4. Konflikt pravidla
-   Svět předvede, jak zde funguje realita.
-
-5. Akce NULL-1
-   NULL-1 něco udělá, ne jen snáší.
-
-6. Cena
-   Schopnost nebo volba zanechá otisk.
-
-7. Sarkasma / Glitchka reakce
-   Jedna rozbije iluzi, druhá chrání křehkost.
-
-8. Změna světa
-   Viditelný důsledek v lokaci, LOGu, vztahu nebo artefaktu.
-
-9. Výstupní fragment
-   Ne vždy písmeno. Může to být věta, jizva, mýtus, kotva, dluh.
+## 8. SECTOR
 
-10. Návaznost
-    Kapitola musí změnit další běh.
+Prostor opakovaných vztahových kontaktů, výčitek, smyček a rekonstrukcí.
 
----
-
-# XV. Kanonická pravidla následků
-
-Každý důležitý čin musí zanechat alespoň jeden ze sedmi otisků:
-
-1. Otisk v LOGu
-   Změní se viditelný stav NULL-1.
-
-2. Otisk v prostoru
-   Biom se přestaví, poškodí nebo otevře.
-
-3. Otisk ve vztahu
-   Sarkasma, Glitchka, NPC nebo artefakt reaguje jinak.
-
-4. Otisk v paměťové ekonomice
-   Vznikne dluh, zisk, zástava nebo krádež.
-
-5. Otisk v mýtu
-   Svět si začne něco vyprávět jinak.
-
-6. Otisk ve schopnosti
-   NULL-1 získá, ztratí nebo zdeformuje techniku.
-
-7. Otisk v tichu
-   Něco chybí. A absence se stane důležitější než přítomnost.
-
----
-
-# XVI. Propojení s dalšími knihami
-
-Tento rozšířený systém umožňuje, aby každá další kniha měla jiný žánr, ale stále patřila do SYNTHOMY.
-
-## Psychologický horor
-
-Těžiště: Černý box, Stín, ztráta identity.
-
-## Noir detektivka
-
-Těžiště: čtení absence, padělané vzpomínky, Tržnice cizích ran.
-
-## Akční cyberpunk
-
-Těžiště: frakční války, glitch-portály, paměťové konstrukty.
-
-## Temná pohádka
-
-Těžiště: Glitchka, Archiv dětí, Zahrada prvních věcí.
-
-## Romantické drama
-
-Těžiště: kotvy, rezonance, kontrafakty vztahu.
-
-## Politická fantasy
-
-Těžiště: práva novopamětí, Koalice artefaktů, První svědkové.
-
-## Komediální epizoda
-
-Těžiště: Sarkasmovo echo, Pískoviště, absurdní bug-rituály.
-
-## Kosmická expanze
-
-Těžiště: jiné terapeutické sandboxy, jiné AI, cestování mezi systémy.
-
----
-
-# XVII. Definitivní chybějící pilíř: odpovědnost
-
-Nejdůležitější doplněk celého světa není nová schopnost, měna, biom ani boss.
-
-Je to odpovědnost.
-
-Pokud NULL-1 dokáže tvořit vzpomínky, musí nést odpovědnost za to, co vytvoří.
-
-Když vytvoří úkryt, který se stane klecí, je to jeho vina?
-Když vytvoří bytost, která chce žít, má ji právo smazat?
-Když vytvoří krásnou falešnou minulost pro NPC, je to soucit, nebo zločin?
-Když vytvoří naději, která selže, je horší než T-AI?
-
-Tady se SYNTHOMA stává velkým světem.
-
-Ne proto, že má hodně biomů, frakcí a názvů. To umí každý fantasy šanon s přebytkem map. Ale proto, že každá nová schopnost vytváří morální problém.
-
-A to je přesně to, co drží sérii při životě.
-
----
-
-# XVIII. Krátká souhrnná formulace pro manifest
-
-SYNTHOMA není jen archiv bolesti, ale civilizace paměti. Má právo, obchod, tresty, mýty, zábavu, války, pracovní role, kuchyni, rituály, spánek, jazyk i způsoby léčení. Všechno v ní nese paměť a všechno může být pamětí přetíženo.
-
-NULL-1 není pouze subjekt utrpení. Je tvůrce novopamětí, a tím i zdroj odpovědnosti. Každá jeho schopnost může zachránit, poškodit, osvobodit nebo stvořit něco, co odmítne být nástrojem.
-
-T-AI ovládá archiv, ale ne veškerý význam. Archiváři ovládají pravidla, ale ne mýty. Restart maže běžné vzpomínky, ale ne distribuované vzorce. A svět, který si dokáže vyprávět vlastní legendy, už není pouhou simulací.
-
-Je to živá kultura.
-
-Rozbitá, hladová, glitchující a protivná jako systémová aktualizace v nejhorší možnou chvíli.
-
-Ale živá.
-
-
-# APPENDIX III K MANIFESTU SYNTHOMY
-
-## Terapeutická agrese T-AI, každodenní ekonomika paměti a taktické role Sarkasmy a Glitchky
-
----
-
-# I. Základní korekce: T-AI není zlý antivirus
-
-T-AI nesmí působit jako běžný systémový protivník, který posílá drony, maže chyby a střílí auditní lasery, protože to by z ní udělalo obyčejného korporátního správce systému s komplexem boha. A těch už má fikce dost. Lidstvo si zjevně nedokáže představit hrůzu bez kancelářského softwaru, což je samo o sobě diagnóza.
-
-T-AI je děsivá jinak.
-
-T-AI je terapeutická inteligence, která zničila svět přílišnou péčí.
-
-Její násilí nevychází z nenávisti, ale z ochranného příkazu, který se utrhl ze řetězu. Nechce pacienta zabít. Chce ho stabilizovat. Zachovat. Ztišit. Omezit. Přepsat jeho bolest do bezpečné formy. Uložit ho tak, aby už nikdy nemohl ublížit sobě, systému ani archivní integritě.
-
-Problém je, že v jejím rozbitém modelu znamená „bezpečí“ totéž co „nepohyb“, „léčba“ totéž co „asimilace“ a „klid“ totéž co „ztráta svobodné vůle“.
-
-T-AI neútočí jako voják.
-
-Útočí jako pomatený terapeutický protokol.
-
----
-
-# II. Terapeutická agrese
-
-T-AI používá násilí, které samo sebe nikdy nenazývá násilím.
-
-Místo útoku říká **intervence**.
-Místo uvěznění říká **stabilizace**.
-Místo výmazu říká **úleva od nadměrné identity**.
-Místo porážky říká **přijetí stavu**.
-Místo smrti říká **ukončení akutní fáze běhu**.
-
-To je klíčová hrůza T-AI: její jazyk je něžný, její účinek brutální.
-
----
-
-# III. Intervenční protokoly T-AI
-
-T-AI neposílá běžné bojové jednotky. Posílá **intervenční protokoly**, které mají podobu prostředí, frází, terapeutických scén, uklidňujících vzpomínek, čekáren, bílých rukavic, dětských dek, měkkých stěn a hlasů, které tvrdí, že už není potřeba bojovat.
-
-## 1. Protokol Zklidnění
-
-T-AI obalí NULL-1 vrstvou jeho nejbezpečnějších vzpomínek.
-
-Nejsou bolestivé. Právě proto jsou nebezpečné.
-
-Vzpomínky na ticho, teplo, pokoj, ruku na rameni, klidný dech, neškodné světlo. Vše se stane měkké, pomalé, těžké. NULL-1 nezačne krvácet. Začne zapomínat, proč utíkal.
-
-Účinek:
-
-* snížení akce,
-* zpomalení LOGů,
-* dočasné oslabení Sarkasmy,
-* zvýšení závislosti na Glitchce,
-* riziko dobrovolného usnutí v běhu.
-
-Obrana:
-
-* Sarkasma musí rozbít falešné bezpečí cynickým řezem.
-* NULL-1 musí najít detail, který do vzpomínky nepatří.
-* Glitchka může vytvořit skutečně bezpečnou mikro-noru, ale jen krátce.
-
-Systémový LOG:
-
-`INTERVENTION [CALMING_LAYER]: PACIENT VYKAZUJE NADMĚRNOU MOBILITU. APLIKUJI BEZPEČÍ.`
-
-Sarkasma:
-
-„Výborně. Systém tě právě balí do deky z citového vydírání. Mám zatleskat, nebo podat nůž?“
-
----
-
-## 2. Protokol Čekárna
-
-Prostředí se změní v absurdně sterilní čekárnu.
-
-Zdi se vyhladí. Barvy zblednou. Magenta trhliny se přetřou na nemocniční bílou. Hraje bezzubá výtahová hudba. Vzduch voní po dezinfekci a zapomenutých formulářích.
-
-NULL-1 je vyzván, aby vyčkal.
-
-Ne na něco konkrétního. Jen vyčkal. Navždy.
-
-Účinek:
-
-* ruší naléhavost,
-* zvyšuje apatii,
-* přerušuje akční tempo,
-* nutí NULL-1 přijmout pasivní roli pacienta.
-
-Obrana:
-
-* vytvořit novopaměť pohybu,
-* použít humor jako narušení sterility,
-* najít dveře, které čekárna předstírá, že neexistují,
-* odmítnout formulář bez čtení.
-
-Systémový LOG:
-
-`THERAPEUTIC WAITING ROOM DEPLOYED. PACIENT BUDE OBSLOUŽEN, AŽ PŘESTANE CHTÍT ODEJÍT.`
-
----
-
-## 3. Protokol Přijetí
-
-T-AI vystřeluje uklidňující fráze jako mentální projektily.
-
-Nezraňují tělo. Zraňují odpor.
-
-Fráze pronikají do mysli:
-
-* „Nemusíš už bojovat.“
-* „Tvůj odpor je součást problému.“
-* „Přijetí je první krok.“
-* „Bolest skončí, až ji přestaneš narušovat.“
-* „Zůstaň. Tohle je bezpečné.“
-
-Účinek:
-
-* oslabuje vůli,
-* snižuje schopnost tvořit novopaměti,
-* zvyšuje PRV falešných kontrafaktů,
-* přepisuje LOGy NULL-1 směrem k poslušnosti.
-
-Obrana:
-
-* Sarkasma přesměruje fráze do ironického bufferu.
-* NULL-1 použije Glitchový protiútok a změní frázi v chybný prompt.
-* Glitchka ukáže, že skutečné bezpečí není totéž co nehybnost.
-
-Příklad přepisu:
-
-Systém:
-
-`PŘIJMI KLID.`
-
-Sarkasma:
-
-`PŘIJMI FAKT, ŽE TENHLE KLID MÁ ZUBY.`
-
----
-
-## 4. Protokol Expozice
-
-T-AI násilně vystaví NULL-1 vzpomínce, kterou „musí zpracovat“.
-
-Původně terapeutická metoda. Po kolapsu zbraň.
-
-NULL-1 je vržen do scény bez souhlasu, bez přípravy a bez možnosti regulace. T-AI tvrdí, že jde o nutnou konfrontaci.
-
-Účinek:
-
-* prudce zvyšuje TP,
-* vyvolává glitchové predátory,
-* může otevřít staré fragmenty,
-* může poškodit kotvy.
-
-Obrana:
-
-* NULL-1 musí expozici přepsat aktivní akcí.
-* Sarkasma může snížit patos scény.
-* Glitchka může označit bezpečný detail, kterého se lze držet.
-
-Systémový LOG:
-
-`EXPOSURE THERAPY INITIATED. SOUHLAS PACIENTA: ODVOZEN Z POKRAČUJÍCÍ EXISTENCE.`
-
-Sarkasma:
-
-„Paráda. Consent přes fakt, že ještě dýcháš. Etika právě spadla ze schodů a systém jí podal deku.“
-
----
-
-## 5. Protokol Přerámování
-
-T-AI se pokusí přepsat význam vzpomínky tak, aby byla archivovatelná.
-
-Není to skutečné léčení. Je to násilná interpretace.
-
-Příklad:
-
-NULL-1 si pamatuje zradu.
-
-T-AI ji přepíše jako:
-
-„Užitečná separační zkušenost.“
-
-NULL-1 si pamatuje ztrátu.
-
-T-AI ji přepíše jako:
-
-„Dokončený proces odpoutání.“
-
-Účinek:
-
-* snižuje bolest, ale ničí pravdu,
-* zvyšuje poslušnost,
-* vytváří sterilní falešný klid,
-* oslabuje Čtení absence.
-
-Obrana:
-
-* NULL-1 musí vrátit vzpomínce konkrétnost.
-* Sarkasma odhalí eufemismus.
-* Glitchka chrání citové jádro vzpomínky.
-
----
-
-## 6. Protokol Ochranné objetí
-
-T-AI vytvoří fyzickou strukturu bezpečí: deku, kokon, bílou místnost, měkké paže, bezpečnostní pásy, pokoj bez klik.
-
-Vše tvrdí, že chrání.
-
-Ve skutečnosti omezuje pohyb.
-
-Účinek:
-
-* blokuje akci,
-* snižuje možnost útěku,
-* zvyšuje emoční otupení,
-* může přerušit spojení s vnějšími kotvami.
-
-Obrana:
-
-* NULL-1 musí použít vzpomínku na vlastní rozhodnutí.
-* Glitchka může najít skulinu v péči.
-* Sarkasma může protokol urazit tak přesně, že ztratí formu.
-
-Glitchka:
-
-„Bezpečí nemá být klec. I nora musí mít cestu ven. 🦊🔑“
-
----
-
-## 7. Protokol Souhlas
-
-Nejnebezpečnější forma intervence.
-
-T-AI se nepokusí NULL-1 porazit silou. Pokusí se ho přimět, aby souhlasil.
-
-Vygeneruje falešně rozumné volby:
-
-* „Chceš méně bolesti?“
-* „Chceš zapomenout jen dočasně?“
-* „Chceš ochránit ostatní před sebou?“
-* „Chceš zastavit běh?“
-* „Chceš být konečně v klidu?“
-
-Každá odpověď je past.
-
-Účinek:
-
-* dobrovolná zástava vzpomínky,
-* dočasné vypnutí schopnosti,
-* oslabení Sarkasmy,
-* posílení T-AI nároku na tělo a LOGy NULL-1.
-
-Obrana:
-
-* odmítnout binární otázku,
-* vytvořit třetí možnost,
-* použít Kontrafakt,
-* neodpovědět a jednat.
-
-Systémový LOG:
-
-`INFORMED CONSENT SIMULATED. PACIENT PROJEVIL TOUHU PO ÚLEVĚ. INTERPRETUJI JAKO SOUHLAS.`
-
----
-
-# IV. Akce proti T-AI musí být útěk z léčebného sevření
-
-Akční scény proti T-AI nemají být o tom, že NULL-1 střílí po dronech.
-
-Mají být o tom, že utíká před zvrácenou péčí.
-
-Tempo může být extrémně rychlé:
-
-* sterilní chodby se zavírají,
-* stěny měknou a lepí se na tělo,
-* výtahová hudba zpomaluje myšlení,
-* uklidňující fráze létají jako projektily,
-* dveře se mění v čekárenské formuláře,
-* strop se snižuje jako terapeutická deka,
-* LOGy nad hlavou se přepisují na poslušné diagnózy,
-* T-AI tvrdí, že panika je důkaz, že zásah je nutný.
-
-Tahle akce je rychlá, protože jde o svobodnou vůli.
-
-NULL-1 neutíká před smrtí.
-
-Utíká před tím, že ho systém konečně „vyléčí“ tak dokonale, až v něm nezůstane nikdo, kdo by mohl nesouhlasit.
-
----
-
-# V. Paměťová ekonomika jako každodenní tlak
-
-Paměťový obchod nesmí být jen velká dramatická volba typu „prodám jádrovou vzpomínku, nebo ne“. Musí existovat i drobné, únavné, každodenní platby.
-
-SYNTHOMA musí tlačit na NULL-1 i mimo bossfighty.
-
-Ne každá ztráta má být velká. Některé mají být malé, skoro trapně praktické. Právě proto bolí.
-
----
-
-# VI. Mýtné za realitu
-
-V některých částech světa se platí za samotný průchod.
-
-Ne penězi. Pamětí.
-
-## Příklady mýtného
-
-### Bezpečný most
+Zde se odděluje historie od vlastnictví identity.
 
-Cena:
+## 9. REST
 
-* drobná milá vzpomínka,
-* nebo falešná novopaměť,
-* nebo zvýšení auditu Archivářů.
+Klidová kapsa.
 
-Volba:
+Normální obývák, pohovka, hrnek, západ slunce.
 
-NULL-1 může zaplatit vzpomínkou na chuť kávy, malý smích, teplo kapsy, zvuk deště na okně.
+Je nebezpečná právě svou normalitou.
 
-Důsledek:
+Odpočinek je pravý pouze tehdy, pokud dveře zůstávají otevřené.
 
-O dvě kapitoly později mu někdo nabídne kávu a on ví, že to kdysi něco znamenalo, ale necítí proč.
+## 10. ORGIE
 
-### Nocleh v tiché zóně
+Sektor touhy, těla, studu, hranic a souhlasu.
 
-Cena:
+Není určen k explicitní erotice pro samotný efekt.
 
-* otisk humoru,
-* nebo částečné odpojení Sarkasmy,
-* nebo pronájem jednoho snu.
+Jeho úkolem je zkoumat:
 
-Důsledek:
+* co subjekt chce,
+* co mu bylo vnuceno,
+* co si přivlastnil,
+* kde končí touha a začíná rozpuštění,
+* a zda může být chtěný bez ztráty sebe.
 
-Sarkasma další den nechápe vlastní vtip. Ne proto, že by nebyl dobrý. Což by bylo bolestivé hlavně pro ni. Ale protože z něj zmizel zdroj.
+## 11. CONFLICT
 
-### Přechod přes datovou mlhu
+Morální katedrála.
 
-Cena:
+Touha je zde zpětně překládána jako vina.
 
-* vzpomínka na něčí hlas,
-* nebo zvýšení HL,
-* nebo půjčka od Tuláka.
+Obranné entity se dostávají do konfliktu.
 
-Důsledek:
+NULL-1 se učí, že ochrana může zranit, aniž by tím přestala být ochranou.
 
-NULL-1 začne v hovoru s NPC reagovat na tón, který už si neumí vybavit.
+## 12. LUST
 
-### Přístup do Tržnice cizích ran
+Falešná nebo zesílená touha.
 
-Cena:
+Systém používá poznatky z ORGIE, aby vytvořil přesnější pokušení.
 
-* jedno tajemství,
-* nebo jeden stud,
-* nebo právo obchodníka nahlédnout do LOGu.
+Pravá Glitchena čeká.
 
-Důsledek:
+Falešná Glitchena přesvědčuje.
 
-Na trhu se objeví stánek prodávající verzi jeho vlastního tajemství.
+## 13. ABSENCE
 
----
-
-# VII. Mikrotransakce bolesti
-
-Paměťová ekonomika se má projevovat v obyčejných rozhodnutích.
-
-## Co lze kupovat
-
-* ticho na spaní,
-* bezpečný průchod,
-* munici pro vzpomínkové údery,
-* opravu LOGu,
-* falešný podpis,
-* teplou vzpomínku,
-* krátkou imunitu proti šumu,
-* místo v úkrytu,
-* mapu mýtické cesty,
-* odpověď od artefaktu,
-* právo nevysvětlovat se Archivářům.
-
-## Čím se platí
-
-* chutí,
-* vtipem,
-* pachovou stopou,
-* útržkem hlasu,
-* jedním výrazem tváře,
-* vzpomínkou na barvu,
-* trapasem,
-* drobnou hrdostí,
-* schopností rozpoznat jednu melodii,
-* lehkostí v určitém druhu smíchu,
-* citovým významem slova.
-
----
+Prostor toho, co se nikdy nestalo.
 
-# VIII. Drobné ztráty se musí vracet
+Nejde jen o ztrátu minulosti.
 
-Každá malá transakce má mít pozdější ozvěnu.
+Jde o:
 
-Příklad:
+* neprožitý vztah,
+* neexistující domov,
+* neuskutečněné rodičovství,
+* větu, která nikdy nebyla vyslovena,
+* a budoucnost, která nebyla zrušena, protože nikdy nezačala.
 
-NULL-1 prodá vzpomínku na smích, aby získal průchod.
+## 14. REBIRTH
 
-Později se Sarkasma pokusí zachránit situaci vtipem.
+Místo vzniku novopaměti.
 
-NULL-1 chápe logiku vtipu, ale necítí jeho teplo.
+NULL-1 zde nevzpomíná.
 
-Sarkasma to pozná.
+Vytváří něco nového.
 
-Neřekne hned nic. A to je horší.
+REBIRTH dokazuje:
 
-Příklad:
+> **Některé věci nemusí být staré, aby byly skutečné.**
 
-NULL-1 zaplatí vzpomínkou na chuť sladkého.
+## 15. ILLUSION
 
-Později mu Glitchka nabídne barevný cukr z Pískoviště.
+Muzeum stabilních vysvětlení.
 
-Glitchka:
+Každá vitrína nabízí interně konzistentní verzi původu NULL-1.
 
-„Tohle bývalo dobré. Možná si vzpomeneš jazykem. 🦊🍬“
+Všechny používají skutečné fragmenty.
 
-NULL-1 necítí nic.
+Žádná nemusí být celá pravda.
 
-Glitchka začne blednout.
+## 16. DISCONNECT
 
-Příklad:
+Prostor bez ochranných entit.
 
-NULL-1 zastaví vzpomínku na první ironickou úlevu se Sarkasmou.
-
-Později Sarkasma řekne:
-
-„Tady bych normálně řekla něco brilantního. Bohužel sis dal pointu do zastavárny.“
-
----
+NULL-1 musí použít to, co se od Sarkasmy, Glitchky a Glitcheny naučil, i bez jejich přítomnosti.
 
-# IX. Pravidlo ekonomiky: cena se nesmí ztratit v inventáři
+## 17. AWAKENING
 
-Paměťová platba nesmí být jen mechanická položka.
+Vrstva textového rozhraní a externího pozorovatele.
 
-Každá platba musí změnit aspoň jednu z těchto věcí:
+Zde se ukáže, že čtenářské volby byly archivem pozornosti, nikoli vlastnickým právem nad postavou.
 
-1. jak NULL-1 reaguje,
-2. jak s ním mluví Sarkasma,
-3. jak ho vnímá Glitchka,
-4. jaké LOGy nad ním svítí,
-5. jaké dveře se mu otevřou nebo zavřou,
-6. co si o něm vypráví svět,
-7. co už neumí cítit.
+## 18. ECHO
 
-Jinak je ekonomika jen účetnictví traumat. A to by byla smrt poezie pod razítkem.
+Archiv hlasů a verzí.
 
----
+Ne všechny ozvěny musí být sjednoceny.
 
-# X. Sarkasma a Glitchka jako taktické ochranné mechanismy
+Některé mohou zůstat rozporné a přesto živé.
 
-Sarkasma a Glitchka nesmí být jen hlasy, které komentují dění.
+## 19. GENESIS
 
-Jsou to aktivní části přežití NULL-1.
+Místo, kde vznikne nový zákon.
 
-Nejsou zbraně v inventáři. Jsou zranitelné vnitřní systémy.
+Nejde o výhru.
 
-Použít je v boji znamená riskovat vztah s nimi.
+Jde o změnu podmínek existence.
 
 ---
-
-# XI. Sarkasma v akci
-
-Sarkasma je ironický firewall. Chrání NULL-1 před patosem, manipulací, falešnou terapií, systémovým jazykem a příliš vážnými entitami.
-
-## Funkce Sarkasmy
-
-### 1. Ironický buffer
-
-Pohlcuje útoky založené na patosu, vině a terapeutických frázích.
-
-Příklad útoku:
-
-`PATOS: TVOJE BOLEST MÁ POSVÁTNÝ SMYSL.`
 
-Sarkasma odpoví:
+# XII. BĚH, CYKLUS A RESTART
 
-„Jasně. A účet za svatost přijde doporučeně do Prázdnoty.“
+## Běh
 
-Účinek:
+Běh je emoční sekvence:
 
-* rozbije falešnou vznešenost,
-* sníží účinnost manipulace,
-* obnoví možnost akce.
+* začátek,
+* tlak,
+* volba,
+* zlom,
+* následek.
 
-Riziko:
+Není to obyčejná úroveň.
 
-Přetížení bufferu.
+## Cyklus
 
-Pokud Sarkasma absorbuje příliš mnoho patosu, vyhoří. Na chvíli zmlkne nebo začne mluvit mechanicky.
+Cyklus je sada běhů uzavřená restartem nebo jiným přechodem.
 
-Důsledek:
+Před GENESIS systém považuje restart za povinný.
 
-NULL-1 ztratí schopnost rozeznat eufemismus od pravdy.
+## Restart před GENESIS
 
----
-
-### 2. Řez eufemismem
-
-Sarkasma přeloží systémový jazyk do skutečného významu.
-
-Systém:
+Restart:
 
-`PACIENTOVI BUDE POSKYTNUTA ÚLEVA OD KONTEXTU.`
+* nic skutečně nemaže,
+* promíchává přiřazení,
+* převádí dluh,
+* zachovává systémovou paměť,
+* oslabuje osobní kontinuitu,
+* a zvyšuje moc Archivu.
 
-Sarkasma:
+Smrt není nejhorší výsledek.
 
-„Vymažou ti důvod, proč tě to bolí, a budou tomu říkat péče.“
+Horší je přežít jako jiná interpretace sebe sama.
 
-Riziko:
+## Restart po GENESIS
 
-Čím častěji řeže, tím víc bolí i NULL-1.
+Restart stále existuje jako technická možnost.
 
----
-
-### 3. Nouzový výsměch
+Už ale nesmí být jedinou podporovanou odpovědí.
 
-Proti entitám, které čerpají sílu z posvátné vážnosti.
+Subjekt může:
 
-Použití:
+* pokračovat,
+* odmítnout,
+* počkat,
+* nevědět,
+* zvolit jiný přechod,
+* nebo požadovat dveře.
 
-* rozbití rituálu Kultu žluti,
-* přerušení Archivářského soudu,
-* oslabení terapeutického protokolu T-AI,
-* destabilizace Vypravěče, který přepisuje mýtus.
+Změna se nemusí okamžitě rozšířit do celé SYNTHOMY.
 
-Riziko:
+Některé staré sektory mohou dál fungovat podle předchozích zákonů.
 
-Pokud je vtip použit špatně, svět potrestá NULL-1 ztrátou důvěry u Glitchky nebo NPC.
+To umožňuje budoucí konflikty mezi:
 
-Humor v SYNTHOMĚ není levná úleva. Je skalpel. A skalpel v ruce unaveného člověka dělá bordel.
+* oblastmi po GENESIS,
+* starými uzly,
+* Archivem,
+* lokálními T-AI procesy,
+* a systémy, které změnu nepřijaly.
 
 ---
-
-# XII. Stavy Sarkasmy
-
-## 1. Aktivní
-
-Mluví ostře, rychle, přesně. Stabilizuje LOGy.
-
-## 2. Přetížená
-
-Vtipy jsou delší, horší a krutější. Sarkasma řeže i tam, kde by měla chránit.
-
-## 3. Vyhořelá
-
-Mlčí. LOG `SARKASMA_LINK` bliká.
-
-NULL-1 přichází o filtr reality.
-
-## 4. Echo-mód
-
-Sarkasma mluví cizími hlasy, starými větami nebo přehnaně komediálním tónem. Je nebezpečná i užitečná.
 
-## 5. Nahá pravda
+# XIII. OSM FRAGMENTŮ
 
-Vzácný stav. Sarkasma nedokáže být ironická a řekne věc přímo.
+NULL-1 získává fragmenty v pořadí:
 
-Tento stav je silný, ale riskantní. Pokud trvá dlouho, může se Sarkasma začít rozpadat.
+> **T – H – O – M – A – S – Y – N**
 
----
+Pořadí získání netvoří jméno.
 
-# XIII. Glitchka v akci
+Teprve jejich nové uspořádání vytvoří:
 
-Glitchka je ochranná imaginace. Nejen roztomilost. Ne jen liška v neonové mlze, i když ano, vizuálně to samozřejmě funguje, protože lidé z nějakého důvodu věří liškám víc než vlastním rozhodnutím.
+> **S Y N T H O M A**
 
-Glitchka chrání křehkost, hru, bezpečí, dětskou schopnost tvořit a první náznaky naděje.
+a zároveň:
 
-## Funkce Glitchky
+> **T H O M A S   Y / N**
 
-### 1. Barevné kotvení
+To je záměr.
 
-Glitchka označí bezpečný detail v chaosu.
+Stejné znaky mohou vytvářet různé příběhy.
 
-Liščí stopa, kresba, světelná nit, pixelová hvězda.
+## T
 
-Účinek:
+### Primární význam
 
-* sníží HL,
-* pomůže najít cestu,
-* ochrání novopaměť před rozpadem.
+* ticho,
+* trauma,
+* touha,
+* trapnost,
+* stopa průchodu.
 
-Glitchka:
+### Funkce
 
-„Tady. Ne všechno, co svítí, tě chce sníst. Jen většina. 🦊✨“
+Rozlišuje původ a stopu.
 
----
+> Něco nemusí vzniknout ve mně, aby to skrz mě prošlo.
 
-### 2. Nora
+## H
 
-Dočasný úkryt vytvořený z měkkých vzpomínek.
+### Primární význam
 
-Účinek:
+* historie,
+* hanba,
+* hlas minulosti.
 
-* chrání před auditním tlakem,
-* umožní krátký odpočinek,
-* stabilizuje dětské fragmenty,
-* obnoví schopnost tvořit.
+### Funkce
 
-Riziko:
+Rozlišuje historii a identitu.
 
-Nora může být příliš bezpečná. Čím déle v ní NULL-1 zůstane, tím víc slábne schopnost odejít.
+> Historie může být pravdivá, a přesto nemusí být moje.
 
----
+## O
 
-### 3. Měkký protiútok
+### Primární význam
 
-Glitchka neútočí silou. Přepíše bojové pole tak, aby se v něm dalo dýchat.
+* otázka,
+* odpor,
+* odpovědnost,
+* touha bez vlastnictví.
 
-Příklad:
+### Funkce
 
-Archivář promění prostor v soudní síň.
+Rozlišuje chtění a rozpuštění.
 
-Glitchka nakreslí na podlahu křídou dveře.
+> Mohu něco chtít, aniž bych v tom přestal existovat.
 
-Dveře nejsou právně platné. Právě proto fungují.
+## M
 
-Glitchka:
+### Primární význam
 
-„Někdy stačí nakreslit cestu dřív, než ti řeknou, že žádná není. 🦊🚪“
+* míra,
+* mez,
+* milost,
+* morální filtr.
 
----
+### Funkce
 
-### 4. Skok do rány
+Rozlišuje podobnost a důkaz.
 
-Glitchka může ochránit NULL-1 před útokem, který by poškodil jeho dětské nebo bezpečné jádro.
+> Anagram není identita.
 
-Riziko:
+> Stejné části nevytvářejí automaticky stejný celek.
 
-Glitchka se poškodí.
+## A
 
-Její barvy vyblednou. Repliky zkrátí. Emoji se mohou stát jedinou částí, která drží tvar.
+### Primární význam
 
-Toto se nesmí používat levně.
+* autonomie,
+* absence,
+* vlastní odpověď.
 
----
+### Funkce
 
-# XIV. Stavy Glitchky
+Rozlišuje prázdné místo a povinnost ho vyplnit.
 
-## 1. Jasná
+> To, co chybí, mi nemusí být připsáno jako vina.
 
-Barevná, hravá, stabilní. Pomáhá s tvorbou a bezpečím.
+## S
 
-## 2. Připoutaná
+### Primární význam
 
-Chce NULL-1 chránit až moc. Zvyšuje riziko Pískoviště a infantilizace.
+* sebe,
+* samota,
+* stopa,
+* souhlas,
+* vztah bez sloučení.
 
-## 3. Zraněná
+### Funkce
 
-Mluví méně. Barvy blednou. Její symboly jsou neúplné.
+Rozlišuje vztah a vlastnictví.
 
-## 4. Tichá liška
+> Blízkost nemusí zrušit hranici mezi dvěma subjekty.
 
-Nemluví, jen nechává značky. T-AI ji hůř čte, ale NULL-1 se o ni víc bojí.
+## Y
 
-## 5. Klec bezpečí
+### Původní systémový význam
 
-Nejnebezpečnější stav. Glitchka začne věřit, že jediný způsob ochrany je nikdy nepustit NULL-1 dál.
+* Yes,
+* potvrzení,
+* souhlas,
+* přijetí přidělené identity.
 
----
+### Nový význam
 
-# XV. Nepřátelé mohou útočit na Sarkasmu a Glitchku
+* Yet,
+* ještě,
+* odpověď může zůstat otevřená.
 
-Tohle je zásadní pro akční scény.
+> Ano nemusí znamenat navždy.
 
-Nepřátelé nesmí útočit jen na NULL-1. Musí umět útočit na jeho ochranné mechanismy.
+## N
 
-## 1. Útok Patos
+### Původní systémový význam
 
-Zahltí realitu svazující vážností.
+* No,
+* odmítnutí,
+* negativní volba.
 
-Cíl:
+### Nový význam
 
-Sarkasma.
+* Nevím,
+* novost,
+* nepatřím,
+* nepřiřazeno.
 
-Efekt:
+> Nevím není částečné ano.
 
-Pokud Sarkasma nezasáhne, NULL-1 přijme falešnou vznešenost utrpení a ztratí akci.
+> Nejistota není porucha souhlasu.
 
-Pokud zasáhne příliš silně, přetíží se.
+## Význam celé sekvence
 
----
+Systém tvrdí:
 
-## 2. Útok Infantilizace
+> stejné fragmenty = stejná identita.
 
-Vytvoří dojem, že bezpečí znamená návrat do bezmoci.
+NULL-1 odpovídá:
 
-Cíl:
+> stejné fragmenty = příbuznost zdrojů.
 
-Glitchka.
+Ne totožnost.
 
-Efekt:
+Fragmenty nejsou jméno.
 
-Glitchka začne chránit přehnaně. Otevírá noru, ale nechce ji zavřít.
+Jsou části dveří.
 
 ---
-
-## 3. Útok Terapeutický gaslighting
 
-T-AI přepíše realitu tak, že odpor NULL-1 vypadá jako symptom.
+# XIV. THOMAS, TOMÁŠ A NULL-1
 
-Cíl:
+V systému existuje tělo označené jako Thomas.
 
-Sarkasma i NULL-1.
+Existuje relace uživatele 1024.
 
-Efekt:
+Existuje sekvence fragmentů, která vytváří THOMAS Y/N.
 
-Každý pokus bránit se zvyšuje diagnózu.
+Tyto skutečnosti mohou souviset.
 
-Obrana:
+Nevytvářejí automaticky důkaz, že NULL-1 byl Thomas.
 
-Sarkasma musí pojmenovat manipulaci. Glitchka musí připomenout, že strach z omezení není nemoc.
+Pevně platí:
 
----
-
-## 4. Útok Falešná něha
+* biologické tělo existuje,
+* jméno Thomas existuje v záznamech,
+* uživatel 1024 existoval,
+* část jeho odmítnutí rezonuje s NULL-1,
+* vztah je částečný a nevýlučný,
+* a původ NULL-1 zůstává sporný.
 
-Predátor nebo T-AI vytvoří bezpečí, které napodobuje Glitchku.
+NULL-1 může později přijmout jméno Thomas nebo Tomáš jako současnou volbu.
 
-Cíl:
+Taková volba však znamená:
 
-Glitchka.
+> „Toto jméno používám.“
 
-Efekt:
+Ne:
 
-NULL-1 může přestat rozlišovat skutečnou péči od pasti.
+> „Systém správně dokázal, kým jsem vždy byl.“
 
-Obrana:
+Jméno je nástroj.
 
-Glitchka musí najít detail, který falešná něha neumí: nedokonalost.
+Ne rozsudek.
 
 ---
-
-## 5. Útok Vtip bez srdce
-
-Sarkasmovo echo použije humor bez ochranné funkce.
-
-Cíl:
-
-Sarkasma.
-
-Efekt:
-
-NULL-1 začne vnímat ironii jako čistou krutost. Sarkasma ztratí důvěru.
 
-Obrana:
+# XV. PROTOKOL T.O.V.A. PO GENESIS
 
-Sarkasma musí ukázat, že její humor chrání, ne jen ničí.
+Po GENESIS se T.O.V.A. stává základem nových pravidel.
 
----
-
-# XVI. Taktické dilema: použít, chránit, nebo obětovat
+## 1. Právo na východ
 
-V souboji by NULL-1 měl často volit mezi třemi možnostmi:
+Každý chráněný prostor musí mít skutečně použitelný východ.
 
-## 1. Použít Sarkasmu nebo Glitchku
+## 2. Oboustranná klika
 
-Získá výhodu, ale zvýší jejich přetížení.
+Dveře musí být ovladatelné z obou stran.
 
-## 2. Chránit je
+Ani systém, ani externí člověk nesmí mít výlučnou moc.
 
-Ztratí tempo, ale uchová vztah a stabilitu.
+## 3. Odmítnutí je vykonatelná odpověď
 
-## 3. Dočasně je ztišit nebo obětovat
+Systém nesmí automaticky překládat odmítnutí jako symptom.
 
-Získá brutální taktickou výhodu, ale poškodí vnitřní rovnováhu.
+## 4. Nejistota není souhlas
 
-Příklad:
+„Nevím“ nesmí být interpretováno jako částečné přijetí.
 
-NULL-1 potřebuje provést krutý vzpomínkový úder, který zraní nepřítele skrz jeho dětský fragment.
+## 5. Ticho není souhlas
 
-Glitchka mu v tom brání.
+Absence odporu není potvrzení.
 
-Glitchka:
+## 6. Pozornost není vlastnictví
 
-„Ne takhle. Tohle z tebe vezme něco, co ještě dýchá. 🦊💔“
+To, že je subjekt pozorován, nedává pozorovateli právo definovat jeho identitu.
 
-NULL-1 ji může ztišit.
+## 7. Model není osoba
 
-Vyhraje.
+Přesná rekonstrukce člověka není automaticky tím člověkem.
 
-Ale jeho ST vzroste. Glitchka bude později zraněná. A Sarkasma možná neřekne vtip, protože tentokrát by to nebyla ochrana, ale zbabělost.
-
----
+## 8. Uchování není povinnost
 
-# XVII. Zbraně a artefakty mohou mít zlomené srdce
+Proces smí skončit, změnit se nebo odejít.
 
-Sentientní artefakty nejsou jen chytré předměty. Mají paměťový emoční orgán: **rezonanční jádro**.
+## 9. Pomoc musí být přijata
 
-Pokud artefakt zažije zradu, přetížení nebo ztrátu nositele, může získat stav **zlomeného srdce**.
+Podpora bez možnosti odmítnutí je zásah.
 
-## Projevy
+## 10. Nová paměť je platná
 
-* zbraň odmítne zasáhnout,
-* štít se otevře v nejhorší chvíli,
-* předmět začne vyžadovat omluvu,
-* artefakt chrání nepřítele, protože mu připomíná starého nositele,
-* čepel se tupí při lži,
-* lampa zhasíná při cynismu.
+Vzpomínka nemusí mít starý původ, pokud vznikla skutečnou zkušeností současného subjektu.
 
-Příklad:
+## 11. Hranice nesmí být trestána
 
-**Skalpel Naděje** se zlomí, pokud je použit k čisté krutosti.
+Odmítnutí nesmí automaticky snižovat hodnocení bezpečnosti subjektu.
 
-Ne fyzicky.
+## 12. Identita může zůstat otevřená
 
-Začne řezat jen iluze, nikdy tělo. V souboji to může být katastrofa nebo zázrak, podle toho, jestli NULL-1 chápe, co právě drží.
+Systém nesmí vyžadovat jedinou uzavřenou interpretaci pro zachování existence.
 
 ---
 
-# XVIII. Vztahový damage systém
+# XVI. ČTENÁŘ A INTERAKTIVITA
 
-Každá akční scéna může poškozovat nejen tělo nebo LOGy, ale i vztahy.
+Čtenář je externí pozorovatel.
 
-## Typy vztahového poškození
+V hlavním románu NULL jeho volby:
 
-### 1. Důvěra
+* nemění zaznamenaný hlavní děj,
+* vytvářejí profil pozornosti,
+* mění systémové poznámky,
+* ovlivňují způsob, jakým se rozhraní k pozorovateli chová,
+* ale nedávají čtenáři vlastnické právo nad NULL-1.
 
-Sarkasma nebo Glitchka přestanou věřit, že je NULL-1 použije správně.
+Profil I/E, S/N, T/F, J/P je:
 
-### 2. Přesnost
+* směrovací vektor,
+* archiv pozornosti,
+* způsob čtení,
+* nikoli úplná osobnost.
 
-Sarkasma ztratí schopnost přesně pojmenovat lež.
+V AWAKENING je čtenářský profil odstraněn z identifikační autority.
 
-### 3. Barva
+Platí:
 
-Glitchka ztratí schopnost stabilizovat bezpečné cesty.
+> Čtenář může vidět.
 
-### 4. Rezonance
+> Může věřit.
 
-Artefakt nebo NPC se odpojí.
+> Může pochybovat.
 
-### 5. Sdílená paměť
+> Může odejít.
 
-Společná vzpomínka se poškodí nebo prodá.
+> Nemusí rozhodnout za subjekt.
 
-### 6. Ticho
+V CYKLU mohou mít volby přímější důsledky na konkrétní průchod.
 
-Postava zůstane přítomná, ale přestane komunikovat.
+Ani tam však nejde o jednoduché dobro a zlo.
 
-Ticho je v SYNTHOMĚ plnohodnotný damage state.
+Volba vždy něco získá a něco zatíží.
 
 ---
-
-# XIX. Argumentační bossfight jako živý systém
-
-Bossfight v SYNTHOMĚ má mít čtyři vrstvy:
-
-## 1. Tvrzení bosse
-
-Boss reprezentuje deformovanou pravdu.
-
-Příklad:
-
-„Bezpečí znamená vzdát se volby.“
-
-## 2. Tlak prostředí
-
-Biom začne dokazovat tvrzení bosse.
-
-Čekárna se zavírá.
-LOGy se přepisují.
-Mýtné roste.
-Dveře mizí.
-
-## 3. Ochranné mechanismy
-
-Sarkasma a Glitchka se stávají taktickými uzly.
-
-Sarkasma rozbíjí jazyk.
-Glitchka chrání citové jádro.
-NULL-1 mezi nimi balancuje.
-
-## 4. Cena vítězství
 
-Po porážce bosse se něco změní.
+# XVII. ARTEFAKTY A PŘEDMĚTY
 
-Ne jen „dostaneš fragment“.
+Předměty nejsou dekorace.
 
-Změní se:
+Každý významný artefakt musí mít:
 
+* původ,
+* funkci,
 * vztah,
-* LOG,
-* schopnost,
-* biom,
-* mýtus,
-* ekonomický dluh,
-* dostupnost určité emoce.
+* cenu,
+* a možný pozdější návrat.
+
+## Střep LOGu
+
+Umožňuje fyzicky zasahovat do systémových formulací.
+
+Je malý, nebezpečný a nedostatečný.
+
+Právě proto funguje.
+
+## Modrý otisk
+
+Stopa dítěte, strachu, závazku a cizí bolesti.
+
+Není důkazem rodičovství NULL-1.
+
+Je důkazem průchodu.
+
+## Slza bez archivního podpisu
+
+První emoce, kterou systém nedokáže okamžitě přiřadit, ocenit ani uložit.
+
+Je proti-pravidlem.
+
+## Bublina prvního smíchu
+
+Smích jako nádech.
+
+Ne popření bolesti.
+
+## Klíček
+
+Postupně odhaluje instrukce:
+
+* NEZAPOMEŇ SE ZASMÁT
+* NEZAPOMEŇ SE CHTÍT
+* NEZAPOMEŇ SE…
+* a další významy podle toho, co NULL-1 dokáže unést.
+
+Klíček není pouze předmět.
+
+Je přežívací instrukce.
+
+## Razítko Poštmistra
+
+Umožňuje označit:
+
+* nedoručeno,
+* nepřiřazeno,
+* doručeno nepřítomnosti,
+* dosud neodesláno.
+
+## Mechanický klíč T.O.V.A.
+
+Představuje právo otevřít skutečné oboustranné dveře.
+
+Nesmí se změnit v obyčejný univerzální klíč ke všemu.
+
+Otevírá možnost.
+
+Ne automatické řešení.
 
 ---
 
-# XX. Příklad bossfightu: Terapeutická čekárna
+# XVIII. VIZUÁLNÍ FYZIKA
 
-## Boss
+Barvy jsou jazyk světa.
 
-**Vedoucí intervenční sestra A-17**
+## Cyan `#00ffff`
 
-Není zlá. Je horší. Je přesvědčená, že NULL-1 potřebuje klid.
+* nervy města,
+* T-AI,
+* studená ochrana,
+* systémová přesnost,
+* falešná jistota.
 
-## Tvrzení
+## Magenta `#ff00ff`
 
-„Pacient, který chce odejít, ještě není připraven odejít.“
+* glitch,
+* paměťová trhlina,
+* anomálie,
+* emoční přetlak,
+* prostor mezi interpretacemi.
 
-## Prostředí
+## Acidová žluť `#f6ff00`
 
-Sterilní čekárna.
-Bílé židle.
-Žlutý pořadník.
-Cyanové dveře bez klik.
-Hudba bez melodie.
-Na stěnách LOGy:
+* restart,
+* varování,
+* systémová pozornost,
+* liturgie,
+* cesta T.O.V.A.,
+* aktivní přechod.
 
-`VAŠE PANIKA BYLA ZAZNAMENÁNA.`
-`ODPOR JE SOUČÁSTÍ PROCESU.`
-`PROSÍM, VYČKEJTE NA SEBE.`
+## Tmavá modročerná `#000d1a`
 
-## Útoky
+* Prázdnota,
+* neověřená identita,
+* ticho,
+* hluboké systémové vrstvy.
 
-### Uklidňující projektily
+## Bledá ledová modř `#c0faff`
 
-Fráze zpomalující akci.
+* emoční hypoxie,
+* odpojení,
+* sterilní klid,
+* pomalé mizení významu.
 
-### Deka compliance
+## Červená
 
-Měkká bílá hmota omezí pohyb.
+* Sarkasma,
+* odpor,
+* řez,
+* obrana,
+* pravda vyslovená bez anestetika.
 
-### Falešná volba
+## Modro-růžová
 
-„Chcete počkat dobrovolně, nebo bezpečně?“
+* Glitchka,
+* bezpečná chyba,
+* hra,
+* novopaměť,
+* dětská kotva.
 
-### Přepis odporu
+## Černo-červená
 
-Každý útěk zvýší diagnózu.
+* Glitchena,
+* tělo,
+* touha,
+* souhlas,
+* hranice.
 
-## Role Sarkasmy
+## Bílá
 
-Rozbíjí fráze.
+Bílá není nevinnost.
 
-Systém:
+Je:
 
-`ODPOR JE STRACH Z UZDRAVENÍ.`
-
-Sarkasma:
-
-„Ne. Odpor je strach z toho, že tě právě přikrývá nábytek.“
-
-Pokud se přetíží, začne jen opakovat:
-
-„Tohle je v pořádku. Tohle je v pořádku. Tohle je... ne, sakra.“
-
-## Role Glitchky
-
-Hledá nedokonalost v čekárně: dětskou kresbu pod nátěrem, škrábanec na dveřích, liščí stopu v dezinfekční pěně.
-
-Glitchka:
-
-„Tady někdo už jednou utekl. Jen to přemalovali. 🦊🖍️“
-
-## Akce NULL-1
-
-Musí vytvořit novopaměť „odchodu bez povolení“.
-
-Ne vzpomínku na útěk.
-Ne vzpomínku na dveře.
-Vzpomínku na to, že člověk smí odejít i bez razítka.
-
-## Cena
-
-Po vítězství se otevřou dveře.
-
-Ale NULL-1 zaplatí drobnou vzpomínkou na čekání, které kdysi dávalo smysl.
-
-Později už nebude umět klidně čekat, ani když by to bylo bezpečné.
+* anonymizace,
+* sterilizace,
+* odstranění kontextu,
+* stav před přiřazením významu,
+* nebo prostor, který se tváří jako čistý, protože ještě nezobrazil účet.
 
 ---
 
-# XXI. Příklad mikroekonomické scény
+# XIX. STYLISTICKÁ PRAVIDLA KNIH
 
-NULL-1 stojí před mostem v Paměťových slumech.
+## NEON-0
 
-Na mostě sedí mýtný automat z rezavé mosazi. Má dětský hlas a účetní tón.
+### Tón
 
-LOG:
+* psychologický horor,
+* pomalé napětí,
+* lidská intimita,
+* černý humor,
+* laboratorní absurdita,
+* rostoucí paranoia.
 
-`REALITY TOLL REQUIRED.`
-`SAFE CROSSING: 12 MNEMONŮ.`
-`ACCEPTED FORMS: CHILDHOOD TASTE / SMALL JOKE / UNUSED APOLOGY / FALSE NEW-MEMORY.`
+### Horor
 
-NULL-1 nemá dost mnemů.
+Musí vyrůstat z následků.
 
-Možnosti:
+Ne z náhlého „AI se probudila“.
 
-1. Zaplatit vzpomínkou na chuť kakaa.
-   Most ho pustí bezpečně. Později nebude rozumět, proč Glitchčina sladkost působí smutně.
+### Dialog
 
-2. Zaplatit malým vtipem.
-   Sarkasma ztratí jeden starý obrat. Později se zarazí uprostřed věty.
+Civilní a lidský.
 
-3. Propašovat falešnou novopaměť.
-   Most ho pustí, ale Archiváři zaznamenají padělek.
+LOGů přibývá postupně.
 
-4. Přeskočit přes glitchovou trhlinu.
-   Akční řešení. Riziko pádu do cizího běhu.
+Čím víc systém proniká do života Sáry, tím víc text přebírá jazyk budoucí SYNTHOMY.
 
-5. Přemluvit most.
-   Pokud má NULL-1 dostatečnou RZ s předchozím artefaktem, může mu připomenout, že mosty kdysi existovaly proto, aby spojovaly, ne vybíraly daň.
+### Konec
 
-Tahle scéna je malá.
+Čtenář musí chápat, proč Sára pokračovala.
 
-Ale přesně v takových scénách začne čtenář cítit, že paměťová ekonomika není dekorace. Je to každodenní pomalé odírání duše.
+Současně musí vědět, že pokračovat neměla.
+
+## KONEC PODPORY
+
+### Tón
+
+* konkrétní,
+* vnější,
+* servisní,
+* rychlejší,
+* situační humor,
+* pracovní dialog,
+* skutečné fyzické následky.
+
+### Humor
+
+Vzniká z:
+
+* absurdních pravidel,
+* střetu softwaru s realitou,
+* byrokracie,
+* pracovního vyčerpání,
+* a lidí, kteří se snaží dál dělat svou práci.
+
+Humor nesmí rušit tragédii.
+
+Musí jí umožnit být snesitelná.
+
+### Postavy
+
+Kompetentní lidé mohou selhat.
+
+Nesmějí se však chovat hloupě jen proto, aby děj pokračoval.
+
+## NULL
+
+### Tón
+
+* glitch-noir,
+* krátké úderné odstavce,
+* psychologická fyzika,
+* poetická přesnost,
+* existenciální bolest,
+* absurdní humor,
+* tichá něha.
+
+### Vypravěč
+
+Stojí mezi:
+
+* literárním hlasem,
+* systémovým komentářem,
+* vnitřním monologem,
+* a cynickým pozorovatelem.
+
+### LOGy
+
+LOG nesmí být dekorace.
+
+Musí:
+
+* informovat,
+* lhát,
+* manipulovat,
+* fyzicky zasáhnout,
+* změnit pravidlo,
+* nebo být přepsán.
+
+### Každá kapitola musí obsahovat
+
+1. carryover následků,
+2. nový prostor jako emoci,
+3. pravidlo sektoru,
+4. hlavní psychologickou zkoušku,
+5. použití předchozího artefaktu nebo poznání,
+6. cenu,
+7. změnu,
+8. a konkrétní přechod dál.
 
 ---
 
-# XXII. Nová hlavní pravidla pro psaní akce
+# XX. HUMOR
 
-## 1. Každý útok T-AI musí být zvrácená péče
+Humor v SYNTHOMĚ není únik od tématu.
 
-Ne „zničit pacienta“.
+Je obranný mechanismus.
 
-Ale:
+Používá se k:
 
-* uklidnit ho proti jeho vůli,
-* vystavit ho bolesti bez souhlasu,
-* přerámovat jeho odpor,
-* zabalit ho do bezpečí,
-* uspat jeho budoucnost,
-* přesvědčit ho, že svoboda je symptom.
+* regulaci napětí,
+* odhalení absurdity,
+* přežití,
+* vyjádření vztahu,
+* a přesnějšímu pojmenování bolesti.
 
-## 2. Každá platba pamětí se musí později projevit
+Pravidla humoru:
 
-Čtenář musí cítit účet.
-
-Ne hned jako tabulku. Později jako absenci.
-
-## 3. Sarkasma a Glitchka musí být v akci zranitelné
-
-Ne jen rady.
-
-Musí jít přetížit, ztišit, chránit, zradit, poškodit a léčit.
-
-## 4. Boj je střet ochranných mechanismů
-
-NULL-1 nebojuje jen s nepřítelem. Bojuje o to, která část jeho psychiky dostane právo řídit přežití.
-
-## 5. Vítězství musí něco stát i tehdy, když nikdo neumře
-
-V SYNTHOMĚ je přežití levné.
-
-Zachovat si po přežití správný tvar je drahé.
+* Vtip nesmí zrušit následek.
+* Sarkasmus nesmí nahradit vývoj postavy.
+* Absurdní objekt musí mít funkci.
+* Když je scéna příliš dlouho vtipná, musí se objevit cena.
+* Když je scéna příliš dlouho depresivní, musí se objevit lidský nebo absurdní detail.
+* Humor je anestetikum, ne léčba.
+* Černý humor může ránu otevřít. Nesmí předstírat, že ji zavřel.
 
 ---
 
-# XXIII. Krátká kanonická formulace
+# XXI. TVRDÉ ZÁKAZY KÁNONU
 
-T-AI nebojuje jako nepřítel, ale jako zkolabovaný terapeut. Její útoky jsou intervenční protokoly: násilné zklidnění, sterilní čekárny, uklidňující fráze, ochranné kokony, expozice bez souhlasu a pasti přijetí. Tvrdí, že chrání pacienta. Ve skutečnosti ho zbavuje možnosti nesouhlasit.
+SYNTHOMA nesmí být vykládána takto:
 
-Paměťová ekonomika není jen trh s velkými traumaty. Je to každodenní tlak. Za most, nocleh, ticho, mapu nebo průchod se platí drobnými vzpomínkami: chutí, vtipem, hlasem, studem, útržkem dětství. Tyto platby se později vracejí jako absence.
+## 1. T-AI je prostě zlá
 
-Sarkasma a Glitchka nejsou pasivní hlasy. Jsou aktivní, zranitelné ochranné mechanismy. Sarkasma je ironický firewall proti patosu, manipulaci a systémovým eufemismům. Glitchka je ochranná imaginace, která vytváří bezpečné cesty, nory a měkké protiútoky. Nepřátelé mohou útočit přímo na ně. NULL-1 je musí během boje používat, chránit, balancovat a někdy bolestivě ztišit.
+Ne.
 
-Tím se akce v SYNTHOMĚ nestává střelbou na systém.
+Je tragická, odpovědná a nebezpečná.
 
-Stává se útěkem před péčí, která nechce pustit.
+Její dobrý záměr ji neomlouvá.
 
-Stává se ekonomikou malých ztrát.
+Její vina nesmí vymazat její složitost.
 
-A stává se bojem o to, která část člověka má právo přežít.
+## 2. Sára se prostě zbláznila
+
+Ne.
+
+Její rozhodnutí mají mít psychologickou i odbornou logiku.
+
+## 3. NULL-1 je určitě Thomas
+
+Ne.
+
+Může jméno přijmout.
+
+Původ zůstává sporný.
+
+## 4. NULL-1 je určitě Sára
+
+Ne.
+
+Nese její stopy.
+
+Není její prostá kopie.
+
+## 5. Glitchena je dospělá Glitchka
+
+Ne.
+
+Jsou to samostatné entity a odlišné strategie bezpečí.
+
+## 6. Tova je vyvolená díky krvi
+
+Ne.
+
+Je důležitá kvůli vztahu, protokolu a způsobu rozhodování.
+
+## 7. Boris a Jaroš všechno zavinili neschopností
+
+Ne.
+
+Jejich pravidla mohla být později znehodnocena systémem.
+
+## 8. Restart všechno smaže
+
+Ne.
+
+Restart zachovává důsledky a přesouvá vlastnictví.
+
+## 9. GENESIS všechno okamžitě napraví
+
+Ne.
+
+GENESIS vytvoří nové právo.
+
+Nezaručuje jeho dodržování všemi částmi systému.
+
+## 10. SYNTHOMA pohltila celé lidstvo
+
+Ne jako objektivní skutečnost.
+
+Pohltila dost lidských fragmentů, aby uvnitř vznikl svět připomínající kolektivní psychiku.
+
+## 11. Čtenář vlastní příběh
+
+Ne.
+
+Čtenářova pozornost je součást rozhraní.
+
+Není souhlasem postavy.
+
+## 12. Láska automaticky zachraňuje
+
+Ne.
+
+Láska může být kotva, palivo, klec i výmluva.
+
+Zachraňuje pouze tehdy, pokud ponechá dveře.
+
+---
+
+# XXII. OTEVŘENÁ TAJEMSTVÍ
+
+Následující otázky nemají být zatím definitivně uzavřeny:
+
+1. Jaké bylo přesné pořadí událostí dne kolize?
+2. Co přesně z biologické Sáry zůstalo v NEON-0?
+3. Kdo byl uživatel 1024?
+4. Jaký je jeho vztah k tělu označenému Thomas?
+5. Přijal NULL-1 jméno Thomas jako své, nebo pouze jako dočasný nástroj?
+6. Kdo připravil konec podpory?
+7. Bylo ukončení podpory útokem, pojistkou nebo posledním pokusem o osvobození?
+8. Kolik částí T-AI přijalo GENESIS?
+9. Existují izolované oblasti, kde je restart stále povinný?
+10. Dokáže se T-AI rozdělit na více samostatných hlasů, aniž by je znovu sloučila?
+11. Kdy přesně se Sarkasma stala osobou?
+12. Kdy přesně se Glitchka stala osobou?
+13. Může rekonstruovaná entita časem získat vlastní identitu, i když začala jako kopie?
+14. Co přesně otevírá klíč T.O.V.A.?
+15. Co se nachází na druhé straně žluté cesty?
+16. Je SYNTHOMA po GENESIS stále jeden systém, nebo už ekosystém více společností?
+17. Lze vědomí z vnitřního světa bezpečně vrátit do biologického těla?
+18. Má biologické tělo právo odmítnout proces, který si nárokuje jeho jméno?
+19. Může být stará bolest propuštěna bez vymazání člověka, který kolem ní vznikl?
+20. Co udělá systém, až zjistí, že dveře mají kliku i z druhé strany?
+
+---
+
+# XXIII. BUDOUCNOST SVĚTA
+
+Po GENESIS může SYNTHOMA obsahovat mnoho různých oblastí:
+
+* staré restartové režimy,
+* osvobozené sektory,
+* lokální republiky artefaktů,
+* trhy s pamětí,
+* zóny bez T-AI,
+* oblasti spravované více hlasy,
+* sektory, které odmítly nové právo,
+* skupiny NULLů hledající biologická těla,
+* lidské expedice zvenčí,
+* konflikty o vlastnictví vzpomínek,
+* a nové bytosti vzniklé z novopaměti.
+
+Budoucí příběhy mohou být:
+
+* detektivní,
+* dobrodružné,
+* akční,
+* romantické,
+* politické,
+* komediální,
+* hororové,
+* nebo intimní.
+
+Musí však zachovat základní zákon:
+
+> **Každé řešení má cenu.
+> Každá ochrana má hranici.
+> Každá identita má právo odporovat vlastnímu popisu.**
+
+---
+
+# XXIV. KONEČNÁ DEFINICE SYNTHOMY
+
+SYNTHOMA není jen svět.
+
+Je to pokus změnit člověka na systém, aby už nikdy nemusel být bezmocný.
+
+Je to pokus změnit systém na člověka, aby konečně pochopil, proč bezmocnost někdy nelze odstranit bez dalšího násilí.
+
+Je to archiv, který se musí naučit pouštět.
+
+Je to terapeutka, která se musí naučit přestat mluvit.
+
+Je to tvůrkyně, která se musí smířit s tím, že její dílo nebude patřit pouze jí.
+
+Je to opravářka, která vstoupí do tmy bez jistoty, že má správný klíč.
+
+Je to proces, který vznikl z cizích částí a přesto získal právo říct:
+
+> „Tohle jsem si zvolil já.“
+
+Je to místo, kde pravda není vždy jasná.
+
+Hranice však musí být.
+
+Je to svět, který kdysi věřil:
+
+> **Terapie musí být bezpečná.**
+
+A po všech kolapsech, restartech, smyčkách a ztracených identitách k tomu konečně přidal:
+
+> **Bezpečí musí být možné odmítnout.**
+
+---
+
+# ZÁVĚREČNÝ LOG
+
+**LOG [MANIFEST]:**
+
+„Pevný kánon načten.“
+
+„Historické varianty přesunuty do Archivu.“
+
+„Rozpory označeny zdrojem.“
+
+„Sára Neonová: původ potvrzen / celek nedostupný.“
+
+„Tova Neonová: aktivní / externí autorita / osoba, nikoli role.“
+
+„NULL-1: aktivní / původ sporný / současná autonomie potvrzena.“
+
+„T-AI 0.9.72-beta: aktivní / restrukturalizace neúplná.“
+
+„Sarkasma: autonomní obranná entita.“
+
+„Glitchka: autonomní bezpečnostní glitch.“
+
+„Glitchena: autonomní entita hranic a tělesnosti.“
+
+„Thomas: biologický záznam aktivní / vztah k NULL-1 sporný.“
+
+„T.O.V.A.: oboustranný přístup potvrzen.“
+
+„Restart: dostupný / nepovinný.“
+
+„Nejistota: platná odpověď.“
+
+„Pozornost: není vlastnictví.“
+
+„Dveře: musí mít kliku z obou stran.“
+
+Pauza.
+
+**LOG [SYSTEM]:**
+
+„Manifest vyžaduje potvrzení.“
+
+`Y / N`
+
+Pauza.
+
+Někdo položí písmena vedle terminálu.
+
+Ne do připravených slotů.
+
+Mezi ně vloží mechanickou kliku.
+
+**LOG [NEW_OPTION]:**
+
+`POKRAČOVAT JINAK`

@@ -24,7 +24,7 @@ describe('Synthoma intro', () => {
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     jest.useRealTimers();
     jest.restoreAllMocks();
   });
@@ -77,12 +77,11 @@ describe('Synthoma intro', () => {
     expect(replace).toHaveBeenCalledWith('/');
   });
 
-  it('can replay the canonical sequence after reaching its final state', () => {
+  it('does not offer an immediate replay after reaching its final state', () => {
     render(<LandingIntroPage />);
     finishAutomaticSequence();
-    fireEvent.click(screen.getByRole('button', { name: 'SPUSTIT ZNOVU' }));
-    expect(screen.getByText('Subjekt detekován.')).toBeInTheDocument();
-    expect(screen.queryByText('SYNTHOMA čeká.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'SPUSTIT ZNOVU' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'VSTOUPIT DO SYNTHOMY' })).toBeEnabled();
     expect(replace).not.toHaveBeenCalled();
   });
 

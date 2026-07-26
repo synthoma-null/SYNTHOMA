@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import LoginForm from '../components/auth/LoginForm';
-import BgVideo from '../components/BgVideo';
 
 export const metadata: Metadata = {
   title: 'SYNTHOMA – AUTH GATE',
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className="glitch-bg auth-page-wrap">
-      <BgVideo src="/video/SYNTHOMA32.webm" />
       <main className="auth-home-main" role="main" aria-label="Přihlášení">
         <h1 className="glitch-master auth-home-title" data-text="AUTH GATE" aria-label="AUTH GATE">
           <span className="glitch-fake1" aria-hidden>AUTH GATE</span>
@@ -19,7 +17,7 @@ export default function LoginPage() {
           <span className="glitch-real" aria-hidden>AUTH GATE</span>
           <span className="sr-only">AUTH GATE</span>
         </h1>
-        <section className="auth-home-panel os-surface os-surface--glass" aria-label="Přihlášení">
+        <section className="auth-home-panel os-surface" aria-label="Přihlášení">
           <LoginForm />
         </section>
       </main>

@@ -53,7 +53,7 @@
   }
 
   .cyklus-page > .cyklus-root--playing {
-    grid-template-rows: 44px 44px minmax(0, 1fr);
+    grid-template-rows: 44px minmax(0, 1fr);
     height: calc(100dvh - var(--cy-shell-top) - var(--cy-shell-bottom));
     min-height: 0;
     padding: env(safe-area-inset-top) 0 0;
@@ -66,23 +66,23 @@
   }
 
   .cyklus-root--playing > .cyklus-stat-dock {
-    grid-row: 2;
+    grid-row: 1;
   }
 
   .cyklus-root--playing > .cyklus-stage {
-    grid-row: 3;
+    grid-row: 2;
     min-height: 0;
     padding: 4px 6px;
   }
 
   .cyklus-stat-dock {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr)) 44px;
     gap: 1px;
     height: 44px;
     min-height: 44px;
     max-height: 44px;
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
     border-inline: 0;
     border-radius: 0;
   }

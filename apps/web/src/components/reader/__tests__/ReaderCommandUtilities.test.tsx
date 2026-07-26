@@ -5,7 +5,7 @@ describe('ReaderCommandUtilities', () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-reader-focus');
-    document.body.innerHTML = '<main class="chapter-reader"><article id="chapter-reader-article">Text kapitoly.</article><button id="toggle-panel-btn">Global settings</button></main>';
+    document.body.innerHTML = '<main class="chapter-reader"><article id="chapter-reader-article">Text kapitoly.</article></main>';
     Object.defineProperty(global, 'SpeechSynthesisUtterance', {
       configurable: true,
       value: class { lang = ''; onend: (() => void) | null = null; onerror: (() => void) | null = null; constructor(public text: string) {} },
@@ -16,19 +16,14 @@ describe('ReaderCommandUtilities', () => {
     });
   });
 
-  it('exposes settings, audio, TTS and focus as keyboard buttons', () => {
-    const settings = jest.spyOn(document.getElementById('toggle-panel-btn')!, 'click');
-    const audio = jest.fn();
-    document.addEventListener('synthoma:audio-toggle', audio, { once: true });
+  it('leaves global settings and audio to the shell and exposes contextual reader tools', () => {
     render(<ReaderCommandUtilities articleId="chapter-reader-article" locale="cs" />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Nastavení' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Hudba' }));
+    expect(screen.queryByRole('button', { name: 'Nastavení' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Hudba' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Přečíst kapitolu nahlas' }));
     fireEvent.click(screen.getByRole('button', { name: 'Režim soustředění' }));
 
-    expect(settings).toHaveBeenCalled();
-    expect(audio).toHaveBeenCalled();
     expect(window.speechSynthesis.speak).toHaveBeenCalledWith(expect.objectContaining({ text: 'Text kapitoly.' }));
     expect(document.querySelector('.chapter-reader')).toHaveClass('chapter-reader--focus');
     expect(document.documentElement).toHaveAttribute('data-reader-focus', 'on');

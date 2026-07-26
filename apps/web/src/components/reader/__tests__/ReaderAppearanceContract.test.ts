@@ -4,12 +4,11 @@ import path from 'node:path';
 describe('Reader appearance contract', () => {
   const read = (file: string) => fs.readFileSync(path.join(process.cwd(), file), 'utf8');
 
-  it('connects the active Reader surface to opacity and glass root tokens', () => {
+  it('connects the active Reader surface to opacity and keeps it solid', () => {
     const css = read('src/styles/reader.css');
     expect(css).toMatch(/\.chapter-reader__article\.SYNTHOMAREADER\s*\{[\s\S]*?--reader-surface-opacity/);
-    expect(css).toMatch(/data-reader-glass="on"[\s\S]*?backdrop-filter:\s*blur\(var\(--reader-glass-blur/);
     expect(css).toMatch(/\.chapter-reader__article\.SYNTHOMAREADER\s*\{[\s\S]*?backdrop-filter:\s*none/);
-    expect(css).toMatch(/@supports not \(\(backdrop-filter:/);
+    expect(css).not.toContain('data-reader-glass');
   });
 
   it('keeps focus and themes from overriding the Reader appearance tokens', () => {
@@ -20,10 +19,10 @@ describe('Reader appearance contract', () => {
     expect(themesCss).not.toContain('--reader-glass-blur');
   });
 
-  it('keeps reading progress and chapter navigation while focus hides utilities', () => {
+  it('keeps reading progress, chapter navigation and the global header in focus mode', () => {
     const readerCss = read('src/styles/reader.css');
     const utilities = read('src/components/reader/ReaderCommandUtilities.tsx');
-    expect(readerCss).toMatch(/data-reader-focus="on"[\s\S]*synthoma-command-header[\s\S]*display:\s*none/);
+    expect(readerCss).not.toMatch(/data-reader-focus="on"[\s\S]*synthoma-command-header[\s\S]*display:\s*none/);
     expect(readerCss).toMatch(/chapter-reader--focus[\s\S]*chapter-reader__machine-links[\s\S]*display:\s*none/);
     expect(readerCss).not.toMatch(/chapter-reader--focus[^}]*chapter-reader__navigation[^}]*display:\s*none/);
     expect(readerCss).not.toMatch(/chapter-reader--focus[^}]*chapter-reader__progress[^}]*display:\s*none/);
@@ -39,11 +38,10 @@ describe('Reader appearance contract', () => {
     expect(gate).not.toContain('SYNTHOMAREADER');
   });
 
-  it('keeps opacity and blur as independent accessible controls', () => {
+  it('keeps opacity accessible and removes the global glass controls', () => {
     const controls = read('app/components/ControlCenterClient.tsx');
-    expect(controls).toContain('PRŮHLEDNOST ČTECÍ PLOCHY');
     expect(controls).toMatch(/min="0\.4"[\s\S]*?max="1"[\s\S]*?value=\{preferences\.readerOpacity\}/);
-    expect(controls).toMatch(/glassBlur[\s\S]*?disabled=\{!preferences\.glassEnabled\}/);
-    expect(controls).toContain('aria-valuetext={`${preferences.glassBlur} px`}');
+    expect(controls).not.toContain('glassBlur');
+    expect(controls).not.toContain('glassEnabled');
   });
 });

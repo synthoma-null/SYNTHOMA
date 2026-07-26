@@ -1,14 +1,14 @@
 /* Gameplay shell and boot surface. */
 
 .cyklus-page {
-  --cy-shell-top: 0px;
+  --cy-shell-top: var(--os-command-height, 56px);
   --cy-shell-bottom: 0px;
   position: fixed;
-  inset: 0;
+  inset: var(--cy-shell-top) 0 0;
   isolation: isolate;
   width: 100%;
-  height: 100dvh;
-  min-height: 100dvh;
+  height: calc(100dvh - var(--cy-shell-top));
+  min-height: calc(100dvh - var(--cy-shell-top));
   overflow: hidden;
   background:
     radial-gradient(ellipse at 8% 12%, color-mix(in srgb, var(--cy-accent-system) 7.5%, transparent), transparent 36%),
@@ -20,7 +20,7 @@
 .cyklus-page::after {
   content: "";
   position: fixed;
-  inset: 0;
+  inset: var(--cy-shell-top) 0 0;
   z-index: 0;
   pointer-events: none;
 }
@@ -114,8 +114,15 @@
   stroke-linejoin: round;
 }
 
-.cyklus-game-header:has(.cyklus-pocket--header .cyklus-pocket__toggle[aria-expanded='true']) {
+.cyklus-stat-dock:has(.cyklus-pocket--stat .cyklus-pocket__toggle[aria-expanded='true']) {
   z-index: var(--cy-z-sheet);
+}
+
+.cyklus-game-header--context {
+  display: flex;
+  justify-content: flex-end;
+  border-bottom-color: var(--cy-line-subtle);
+  background: transparent;
 }
 
 .cyklus-loading {
@@ -132,7 +139,7 @@
 .cyklus-page > .cyklus-root--menu {
   width: 100%;
   max-width: none;
-  min-height: 100dvh;
+  min-height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -173,7 +180,7 @@
   align-items: center;
   gap: var(--cy-space-5) clamp(2rem, 8vw, 8rem);
   width: min(100%, 1320px);
-  min-height: 100dvh;
+  min-height: 100%;
   margin: 0 auto;
   padding: calc(2rem + env(safe-area-inset-top)) clamp(1.25rem, 5vw, 5rem) calc(2rem + env(safe-area-inset-bottom));
   background: transparent;
@@ -256,16 +263,6 @@
   margin: 0;
   color: var(--cy-text);
   text-shadow: none;
-}
-
-.cyklus-menu__brand {
-  font-family: var(--font-family-heading), var(--cy-font-mono);
-  font-size: clamp(3.25rem, 8vw, 7rem);
-  font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-shadow: var(--cy-glow-system);
 }
 
 .cyklus-menu__module {
@@ -456,13 +453,15 @@
   margin: 0;
 }
 
-.cyklus-pocket--header {
+.cyklus-pocket--header,
+.cyklus-pocket--stat {
   position: relative;
   width: 44px;
   height: 44px;
 }
 
-.cyklus-pocket--header .cyklus-pocket__toggle {
+.cyklus-pocket--header .cyklus-pocket__toggle,
+.cyklus-pocket--stat .cyklus-pocket__toggle {
   display: grid;
   width: 44px;
   height: 44px;
@@ -474,11 +473,13 @@
   background: transparent;
 }
 
-.cyklus-pocket--header .cyklus-pocket-trigger__label {
+.cyklus-pocket--header .cyklus-pocket-trigger__label,
+.cyklus-pocket--stat .cyklus-pocket-trigger__label {
   display: none;
 }
 
-.cyklus-pocket--header .cyklus-pocket-trigger__count {
+.cyklus-pocket--header .cyklus-pocket-trigger__count,
+.cyklus-pocket--stat .cyklus-pocket-trigger__count {
   position: absolute;
   top: 2px;
   right: 2px;
@@ -492,6 +493,35 @@
   position: fixed;
   top: calc(env(safe-area-inset-top) + 45px);
   right: max(8px, env(safe-area-inset-right));
+  left: auto;
+  width: min(360px, calc(100vw - 16px));
+  max-height: min(62dvh, 420px);
+  border: 1px solid var(--cy-line-strong);
+  background: var(--cy-panel-solid);
+  box-shadow: var(--cy-shadow);
+}
+
+.cyklus-pocket--stat {
+  align-self: stretch;
+  justify-self: end;
+}
+
+.cyklus-pocket--stat .cyklus-pocket__toggle {
+  border-left: 1px solid var(--cy-line-strong);
+  background: var(--cy-panel-solid);
+}
+
+.cyklus-pocket--stat .cyklus-pocket__toggle:hover,
+.cyklus-pocket--stat .cyklus-pocket__toggle:focus-visible,
+.cyklus-pocket--stat .cyklus-pocket__toggle[aria-expanded='true'] {
+  background: var(--cy-button-hover);
+  color: var(--cy-cyan-soft);
+  box-shadow: inset 0 -2px 0 var(--cy-cyan);
+}
+
+.cyklus-pocket--stat .cyklus-pocket__panel {
+  top: calc(100% + 2px);
+  right: 0;
   left: auto;
   width: min(360px, calc(100vw - 16px));
   max-height: min(62dvh, 420px);
@@ -601,35 +631,30 @@
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-    grid-template-rows: 44px auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     gap: var(--cy-space-4);
     align-items: start;
     padding-inline: clamp(1rem, 3vw, 2.5rem);
   }
 
-  .cyklus-root:not(.cyklus-root--menu) > .cyklus-game-header {
+  .cyklus-root--playing > .cyklus-stat-dock {
     grid-column: 1 / -1;
     grid-row: 1;
   }
 
-  .cyklus-root--playing > .cyklus-stat-dock {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
-
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
   }
 
   .cyklus-desktop-top__right {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 2;
   }
 
   .cyklus-root--ended > .cyklus-stage {
     grid-column: 1 / -1 !important;
-    grid-row: 2 / -1;
+    grid-row: 1 / -1;
   }
 
   .cyklus-root--ended > :is(.cyklus-pocket--standalone, .cyklus-stat-dock, .cyklus-desktop-top__right, .cyklus-bottom-nav, .cyklus-mobile-utility-dock) {
@@ -640,14 +665,14 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
-    grid-template-rows: 44px auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     max-width: 1024px;
     padding-inline: var(--cy-space-4);
   }
 
-  .cyklus-root--playing > .cyklus-stat-dock { grid-row: 2; }
-  .cyklus-root--playing > .cyklus-stage { grid-row: 3; }
-  .cyklus-root--ended > .cyklus-stage { grid-row: 2 / -1; }
+  .cyklus-root--playing > .cyklus-stat-dock { grid-row: 1; }
+  .cyklus-root--playing > .cyklus-stage { grid-row: 2; }
+  .cyklus-root--ended > .cyklus-stage { grid-row: 1 / -1; }
 
   .cyklus-desktop-top__right {
     display: none;
@@ -660,14 +685,9 @@
 }
 
 @media (max-width: 767px) {
-  .cyklus-page {
-    --cy-shell-top: 0px;
-    --cy-shell-bottom: 0px;
-  }
-
   .cyklus-page > .cyklus-root:not(.cyklus-root--menu) {
     display: grid;
-    grid-template-rows: 44px auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     width: 100%;
     height: 100%;
     min-height: 0;
@@ -676,11 +696,11 @@
   }
 
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-stat-dock {
-    grid-row: 2;
+    grid-row: 1;
   }
 
   .cyklus-root:not(.cyklus-root--menu) > .cyklus-stage {
-    grid-row: 3;
+    grid-row: 2;
   }
 
   .cyklus-desktop-top__right {
@@ -736,11 +756,6 @@
 
   .cyklus-menu__title {
     margin-top: auto;
-  }
-
-  .cyklus-menu__brand {
-    font-size: clamp(2.75rem, 15vw, 4.5rem);
-    overflow-wrap: anywhere;
   }
 
   .cyklus-menu__intro {

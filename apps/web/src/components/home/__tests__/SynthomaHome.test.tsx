@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import LangSwitcher from '../../LangSwitcher';
 import { LangProvider } from '../../../lib/LangContext';
 import SynthomaHome from '../SynthomaHome';
+import SynthomaFooter from '../../synthoma-os/SynthomaFooter';
 
 jest.mock('next/navigation', () => ({ useRouter: () => ({ replace: jest.fn() }) }));
 
@@ -28,7 +29,7 @@ describe('Synthoma Home', () => {
     expect(within(sectors).getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
     expect(within(sectors).getByRole('link', { name: /CYKLUS/ })).toBeInTheDocument();
     expect(within(sectors).getByRole('link', { name: /AUTOR/ })).toHaveAttribute('href', '/autor');
-    expect(screen.getByRole('link', { name: 'PŘÍSTUP PRO AI' })).toHaveAttribute('href', '/ai/api');
+    expect(screen.queryByText(/SUBJECT_CONTACT/)).not.toBeInTheDocument();
     expect(screen.getByText(/SYNTHOMA je interaktivní psychologický román/)).toBeInTheDocument();
     expect(screen.getByText('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.')).toBeVisible();
     expect(screen.getByRole('link', { name: 'SPUSTIT INTRO' })).toHaveAttribute('href', '/landing-intro?replay=1');
@@ -59,18 +60,15 @@ describe('Synthoma Home', () => {
     await waitFor(() => expect(screen.getByRole('link', { name: /POKRAČOVAT V CYKLU/ })).toHaveAttribute('href', '/cyklus'));
   });
 
-  it('uses one decorative muted video with a fallback layer', () => {
+  it('leaves the decorative background video to the global shell', () => {
     render(<SynthomaHome />);
-    const video = document.querySelector('video') as HTMLVideoElement;
-    expect(video).toHaveAttribute('aria-hidden', 'true');
-    expect(video).toHaveProperty('muted', true);
-    expect(document.querySelector('.synthoma-media-layer__fallback')).toBeInTheDocument();
-    expect(document.querySelectorAll('.synthoma-media-layer__brand-art')).toHaveLength(2);
+    expect(document.querySelector('video')).not.toBeInTheDocument();
+    expect(document.querySelector('.synthoma-global-background')).not.toBeInTheDocument();
   });
 
-  it('keeps one footer, the main routes and the corrected Czech Cyklus CTA', () => {
+  it('leaves the shared footer to the shell and keeps the corrected Czech Cyklus CTA', () => {
     render(<SynthomaHome />);
-    expect(document.querySelectorAll('footer')).toHaveLength(1);
+    expect(document.querySelectorAll('footer')).toHaveLength(0);
     expect(screen.getByText('SPUSTIT')).toBeInTheDocument();
     expect(screen.queryByText('SPOUSTIT')).not.toBeInTheDocument();
     const sectors = screen.getByRole('navigation', { name: 'Sektory SYNTHOMA' });
@@ -81,10 +79,11 @@ describe('Synthoma Home', () => {
   });
 
   it('localizes the shared legal navigation without changing its canonical route', async () => {
-    render(<LangProvider initialLang="en"><LangSwitcher /><SynthomaHome /></LangProvider>);
-    const nav = await screen.findByRole('navigation', { name: 'Legal information' });
-    expect(within(nav).getByRole('link', { name: 'TERMS OF USE AND SALE' })).toHaveAttribute('href', '/terms');
-    expect(within(nav).getByRole('link', { name: 'PRIVACY POLICY' })).toHaveAttribute('href', '/privacy');
+    render(<LangProvider initialLang="en"><LangSwitcher /><SynthomaHome /><SynthomaFooter /></LangProvider>);
+    const nav = await screen.findByRole('navigation', { name: 'System links' });
+    expect(within(nav).getByRole('link', { name: 'TERMS' })).toHaveAttribute('href', '/terms?locale=en');
+    expect(within(nav).getByRole('link', { name: 'PRIVACY' })).toHaveAttribute('href', '/privacy?locale=en');
+    expect(within(nav).getByRole('link', { name: 'AI / API' })).toHaveAttribute('href', '/ai/api?locale=en');
     expect(screen.getByRole('navigation', { name: 'SYNTHOMA sectors' })).toHaveTextContent('LIBRARY');
     expect(screen.getByText(/SYNTHOMA is an interactive psychological novel/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /START THE STORY/ })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
@@ -103,13 +102,12 @@ describe('Synthoma Home', () => {
     expect(paths[0]).toHaveClass('home-first-contact__path--primary');
   });
 
-  it('keeps the legal footer in flow, touch-safe and clear of the mobile dock', () => {
-    const css = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/home.css'), 'utf8');
-    expect(css).toMatch(/\.synthoma-home__memory\s*\{[^}]*display:\s*grid/);
-    expect(css).not.toMatch(/\.synthoma-home__memory\s*\{[^}]*position:\s*(?:fixed|sticky)/);
-    expect(css).toMatch(/\.synthoma-home__legal a\s*\{[^}]*min-height:\s*44px/);
-    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.synthoma-home__memory\s*\{[^}]*safe-area-inset-bottom/);
-    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.synthoma-home__legal\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
+  it('delegates legal links and safe-area spacing to the global footer', () => {
+    const homeCss = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/home.css'), 'utf8');
+    const shellCss = fs.readFileSync(path.join(process.cwd(), 'src/styles/synthoma-os/layout.css'), 'utf8');
+    expect(homeCss).not.toContain('.synthoma-home__memory');
+    expect(homeCss).not.toContain('.synthoma-home__legal');
+    expect(shellCss).toMatch(/\.synthoma-global-footer\s*\{[^}]*display:\s*grid/);
   });
 
   it('prioritizes the descriptor and entry paths in short mobile and landscape viewports', () => {

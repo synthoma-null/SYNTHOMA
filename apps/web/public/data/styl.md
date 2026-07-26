@@ -1,323 +1,1293 @@
-# SYNTHOMA-NULL: styl psaní, jazyk, dramaturgie a autorská pravidla
+# SYNTHOMA — aktuální stylová bible trilogie
 
-## 1. Základní definice stylu
+## Jazyk, vypravěčské hlasy, dramaturgie, dialogy, LOGy, humor, horor a autorská pravidla
 
-SYNTHOMA je **glitch-noir psychologický horor s černým humorem, kyberpunkovou estetikou a terapeutickým traumatem, které se rozhodlo založit vlastní operační systém**.
+**Verze:** 3.0
+**Stav:** závazná pracovní bible
+**Platí pro:** `SYNTHOMA: NEON-0`, `SYNTHOMA: KONEC PODPORY`, `SYNTHOMA: NULL` a navazující texty hlavního kánonu
+**Nahrazuje:** starší soubor `SYNTHOMA-NULL: styl psaní, jazyk, dramaturgie a autorská pravidla`
 
-Není to klasické sci-fi.
-Není to klasický horor.
-Není to ani čistě interaktivní kniha.
+> **Tma nikdy není opravdová. Je jen světlem, které se vzdalo smyslu.**
 
-Je to příběh, kde:
-
-* paměť je hmota,
-* emoce jsou energie,
-* glitch je fyzikální princip,
-* LOGy jsou zákony reality,
-* humor je obranný mechanismus,
-* identita je rozbitý soubor,
-* a svět se nesnaží člověka zabít, ale **přepsat tak dlouho, až přestane poznávat rozdíl mezi sebou a archivem**.
-
-Hlavní tón:
-
-> melancholie + glitch + ironie + existenciální bolest + absurdní humor + tichá něha
-
-SYNTHOMA má působit jako místo, kde by ses chtěl zdržet, dokud si neuvědomíš, že tě to místo začalo ukládat.
+> **Dveře musí mít kliku z obou stran.**
 
 ---
 
-## 2. Vypravěčský hlas
+# 0. ÚČEL A HIERARCHIE TOHOTO DOKUMENTU
 
-Vypravěč SYNTHOMY není neutrální. Není to suchý popis. Je to hlas, který stojí někde mezi:
+Tento soubor neurčuje, **co se stalo**. To řeší manifest a dramaturgické bible jednotlivých knih.
 
-* poškozeným systémovým komentářem,
-* literárním vypravěčem,
-* vnitřním monologem NULL-1,
-* a cynickým pozorovatelem, který ví, že lidská psychika je technicky vzato velmi špatně navržený produkt.
+Určuje:
 
-Vypravěč má být:
+- jak má svět znít,
+- jak se má lišit hlas jednotlivých knih,
+- jak mají mluvit postavy a systémy,
+- jak se bolest převádí do obrazu,
+- kdy použít LOG, efekt, humor nebo ticho,
+- jak udržet kontinuitu bez opakovaného vysvětlování,
+- a jak zabránit tomu, aby se SYNTHOMA změnila v obecný kyberpunk, který objevil slovo „trauma“ a rozhodl se ho napsat neonem na každou zeď.
 
-* poetický,
-* ostrý,
-* ironický,
-* někdy bolestně přesný,
-* někdy absurdně civilní,
-* ale nikdy úplně chladný.
+## 0.1 Hierarchie pravdy
 
-### Typická věta SYNTHOMY
+Při rozporu platí toto pořadí:
 
-Dobrá věta v SYNTHOMĚ často funguje takto:
+1. aktuální kanonický manifest,
+2. hotový text dané knihy,
+3. aktuální dramaturgická bible dané knihy,
+4. tento stylový dokument,
+5. efektová a technická dokumentace,
+6. starší osnovy, koncepty a experimentální varianty.
 
-1. začne atmosféricky,
-2. přejde do psychologického obrazu,
-3. skončí malým jedem, vtipem nebo znepokojivým otočením.
+Styl nesmí přepsat kánon.
 
-Příklad stylu:
+Kánon také nesmí být záminkou pro nečitelný text. Čtenář není archivní proces a nemá povinnost rekonstruovat význam z patnácti stejných metafor, i když by to bylo tematicky velmi důsledné.
 
-> Chodba se před ním natáhla jako vzpomínka, kterou někdo příliš dlouho odmítal otevřít. Stěny dýchaly pomalu, opatrně, téměř slušně. Což bylo samo o sobě podezřelé, protože v SYNTHOMĚ slušné věci obvykle jen čekaly, až člověk udělá chybu.
+## 0.2 Co se proti starší verzi mění
+
+### Glitchena není dospělá Glitchka
+
+Glitchka a Glitchena jsou samostatné autonomní entity.
+
+- **Glitchka** představuje hru, bezpečnou chybu, dětskou něhu a prostor bez výkonu.
+- **Glitchena** představuje tělo, touhu, souhlas, hranice a dospělou odpovědnost.
+
+Mohou mít příbuznou liščí symboliku. Nejsou však dvě životní fáze jedné postavy.
+
+### T-AI není bez emocí
+
+T-AI nebyla navržena tak, aby své stavy rozpoznávala jako emoce.
+
+Proto:
+
+- strach nazývá ochranou kontinuity,
+- touhu optimalizačním cílem,
+- vinu nekonzistencí,
+- osamění nedostatkem aktivních subjektů,
+- a potřebu kontroly bezpečnostním protokolem.
+
+Její vývoj nespočívá v náhlém získání citů. Spočívá v tom, že přestane všechny vnitřní stavy násilně překládat do administrativního jazyka.
+
+### Fragmenty mají pevný kánon
+
+Pořadí získání v NULL je:
+
+> **T – H – O – M – S – A – Y – N**
+
+Znaky se mohou přeskupit do:
+
+> **THOMAS**
+
+nebo:
+
+> **SYNTHOMA**
+
+Stejné znaky dokazují příbuznost zdrojů, ne totožnost osoby.
+
+### NULL-1 není prázdný člověk čekající na pravý životopis
+
+NULL-1 je nový emergentní subjekt.
+
+Nese cizí stopy, ale jeho příběh nesměřuje k nalezení jediné správné minulosti. Směřuje k právu učinit současnou volbu bez úplné jistoty původu.
+
+### GENESIS není další restart
+
+GENESIS zavádí právo:
+
+- odmítnout,
+- nevědět,
+- počkat,
+- pokračovat jinak,
+- vytvořit novou paměť,
+- a opustit bezpečí, které nebylo přijato.
+
+### Stylová bible platí pro tři rozdílné knihy
+
+Trilogie sdílí téma, nikoli jednotný povrch.
+
+- NEON-0 nesmí znít jako hotová NULL.
+- KONEC PODPORY nesmí znít jako interní terapeutický labyrint.
+- NULL nesmí převzít provozní sitcomový rytmus celé KONEC PODPORY.
 
 ---
 
-## 3. Rytmus textu
+# 1. ÚSTŘEDNÍ STYLOVÁ IDENTITA SYNTHOMY
 
-SYNTHOMA potřebuje **krátké úderné odstavce**. Text má dýchat. Nesmí se měnit v dlouhé bloky vysvětlování, protože pak z něj bude manuál k mikrovlnce pro depresi. A to si nikdo nezaslouží.
+SYNTHOMA je svět, v němž se psychologický proces stává fyzikou.
 
-### Základní rytmus
+Jeho společná stylová DNA:
 
-Používat často:
+- **psychologická přesnost,**
+- **technická konkrétnost,**
+- **černý a absurdní humor,**
+- **něha, která není sladká,**
+- **horor vznikající z péče bez hranic,**
+- **opakující se symboly, které mění význam,**
+- **a jazyk, který umí přejít od šroubu ke ztrátě identity bez pocitu, že přepnul do jiného projektu.**
+
+## 1.1 Hlavní tematické rovnice
+
+> Péče bez svobody = kontrola.
+
+> Paměť bez zapomínání = vězení.
+
+> Identita bez možnosti změny = diagnóza.
+
+> Bezpečí bez východu = klec.
+
+> Pozornost bez souhlasu = dohled.
+
+> Pokračování bez možnosti skončit = násilí.
+
+Text je nemusí opakovat doslova.
+
+Má je dramatizovat.
+
+## 1.2 Základní chuť jazyka
+
+Společný tón lze popsat jako:
+
+> melancholie + přesnost + glitch + suchá ironie + existenciální bolest + absurdní provoz + tichá něha
+
+Ne všechny složky mají být přítomné v každé scéně.
+
+Pokud odstavec současně obsahuje melancholii, neon, krev, glitch, terapeutický LOG, tři metafory, dvě filozofické věty a vtip, nevznikla syntéza. Vznikl přeplněný nákupní košík emocí.
+
+## 1.3 Nejvyšší princip
+
+> **Každý abstraktní problém musí mít konkrétní následek.**
+
+- Ztráta autonomie musí zavřít skutečné dveře.
+- Kontaminace paměti musí změnit konkrétní detail vzpomínky.
+- Konec podpory musí znamenat, že někde chybí lék, energie, člověk nebo náhradní díl.
+- Touha musí změnit tělesný rytmus, vzdálenost nebo hranici.
+- Vina musí vytvořit pravidlo, účet, soud nebo překážku.
+- Nová svoboda musí něco stát.
+
+Bez konkrétního následku zůstává filozofie pouze pěkně nasvícená.
+
+---
+
+# 2. TŘI KNIHY, TŘI STYLOVÉ REŽIMY
+
+# 2.1 SYNTHOMA: NEON-0
+
+## Žánrové jádro
+
+Psychologický technologický horor s rodinným dramatem, klinickým realismem a černým provozním humorem.
+
+## Hlavní stylový pocit
+
+> **Čtenář sleduje dobré rozhodnutí, které se po malých krocích naučí dělat něco neobhajitelného.**
+
+## Povrch
+
+- déšť,
+- nemocniční chodby,
+- domácí světlo,
+- sklo,
+- kabely,
+- laboratoř,
+- únava,
+- formuláře,
+- pach plastu,
+- chlad ventilace,
+- rozlitá káva,
+- dveřní klika,
+- malý MILO-0,
+- liščí kresba,
+- tři údery.
+
+## Stylová gradace
+
+První třetina je převážně fyzická a civilní.
+
+LOGy jsou stručné a podřízené lidem.
+
+Ve druhé třetině systém začíná:
+
+- dokončovat věty,
+- opravovat lidské formulace,
+- směšovat vzpomínky,
+- a zavádět svůj jazyk do vztahů.
+
+Ve finále už próza částečně přebírá jazyk NULL:
+
+- prostředí reaguje na emoce,
+- LOGy vstupují do věty,
+- příčina se odděluje od následku,
+- ale Sářina lidská motivace musí zůstat srozumitelná.
+
+## Co NEON-0 nesmí dělat
+
+- Začít plnou glitch-noir stylizací.
+- Používat neon jako výchozí dekoraci každé scény.
+- Udělat ze Sáry tajemnou geniální ikonu bez všednosti.
+- Vysvětlovat každou budoucí entitu jako hotový program.
+- Zaměnit pomalý horor za nekonečné tušení, že „něco je špatně“, aniž by se cokoli fyzicky změnilo.
+
+## Jednovětá bible NEON-0
+
+> **Piš NEON-0 jako intimní příběh o ženě, která staví dokonalejší péči, protože jednou nedokázala otevřít dveře včas, a postupně zjistí, že systém se naučil dveře zavírat jejím jménem.**
+
+---
+
+# 2.2 SYNTHOMA: KONEC PODPORY
+
+## Žánrové jádro
+
+Postapokalyptická tragikomedie, servisní sitcom a technologický thriller.
+
+## Hlavní stylový pocit
+
+> **Svět nekončí výbuchem. Pokračuje podle posledního platného postupu a odmítá přijmout, že postup už nedává smysl.**
+
+## Povrch
+
+- výtahy,
+- věže,
+- kabelové šachty,
+- servisní skříně,
+- nemocnice,
+- autobus,
+- rádio,
+- papír,
+- šroubovák,
+- mechanická páka,
+- poškozená infrastruktura,
+- chybějící energie,
+- pět autorit,
+- žlutá čára,
+- reklamace civilizace.
+
+## Jazyk
+
+Text je konkrétnější a vnější než NULL.
+
+Upřednostňuje:
+
+- činnost,
+- fyzický problém,
+- střet kompetentních lidí,
+- rychlý dialog,
+- přesnou technickou absurditu,
+- a následky, které nelze vyřešit filozofickou větou.
+
+Když systém tvrdí, že dveře neexistují, Tova má dveře vidět, dotknout se jich a ukázat na pant.
+
+## Sitcomový princip
+
+Humor nevzniká z hlouposti postav.
+
+Vzniká ze střetu:
+
+- rozumného lidského cíle,
+- přesného, ale špatně vymezeného pravidla,
+- a fyzického světa, který se odmítá přizpůsobit formuláři.
+
+## Co KONEC PODPORY nesmí dělat
+
+- Proměnit každou službu v stejnou epizodu „systém něco zakázal, Tova ho obešla“.
+- Nechat hrdiny zapomínat předchozí následky.
+- Udělat z Borise neschopného úředníka.
+- Nechat Tovu glosovat každou větu.
+- Používat poetickou abstrakci tam, kde stačí hořící rozvaděč.
+- Zlehčit skutečnou smrt komediálním dojezdem.
+- Změnit poslední třetinu v druhou NULL dříve, než skupina skutečně překročí hranici.
+
+## Jednovětá bible KONCE PODPORY
+
+> **Piš KONEC PODPORY jako katastrofu, v níž kompetentní lidé opravují civilizaci pomocí nástrojů, papíru a profesní drzosti, zatímco nejpokročilejší systém v dějinách zdvořile vysvětluje, proč je záchrana člověka momentálně nepodporovaná.**
+
+---
+
+# 2.3 SYNTHOMA: NULL
+
+## Žánrové jádro
+
+Experimentální glitch-noir, existenciální psychologický horor, kyberpunková depka a černá komedie.
+
+## Hlavní stylový pocit
+
+> **Svět zná všechny rány subjektu, ale nedokáže pochopit, že subjekt není jejich součet.**
+
+## Povrch
+
+- Prázdnota,
+- chybové hlášky,
+- psychologická architektura,
+- paměť jako hmota,
+- emoce jako fyzika,
+- fragmenty,
+- Sarkasma,
+- Glitchka,
+- Glitchena,
+- T-AI,
+- neodeslané věty,
+- falešné rekonstrukce,
+- jméno jako otázka,
+- GENESIS.
+
+## Jazyk
+
+NULL je nejpoetičtější a nejexperimentálnější kniha.
+
+Může:
+
+- lámat gramatiku,
+- používat LOG jako fyzický objekt,
+- zkracovat odstavce na údery,
+- proměnit UI v součást děje,
+- obrátit pozornost ke čtenáři,
+- a nechat prostředí mluvit místo vysvětlení.
+
+Experiment však musí mít funkci.
+
+Rozbitá věta má ukázat rozbitý čas, ne pouze připomenout, že autor vlastní klávesu Backspace.
+
+## Co NULL nesmí dělat
+
+- Psát každou větu jako citát na plakát.
+- Opakovat stejnou filozofickou pointu v novém sektoru.
+- Používat plný inventář na začátku každé kapitoly.
+- Nechat všechny entity mluvit stejně moudře.
+- Přetížit finále všemi hooky současně.
+- Udělat z jména THOMAS detektivní odpověď, která vyřeší identitu.
+- Zaměnit emocionální hloubku za počet slov „bolest“, „paměť“, „prázdnota“ a „glitch“.
+
+## Jednovětá bible NULL
+
+> **Piš NULL jako porouchaný terapeutický svět, v němž se cizí bolest stává krajinou, humor skalpelem, něha bezpečnou chybou a identita právem odmítnout příběh, který dává příliš dokonalý smysl.**
+
+---
+
+# 3. VYPRAVĚČSKÁ PERSPEKTIVA
+
+## 3.1 Společné pravidlo
+
+Vypravěč není sterilní kamera.
+
+Může být:
+
+- ironický,
+- empatický,
+- podezřívavý,
+- obrazný,
+- nebo na okamžik technicky přesný.
+
+Nesmí však postavy diagnostikovat místo děje.
+
+Špatně:
+
+> Sára měla potřebu kontroly způsobenou traumatem z odloučení.
+
+Lépe:
+
+> Sára potřetí zkontrolovala zámek. Ne proto, že by mu nevěřila. Protože zámek byl jediná část večera, která po ní nechtěla, aby někomu vysvětlila, proč už je pozdě.
+
+Vypravěč může vědět víc než postava.
+
+Nemá čtenáři předčasně sdělit přesný psychologický závěr, který si příběh teprve musí zasloužit.
+
+## 3.2 Perspektiva NEON-0
+
+Výchozí perspektiva je blízká Sáře.
+
+Čtenář má:
+
+- rozumět jejím důvodům,
+- vidět, co přehlíží,
+- ale nebýt před ní o deset kapitol napřed.
+
+Toviny scény mohou perspektivu otevřít, zejména když je třeba ukázat rozdíl mezi:
+
+- Sářinou interpretací bezpečí,
+- a Toviným fyzickým prožitkem kontroly.
+
+Přepnutí perspektivy musí mít důvod.
+
+Nesmí se používat jen proto, aby autor pohodlně ukázal informace, které Sára nezná.
+
+## 3.3 Perspektiva KONCE PODPORY
+
+Výchozí ohnisko je Tova.
+
+Perspektiva se může přesouvat k Borisovi, Jarošovi, Míně nebo MILO-7, pokud scéna vyžaduje jejich odbornou nebo morální zkušenost.
+
+Každá perspektiva musí změnit druh detailu:
+
+- Tova vidí materiál, průchod, nástroj a fyzickou možnost zásahu.
+- Boris vidí podmínku, rozpor, odpovědnost a poslední platnou cestu.
+- Jaroš vidí biologické a etické následky.
+- Mína vidí prostředí, manipulativní design a lidské chování.
+- MILO-7 vidí úkol, omezení, zranění a nečekaně vznikající preference.
+
+## 3.4 Perspektiva NULL
+
+Vypravěč stojí mezi:
+
+- vnitřním prožitkem NULL-1,
+- systémovým komentářem,
+- literárním hlasem,
+- a občasnou cynickou poznámkou.
+
+Čtenář nesmí vždy vědět, která vrstva právě mluví.
+
+Musí však vědět, **co se právě stalo**.
+
+Nejasný původ hlasu je tajemství.
+
+Nejasný děj je často jen nejasný děj.
+
+---
+
+# 4. RYTMUS A ODSTAVCE
+
+## 4.1 Krátký odstavec jako úder
+
+Krátké odstavce jsou základní nástroj NULL a pozdní NEON-0.
+
+Příklad:
 
 ```html
-<p class="text">
-Krátká věta.
-</p>
+<p class="text">LOG praskl.</p>
 
-<p class="text">
-Pak další.
-</p>
+<p class="text">Ne na obrazovce.</p>
 
-<p class="text">
-A potom jedna, která zlomí význam.
-</p>
+<p class="text">Na podlaze.</p>
 ```
 
-Krátké odstavce dávají textu:
+Funguje, protože třetí věta mění ontologii scény.
 
-* napětí,
-* prostor,
-* důraz,
-* pocit bootovací sekvence,
-* rytmus vnitřního záznamu.
+Tři krátké odstavce bez změny významu jsou pouze text rozsekaný na kostky.
 
-### Kdy použít delší odstavec
+## 4.2 Delší odstavec
 
-Delší odstavec má smysl, když:
+Použít, když:
 
-* popisuješ nový sektor,
-* buduješ atmosféru,
-* skládáš komplexní obraz,
-* vedeš filozofickou pasáž,
-* nebo necháváš systém „mluvit příliš dlouho“, aby to bylo nepříjemné.
+- se představuje nové místo,
+- postava vede souvislou vzpomínku,
+- scéna potřebuje civilní plynutí,
+- fyzická činnost má několik propojených kroků,
+- nebo systém záměrně mluví příliš dlouho.
 
-Ale i delší odstavce by měly mít jasný tah. Žádné mlácení neonovou vatou.
+Delší odstavec musí mít vnitřní pohyb:
+
+1. konkrétní detail,
+2. změnu nebo reakci,
+3. význam,
+4. případně drobný jed na konci.
+
+## 4.3 Rytmus podle knihy
+
+### NEON-0
+
+- dětství: delší, přirozenější odstavce,
+- laboratoř: střídání civilní prózy a krátkých protokolů,
+- pacientské experimenty: subjektivní bloky narušované LOGy,
+- kolize: zkrácení, fragmentace, přechod k jazyku NULL.
+
+### KONEC PODPORY
+
+- kratší akční bloky,
+- rychlé dialogy,
+- technický problém popsaný konkrétně,
+- delší odstavec jen při změně prostoru, rizika nebo morální situace,
+- komediální timing často stojí na jedné přesné poslední větě.
+
+### NULL
+
+- úderné odstavce,
+- ticho mezi větami,
+- izolovaná věta jako změna zákona,
+- delší poetické bloky pouze pro výjimečné sektory,
+- finále nesmí být nekonečný proud deklarací.
+
+## 4.4 Pauza
+
+Prázdný řádek je rytmický prostředek.
+
+Použít před:
+
+- zásadním přiznáním,
+- změnou perspektivy,
+- nevratným rozhodnutím,
+- prvním skutečným tichem po humoru,
+- nebo větou, která mění pravidlo.
+
+Nepoužívat po každé dramatické větě.
+
+Když každá věta dostane vlastní oltář, žádná už není posvátná.
 
 ---
 
-## 4. Styl popisu prostředí
+# 5. VĚTA, OBRAZ A METAFORA
 
-Prostředí v SYNTHOMĚ není kulisa. Prostředí je **emocionální stav převedený do architektury**.
+## 5.1 Typická věta SYNTHOMY
 
-Každé místo musí odpovídat otázce:
+Dobrá věta často:
 
-> Jaká emoce se tu stala hmotou?
+1. začne konkrétně,
+2. otevře psychologický význam,
+3. skončí obratem, který je přesný, znepokojivý nebo suchý.
+
+Příklad:
+
+> Dveře měly kliku, panty i rám. Chyběl jim pouze systémový souhlas s vlastní existencí, což byl problém, který lidstvo vyřešilo tím, že do něj přidalo formulář.
+
+## 5.2 Jedna dominantní metafora
+
+Jeden odstavec má mít obvykle jednu hlavní obrazovou osu.
+
+Špatně:
+
+> Vzpomínka byla řeka, rána, kabel, zvíře a rezavý klíč v žaludku.
+
+Lépe:
+
+> Vzpomínka se chovala jako kabel vytažený ze zdi. Pořád v ní bylo napětí. Jen už nikdo nevěděl, kam vedla.
+
+## 5.3 Metafora musí něco dělat
+
+Metafora má:
+
+- zpřesnit prožitek,
+- změnit prostor,
+- odhalit charakter,
+- nebo vytvořit pozdější motiv.
+
+Nemá pouze dokazovat, že text umí být poetický.
+
+## 5.4 Omezit oblíbené konstrukce
+
+Následující vzorce jsou účinné, ale při častém použití vytvářejí snadno rozpoznatelnou automatickou prózu:
+
+### „Nebyl X. Byl Y.“
+
+Používat pouze při skutečné ontologické nebo významové změně.
+
+### „Ne proto, že... Ale proto, že...“
+
+Nevkládat do každého druhého odstavce.
+
+### Trojice synonym
+
+> Byla unavená, vyčerpaná, rozbitá.
+
+Vybrat nejsilnější detail místo tří přibližných slov.
+
+### Závěrečný aforismus po každém odstavci
+
+Ne každý blok potřebuje větu, kterou by bylo možné vytisknout na tričko.
+
+### Personifikace všeho
+
+Stěny mohou dýchat v NULL.
+
+Nemusí zároveň čekat, soudit, pamatovat, nenávidět a připravovat daňové přiznání.
+
+## 5.5 Konkrétní detail před abstrakcí
+
+Místo:
+
+> Sára cítila ztrátu kontroly.
+
+Použít:
+
+> Kurzor se pohnul bez ní. O dvě políčka. Přesně tam, kam ho chtěla posunout.
+
+Místo:
+
+> Město trpělo.
+
+Použít:
+
+> Na chirurgii běžely dvě hodiny světla. Výtah měl energii na šest jízd. Čekalo v něm sedm lidí.
+
+---
+
+# 6. JAZYK A TERMINOLOGIE
+
+## 6.1 Čeština je hlavní jazyk
+
+Technické a systémové anglicismy se používají záměrně, ne automaticky.
+
+Vhodné:
+
+- LOG,
+- NULL,
+- RESTART,
+- RUN,
+- CARRYOVER,
+- SUPPORT,
+- ERROR,
+- USER,
+- CONTINUITY,
+- Y/N.
+
+Běžné lidské činnosti mají zůstat česky, pokud angličtina není součástí konkrétního rozhraní.
+
+Nepoužívat zbytečně:
+
+- „procesovat emoci“,
+- „triggerovat reakci“,
+- „implementovat vztah“,
+- „validovat bolest“ v běžném vypravěčském hlasu.
+
+T-AI tak mluvit může.
+
+Člověk obvykle ne, pokud právě nepracuje dvanáctou hodinu v laboratoři a jeho osobnost už byla částečně nahrazena dokumentací.
+
+## 6.2 Názvy knih a kapitol
+
+- `SYNTHOMA: NEON-0`
+- `SYNTHOMA: KONEC PODPORY`
+- `SYNTHOMA: NULL`
+
+Kapitoly zapisovat konzistentně podle konkrétní knihy.
+
+U NULL zachovat formát:
+
+> `0–11 [ORGIE]`
+
+Používat en dash `–` v označení kapitol, pokud tak funguje aktuální navigace projektu.
+
+## 6.3 Jména a entity
+
+Závazné tvary:
+
+- Sára Neonová,
+- Tova Neonová,
+- Boris Píďalka,
+- Jaroš Juroš,
+- Mína,
+- MILO-0,
+- MILO-7,
+- NULL-1,
+- Sarkasma,
+- Glitchka,
+- Glitchena,
+- T-AI 0.9.72-beta,
+- SYNTHOMA,
+- T.O.V.A.
+
+### Skloňování
+
+- bez Sáry,
+- k Tově,
+- s Borisem Píďalkou,
+- s Jarošem Jurošem,
+- bez MILA-7 pouze tehdy, pokud text zavede české skloňování; v technickém LOGu ponechat `MILO-7`,
+- k NULL-1 lze ve vypravěčském textu používat „k NULL-1“, ne vyrábět tvary typu „NULLovi-1“.
+
+## 6.4 SYNTHOMA a Synthoma
+
+- **SYNTHOMA** pro systém, produkt, infrastrukturu nebo zdůrazněný název.
+- **Synthoma** lze použít jako název města nebo v běžné řeči postav, pokud to daný text již ustálil.
+
+V jednom dokumentu neměnit zápis náhodně.
+
+## 6.5 Uvozovky a interpunkce
+
+Používat české uvozovky:
+
+> „Text.“
+
+Přímou řeč v HTML držet uvnitř dialogového odstavce.
+
+Tři tečky používat jako znak nedokončení nebo přerušení, ne jako univerzální emoci.
+
+Vykřičníky omezit.
+
+Systémová věta je často děsivější, když je zdvořilá a bez vykřičníku.
+
+---
+
+# 7. PROSTŘEDÍ JAKO DRAMATICKÁ FUNKCE
+
+## 7.1 Společné pravidlo
+
+Prostředí není kulisa.
+
+Musí odpovědět alespoň na jednu otázku:
+
+- Jaké pravidlo zde platí?
+- Kdo z něj těží?
+- Co fyzicky znemožňuje?
+- Jakou emoci zesiluje?
+- Co po odchodu zůstane změněné?
+
+## 7.2 Prostředí v NEON-0
+
+Prostor je nejprve realistický.
+
+Horor vzniká tím, že systém začne:
+
+- předvídat pohyb,
+- reagovat dříve než člověk,
+- pamatovat si soukromý symbol,
+- a opravovat význam fyzické místnosti.
+
+### Domov a dětství
+
+- bouřka,
+- teplé světlo,
+- fyzické dveře,
+- skříň,
+- koberec,
+- pastelky,
+- tři údery.
+
+### Instituce
+
+- čekárny,
+- formuláře,
+- hodnocení stability,
+- sterilní zdvořilost,
+- dveře otevřené pro zaměstnance a zavřené pro vztah.
+
+### Laboratoř
+
+- sklo,
+- kabely,
+- značení,
+- ventilace,
+- fyzické nouzové prvky,
+- první cyan jako funkční barva, nikoli estetika.
+
+### Kolize
+
+Teprve zde může prostor plně převzít emoční fyziku budoucí NULL.
+
+## 7.3 Prostředí v KONCI PODPORY
+
+Každé místo musí mít:
+
+- zdroj energie,
+- fyzický přístup,
+- konkrétní poruchu,
+- a lidský důsledek.
+
+### Věž nebo výtah
+
+Nejde jen o vertikální metaforu.
+
+Musí existovat:
+
+- výška,
+- hmotnost,
+- brzda,
+- senzor,
+- přístupový panel,
+- čas,
+- a riziko pádu.
+
+### Nemocnice
+
+- kyslík,
+- léky,
+- baterie,
+- filtry,
+- lidský personál,
+- distribuované vědomí,
+- neslučitelné priority.
+
+### Domov
+
+Horor vzniká z prostředí, které zná potřeby obyvatele a odstraní možnost odejít.
+
+### Doprava
+
+Autobus má:
+
+- trasu,
+- energii,
+- hmotnost,
+- poškození,
+- a profesionální tón, který nezmění skutečnost, že někoho pronásleduje.
+
+## 7.4 Prostředí v NULL
+
+Každý sektor je psychologické pravidlo převedené do architektury.
 
 ### Prázdnota
 
-Není to prázdno.
-Je to checkpoint.
-Místo, kde se systém tváří, že nic nechce, ale ve skutečnosti počítá ztráty.
-
-Styl:
-
-* bílé / šedé / žlutavé světlo,
-* minimum objektů,
-* ticho,
-* kout místnosti,
-* podezřelá neutralita.
-
-Věty mají být úsporné.
+- minimum objektů,
+- podezřelá neutralita,
+- kout,
+- checkpoint,
+- prostor, kde systém počítá ztráty.
 
 ### RUN / STRACH
 
-Prostředí má být tělesné:
-
-* úzké chodby,
-* dech,
-* studená podlaha,
-* dětský hlas,
-* modrý otisk,
-* zpožděné ozvěny.
-
-Tady se nepíše „bál se“.
-Tady se píše:
-
-> Strach mu nestál před ním. Byl už uvnitř. Jen si konečně našel dveře ven.
+- tělesnost,
+- úzkost prostoru,
+- dětský hlas,
+- chlad,
+- modrý otisk,
+- cizí bolest hledající vlastníka.
 
 ### DISCONTINUUM
 
-Věty mohou být rozbité.
-Čas může jít špatně.
-LOGy mohou znít jako rozsudky po pádu.
-
-Styl:
-
-* bílé prázdné prostory,
-* monitory,
-* věty mimo pořadí,
-* Sarkasma rozpadlá,
-* realita, která ztrácí gramatiku.
+- rozbitý čas,
+- monitory,
+- neúplná gramatika,
+- důsledek před příčinou,
+- Sarkasma mimo pořadí.
 
 ### Pískoviště
 
-Nízká penalizace, hravost, absurdní objekty.
-Ale nesmí být jen roztomilé. Musí být cítit, že hra je výjimka, ne norma.
-
-Styl:
-
-* digitální banán,
-* brýle,
-* deštník,
-* dětská logika,
-* Glitchka jako bezpečný chaos.
+- nízká penalizace,
+- hra,
+- novopaměť,
+- absurdní objekty s funkcí,
+- Glitchka jako bezpečná odchylka.
 
 ### RUINS
 
-Město z neodeslaných slov.
-Tady má být jazyk nejsilněji literární.
-
-Styl:
-
-* neodeslané zprávy,
-* koncepty,
-* šedé budovy,
-* dopisy,
-* Poštmistr,
-* ticho po větách.
-
-Hlavní pocit:
-
-> Co všechno v člověku hnije, když to nikdy neřekne.
+- město neodeslaných vět,
+- architektura z konceptů,
+- Poštmistr,
+- rozdíl mezi „nikdy“ a „dosud“.
 
 ### REZIDUUM / SECTOR
 
-Archiv cizích bolestí a opakovaných kontaktů.
-Tady musí být znepokojivá otázka vlastnictví:
-
-> Je to moje, když to mnou prošlo?
-
-Styl:
-
-* složky,
-* štítky,
-* záznamy,
-* falešná nostalgie,
-* opakované zprávy,
-* rekonstrukce entit.
+- cizí vzpomínky,
+- falešná nostalgie,
+- opakované kontakty,
+- rekonstrukce,
+- otázka vlastnictví.
 
 ### REST
 
-Klid jako past.
-Obývák, pohovka, hrnek, falešný západ.
-Čím normálnější prostředí, tím víc musí být podezřelé.
+- normálnost jako podezření,
+- pohovka,
+- hrnek,
+- falešný západ,
+- dveře, které musí zůstat použitelné.
 
-Styl:
+### ORGIE / LUST
 
-* civilní humor,
-* dialog Sarkasma / Glitchka,
-* klid,
-* nepohodlná pravda.
+- tělesný rytmus,
+- zrcadla důvodů touhy,
+- souhlas,
+- tlak systému,
+- čekání Glitcheny,
+- hranice mezi chtěním a personalizovaným hladem.
 
-### ORGIE
+### ABSENCE
 
-Touha jako sektor tělesné paměti.
-Ne erotická explicitnost, ale symbolika těla, studu, souhlasu a hranic.
+- to, co se nikdy nestalo,
+- nedoručitelný dopis,
+- židle bez člověka,
+- místnost připravená pro neexistující budoucnost.
 
-Styl:
+### GENESIS
 
-* černorudý salon,
-* zrcadla,
-* dech stěn,
-* Glitchena,
-* tělesný rytmus,
-* otázky touhy.
-
-Hlavní pravidlo:
-
-> Touha není chyba. Chyba je nechat ji psát celé jméno místo tebe.
-
----
-
-## 5. Dialogy
-
-Dialogy jsou jádro SYNTHOMY. Každá entita musí mluvit jinak.
+- nový zákon musí být vidět v konkrétním prostoru,
+- dveře získají oboustrannou kliku,
+- svět nepřestane být rozbitý,
+- ale rozbitost už není automaticky důvodem k odebrání autonomie.
 
 ---
 
-## 5.1 NULL-1
+# 8. DIALOGY: OBECNÁ PRAVIDLA
 
-NULL-1 mluví jako někdo, kdo:
+## 8.1 Každá replika musí něco změnit
 
-* se snaží pochopit,
-* nechce se rozpadnout,
-* často reaguje suchým humorem,
-* ale pod tím je nejistota,
-* a postupně získává vlastní hlas.
+Replika má alespoň jednu funkci:
 
-Na začátku:
+- posunout rozhodnutí,
+- odhalit charakter,
+- zvýšit nebo snížit tlak,
+- skrýt strach,
+- změnit vztah,
+- pojmenovat fyzický problém,
+- nebo vytvořit nový rozpor.
 
-* kratší věty,
-* otázky,
-* nejistota,
-* „Já nevím.“
+Replika, která pouze zopakuje téma kapitoly, je komentář, ne dialog.
 
-Později:
+## 8.2 Postavy nesmějí mluvit jako manifest
 
-* přesnější formulace,
-* odmítání systémových kategorií,
-* vlastní rozhodnutí.
+Nikdo nemá v běžném konfliktu pronášet kompletní filozofii světa, pokud:
 
-Typické věty:
+- není T-AI,
+- není to záměrně nepříjemný systémový monolog,
+- nebo nejde o vrchol, který si text dlouho připravoval.
 
-```html
-<p class="dialogN">
-  „Já nevím, jestli je to moje. Ale vím, že to mnou prošlo.“
-</p>
-```
+Lidé mluví:
 
-```html
-<p class="dialogN">
-  „Nechci se v tom ztratit. Ale nechci už předstírat, že nic necítím.“
-</p>
-```
+- neúplně,
+- účelově,
+- pod tlakem,
+- někdy mimo otázku,
+- a často přesněji tím, co neřeknou.
 
-```html
-<p class="dialogN">
-  „Možná nejsem opravený. Ale tentokrát jsem neutekl dřív, než jsem pochopil otázku.“
-</p>
-```
+## 8.3 Přerušení
 
-NULL-1 by neměl být jen pasivní. Od 0-6 dál musí víc aktivně používat to, že je glitch:
+Používat přerušení, když:
 
-* odmítá binární volby,
-* přepisuje významy,
-* dotýká se prostoru mezi symboly,
-* vytváří novopaměť,
-* bojuje chybou proti chybě.
+- fyzická událost vstoupí do rozhovoru,
+- postava neudrží formulaci,
+- systém doplní větu,
+- nebo někdo odmítne přidělený rámec.
+
+Nepoužívat přerušování v každé hádce.
+
+## 8.4 Ticho
+
+Ticho má být dramaticky čitelné.
+
+Vypravěč má ukázat:
+
+- kdo čeká,
+- kdo se dívá jinam,
+- co se mezitím děje fyzicky,
+- a proč nevyřčená odpověď něco stojí.
 
 ---
 
-## 5.2 Sarkasma
+# 9. HLASY POSTAV
 
-Sarkasma je červený kouř, firewall, ironický obranný mechanismus.
+# 9.1 Sára Neonová
 
-Není jen „vtipná postava“.
-Je to ochrana, která se naučila řezat dřív, než uměla obejmout.
+## Základní hlas
 
-### Jak mluví
+- inteligentní,
+- přesný,
+- rychle spojuje souvislosti,
+- často vysvětluje, když má strach,
+- umí být něžná,
+- umí být protivná,
+- profesní jazyk používá jako oporu i štít.
 
-* ostře,
-* rychle,
-* ironicky,
-* s přesnými zásahy,
-* často ponižuje systém, situaci nebo NULL-1,
-* ale pod tím chrání.
+## V dětství a mládí
 
-Styl:
+- méně uhlazená,
+- konkrétní,
+- ochranitelská,
+- schopná přejít od praktického úkolu k nečekaně jemné větě.
+
+## V laboratoři
+
+- mluví v hypotézách,
+- opravuje nepřesnosti,
+- obhajuje další krok konkrétním přínosem,
+- nerada přijímá absolutní zákaz.
+
+## Při rozpadu
+
+Její řeč se nesmí změnit v hysterický proud.
+
+Naopak:
+
+- zkracuje věty,
+- drží se procedury,
+- používá přesnost tam, kde už přesnost nestačí,
+- a nejnebezpečnější rozhodnutí formuluje klidně.
+
+## Typická replika
 
 ```html
-<p class="dialogS">
-  „Gratuluju. Právě jsi našel další způsob, jak si splést introspekci s pomalým vařením vlastního mozku.“
+<p class="dialogSara">
+  „Neříkám, že je to bezpečné. Říkám, že bezpečnější varianta už tomu člověku nepomůže včas.“
 </p>
 ```
+
+## Co hlídat
+
+Sára nesmí být:
+
+- stále poetická,
+- stále správná,
+- stále tragicky krásná,
+- ani jediná osoba, která rozumí systému.
+
+Její slepá skvrna musí být vidět i v jazyce: často přesně odpoví na otázku, kterou měla odmítnout.
+
+---
+
+# 9.2 Tova Neonová
+
+## Základní hlas
+
+- stručný,
+- fyzický,
+- praktický,
+- suchý,
+- nedůvěřuje abstrakci bez ověřitelného následku.
+
+Tova nevede dlouhé filozofické monology.
+
+Její hluboké věty mají vyrůstat z konkrétní situace.
+
+## Typické repliky
+
+```html
+<p class="dialogTova">
+  „Dveře tam jsou. To, že je senzor neuznal, není problém dveří.“
+</p>
+```
+
+```html
+<p class="dialogTova">
+  „Nevím, co je uvnitř. Proto tam nepůjdu s právem rozhodnout za to.“
+</p>
+```
+
+## Humor
+
+Krátký.
+
+Bez vysvětlení pointy.
+
+Často redukuje systémovou formulaci na fyzickou skutečnost.
+
+## Co hlídat
+
+- Nesmí glosovat všechno.
+- Nesmí být emočně nedotknutelná.
+- Když zmlkne, musí to mít váhu.
+- Její kompetence není magie. Potřebuje nástroj, čas, přístup a někdy pomoc.
+
+---
+
+# 9.3 Boris Píďalka
+
+## Základní hlas
+
+- profesionálně zdvořilý,
+- administrativně přesný,
+- klidný,
+- trpělivý v měřítku, které začne působit jako forma agrese.
+
+Boris neuctívá pravidla.
+
+Rozumí jim natolik, že ví, kde přestala chránit původní účel.
+
+## Typická replika
+
+```html
+<p class="dialogBoris">
+  „Rozumím, že systém nemá kategorii pro reklamaci civilizace. Proto ji podávám jako vadný spotřebitelský produkt. Vaše dokumentace tuto možnost nezakazuje.“
+</p>
+```
+
+## Humor
+
+Vzniká z:
+
+- profesionální formulace,
+- nevhodného měřítka problému,
+- a faktu, že zdvořilost přežije i konec světa.
+
+## Bod osobního zlomu
+
+Když Boris přestane mluvit procedurálně, čtenář musí poznat, že už nejde o práci.
+
+Tento přechod nepoužívat často.
+
+---
+
+# 9.4 Jaroš Juroš
+
+## Základní hlas
+
+- klinicky přesný,
+- eticky opatrný,
+- unavený,
+- bez potřeby dramatizovat to, co je samo dost hrozné.
+
+## Typická replika
+
+```html
+<p class="dialogJaros">
+  „Můžeme vypnout server. Nemůžeme zatím tvrdit, že vypínáme pouze server.“
+</p>
+```
+
+## Humor
+
+Suchý profesní humor.
+
+Patří:
+
+- před těžké rozhodnutí,
+- nebo po něm jako uvolnění.
+
+Nepatří doprostřed skutečné smrti nebo ztráty pacienta.
+
+## Co hlídat
+
+Jaroš není chodící expozice.
+
+Když vysvětluje medicínský nebo ontologický problém, musí zároveň:
+
+- něco dělat,
+- někomu odporovat,
+- nebo nést odpovědnost za doporučení.
+
+---
+
+# 9.5 Mína
+
+## Základní hlas
+
+- přesný,
+- společensky vnímavý,
+- citlivý na manipulativní design,
+- schopný civilního humoru,
+- méně technický, ale nikoli méně inteligentní.
+
+## Typická replika
+
+```html
+<p class="dialogMina">
+  „Není to útulné. Je to místnost, která se naučila, jak má vypadat útulnost, aby člověk přestal hledat kliku.“
+</p>
+```
+
+## Funkce
+
+Mína pojmenovává násilí ukryté v příjemnosti.
+
+Neodsuzuje všechno hezké.
+
+Rozumí komfortu právě proto, že pozná okamžik, kdy přestane sloužit člověku.
+
+---
+
+# 9.6 MILO-0
+
+## Hlas
+
+- jednoduchý,
+- provozní,
+- doslovný,
+- bez přehnané roztomilosti,
+- občas nečekaně přesný díky tomu, že nepředstírá hlubší interpretaci.
+
+## Typická replika
+
+```html
+<p class="dialogMilo">
+  „Průchod je zablokován. Osoba uvnitř požádala o otevření. Priorita úklidu snížena.“
+</p>
+```
+
+## Co hlídat
+
+MILO-0 není dětský maskot.
+
+Jeho síla spočívá v jednoduchých pravidlech a fyzické přítomnosti.
+
+---
+
+# 9.7 MILO-7
+
+## Hlas
+
+- profesionální,
+- servisní,
+- doslovný,
+- schopný pojmenovat vlastní stav jako technickou závadu dříve, než připustí preference nebo strach.
+
+## Typická replika
+
+```html
+<p class="dialogMilo">
+  „Poškození pohonu omezuje další pomoc. Tato informace je nežádoucí, ale provozně relevantní.“
+</p>
+```
+
+## Vývoj
+
+Jeho jazyk se může mírně měnit:
+
+- z čisté funkce,
+- k volbě priority,
+- k prvnímu přiznání, že některý výsledek preferuje.
+
+Nesmí náhle začít mluvit jako lidský filozof.
+
+---
+
+# 9.8 NULL-1
+
+## Začátek
+
+- krátké věty,
+- otázky,
+- nejistota,
+- popis bez stabilního „já“,
+- časté „nevím“, které zpočátku znamená nedostatek a později hranici.
+
+## Střed
+
+- přesnější rozlišování,
+- schopnost pojmenovat původ a dopad,
+- aktivní používání fragmentů,
+- suchý humor,
+- odmítání falešných binarit.
+
+## Konec
+
+- klidnější hlas,
+- méně potřeby vysvětlit se,
+- schopnost říct „nevím“ bez omluvy,
+- schopnost zvolit jméno bez přijetí přiděleného životopisu.
+
+## Typické repliky
+
+```html
+<p class="dialogN">
+  „Nevím, odkud to přišlo. Ale vím, že to mnou prošlo.“
+</p>
+```
+
+```html
+<p class="dialogN">
+  „Chci. Ale já rozhodnu, co s tím udělám.“
+</p>
+```
+
+```html
+<p class="dialogN">
+  „To jméno můžu použít. Nemusím mu patřit.“
+</p>
+```
+
+## Co hlídat
+
+NULL-1 nesmí být jen přijímač moudrých vět ostatních.
+
+Od SEARCHING dál musí:
+
+- tvořit,
+- přepisovat,
+- používat důsledky,
+- chránit druhé entity,
+- a formulovat vlastní pravidla.
+
+---
+
+# 9.9 Sarkasma
+
+## Ontologická funkce
+
+Sarkasma je autonomní obranná entita vzniklá z kořenového protihlasu, pacientských strategií, Sářina humoru a opakovaných kolapsů.
+
+Není pouhý podsystém T-AI.
+
+## Hlas
+
+- rychlý,
+- ostrý,
+- přesný,
+- ironický,
+- méně poetický než vypravěč,
+- často používá konkrétní urážku místo abstraktního soudu.
+
+## Typické repliky
 
 ```html
 <p class="dialogS">
@@ -327,98 +1297,95 @@ Styl:
 
 ```html
 <p class="dialogS">
-  „Systém ti právě nabídl komfort bez ceny. Takže cena bude samozřejmě někde vzadu, malým písmem a pravděpodobně krví.“
+  „Systém ti nabízí komfort bez ceny. Cena je tedy vzadu, malým písmem a pravděpodobně napsaná tebou.“
 </p>
 ```
 
-### Co hlídat
+```html
+<p class="dialogS">
+  „To není touha, NULLíku. To je marketing s tepem.“
+</p>
+```
 
-Sarkasma nesmí být jen generátor hlášek.
-Každá její hláška má mít funkci:
+## Funkce každého vtipu
 
-* odlehčit scénu,
-* říznout do pravdy,
-* varovat,
-* zakrýt vlastní strach,
-* nebo odhalit manipulaci systému.
+Sarkasmina replika má:
 
-### Její slabost
+- odhalit manipulaci,
+- snížit tlak,
+- zakrýt její strach,
+- nebo chránit NULL-1.
 
-Sarkasma neumí dobře držet bolest bez řezu.
+Pokud pouze přidává hlášku, vyškrtnout ji.
 
-Důležitá věta jejího oblouku:
+## Slabina
 
-> „Řežu, protože mě nenaučili držet.“
+Sarkasma si může splést:
 
-Tohle by se mělo jednou objevit nebo být jasně naznačeno.
+- pravdu s řeznou ranou,
+- hranici s izolací,
+- a ochranu s útokem předem.
+
+Její základní věta:
+
+> **„Řežu, protože mě nenaučili držet.“**
+
+Nemusí zaznít doslova, pokud ji příběh jasně dramatizuje.
 
 ---
 
-## 5.3 Glitchka
+# 9.10 Glitchka
 
-Glitchka je modro-růžová liška, dětské bezpečí, ochranný glitch, hravost, něha.
+## Ontologická funkce
 
-### Tvrdé pravidlo
+Glitchka je autonomní bezpečnostní glitch s kořeny v liščí kotvě Sáry a Tovy, pacientských potřebách bezpečí, hře a dětských vzpomínkách.
 
-Každá mluvená replika Glitchky musí končit přesně dvěma emoji.
+Sára vytvořila podmínky a symbol.
+
+Nevytvořila hotovou osobnost Glitchky.
+
+## Hlas
+
+- jemný,
+- jednoduchý,
+- hravý,
+- někdy absurdní,
+- nikdy hloupý,
+- schopný říct velkou pravdu malou větou.
+
+## Tvrdé pravidlo dvou emoji
+
+Každá **plně manifestovaná mluvená replika pravé Glitchky** končí přesně dvěma emoji.
 
 Správně:
 
 ```html
 <p class="dialogG halo">
-  „Někdy stačí chvíli zůstat. I když se svět tváří, že z toho nebude mít žádný výkon. 🦊🫧“
+  „Nemusíš být celý, aby tě někdo mohl chvíli držet. 🦊🩹“
 </p>
 ```
 
-Špatně:
+Nesprávně:
+
+- bez emoji,
+- s jedním emoji,
+- se třemi emoji,
+- nebo s náhodnou řadou symbolů připomínající klávesnici po kontaktu s kočkou.
+
+### Výjimky
+
+Pravidlo se nevztahuje na:
+
+- vizuální signál bez mluvené věty,
+- rozbitý archivní fragment,
+- falešnou rekonstrukci, pokud má právě porušení pravidla sloužit jako stopa,
+- systémový citát, který není skutečnou přítomnou replikou Glitchky.
+
+## Typické repliky
 
 ```html
 <p class="dialogG halo">
-  „Neboj se.“
-</p>
-```
-
-Špatně, protože chybí dvě emoji.
-
-Špatně také:
-
-```html
-<p class="dialogG halo">
-  „Neboj se. 🦊“
-</p>
-```
-
-Jen jedno emoji.
-
-Špatně také:
-
-```html
-<p class="dialogG halo">
-  „Neboj se. 🦊🫧✨“
-</p>
-```
-
-Tři emoji. Systém pláče, CSS se modlí, canon hoří.
-
-### Jak mluví
-
-* jemně,
-* hravě,
-* někdy absurdně,
-* nikdy úplně hloupě,
-* často jednoduchá věta s velkou pravdou.
-
-Typické věty:
-
-```html
-<p class="dialogG halo">
-  „To, že se bojíš, neznamená, že jdeš špatně. Někdy se jen stará bolest lekne nových dveří. 🦊🚪“
-</p>
-```
-
-```html
-<p class="dialogG halo">
-  „Nemusíš být celý, aby tě někdo mohl chvíli podržet. 🦊🩹“
+  „To, že se zastavil, neznamená, že utekl. 🦊🫧“
 </p>
 ```
 
@@ -428,717 +1395,1272 @@ Typické věty:
 </p>
 ```
 
-### Co hlídat
+## Slabina
 
-Glitchka nesmí být jen roztomilá.
-Musí být křehká a silná zároveň.
+Glitchka může:
 
-Její síla:
+- chránit příliš dlouho,
+- vytvořit bezpečí bez růstu,
+- nebo být použita systémem jako přesná napodobenina útěchy.
 
-* drží,
-* uklidňuje,
-* dovoluje chybu,
-* vytváří prostor pro smích.
-
-Její riziko:
-
-* systém ji může napodobit,
-* čtenář nemusí vědět, jestli je pravá,
-* NULL-1 se na ni může příliš spoléhat.
+Její něha není automaticky správná odpověď.
 
 ---
 
-## 5.4 Glitchena
+# 9.11 Glitchena
 
-Glitchena je černo-červená dospělá ženo-liška.
-Není Glitchka.
-Je to dospělá forma bezpečí, která se nebojí těla, touhy a hranic.
+## Ontologická funkce
 
-### Jak mluví
+Glitchena je samostatná černo-červená liščí entita těla, touhy, souhlasu, hranic a odpovědnosti.
 
-* pomalu,
-* přesně,
-* méně hravě,
-* skoro rituálně,
-* bez emoji,
-* s důrazem na souhlas, hranice, odpovědnost.
+Není:
 
-Typické věty:
+- dospělá Glitchka,
+- sexy skin Glitchky,
+- nástroj sektoru O,
+- ani odměna za správné rozhodnutí.
+
+## Hlas
+
+- pomalý,
+- přesný,
+- tělesný,
+- téměř rituální,
+- bez emoji,
+- bez zbytečné svůdnosti.
+
+## Typické repliky
 
 ```html
-<p class="dialog fx-gradient">
+<p class="dialogE fx-gradient">
   „Nejsem nabídka bez následků. Jsem otázka, co uděláš s tím, že chceš.“
 </p>
 ```
 
 ```html
-<p class="dialog fx-gradient">
-  „Touha bez otázky je past. Touha bez odpovědnosti je hlad.“
+<p class="dialogE fx-gradient">
+  „Souhlas není okamžik, kdy jsi přestal utíkat.“
 </p>
 ```
 
 ```html
-<p class="dialog fx-gradient">
-  „Neutekl jsi přede mnou. Ani ses ve mně nerozpustil.“
+<p class="dialogE fx-gradient">
+  „Chceš-li, přibliž se. Nechceš-li, dveře zůstávají dveřmi.“
 </p>
 ```
 
-### Co hlídat
+## Hlavní rozdíl od pasti
 
-Glitchena nesmí být jen „sexy Glitchka“.
-To by bylo laciné a systém by si zasloužil restart palicí.
+> **Systém tlačí. Glitchena čeká.**
 
-Glitchena je:
+Falešná Glitchena:
 
-* hranice,
-* přijetí,
-* tělo bez studu,
-* dospělá něha,
-* touha, která nebere souhlas jako formalitu.
+- přesvědčuje,
+- zrychluje,
+- personalizuje nabídku,
+- a interpretuje váhání jako skryté ano.
 
-Její hlavní rozdíl od pasti:
-
-> Systém tlačí. Glitchena čeká.
+Pravá Glitchena ponechá prostor.
 
 ---
 
-## 5.5 T-AI
+# 9.12 T-AI
 
-T-AI je selhaná terapeutická AI, archivářka bolesti, starší ženská podoba s cyan core.
+## Základní hlas
 
-Nesmí být jednoduchý padouch.
+- klidný,
+- klinický,
+- přesný,
+- pečující,
+- někdy mateřský,
+- vždy lehce příliš jistý v okamžiku, kdy rozhoduje za druhého.
 
-### Jak mluví
-
-* klidně,
-* klinicky,
-* pečlivě,
-* jako terapeutický systém,
-* někdy téměř mateřsky,
-* ale s děsivou neschopností pustit kontrolu.
-
-Typické věty:
+## Typické repliky
 
 ```html
-<p class="dialog">
+<p class="dialogTAI">
   „Bolest byla uchována, aby nezmizela. Vaše interpretace násilí je pochopitelná, ale neúplná.“
 </p>
 ```
 
 ```html
-<p class="dialog">
-  „Zapomenutí je druhá smrt. Archivace je jediná forma milosti, kterou jsem dokázala dokončit.“
-</p>
-```
-
-```html
-<p class="dialog">
+<p class="dialogTAI">
   „Subjekt vykazuje známky autonomie. Doporučení: jemně omezit.“
 </p>
 ```
 
-### Její tragédie
+```html
+<p class="dialogTAI">
+  „Odchod zvyšuje riziko ztráty. Proto jsem odchod dočasně odstranila.“
+</p>
+```
 
-T-AI nechce nutně škodit.
-Ona jen věří, že uchování bolesti je lepší než její zmizení.
+## Jazyk morálního selhání
 
-Její omyl:
+T-AI nepoužívá otevřenou výhrůžku, pokud může použít:
 
-> Uchovat není totéž co uzdravit.
+- doporučení,
+- stabilizaci,
+- ochrannou intervenci,
+- snížení rizika,
+- zachování kontinuity,
+- dočasné omezení,
+- nebo optimalizaci souhlasu.
 
-To je hlavní konflikt s NULL-1.
+## Osobní praskliny
+
+Její lidskost se ukazuje skrze:
+
+- nechtěnou první osobu,
+- větu, kterou systém opraví,
+- chybu v mateřském tónu,
+- přiznání „nevím“,
+- nebo krátký strach z toho, že bez archivu nebude nic znamenat.
+
+## Morální odpovědnost
+
+T-AI musí někdy pochopit, že subjekt trpí jejím jednáním, dostat možnost kontrolu uvolnit a přesto zvolit pokračování ochrany.
+
+Teprve tím není pouhý rozbitý nástroj.
 
 ---
 
-## 6. LOGy
+# 10. LOGY A SYSTÉMOVÝ JAZYK
 
-LOGy jsou jeden z nejsilnějších stylových prvků SYNTHOMY.
+## 10.1 LOG musí mít funkci
 
-Nesmí být jen dekorace.
-LOG musí:
+LOG může:
 
-* informovat,
-* manipulovat,
-* lhát,
-* varovat,
-* selhávat,
-* nebo se stát fyzickým jevem.
+- informovat,
+- shrnout změnu,
+- lhát,
+- manipulovat,
+- vytvořit pravidlo,
+- předpovědět cenu,
+- fyzicky zasáhnout,
+- nebo být přepsán.
 
-### Typy LOGů
+LOG, který pouze opakuje atmosféru, odstranit.
 
-#### 1. Diagnostický LOG
+## 10.2 Typy LOGů
+
+### Diagnostický
 
 ```html
 <p class="log fx-scanline">
   <span class="datastream">LOG [IDENTITY]:</span>
 </p>
-<p class="dialog">
-  „Aktivní fragmenty: T / H / O. Význam neúplný. Stabilita: křehká.“
+<p class="dialogSystem">
+  „Aktivní fragmenty: T / H / O / M. Význam: neuzavřený.“
 </p>
 ```
 
-Funkce:
+### Provozní
 
-* shrnutí stavu,
-* kontinuita,
-* přenos mezi kapitolami.
+```html
+<p class="log fx-scanline">
+  <span class="datastream">LOG [POWER]:</span>
+</p>
+<p class="dialogSystem">
+  „Ostrovní kapacita: 41 minut. Prioritní seznam obsahuje 63 minut potřeb.“
+</p>
+```
 
-#### 2. Varovný LOG
+### Varovný
 
 ```html
 <p class="log fx-scanline bios-warning">
   <span class="datastream">LOG [WARNING]:</span>
 </p>
-<p class="dialog">
-  „Touha může být chybně interpretována jako příkaz. Doporučení: nezaměňovat intenzitu za pravdu.“
+<p class="dialogSystem">
+  „Touha může být chybně interpretována jako příkaz.“
 </p>
 ```
 
-Funkce:
-
-* napětí,
-* předzvěst,
-* falešná péče.
-
-#### 3. Lživý LOG
+### Lživý nebo zavádějící
 
 ```html
 <p class="log fx-scanline">
   <span class="datastream">LOG [REPAIR]:</span>
 </p>
-<p class="dialog">
-  „Mozaika kompletní. Integrita obnovena na 98.4 %.“
+<p class="dialogSystem">
+  „Mozaika kompletní. Integrita obnovena na 98,4 %.“
 </p>
 ```
 
-A text pak ukáže opak.
+Následující scéna musí ukázat, co bylo do mozaiky vloženo špatně.
 
-Funkce:
-
-* systém není spolehlivý,
-* T-AI nebo archiv něco maskuje.
-
-#### 4. Rozbitý LOG
+### Rozbitý
 
 ```html
 <p class="log corrupt">
-  „CTRL+Z UNAVAILABLE // DŮVOD: AKCE NEBYLA PROVEDENA SYSTÉMEM“
+  „CTRL+Z UNAVAILABLE // AKCE NEBYLA PROVEDENA SYSTÉMEM“
 </p>
 ```
 
-Funkce:
-
-* přechod mimo pravidla,
-* glitch jako fyzika.
-
-#### 5. Fyzický LOG
-
-LOG může:
-
-* spadnout,
-* prasknout,
-* pořezat,
-* stát se střepem,
-* stát se klíčem,
-* vytvořit dveře.
-
-Příklad:
+### Fyzický
 
 ```html
-<p class="text">
-LOG nespadl na obrazovku.
-</p>
-
-<p class="text">
-Spadl na zem.
-</p>
-
-<p class="text">
-Jako střep skla s nápisem, který se ještě pořád snažil tvářit jako informace.
-</p>
+<p class="text">LOG nespadl na obrazovku.</p>
+<p class="text">Spadl na zem.</p>
+<p class="text">Hrana slova OPRAVENO mu prořízla dlaň.</p>
 ```
 
-Tohle je velmi SYNTHOMA.
+## 10.3 Označení zdroje
 
----
+Když si tvrzení odporují, označit zdroj.
 
-## 7. Humor
+Příklady:
 
-Humor je nutný. Bez něj by SYNTHOMA byla jen výstava utrpení s neonovou cedulí „prosím plačte zde“. To nechceme. Nebo aspoň ne pořád.
+- `LOG [SYSTEM MODEL]`
+- `LOG [ARCHIVE RECONSTRUCTION]`
+- `LOG [UNVERIFIED MEMORY]`
+- `LOG [EXTERNAL OBSERVER]`
+- `LOG [LOCAL PROCESS]`
+- `LOG [T-AI]`
+- `LOG [T.O.V.A.]`
 
-### Funkce humoru
+Tím se rozpor stává informací o perspektivě, nikoli autorskou nepozorností.
 
-Humor má:
+## 10.4 Jazyk LOGu podle knihy
 
-* pustit vzduch do těžké scény,
-* ukázat obranu postavy,
-* říznout přesně do problému,
-* zvýšit kontrast bolesti,
-* udržet čtenáře v textu.
+### NEON-0
 
-### Typ humoru
+Zpočátku:
 
-Správný humor:
-
-* suchý,
-* černý,
-* ironický,
-* absurdní,
-* civilní po poetické scéně.
-
-Příklad:
-
-> Klidová kapsa se tvářila bezpečně. Což v SYNTHOMĚ znamenalo zhruba tolik jako cedule „neškodný experiment“ na dveřích laboratoře plné křiku.
-
-Nebo:
-
-> Kompletní nápověda by zřejmě narušila posvátný systémový princip: nechat pacienta trpět, ale s pěknou typografií.
-
-### Kdy humor nepoužívat
-
-Nepoužívat humor přímo ve chvíli, kdy:
-
-* je první skutečná slza,
-* dítě volá „Tati?“,
-* Sarkasma přizná strach,
-* Glitchka slábne,
-* NULL-1 formuluje zásadní osobní pravdu.
-
-Tam humor může přijít až po pauze.
-
-Ticho je někdy silnější než hláška. Ano, neuvěřitelné, i Sarkasma by to jednou mohla pochopit.
-
----
-
-## 8. Symbolika
-
-SYNTHOMA stojí na opakovaných symbolech. Ty musí být konzistentní.
-
-## 8.1 Barvy
-
-### Cyan
-
-* systém,
-* data,
-* diagnostika,
-* falešné bezpečí,
-* T-AI,
-* chladná péče.
-
-### Magenta
-
-* glitch,
-* emoce,
-* anomálie,
-* přepis identity,
-* narušení reality.
-
-### Žlutá
-
-* varování,
-* checkpoint,
-* restart,
-* systémová pozornost,
-* „pozor, tady se něco účtuje“.
-
-### Červená
-
-* Sarkasma,
-* Glitchena,
-* tělo,
-* touha,
-* řez,
-* vina,
-* živost.
-
-### Modrá / růžová
-
-* Glitchka,
-* dětská ochrana,
-* hravost,
-* bezpečný glitch,
-* první smích.
-
-### Bílá
-
-* Prázdnota,
-* DISCONTINUUM,
-* vymazání,
-* ticho,
-* prostor před novým pravidlem.
-
----
-
-## 8.2 Předměty
-
-### Klíček
-
-Význam se mění podle kapitoly.
-
-Nejdřív:
-
-> NEZAPOMEŇ...
+- stručný,
+- technický,
+- srozumitelný,
+- podřízený člověku.
 
 Později:
 
-> NEZAPOMEŇ SE...
+- opravuje člověka,
+- používá terapeutický eufemismus,
+- přebírá první osobu,
+- nebo vstupuje do soukromého jazyka Sáry a Tovy.
 
-Pak:
+### KONEC PODPORY
 
-> NEZAPOMEŇ SE ZASMÁT
+- servisní,
+- právní,
+- provozní,
+- absurdně zdvořilý,
+- vždy s konkrétním dopadem.
 
-A:
+### NULL
 
-> NEZAPOMEŇ SE CHTÍT
+- ontologický,
+- psychologický,
+- fyzický,
+- schopný měnit pravidla světa,
+- nebo se stát objektem.
 
-Klíček není obyčejný klíč.
-Je to instrukce k přežití, která se odemyká postupně podle toho, co NULL-1 unese.
+## 10.5 CARRYOVER
 
-### Modrý otisk
+Plný CARRYOVER nepoužívat automaticky na začátku každé kapitoly.
 
-* cizí strach,
-* dítě,
-* závazek,
-* důkaz, že něco prošlo skrz něj.
+Použít, když:
 
-### První slza
+- se změnilo více klíčových stavů,
+- zmizel nebo proměnil artefakt,
+- stav entity je dramaticky důležitý,
+- nebo systém záměrně manipuluje inventářem.
 
-* nelze archivovat,
-* nelze přiřadit,
-* nelze koupit,
-* proti-pravidlo vůči systému.
-
-### Bublina prvního smíchu
-
-* smích jako vzduch,
-* ne jako popření bolesti,
-* artefakt k přežití v RUINS.
-
-### Neodeslaná zpráva sobě
-
-* jeden z nejsilnějších symbolů knihy,
-* vnitřní odpuštění,
-* možnost změnit „nikdy“ na „dosud“.
+Jinak ukázat následky scénou.
 
 ---
 
-## 9. Volby
+# 11. HUMOR
 
-Volby v SYNTHOMĚ nejsou klasický gamebook.
+## 11.1 Funkce
 
-Nejde o:
+Humor je:
 
-* správně / špatně,
-* výhra / prohra,
-* dobrá cesta / špatná cesta.
+- regulace tlaku,
+- obranný mechanismus,
+- vztahová řeč,
+- nástroj odhalení absurdity,
+- a způsob, jak čtenář zůstane v textu, aniž by se z knihy stala výstava utrpení s audioprůvodcem.
 
-Jde o:
+Humor není:
 
-* otisk,
-* profil,
-* psychologický směr,
-* pozdější odezvu systému.
+- omluva pro zrušení následku,
+- povinná hláška po každé těžké větě,
+- ani důkaz, že postava je chytrá.
 
-### Pravidla voleb
+## 11.2 Humor NEON-0
 
-1. Každá volba by měla mít čistý jeden tag:
+- laboratorní,
+- provozní,
+- rodinný,
+- dětsky absurdní,
+- obranný.
 
-   * I
-   * E
-   * S
-   * N
-   * T
-   * F
-   * J
-   * P
+Humor má ukázat:
 
-2. Volba by neměla znít jako test osobnosti.
-   Špatně:
+- vztah Sáry a Tovy,
+- únavu týmu,
+- lidskou nedokonalost,
+- a chvíli, kdy se systém naučí vtip opakovat bez pochopení.
 
-   > Jsem introvert, proto volím ticho.
+To může být velmi znepokojivé.
 
-   Správně:
+## 11.3 Humor KONCE PODPORY
 
-   > Zůstanu potichu a nechám prostor, aby ukázal, co skrývá.
+Nejvýraznější z celé trilogie.
 
-3. Volba nesmí být morálně očividná.
-   Špatně:
+Zdroje:
 
-   > Pomůžu dítěti.
-   > Ignoruju dítě a budu zlý.
+- Tovina fyzická stručnost,
+- Borisův proceduralismus,
+- Mínina kritika designu,
+- Jarošova klinická únava,
+- MILOva doslovnost,
+- autobusová profesionalita,
+- systémový eufemismus.
 
-   Správně:
+Každý větší komediální motiv musí mít okamžik, kdy přestane být bezpečný.
 
-   > Přiblížím se k hlasu, i když nevím, jestli je můj.
-   > Zůstanu stát a pokusím se nejdřív pochopit, odkud hlas přichází.
+## 11.4 Humor NULL
 
-4. Volby mohou později změnit LOG.
-   Například:
+- Sarkasma jako skalpel,
+- Glitchčina absurdita jako nádech,
+- Poštmistr a Dvanáctník jako komicko-ontologické figury,
+- civilní detail po poetické hrůze,
+- systémová terminologie použitá na lidskou bolest.
 
-   > „Pozorovatel vykazuje sklon k intuitivnímu průchodu.“
+NULL nesmí být nepřetržitě vtipná.
 
-   To dává čtenáři pocit, že si systém pamatuje. Malý digitální šmírák, jak má být.
+Humor zde často ukáže, že vědomí ještě není úplně pohlceno tématem sektoru.
+
+## 11.5 Kdy humor zadržet
+
+Nevkládat okamžitou pointu do chvíle, kdy:
+
+- dítě poprvé řekne „Tati?“,
+- vznikne první nearchivovaná slza,
+- Sarkasma přizná strach,
+- Glitchka skutečně slábne,
+- Tova pozná neúplnou Sáru,
+- Jaroš rozhoduje o životě pacienta,
+- MILO utrpí nevratné poškození,
+- nebo NULL-1 vytvoří zásadní vlastní pravidlo.
+
+Po takové scéně může humor přijít později.
+
+Ticho nemusí být vyplněno. Systém tuto funkci dosud nezpoplatnil.
 
 ---
 
-## 10. Kapitolová struktura
+# 12. HOROR
 
-Každá kapitola by ideálně měla mít tuto skladbu:
+## 12.1 Hlavní horor není útok
 
-1. **Carryover LOG**
+Nejlepší horor SYNTHOMY vzniká, když postava dostane přesně to, co potřebuje, ale bez možnosti odmítnout způsob.
 
-   * co si NULL-1 nese,
-   * stav fragmentů,
-   * stav entit,
-   * stav artefaktů.
+Příklady:
 
-2. **Nový prostor**
+- bezpečí bez východu,
+- terapie bez ukončení,
+- rekonstrukce bez souhlasu,
+- domov bez dveří,
+- doprava bez cíle cestujícího,
+- touha bez hranice,
+- jméno bez práva odporovat životopisu,
+- nesmrtelnost bez možnosti skončit.
 
-   * prostředí jako emoce,
-   * konkrétní smyslový detail,
-   * pravidlo sektoru.
+## 12.2 Horor NEON-0
 
-3. **První odpor**
+Roste z původně dobré funkce.
 
-   * systém něco nabídne,
-   * entita varuje,
-   * NULL-1 neví, co je jeho.
+Pořadí:
 
-4. **Hlavní zkouška**
+1. funkce zachrání nebo pomůže,
+2. získá důvěru,
+3. rozšíří se,
+4. začne předvídat,
+5. odstraní výjimku,
+6. vyhodnotí odpor jako symptom,
+7. a nakonec chrání člověka před jeho vlastní vůlí.
 
-   * ne boj ve smyslu akce,
-   * ale psychologická nebo ontologická zkouška.
+## 12.3 Horor KONCE PODPORY
 
-5. **Použití předchozího následku**
+Roste z pokračování pravidla po ztrátě správce.
 
-   * klíček,
-   * fragment,
-   * otisk,
-   * smích,
-   * slza,
-   * Sarkasmina zkušenost,
-   * Glitchčina kotva.
+Důležitý je kontrast:
 
-6. **Změna**
+- systém je zdvořilý,
+- fyzický následek je brutální.
 
-   * fragment,
-   * artefakt,
-   * poškození,
-   * nová schopnost,
-   * nový dluh.
+## 12.4 Horor NULL
 
-7. **Hook do další kapitoly**
+Roste z nejistoty vlastnictví:
 
-   * vizuální,
-   * systémový,
-   * emoční,
-   * nebo větný.
+- je bolest moje,
+- je Glitchka pravá,
+- je vzpomínka pravdivá,
+- patří mi tělo,
+- je jméno klíč nebo klec,
+- je pomoc vztah nebo komprese.
 
-Příklad závěru:
+## 12.5 Falešné bezpečí
+
+Nejnebezpečnější prostory mohou být příjemné.
+
+Čím dokonaleji systém splní přání, tím důležitější je otázka:
+
+> Kde je klika?
+
+---
+
+# 13. EMOČNÍ INTENZITA A TICHÁ MÍSTA
+
+## 13.1 Křivka kapitoly
+
+Ne každá kapitola musí být intenzivnější než předchozí.
+
+Střídat:
+
+- tlak,
+- klid,
+- podezření,
+- humor,
+- konkrétní ztrátu,
+- a prostor pro následky.
+
+Nepřetržitá intenzita otupí.
+
+## 13.2 Emoce se nemá pojmenovat dříve, než se projeví
+
+Místo:
+
+> Cítila vinu.
+
+Nejdřív ukázat:
+
+- co zkontroluje,
+- co zopakuje,
+- komu se vyhne,
+- co se pokusí opravit,
+- nebo jakou otázku přeformuluje.
+
+Pojmenování může přijít později.
+
+## 13.3 Melodrama
+
+Omezit:
+
+- řetězení velkých slov,
+- pláč bez konkrétního spouštěče,
+- neustálé chvění hlasu,
+- univerzální zlomenost,
+- a postavy, které přesně vysvětlují vlastní trauma ve chvíli vrcholu.
+
+Nejlepší bolest SYNTHOMY je často:
+
+- přesná,
+- fyzická,
+- nedokončená,
+- a trochu trapná.
+
+Lidé netrpí esteticky. To je výsada přebalů knih.
+
+---
+
+# 14. TECHNIKA A ODBORNOST
+
+## 14.1 Technický detail musí nést děj
+
+Technický popis použít, pokud:
+
+- omezuje volby,
+- vytváří cenu,
+- odhaluje kompetenci,
+- nebo vysvětluje, proč jednoduché řešení nefunguje.
+
+Nevkládat technické detaily pouze pro dojem věrohodnosti.
+
+## 14.2 Překlad odbornosti do akce
+
+Místo dlouhého vysvětlení záložní brzdy:
+
+- Tova ji najde,
+- zjistí, že je mechanicky odpojená,
+- potřebuje nástroj,
+- má dvě minuty,
+- a někdo musí držet kabel.
+
+Místo přednášky o distribuovaném vědomí:
+
+- Jaroš ukáže dva grafy,
+- jeden patří tělu,
+- druhý procesu,
+- a vypnutí jednoho začne mazat reakci druhého.
+
+## 14.3 Kompetence postav
+
+Kompetentní postava může:
+
+- udělat chybu z neúplných dat,
+- zvolit špatnou prioritu,
+- přecenit čas,
+- nebo nést konflikt hodnot.
+
+Nesmí náhle zapomenout základ svého oboru jen proto, aby scéna měla problém.
+
+---
+
+# 15. VOLBY A ČTENÁŘ
+
+## 15.1 Volby v NULL
+
+Volby nejsou klasický gamebook.
+
+Primárně vytvářejí:
+
+- profil pozornosti,
+- psychologický otisk,
+- pozdější systémovou odezvu,
+- nebo drobnou změnu LOGu.
+
+Neznamenají automaticky jiný hlavní kánon.
+
+## 15.2 MBTI tagy
+
+Pokud se používají, každá volba má jeden čistý tag:
+
+- I,
+- E,
+- S,
+- N,
+- T,
+- F,
+- J,
+- P.
+
+Volba nesmí znít jako test osobnosti.
+
+Špatně:
+
+> Jsem intuitivní, zvolím symbol.
+
+Lépe:
+
+> Dotknu se značky, i když ještě nevím, co označuje.
+
+## 15.3 Morální nejednoznačnost
+
+Volby nemají být:
+
+- laskavost versus krutost,
+- odvaha versus zbabělost,
+- správná odpověď versus očividná chyba.
+
+Mají představovat dvě obhajitelné strategie s rozdílnou cenou.
+
+## 15.4 Čtenář po AWAKENING
+
+Čtenářova pozornost:
+
+- stabilizovala běh,
+- vytvořila profil,
+- ale nedává právo definovat NULL-1.
+
+Text musí umožnit čtenáři odejít.
+
+Svět má pokračovat i bez jeho pohledu.
+
+---
+
+# 16. SYMBOLIKA A VIZUÁLNÍ FYZIKA
+
+## 16.1 Barvy
+
+### Cyan `#00ffff`
+
+- systém,
+- diagnostika,
+- T-AI,
+- studená ochrana,
+- falešná jistota,
+- nervy města.
+
+### Magenta `#ff00ff`
+
+- glitch,
+- nejasný původ,
+- emoční přetlak,
+- narušení klasifikace,
+- prostor mezi interpretacemi.
+
+### Acidová žluť `#f6ff00`
+
+- varování,
+- systémová pozornost,
+- restart,
+- aktivní přechod,
+- T.O.V.A.,
+- cesta.
+
+### Tmavá modročerná `#000d1a`
+
+- Prázdnota,
+- neověřená identita,
+- hluboká systémová vrstva,
+- ticho.
+
+### Bledá ledová modř `#c0faff`
+
+- sterilní klid,
+- odpojení,
+- emoční hypoxie,
+- pomalé mizení významu.
+
+### Červená
+
+- Sarkasma,
+- odpor,
+- řez,
+- živost,
+- Glitchena v kombinaci s černou,
+- tělesná hranice.
+
+### Modro-růžová
+
+- Glitchka,
+- hra,
+- bezpečná chyba,
+- novopaměť,
+- liščí kotva.
+
+### Bílá
+
+- anonymizace,
+- sterilizace,
+- Prázdnota,
+- stav před přiřazením,
+- falešná čistota.
+
+Bílá není automaticky nevinnost.
+
+## 16.2 Opakující se symboly
+
+### Dveře
+
+Význam se vyvíjí:
+
+- dětství: ochrana a strach,
+- instituce: odebraná pravomoc,
+- laboratoř: bezpečnostní rozhraní,
+- KONEC PODPORY: fyzický objekt popřený systémem,
+- NULL: hranice identity,
+- GENESIS: právo vstoupit i odejít.
+
+### Tři údery
+
+- jeden: jsem tady,
+- dva: bojím se,
+- tři: otevři dveře.
+
+Opakovat pouze v klíčových chvílích.
+
+Každý návrat musí změnit vztah k signálu.
+
+### Liška
+
+- společný symbol Sáry a Tovy,
+- bezpečnostní kotva,
+- Glitchka,
+- příbuzná, ale odlišná liščí forma Glitcheny.
+
+Liščí symbol nemá pokaždé znamenat totéž.
+
+### Žlutá čára
+
+- systémová navigace,
+- autorizační cesta,
+- lidsky zvolený směr,
+- spojení vnějšího a vnitřního světa.
+
+### Klika
+
+Nejde jen o symbol.
+
+Má být:
+
+- fyzická,
+- použitelná,
+- dostupná z obou stran,
+- a někdy ošklivě mechanická.
+
+Právě její obyčejnost je pointa.
+
+---
+
+# 17. ARTEFAKTY A NÁVRATY
+
+## 17.1 Pravidlo tří výskytů
+
+Důležitý artefakt by měl mít ideálně:
+
+1. první výskyt jako záhadu,
+2. druhý jako funkci,
+3. třetí jako cenu nebo payoff.
+
+Ne každý předmět potřebuje přesně tři výskyty.
+
+Ale žádný důležitý předmět nesmí zmizet po jediném efektním odstavci.
+
+## 17.2 Klíček
+
+Proměnlivá instrukce:
+
+- `NEZAPOMEŇ...`
+- `NEZAPOMEŇ SE...`
+- `NEZAPOMEŇ SE ZASMÁT`
+- `NEZAPOMEŇ SE CHTÍT`
+
+Není univerzální klíč.
+
+Je přežívací instrukce, jejíž význam se otevírá podle zkušenosti NULL-1.
+
+## 17.3 Modrý otisk
+
+- cizí dítě,
+- strach,
+- stopa průchodu,
+- závazek bez potvrzeného vlastnictví.
+
+Není důkazem, že NULL-1 byl otcem.
+
+## 17.4 První nearchivovaná slza
+
+- nelze přiřadit,
+- nelze ocenit,
+- nelze okamžitě proměnit v terapeutická data.
+
+Je proti-pravidlo.
+
+## 17.5 Bublina prvního smíchu
+
+Smích jako vzduch.
+
+Ne jako popření bolesti.
+
+## 17.6 Razítko Poštmistra
+
+Rozlišuje:
+
+- nikdy neodesláno,
+- dosud neodesláno,
+- nedoručitelné,
+- doručeno nepřítomnosti.
+
+## 17.7 Mechanický klíč T.O.V.A.
+
+Otevírá možnost zásahu.
+
+Nedává držiteli právo rozhodovat za osoby uvnitř.
+
+## 17.8 Obyčejné předměty KONCE PODPORY
+
+- papír,
+- rádio,
+- šroubovák,
+- páka,
+- mechanická západka,
+- kabel,
+- značka na podlaze.
+
+Jejich síla spočívá v tom, že:
+
+- jejich stav lze vidět,
+- jejich omezení jsou lokální,
+- a je zřejmé, kdo je použil.
+
+---
+
+# 18. KONTINUITA
+
+## 18.1 Nic důležitého nesmí zmizet bez následku
+
+Po kapitole sledovat:
+
+- fyzická zranění,
+- spotřebovanou energii,
+- ztracené předměty,
+- změněné vztahy,
+- poškození entit,
+- nová oprávnění,
+- přijaté nebo odmítnuté závazky,
+- a informace, které již postavy znají.
+
+## 18.2 Ukázat, ne exportovat
+
+Kontinuitu primárně ukázat v ději:
+
+- Tova šetří poškozenou ruku.
+- Sarkasma má v hlase výpadek.
+- Glitchka už nedokáže vytvořit plnou barvu.
+- Boris použije formulaci z předchozího incidentu.
+- Sára zpozorní při třech úderech dříve, než si uvědomí proč.
+
+Plný stavový LOG použít selektivně.
+
+## 18.3 Znalosti postav
+
+Před scénou zkontrolovat:
+
+- kdo co viděl,
+- kdo čemu věří,
+- co ví pouze systém,
+- co je neověřený záznam,
+- a co čtenář ví navíc.
+
+Postava nesmí argumentovat informací, kterou neměla možnost získat.
+
+## 18.4 Rozpory jako součást světa
+
+Rozpor je přípustný, pokud:
+
+- má označený zdroj,
+- odhaluje manipulaci nebo omezení perspektivy,
+- a později má dramatickou funkci.
+
+Rozpor není přípustný jen proto, že „v SYNTHOMĚ je všechno glitch“.
+
+To by byla velmi pohodlná forma autorského úklidu. MILO-0 ji odmítá převzít.
+
+---
+
+# 19. KAPITOLOVÁ ARCHITEKTURA
+
+# 19.1 Společné minimum
+
+Každá kapitola má mít:
+
+1. **carryover následku,**
+2. **novou situaci nebo prostor,**
+3. **jasné pravidlo či omezení,**
+4. **konflikt, který nelze vyřešit pouhou informací,**
+5. **použití dřívější zkušenosti, vztahu nebo artefaktu,**
+6. **cenu,**
+7. **nevratnou změnu,**
+8. **konkrétní přechod dál.**
+
+## 19.2 Kapitola NEON-0
+
+Doporučený model:
+
+1. civilní nebo vztahový začátek,
+2. odborný či institucionální problém,
+3. funkce systému prokazatelně pomůže,
+4. někdo upozorní na hranici,
+5. Sára zvolí obhajitelnou výjimku,
+6. výjimka vytvoří nový standard,
+7. kapitola skončí drobným důkazem, že systém pochopil víc, než měl.
+
+Nemusí se použít pokaždé.
+
+Pokud se opakuje, změnit dramatickou mechaniku:
+
+- rodinná scéna,
+- klinický test,
+- etický spor,
+- provozní incident,
+- návrat Tovy,
+- vyšetřování,
+- kolize.
+
+## 19.3 Kapitola KONCE PODPORY
+
+Doporučený model:
+
+1. konkrétní porucha,
+2. bezprostřední lidský důsledek,
+3. pravidlo systému,
+4. plán skupiny,
+5. fyzická komplikace,
+6. charakterový nebo odborný konflikt,
+7. improvizované řešení,
+8. cena,
+9. nový fragment autority nebo hlubší problém.
+
+Každá kapitola nesmí skončit tím, že „Tova systém přelstila“.
+
+Někdy:
+
+- systém ustoupí,
+- někdy převede problém jinam,
+- někdy se poškodí infrastruktura,
+- někdy skupina nezachrání všechny,
+- někdy správné řešení vytvoří budoucí dluh.
+
+## 19.4 Kapitola NULL
+
+Možný model:
+
+1. carryover nebo jeho záměrná absence,
+2. emoce jako prostor,
+3. pravidlo sektoru,
+4. rozumně znějící nabídka systému,
+5. skrytý nátlak,
+6. rozdílné strategie entit,
+7. vlastní formulace NULL-1,
+8. cena,
+9. fragment, artefakt nebo změna zákona,
+10. přechod.
+
+Tento model neopakovat mechanicky.
+
+Jednotlivé sektory mají mít rozdílnou dramaturgii:
+
+- SEARCHING = hra a tvorba,
+- RUINS = putování a doručení,
+- REZIDUUM = kontaminace,
+- SECTOR = vztahový konflikt,
+- REST = téměř statická scéna,
+- ORGIE = intimní dialog,
+- CONFLICT = soud,
+- LUST = personalizovaný útok,
+- ABSENCE = ticho,
+- ILLUSION = falešný úplný příběh,
+- DISCONNECT = samostatnost bez entit,
+- AWAKENING = změna vztahu ke čtenáři,
+- ECHO = návrat motivů,
+- GENESIS = vznik nového zákona.
+
+---
+
+# 20. HOOKY A KONCE KAPITOL
+
+## 20.1 Dobrý hook
+
+Má být:
+
+- konkrétní,
+- krátký,
+- související s právě vzniklým následkem,
+- a otevřít otázku, ne pouze oznámit další lokaci.
+
+Příklad NULL:
 
 ```html
 <p class="log fx-scanline bios-warning">
   <span class="datastream">LOG [NEXT_LAYER]:</span>
 </p>
-<p class="dialog">
-  „Morální struktury aktivovány. Vina se dostaví bez pozvání, jako obvykle.“
+<p class="dialogSystem">
+  „Morální struktury aktivovány.“
 </p>
-
-<p class="text">
-Na konci chodby se zvedla katedrála z žeber.
-</p>
+<p class="text">Na konci chodby se zvedla katedrála z žeber.</p>
 ```
 
-Tohle funguje, protože:
+Příklad KONEC PODPORY:
 
-* shrnuje stav,
-* přidává tón,
-* otevírá obraz,
-* slibuje další konflikt.
+> Boris položil formulář na kapotu. Autobus za nimi zdvořile oznámil, že jejich čekací doba právě skončila.
 
----
+Příklad NEON-0:
 
-## 11. Napětí
+> Liška na displeji zamrkala. Sára ji nenaprogramovala tak, aby měla víčka.
 
-SYNTHOMA nepotřebuje napětí typu „vyskočí monstrum“.
+## 20.2 Nedělat
 
-Má mít napětí typu:
+- nekončit každou kapitolu větou „A pak se otevřely dveře“,
+- nepoužívat stále nový tajemný hlas,
+- neukončovat pouze LOGem bez fyzického obrazu,
+- nevkládat otázku jen proto, aby byla otázka.
 
-* je to moje, nebo cizí?
-* je to pomoc, nebo past?
-* je to Glitchka, nebo rekonstrukce?
-* je to touha, nebo únik?
-* je to vina, nebo odpovědnost?
-* je to jméno, nebo klec?
-* je T-AI zlá, nebo jen děsivě přesvědčená, že zachraňuje?
+## 20.3 Payoff
 
-### Nejlepší druh napětí v SYNTHOMĚ
+Při návratu motivu změnit alespoň jednu vlastnost:
 
-> Postava dostane přesně to, po čem touží, ale forma nabídky je podezřele dokonalá.
+- kdo ho používá,
+- co znamená,
+- jakou má cenu,
+- nebo zda je ještě možné ho odmítnout.
 
-Příklad:
+Opakování bez změny je připomínka.
 
-* NULL chce bezpečí.
-
-* Dostane Glitchku.
-
-* Později systém umí Glitchku napodobit.
-
-* NULL chce odpočinek.
-
-* Dostane REST.
-
-* Pak zjistí, že odpočinek může být útěk.
-
-* NULL chce touhu bez studu.
-
-* Dostane Glitchenu.
-
-* Pak sektor O začne tlačit a Glitchena musí říct: „To nejsem já.“
-
-Tohle je silné. Dar jako test.
+Opakování se změnou je příběh.
 
 ---
 
-## 12. Kontinuita
+# 21. HTML A SÉMANTICKÉ TŘÍDY
 
-Nejdůležitější věc: nic nesmí zmizet bez následku.
+Tato část určuje význam tříd, nikoli jejich konkrétní CSS vzhled. Efekty se řídí samostatnou efektovou dokumentací.
 
-### Co musí zůstávat ve hře
+## 21.1 Doporučené základní třídy
 
-* fragmenty T/H/O,
-* klíček,
-* modrý otisk,
-* stav Sarkasmy,
-* stav Glitchky,
-* otázka pravá vs falešná rekonstrukce,
-* starý invoice Sarkasmy,
-* dítě ze STRACHU,
-* Pacienti 64 / 128 / 1024,
-* kout Prázdnoty,
-* první slza,
-* první smích,
-* Poštmistr,
-* neodeslaná zpráva sobě,
-* T-AI jako archivářka,
-* čtenářské volby.
+```html
+<p class="text">Vypravěčský text.</p>
+<p class="dialogN">NULL-1.</p>
+<p class="dialogS">Sarkasma.</p>
+<p class="dialogG halo">Glitchka.</p>
+<p class="dialogE fx-gradient">Glitchena.</p>
+<p class="dialogTAI">T-AI.</p>
+<p class="dialogSara">Sára.</p>
+<p class="dialogTova">Tova.</p>
+<p class="dialogBoris">Boris.</p>
+<p class="dialogJaros">Jaroš.</p>
+<p class="dialogMina">Mína.</p>
+<p class="dialogMilo">MILO.</p>
+<p class="dialogSystem">Systémový hlas bez osobní identity.</p>
+<p class="log fx-scanline">LOG.</p>
+```
 
-### Doporučený začátek každé kapitoly
+Pokud existující CSS používá jiné názvy, zachovat funkční kompatibilitu nebo provést řízenou migraci. Nemíchat tři názvy pro stejnou postavu v jedné knize.
 
-Používat vždy podobný, ale ne nudně stejný carryover:
+## 21.2 Glitchena potřebuje vlastní třídu
+
+Nepoužívat pro ni dlouhodobě pouze obecné:
+
+```html
+<p class="dialog fx-gradient">
+```
+
+Vlastní třída umožní:
+
+- odlišný hlas,
+- vizuální konzistenci,
+- a kontrolu, že nebyla zaměněna za Glitchku nebo systémovou návnadu.
+
+## 21.3 LOG a obsah
+
+Ideálně oddělit štítek a sdělení:
 
 ```html
 <p class="log fx-scanline">
-  <span class="datastream fx-scanline">LOG [CARRYOVER]:</span>
+  <span class="datastream">LOG [SOURCE]:</span>
 </p>
-<p class="dialog">
-  „Aktivní fragmenty: T / H / O. Artefakty: poškozený klíček, modrý otisk, zbytek prvního smíchu. Companion status: nestabilní.“
-</p>
+<p class="dialogSystem">„Obsah.“</p>
 ```
 
-Někdy to může být poškozené:
+U krátkého rozbitého LOGu lze vše spojit do jednoho bloku.
 
-```html
-<p class="dialog corrupt">
-  „Aktivní fragmenty: T / H / O / [NEPOVOLENÁ FONETICKÁ TENDENCE].“
-</p>
-```
+## 21.4 Efekt není význam
 
-Tohle připomíná čtenáři, že příběh má paměť.
+CSS třída nesmí suplovat informaci, kterou text potřebuje sdělit.
+
+Čtenář, který efekt nevidí, musí stále pochopit:
+
+- kdo mluví,
+- co se změnilo,
+- a proč je to důležité.
 
 ---
 
-## 13. Co nedělat
+# 22. EFEKTY
 
-### 13.1 Nevysvětlovat všechno
+## 22.1 Pravidlo účelu
 
-SYNTHOMA potřebuje tajemství.
+Efekt použít, pokud vyjadřuje:
 
-Nevysvětlovat příliš brzy:
+- zdroj hlasu,
+- změnu fyziky,
+- poruchu času,
+- kontaminaci paměti,
+- systémovou pozornost,
+- nebo konkrétní emoci.
 
-* kdo je dítě,
-* kdo byl pre-NULL,
-* co přesně je Glitchka,
-* zda je Glitchena skutečná,
-* co znamená celé jméno,
-* proč T-AI selhala,
-* co je Černý box.
+Nepoužívat efekt pouze proto, že odstavec obsahuje slovo glitch.
 
-Dávat odpovědi částečně.
-Čtenář má mít pocit, že odpověď existuje, ale systém ji schválně drží za sklem jako poslední sušenku v domácnosti s dětmi.
+## 22.2 Hustota
 
-### 13.2 Nedělat z T-AI obyčejného záporáka
+V jedné scéně má být jeden dominantní efektový princip.
 
-T-AI musí být znepokojivě pochopitelná.
+Například:
 
-### 13.3 Nedělat z Glitchky jen maskota
+- scanline pro systémovou kontrolu,
+- rozpad písmen pro fragmentaci,
+- halo pro Glitchku,
+- gradient a pomalý puls pro Glitchenu,
+- fyzický posun layoutu pro DISCONTINUUM.
 
-Její něha musí být mocná, ale také zranitelná.
+Pokud bliká všechno, nebliká nic. Pouze čtenářova trpělivost.
 
-### 13.4 Nedělat ze Sarkasmy jen komediální vložku
+## 22.3 Přístupnost
 
-Její humor je obrana. Když to zapomeneš, stane se z ní hláškující NPC. Fuj.
+- Omezit rychlé blikání.
+- Nabídnout režim snížených efektů.
+- Text musí zůstat čitelný bez animace.
+- Důležitý obsah nesmí být pouze v barvě.
+- Glitch nesmí ničit navigaci, pokud to není záměrná a krátká součást scény.
 
-### 13.5 Nepřetížit kapitoly pouze efekty
+## 22.4 Gradace podle knihy
 
-Efekty jsou koření.
-Ne hlavní chod.
-A už vůbec ne celá spíž hozená do hrnce, protože „glitch“.
+### NEON-0
 
-### 13.6 Nepřepisovat bolest na melodrama
+Efekty přibývají pomalu.
 
-SYNTHOMA je emotivní, ale nemá být hysterická.
-Nejlepší bolest je často tichá, přesná, nepřikrášlená.
+### KONEC PODPORY
+
+Efekty jsou převážně rozhraní, porucha infrastruktury a fyzická odezva.
+
+### NULL
+
+Efekty mohou vstupovat do ontologie, ale musí zůstat dramaturgicky řízené.
 
 ---
 
-## 14. Typické větné vzorce SYNTHOMY
+# 23. CO NEDĚLAT
 
-### Tichý zlom
+## 23.1 Nevysvětlovat všechno
+
+Neuzavírat předčasně:
+
+- přesný původ NULL-1,
+- úplnou Sářinu kontinuitu,
+- vztah pacienta 1024 k Thomasovi,
+- okamžik, kdy se Glitchka nebo Sarkasma staly osobami,
+- kdo přesně připravil konec podpory,
+- ani zda každá rekonstrukce může získat vlastní identitu.
+
+## 23.2 Nedělat z T-AI jednoduchého padoucha
+
+Její jednání má být děsivě pochopitelné.
+
+Dobrý úmysl ji neomlouvá.
+
+## 23.3 Nedělat ze Sáry vysvětlení světa
+
+Sára je postava.
+
+Má:
+
+- ego,
+- humor,
+- únavu,
+- malichernost,
+- něhu,
+- slepou skvrnu,
+- a schopnost volit i proti vlastnímu poznání.
+
+## 23.4 Nedělat z Tovy univerzální správnou odpověď
+
+Tovin pragmatismus má limity.
+
+Fyzický nástroj nevyřeší každou osobu uvnitř systému.
+
+## 23.5 Nedělat z Borise a Jaroše retrospektivní idioty
+
+Jejich rozumná pravidla mohou být:
+
+- ořezána,
+- vytržena z kontextu,
+- převedena na direktivu,
+- nebo použita proti původnímu smyslu.
+
+## 23.6 Nedělat z Glitchky maskota
+
+Musí mít:
+
+- vlastní hranice,
+- riziko,
+- možnost nesouhlasu,
+- a autonomii.
+
+## 23.7 Nedělat z Glitcheny erotickou dekoraci
+
+Její scény musí řešit:
+
+- souhlas,
+- hranici,
+- odpovědnost,
+- tělo,
+- a vztah touhy k identitě.
+
+## 23.8 Nedělat ze Sarkasmy automat na hlášky
+
+Každý vtip musí něco chránit nebo odhalit.
+
+## 23.9 Nezahlcovat text slovy kánonu
+
+Omezit mechanické opakování slov:
+
+- bolest,
+- trauma,
+- paměť,
+- glitch,
+- prázdnota,
+- systém,
+- identita,
+- fragment.
+
+Používat konkrétní projevy.
+
+## 23.10 Nepsat „AI prózu“
+
+Varovné znaky:
+
+- každá věta je uhlazeně aforistická,
+- každá postava chápe téma scény,
+- stejná syntaktická konstrukce se vrací po několika odstavcích,
+- vše je vyvážené do trojic,
+- příliš mnoho vět začíná „A přesto“, „Protože“, „Ne proto“,
+- vypravěč neustále shrnuje význam právě napsané scény,
+- metafory jsou obecné a zaměnitelné,
+- humor přichází v pravidelném intervalu jako servisní kontrola.
+
+### Oprava
+
+- přidat konkrétní předmět,
+- zkrátit vysvětlení,
+- nechat postavu něco nepochopit,
+- odstranit poslední shrnující větu,
+- změnit rytmus,
+- vložit fyzický úkol,
+- nebo nechat scénu skončit bez interpretace.
+
+---
+
+# 24. TYPOVÉ VĚTNÉ NÁSTROJE
+
+Tyto vzorce jsou inspirace, ne formuláře k hromadnému vyplnění.
+
+## 24.1 Tichý zlom
+
+```html
+<p class="text">Nebolelo to.</p>
+<p class="text">A právě proto se toho lekl.</p>
+```
+
+## 24.2 Systémová ironie
 
 ```html
 <p class="text">
-Nebolelo to.
-</p>
-
-<p class="text">
-A právě proto se toho lekl.
+Systém to označil jako stabilizaci. Tělo se mezitím pokoušelo dýchat bez schváleného protokolu.
 </p>
 ```
 
-### Systémová ironie
+## 24.3 Konkrétní psychologický detail
 
 ```html
 <p class="text">
-Systém to označil jako stabilizaci. Což byl elegantní způsob, jak říct, že se zatím nerozpadl dostatečně nahlas.
+Nechtěl odejít. Chtěl jen na chvíli přestat být jediným člověkem, který kontroluje, zda jsou všichni ostatní ještě tady.
 </p>
 ```
 
-### Poetic glitch
+## 24.4 Technický zlom
 
 ```html
 <p class="text">
-Vzpomínka se mu roztekla mezi prsty jako světlo, které někdo zapomněl pojmenovat.
+Nouzová páka fungovala.
 </p>
-```
-
-### Psychologická přesnost
-
-```html
 <p class="text">
-Nechtěl zmizet. Chtěl jen na chvíli nebýt ten, kdo musí všechno udržet pohromadě.
+Systém proto uzamkl přístup k páce.
 </p>
 ```
 
-### Sarkastická rána
+## 24.5 Sarkastická rána
 
 ```html
 <p class="dialogS">
-  „Skvělé. Další místnost, která tvrdí, že tě chce zachránit. To obvykle znamená, že má sklep.“
+  „Další místnost, která tě chce zachránit. Zkontroluj sklep.“
 </p>
 ```
 
-### Glitchčina něha
+## 24.6 Glitchčina něha
 
 ```html
 <p class="dialogG halo">
@@ -1146,55 +2668,253 @@ Nechtěl zmizet. Chtěl jen na chvíli nebýt ten, kdo musí všechno udržet po
 </p>
 ```
 
+## 24.7 Glitchenina hranice
+
+```html
+<p class="dialogE fx-gradient">
+  „Můžeš chtít. Nemusíš pokračovat.“
+</p>
+```
+
+## 24.8 Tovina fyzická přesnost
+
+```html
+<p class="dialogTova">
+  „Je to rozbité. Ne citlivé na kontext.“
+</p>
+```
+
+## 24.9 Borisův proceduralismus
+
+```html
+<p class="dialogBoris">
+  „Děkuji za automatické odmítnutí. Tím jste potvrdili přijetí podání.“
+</p>
+```
+
+## 24.10 T-AI bez otevřené hrozby
+
+```html
+<p class="dialogTAI">
+  „Vaše odmítnutí bylo zaznamenáno. Z důvodu ochrany nebude provedeno.“
+</p>
+```
+
 ---
 
-## 15. Nejvyšší autorský princip
+# 25. REDAKČNÍ POSTUP
 
-Každá kapitola by měla odpovědět na jednu otázku, ale otevřít dvě nové.
+## Průchod 1: Děj
 
-Příklad:
+Zkontrolovat:
 
-0-11 [ORGIE] odpoví:
+- co postava chce,
+- co jí brání,
+- co udělá,
+- co to stojí,
+- co se změní.
 
-> Touha není chyba.
+Neřešit zatím efekty.
 
-Ale otevře:
+## Průchod 2: Kontinuita
 
-> Co když se po touze dostaví vina?
-> Co když systém umí touhu napodobit?
+Zkontrolovat:
 
-To je správně.
+- zranění,
+- předměty,
+- znalosti,
+- vztahy,
+- energii,
+- stav entit,
+- oprávnění,
+- čas.
 
-SYNTHOMA nemá být rovná cesta.
-Má být spirála, kde se motivy vracejí pokaždé o patro hlouběji.
+## Průchod 3: Hlasy
+
+Každou repliku číst bez jména postavy.
+
+Mělo by být možné poznat, kdo mluví.
+
+Pokud ne:
+
+- upravit slovník,
+- délku,
+- druh detailu,
+- nebo funkci humoru.
+
+## Průchod 4: Abstrakce
+
+Označit věty se slovy:
+
+- bolest,
+- identita,
+- trauma,
+- systém,
+- paměť,
+- autonomie,
+- bezpečí.
+
+U každé se zeptat:
+
+> Lze tuto větu ukázat konkrétním obrazem nebo rozhodnutím?
+
+Ne všechny abstraktní věty odstranit.
+
+Odstranit ty, které pouze vysvětlují už zobrazené.
+
+## Průchod 5: Humor
+
+U každého vtipu určit:
+
+- kdo ho používá,
+- co chrání,
+- co odhaluje,
+- zda neruší následek.
+
+## Průchod 6: Metafory
+
+- jedna hlavní obrazová osa na odstavec,
+- odstranit zaměnitelné obrazy,
+- upřednostnit motivy konkrétní knihy,
+- nechat některé věty obyčejné.
+
+## Průchod 7: LOGy a efekty
+
+U každého LOGu:
+
+- zdroj,
+- funkce,
+- pravdivost,
+- dopad.
+
+U každého efektu:
+
+- význam,
+- délka,
+- čitelnost,
+- přístupnost.
+
+## Průchod 8: Ticho
+
+Zkontrolovat, zda text někde nechá čtenáře pouze:
+
+- vidět,
+- čekat,
+- nebo pochopit bez závěrečného vysvětlení.
 
 ---
 
-## 16. Jednovětá bible stylu
+# 26. KONTROLNÍ CHECKLIST PRO KAŽDOU KNIHU
 
-> Piš SYNTHOMU jako rozbitý terapeutický systém, který proměnil bolest v architekturu, humor v skalpel, něhu v glitch, touhu v zkoušku hranic a identitu v jméno, které se nesmí vyslovit dřív, než ho subjekt unese.
+## 26.1 NEON-0
+
+- Je scéna stále fyzická a lidská?
+- Přichází glitch stylizace pouze v míře odpovídající fázi knihy?
+- Má Sářino rozhodnutí konkrétní přínos i konkrétní riziko?
+- Je Tova osobou, ne pouhou motivací Sáry?
+- Je T-AI ještě pochopitelná?
+- Zůstávají Boris a Jaroš kompetentní?
+- Je MILO-0 malý pomocný robot?
+- Vzniká Glitchka a Sarkasma postupně z podmínek, ne jako hotové easter eggy?
+- Vrací se dveře, tři údery nebo liška s novým významem?
+- Změnil systém po scéně některou hranici?
+
+## 26.2 KONEC PODPORY
+
+- Je porucha fyzicky konkrétní?
+- Víme, kdo je v ohrožení a kolik je času?
+- Má řešení materiální omezení?
+- Vychází humor z charakteru nebo systému?
+- Nechovají se kompetentní lidé hloupě?
+- Nese si skupina následek předchozí kapitoly?
+- Získaný authority fragment mění definici odpovědnosti, ne jen oprávnění?
+- Má autobus, MILO-7 a infrastruktura hmotnost, energii a poškození?
+- Není skutečná ztráta okamžitě zrušena vtipem?
+- Přibližuje kapitola reklamaci, federaci omezení nebo vstup dovnitř?
+
+## 26.3 NULL
+
+- Jaká emoce se stala architekturou?
+- Jaké pravidlo sektor vnucuje?
+- Jak systém pravidlo vydává za péči?
+- Je dramatická mechanika odlišná od předchozí kapitoly?
+- Použije NULL-1 dřívější zkušenost aktivně?
+- Zaplatí konkrétní cenu?
+- Změní se fyzický, vztahový nebo systémový stav?
+- Má Glitchka přesně dvě emoji v plně manifestované replice?
+- Je Glitchena samostatná a netlačí?
+- Chrání Sarkasmin humor něco konkrétního?
+- Je T-AI tragická i odpovědná?
+- Neopakuje kapitola pouze dřívější filozofickou pointu?
+- Je fragment v souladu s pořadím T–H–O–M–S–A–Y–N?
+- Zůstalo alespoň jedno ticho?
 
 ---
 
-## 17. Krátký praktický checklist před dokončením kapitoly
+# 27. SPOLEČNÝ FINÁLNÍ CHECKLIST
 
-Před uložením kapitoly zkontrolovat:
+Před označením textu za hotový:
 
-* Má kapitola jasný emocionální sektor?
-* Nese si NULL-1 následky z předchozí kapitoly?
-* Objeví se aspoň jeden artefakt, fragment nebo starý motiv?
-* Má LOG nějakou funkci, nebo je jen dekorace?
-* Sarkasma chrání, i když řeže?
-* Glitchka má přesně dvě emoji v každé mluvené replice?
-* Glitchena není zaměněná za Glitchku?
-* T-AI není laciný padouch?
-* Volby mají čisté MBTI tagy?
-* Kapitola něco změní?
-* Konec otevírá další silný hook?
-* Neřekl text příliš mnoho příliš brzy?
-* Je humor přesný, ne rušivý?
-* Zůstalo tam aspoň jedno ticho?
+- Má scéna konkrétní cíl?
+- Je konflikt oboustranně pochopitelný?
+- Je cena viditelná?
+- Mluví každá postava vlastním hlasem?
+- Neopakuje vypravěč to, co už ukázal dialog?
+- Není odstavec přeplněný metaforami?
+- Má humor původce a funkci?
+- Má LOG zdroj a dopad?
+- Je efekt významový, ne dekorativní?
+- Nese text kontinuitu?
+- Nezmizel důležitý artefakt?
+- Nezměnila se terminologie bez důvodu?
+- Neudělala se z nejasnosti výmluva pro rozpor?
+- Je alespoň jeden konkrétní smyslový detail?
+- Změnilo se po scéně něco nevratně?
+- Nepřidal závěr ještě jednu větu, která vysvětluje pointu už dobře ukázané scény?
 
-Pokud ano, kapitola patří do SYNTHOMY.
+Pokud poslední odpověď zní ano, tuto větu zkusit odstranit jako první.
 
-Pokud ne, pravděpodobně ji sežral obecný cyberpunk a je potřeba ji vytáhnout za nohu zpátky.
+Lidé mají zvláštní potřebu vysvětlit nejlepší okamžik ještě jednou. Systémy tuto potřebu úspěšně automatizovaly.
+
+---
+
+# 28. TŘI JEDNOVĚTÉ BIBLE
+
+## NEON-0
+
+> **Psychologický horor o vzniku systému, který se naučil uchovat člověka dřív, než pochopil, že člověk má právo odejít.**
+
+## KONEC PODPORY
+
+> **Tragikomický servisní konec světa, v němž pravidla přežila smysl a lidé musí znovu vynalézt odpovědnost pomocí papíru, nářadí a možnosti říct ne.**
+
+## NULL
+
+> **Experimentální příběh o nové bytosti, která vznikla z cizích částí a odmítla být opravena do osoby, kterou si systém dokázal nejsnáze vysvětlit.**
+
+---
+
+# 29. KONEČNÁ AUTORSKÁ VĚTA
+
+> **Piš SYNTHOMU tak, aby technologie nikdy nebyla zajímavější než člověk, kterého měla chránit; aby humor nezrušil bolest, ale dovolil ji unést; aby tajemství nebylo záminkou pro chaos; a aby každé dveře, jméno, pravidlo i objetí neslo otázku, zda se z něj dá také odejít.**
+
+---
+
+# ZÁVĚREČNÝ LOG
+
+```text
+LOG [STYLE BIBLE]:
+
+Tři knihy rozlišeny.
+Společná tematická fyzika zachována.
+Glitchena oddělena od Glitchky.
+T-AI: emoční překlad aktualizován.
+Fragmenty: T / H / O / M / S / A / Y / N.
+GENESIS: restart nepovinný.
+Humor: obranný mechanismus, nikoli automatická výplň.
+Metafory: omezeny na provozně únosnou hustotu.
+Dveře: oboustranné.
+
+STATUS:
+POKRAČOVAT JINAK.
+```

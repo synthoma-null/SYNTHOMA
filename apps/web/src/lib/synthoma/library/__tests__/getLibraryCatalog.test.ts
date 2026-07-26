@@ -1,12 +1,19 @@
 import { getLibraryCatalog } from '../getLibraryCatalog';
 
 describe('getLibraryCatalog', () => {
-  it('loads both collections in canonical order', async () => {
+  it('loads all three collections in canonical story order', async () => {
     const catalog = await getLibraryCatalog();
-    expect(catalog.collections).toHaveLength(2);
-    expect(catalog.collections[0]?.slug).toBe('SYNTHOMA-NULL');
-    expect(catalog.collections[0]?.chapters.length).toBe(22);
-    expect(catalog.collections[1]).toMatchObject({
+    expect(catalog.collections).toHaveLength(3);
+    expect(catalog.collections[0]).toMatchObject({
+      slug: 'neon-0',
+      title: 'SYNTHOMA: NEON-0',
+      availableCount: 24,
+      totalCount: 24,
+      status: 'complete',
+    });
+    expect(catalog.collections[1]?.slug).toBe('SYNTHOMA-NULL');
+    expect(catalog.collections[1]?.chapters.length).toBe(22);
+    expect(catalog.collections[2]).toMatchObject({
       slug: 'konec-podpory',
       title: 'SYNTHOMA: KONEC PODPORY',
       availableCount: 19,
@@ -23,7 +30,9 @@ describe('getLibraryCatalog', () => {
 
   it('resolves canonical chapter id for 0-inf-restart', async () => {
     const catalog = await getLibraryCatalog();
-    const restart = catalog.collections[0]?.chapters.find((ch) => ch.filename.includes('0-∞'));
+    const restart = catalog.collections
+      .find((collection) => collection.slug === 'SYNTHOMA-NULL')
+      ?.chapters.find((ch) => ch.filename.includes('0-∞'));
     expect(restart?.id).toBe('0-inf-restart');
   });
 

@@ -27,10 +27,20 @@ function closeCompetingPanels(panel: 'identity' | 'settings' | 'audio') {
 export default function SynthomaCommandHeader() {
   const pathname = usePathname() ?? '/';
   const { mode, status, actions } = useHeader();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const active = SECTORS.find((sector) => isActive(pathname, sector.href));
-  const quiet = mode === 'reader' || mode === 'utility';
-  const label = active ? t(active.labelKey as TKey) : t('shell.system');
+  const contextualLabel = pathname === '/autor'
+    ? 'AUTOR'
+    : pathname === '/reader' || pathname.startsWith('/chapter/')
+      ? lang === 'en' ? 'READER' : 'ČTEČKA'
+      : pathname.startsWith('/ai')
+        ? 'AI / API'
+        : pathname.startsWith('/terms') || pathname.startsWith('/privacy')
+          ? lang === 'en' ? 'PROTOCOL' : 'PROTOKOL'
+          : pathname.startsWith('/login') || pathname.startsWith('/register')
+            ? 'AUTH'
+            : null;
+  const label = active ? t(active.labelKey as TKey) : contextualLabel ?? t('shell.system');
 
   return (
     <header className={`synthoma-command-header synthoma-command-header--${mode}`} data-testid="synthoma-command-header">
@@ -42,15 +52,13 @@ export default function SynthomaCommandHeader() {
           <><span aria-hidden="true">SYS</span><strong>{label}</strong><span className="synthoma-command-header__pulse" aria-hidden="true" /></>
         )}
       </div>
-      {!quiet && (
-        <nav className="synthoma-command-header__sectors" aria-label={t('shell.sectors.aria')}>
-          {SECTORS.map((sector) => (
-            <Link key={sector.href} href={sector.href} aria-current={isActive(pathname, sector.href) ? 'page' : undefined}>
-              {t(sector.labelKey as TKey)}
-            </Link>
-          ))}
-        </nav>
-      )}
+      <nav className="synthoma-command-header__sectors" aria-label={t('shell.sectors.aria')}>
+        {SECTORS.map((sector) => (
+          <Link key={sector.href} href={sector.href} aria-current={isActive(pathname, sector.href) ? 'page' : undefined}>
+            {t(sector.labelKey as TKey)}
+          </Link>
+        ))}
+      </nav>
       <nav className="synthoma-command-header__commands" aria-label={t('shell.controls.aria')}>
         {actions && <span className="synthoma-command-header__slot-actions" data-testid="command-header-slot-actions">{actions}</span>}
         <button className="os-command" type="button" data-synthoma-command="identity" aria-label={t('shell.identity')} aria-controls="id-panel-popup" aria-expanded="false" aria-pressed="false" onClick={() => { closeCompetingPanels('identity'); document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')); }}><SynthomaCommandIcon name="identity" /></button>

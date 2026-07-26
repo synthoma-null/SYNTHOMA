@@ -6,7 +6,7 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   const root=document.documentElement;
   const clamp=(value,min,max,fallback)=>{const n=Number(value);return Number.isFinite(n)?Math.min(max,Math.max(min,n)):fallback};
   let raw={};try{raw=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch{}
-  const legacy=raw.version!==version&&raw.version!==2;
+  const legacy=![2,3,version].includes(raw.version);
   const legacyValue=(name,fallback)=>{try{const value=localStorage.getItem(name);return value===null?fallback:value}catch{return fallback}};
   const theme=legacy?legacyValue('theme','synthoma'):(typeof raw.theme==='string'?raw.theme:'synthoma');
   const motionMode=legacy?(legacyValue('animationsDisabled','false')==='true'?'off':'system'):(['system','full','reduced','off'].includes(raw.motionMode)?raw.motionMode:'system');
@@ -25,9 +25,7 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   const readerLineHeight=!legacy&&['compact','comfortable','airy'].includes(raw.readerLineHeight)?raw.readerLineHeight:'comfortable';
   const effectIntensity=clamp(!legacy?raw.effectIntensity:.75,0,1,.75);
   const opacity=clamp(legacy?legacyValue('readerBgOpacity',.85):raw.readerOpacity,.4,1,.85);
-  const glass=legacy?legacyValue('glassMode','false')==='true':raw.glassEnabled===true;
   const focus=!legacy&&raw.focusMode===true;
-  const blur=clamp(legacy?legacyValue('glassBlur',12):raw.glassBlur,0,24,12);
   root.dataset.theme=theme;
   root.dataset.motionPreference=motionMode;
   root.dataset.motion=motion;
@@ -36,17 +34,14 @@ export const UI_PREFERENCE_BOOTSTRAP = `(()=>{try{
   root.dataset.noise=noise&&motion==='full'?'on':'off';
   root.dataset.scanlines=scanlines&&motion!=='off'?'on':'off';
   root.dataset.textEffects=motion==='off'?'off':textEffects;
-  root.dataset.glass=glass?'on':'off';
-  root.dataset.readerGlass=glass?'on':'off';
   root.dataset.readerFocus=focus?'on':'off';
   root.dataset.readerWidth=readerWidth;
   root.dataset.readerLineHeight=readerLineHeight;
   root.style.setProperty('--font-size-multiplier',String(fontScale));
   root.style.setProperty('--reader-effect-intensity',String(effectIntensity));
   root.style.setProperty('--reader-surface-opacity',Math.round(opacity*100)+'%');
-  root.style.setProperty('--reader-glass-blur',blur+'px');
   root.style.setProperty('--app-bg-opacity',String(opacity));
   root.style.setProperty('--bg-opacity',String(opacity));
-  root.style.setProperty('--app-bg-blur',blur+'px');
-  root.style.setProperty('--glass-blur',blur+'px');
+  localStorage.removeItem('glassMode');
+  localStorage.removeItem('glassBlur');
 }catch{}})();`;

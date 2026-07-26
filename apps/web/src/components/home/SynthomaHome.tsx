@@ -1,7 +1,5 @@
 'use client';
 
-import HomeBackground from './HomeBackground';
-import HomeMemorySignal from './HomeMemorySignal';
 import HomeFirstContact from './HomeFirstContact';
 import HomePrimaryAction from './HomePrimaryAction';
 import HomeSectorLinks from './HomeSectorLinks';
@@ -13,7 +11,6 @@ export default function SynthomaHome() {
   const { t } = useLang();
   return (
     <main className="synthoma-home" aria-labelledby="synthoma-home-title">
-      <HomeBackground />
       <div className="synthoma-home__grid synthoma-local-scrim">
         <HomeSystemStatus />
         <section className="synthoma-home__primary">
@@ -35,7 +32,6 @@ export default function SynthomaHome() {
           <HomePrimaryAction />
         </section>
         <HomeSectorLinks />
-        <HomeMemorySignal />
       </div>
     </main>
   );

@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import SynthomaMediaLayer from '../synthoma-os/SynthomaMediaLayer';
 import { useArchiveSnapshot } from '../../lib/synthoma/archive/useArchiveSnapshot';
 import { resolveArchiveCardVisibility } from '../../lib/synthoma/archive/resolveArchiveLock';
 import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
@@ -42,7 +41,7 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
   const [enCards, setEnCards] = useState<ArchiveCard[] | null>(null);
   const [purchaseCardId, setPurchaseCardId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<'records' | 'collection'>('records');
-  const [bookFilter, setBookFilter] = useState<'all' | 'synthoma-null' | 'konec-podpory'>('all');
+  const [bookFilter, setBookFilter] = useState<'all' | 'synthoma-null' | 'konec-podpory' | 'neon-0'>('all');
   const { resolve: resolveAccess, getCachedAccess } = useAccess();
   const returnFocusRef = useRef<HTMLElement | null>(null);
 
@@ -135,7 +134,6 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
 
   return (
     <main className="synthoma-archive" id="main-content">
-      <SynthomaMediaLayer src="/video/SYNTHOMA10.webm" className="synthoma-archive__media" />
       <div className="synthoma-archive__content">
         <header className="synthoma-archive__header">
           <span className="os-status__code">{t('archive.code')}</span>
@@ -198,6 +196,7 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
           <div className="synthoma-archive__book-filters" role="group" aria-label={lang === 'en' ? 'Filter records by book' : 'Filtrovat záznamy podle knihy'}>
             {([
               ['all', lang === 'en' ? 'ALL' : 'VŠE'],
+              ['neon-0', 'NEON-0'],
               ['synthoma-null', 'SYNTHOMA-NULL'],
               ['konec-podpory', 'KONEC PODPORY'],
             ] as const).map(([id, label]) => (

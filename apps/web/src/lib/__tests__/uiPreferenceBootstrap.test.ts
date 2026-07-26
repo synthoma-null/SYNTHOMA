@@ -20,11 +20,11 @@ describe('UI preference bootstrap', () => {
     expect(root).toHaveAttribute('data-background-motion', 'off');
     expect(root).toHaveAttribute('data-glitch', 'off');
     expect(root.style.getPropertyValue('--font-size-multiplier')).toBe('1.2');
-    expect(root.style.getPropertyValue('--glass-blur')).toBe('18px');
-    expect(root).toHaveAttribute('data-reader-glass', 'on');
+    expect(root.style.getPropertyValue('--glass-blur')).toBe('');
+    expect(root).not.toHaveAttribute('data-reader-glass');
     expect(root).toHaveAttribute('data-reader-focus', 'on');
     expect(root.style.getPropertyValue('--reader-surface-opacity')).toBe('72%');
-    expect(root.style.getPropertyValue('--reader-glass-blur')).toBe('18px');
+    expect(root.style.getPropertyValue('--reader-glass-blur')).toBe('');
   });
 
   it('resolves system motion and data saver without loading background motion', () => {

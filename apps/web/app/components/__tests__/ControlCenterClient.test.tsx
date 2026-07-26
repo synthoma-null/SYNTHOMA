@@ -30,15 +30,15 @@ describe('ControlCenterClient', () => {
     expect(screen.queryByText('SYS / CTRL')).not.toBeInTheDocument();
   });
 
-  it('shows only relevant tabs and keeps opacity separate from glass blur', async () => {
+  it('shows only relevant tabs and exposes a solid Reader surface control', async () => {
     renderCenter();
     expect(await screen.findByRole('dialog', { name: /ovládací centrum/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: 'Vzhled' })).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'Čtení' })).not.toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Zvuk' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Aplikace' })).toBeInTheDocument();
-    expect(screen.getByRole('slider', { name: 'PRŮHLEDNOST ČTECÍ PLOCHY' })).toBeEnabled();
-    expect(screen.getByRole('slider', { name: 'Rozostření skla' })).toBeDisabled();
+    expect(screen.getAllByRole('slider')).toHaveLength(2);
+    expect(screen.queryByText(/skla/i)).not.toBeInTheDocument();
   });
 
   it('shows PWA status and cache actions in the application tab', async () => {

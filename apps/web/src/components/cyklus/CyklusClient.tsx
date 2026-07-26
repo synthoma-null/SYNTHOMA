@@ -15,7 +15,6 @@ import StatDock from './StatDock';
 import { CyklusVoidHub } from './CyklusVoidHub';
 import CyklusVoidHubClient from './CyklusVoidHubClient';
 import CyklusPocketDock from './CyklusPocketDock';
-import CyklusCommandRail from './CyklusCommandRail';
 import { CyklusCardScene } from './CyklusCardScene';
 import { CycleForecastNotice, CycleSummaryNotice } from './CycleNotices';
 import CyklusCardOverlay from './CyklusCardOverlay';
@@ -25,7 +24,6 @@ import { Button } from '../synthoma-os/ui';
 import SynthomaWordmark from '../synthoma/SynthomaWordmark';
 import { STAT_LABELS, SECTOR_LABELS, ENTITY_LABELS, type StatKey, type EntityId, type CyklusRunState, type CyklusRunSummary, type SwipeCard, type CyklusChoiceRecord, type CardCondition, type RunEnding } from '../../game/cyklus/cyklusTypes';
 import { getCardChoiceOrder, getChoiceForPhysicalSide, type PhysicalCardSide } from '../../game/cyklus/cyklusCardPresentation';
-import useCyklusMobileLayout from './useCyklusMobileLayout';
 import { useBackgroundMotionAllowed } from '../../hooks/useBackgroundMotionAllowed';
 
 function getTutorialHighlight(cardId: string | undefined): { stat?: StatKey | 'all'; actions?: boolean; pocket?: boolean } | null {
@@ -189,7 +187,6 @@ import CyklusPortalScope from './CyklusPortalScope';
 export default function CyklusClient() {
   const { setStatus, setActions } = useHeader();
   const { data: session, status: sessionStatus } = useSession();
-  const mobileGameplayLayout = useCyklusMobileLayout();
   const backgroundMotionAllowed = useBackgroundMotionAllowed();
   const [state, setState] = useState<CyklusRunState | null>(null);
   const [loading, setLoading] = useState(true);
@@ -198,7 +195,6 @@ export default function CyklusClient() {
   const [flyDirection, setFlyDirection] = useState<'yes' | 'no' | null>(null);
   const [cardArtRevealed, setCardArtRevealed] = useState(false);
   const [posterViewerOpen, setPosterViewerOpen] = useState(false);
-  const [currentTraceOpen, setCurrentTraceOpen] = useState(false);
   const [runHistory, setRunHistory] = useState<CyklusRunSummary[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [activeStat, setActiveStat] = useState<StatKey | null>(null);
@@ -227,8 +223,6 @@ export default function CyklusClient() {
   const cardRef = useRef<HTMLDivElement>(null);
   const cardTitleRef = useRef<HTMLHeadingElement>(null);
   const posterViewerTriggerRef = useRef<HTMLButtonElement>(null);
-  const currentTraceTriggerRef = useRef<HTMLButtonElement>(null);
-  const currentTraceCloseRef = useRef<HTMLButtonElement>(null);
   const gesturePointerId = useRef<number | null>(null);
   const gestureStartX = useRef(0);
   const gestureStartY = useRef(0);
@@ -298,40 +292,9 @@ export default function CyklusClient() {
     window.setTimeout(() => posterViewerTriggerRef.current?.focus(), 0);
   }, []);
 
-  const closeCurrentTrace = useCallback((restoreFocus = true) => {
-    setCurrentTraceOpen(false);
-    if (restoreFocus) {
-      window.setTimeout(() => currentTraceTriggerRef.current?.focus(), 0);
-    }
-  }, []);
-
-  const toggleCurrentTrace = useCallback(() => {
-    if (currentTraceOpen) {
-      closeCurrentTrace();
-      return;
-    }
-    setCurrentTraceOpen(true);
-  }, [closeCurrentTrace, currentTraceOpen]);
-
   useEffect(() => {
     setServerSyncEnabled(sessionStatus === 'authenticated');
   }, [sessionStatus]);
-
-  useEffect(() => {
-    if (!currentTraceOpen) return;
-    currentTraceCloseRef.current?.focus();
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') closeCurrentTrace();
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [closeCurrentTrace, currentTraceOpen]);
-
-  useEffect(() => {
-    if (mobileGameplayLayout && currentTraceOpen) {
-      closeCurrentTrace(false);
-    }
-  }, [closeCurrentTrace, currentTraceOpen, mobileGameplayLayout]);
 
   useEffect(() => {
     let cancelled = false;
@@ -784,7 +747,6 @@ export default function CyklusClient() {
   if (showMenu) {
     return (
       <div className="cyklus-no-select cyklus-root cyklus-root--menu">
-        <CyklusCommandRail />
         {backgroundMotionAllowed ? <video className="cyklus-menu__video" autoPlay muted loop playsInline aria-hidden="true" tabIndex={-1}>
           <source src="/video/SYNTHOMA5.webm" type="video/webm" />
         </video> : null}
@@ -795,7 +757,7 @@ export default function CyklusClient() {
           </div>
           <section className="cyklus-menu__content cyklus-menu__content--brand-safe" aria-labelledby="cyklus-menu-brand">
             <div className="cyklus-menu__title">
-              <SynthomaWordmark context="cyklus" className="cyklus-menu__brand" id="cyklus-menu-brand" data-testid="cyklus-menu-brand" />
+              <SynthomaWordmark context="home" className="cyklus-menu__brand" id="cyklus-menu-brand" data-testid="cyklus-menu-brand" />
               <span className="cyklus-menu__module">CYKLUS / NULL-1</span>
             </div>
             <div className="cyklus-menu__restart-line">RESTART PROTOCOL / STANDBY</div>
@@ -854,7 +816,6 @@ export default function CyklusClient() {
   const profile = computeProfile(state);
   const ending = state.status === 'dead' || state.status === 'completed' ? computeEnding(state) : null;
   const tutorialHighlight = getTutorialHighlight(card?.id);
-  const tutorialActive = card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done');
   const showCardPoster = posterActive;
 
   return (
@@ -868,21 +829,6 @@ export default function CyklusClient() {
       outcomeVisible ? 'cyklus-root--outcome-visible' : '',
       posterViewerOpen ? 'cyklus-root--poster-active' : '',
     ].filter(Boolean).join(' ')}>
-      <CyklusCommandRail
-        pocketControl={!ending ? (
-          <CyklusPocketDock
-            state={state}
-            open={showPocket}
-            highlighted={tutorialHighlight?.pocket}
-            placement="header"
-            confirmActivateId={confirmActivateId}
-            onToggle={() => setShowPocket((value) => !value)}
-            onClose={() => setShowPocket(false)}
-            onConfirmActivate={setConfirmActivateId}
-            onActivate={handleActivateItem}
-          />
-        ) : undefined}
-      />
       {showSkipConfirm && (
         <div className="cyklus-no-select cyklus-overlay cyklus-overlay--warning">
           <button className="cyklus-overlay__backdrop" type="button" onClick={() => setShowSkipConfirm(false)} aria-label="Zavřít potvrzení tutorialu" />
@@ -913,9 +859,19 @@ export default function CyklusClient() {
           highlight={tutorialHighlight?.stat}
           history={state.history}
           climate={state.modifier.id !== 'none' ? state.modifier : null}
-          traceOpen={!mobileGameplayLayout ? currentTraceOpen : undefined}
-          onToggleTrace={!mobileGameplayLayout ? toggleCurrentTrace : undefined}
-          traceTriggerRef={currentTraceTriggerRef}
+          pocketControl={(
+            <CyklusPocketDock
+              state={state}
+              open={showPocket}
+              highlighted={tutorialHighlight?.pocket}
+              placement="stat"
+              confirmActivateId={confirmActivateId}
+              onToggle={() => setShowPocket((value) => !value)}
+              onClose={() => setShowPocket(false)}
+              onConfirmActivate={setConfirmActivateId}
+              onActivate={handleActivateItem}
+            />
+          )}
           tutorialProgress={card?.category === 'tutorial' && !state.flags.includes('tutorial_v2_done') ? (() => {
             const tp = TUTORIAL_PROGRESS_MAP[card.id];
             const tierLabel = tp?.tier === 'ext' ? 'ROZŠÍŘENÍ' : 'ZÁKLAD';
@@ -1086,15 +1042,6 @@ export default function CyklusClient() {
           </div>
         ) : card ? (
           <>
-            {currentTraceOpen && !mobileGameplayLayout && (
-              <ActiveObjectivePanel
-                state={state}
-                runHistoryCount={runHistory.length}
-                tutorialActive={tutorialActive}
-                onClose={closeCurrentTrace}
-                closeButtonRef={currentTraceCloseRef}
-              />
-            )}
             <div
               ref={cardRef}
               className={[

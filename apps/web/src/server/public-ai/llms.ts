@@ -15,6 +15,7 @@ export async function llmsIndex(): Promise<string> {
 - [Understand the world](${absolutePublicUrl('/archive')})
 
 ## Free books
+- [SYNTHOMA: NEON-0 index](${absolutePublicUrl('/ai/en/books/neon-0.md')})
 - [SYNTHOMA-NULL index](${absolutePublicUrl('/ai/en/books/synthoma-null.md')})
 - [SYNTHOMA: KONEC PODPORY index](${absolutePublicUrl('/ai/en/books/konec-podpory.md')})
 ${chapters.map((chapter) => `- [${chapter.title}](${absolutePublicUrl(`/ai/en/chapters/${chapter.id}.md`)})`).join('\n')}

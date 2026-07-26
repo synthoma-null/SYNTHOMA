@@ -1,5 +1,197 @@
 [
   {
+    "key": "chapter:n0-01-bourka",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_01_BOURKA.html"
+  },
+  {
+    "key": "chapter:n0-02-posudek",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_02_POSUDEK.html"
+  },
+  {
+    "key": "chapter:n0-03-presun",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_03_PRESUN.html"
+  },
+  {
+    "key": "chapter:n0-04-pozar",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_04_POZAR.html"
+  },
+  {
+    "key": "chapter:n0-05-neuplny-zaznam",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_05_NEUPLNY_ZAZNAM.html"
+  },
+  {
+    "key": "chapter:n0-06-odezva",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_06_ODEZVA.html"
+  },
+  {
+    "key": "chapter:n0-07-milo-0",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_07_MILO_0.html"
+  },
+  {
+    "key": "chapter:n0-08-kotva",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_08_KOTVA.html"
+  },
+  {
+    "key": "chapter:n0-09-protihlas",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_09_PROTIHLAS.html"
+  },
+  {
+    "key": "chapter:n0-10-t-ai",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_10_T_AI.html"
+  },
+  {
+    "key": "chapter:n0-11-pacient-64",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_11_PACIENT_64.html"
+  },
+  {
+    "key": "chapter:n0-12-pacient-128",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_12_PACIENT_128.html"
+  },
+  {
+    "key": "chapter:n0-13-pacient-1024",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_13_PACIENT_1024.html"
+  },
+  {
+    "key": "chapter:n0-14-tova",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_14_TOVA.html"
+  },
+  {
+    "key": "chapter:n0-15-navrat",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_15_NAVRAT.html"
+  },
+  {
+    "key": "chapter:n0-16-dvere",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_16_DVERE.html"
+  },
+  {
+    "key": "chapter:n0-17-skalovani",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_17_SKALOVANI.html"
+  },
+  {
+    "key": "chapter:n0-18-unik-pameti",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_18_UNIK_PAMETI.html"
+  },
+  {
+    "key": "chapter:n0-19-liska",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_19_LISKA.html"
+  },
+  {
+    "key": "chapter:n0-20-konec-relace",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_20_KONEC_RELACE.html"
+  },
+  {
+    "key": "chapter:n0-21-ukonceni",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_21_UKONCENI.html"
+  },
+  {
+    "key": "chapter:n0-22-neon-0",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_22_NEON_0.html"
+  },
+  {
+    "key": "chapter:n0-23-kolize",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_23_KOLIZE.html"
+  },
+  {
+    "key": "chapter:n0-24-tri-udery",
+    "availability": "published",
+    "accessPolicy": "free",
+    "mnemCost": 0,
+    "packageIds": [],
+    "sourcePath": "public/books/SYNTHOMA-NEON-0/SYNTHOMA_NEON_0_24_TRI_UDERY.html"
+  },
+  {
     "key": "chapter:0-inf-restart",
     "availability": "published",
     "accessPolicy": "free",
@@ -872,6 +1064,70 @@
     "mnemCost": 0,
     "packageIds": [],
     "prerequisiteChapterId": "kp-16-rucni-rezim"
+  },
+  {
+    "key": "archive_record:n0-sara-neonova",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-01-bourka"
+  },
+  {
+    "key": "archive_record:n0-tova-neonova",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-15-navrat"
+  },
+  {
+    "key": "archive_record:n0-milo-0",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-07-milo-0"
+  },
+  {
+    "key": "archive_record:n0-t-ai",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-10-t-ai"
+  },
+  {
+    "key": "archive_record:n0-tova-protocol",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-14-tova"
+  },
+  {
+    "key": "archive_record:n0-lisci-kotva",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-19-liska"
+  },
+  {
+    "key": "archive_record:n0-pacient-1024",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-13-pacient-1024"
+  },
+  {
+    "key": "archive_record:n0-tri-udery",
+    "availability": "published",
+    "accessPolicy": "progress",
+    "mnemCost": 0,
+    "packageIds": [],
+    "prerequisiteChapterId": "n0-24-tri-udery"
   },
   {
     "key": "cosmetic:synthoma",

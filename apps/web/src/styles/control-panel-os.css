@@ -32,12 +32,6 @@
   visibility: visible;
 }
 
-#control-panel.control-panel.glass {
-  background: color-mix(in srgb, var(--cy-surface-1) 90%, transparent) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  backdrop-filter: blur(16px) !important;
-}
-
 #control-panel .cp-header {
   position: sticky;
   top: 0;

@@ -16,6 +16,7 @@ ${cs
 
 ## ${cs ? 'Verejny obsah' : 'Public content'}
 
+- [SYNTHOMA: NEON-0](${absolutePublicUrl(`/ai/${locale}/books/neon-0.md`)})
 - [${cs ? 'Kniha SYNTHOMA-NULL' : 'SYNTHOMA-NULL book'}](${absolutePublicUrl(`/ai/${locale}/books/synthoma-null.md`)})
 - [SYNTHOMA: KONEC PODPORY](${absolutePublicUrl(`/ai/${locale}/books/konec-podpory.md`)})
 - [${cs ? 'Archiv' : 'Archive'}](${absolutePublicUrl(`/ai/${locale}/archive.md`)})

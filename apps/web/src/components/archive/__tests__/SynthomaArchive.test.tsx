@@ -58,6 +58,16 @@ const konecPodporyCard: ArchiveCard = {
   access: { mode: 'free', visibility: 'full', requiredChapterId: null, requiredChapterTitle: null, mnemCost: 0, label: 'Dostupné' },
 };
 
+const neonCard: ArchiveCard = {
+  id: 'n0-t-ai',
+  category: 'mechaniky',
+  title: 'T-AI 0.9.72-beta',
+  teaser: 'Systém péče před verzí 1.0.',
+  body: ['Plný záznam NEON-0.'],
+  sourceBook: 'neon-0',
+  access: { mode: 'free', visibility: 'full', requiredChapterId: null, requiredChapterTitle: null, mnemCost: 0, label: 'Dostupné' },
+};
+
 const library: LibraryCatalog = {
   collections: [
     { slug: 'SYNTHOMA-NULL', title: 'SYNTHOMA-NULL', chapters: [], availableCount: 5, totalCount: 22 },
@@ -132,5 +142,13 @@ describe('SynthomaArchive localization and dialog integration', () => {
     fireEvent.click(screen.getByRole('button', { name: 'KONEC PODPORY' }));
     expect(screen.getByRole('button', { name: /Tova Neonová/ })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Záznam jedna/ })).not.toBeInTheDocument();
+  });
+
+  it('exposes NEON-0 as its own archive filter', () => {
+    render(<SynthomaArchive initialCards={[card, konecPodporyCard, neonCard]} />);
+    fireEvent.click(screen.getByRole('button', { name: 'NEON-0' }));
+    expect(screen.getByRole('button', { name: /T-AI 0.9.72-beta/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Záznam jedna/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Tova Neonová/ })).not.toBeInTheDocument();
   });
 });
