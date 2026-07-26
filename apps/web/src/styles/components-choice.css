@@ -5,9 +5,9 @@
 
 /* Default / X */
 p.choice[data-tags] {
-  --choice-accent: var(--accent-secondary, #00ffff);
-  --choice-accent-soft: rgba(0, 255, 255, 0.16);
-  --choice-accent-hot: rgba(0, 255, 255, 0.42);
+  --choice-accent: var(--accent-secondary, #00b6f1);
+  --choice-accent-soft: rgba(0, 182, 241, 0.16);
+  --choice-accent-hot: rgba(0, 182, 241, 0.42);
   --choice-letter: "?";
 }
 

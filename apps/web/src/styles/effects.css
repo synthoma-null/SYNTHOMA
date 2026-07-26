@@ -13,14 +13,14 @@
 
 /* pulseWave – jemný puls řízený motivem. 💓 */
 @keyframes pulseWave {
-  0%   { box-shadow: 0 0 0 0 var(--pulse-color, color-mix(in oklab, var(--accent-secondary, #0ff) 45%, transparent)); }
-  70%  { box-shadow: 0 0 0 18px color-mix(in oklab, var(--pulse-color, var(--accent-secondary, #0ff)) 0%, transparent); }
-  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--pulse-color, var(--accent-secondary, #0ff)) 0%, transparent); }
+  0%   { box-shadow: 0 0 0 0 var(--pulse-color, color-mix(in oklab, var(--accent-secondary, #00b6f1) 45%, transparent)); }
+  70%  { box-shadow: 0 0 0 18px color-mix(in oklab, var(--pulse-color, var(--accent-secondary, #00b6f1)) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--pulse-color, var(--accent-secondary, #00b6f1)) 0%, transparent); }
 }
 .effect-pulseWave {
   position: relative;
   /* Odvozená barva pulzu z motivu – lze přepsat lokálně */
-  --pulse-color: color-mix(in oklab, var(--accent-secondary, #0ff) 55%, transparent);
+  --pulse-color: color-mix(in oklab, var(--accent-secondary, #00b6f1) 55%, transparent);
 }
 .effect-pulseWave::after {
   content: '';
@@ -42,7 +42,7 @@ body.no-animations .effect-pulseWave::after {
   color: var(--accent-primary, #f0f);
   text-shadow:
     0 0 6px color-mix(in oklab, var(--accent-primary, #f0f) 50%, transparent),
-    1px 0 color-mix(in oklab, var(--accent-secondary, #0ff) 20%, transparent),
+    1px 0 color-mix(in oklab, var(--accent-secondary, #00b6f1) 20%, transparent),
    -1px 0 color-mix(in oklab, var(--accent-warning, #f6ff00) 12%, transparent);
   box-shadow:
     0 0 12px color-mix(in oklab, var(--accent-primary, #f0f) 25%, transparent) inset,
@@ -93,10 +93,10 @@ body.no-animations .effect-pulseWave::after {
 .effect-crtTerminal {
   position: relative;
   background: rgba(0, 13, 26, 0.6);
-  border: 1px solid rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(0, 182, 241, 0.2);
   padding: 16px;
   color: var(--c-ghost-white);
-  text-shadow: 0 0 2px rgba(0,255,255,0.3);
+  text-shadow: 0 0 2px rgba(0, 182, 241,0.3);
   animation: crtFlicker 2.6s steps(30, end) infinite;
 }
 .effect-crtTerminal::before {
@@ -443,7 +443,7 @@ body.no-animations:not(.force-shine) .noising-char.noising-static {
   border-radius: 12px;
   padding: 16px;
   background: color-mix(in oklab, var(--bg-glass, rgba(255,255,255,0.06)) 100%, transparent);
-  box-shadow: 0 0 18px color-mix(in oklab, var(--shadow-primary, #0ff) 16%, transparent) inset;
+  box-shadow: 0 0 18px color-mix(in oklab, var(--shadow-primary, #00b6f1) 16%, transparent) inset;
 }
 .lib-section-title { font-size: 20px; font-weight: 700; margin: 0; }
 .lib-list { margin-top: 10px; display: grid; gap: 10px; list-style: none; padding: 0; }
@@ -459,7 +459,7 @@ body.no-animations:not(.force-shine) .noising-char.noising-static {
   font-family: inherit;
   font-size: inherit;
   font-weight: 600;
-  text-shadow: 0 0 4px var(--text-secondary, rgba(0,255,255,.3));
+  text-shadow: 0 0 4px var(--text-secondary, rgba(0, 182, 241,.3));
   transition: border-color .18s ease, box-shadow .18s ease, transform .12s ease, filter .18s ease, background .18s ease;
   box-shadow: 0 0 0 0 transparent;
   position: relative;
@@ -473,13 +473,13 @@ button.lib-link {
 }
 .lib-link:hover {
   border-color: var(--border-primary, currentColor);
-  box-shadow: 0 0 12px var(--glow-primary, rgba(0,255,255,.3)), 0 0 2px var(--glow-secondary, rgba(255,0,255,.2));
+  box-shadow: 0 0 12px var(--glow-primary, rgba(0, 182, 241,.3)), 0 0 2px var(--glow-secondary, rgba(255,0,255,.2));
   transform: translateY(-1px);
   filter: brightness(1.05) saturate(1.04);
   background: color-mix(in oklab, var(--bg-glass, rgba(255,255,255,0.06)) 80%, transparent);
 }
 .lib-link:focus-visible {
-  outline: 2px solid var(--accent-primary, #0ff);
+  outline: 2px solid var(--accent-primary, #00b6f1);
   outline-offset: 2px;
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-primary) 28%, transparent), 0 0 10px var(--glow-primary);
 }
@@ -497,7 +497,7 @@ button.lib-link {
   text-shadow: 0 0 6px var(--glow-primary);
 }
 .lib-link::before { color: #f0f; transform: translate(0,0); }
-.lib-link::after  { color: #0ff; transform: translate(0,0); }
+.lib-link::after  { color: #00b6f1; transform: translate(0,0); }
 
 .lib-link:hover::before, .lib-link:hover::after {
   opacity: 1;
@@ -519,7 +519,7 @@ button.lib-link {
   backdrop-filter: none;
   background: rgba(var(--bg-secondary-rgb, 10,10,12), 0.72);
   border-radius: 0;
-  box-shadow: var(--shadow-glow, 0 0 12px rgba(0,255,255,.25));
+  box-shadow: var(--shadow-glow, 0 0 12px rgba(0, 182, 241,.25));
 }
 
 /* Layout + bg pro library – fixed bg. */

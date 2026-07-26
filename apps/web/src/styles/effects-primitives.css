@@ -6,13 +6,13 @@
    ========================================================= */
 
 :root {
-  --fx-memory-primary: var(--accent-secondary, #0ff);
+  --fx-memory-primary: var(--accent-secondary, #00b6f1);
   --fx-memory-secondary: var(--accent-primary, #f0f);
   --fx-warning: var(--accent-warning, #ffea00);
   --fx-danger: var(--accent-error, #ff1744);
   --fx-silence: var(--text-primary, #f2f2f2);
   --fx-success: var(--accent-success, #00e676);
-  --fx-system: var(--accent-secondary, #0ff);
+  --fx-system: var(--accent-secondary, #00b6f1);
 }
 
 
@@ -51,33 +51,33 @@
   position: relative;
   display: inline;
   vertical-align: baseline;
-  -webkit-text-stroke: 1px var(--accent-primary, #0ff);
+  -webkit-text-stroke: 1px var(--accent-primary, #00b6f1);
   -webkit-text-fill-color: currentColor;
   text-shadow:
-    1px 0 0 var(--accent-primary, #0ff),
-    -1px 0 0 var(--accent-primary, #0ff),
-    0 1px 0 var(--accent-primary, #0ff),
-    0 -1px 0 var(--accent-primary, #0ff),
-    1px 1px 0 var(--accent-primary, #0ff),
-    1px -1px 0 var(--accent-primary, #0ff),
-    -1px 1px 0 var(--accent-primary, #0ff),
-    -1px -1px 0 var(--accent-primary, #0ff);
+    1px 0 0 var(--accent-primary, #00b6f1),
+    -1px 0 0 var(--accent-primary, #00b6f1),
+    0 1px 0 var(--accent-primary, #00b6f1),
+    0 -1px 0 var(--accent-primary, #00b6f1),
+    1px 1px 0 var(--accent-primary, #00b6f1),
+    1px -1px 0 var(--accent-primary, #00b6f1),
+    -1px 1px 0 var(--accent-primary, #00b6f1),
+    -1px -1px 0 var(--accent-primary, #00b6f1);
   color: currentColor;
   opacity: 1;
 }
 
 .fx-outline.is-lit {
   text-shadow:
-    1px 0 0 var(--accent-primary, #0ff),
-    -1px 0 0 var(--accent-primary, #0ff),
-    0 1px 0 var(--accent-primary, #0ff),
-    0 -1px 0 var(--accent-primary, #0ff),
-    1px 1px 0 var(--accent-primary, #0ff),
-    1px -1px 0 var(--accent-primary, #0ff),
-    -1px 1px 0 var(--accent-primary, #0ff),
-    -1px -1px 0 var(--accent-primary, #0ff),
+    1px 0 0 var(--accent-primary, #00b6f1),
+    -1px 0 0 var(--accent-primary, #00b6f1),
+    0 1px 0 var(--accent-primary, #00b6f1),
+    0 -1px 0 var(--accent-primary, #00b6f1),
+    1px 1px 0 var(--accent-primary, #00b6f1),
+    1px -1px 0 var(--accent-primary, #00b6f1),
+    -1px 1px 0 var(--accent-primary, #00b6f1),
+    -1px -1px 0 var(--accent-primary, #00b6f1),
     0 0 6px var(--glow-primary, rgba(255, 0, 255, .6)),
-    0 0 12px var(--glow-secondary, rgba(0, 255, 255, .6));
+    0 0 12px var(--glow-secondary, rgba(0, 182, 241, .6));
 }
 
 .fx-outline.hollow {

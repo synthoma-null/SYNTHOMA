@@ -118,8 +118,8 @@
   
   /* Debug mode – pro vývojáře, s dashed borders. */
   .debug-mode .rich-hidden { display: block !important; opacity: 0.3; border: 1px dashed #ff00ff; margin: 1rem 0; }
-  .debug-mode .hidden { display: block !important; opacity: 0.2; border: 1px dashed #00ffff; margin: 1rem 0; }
-  .debug-mode .tw-line { border-left: 2px solid rgba(0, 255, 255, 0.3); padding-left: 0.5rem; }
+  .debug-mode .hidden { display: block !important; opacity: 0.2; border: 1px dashed #00b6f1; margin: 1rem 0; }
+  .debug-mode .tw-line { border-left: 2px solid rgba(0, 182, 241, 0.3); padding-left: 0.5rem; }
   
   /* CTA spacing – bez inline. */
   .hero-cta .glitch-button.appear { margin: 2rem auto; }
@@ -193,8 +193,8 @@
   
   /* Dark mode fallback – přebírá téma. */
   @media (prefers-color-scheme: dark) {
-    .chapter-item { background: rgba(0,255,255,0.12); }
-    .chapter-item:hover { background: rgba(0,255,255,0.25); }
+    .chapter-item { background: rgba(0, 182, 241,0.12); }
+    .chapter-item:hover { background: rgba(0, 182, 241,0.25); }
   }
   
   /* =========================
@@ -241,8 +241,8 @@
     text-decoration: none !important;
   }
   #reader-content a.selected, #reader-body a.selected, #reader-extra a.selected {
-    color: var(--accent-primary, #00ffff);
-    text-shadow: 0 0 6px var(--glow-primary, #00ffff);
+    color: var(--accent-primary, #00b6f1);
+    text-shadow: 0 0 6px var(--glow-primary, #00b6f1);
     border-bottom: 1px dashed currentColor;
   }
   
@@ -280,7 +280,7 @@
   }
   .choice-box .choice-link:hover { background: var(--border-secondary, 0.5); box-shadow: 0 0 10px var(--glow-secondary); transform: translateY(-1px); text-decoration: none; }
   .choice-box .choice-link:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-primary) 35%, transparent); text-decoration: none; }
-  .choice-box .choice-link.selected { background: rgba(0,255,255,0.08); box-shadow: 0 0 12px var(--glow-primary); }
+  .choice-box .choice-link.selected { background: rgba(0, 182, 241,0.08); box-shadow: 0 0 12px var(--glow-primary); }
   .choice-box .choice-link.selected { position: relative; }
   .choice-box .choice-link.selected::after {
     content: '✔';
@@ -288,7 +288,7 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%) scale(0.6);
-    color: var(--accent-primary, #00ffff);
+    color: var(--accent-primary, #00b6f1);
     text-shadow: 0 0 6px var(--glow-primary);
     opacity: 0;
     animation: checkPop 260ms ease forwards;
@@ -470,13 +470,13 @@
   #reader-extra .dialogG {
     text-shadow:
       0 0 10px var(--c-acid-yellow, #f6ff00),
-      0 0 18px var(--accent-secondary, rgba(0,255,255,.45));
+      0 0 18px var(--accent-secondary, rgba(0, 182, 241,.45));
   }
   /* Ensure LOG glow in Reader */
   .SYNTHOMAREADER .chapter-content .log,
   #reader-body .log,
   #reader-extra .log {
-    text-shadow: 0 0 6px var(--glow-secondary, rgba(0,255,255,.4)), 0 0 12px var(--glow-primary, rgba(255,0,255,.25));
+    text-shadow: 0 0 6px var(--glow-secondary, rgba(0, 182, 241,.4)), 0 0 12px var(--glow-primary, rgba(255,0,255,.25));
   }
   
   /* Chapter meta box – MBTI summary. */
@@ -495,7 +495,7 @@
     left: 50%;
     width: 0;
     height: 0;
-    background: rgba(0, 255, 255, 0.3);
+    background: rgba(0, 182, 241, 0.3);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: width 0.6s ease, height 0.6s ease;
@@ -612,8 +612,8 @@
   /* Re-enable and style WebKit scrollbar specifically for playlist */
   #playlist-container.playlist::-webkit-scrollbar { width: 10px; height: 10px; display: block; }
   #playlist-container.playlist::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); border-radius: 6px; }
-  #playlist-container.playlist::-webkit-scrollbar-thumb { background: rgba(0,255,255,0.35); border-radius: 6px; box-shadow: 0 0 8px rgba(0,255,255,0.25); }
-  #playlist-container.playlist::-webkit-scrollbar-thumb:hover { background: rgba(0,255,255,0.5); }
+  #playlist-container.playlist::-webkit-scrollbar-thumb { background: rgba(0, 182, 241,0.35); border-radius: 6px; box-shadow: 0 0 8px rgba(0, 182, 241,0.25); }
+  #playlist-container.playlist::-webkit-scrollbar-thumb:hover { background: rgba(0, 182, 241,0.5); }
   #playlist-container.playlist a {
     display: block;
     width: 100%;
@@ -631,7 +631,7 @@
     text-overflow: ellipsis;
   }
   #playlist-container.playlist a:hover { background: rgba(var(--bg-secondary-rgb), 0.5); transform: translateY(-1px); }
-  #playlist-container.playlist a.active { background: rgba(0,255,255,0.12); box-shadow: 0 0 8px var(--glow-primary); }
+  #playlist-container.playlist a.active { background: rgba(0, 182, 241,0.12); box-shadow: 0 0 8px var(--glow-primary); }
   /* Mobile: o kousek menší scroll box */
   @media (max-width: 700px) {
     #playlist-container.playlist { max-height: 160px; }
@@ -1007,7 +1007,7 @@
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     border-radius: 0;
-    box-shadow: var(--shadow-glow, 0 0 12px rgba(0,255,255,.25));
+    box-shadow: var(--shadow-glow, 0 0 12px rgba(0, 182, 241,.25));
   }
 
   /* Konec revize. Testuj to na mobilu, ať ti to nerozbije scroll jako moje trpělivost při auditu! 😜 Pokud chceš víc, piš – jsem tu na záchranu tvých stylů před kolapsem. 🚀 */

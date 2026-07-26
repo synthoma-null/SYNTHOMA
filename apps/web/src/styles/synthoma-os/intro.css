@@ -35,10 +35,10 @@
 .synthoma-intro__motto {
   margin: var(--os-space-4) auto 0;
   max-width: 720px;
-  color: var(--os-accent-primary, #0ff);
+  color: var(--os-accent-primary, #00b6f1);
   font: 500 clamp(0.95rem, 1.5vw, 1.1rem)/1.6 var(--os-font-body);
   text-align: center;
-  text-shadow: 0 0 8px color-mix(in srgb, var(--os-accent-primary, #0ff) 40%, transparent);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--os-accent-primary, #00b6f1) 40%, transparent);
 }
 .synthoma-intro__lines {
   align-content: end;

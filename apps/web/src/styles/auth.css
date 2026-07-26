@@ -1,4 +1,4 @@
-﻿/* auth.css — Auth pages, login, register styles */
+/* auth.css — Auth pages, login, register styles */
 
 /* =========================
    AUTH PAGES
@@ -100,7 +100,7 @@
   letter-spacing: .1em;
   text-transform: uppercase;
   margin: 0;
-  color: #fff;
+  color: var(--syn-text-heading, #d2e2e7);
   text-align: center;
 }
 .auth-home-panel {
@@ -114,7 +114,7 @@
   backdrop-filter: blur(14px);
   border-radius: 20px;
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: var(--shadow-glow, 0 0 12px rgba(0,255,255,.25));
+  box-shadow: var(--shadow-glow, 0 0 12px rgba(0, 182, 241,.25));
 }
 @media (max-width: 520px) {
   .auth-home-panel { padding: 1.5rem 1.2rem; }

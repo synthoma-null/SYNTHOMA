@@ -11,7 +11,7 @@ interface Props {
 }
 
 const CARD_TYPE_COLOR: Record<string, string> = {
-  action: '#00ffe0',
+  action: '#00b6f1',
   sabotage: '#ff4fa0',
   relic: '#ffe600',
   glitch: '#00ff88',

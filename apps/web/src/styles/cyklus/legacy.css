@@ -67,7 +67,7 @@
   letter-spacing: 0.12em;
   color: var(--text-primary);
   margin-bottom: 1rem;
-  text-shadow: 0 0 20px var(--glow-secondary, rgba(0, 255, 255, 0.15));
+  text-shadow: 0 0 20px var(--glow-secondary, rgba(0, 182, 241, 0.15));
 }
 
 .cyklus-menu__intro {
@@ -745,9 +745,9 @@
   max-height: 90vh;
   padding: 2rem;
   background: var(--bg-primary, #000);
-  border: 1px solid rgba(0, 255, 255, 0.18);
+  border: 1px solid rgba(0, 182, 241, 0.18);
   border-radius: 1rem;
-  box-shadow: 0 0 32px rgba(0, 255, 255, 0.12);
+  box-shadow: 0 0 32px rgba(0, 182, 241, 0.12);
   overflow-y: auto;
 }
 
@@ -1636,7 +1636,7 @@
   background: var(--bg-tertiary);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
-  box-shadow: 0 0 20px var(--glow-secondary, rgba(0, 255, 255, 0.06));
+  box-shadow: 0 0 20px var(--glow-secondary, rgba(0, 182, 241, 0.06));
 }
 
 .cyklus-stat-dock__climate {
@@ -1904,7 +1904,7 @@
   border: 1px solid var(--border-secondary);
   border-radius: 1rem;
   background: var(--bg-tertiary);
-  box-shadow: 0 0 40px var(--glow-secondary, rgba(0, 255, 255, 0.1));
+  box-shadow: 0 0 40px var(--glow-secondary, rgba(0, 182, 241, 0.1));
   overflow: hidden;
   font-family: var(--font-family-primary);
   max-height: 85vh;
@@ -3207,7 +3207,7 @@
   border-radius: 1rem;
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.5),
-    0 0 20px var(--glow-secondary, rgba(0, 255, 255, 0.03)),
+    0 0 20px var(--glow-secondary, rgba(0, 182, 241, 0.03)),
     0 0 60px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   position: relative;
@@ -3219,7 +3219,7 @@
   inset: 0;
   border-radius: 1rem;
   pointer-events: none;
-  box-shadow: inset 0 0 30px var(--glow-secondary, rgba(0, 255, 255, 0.01));
+  box-shadow: inset 0 0 30px var(--glow-secondary, rgba(0, 182, 241, 0.01));
 }
 
 .cyklus-void-hub__header {
@@ -3237,7 +3237,7 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   color: var(--accent-secondary);
-  text-shadow: 0 0 6px var(--glow-secondary, rgba(0, 255, 255, 0.25)), 0 0 12px var(--glow-secondary, rgba(0, 255, 255, 0.1));
+  text-shadow: 0 0 6px var(--glow-secondary, rgba(0, 182, 241, 0.25)), 0 0 12px var(--glow-secondary, rgba(0, 182, 241, 0.1));
   position: relative;
 }
 
@@ -3248,7 +3248,7 @@
   left: 0;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 255, 0.5) 40%, rgba(255, 0, 255, 0.4) 70%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 182, 241, 0.5) 40%, rgba(255, 0, 255, 0.4) 70%, transparent 100%);
 }
 
 .cyklus-void-hub__actions {
@@ -3280,7 +3280,7 @@
   border-bottom: 1px solid var(--border-tertiary);
   background: var(--bg-glass);
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 255, 0.25) transparent;
+  scrollbar-color: rgba(0, 182, 241, 0.25) transparent;
   flex-shrink: 0;
 }
 
@@ -3293,7 +3293,7 @@
 }
 
 .cyklus-void-tabs::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 255, 0.25);
+  background: rgba(0, 182, 241, 0.25);
   border-radius: 2px;
 }
 
@@ -3321,7 +3321,7 @@
   background: rgba(var(--bg-secondary-rgb), 0.6);
   border-color: var(--accent-secondary);
   color: var(--accent-secondary);
-  box-shadow: 0 0 8px var(--glow-secondary, rgba(0, 255, 255, 0.1)), inset 0 0 4px var(--glow-secondary, rgba(0, 255, 255, 0.03));
+  box-shadow: 0 0 8px var(--glow-secondary, rgba(0, 182, 241, 0.1)), inset 0 0 4px var(--glow-secondary, rgba(0, 182, 241, 0.03));
 }
 
 .cyklus-void-hub__content {
@@ -3329,7 +3329,7 @@
   overflow-y: auto;
   padding: 1.25rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 255, 0.25) transparent;
+  scrollbar-color: rgba(0, 182, 241, 0.25) transparent;
 }
 
 .cyklus-void-hub__content::-webkit-scrollbar {
@@ -3341,12 +3341,12 @@
 }
 
 .cyklus-void-hub__content::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 255, 0.2);
+  background: rgba(0, 182, 241, 0.2);
   border-radius: 3px;
 }
 
 .cyklus-void-hub__content::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 255, 0.35);
+  background: rgba(0, 182, 241, 0.35);
 }
 
 .cyklus-void-panel {
@@ -3437,19 +3437,19 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 255, 0.2) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 182, 241, 0.2) 50%, transparent 100%);
 }
 
 .cyklus-void-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 255, 255, 0.35);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 255, 255, 0.08);
+  border-color: rgba(0, 182, 241, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 182, 241, 0.08);
   background: rgba(25, 25, 45, 0.65);
 }
 
 .cyklus-void-card--equipped {
-  border-color: rgba(0, 255, 255, 0.6);
-  box-shadow: 0 0 18px rgba(0, 255, 255, 0.12), inset 0 0 20px rgba(0, 255, 255, 0.04);
+  border-color: rgba(0, 182, 241, 0.6);
+  box-shadow: 0 0 18px rgba(0, 182, 241, 0.12), inset 0 0 20px rgba(0, 182, 241, 0.04);
   background: rgba(0, 45, 60, 0.5);
 }
 
@@ -3459,8 +3459,8 @@
   top: 0.55rem;
   right: 0.65rem;
   font-size: 0.65rem;
-  color: #00ffff;
-  text-shadow: 0 0 6px rgba(0, 255, 255, 0.6);
+  color: #00b6f1;
+  text-shadow: 0 0 6px rgba(0, 182, 241, 0.6);
 }
 
 .cyklus-void-card--locked {
@@ -3509,10 +3509,10 @@
 
 .cyklus-void-card__value {
   font-size: 1.35rem;
-  color: #00ffff;
+  color: #00b6f1;
   font-weight: 700;
   letter-spacing: 0.02em;
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
+  text-shadow: 0 0 8px rgba(0, 182, 241, 0.25);
 }
 
 .cyklus-void-stats {
@@ -3588,9 +3588,9 @@
 .cyklus-void-button {
   flex: 1 1 auto;
   padding: 0.55rem 0.85rem;
-  background: rgba(0, 255, 255, 0.08);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  color: #00ffff;
+  background: rgba(0, 182, 241, 0.08);
+  border: 1px solid rgba(0, 182, 241, 0.3);
+  color: #00b6f1;
   font-size: 0.75rem;
   letter-spacing: 0.09em;
   cursor: pointer;
@@ -3600,9 +3600,9 @@
 }
 
 .cyklus-void-button:hover:not(:disabled) {
-  background: rgba(0, 255, 255, 0.18);
-  border-color: rgba(0, 255, 255, 0.55);
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+  background: rgba(0, 182, 241, 0.18);
+  border-color: rgba(0, 182, 241, 0.55);
+  box-shadow: 0 0 12px rgba(0, 182, 241, 0.2);
   transform: translateY(-1px);
 }
 
@@ -4386,7 +4386,7 @@
 
 .cyklus-card-scene.scene-system,
 .cyklus-card-scene.scene-tai {
-  --scene-accent: #00ffff;
+  --scene-accent: #00b6f1;
 }
 
 .cyklus-card-scene.scene-warning,
@@ -4411,7 +4411,7 @@
 }
 
 .cyklus-card-scene {
-  border-left: 1px solid color-mix(in srgb, var(--scene-accent, #00ffff), transparent 54%);
+  border-left: 1px solid color-mix(in srgb, var(--scene-accent, #00b6f1), transparent 54%);
   padding-left: 0.85rem;
 }
 
@@ -4626,10 +4626,10 @@
   gap: 1rem;
   margin-bottom: 1rem;
   padding: 0.85rem 1rem;
-  border: 1px solid rgba(0, 255, 255, 0.18);
+  border: 1px solid rgba(0, 182, 241, 0.18);
   border-radius: 1rem;
   background: linear-gradient(135deg, rgba(0, 13, 26, 0.88), rgba(255, 0, 255, 0.08));
-  box-shadow: 0 0 24px rgba(0, 255, 255, 0.08);
+  box-shadow: 0 0 24px rgba(0, 182, 241, 0.08);
 }
 
 .cyklus-void-client-status {
@@ -4826,7 +4826,7 @@
 }
 
 .void-hub-action-button {
-  border: 1px solid rgba(0, 255, 255, 0.28);
+  border: 1px solid rgba(0, 182, 241, 0.28);
   border-radius: 999px;
   padding: 0.42rem 0.82rem;
   background: rgba(0, 13, 26, 0.78);
@@ -4835,7 +4835,7 @@
   font-size: 0.82rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  box-shadow: 0 0 14px rgba(0, 255, 255, 0.08);
+  box-shadow: 0 0 14px rgba(0, 182, 241, 0.08);
   transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
 }
 
@@ -4904,8 +4904,8 @@
 .void-hub-tab:hover,
 .void-hub-tab.is-active {
   transform: translateY(-1px);
-  border-color: rgba(0, 255, 255, 0.38);
-  background: rgba(0, 255, 255, 0.06);
+  border-color: rgba(0, 182, 241, 0.38);
+  background: rgba(0, 182, 241, 0.06);
 }
 
 .void-hub-tab.is-attention {
@@ -4982,7 +4982,7 @@
   margin: 0 0 0.25rem;
   font-size: 0.72rem;
   letter-spacing: 0.16em;
-  color: rgba(0, 255, 255, 0.72);
+  color: rgba(0, 182, 241, 0.72);
   text-transform: uppercase;
 }
 
@@ -4993,7 +4993,7 @@
 .cyklus-suggestion-box h3 {
   margin: 0 0 0.65rem;
   color: #c0faff;
-  text-shadow: 0 0 14px rgba(0, 255, 255, 0.16);
+  text-shadow: 0 0 14px rgba(0, 182, 241, 0.16);
 }
 
 .cyklus-progression-dashboard,
@@ -5040,8 +5040,8 @@
 
 .void-room-badge.is-maxed,
 .craft-recipe-row.is-crafted .craft-status-pill {
-  border-color: rgba(0, 255, 255, 0.4);
-  box-shadow: 0 0 14px rgba(0, 255, 255, 0.13);
+  border-color: rgba(0, 182, 241, 0.4);
+  box-shadow: 0 0 14px rgba(0, 182, 241, 0.13);
 }
 
 .cyklus-pocket-grid,
@@ -5095,10 +5095,10 @@
 .craft-recipe-row,
 .void-room-row,
 .loadout-entry {
-  border-left: 2px solid rgba(0, 255, 255, 0.28);
+  border-left: 2px solid rgba(0, 182, 241, 0.28);
   padding: 0.75rem 0 0.75rem 0.8rem;
   margin: 0.4rem 0;
-  background: linear-gradient(90deg, rgba(0, 255, 255, 0.045), transparent 72%);
+  background: linear-gradient(90deg, rgba(0, 182, 241, 0.045), transparent 72%);
 }
 
 .craft-recipe-row.is-locked,
@@ -5111,7 +5111,7 @@
 .void-room-row.is-pocket-room,
 .cyklus-pocket-panel {
   border-color: rgba(246, 255, 0, 0.18);
-  box-shadow: 0 0 28px rgba(246, 255, 0, 0.06), inset 0 0 0 1px rgba(0, 255, 255, 0.04);
+  box-shadow: 0 0 28px rgba(246, 255, 0, 0.06), inset 0 0 0 1px rgba(0, 182, 241, 0.04);
 }
 
 .pocket-item-titleline {
@@ -5242,10 +5242,10 @@
   border-radius: 1.35rem;
   padding: 1.1rem;
   background:
-    radial-gradient(circle at 12% 0%, rgba(0, 255, 255, 0.12), transparent 34%),
+    radial-gradient(circle at 12% 0%, rgba(0, 182, 241, 0.12), transparent 34%),
     radial-gradient(circle at 88% 8%, rgba(255, 0, 255, 0.1), transparent 28%),
     linear-gradient(145deg, rgba(0, 13, 26, 0.92), rgba(0, 0, 0, 0.72));
-  box-shadow: 0 0 34px rgba(0, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  box-shadow: 0 0 34px rgba(0, 182, 241, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.025);
 }
 
 .cyklus-void-hub::before {
@@ -5281,7 +5281,7 @@
 .void-hub-section-header h3 {
   margin: 0 0 0.55rem;
   color: #c0faff;
-  text-shadow: 0 0 16px rgba(0, 255, 255, 0.16);
+  text-shadow: 0 0 16px rgba(0, 182, 241, 0.16);
 }
 
 .void-hub-hero p,

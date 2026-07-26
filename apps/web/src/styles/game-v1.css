@@ -6,7 +6,7 @@
 /* ── v1.0 design tokens (game scope) ──────────────────────────────────────────── */
 
 :root {
-  --v1-accent: #00ffe0;
+  --v1-accent: #00b6f1;
   --v1-accent-dim: rgba(0, 255, 224, 0.12);
   --v1-danger: #ff4d4d;
   --v1-warning: #ff9f43;

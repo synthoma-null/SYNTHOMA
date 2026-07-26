@@ -229,7 +229,7 @@ export async function downloadChapterAsHtml(
         }
         
         .glitch-fake2 {
-            color: #00ffff;
+            color: #00b6f1;
             transform: translateX(2px);
         }
         

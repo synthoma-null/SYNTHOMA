@@ -91,7 +91,7 @@ export async function POST(
   if (room.players.length >= room.maxPlayers) return NextResponse.json({ error: 'Room full' }, { status: 400 });
 
   const seatIndex = room.players.length;
-  const color = PLAYER_COLORS[seatIndex % PLAYER_COLORS.length] ?? '#00ffe0';
+  const color = PLAYER_COLORS[seatIndex % PLAYER_COLORS.length] ?? '#00b6f1';
 
   const currentState = room.stateJson as unknown as GameState;
   const updatedState: GameState = {

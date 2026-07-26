@@ -1718,10 +1718,10 @@
 .run-map__node-circle {
   --bg-card: var(--game-bg-card, var(--bg-card, #000));
   --border: var(--game-border, var(--border, rgba(0, 255, 224, 0.15)));
-  --text-primary: var(--game-text, var(--text-primary, #0ff));
+  --text-primary: var(--game-text, var(--text-primary, #00b6f1));
   --text-secondary: var(--game-text-muted, var(--text-secondary, #a0a0c0));
   --text-muted: var(--game-text-muted, var(--text-muted, rgba(0, 255, 224, 0.4)));
-  --accent: var(--game-accent, var(--accent, #0ff));
+  --accent: var(--game-accent, var(--accent, #00b6f1));
 }
 
 /* ── Larger fonts for roguelite UI ─────────────────────────────────────────── */

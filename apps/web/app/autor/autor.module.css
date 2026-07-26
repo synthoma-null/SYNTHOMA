@@ -3,13 +3,13 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 1rem;
-  color: #f7f7ff;
+  color: var(--syn-text-reading, #b4c1c7);
 }
 
 .autor-fallback h1,
 .autor-fallback h2,
 .autor-fallback h3 {
-  color: #fff;
+  color: var(--syn-text-heading, #d2e2e7);
   margin: 2rem 0 1rem;
 }
 
@@ -29,24 +29,24 @@
 }
 
 .autor-fallback .log {
-  color: #00ffff;
+  color: #00b6f1;
   font-family: monospace;
   font-size: 0.9rem;
 }
 
 .autor-fallback .dialog {
-  color: #f7f7ff;
+  color: var(--syn-text-human, #c4c2be);
   font-style: italic;
   margin: 1rem 0;
 }
 
 .autor-fallback .text {
-  color: #cfcfe3;
+  color: var(--syn-text-reading, #b4c1c7);
 }
 
 /* Glitch effects for fallback */
 .autor-fallback .fx-gradient {
-  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  background: linear-gradient(90deg, #00b6f1, #ff00ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -58,8 +58,8 @@
 }
 
 .autor-fallback .halo {
-  color: #00ffff;
-  text-shadow: 0 0 6px #00ffff;
+  color: #00b6f1;
+  text-shadow: 0 0 6px #00b6f1;
 }
 
 .autor-fallback .fx-neon {

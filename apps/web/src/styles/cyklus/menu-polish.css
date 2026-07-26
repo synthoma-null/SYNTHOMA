@@ -51,18 +51,20 @@
 
 .cyklus-menu__title {
   display: grid;
+  box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  max-width: none;
+  max-width: 100%;
   gap: 0.4rem;
-  overflow: visible;
+  padding-inline: 0.35rem;
+  overflow: clip;
 }
 
 .cyklus-menu__brand {
   display: block;
-  width: max-content;
+  width: 100%;
   min-width: 0;
-  max-width: none;
+  max-width: 100%;
   overflow: visible;
   overflow-wrap: normal;
   white-space: nowrap;
@@ -216,8 +218,8 @@
   .cyklus-menu__title { margin-top: 0; }
 
   .cyklus-menu__brand {
-    width: max-content;
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
     overflow: visible;
   }
 

@@ -3,6 +3,7 @@
 .synthoma-wordmark {
   position: relative;
   display: inline-block;
+  max-width: 100%;
   margin: 0;
   padding: 0;
   white-space: nowrap;
@@ -10,54 +11,58 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--os-text, #c0faff);
+  color: var(--syn-text-hot, #edf8fb);
   text-align: center;
   z-index: 10;
   -webkit-user-select: none;
   user-select: none;
   text-shadow:
-    0 0 6px var(--os-accent-primary, #0ff),
-    0 0 16px var(--os-accent-secondary, #ff00c8),
-    0 0 36px var(--os-accent-primary, #0ff),
-    2px 2px 12px var(--os-accent-secondary, #ff00c8);
+    -1px 0 0 var(--syn-cyan, #00b6f1),
+    1px 0 0 var(--syn-magenta, #ee26d0),
+    0 0 4px rgb(245 251 255 / 0.42),
+    0 0 10px rgb(0 182 241 / 0.18);
   animation: synthoma-wordmark-breathe 2.4s ease-in-out infinite alternate;
   will-change: transform, text-shadow;
 }
 
 .synthoma-wordmark--intro {
-  font-size: clamp(2.5rem, 10vw, 6rem);
+  font-size: 5rem;
   line-height: 1.05;
 }
 
 .synthoma-wordmark--home {
-  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-size: 5rem;
   line-height: 0.92;
 }
 
 .synthoma-wordmark--compact {
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-size: 1.4rem;
   line-height: 1;
   letter-spacing: 0.06em;
 }
 
 .synthoma-wordmark--cyklus {
-  font-size: clamp(3.25rem, 8vw, 7rem);
+  font-size: 4.75rem;
   line-height: 0.9;
   letter-spacing: 0.08em;
 }
 
 @media (max-width: 767px) {
-  .synthoma-wordmark--home { font-size: clamp(3rem, 17vw, 5rem); }
-  .synthoma-wordmark--cyklus { font-size: clamp(2.75rem, 15vw, 4.5rem); }
+  .synthoma-wordmark--home { font-size: 3.25rem; }
+  .synthoma-wordmark--cyklus { font-size: 3rem; }
+  .synthoma-wordmark--intro { font-size: 3.4rem; }
 }
 
 @media (max-width: 480px) {
-  .synthoma-wordmark--intro { font-size: clamp(2.4rem, 15vw, 4.5rem); }
+  .synthoma-wordmark--home { font-size: 2.7rem; }
+  .synthoma-wordmark--cyklus { font-size: 2.55rem; }
+  .synthoma-wordmark--intro { font-size: 2.8rem; }
 }
 
 @media (max-width: 359px) {
-  .synthoma-wordmark--home { font-size: clamp(2.7rem, 16.5vw, 4rem); }
-  .synthoma-wordmark--intro { font-size: clamp(2rem, 12vw, 3rem); }
+  .synthoma-wordmark--home { font-size: 2.35rem; }
+  .synthoma-wordmark--cyklus { font-size: 2.25rem; }
+  .synthoma-wordmark--intro { font-size: 2.35rem; }
   .synthoma-wordmark--compact { font-size: 1.1rem; }
 }
 
@@ -76,17 +81,23 @@
 }
 
 .synthoma-wordmark__layer--magenta {
-  color: var(--os-accent-secondary, #ff00c8);
-  opacity: 0.58;
-  text-shadow: 2px 0 var(--os-accent-secondary, #ff00c8), 0 0 10px var(--os-accent-secondary, #ff00c8), 0 0 28px rgba(255, 0, 200, 0.6);
+  color: var(--syn-magenta, #ee26d0);
+  opacity: 0.72;
+  text-shadow:
+    2px 0 var(--syn-magenta-hot, #ff2bd6),
+    0 0 5px rgb(255 43 214 / 0.42),
+    0 0 16px rgb(238 38 208 / 0.14);
   z-index: 1;
   animation: synthoma-wordmark-glitch-1 2.2s infinite linear alternate;
 }
 
 .synthoma-wordmark__layer--cyan {
-  color: var(--os-accent-primary, #0ff);
-  opacity: 0.44;
-  text-shadow: -2px 0 var(--os-accent-primary, #0ff), 0 0 8px var(--os-accent-primary, #0ff), 0 0 28px rgba(0, 255, 255, 0.5);
+  color: var(--syn-cyan, #00b6f1);
+  opacity: 0.7;
+  text-shadow:
+    -2px 0 var(--syn-cyan-hot, #19caff),
+    0 0 5px rgb(25 202 255 / 0.42),
+    0 0 16px rgb(0 182 241 / 0.14);
   z-index: 2;
   animation: synthoma-wordmark-glitch-2 1.7s infinite linear alternate;
 }
@@ -96,8 +107,11 @@
   position: relative;
   display: inline;
   z-index: 20;
-  color: var(--os-accent-primary, #0ff);
-  text-shadow: 0 0 6px var(--os-accent-primary, #0ff), 0 0 12px var(--os-accent-primary, #0ff), 2px 2px 10px rgba(255, 0, 200, 0.35);
+  color: var(--syn-text-hot, #edf8fb);
+  text-shadow:
+    -1px 0 0 rgb(0 182 241 / 0.9),
+    1px 0 0 rgb(238 38 208 / 0.82),
+    0 0 7px rgb(0 182 241 / 0.24);
 }
 
 .synthoma-wordmark__char,
@@ -114,9 +128,11 @@
 }
 
 .synthoma-wordmark__char.glitchy {
-  color: var(--os-accent-secondary, #f0f);
+  color: var(--syn-magenta-hot, #ff2bd6);
   filter: blur(1.5px) brightness(2.2);
-  text-shadow: 0 0 15px var(--os-accent-secondary, #f0f), 0 0 8px var(--os-accent-secondary, #f0f), 0 0 2px var(--os-accent-secondary, #f0f);
+  text-shadow:
+    0 0 8px rgb(255 43 214 / 0.58),
+    -2px 0 0 var(--syn-cyan-hot, #19caff);
   animation: synthoma-wordmark-glitch-jump 0.10s linear 3;
   transform: translateY(-2px) scale(1.07) skewX(3deg);
 }
@@ -175,10 +191,4 @@
     filter: blur(0.5px) brightness(1.35);
     transform: translateY(0) scale(1) skewX(0deg);
   }
-}
-
-@media (max-width: 359px) {
-  .synthoma-wordmark--intro { font-size: clamp(1.8rem, 10vw, 2.4rem); }
-  .synthoma-wordmark--home { font-size: clamp(2.6rem, 16.5vw, 4rem); }
-  .synthoma-wordmark--compact { font-size: 1.1rem; }
 }

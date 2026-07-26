@@ -10,7 +10,7 @@ interface Props {
 }
 
 const NODE_TYPE_COLOR: Record<string, string> = {
-  start: '#00ffe0',
+  start: '#00b6f1',
   safe: '#1a2233',
   noise: '#ff4fa0',
   trap: '#ff3300',
@@ -41,7 +41,7 @@ const NODE_TYPE_ICON: Record<string, string> = {
 
 function PieceMarker({ piece, x, y, idx }: { piece: GamePiece; x: number; y: number; idx: number }) {
   const colors: Record<string, string> = {
-    memory: '#00ffe0',
+    memory: '#00b6f1',
     laugh: '#ffe600',
     choice: '#ff4fa0',
   };
@@ -88,7 +88,7 @@ function NodeTile({ node, isActive, onClick, pieces }: {
         cy={node.y}
         r={18}
         fill={isActive ? 'rgba(0,255,224,0.15)' : 'rgba(10,14,26,0.9)'}
-        stroke={isActive ? '#00ffe0' : color}
+        stroke={isActive ? '#00b6f1' : color}
         strokeWidth={isActive ? 2.5 : 1.5}
         strokeDasharray={hasTrap ? '3 2' : undefined}
       />

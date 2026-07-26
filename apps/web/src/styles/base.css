@@ -8,7 +8,7 @@ html, body { height: 100%; }
 body {
   margin: 0;
   background: var(--bg-primary, #000);
-  color: var(--text-primary, #0ff);
+  color: var(--text-primary, #00b6f1);
   font-family: var(--font-family-ui, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol");
   line-height: var(--line-height-base, 1.5);
 }
@@ -25,7 +25,7 @@ html {
   --font-size-base: 16px;
   --font-size-multiplier: 1.0;
   --line-height-base: 1.5;
-  --shadow-glow: 0 0 12px var(--glow-secondary, rgba(0,255,255,.4));
+  --shadow-glow: 0 0 12px var(--glow-secondary, rgba(0, 182, 241,.4));
   /* Výchozí UI font proměnné – témata v themes.css je přepisují konkrétními rodinami */
   --font-family-primary: ui-monospace, monospace;
   --font-family-heading: ui-monospace, monospace;
@@ -203,7 +203,7 @@ body.no-animations *::after {
   background: #111;
 }
 .noscript-fallback a {
-  color: #0ff;
+  color: #00b6f1;
 }
 
 /* Fallback for browsers that do not support color-mix() (Chrome < 111, Safari < 16) */
@@ -212,9 +212,9 @@ body.no-animations *::after {
   p.choice[data-tags] > .choice-link,
   p.choice[data-tags]:not(:has(> .choice-link)),
   .choice-box .choice-link {
-    border-color: var(--choice-accent, var(--accent-secondary, #0ff));
-    box-shadow: 0 0 8px var(--choice-accent, var(--accent-secondary, #0ff));
-    text-shadow: 0 0 4px var(--choice-accent, var(--accent-secondary, #0ff));
+    border-color: var(--choice-accent, var(--accent-secondary, #00b6f1));
+    box-shadow: 0 0 8px var(--choice-accent, var(--accent-secondary, #00b6f1));
+    text-shadow: 0 0 4px var(--choice-accent, var(--accent-secondary, #00b6f1));
   }
   p.choice[data-tags] > .choice-link:hover,
   p.choice[data-tags]:not(:has(> .choice-link)):hover,
@@ -222,8 +222,8 @@ body.no-animations *::after {
   p.choice[data-tags] > .choice-link.chosen,
   p.choice[data-tags].selected:not(:has(> .choice-link)),
   p.choice[data-tags].chosen:not(:has(> .choice-link)) {
-    border-color: var(--choice-accent, var(--accent-secondary, #0ff));
-    box-shadow: 0 0 12px var(--choice-accent, var(--accent-secondary, #0ff));
+    border-color: var(--choice-accent, var(--accent-secondary, #00b6f1));
+    box-shadow: 0 0 12px var(--choice-accent, var(--accent-secondary, #00b6f1));
   }
   .choices-locked p.choice[data-tags] > .choice-link:not(.chosen),
   p.choice[data-tags] > .choice-link.faded,
@@ -246,7 +246,7 @@ body.no-animations *::after {
   p.dialogN::before,
   p.dialogD::before {
     box-shadow: none;
-    background: var(--accent-secondary, #0ff);
+    background: var(--accent-secondary, #00b6f1);
   }
 
   /* Synth gate */
@@ -262,7 +262,7 @@ body.no-animations *::after {
   .synth-gate-primary,
   .synth-gate-help .choice {
     background: transparent;
-    border-color: var(--border-primary, rgba(0,255,255,0.3));
+    border-color: var(--border-primary, rgba(0, 182, 241,0.3));
     box-shadow: none;
     text-shadow: none;
   }
@@ -277,8 +277,8 @@ body.no-animations *::after {
   z-index: var(--z-skip-link, 9999);
   padding: 0.75rem 1.5rem;
   background: var(--bg-tertiary, #111);
-  color: var(--text-primary, #0ff);
-  border: 1px solid var(--border-primary, #0ff);
+  color: var(--text-primary, #00b6f1);
+  border: 1px solid var(--border-primary, #00b6f1);
   border-radius: 8px;
   text-decoration: none;
   font-size: 0.9rem;

@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
    SYNTHOMA UI CORE — sjednoceno, bez duplicit, theme-aware
    Sekce: Utilities • Typography • ScrambleTitle • Hero
            Control Panel • Loaders/Overlays • Modal • Error
@@ -37,7 +37,7 @@
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     border: 1px solid var(--border-secondary);
-    box-shadow: var(--shadow-glow, 0 0 12px rgba(0,255,255,.25));
+    box-shadow: var(--shadow-glow, 0 0 12px rgba(0, 182, 241,.25));
   }
   
   .accent { color: var(--text-accent); }
@@ -404,7 +404,7 @@
     height: 100%;
     border-radius: 2px;
     background: transparent;
-    box-shadow: -1px 0 4px 0px var(--accent-secondary, #0ff), 1px 0 8px 0px var(--accent-primary, #ff00ff), 0px 0 12px 0px var(--accent-warning, #faff00);
+    box-shadow: -1px 0 4px 0px var(--accent-secondary, #00b6f1), 1px 0 8px 0px var(--accent-primary, #ff00ff), 0px 0 12px 0px var(--accent-warning, #faff00);
     animation: border-glow 2.6s infinite cubic-bezier(.8,0,.23,1.1);
   }
   @media (prefers-reduced-motion: reduce) {
@@ -481,8 +481,8 @@
     border-radius: 2px;
     background: transparent;
     box-shadow:
-      -1px 0 4px 0px var(--glow-secondary, rgba(0,255,255,.6)),
-      1px 0 8px 0px var(--glow-secondary, rgba(0,255,255,.6));
+      -1px 0 4px 0px var(--glow-secondary, rgba(0, 182, 241,.6)),
+      1px 0 8px 0px var(--glow-secondary, rgba(0, 182, 241,.6));
     z-index: 2;
     pointer-events: none;
     opacity: 0.6;
@@ -775,9 +775,9 @@
   }
   
   #glitch-synthoma .glitch-fake2 {
-    color: var(--accent-secondary, #0ff);
+    color: var(--accent-secondary, #00b6f1);
     opacity: .45;
-    text-shadow: -2px 0 var(--accent-secondary, #0ff), 0 0 8px var(--accent-secondary, #0ff);
+    text-shadow: -2px 0 var(--accent-secondary, #00b6f1), 0 0 8px var(--accent-secondary, #00b6f1);
     animation: glitchLayer2 1.3s steps(4, jump-none) infinite;
     animation-delay: .12s;
   }
@@ -840,23 +840,23 @@
   
   .home-page #glitch-synthoma .glitch-fake2,
   .landing-intro-page #glitch-synthoma .glitch-fake2 {
-    color: var(--accent-secondary, #0ff);
+    color: var(--accent-secondary, #00b6f1);
     opacity: 0.44;
-    text-shadow: -2px 0 var(--accent-secondary, #0ff), 0 0 8px var(--accent-secondary, #0ff), 0 0 28px color-mix(in oklab, var(--accent-secondary, #0ff) 50%, transparent);
+    text-shadow: -2px 0 var(--accent-secondary, #00b6f1), 0 0 8px var(--accent-secondary, #00b6f1), 0 0 28px color-mix(in oklab, var(--accent-secondary, #00b6f1) 50%, transparent);
     z-index: 2;
     animation: glitchLayer2 1.7s infinite linear alternate;
   }
   
   .home-page #glitch-synthoma .glitch-real,
   .landing-intro-page #glitch-synthoma .glitch-real {
-    color: var(--text-primary, #0ff);
-    text-shadow: 0 0 6px var(--glow-secondary, rgba(0,255,255,.6)), 0 0 12px var(--glow-secondary, rgba(0,255,255,.6)), 2px 2px 10px color-mix(in oklab, var(--glow-primary, rgba(255,0,255,.5)) 35%, transparent);
+    color: var(--text-primary, #00b6f1);
+    text-shadow: 0 0 6px var(--glow-secondary, rgba(0, 182, 241,.6)), 0 0 12px var(--glow-secondary, rgba(0, 182, 241,.6)), 2px 2px 10px color-mix(in oklab, var(--glow-primary, rgba(255,0,255,.5)) 35%, transparent);
   }
   
   /* Reader a Autor glitch – sjednoceno. */
   #glitch-reader.glitch-master, #glitch-autor.glitch-master {
     color: var(--text-primary);
-    text-shadow: 0 0 6px var(--glow-secondary, rgba(0,255,255,.6)), 0 0 14px var(--glow-primary, rgba(255,0,255,.6));
+    text-shadow: 0 0 6px var(--glow-secondary, rgba(0, 182, 241,.6)), 0 0 14px var(--glow-primary, rgba(255,0,255,.6));
   }
   
   #glitch-reader .glitch-fake1, #glitch-autor .glitch-fake1 {
@@ -865,13 +865,13 @@
   }
   
   #glitch-reader .glitch-fake2, #glitch-autor .glitch-fake2 {
-    color: var(--accent-secondary, #0ff);
-    text-shadow: -2px 0 var(--accent-secondary, #0ff), 0 0 8px var(--accent-secondary, #0ff), 0 0 28px color-mix(in oklab, var(--accent-secondary, #0ff) 50%, transparent);
+    color: var(--accent-secondary, #00b6f1);
+    text-shadow: -2px 0 var(--accent-secondary, #00b6f1), 0 0 8px var(--accent-secondary, #00b6f1), 0 0 28px color-mix(in oklab, var(--accent-secondary, #00b6f1) 50%, transparent);
   }
   
   #glitch-reader .glitch-real, #glitch-autor .glitch-real {
-    color: var(--text-primary, #0ff);
-    text-shadow: 0 0 6px var(--glow-secondary, rgba(0,255,255,.6)), 0 0 12px var(--glow-secondary, rgba(0,255,255,.6)), 2px 2px 10px color-mix(in oklab, var(--glow-primary, rgba(255,0,255,.5)) 35%, transparent);
+    color: var(--text-primary, #00b6f1);
+    text-shadow: 0 0 6px var(--glow-secondary, rgba(0, 182, 241,.6)), 0 0 12px var(--glow-secondary, rgba(0, 182, 241,.6)), 2px 2px 10px color-mix(in oklab, var(--glow-primary, rgba(255,0,255,.5)) 35%, transparent);
   }
   
   .hero-intro .manifest {
@@ -1076,14 +1076,14 @@
   /* Global hover/focus/selected/disabled for all choice-link contexts */
   .choice-link:hover { background: var(--border-secondary, 0.5); box-shadow: 0 0 10px var(--glow-secondary); transform: translateY(-1px); text-decoration: none; }
   .choice-link:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent-primary) 35%, transparent); text-decoration: none; }
-  .choice-link.selected { background: rgba(0,255,255,0.08); box-shadow: 0 0 12px var(--glow-primary); position: relative; }
+  .choice-link.selected { background: rgba(0, 182, 241,0.08); box-shadow: 0 0 12px var(--glow-primary); position: relative; }
   .choice-link.selected::after {
     content: '✔';
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%) scale(0.6);
-    color: var(--accent-primary, #00ffff);
+    color: var(--accent-primary, #00b6f1);
     text-shadow: 0 0 6px var(--glow-primary);
     opacity: 0;
     animation: checkPop 260ms ease forwards;
@@ -1230,7 +1230,7 @@
     text-align: right;
     font-size: 12px;
     font-family: monospace;
-    color: var(--accent-secondary, #0ff);
+    color: var(--accent-secondary, #00b6f1);
     opacity: 0.85;
   }
   /* Glass mode transition smoothing */
@@ -1279,7 +1279,7 @@
   }
   #control-panel #playlist-container.playlist a:last-child { margin-bottom: 0; }
   #control-panel #playlist-container.playlist a:hover { background: rgba(var(--bg-secondary-rgb), 0.5); transform: translateY(-1px); }
-  #control-panel #playlist-container.playlist a.active { background: rgba(0,255,255,0.12); box-shadow: 0 0 8px var(--glow-primary); }
+  #control-panel #playlist-container.playlist a.active { background: rgba(0, 182, 241,0.12); box-shadow: 0 0 8px var(--glow-primary); }
 
   #control-panel .audio-buttons .btn,
   #control-panel .audio-buttons button {
@@ -1636,7 +1636,7 @@
     text-decoration: underline;
     text-decoration-style: dotted;
     text-underline-offset: .18em;
-    text-decoration-color: var(--accent-secondary, #0ff);
+    text-decoration-color: var(--accent-secondary, #00b6f1);
   }
   /* Po zvolení varianty */
   .echo-ghost[data-echo-chosen] {
@@ -1658,11 +1658,11 @@
     flex-direction: column;
     gap: 3px;
     background: rgba(8,8,12,.92);
-    border: 1px solid var(--accent-secondary, #0ff);
+    border: 1px solid var(--accent-secondary, #00b6f1);
     border-radius: 8px;
     padding: 6px 4px;
     min-width: 120px;
-    box-shadow: 0 4px 20px rgba(0,0,0,.6), 0 0 10px var(--glow-secondary, rgba(0,255,255,.2));
+    box-shadow: 0 4px 20px rgba(0,0,0,.6), 0 0 10px var(--glow-secondary, rgba(0, 182, 241,.2));
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     pointer-events: all;
@@ -1683,8 +1683,8 @@
   }
   .echo-picker-opt:hover,
   .echo-picker-opt:focus-visible {
-    background: rgba(0,255,255,.1);
-    color: var(--accent-secondary, #0ff);
+    background: rgba(0, 182, 241,.1);
+    color: var(--accent-secondary, #00b6f1);
     outline: none;
   }
   .echo-picker-opt.is-current {
@@ -2087,13 +2087,13 @@
     transition: background .2s ease, border-color .2s ease;
   }
   .archive-card .related-chip:hover {
-    background: rgba(0, 255, 255, .12);
-    border-color: rgba(0, 255, 255, .4);
+    background: rgba(0, 182, 241, .12);
+    border-color: rgba(0, 182, 241, .4);
   }
 
   /* Dynamic card accent */
   .archive-card {
-    --card-accent: var(--accent-primary, #00ffff);
+    --card-accent: var(--accent-primary, #00b6f1);
   }
 
   .archive-card .card-title {
@@ -2256,7 +2256,7 @@
     position: absolute;
     left: 0; right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-secondary, #0ff), transparent);
+    background: linear-gradient(90deg, transparent, var(--accent-secondary, #00b6f1), transparent);
     opacity: 0.5;
     animation: skeletonScanline 2.5s linear infinite;
   }
@@ -2572,7 +2572,7 @@
   font-family: inherit;
   font-size: inherit;
   font-weight: 700;
-  text-shadow: 0 0 4px var(--glow-secondary, rgba(0,255,255,.3));
+  text-shadow: 0 0 4px var(--glow-secondary, rgba(0, 182, 241,.3));
 }
 .lib-link--locked:hover {
   opacity: 0.85;
@@ -4529,7 +4529,7 @@
   top: 0.15rem;
   right: 0.25rem;
   font-size: 0.65rem;
-  color: var(--accent-secondary, #0ff);
+  color: var(--accent-secondary, #00b6f1);
 }
 .theme-balance,
 .theme-error,

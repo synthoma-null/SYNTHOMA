@@ -2,31 +2,37 @@
 
 :root,
 [data-theme] {
-  --cy-bg: var(--bg-primary, #020306);
-  --cy-bg-elevated: var(--bg-secondary, #050810);
-  --cy-surface-1: var(--bg-tertiary, #050910);
-  --cy-surface-2: color-mix(in srgb, var(--cy-surface-1) 88%, var(--text-primary, #d9fbff) 12%);
-  --cy-surface-3: color-mix(in srgb, var(--cy-surface-1) 80%, var(--text-primary, #d9fbff) 20%);
+  --cy-bg: var(--syn-black-0, #010205);
+  --cy-bg-elevated: var(--syn-black-1, #02050a);
+  --cy-surface-1: var(--syn-black-2, #050910);
+  --cy-surface-2: var(--syn-black-3, #07101a);
+  --cy-surface-3: color-mix(in srgb, var(--cy-surface-1) 84%, var(--syn-blue, #2855d1) 16%);
 
-  --cy-text: var(--text-primary, #d9fbff);
+  --cy-text: var(--syn-text, #d9f4fb);
   --cy-text-soft: color-mix(in srgb, var(--cy-text) 84%, var(--cy-bg));
   --cy-text-dim: color-mix(in srgb, var(--cy-text) 70%, var(--cy-bg));
   --cy-text-inverse: var(--bg-primary, #020306);
 
-  --cy-line: var(--border-secondary, color-mix(in srgb, var(--cy-text) 28%, transparent));
-  --cy-line-strong: var(--border-primary, color-mix(in srgb, var(--cy-text) 62%, transparent));
-  --cy-line-subtle: var(--border-tertiary, color-mix(in srgb, var(--cy-text) 14%, transparent));
+  --cy-line: var(--syn-border-dim, rgb(73 135 160 / 0.22));
+  --cy-line-strong: var(--syn-border-cyan, rgb(0 182 241 / 0.58));
+  --cy-line-subtle: rgb(73 135 160 / 0.14);
 
-  --cy-accent-primary: var(--accent-secondary, #00eaff);
-  --cy-accent-secondary: var(--accent-primary, #ff19c7);
-  --cy-accent-warning: var(--accent-warning, #f4e83a);
-  --cy-accent-danger: var(--accent-error, #ff3d4f);
-  --cy-accent-success: var(--accent-success, #7bed9f);
+  --cy-accent-primary: var(--syn-cyan, #00b6f1);
+  --cy-accent-secondary: var(--syn-magenta, #ee26d0);
+  --cy-accent-warning: var(--syn-yellow, #ecd804);
+  --cy-accent-danger: var(--syn-red, #ff315d);
+  --cy-accent-success: var(--syn-cyan-hot, #19caff);
 
   --cy-shadow: 0 20px 55px color-mix(in srgb, var(--cy-bg) 82%, transparent);
   --cy-shadow-compact: 0 8px 24px color-mix(in srgb, var(--cy-bg) 72%, transparent);
-  --cy-glow-primary: 0 0 18px var(--glow-secondary, color-mix(in srgb, var(--cy-accent-primary) 22%, transparent));
-  --cy-glow-secondary: 0 0 18px var(--glow-primary, color-mix(in srgb, var(--cy-accent-secondary) 20%, transparent));
+  --cy-glow-primary:
+    0 0 0 1px color-mix(in srgb, var(--cy-accent-primary) 72%, transparent),
+    0 0 5px color-mix(in srgb, var(--cy-accent-primary) 42%, transparent),
+    0 0 18px color-mix(in srgb, var(--cy-accent-primary) 16%, transparent);
+  --cy-glow-secondary:
+    0 0 0 1px color-mix(in srgb, var(--cy-accent-secondary) 66%, transparent),
+    0 0 5px color-mix(in srgb, var(--cy-accent-secondary) 36%, transparent),
+    0 0 18px color-mix(in srgb, var(--cy-accent-secondary) 14%, transparent);
 
   --cy-grid-color: color-mix(in srgb, var(--cy-accent-primary) 4%, transparent);
   --cy-grid-opacity: 0.5;

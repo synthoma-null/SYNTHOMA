@@ -17,5 +17,5 @@ export const DRAW_ON_TURN_START = 1;
 export const VOID_PRESSURE_PER_TURN = 1;
 export const VOID_GLOBAL_EVENT_EVERY_N_TURNS = 3;
 
-export const PLAYER_COLORS = ['#00ffe0', '#ff4fa0', '#ffe600', '#7b2fff', '#ff7700', '#00ff88'] as const;
+export const PLAYER_COLORS = ['#00b6f1', '#ff4fa0', '#ffe600', '#7b2fff', '#ff7700', '#00ff88'] as const;
 export type PlayerColor = typeof PLAYER_COLORS[number];

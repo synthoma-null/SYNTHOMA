@@ -3,7 +3,7 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 1rem;
-  color: #f7f7ff;
+  color: var(--syn-text-reading, #b4c1c7);
 }
 
 .books-fallback h1 {
@@ -11,13 +11,13 @@
   letter-spacing: .06em;
   text-transform: uppercase;
   margin: 0 0 2rem;
-  color: #fff;
+  color: var(--syn-text-heading, #d2e2e7);
 }
 
 .books-fallback h2 {
   font-size: 1.5rem;
   margin: 2rem 0 1rem;
-  color: #00ffff;
+  color: #00b6f1;
 }
 
 .books-fallback ul {
@@ -36,7 +36,7 @@
   background: rgba(18,18,22,.65);
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 14px;
-  color: #f7f7ff;
+  color: var(--syn-text-ui, #9db0b9);
   text-decoration: none;
   transition: transform .15s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
 }

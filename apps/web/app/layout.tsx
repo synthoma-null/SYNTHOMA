@@ -25,6 +25,7 @@ import "../src/styles/audio-panel.css";
 import "../src/styles/motion-contract.css";
 import "../src/styles/pwa.css";
 import "../src/styles/site-unification.css";
+import "../src/styles/synthoma-art-direction.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";
@@ -184,8 +185,8 @@ export const generateViewport = (): Viewport => ({
   initialScale: 1,
   viewportFit: 'cover',
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#000d1a" },
-    { media: "(prefers-color-scheme: light)", color: "#000d1a" },
+    { media: "(prefers-color-scheme: dark)", color: "#010205" },
+    { media: "(prefers-color-scheme: light)", color: "#010205" },
   ],
 });
 

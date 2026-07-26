@@ -1,0 +1,1349 @@
+/*
+ * SYNTHOMA art direction
+ * Black diagnostic surfaces with local cyan/magenta signal faults.
+ * This final layer intentionally adapts legacy components without changing
+ * their DOM or interaction contracts.
+ */
+
+html[data-theme="synthoma"] {
+  color-scheme: dark;
+  background: var(--syn-black-0);
+}
+
+html[data-theme="synthoma"] body {
+  background: var(--syn-black-0);
+  color: var(--syn-text-ui);
+}
+
+html[data-theme="synthoma"] ::selection {
+  background: rgb(238 38 208 / 0.34);
+  color: var(--syn-text-hot);
+}
+
+html[data-theme="synthoma"] .synthoma-shell {
+  background:
+    radial-gradient(circle at 12% 8%, rgb(0 182 241 / 0.055), transparent 28rem),
+    radial-gradient(circle at 88% 84%, rgb(238 38 208 / 0.05), transparent 30rem),
+    var(--syn-black-0);
+  color: var(--syn-text-ui);
+}
+
+html[data-theme="synthoma"] .synthoma-shell::before,
+html[data-theme="synthoma"] .synthoma-shell::after {
+  content: "";
+  position: fixed;
+  inset: var(--os-command-height) 0 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+html[data-theme="synthoma"] .synthoma-shell::before {
+  background-image:
+    linear-gradient(rgb(73 135 160 / 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(73 135 160 / 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.8), transparent 86%);
+  opacity: 0.32;
+}
+
+html[data-theme="synthoma"] .synthoma-shell::after {
+  background:
+    linear-gradient(90deg, transparent 0 7%, rgb(0 182 241 / 0.16) 7% 8.5%, transparent 8.5% 78%, rgb(238 38 208 / 0.13) 78% 80%, transparent 80%) 0 18% / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 0 64%, rgb(238 38 208 / 0.11) 64% 68%, transparent 68%) 0 73% / 100% 1px no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 5px, rgb(217 244 251 / 0.013) 5px 6px);
+  opacity: 0.55;
+}
+
+html[data-theme="synthoma"] :where(
+  .signal-system,
+  .signal-human,
+  .signal-anomaly,
+  .signal-emotion,
+  .signal-archive,
+  .signal-warning,
+  .signal-core
+) {
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .signal-system {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .signal-human {
+  color: var(--text-human);
+}
+
+html[data-theme="synthoma"] .signal-anomaly {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] .signal-emotion {
+  color: var(--text-emotion);
+}
+
+html[data-theme="synthoma"] .signal-archive {
+  color: var(--text-archive);
+}
+
+html[data-theme="synthoma"] .signal-warning {
+  color: var(--text-warning);
+}
+
+html[data-theme="synthoma"] .signal-core {
+  color: var(--text-core);
+}
+
+html[data-theme="synthoma"] .signal-copy {
+  text-shadow:
+    -0.35px 0 rgb(53 189 247 / 0.14),
+    0.35px 0 rgb(223 97 203 / 0.1);
+}
+
+html[data-theme="synthoma"] .signal-title {
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    var(--ink-blue-hot) 0%,
+    var(--ink-violet) 46%,
+    var(--ink-magenta) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Global media stays dark; color is a fault in the image, not a wash over it. */
+html[data-theme="synthoma"] {
+  --os-media-opacity: 0.42;
+  --os-scrim-strong: rgb(1 2 5 / 0.94);
+  --os-scrim-soft: rgb(1 2 5 / 0.68);
+}
+
+html[data-theme="synthoma"] .synthoma-global-background__grid {
+  background-image:
+    linear-gradient(rgb(73 135 160 / 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(73 135 160 / 0.08) 1px, transparent 1px);
+  opacity: 0.12;
+}
+
+html[data-theme="synthoma"] .synthoma-global-background__noise {
+  background-image: repeating-linear-gradient(0deg, transparent 0 4px, rgb(245 251 255 / 0.018) 4px 5px);
+  opacity: 0.5;
+}
+
+html[data-theme="synthoma"] .synthoma-global-background__vignette {
+  background: radial-gradient(circle at 50% 38%, transparent 12%, rgb(1 2 5 / 0.88) 100%);
+}
+
+html[data-theme="synthoma"] .synthoma-global-background__scrim {
+  background: linear-gradient(180deg, rgb(1 2 5 / 0.66), rgb(1 2 5 / 0.9));
+}
+
+/* Shared shell: neutral core, cyan left signal, magenta right fault. */
+html[data-theme="synthoma"] :where(
+  .synthoma-command-header,
+  .synthoma-mobile-nav,
+  .synthoma-global-footer
+) {
+  border-color: var(--syn-border-dim);
+  background: rgb(1 2 5 / 0.98);
+  box-shadow:
+    inset 3px 0 0 rgb(0 182 241 / 0.58),
+    inset -3px 0 0 rgb(238 38 208 / 0.5),
+    0 12px 32px rgb(0 0 0 / 0.42);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="synthoma"] .synthoma-command-header {
+  border-bottom-color: var(--syn-border-cyan);
+}
+
+html[data-theme="synthoma"] .synthoma-command-header__brand {
+  color: var(--syn-text-hot);
+  text-shadow:
+    -1px 0 var(--syn-cyan),
+    1px 0 var(--syn-magenta);
+}
+
+html[data-theme="synthoma"] .synthoma-wordmark {
+  color: var(--syn-text-hot);
+  text-shadow:
+    -1px 0 0 var(--syn-cyan),
+    1px 0 0 var(--syn-magenta),
+    0 0 7px rgb(0 182 241 / 0.2);
+}
+
+html[data-theme="synthoma"] :where(
+  .synthoma-command-header__status,
+  .synthoma-command-header__sectors a,
+  .synthoma-mobile-nav a,
+  .synthoma-global-footer,
+  .nav-label,
+  .panel-label,
+  .field-label,
+  label
+) {
+  color: var(--syn-text-ui);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .synthoma-command-header__status strong {
+  color: var(--syn-magenta-hot);
+}
+
+html[data-theme="synthoma"] .synthoma-command-header__pulse {
+  background: var(--syn-cyan-hot);
+  box-shadow:
+    0 0 0 1px var(--syn-cyan-pale),
+    0 0 7px rgb(25 202 255 / 0.5);
+}
+
+html[data-theme="synthoma"] .synthoma-command-header__sectors a[aria-current="page"] {
+  color: var(--syn-text-hot);
+  box-shadow:
+    inset 0 -2px 0 var(--syn-cyan),
+    inset 0 -3px 0 rgb(238 38 208 / 0.28);
+}
+
+/* Solid diagnostic surfaces replace the legacy glass vocabulary. */
+html[data-theme="synthoma"] :where(
+  .glass,
+  .panel,
+  .os-surface,
+  .os-surface--glass,
+  .library-article,
+  .profile-card,
+  .admin-panel,
+  .auth-container,
+  .auth-home-panel,
+  .public-ai-page article,
+  .legal-page article,
+  .chapter-access-gate > section,
+  .synthoma-system-state__panel,
+  .modal-content,
+  .dialog-content,
+  .theme-dialog,
+  .toast,
+  .tooltip
+) {
+  border-color: var(--syn-border-dim);
+  border-radius: 3px;
+  background:
+    linear-gradient(180deg, rgb(5 9 16 / 0.99), rgb(1 3 7 / 0.99));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 0 0 0 1px rgb(245 251 255 / 0.018),
+    0 18px 50px rgb(0 0 0 / 0.48);
+}
+
+html[data-theme="synthoma"] :where(
+  .os-surface,
+  .library-article,
+  .profile-card,
+  .admin-panel,
+  .auth-container,
+  .public-ai-page article
+) {
+  border-left-color: var(--syn-border-cyan);
+  border-right-color: var(--syn-border-magenta);
+}
+
+html[data-theme="synthoma"] :where(
+  .os-surface,
+  .library-article,
+  .profile-card,
+  .admin-panel,
+  .auth-container,
+  .public-ai-page article
+)::before {
+  border-color: var(--syn-cyan-hot);
+  filter: none;
+}
+
+/* Controls use sharp signal edges instead of a diffuse turquoise fill. */
+html[data-theme="synthoma"] :where(
+  button,
+  .btn,
+  .os-button,
+  .os-command,
+  [role="button"]
+) {
+  border-color: var(--syn-border-dim);
+  border-radius: 2px;
+  background: var(--syn-black-2);
+  color: var(--syn-text-ui);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  button,
+  .btn,
+  .os-button,
+  .os-command,
+  [role="button"]
+):is(:hover, :focus-visible) {
+  border-color: var(--syn-border-cyan);
+  background: var(--syn-black-3);
+  color: var(--syn-text-hot);
+  box-shadow:
+    inset 2px 0 0 var(--syn-cyan),
+    inset -2px 0 0 var(--syn-magenta),
+    0 0 8px rgb(0 182 241 / 0.12);
+}
+
+html[data-theme="synthoma"] :where(
+  button,
+  .btn,
+  .os-button,
+  .os-command,
+  [role="button"]
+)[aria-pressed="true"],
+html[data-theme="synthoma"] :where(.btn-primary, .os-button--primary) {
+  border-color: var(--syn-border-cyan);
+  background: linear-gradient(90deg, rgb(0 79 124 / 0.18), var(--syn-black-2) 42%, rgb(112 0 93 / 0.14));
+  color: var(--syn-text-hot);
+  box-shadow:
+    inset 3px 0 0 var(--syn-cyan),
+    inset -3px 0 0 var(--syn-magenta);
+}
+
+html[data-theme="synthoma"] :where(input, select, textarea) {
+  border-color: var(--syn-border-dim);
+  border-radius: 2px;
+  background: var(--syn-black-1);
+  color: var(--syn-text-ui);
+  box-shadow: inset 0 0 0 1px rgb(245 251 255 / 0.012);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(input, select, textarea):focus-visible {
+  border-color: var(--syn-border-cyan);
+  box-shadow:
+    inset 2px 0 0 var(--syn-cyan),
+    inset -2px 0 0 var(--syn-magenta);
+}
+
+/* Homepage and intro. */
+html[data-theme="synthoma"] .synthoma-home__system {
+  border-color: var(--syn-border-dim);
+  color: var(--syn-text-muted);
+}
+
+html[data-theme="synthoma"] .synthoma-home__system strong,
+html[data-theme="synthoma"] .synthoma-home__designation {
+  color: var(--syn-magenta-hot);
+}
+
+html[data-theme="synthoma"] .home-light-quote {
+  border-left-color: var(--syn-cyan);
+  color: var(--syn-text-hot);
+  background: linear-gradient(90deg, rgb(0 79 124 / 0.1), transparent 72%);
+}
+
+html[data-theme="synthoma"] .home-light-quote__beam {
+  background: linear-gradient(90deg, var(--syn-cyan), var(--syn-text-hot) 42%, var(--syn-magenta), transparent);
+  box-shadow:
+    0 0 4px rgb(25 202 255 / 0.4),
+    0 0 12px rgb(238 38 208 / 0.16);
+}
+
+html[data-theme="synthoma"] .home-sector-link {
+  border-color: var(--syn-border-dim);
+  background: var(--syn-black-1);
+  color: var(--syn-text-ui);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .home-sector-link .home-sector-link__copy strong {
+  color: var(--syn-text-heading);
+}
+
+html[data-theme="synthoma"] .home-sector-link :where(
+  .home-sector-link__index,
+  .home-sector-link__marker,
+  .home-sector-link__copy > span
+) {
+  color: var(--syn-text-muted);
+}
+
+html[data-theme="synthoma"] .home-sector-link:nth-child(even) {
+  --home-sector-accent: var(--syn-magenta);
+}
+
+html[data-theme="synthoma"] :where(.synthoma-intro, .landing-intro) {
+  background: var(--syn-black-0);
+}
+
+/* Library, archive and card catalogue. */
+html[data-theme="synthoma"] :where(
+  .synthoma-library,
+  .synthoma-archive,
+  .archive-page,
+  .cards-page
+) {
+  background: transparent;
+  color: var(--syn-text-ui);
+}
+
+html[data-theme="synthoma"] :where(
+  .lib-section,
+  .book-card,
+  .archive-record-card,
+  .archive-card,
+  .card-catalog-card,
+  .fragment-card
+) {
+  border-color: var(--syn-border-dim);
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--syn-black-2), var(--syn-black-1));
+  color: var(--syn-text-ui);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .lib-section,
+  .book-card,
+  .archive-record-card,
+  .archive-card,
+  .card-catalog-card
+):nth-child(odd) {
+  border-left-color: var(--syn-border-cyan);
+}
+
+html[data-theme="synthoma"] :where(
+  .lib-section,
+  .book-card,
+  .archive-record-card,
+  .archive-card,
+  .card-catalog-card
+):nth-child(even) {
+  border-left-color: var(--syn-border-magenta);
+}
+
+html[data-theme="synthoma"] :where(
+  .archive-record-card__title,
+  .archive-card h2,
+  .lib-section h2,
+  .book-card h2
+) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .library-book-card__title,
+  .archive-book-card__title,
+  .lib-section-title,
+  .lib-link-title,
+  .card-catalog-card h2
+) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .library-book-card__description,
+  .archive-book-card__description,
+  .archive-record-card__teaser,
+  .archive-record-card__body .text,
+  .lib-note,
+  .card-description
+) {
+  color: var(--syn-text-ui);
+  font-family: var(--font-reading);
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .library-book-card__status,
+  .library-book-card__cta,
+  .archive-book-card__status,
+  .archive-book-card__meta,
+  .archive-record-card__category,
+  .archive-record-card__source,
+  .lib-badge,
+  .lib-meta,
+  .chapter-meta,
+  .meta,
+  .system-id,
+  .timestamp,
+  .microcopy
+) {
+  color: var(--syn-text-muted);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .archive-record-card__tag,
+  .archive-card .tag,
+  .lib-meta,
+  .chapter-meta
+) {
+  border-color: var(--syn-border-dim);
+  color: var(--syn-text-muted);
+}
+
+html[data-theme="synthoma"] .archive-record-card__tag:nth-child(3n + 2) {
+  border-color: var(--syn-border-magenta);
+  color: var(--syn-magenta-hot);
+}
+
+/* Reader: quiet neutral text, color only at semantic breaks. */
+html[data-theme="synthoma"] :where(
+  .chapter-reader,
+  .reader-page,
+  .SYNTHOMAREADER,
+  .author-reader
+) {
+  background: transparent;
+  color: var(--syn-text-reading);
+}
+
+html[data-theme="synthoma"] :where(
+  .chapter-reader__article,
+  .SYNTHOMAREADER,
+  .author-reader__article
+) {
+  border-color: var(--syn-border-dim);
+  background: rgb(1 2 5 / var(--reader-surface-opacity, 0.96));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 1px 0 0 rgb(0 182 241 / 0.18),
+    inset -1px 0 0 rgb(238 38 208 / 0.14);
+}
+
+html[data-theme="synthoma"] :where(
+  .chapter-reader__article p,
+  .chapter-reader__article li,
+  .SYNTHOMAREADER p,
+  .SYNTHOMAREADER li,
+  .author-reader__article p,
+  .author-reader__article li
+) {
+  color: var(--syn-text-reading);
+  font-family: var(--font-reading);
+  font-weight: 400;
+  line-height: 1.72;
+  letter-spacing: 0.008em;
+  text-shadow: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html[data-theme="synthoma"] :where(
+  .chapter-reader__command-bar,
+  .reader-command-bar,
+  .reader-rail,
+  .chapter-reader__rail
+) {
+  border-color: var(--syn-border-dim);
+  background: rgb(1 2 5 / 0.98);
+  color: var(--syn-text-ui);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="synthoma"] :where(.dialogue, .dialogue-line, [data-speaker]) {
+  color: var(--syn-text-human);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .system-log,
+  .log-line,
+  [data-speaker="system"]
+) {
+  color: color-mix(in srgb, var(--syn-cyan) 62%, var(--syn-text-reading));
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER .log {
+  color: color-mix(in srgb, var(--syn-cyan) 62%, var(--syn-text-reading));
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .chapter-reader__article.SYNTHOMAREADER .dialog-line {
+  color: var(--speaker-color, var(--syn-text-human)) !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="synthoma"] .chapter-reader__article.SYNTHOMAREADER .chapter-content :where(
+  .dialog,
+  .dialogG,
+  .dialogS,
+  .dialogN,
+  .dialogD,
+  .dialogGlitchena,
+  .dialog.fx-gradient
+) {
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER :where(
+  .dialog,
+  .dialogG,
+  .dialogS,
+  .dialogN,
+  .dialogD,
+  .dialogGlitchena,
+  .dialog.fx-gradient
+) {
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER .dialog {
+  color: var(--syn-text-human);
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER .dialogN {
+  color: var(--speaker-null);
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER .dialogS {
+  color: var(--speaker-sarkasma);
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER .dialogG {
+  color: var(--speaker-glitchka);
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER :where(.dialogGlitchena, .dialog.fx-gradient) {
+  color: var(--speaker-glitchena);
+}
+
+html[data-theme="synthoma"] :where(.choice-box, .reader-choice-list) {
+  border-color: var(--syn-border-dim);
+  background: var(--syn-black-1);
+}
+
+html[data-theme="synthoma"] :where(.choice-link, .reader-choice) {
+  border-color: var(--syn-border-dim);
+  background: var(--syn-black-2);
+  color: var(--syn-text-ui);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .SYNTHOMAREADER :where(.choice-link, .reader-choice) {
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(.choice-link, .reader-choice):is(:hover, :focus-visible, [aria-current="true"]) {
+  color: var(--syn-text-hot);
+}
+
+html[data-theme="synthoma"] :where(.choice-link, .reader-choice):nth-child(even) {
+  border-left-color: var(--syn-magenta);
+}
+
+/* Profile, auth, legal, states and overlays. */
+html[data-theme="synthoma"] :where(
+  .profile-page,
+  .auth-page-wrap,
+  .legal-page,
+  .public-ai-page,
+  .pwa-page,
+  .synthoma-system-state
+) {
+  background: transparent;
+  color: var(--syn-text-ui);
+}
+
+html[data-theme="synthoma"] .profile-panel :where(p, dt, dd, label) {
+  color: var(--syn-text-ui);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .profile-panel :where(h2, h3, strong) {
+  color: var(--syn-text-heading);
+}
+
+html[data-theme="synthoma"] :where(
+  .legal-page article,
+  .protocol-document,
+  .author-reader__article
+) {
+  color: var(--syn-text-legal);
+  font-family: var(--font-reading);
+  font-weight: 400;
+  line-height: 1.72;
+  letter-spacing: 0.008em;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .legal-page :where(
+  p.text,
+  ul.text,
+  ol.text,
+  .legal-list,
+  td,
+  th
+) {
+  color: var(--syn-text-legal);
+  font-family: var(--font-reading);
+  font-weight: 400;
+  line-height: 1.72;
+  letter-spacing: 0.008em;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .legal-page :where(h1.title, h2.title, h3.subtitle) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .author-reader__article .autor-semantic-content :where(
+  p:not(.log):not([class*="dialog"]),
+  li
+) {
+  color: var(--syn-text-legal);
+  font-family: var(--font-reading);
+  font-weight: 400;
+  line-height: 1.72;
+  letter-spacing: 0.008em;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .author-reader__article .autor-semantic-content :where(h1, h2, h3) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .author-reader__article .autor-semantic-content :where(
+  .dialog,
+  .dialogG,
+  .dialogS,
+  .dialogN,
+  .dialogD,
+  .dialogGlitchena,
+  .dialog.fx-gradient
+) {
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .legal-page article p,
+  .legal-page article li,
+  .legal-page article dd,
+  .protocol-document p,
+  .protocol-document li,
+  .author-reader__article p,
+  .author-reader__article li
+) {
+  color: var(--syn-text-legal);
+  font-family: var(--font-reading);
+  letter-spacing: 0.008em;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .legal-page article h2,
+  .legal-page article h3,
+  .protocol-document h2,
+  .protocol-document h3,
+  .author-reader__article h2,
+  .author-reader__article h3
+) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .auth-subtitle,
+  .auth-hint,
+  .profile-panel .profile-muted,
+  .synthoma-system-state__code
+) {
+  color: var(--syn-text-muted);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .profile-panel-backdrop,
+  .modal-backdrop,
+  .dialog-backdrop,
+  .theme-dialog-overlay,
+  .loading-overlay,
+  .error-overlay,
+  .control-center__backdrop
+) {
+  background: rgb(1 2 5 / 0.86);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+html[data-theme="synthoma"] :where(
+  .error-message,
+  .error-title,
+  [role="alert"]
+) {
+  color: var(--syn-red);
+}
+
+html[data-theme="synthoma"] :where(.warning, .status-warning, [data-status="warning"]) {
+  color: var(--syn-yellow);
+}
+
+/* Configuration and audio share one black system-node construction. */
+html[data-theme="synthoma"] #control-panel.control-panel,
+html[data-theme="synthoma"] .synthoma-audio-panel__surface,
+html[data-theme="synthoma"] .profile-panel {
+  border-color: var(--syn-border-cyan);
+  border-right-color: var(--syn-border-magenta);
+  border-radius: 2px;
+  background: var(--syn-black-1);
+  color: var(--syn-text-ui);
+  box-shadow:
+    0 0 0 1px rgb(0 182 241 / 0.42),
+    0 0 5px rgb(25 202 255 / 0.2),
+    0 0 24px rgb(0 0 0 / 0.72);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .control-center__header,
+  .control-center__presets,
+  .synthoma-audio-panel__header
+) {
+  background: var(--syn-black-2);
+  border-color: var(--syn-border-dim);
+}
+
+html[data-theme="synthoma"] :where(
+  .control-center__kicker,
+  .synthoma-audio-panel__kicker,
+  .control-center__toggle span:last-child
+) {
+  color: var(--syn-cyan-hot);
+}
+
+html[data-theme="synthoma"] .control-center__presets > div:first-child span,
+html[data-theme="synthoma"] .synthoma-audio-panel__track-state,
+html[data-theme="synthoma"] .synthoma-audio-panel__library button.is-active small {
+  color: var(--syn-magenta-hot);
+}
+
+html[data-theme="synthoma"] :where(
+  .control-center__body,
+  .control-center__toggle,
+  .control-center__preset,
+  .synthoma-audio-panel__body,
+  .synthoma-audio-panel__track-copy,
+  .synthoma-audio-panel__library button
+) {
+  color: var(--syn-text-ui);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .control-center__title,
+  .synthoma-audio-panel__title,
+  .synthoma-audio-panel__track
+) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .synthoma-audio-panel__progress input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    90deg,
+    var(--syn-cyan) 0 var(--audio-progress),
+    var(--syn-magenta) var(--audio-progress) calc(var(--audio-progress) + 2px),
+    var(--syn-black-3) calc(var(--audio-progress) + 2px) 100%
+  );
+}
+
+html[data-theme="synthoma"] .synthoma-audio-panel__progress input[type="range"]::-webkit-slider-thumb {
+  border-color: var(--syn-text-hot);
+  background: var(--syn-magenta-hot);
+  box-shadow:
+    0 0 0 1px var(--syn-magenta),
+    0 0 6px rgb(238 38 208 / 0.45);
+}
+
+/* Cyklus uses the same signal hierarchy while retaining its component layout. */
+html[data-theme="synthoma"] :where(
+  .cyklus-page,
+  .cyklus-void-page,
+  .cyklus-overlay--void-hub
+) {
+  --cy-bg: var(--syn-black-0);
+  --cy-bg-elevated: var(--syn-black-1);
+  --cy-surface-1: var(--syn-black-2);
+  --cy-surface-2: var(--syn-black-3);
+  --cy-surface-3: #0b1628;
+  --cy-text: var(--syn-text-ui);
+  --cy-text-soft: var(--syn-text-reading);
+  --cy-text-dim: var(--syn-text-muted);
+  --cy-line: var(--syn-border-dim);
+  --cy-line-strong: var(--syn-border-cyan);
+  --cy-line-subtle: rgb(73 135 160 / 0.14);
+  --cy-accent-primary: var(--syn-cyan);
+  --cy-accent-secondary: var(--syn-magenta);
+  --cy-accent-warning: var(--syn-yellow);
+  --cy-accent-danger: var(--syn-red);
+  --cy-accent-success: var(--syn-cyan-hot);
+  background-color: var(--syn-black-0);
+  color: var(--syn-text-ui);
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-card,
+  .cyklus-panel,
+  .cyklus-hud,
+  .cyklus-stat-dock,
+  .cyklus-pocket,
+  .cyklus-outcome,
+  .cyklus-overlay__panel,
+  .cyklus-void-shell
+) {
+  border-color: var(--syn-border-dim);
+  background: linear-gradient(180deg, var(--syn-black-2), var(--syn-black-1));
+  color: var(--syn-text-ui);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-card,
+  .cyklus-panel,
+  .cyklus-outcome,
+  .cyklus-overlay__panel
+) {
+  box-shadow:
+    inset 2px 0 0 rgb(0 182 241 / 0.28),
+    inset -2px 0 0 rgb(238 38 208 / 0.24),
+    0 20px 55px rgb(0 0 0 / 0.58);
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-card p,
+  .cyklus-card__text,
+  .cyklus-scene-text,
+  .cyklus-outcome p
+) {
+  color: var(--syn-text-reading);
+  font-family: var(--font-reading);
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-card__title,
+  .cyklus-outcome h2,
+  .cyklus-pocket-panel h2,
+  .cyklus-pocket-column h3,
+  .cyklus-stat-popup__name
+) {
+  color: var(--syn-text-heading);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-card__metadata,
+  .cyklus-card__eyebrow,
+  .cyklus-stat-chip__label,
+  .cyklus-stat-chip__status,
+  .cyklus-stat-dock__climate-label,
+  .cyklus-pocket__item-mood,
+  .cyklus-pocket__combo-hint
+) {
+  color: var(--syn-text-muted);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-pocket__item-text,
+  .cyklus-stat-popup__description,
+  .cyklus-stat-dock__climate-desc,
+  .cyklus-active-objective__hint
+) {
+  color: var(--syn-text-ui);
+  font-family: var(--font-reading);
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-choice,
+  .cyklus-answer,
+  .cyklus-card__choice
+) {
+  border-color: var(--syn-border-dim);
+  background: var(--syn-black-2);
+  color: var(--syn-text-ui);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-choice,
+  .cyklus-answer,
+  .cyklus-card__choice
+):is(:hover, :focus-visible, :active) {
+  color: var(--syn-text-hot);
+}
+
+html[data-theme="synthoma"] :where(
+  .cyklus-choice,
+  .cyklus-answer,
+  .cyklus-card__choice
+):nth-child(even) {
+  border-left-color: var(--syn-magenta);
+}
+
+html[data-theme="synthoma"] .cyklus-menu__content::before {
+  background: linear-gradient(90deg, rgb(1 2 5 / 0.97), rgb(1 2 5 / 0.84) 62%, transparent);
+}
+
+html[data-theme="synthoma"] .cyklus-menu__portal {
+  filter: none;
+  opacity: 0.28;
+}
+
+/*
+ * Spectral ink prototypes
+ * Keep this layer limited to the six review surfaces until the direction is
+ * approved. Color follows meaning, never the element tag alone.
+ */
+
+/* 1. Homepage */
+html[data-theme="synthoma"] .synthoma-home__designation {
+  color: var(--text-anomaly);
+  text-shadow:
+    -0.4px 0 var(--ink-blue-hot),
+    0.4px 0 var(--ink-magenta-hot);
+}
+
+html[data-theme="synthoma"] .synthoma-home__statement {
+  color: var(--ink-violet);
+  text-shadow:
+    -0.35px 0 rgb(53 189 247 / 0.14),
+    0.35px 0 rgb(223 97 203 / 0.1);
+}
+
+html[data-theme="synthoma"] .synthoma-home__format {
+  color: var(--text-human);
+}
+
+html[data-theme="synthoma"] .synthoma-home__system > span:first-child {
+  color: var(--text-archive);
+}
+
+html[data-theme="synthoma"] .synthoma-home__system > strong {
+  color: var(--text-system);
+  text-shadow: 0 0 7px rgb(53 189 247 / 0.22);
+}
+
+html[data-theme="synthoma"] .synthoma-home__system > span:last-child {
+  color: var(--text-warning);
+}
+
+html[data-theme="synthoma"] .home-sector-link .home-sector-link__index {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .home-sector-link .home-sector-link__copy strong {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 58%, var(--ink-magenta));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="synthoma"] .home-sector-link .home-sector-link__copy > span {
+  color: var(--ink-violet-soft);
+}
+
+html[data-theme="synthoma"] .home-sector-link .home-sector-link__marker {
+  color: var(--text-core);
+}
+
+html[data-theme="synthoma"] .home-sector-link:nth-child(even) .home-sector-link__index,
+html[data-theme="synthoma"] .home-sector-link:nth-child(even) .home-sector-link__marker {
+  color: var(--text-anomaly);
+}
+
+/* 2. One library card */
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) !important;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  min-height: 18rem;
+  max-height: 24rem;
+  overflow: hidden;
+  border-color: rgb(53 189 247 / 0.48);
+  border-right-color: rgb(223 97 203 / 0.42);
+  box-shadow:
+    inset 2px 0 0 rgb(53 189 247 / 0.28),
+    inset -2px 0 0 rgb(223 97 203 / 0.22),
+    0 18px 44px rgb(0 0 0 / 0.42);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cover {
+  width: 100% !important;
+  max-width: 11rem !important;
+  height: 100%;
+  max-height: 20rem;
+  margin: 0 !important;
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cover img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__title {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 52%, var(--ink-magenta));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__description {
+  color: var(--ink-violet-soft);
+  text-shadow:
+    -0.3px 0 rgb(53 189 247 / 0.12),
+    0.3px 0 rgb(223 97 203 / 0.08);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__status {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cta {
+  color: var(--text-core);
+  text-shadow: 0 0 7px rgb(53 189 247 / 0.2);
+}
+
+/* 3. Current Cyklus card */
+html[data-theme="synthoma"] .cyklus-card .cyklus-card__title {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 48%, var(--ink-magenta));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card__category {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card__context,
+html[data-theme="synthoma"] .cyklus-card .cyklus-card__overload-risk {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card__overload-label,
+html[data-theme="synthoma"] .cyklus-card .cyklus-preview__risk--high {
+  color: var(--text-warning);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card-scene .text {
+  color: var(--ink-violet);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card-scene .log {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card-scene .dialog {
+  color: var(--text-human);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card-scene :where(.dialogS, .dialogG, .dialogGlitchena) {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-card-scene .dialogN {
+  color: var(--ink-blue);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-preview--left :where(.cyklus-preview__hint, .cyklus-btn) {
+  color: var(--ink-blue);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-preview--right :where(.cyklus-preview__hint, .cyklus-btn) {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-preview--left .cyklus-btn:is(:hover, :focus-visible) {
+  color: var(--text-core);
+  box-shadow: inset 3px 0 0 var(--ink-blue-hot), 0 0 10px rgb(53 189 247 / 0.2);
+}
+
+html[data-theme="synthoma"] .cyklus-card .cyklus-preview--right .cyklus-btn:is(:hover, :focus-visible) {
+  color: var(--text-core);
+  box-shadow: inset -3px 0 0 var(--ink-magenta-hot), 0 0 10px rgb(223 97 203 / 0.2);
+}
+
+/* 4-5. NULL and NEON-0 reader pages */
+html[data-theme="synthoma"] .chapter-reader[data-book="synthoma-null"] {
+  --book-body-text: #a7acd0;
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book="konec-podpory"] {
+  --book-body-text: #a9bcc1;
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book="neon-0"] {
+  --book-body-text: #b7aabd;
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__article .chapter-content :where(
+  p,
+  li,
+  .text
+) {
+  color: var(--book-body-text);
+  text-shadow:
+    -0.3px 0 rgb(53 189 247 / 0.1),
+    0.3px 0 rgb(223 97 203 / 0.075);
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__article .chapter-content .log {
+  color: var(--text-system);
+  text-shadow: none;
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__article .chapter-content .dialog {
+  color: var(--text-human);
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book="synthoma-null"] .chapter-reader__article .chapter-content :where(
+  .dialogN,
+  .dialog--null
+) {
+  color: var(--ink-blue);
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book="neon-0"] .chapter-reader__article .chapter-content :where(
+  .dialogG,
+  .dialogS,
+  .dialogGlitchena,
+  .neon-anomaly
+) {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book="neon-0"] .chapter-reader__identity-title {
+  color: var(--ink-magenta-soft);
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book="synthoma-null"] .chapter-reader__identity-title {
+  color: var(--ink-blue);
+}
+
+html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__identity-meta,
+html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__sequence {
+  color: var(--text-archive);
+}
+
+/* 6. Open control panel */
+html[data-theme="synthoma"] #control-panel .control-center__kicker {
+  color: var(--text-system);
+  text-shadow: 0 0 7px rgb(53 189 247 / 0.2);
+}
+
+html[data-theme="synthoma"] #control-panel .control-center__header h2 {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 48%, var(--ink-magenta));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="synthoma"] #control-panel .control-center__header p,
+html[data-theme="synthoma"] #control-panel .control-center__field legend {
+  color: var(--text-archive);
+}
+
+html[data-theme="synthoma"] #control-panel :where(
+  .control-center__toggle,
+  .control-center__range,
+  .control-center__preset
+) {
+  color: var(--ink-violet-soft);
+}
+
+html[data-theme="synthoma"] #control-panel :where(
+  .control-center__toggle span:last-child,
+  .control-center__range output,
+  [role="tab"][aria-selected="true"],
+  [aria-pressed="true"]
+) {
+  color: var(--text-core);
+  text-shadow: 0 0 7px rgb(53 189 247 / 0.2);
+}
+
+html[data-theme="synthoma"] #control-panel .control-center__presets > div:first-child span,
+html[data-theme="synthoma"] #control-panel [role="tab"]:nth-child(even) {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] #control-panel .control-center__effective strong {
+  color: var(--text-warning);
+}
+
+/* Motion-off keeps the chromatic identity without animated flicker. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="synthoma"] .synthoma-shell::after {
+    opacity: 0.34;
+  }
+
+  html[data-theme="synthoma"] :where(
+    .synthoma-home__designation,
+    .synthoma-home__system > strong,
+    .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cta,
+    #control-panel .control-center__kicker
+  ) {
+    text-shadow: none;
+  }
+}
+
+html[data-theme="synthoma"][data-motion="off"] .synthoma-shell::after,
+html[data-theme="synthoma"][data-noise="off"] .synthoma-shell::after {
+  background: none;
+}
+
+@media (max-width: 767px) {
+  html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] {
+    grid-template-columns: 5.5rem minmax(0, 1fr) !important;
+    gap: 0.9rem;
+    min-height: 10rem;
+    max-height: 14rem;
+    padding: 0.8rem;
+  }
+
+  html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cover {
+    width: 5.5rem !important;
+    height: 8.25rem;
+  }
+
+  html[data-theme="synthoma"] .reader-onboarding {
+    bottom: calc(var(--os-mobile-nav-height) + env(safe-area-inset-bottom));
+    max-height: calc(100dvh - var(--os-command-height) - var(--os-mobile-nav-height) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+
+  html[data-theme="synthoma"] .reader-onboarding__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html[data-theme="synthoma"] .reader-onboarding__actions button {
+    width: 100%;
+  }
+}

@@ -86,9 +86,9 @@ p.dialogG::before {
   border-radius: 2px;
   background: transparent;
   box-shadow:
-    -1px 0 4px 0px color-mix(in oklab, var(--accent-secondary, #0ff) 70%, transparent),
+    -1px 0 4px 0px color-mix(in oklab, var(--accent-secondary, #00b6f1) 70%, transparent),
     1px 0 8px 0px color-mix(in oklab, var(--accent-primary, #f0f) 60%, transparent),
-    0 0 12px 0 color-mix(in oklab, var(--accent-secondary, #0ff) 55%, transparent);
+    0 0 12px 0 color-mix(in oklab, var(--accent-secondary, #00b6f1) 55%, transparent);
 
   z-index: 2;
   pointer-events: none;

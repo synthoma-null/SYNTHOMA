@@ -1,37 +1,37 @@
 /* Full Cyklus surface contracts for every existing UI theme. */
 
 [data-theme="synthoma"] {
-  --cy-bg: #020306;
-  --cy-bg-elevated: #050810;
-  --cy-surface-1: #07101a;
-  --cy-surface-2: #0b1822;
-  --cy-surface-3: #102532;
-  --cy-text: #d9fbff;
-  --cy-text-soft: #9bdce5;
-  --cy-text-dim: #699aa4;
-  --cy-text-inverse: #020306;
-  --cy-line: rgba(0, 234, 255, 0.3);
-  --cy-line-strong: rgba(0, 234, 255, 0.72);
-  --cy-line-subtle: rgba(152, 235, 245, 0.14);
-  --cy-accent-primary: #00eaff;
-  --cy-accent-secondary: #ff19c7;
-  --cy-accent-warning: #f4e83a;
-  --cy-accent-danger: #ff3d4f;
-  --cy-accent-success: #7bed9f;
+  --cy-bg: #010205;
+  --cy-bg-elevated: #02050a;
+  --cy-surface-1: #050910;
+  --cy-surface-2: #07101a;
+  --cy-surface-3: #0b1628;
+  --cy-text: #d9f4fb;
+  --cy-text-soft: #a4bdc8;
+  --cy-text-dim: #6f97a8;
+  --cy-text-inverse: #010205;
+  --cy-line: rgb(73 135 160 / 0.22);
+  --cy-line-strong: rgb(0 182 241 / 0.58);
+  --cy-line-subtle: rgb(73 135 160 / 0.14);
+  --cy-accent-primary: #00b6f1;
+  --cy-accent-secondary: #ee26d0;
+  --cy-accent-warning: #ecd804;
+  --cy-accent-danger: #ff315d;
+  --cy-accent-success: #19caff;
   --cy-shadow: 0 22px 58px rgba(0, 0, 0, 0.64);
   --cy-shadow-compact: 0 8px 22px rgba(0, 0, 0, 0.42);
-  --cy-glow-primary: 0 0 18px rgba(0, 234, 255, 0.22);
-  --cy-glow-secondary: 0 0 18px rgba(255, 25, 199, 0.2);
-  --cy-grid-color: rgba(0, 234, 255, 0.045);
+  --cy-glow-primary: 0 0 0 1px rgb(0 182 241 / 0.72), 0 0 5px rgb(25 202 255 / 0.42), 0 0 18px rgb(0 182 241 / 0.16);
+  --cy-glow-secondary: 0 0 0 1px rgb(238 38 208 / 0.66), 0 0 5px rgb(255 43 214 / 0.36), 0 0 18px rgb(238 38 208 / 0.14);
+  --cy-grid-color: rgba(0, 182, 241, 0.035);
   --cy-grid-opacity: 0.55;
   --cy-scanline-color: rgba(217, 251, 255, 0.026);
   --cy-noise-opacity: 0.18;
   --cy-overlay-backdrop: rgba(0, 2, 5, 0.88);
   --cy-scrollbar-track: rgba(0, 0, 0, 0.36);
-  --cy-focus-ring: #7cf7ff;
-  --cy-button-bg: #08121a;
-  --cy-button-hover: #0c1c27;
-  --cy-button-active: #261025;
+  --cy-focus-ring: #19caff;
+  --cy-button-bg: #050910;
+  --cy-button-hover: #07101a;
+  --cy-button-active: #170817;
   --cy-theme-radius: 4px;
 }
 
