@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { CardPresentation } from '../../game/cyklus/cyklusTypes';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 const MIN_SCALE = 1;
 const MAX_SCALE = 4;
@@ -105,6 +106,12 @@ export default function CyklusCardPoster({
   const [geometry, setGeometry] = useState<PosterGeometry | null>(null);
   const [activePointerCount, setActivePointerCount] = useState(0);
   const instructionId = useId();
+  const { closeLayer } = useUiLayer({
+    id: `cyklus-poster:${cardTitle}`,
+    type: 'fullscreen-overlay',
+    open: fullscreen && Boolean(onClose),
+    onClose: () => onClose?.(),
+  });
 
   const commitTransform = useCallback((next: PosterTransform) => {
     transformRef.current = next;
@@ -177,15 +184,7 @@ export default function CyklusCardPoster({
   }, [measureGeometry, presentation.artSrc]);
 
   useEffect(() => {
-    if (!fullscreen || !onClose) return;
-    closeButtonRef.current?.focus();
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      event.preventDefault();
-      onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    if (fullscreen && onClose) closeButtonRef.current?.focus();
   }, [fullscreen, onClose]);
 
   useEffect(() => () => {
@@ -401,9 +400,9 @@ export default function CyklusCardPoster({
 
   return (
     <div className="cyklus-poster-viewer" role="dialog" aria-modal="true" aria-label={`Zvětšený obrázek karty ${cardTitle}`}>
-      <button className="cyklus-poster-viewer__backdrop" type="button" aria-label="Zavřít zvětšený obrázek" onClick={onClose} />
+      <button className="cyklus-poster-viewer__backdrop" type="button" aria-label="Zavřít zvětšený obrázek" onClick={closeLayer} />
       <div className="cyklus-poster-viewer__surface">
-        <button ref={closeButtonRef} className="cyklus-poster-viewer__close" type="button" aria-label="Zavřít zvětšený obrázek" onClick={onClose}>×</button>
+        <button ref={closeButtonRef} className="cyklus-poster-viewer__close" type="button" aria-label="Zavřít zvětšený obrázek" onClick={closeLayer}>×</button>
         {poster}
       </div>
     </div>

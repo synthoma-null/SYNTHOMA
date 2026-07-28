@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { PACKAGES } from '../../content/booksManifest';
 import type { ContentType } from '../../content/catalog';
 import { useAccess, useContentAccess } from './AccessProvider';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 interface ContentPurchaseDialogProps {
   contentType: ContentType;
@@ -38,15 +39,16 @@ export default function ContentPurchaseDialog({
   const [codeBusy, setCodeBusy] = useState(false);
   const attemptKeyRef = useRef(createAttemptKey(contentType, contentId));
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const { closeLayer } = useUiLayer({
+    id: `purchase:${contentType}:${contentId}`,
+    type: 'purchase-dialog',
+    open: true,
+    onClose,
+  });
 
   useEffect(() => {
     closeRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose]);
+  }, []);
 
   useEffect(() => {
     attemptKeyRef.current = createAttemptKey(contentType, contentId);
@@ -131,10 +133,10 @@ export default function ContentPurchaseDialog({
       role="dialog"
       aria-modal="true"
       aria-labelledby="content-purchase-title"
-      onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}
+      onMouseDown={(event) => { if (event.target === event.currentTarget) closeLayer(); }}
     >
       <div className="paywall-modal os-surface">
-        <button ref={closeRef} className="paywall-close" type="button" onClick={onClose} aria-label="Zavřít">✕</button>
+        <button ref={closeRef} className="paywall-close" type="button" onClick={closeLayer} aria-label="Zavřít">✕</button>
         <div className="paywall-log">
           <p><span className="paywall-log-prefix">LOG [ACCESS_GATE]:</span></p>
           <p className="paywall-log-msg">Obsah existuje. Přístup zatím ne. Systém tentokrát rozlišuje obě skutečnosti.</p>

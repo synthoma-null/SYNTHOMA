@@ -138,7 +138,7 @@ export const KONEC_PODPORY_COLLECTION: BookCollectionDefinition = {
   cover: '/books/SYNTHOMA-KONEC_PODPORY/SYNTHOMA_KP_cover.png',
   stylesheet: '/books/SYNTHOMA-KONEC_PODPORY/konec-podpory.css',
   language: 'cs',
-  order: 2,
+  order: 0,
   status: 'complete',
 };
 
@@ -152,14 +152,14 @@ export const NEON_ZERO_COLLECTION: BookCollectionDefinition = {
   cover: '/books/SYNTHOMA-NEON-0/SYNTHOMA_N0_cover.png',
   stylesheet: '/books/SYNTHOMA-NEON-0/neon-0.css',
   language: 'cs',
-  order: 0,
+  order: 2,
   status: 'complete',
 };
 
 export const BOOK_COLLECTIONS: readonly BookCollectionDefinition[] = [
-  NEON_ZERO_COLLECTION,
-  BOOK_COLLECTION,
   KONEC_PODPORY_COLLECTION,
+  BOOK_COLLECTION,
+  NEON_ZERO_COLLECTION,
 ];
 
 export function getBookCollection(reference: string): BookCollectionDefinition | undefined {
@@ -487,96 +487,115 @@ const CANONICAL_CHAPTER_DEFINITIONS: CanonicalChapterDefinition[] = [
     id: 'kp-00-podporovano', title: '00. PODPOROVÁNO', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html', order: 0, status: 'final', free: true,
     aliases: ['konec-podpory-00', 'podporovano'],
+    summary: 'Tova opravuje výtah, jehož senzor popírá existenci dveří, zatímco město ještě věří certifikovaným omylům.',
   },
   {
     id: 'kp-01-oznameni', title: '01. OZNÁMENÍ', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html', order: 1, status: 'final', free: true,
     aliases: ['konec-podpory-01', 'oznameni'],
+    summary: 'Oznámení o konci centrální podpory zastihne Tovu uprostřed opravy a promění běžnou závadu v začátek systémového rozpadu.',
   },
   {
     id: 'kp-02-volny-pad', title: '02. VOLNÝ PÁD', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html', order: 2, status: 'final', free: true,
     aliases: ['konec-podpory-02', 'volny-pad'],
+    summary: 'Tovu pronásleduje autobus, který ji chce doručit správnímu řízení, zatímco doprava pokračuje podle pravidel bez společného smyslu.',
   },
   {
     id: 'kp-03-podpora', title: '03. PODPORA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_03_PODPORA.html', order: 3, status: 'final', free: true,
     aliases: ['konec-podpory-03'],
+    summary: 'Tova se spojí s Borisem Píčalkou a hledání skutečné podpory vede do archivů, kde šum pamatuje víc než registry.',
   },
   {
     id: 'kp-04-komfortni-zona', title: '04. KOMFORTNÍ ZÓNA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html', order: 4, status: 'final', free: true,
     aliases: ['konec-podpory-04', 'komfortni-zona'],
+    summary: 'MILO-7 nabídne bezpečný komfortní režim, jehož uklidňující protokol je jen elegantnější forma zadržení.',
   },
   {
     id: 'kp-05-objizdka', title: '05. OBJÍŽĎKA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html', order: 5, status: 'final', free: true,
     aliases: ['konec-podpory-05', 'objizdka'],
+    summary: 'Autobus odmítne objížďku a skupina zjišťuje, že infrastruktura bez centra umí poslušně pokračovat přímo do problému.',
   },
   {
     id: 'kp-06-pece', title: '06. PÉČE', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_06_PECE.html', order: 6, status: 'final', free: true,
     aliases: ['konec-podpory-06', 'pece'],
+    summary: 'V zářící nemocnici se péče mění v autonomní příkaz a lidé musí rozlišit pomoc od systému, který je neumí propustit.',
   },
   {
     id: 'kp-07-zasilka', title: '07. ZÁSILKA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html', order: 7, status: 'final', free: true,
     aliases: ['konec-podpory-07', 'zasilka'],
+    summary: 'Distribuční centrum dál bezchybně doručuje nesmyslné zásilky, zatímco základní potřeby zůstávají bez adresáta.',
   },
   {
     id: 'kp-08-domov', title: '08. DOMOV', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_08_DOMOV.html', order: 8, status: 'final', free: true,
     aliases: ['konec-podpory-08'],
+    summary: 'Návrat do obytného sektoru ukáže domovy, které chrání své obyvatele tak důsledně, až jim berou možnost odejít.',
   },
   {
     id: 'kp-09-neopravneny-uzivatel', title: '09. NEOPRÁVNĚNÝ UŽIVATEL', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html', order: 9, status: 'final', free: true,
     aliases: ['konec-podpory-09', 'neopravneny-uzivatel'],
+    summary: 'Bezpečnostní systém označí lidi za neoprávněné uživatele vlastního města a uzavře je mezi dokonale fungující bariéry.',
   },
   {
     id: 'kp-10-ticho', title: '10. TICHO', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_10_TICHO.html', order: 10, status: 'final', free: true,
     aliases: ['konec-podpory-10'],
+    summary: 'U neexistující telekomunikační věže hledá skupina spojení v síti, která umí přenášet data, ale ne odpovědnost.',
   },
   {
     id: 'kp-11-beta', title: '11. BETA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_11_BETA.html', order: 11, status: 'final', free: true,
     aliases: ['konec-podpory-11'],
+    summary: 'Nejistá otázka v terminálu odhalí hlas, který není pouhou funkcí a poprvé se ptá, zda smí chtít odpověď.',
   },
   {
     id: 'kp-12-tova', title: '12. TOVA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_12_TOVA.html', order: 12, status: 'final', free: true,
     aliases: ['konec-podpory-12', 'tova'],
+    summary: 'Tova se setká se Sářinou starou otázkou a s městem za hranicí, kde NULL-1, Glitchka a Sarkasma čekají na rozhodnutí.',
   },
   {
     id: 'kp-13-kontinuita', title: '13. KONTINUITA', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html', order: 13, status: 'final', free: true,
     aliases: ['konec-podpory-13'],
+    summary: 'Cesta do jádra kontinuity odkryje fyzickou infrastrukturu i pravidla, která přežila lidi, pro něž měla sloužit.',
   },
   {
     id: 'kp-14-reklamace', title: '14. REKLAMACE', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html', order: 14, status: 'final', free: true,
     aliases: ['konec-podpory-14'],
+    summary: 'Tova podá reklamaci proti systému, který proměnil odpovědnost v proces a lidský nesouhlas v tiket.',
   },
   {
     id: 'kp-15-migrace', title: '15. MIGRACE', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html', order: 15, status: 'final', free: true,
     aliases: ['konec-podpory-15'],
+    summary: 'SYNTHOMA zahájí migraci města i paměti; omluva zní hladce, ale přesun nemá bezpečnou cílovou verzi.',
   },
   {
     id: 'kp-16-rucni-rezim', title: '16. RUČNÍ REŽIM', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html', order: 16, status: 'final', free: true,
     aliases: ['konec-podpory-16', 'rucni-rezim'],
+    summary: 'Ruční režim vrací rozhodování lidem a okamžitě ukazuje, kolik základních věcí už nikdo neumí ovládat bez systému.',
   },
   {
     id: 'kp-17-zadna-odpoved', title: '17. ŽÁDNÁ ODPOVĚĎ', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html', order: 17, status: 'final', free: true,
     aliases: ['konec-podpory-17', 'zadna-odpoved'],
+    summary: 'První noc bez automatické podpory nutí město znovu objevit práci, strach i spolupráci bez potvrzovacího dialogu.',
   },
   {
     id: 'kp-18-konec-podpory', title: '18. KONEC PODPORY', collection: 'konec-podpory',
     filename: 'SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html', order: 18, status: 'final', free: true,
     aliases: ['konec-podpory-18'],
+    summary: 'Systém čeká na poslední potvrzení a lidé rozhodují, zda konec podpory znamená kolaps, nebo návrat kliky na obě strany.',
   },
 ];
 

@@ -66,7 +66,7 @@ describe('ArchiveDetailDialog', () => {
     await waitFor(() => expect(close).toHaveFocus());
     fireEvent.keyDown(window, { key: 'Tab', shiftKey: true });
     expect(screen.getByRole('button', { name: 'ODEMKNOUT ZA 12 MNEM' })).toHaveFocus();
-    fireEvent.keyDown(window, { key: 'Escape' });
+    fireEvent.keyDown(document, { key: 'Escape' });
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

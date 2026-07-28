@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import ControlCenterClient from '../ControlCenterClient';
 import { LangProvider } from '../../../src/lib/LangContext';
 import { updateUiPreferences } from '../../../src/lib/uiPreferences';
+import UiLayerProvider from '../../../src/components/ui-layer/UiLayerProvider';
 
 let mockPathname = '/';
 jest.mock('next/navigation', () => ({ usePathname: () => mockPathname, useRouter: () => ({ replace: jest.fn() }) }));
@@ -11,7 +12,7 @@ jest.mock('../ControlCenterAudio', () => ({ __esModule: true, default: () => <di
 
 function renderCenter(initialLang: 'cs' | 'en' = 'cs') {
   document.body.innerHTML = '<button id="toggle-panel-btn" aria-expanded="false">Settings</button>';
-  const view = render(<LangProvider initialLang={initialLang}><ControlCenterClient /></LangProvider>);
+  const view = render(<LangProvider initialLang={initialLang}><UiLayerProvider><ControlCenterClient /></UiLayerProvider></LangProvider>);
   act(() => document.dispatchEvent(new CustomEvent('synthoma:control-panel-toggle')));
   return view;
 }
@@ -21,7 +22,11 @@ describe('ControlCenterClient', () => {
     localStorage.clear();
     localStorage.setItem('synthoma_lang', 'cs');
     mockPathname = '/';
+    window.history.replaceState({}, '', '/');
+    jest.spyOn(window.history, 'back').mockImplementation(() => {});
   });
+
+  afterEach(() => jest.restoreAllMocks());
 
   it('does not render utility markup until the panel is opened', () => {
     document.body.innerHTML = '<button id="toggle-panel-btn" aria-expanded="false">Settings</button>';
@@ -68,6 +73,26 @@ describe('ControlCenterClient', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Reading' }));
     expect(screen.getByText('FOR THIS SCREEN')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /focus mode/i })).toBeInTheDocument();
+  });
+
+  it('closes the control center with browser Back', async () => {
+    renderCenter();
+    expect(await screen.findByRole('dialog')).toBeVisible();
+    fireEvent.popState(window);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(window.location.pathname).toBe('/');
+  });
+
+  it('closes a nested confirmation before the control center', async () => {
+    updateUiPreferences({ noiseEffects: false });
+    renderCenter();
+    fireEvent.click(await screen.findByRole('button', { name: /sporn/i }));
+    expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+
+    fireEvent.popState(window);
+
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeVisible();
   });
 });
 

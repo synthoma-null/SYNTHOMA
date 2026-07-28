@@ -1,12 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 export const READER_ONBOARDING_KEY = 'synthoma_reader_onboarding_v3_seen';
 
 export default function ReaderOnboarding({ locale }: { locale: 'cs' | 'en' }) {
   const [open, setOpen] = useState(false);
   const continueRef = useRef<HTMLButtonElement>(null);
+  const dismiss = () => {
+    try { window.localStorage.setItem(READER_ONBOARDING_KEY, 'true'); } catch {}
+    setOpen(false);
+  };
+  const { closeLayer } = useUiLayer({
+    id: 'reader-onboarding',
+    type: 'help',
+    open,
+    onClose: dismiss,
+  });
   const copy = locale === 'en'
     ? { title: 'CUSTOMIZE THE READER', body: 'The control panel changes text size, page width, line spacing, theme and effect intensity.', open: 'OPEN PANEL', continue: 'CONTINUE READING' }
     : { title: 'PŘIZPŮSOB SI ČTEČKU', body: 'Ovládací panel mění velikost textu, šířku stránky, řádkování, motiv a intenzitu efektů.', open: 'OTEVŘÍT PANEL', continue: 'POKRAČOVAT VE ČTENÍ' };
@@ -22,12 +33,8 @@ export default function ReaderOnboarding({ locale }: { locale: 'cs' | 'en' }) {
     if (open) requestAnimationFrame(() => continueRef.current?.focus());
   }, [open]);
 
-  const dismiss = () => {
-    try { window.localStorage.setItem(READER_ONBOARDING_KEY, 'true'); } catch {}
-    setOpen(false);
-  };
   const openPanel = () => {
-    dismiss();
+    closeLayer();
     document.dispatchEvent(new CustomEvent('synthoma:control-panel-toggle'));
   };
 
@@ -39,7 +46,7 @@ export default function ReaderOnboarding({ locale }: { locale: 'cs' | 'en' }) {
       <p>{copy.body}</p>
       <div className="reader-onboarding__actions">
         <button type="button" onClick={openPanel}>{copy.open}</button>
-        <button ref={continueRef} type="button" onClick={dismiss}>{copy.continue}</button>
+        <button ref={continueRef} type="button" onClick={closeLayer}>{copy.continue}</button>
       </div>
     </div>
   );

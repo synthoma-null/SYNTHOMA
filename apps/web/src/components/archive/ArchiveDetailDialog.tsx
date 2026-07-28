@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from 'react';
 import type { ArchiveCard, ArchiveCardVisibility } from '../../lib/synthoma/archive/archiveTypes';
 import type { ContentAccess } from '../../content/catalog';
 import { useLang } from '../../lib/LangContext';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -23,14 +24,15 @@ export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose,
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const { closeLayer } = useUiLayer({
+    id: `archive-record:${card.id}`,
+    type: 'archive-detail',
+    open: true,
+    onClose,
+  });
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onClose();
-        return;
-      }
       if (e.key !== 'Tab') return;
       const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
       if (!focusable.length) return;
@@ -51,7 +53,7 @@ export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose,
       window.removeEventListener('keydown', handleKeyDown);
       document.body.classList.remove('synthoma-dialog-lock');
     };
-  }, [onClose]);
+  }, []);
 
   return (
     <div
@@ -59,10 +61,10 @@ export default function ArchiveDetailDialog({ card, mode, relatedCards, onClose,
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => { if (e.target === e.currentTarget) closeLayer(); }}
     >
       <div ref={dialogRef} className="synthoma-detail-dialog os-surface archive-detail-dialog">
-        <button ref={closeRef} className="synthoma-detail-dialog__close" onClick={onClose} aria-label={t('archive.detail.close')} type="button">
+        <button ref={closeRef} className="synthoma-detail-dialog__close" onClick={closeLayer} aria-label={t('archive.detail.close')} type="button">
           <span aria-hidden="true">×</span><span className="synthoma-detail-dialog__close-label">{t('action.close')}</span>
         </button>
         <div className="archive-detail-dialog__body">

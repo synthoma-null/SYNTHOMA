@@ -73,7 +73,8 @@ describe('Cyklus gameplay geometry contract', () => {
     const poster = fs.readFileSync(path.join(process.cwd(), 'src/components/cyklus/CyklusCardPoster.tsx'), 'utf8');
     expect(poster).toContain('const MAX_SCALE = 4');
     expect(poster).toContain('aria-label="Zvětšit obrázek"');
-    expect(poster).toContain("event.key !== 'Escape'");
+    expect(poster).toContain("type: 'fullscreen-overlay'");
+    expect(poster).toContain('onClick={closeLayer}');
     expect(poster).toContain('onWheel={fullscreen ? handleWheel : undefined}');
     expect(client.match(/createPortal\(/g)).toHaveLength(1);
     expect(tokens).toMatch(/--cy-z-sheet:\s*60;/);

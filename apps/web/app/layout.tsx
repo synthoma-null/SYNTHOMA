@@ -61,6 +61,8 @@ import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 import { SYNTHOMA_DESCRIPTOR } from "../src/lib/publicMetadata";
 import { SYNTHOMA_ASSETS } from "../src/lib/brandAssets";
 import FirstVisitRedirectClient from "./components/FirstVisitRedirectClient";
+import UiLayerProvider from "../src/components/ui-layer/UiLayerProvider";
+import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from "../src/lib/intro";
 
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
@@ -270,6 +272,27 @@ export default async function RootLayout({ children }: PropsWithChildren) {
               pointer-events: none;
               transition: opacity 250ms ease, visibility 0s linear 250ms;
             }
+            html[data-synthoma-intro-pending="true"] #app-shell {
+              visibility: hidden;
+            }
+          ` }}
+        />
+
+        <script
+          id="synthoma-intro-first-paint"
+          dangerouslySetInnerHTML={{ __html: `
+            (function () {
+              if (window.location.pathname !== "/") return;
+              try {
+                if (window.localStorage.getItem(${JSON.stringify(SYNTHOMA_INTRO_STORAGE_KEY)}) !== ${JSON.stringify(SYNTHOMA_INTRO_VERSION)}) {
+                  document.documentElement.setAttribute("data-synthoma-intro-pending", "true");
+                  window.location.replace("/landing-intro");
+                }
+              } catch (_) {
+                document.documentElement.setAttribute("data-synthoma-intro-pending", "true");
+                window.location.replace("/landing-intro");
+              }
+            })();
           ` }}
         />
 
@@ -338,6 +361,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <SessionProviderClient>
 
         <LangProvider initialLang={initialLang}>
+        <UiLayerProvider>
         <FirstVisitRedirectClient />
 
         <AccessProvider>
@@ -386,6 +410,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
         </AccessProvider>
 
+        </UiLayerProvider>
         </LangProvider>
 
         </SessionProviderClient>

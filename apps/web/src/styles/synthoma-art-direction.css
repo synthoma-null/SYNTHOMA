@@ -26,6 +26,7 @@ html[data-theme="synthoma"] .synthoma-shell {
     radial-gradient(circle at 88% 84%, rgb(238 38 208 / 0.05), transparent 30rem),
     var(--syn-black-0);
   color: var(--syn-text-ui);
+  font-weight: 500;
 }
 
 html[data-theme="synthoma"] .synthoma-shell::before,
@@ -186,6 +187,8 @@ html[data-theme="synthoma"] :where(
   label
 ) {
   color: var(--syn-text-ui);
+  font-size: var(--text-caption);
+  font-weight: 700;
   text-shadow: none;
 }
 
@@ -457,6 +460,9 @@ html[data-theme="synthoma"] :where(
 ) {
   color: var(--syn-text-ui);
   font-family: var(--font-reading);
+  font-size: var(--text-card);
+  font-weight: 500;
+  line-height: 1.65;
   letter-spacing: 0;
   text-shadow: none;
 }
@@ -477,6 +483,8 @@ html[data-theme="synthoma"] :where(
   .microcopy
 ) {
   color: var(--syn-text-muted);
+  font-size: var(--text-label);
+  font-weight: 700;
   text-shadow: none;
 }
 
@@ -530,7 +538,8 @@ html[data-theme="synthoma"] :where(
 ) {
   color: var(--syn-text-reading);
   font-family: var(--font-reading);
-  font-weight: 400;
+  font-size: var(--text-reader);
+  font-weight: 500;
   line-height: 1.72;
   letter-spacing: 0.008em;
   text-shadow: none;
@@ -547,6 +556,8 @@ html[data-theme="synthoma"] :where(
   border-color: var(--syn-border-dim);
   background: rgb(1 2 5 / 0.98);
   color: var(--syn-text-ui);
+  font-size: var(--text-caption);
+  font-weight: 700;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -659,12 +670,14 @@ html[data-theme="synthoma"] :where(
 }
 
 html[data-theme="synthoma"] .profile-panel :where(p, dt, dd, label) {
-  color: var(--syn-text-ui);
+  color: var(--text-human);
+  font-size: var(--text-ui);
+  font-weight: 500;
   text-shadow: none;
 }
 
 html[data-theme="synthoma"] .profile-panel :where(h2, h3, strong) {
-  color: var(--syn-text-heading);
+  color: var(--text-emotion);
 }
 
 html[data-theme="synthoma"] :where(
@@ -674,7 +687,8 @@ html[data-theme="synthoma"] :where(
 ) {
   color: var(--syn-text-legal);
   font-family: var(--font-reading);
-  font-weight: 400;
+  font-size: var(--text-body);
+  font-weight: 500;
   line-height: 1.72;
   letter-spacing: 0.008em;
   text-shadow: none;
@@ -690,7 +704,8 @@ html[data-theme="synthoma"] .legal-page :where(
 ) {
   color: var(--syn-text-legal);
   font-family: var(--font-reading);
-  font-weight: 400;
+  font-size: var(--text-body);
+  font-weight: 500;
   line-height: 1.72;
   letter-spacing: 0.008em;
   text-shadow: none;
@@ -705,9 +720,10 @@ html[data-theme="synthoma"] .author-reader__article .autor-semantic-content :whe
   p:not(.log):not([class*="dialog"]),
   li
 ) {
-  color: var(--syn-text-legal);
+  color: var(--text-human);
   font-family: var(--font-reading);
-  font-weight: 400;
+  font-size: var(--text-body);
+  font-weight: 500;
   line-height: 1.72;
   letter-spacing: 0.008em;
   text-shadow: none;
@@ -741,6 +757,8 @@ html[data-theme="synthoma"] :where(
 ) {
   color: var(--syn-text-legal);
   font-family: var(--font-reading);
+  font-size: var(--text-body);
+  font-weight: 500;
   letter-spacing: 0.008em;
   text-shadow: none;
 }
@@ -842,6 +860,8 @@ html[data-theme="synthoma"] :where(
   .synthoma-audio-panel__library button
 ) {
   color: var(--syn-text-ui);
+  font-size: var(--text-ui);
+  font-weight: 600;
   text-shadow: none;
 }
 
@@ -934,6 +954,9 @@ html[data-theme="synthoma"] :where(
 ) {
   color: var(--syn-text-reading);
   font-family: var(--font-reading);
+  font-size: var(--text-card);
+  font-weight: 500;
+  line-height: 1.65;
   letter-spacing: 0;
   text-shadow: none;
 }
@@ -959,6 +982,8 @@ html[data-theme="synthoma"] :where(
   .cyklus-pocket__combo-hint
 ) {
   color: var(--syn-text-muted);
+  font-size: max(0.75rem, var(--text-caption));
+  font-weight: 700;
   text-shadow: none;
 }
 
@@ -970,6 +995,8 @@ html[data-theme="synthoma"] :where(
 ) {
   color: var(--syn-text-ui);
   font-family: var(--font-reading);
+  font-size: var(--text-small);
+  font-weight: 500;
   letter-spacing: 0;
   text-shadow: none;
 }
@@ -982,6 +1009,8 @@ html[data-theme="synthoma"] :where(
   border-color: var(--syn-border-dim);
   background: var(--syn-black-2);
   color: var(--syn-text-ui);
+  font-size: var(--text-small);
+  font-weight: 700;
   text-shadow: none;
 }
 
@@ -1011,9 +1040,9 @@ html[data-theme="synthoma"] .cyklus-menu__portal {
 }
 
 /*
- * Spectral ink prototypes
- * Keep this layer limited to the six review surfaces until the direction is
- * approved. Color follows meaning, never the element tag alone.
+ * Spectral ink
+ * Color follows meaning rather than element type. Long-form reading stays
+ * stable while navigation, metadata, people and anomalies keep distinct voices.
  */
 
 /* 1. Homepage */
@@ -1073,15 +1102,8 @@ html[data-theme="synthoma"] .home-sector-link:nth-child(even) .home-sector-link_
   color: var(--text-anomaly);
 }
 
-/* 2. One library card */
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] {
-  display: grid !important;
-  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) !important;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  min-height: 18rem;
-  max-height: 24rem;
-  overflow: hidden;
+/* Library cards keep a shared structure while each volume carries its own ink. */
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="SYNTHOMA-NULL"] {
   border-color: rgb(53 189 247 / 0.48);
   border-right-color: rgb(223 97 203 / 0.42);
   box-shadow:
@@ -1090,21 +1112,7 @@ html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-nu
     0 18px 44px rgb(0 0 0 / 0.42);
 }
 
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cover {
-  width: 100% !important;
-  max-width: 11rem !important;
-  height: 100%;
-  max-height: 20rem;
-  margin: 0 !important;
-}
-
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cover img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-}
-
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__title {
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="SYNTHOMA-NULL"] .library-book-card__title {
   color: transparent;
   background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 52%, var(--ink-magenta));
   background-clip: text;
@@ -1112,23 +1120,107 @@ html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-nu
   -webkit-text-fill-color: transparent;
 }
 
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__description {
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="SYNTHOMA-NULL"] .library-book-card__description {
   color: var(--ink-violet-soft);
   text-shadow:
     -0.3px 0 rgb(53 189 247 / 0.12),
     0.3px 0 rgb(223 97 203 / 0.08);
 }
 
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__status {
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="SYNTHOMA-NULL"] .library-book-card__status {
   color: var(--text-system);
 }
 
-html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cta {
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="SYNTHOMA-NULL"] .library-book-card__cta {
   color: var(--text-core);
   text-shadow: 0 0 7px rgb(53 189 247 / 0.2);
 }
 
-/* 3. Current Cyklus card */
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="konec-podpory"] {
+  border-color: rgb(114 188 232 / 0.48);
+  border-right-color: rgb(223 97 203 / 0.38);
+  box-shadow:
+    inset 2px 0 0 rgb(114 188 232 / 0.26),
+    inset -2px 0 0 rgb(223 97 203 / 0.2),
+    0 18px 44px rgb(0 0 0 / 0.42);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="konec-podpory"] .library-book-card__title {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-blue), var(--ink-silver-blue) 58%, var(--ink-magenta-soft));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="konec-podpory"] .library-book-card__description {
+  color: var(--ink-silver-blue);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="konec-podpory"] .library-book-card__status {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="konec-podpory"] .library-book-card__cta {
+  color: var(--text-core);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="neon-0"] {
+  border-color: rgb(169 155 211 / 0.44);
+  border-right-color: rgb(223 97 203 / 0.48);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="neon-0"] .library-book-card__title {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-human), var(--ink-violet) 48%, var(--ink-magenta-hot));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="neon-0"] .library-book-card__description {
+  color: var(--text-human);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="neon-0"] .library-book-card__status {
+  color: var(--text-emotion);
+}
+
+html[data-theme="synthoma"] .library-book-card[data-collection-slug="neon-0"] .library-book-card__cta {
+  color: var(--text-anomaly);
+}
+
+html[data-theme="synthoma"] .archive-record-card__title {
+  color: var(--archive-card-accent);
+}
+
+html[data-theme="synthoma"] .archive-record-card__category,
+html[data-theme="synthoma"] .archive-record-card__source {
+  color: color-mix(in srgb, var(--archive-card-accent) 72%, var(--ink-archive));
+  font-size: var(--text-label);
+  font-weight: 700;
+}
+
+html[data-theme="synthoma"] :where(
+  .archive-record-card__teaser,
+  .archive-record-card__body .text,
+  .archive-record-card__quote
+) {
+  color: var(--ink-violet-soft);
+  font-size: var(--text-card);
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+html[data-theme="synthoma"] .archive-record-card[data-archive-category="postavy"] :where(
+  .archive-record-card__teaser,
+  .archive-record-card__body .text,
+  .archive-record-card__quote
+) {
+  color: var(--text-human);
+}
+
+/* Current Cyklus card */
 html[data-theme="synthoma"] .cyklus-card .cyklus-card__title {
   color: transparent;
   background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 48%, var(--ink-magenta));
@@ -1189,7 +1281,7 @@ html[data-theme="synthoma"] .cyklus-card .cyklus-preview--right .cyklus-btn:is(:
   box-shadow: inset -3px 0 0 var(--ink-magenta-hot), 0 0 10px rgb(223 97 203 / 0.2);
 }
 
-/* 4-5. NULL and NEON-0 reader pages */
+/* NULL, KONEC PODPORY and NEON-0 reader pages */
 html[data-theme="synthoma"] .chapter-reader[data-book="synthoma-null"] {
   --book-body-text: #a7acd0;
 }
@@ -1251,7 +1343,53 @@ html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__sequence
   color: var(--text-archive);
 }
 
-/* 6. Open control panel */
+/* Profile, authentication and public protocol surfaces. */
+html[data-theme="synthoma"] .profile-panel :where(
+  .profile-panel__eyebrow,
+  .profile-kicker,
+  dt
+) {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] .profile-panel :where(
+  .profile-muted,
+  time,
+  small
+) {
+  color: var(--text-archive);
+}
+
+html[data-theme="synthoma"] :where(
+  .auth-log-prefix,
+  .public-ai-page .log,
+  .public-ai-page code,
+  .protocol-document code
+) {
+  color: var(--text-system);
+}
+
+html[data-theme="synthoma"] :where(
+  .auth-log-msg,
+  .auth-subtitle,
+  .author-reader__article .autor-semantic-content p
+) {
+  color: var(--text-human);
+}
+
+html[data-theme="synthoma"] :where(
+  .public-ai-page h1,
+  .public-ai-page h2,
+  .auth-home-title
+) {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-blue-hot), var(--ink-violet) 48%, var(--ink-magenta));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Open control panel */
 html[data-theme="synthoma"] #control-panel .control-center__kicker {
   color: var(--text-system);
   text-shadow: 0 0 7px rgb(53 189 247 / 0.2);
@@ -1306,7 +1444,7 @@ html[data-theme="synthoma"] #control-panel .control-center__effective strong {
   html[data-theme="synthoma"] :where(
     .synthoma-home__designation,
     .synthoma-home__system > strong,
-    .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cta,
+    .library-book-card__cta,
     #control-panel .control-center__kicker
   ) {
     text-shadow: none;
@@ -1319,19 +1457,6 @@ html[data-theme="synthoma"][data-noise="off"] .synthoma-shell::after {
 }
 
 @media (max-width: 767px) {
-  html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] {
-    grid-template-columns: 5.5rem minmax(0, 1fr) !important;
-    gap: 0.9rem;
-    min-height: 10rem;
-    max-height: 14rem;
-    padding: 0.8rem;
-  }
-
-  html[data-theme="synthoma"] .library-book-card[data-collection-slug="synthoma-null"] .library-book-card__cover {
-    width: 5.5rem !important;
-    height: 8.25rem;
-  }
-
   html[data-theme="synthoma"] .reader-onboarding {
     bottom: calc(var(--os-mobile-nav-height) + env(safe-area-inset-bottom));
     max-height: calc(100dvh - var(--os-command-height) - var(--os-mobile-nav-height) - env(safe-area-inset-bottom));

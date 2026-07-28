@@ -42,7 +42,7 @@ describe('typography readability browser audit', () => {
     const library = read('src/styles/library-archive.css');
     const reader = read('src/styles/reader.css');
 
-    expect(tokens).toMatch(/@media \(min-width: 1024px\)[\s\S]*?--text-card:\s*1\.125rem;[\s\S]*?--text-reader:\s*1\.25rem;/);
+    expect(tokens).toMatch(/@media \(min-width: 1024px\)[\s\S]*?--text-card:\s*1\.1875rem;[\s\S]*?--text-reader:\s*1\.3125rem;/);
     expect(library).toMatch(/\.library-book-card__description\s*\{[^}]*font-size:\s*var\(--text-card\)/);
     expect(library).toMatch(/\.archive-record-card__teaser\s*\{[^}]*font-size:\s*var\(--text-card\)/);
     expect(library).toMatch(/\.archive-record-card__source\s*\{[^}]*color:\s*var\(--os-text-blue\)/);

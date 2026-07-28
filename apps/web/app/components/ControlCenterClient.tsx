@@ -9,6 +9,7 @@ import { applyUiPreferencePreset, getEffectiveMotionMode, getMatchingUiPreferenc
 import ThemeShopClient from './ThemeShopClient';
 import ControlCenterAudio from './ControlCenterAudio';
 import PwaSettings from '../../src/components/pwa/PwaSettings';
+import { useUiLayer } from '../../src/components/ui-layer/UiLayerProvider';
 
 type TabId = 'display' | 'motion' | 'reading' | 'sound' | 'app';
 
@@ -83,6 +84,25 @@ export default function ControlCenterClient() {
     setConfirmReset(false);
     if (restoreFocus) requestAnimationFrame(() => restoreFocusRef.current?.focus());
   };
+  const { closeLayer } = useUiLayer({
+    id: 'control-center',
+    type: 'settings',
+    open,
+    onClose: () => close(),
+    restoreFocus: () => restoreFocusRef.current?.focus(),
+  });
+  const { closeLayer: closeResetLayer } = useUiLayer({
+    id: 'control-center:reset-confirmation',
+    type: 'alert-dialog',
+    open: open && confirmReset,
+    onClose: () => setConfirmReset(false),
+  });
+  const { closeLayer: closePresetLayer } = useUiLayer({
+    id: 'control-center:preset-confirmation',
+    type: 'alert-dialog',
+    open: open && pendingPreset !== null,
+    onClose: () => setPendingPreset(null),
+  });
 
   useEffect(() => {
     const trigger = document.getElementById('toggle-panel-btn');
@@ -106,7 +126,6 @@ export default function ControlCenterClient() {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { event.preventDefault(); close(); return; }
       if (event.key !== 'Tab') return;
       const focusable = Array.from(panelRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), select:not(:disabled), a[href]') ?? []);
       const first = focusable[0];
@@ -123,9 +142,9 @@ export default function ControlCenterClient() {
   const tabs: TabId[] = readingContext ? ['display', 'motion', 'reading', 'sound', 'app'] : ['display', 'motion', 'sound', 'app'];
 
   return <>
-    <button className="control-center__backdrop is-visible" type="button" aria-label={copy.close} onClick={() => close()} />
+    <button className="control-center__backdrop is-visible" type="button" aria-label={copy.close} onClick={closeLayer} />
     <div id="control-panel" ref={panelRef} className="control-panel control-center visible" role="dialog" aria-modal="true" aria-labelledby="control-center-title">
-      <header className="control-center__header"><div><span className="control-center__kicker">SYS / CTRL</span><h2 id="control-center-title">{copy.title}</h2><p>SYNTHOMA OS // USER CHANNEL</p></div><button ref={closeRef} className="control-center__close" type="button" aria-label={copy.close} onClick={() => close()}>×</button></header>
+      <header className="control-center__header"><div><span className="control-center__kicker">SYS / CTRL</span><h2 id="control-center-title">{copy.title}</h2><p>SYNTHOMA OS // USER CHANNEL</p></div><button ref={closeRef} className="control-center__close" type="button" aria-label={copy.close} onClick={closeLayer}>×</button></header>
       <section className="control-center__presets" aria-labelledby="control-presets-title"><div><h3 id="control-presets-title">{copy.presets}</h3><span>{matchingPreset ? PRESET_LABELS[matchingPreset][lang] : copy.custom}</span></div><div>{(Object.keys(PRESET_LABELS) as UiPreferencePresetId[]).map((id) => <button key={id} type="button" aria-pressed={matchingPreset === id} title={PRESET_LABELS[id].detail} onClick={() => { if (matchingPreset === null) setPendingPreset(id); else applyUiPreferencePreset(id); }}>{PRESET_LABELS[id][lang]}</button>)}</div></section>
       <div className="control-center__tabs" role="tablist" aria-label={copy.title}>{tabs.map((id) => <button key={id} id={`control-tab-${id}`} type="button" role="tab" aria-selected={tab === id} aria-controls={`control-tabpanel-${id}`} onClick={() => setTab(id)}>{copy[id]}</button>)}</div>
       <div className="control-center__body">
@@ -157,9 +176,9 @@ export default function ControlCenterClient() {
         {tab === 'sound' ? <section id="control-tabpanel-sound" role="tabpanel" aria-labelledby="control-tab-sound"><ControlCenterAudio /></section> : null}
         {tab === 'app' ? <section id="control-tabpanel-app" role="tabpanel" aria-labelledby="control-tab-app"><PwaSettings lang={lang} /></section> : null}
       </div>
-      <footer className="control-center__footer"><button type="button" onClick={() => setConfirmReset(true)}>{copy.reset}</button><button type="button" className="control-center__done" onClick={() => close()}>{copy.done}</button></footer>
+      <footer className="control-center__footer"><button type="button" onClick={() => setConfirmReset(true)}>{copy.reset}</button><button type="button" className="control-center__done" onClick={closeLayer}>{copy.done}</button></footer>
     </div>
-    {confirmReset ? <div className="control-center__confirm" role="alertdialog" aria-modal="true" aria-labelledby="control-reset-title"><div><h2 id="control-reset-title">{copy.confirmTitle}</h2><p>{copy.confirmBody}</p><div><button type="button" onClick={() => setConfirmReset(false)}>{copy.cancel}</button><button type="button" onClick={() => { resetUiPreferences(); setConfirmReset(false); }}>{copy.confirm}</button></div></div></div> : null}
-    {pendingPreset ? <div className="control-center__confirm" role="alertdialog" aria-modal="true" aria-labelledby="control-preset-title"><div><h2 id="control-preset-title">{copy.presetConfirm}</h2><p>{copy.presetBody}<br />{PRESET_LABELS[pendingPreset].detail}</p><div><button type="button" onClick={() => setPendingPreset(null)}>{copy.cancel}</button><button type="button" onClick={() => { applyUiPreferencePreset(pendingPreset); setPendingPreset(null); }}>{copy.apply}</button></div></div></div> : null}
+    {confirmReset ? <div className="control-center__confirm" role="alertdialog" aria-modal="true" aria-labelledby="control-reset-title"><div><h2 id="control-reset-title">{copy.confirmTitle}</h2><p>{copy.confirmBody}</p><div><button type="button" onClick={closeResetLayer}>{copy.cancel}</button><button type="button" onClick={() => { resetUiPreferences(); closeResetLayer(); }}>{copy.confirm}</button></div></div></div> : null}
+    {pendingPreset ? <div className="control-center__confirm" role="alertdialog" aria-modal="true" aria-labelledby="control-preset-title"><div><h2 id="control-preset-title">{copy.presetConfirm}</h2><p>{copy.presetBody}<br />{PRESET_LABELS[pendingPreset].detail}</p><div><button type="button" onClick={closePresetLayer}>{copy.cancel}</button><button type="button" onClick={() => { applyUiPreferencePreset(pendingPreset); closePresetLayer(); }}>{copy.apply}</button></div></div></div> : null}
   </>;
 }

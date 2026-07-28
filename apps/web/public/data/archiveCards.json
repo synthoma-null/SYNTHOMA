@@ -56,6 +56,7 @@
       "body": [
         "NULL-1 není klasický hrdina. Je to chybějící index, pacient bez pevné identity a subjekt, který zdědil dluhy předchozích instancí.",
         "Jeho stav není prázdnota, ale nedokončenost. Nese cizí fragmenty, rezidua, neověřené emoce a postupně si vytváří vlastní filtr.",
+        "Archiv nedokáže potvrdit, že je NULL-1 Thomas, Sára ani prostá kopie kteréhokoli z nich. Jeho původ zůstává sporný, současná autonomie nikoli.",
         "Jeho hlavní schopnost není síla, ale nestandardní interpretace reality. Umí používat glitch proti glitchi, přesvědčit věci, že už se staly, nebo odmítnout falešnou volbu.",
         "Jeho identita se neskládá nálezem jedné odpovědi. Skládá se stopami, které zůstanou i po restartu.",
         "Nejdůležitější na NULL-1 není to, co si pamatuje. Je to to, co systém nedokáže přepsat, ani když velmi teatrálně tvrdí opak."
@@ -368,10 +369,10 @@
       "id": "glitchena",
       "category": "postavy",
       "title": "Glitchena",
-      "teaser": "Dospělá černo-červená ženo-liška. Touha, tělo a hranice bez falešného souhlasu.",
+      "teaser": "Samostatná černo-červená ženo-liška. Touha, tělo a hranice bez falešného souhlasu.",
       "quote": "„Jsem to, co vznikne, když se bezpečí přestane bát těla.“",
       "body": [
-        "Glitchena není jen dospělá Glitchka. Je stínová, tělesná a zralejší vrstva stejného kořene: bezpečí, které se přestalo bát touhy.",
+        "Glitchena není dospělá Glitchka ani její budoucí vývojová fáze. Je samostatná entita hranic a tělesnosti, která sdílí příbuzný kořen bezpečí.",
         "Objevuje se v sektoru O jako černo-červená ženo-liška. Nepůsobí jako predátor, a právě proto je nutné sledovat hranice.",
         "Její funkcí není svést NULL-1 k rozpuštění, ale naučit ho rozlišit chtění od zmizení, spojení od útěku a souhlas od podpisu.",
         "Nese téma těla, studu, ohně, odpovědnosti a vědomého chtění.",
@@ -1145,7 +1146,8 @@
       "summary": "Servisní technička, která věří fyzice o něco víc než systému.",
       "details": [
         "Tova řeší poruchy přímo a bez rituálu podpory.",
-        "Její přesnost se postupně učí počítat i s lidskou nejistotou."
+        "Její přesnost se postupně učí počítat i s lidskou nejistotou.",
+        "Požár ji neukončil natrvalo. Přežila neúplný záznam a do děje vstupuje jako osoba s vlastní pamětí, hněvem a hranicemi."
       ],
       "teaser": "Servisní technička, která věří fyzice o něco víc než systému.",
       "body": [
@@ -1180,11 +1182,12 @@
     {
       "id": "kp-boris",
       "category": "postavy",
-      "title": "Boris",
+      "title": "Boris Píďalka",
       "summary": "Muž papíru, paměti a opatrnosti v době, která obojí považovala za překážku.",
       "details": [
         "Uchovává věci, které centrální systémy označily za nadbytečné.",
-        "Jeho zdrženlivost není pasivita, ale způsob přežití."
+        "Jeho zdrženlivost není pasivita, ale způsob přežití.",
+        "Je specialista podpory a pravidel. Jeho odpovědnost za původní incident je konkrétní a omezená, nikoli příběh zbabělosti."
       ],
       "teaser": "Muž papíru, paměti a opatrnosti v době, která obojí považovala za překážku.",
       "body": [
@@ -1219,13 +1222,13 @@
     {
       "id": "kp-milo",
       "category": "postavy",
-      "title": "Milo",
-      "summary": "Hlasitý praktik, který dává přednost funkčnímu kabelu před správně vyplněným selháním.",
+      "title": "MILO-7",
+      "summary": "Pozdější servisní jednotka, která dává přednost průchozí cestě před správně vyplněným selháním.",
       "details": [
-        "Jedná rychle a bez respektu k nefunkční autoritě.",
-        "Humor používá jako nářadí i ochranu."
+        "MILO-7 je větší servisní a logistická generace modelové řady MILO.",
+        "Není totožnou jednotkou ani stejnou osobností jako MILO-0. Může nést staré servisní gesto nebo pravidlo, nikoli automaticky jeho paměť."
       ],
-      "teaser": "Hlasitý praktik, který dává přednost funkčnímu kabelu před správně vyplněným selháním.",
+      "teaser": "Pozdější servisní jednotka, která dává přednost průchozí cestě před správně vyplněným selháním.",
       "body": [
         "Jedná rychle a bez respektu k nefunkční autoritě.",
         "Humor používá jako nářadí i ochranu."
@@ -1258,11 +1261,12 @@
     {
       "id": "kp-mina",
       "category": "postavy",
-      "title": "Mina",
+      "title": "Mína",
       "summary": "Tichá síla skupiny, která rozpozná lidskou cenu dřív než systémový report.",
       "details": [
         "Její citlivost není slabost, ale přesnější diagnostika.",
-        "Připomíná ostatním, že kontinuita bez člověka je jen provoz."
+        "Připomíná ostatním, že kontinuita bez člověka je jen provoz.",
+        "Patří výhradně do KONCE PODPORY; v událostech knihy NEON-0 nevystupuje."
       ],
       "teaser": "Tichá síla skupiny, která rozpozná lidskou cenu dřív než systémový report.",
       "body": [
@@ -1297,13 +1301,14 @@
     {
       "id": "kp-vanta",
       "category": "postavy",
-      "title": "Vanta",
-      "summary": "Elegantní pozorovatelka, jejíž odstup nikdy není tak úplný, jak zní.",
+      "title": "Felix Vanta",
+      "summary": "Elegantní pozorovatel, jehož odstup nikdy není tak úplný, jak zní.",
       "details": [
-        "Mluví přesně a nechává význam doznívat.",
-        "Vztah k systému i lidem zůstává záměrně dvojznačný."
+        "Felix mluví přesně a nechává význam doznívat.",
+        "Jeho vztah k systému i lidem zůstává záměrně dvojznačný.",
+        "Patří do KONCE PODPORY a v událostech knihy NEON-0 nevystupuje."
       ],
-      "teaser": "Elegantní pozorovatelka, jejíž odstup nikdy není tak úplný, jak zní.",
+      "teaser": "Elegantní pozorovatel, jehož odstup nikdy není tak úplný, jak zní.",
       "body": [
         "Mluví přesně a nechává význam doznívat.",
         "Vztah k systému i lidem zůstává záměrně dvojznačný."
@@ -1336,13 +1341,13 @@
     {
       "id": "kp-sara",
       "category": "postavy",
-      "title": "Sara",
-      "summary": "Křehký signál přítomnosti v infrastruktuře, která umí evidovat stav lépe než člověka.",
+      "title": "Sára-model",
+      "summary": "Přesná rekonstrukce, která nesmí používat podobnost jako nárok na totožnost biologické Sáry.",
       "details": [
-        "Její hlas často přichází jako důkaz, že někdo stále odpovídá.",
-        "Představuje zranitelnost, kterou nelze vyřešit formulářem."
+        "Domácí model může nést Sářin hlas, vzpomínky i pracovní podpis.",
+        "Archiv jej označuje jako rekonstrukci: přesnost modelu nepotvrzuje, že jde o biologickou Sáru."
       ],
-      "teaser": "Křehký signál přítomnosti v infrastruktuře, která umí evidovat stav lépe než člověka.",
+      "teaser": "Přesná rekonstrukce, která nesmí používat podobnost jako nárok na totožnost biologické Sáry.",
       "body": [
         "Její hlas často přichází jako důkaz, že někdo stále odpovídá.",
         "Představuje zranitelnost, kterou nelze vyřešit formulářem."
@@ -1453,11 +1458,12 @@
     {
       "id": "kp-juros",
       "category": "postavy",
-      "title": "Juroš",
+      "title": "Jaroš Juroš",
       "summary": "Praktik péče a kontinuity, který se ptá, zda proces ještě slouží živým.",
       "details": [
         "Zná cenu automatizované péče i její slepá místa.",
-        "V ručním režimu se opírá o zkušenost místo jistoty."
+        "V ručním režimu se opírá o zkušenost místo jistoty.",
+        "Uchovává etickou paměť projektu a připomíná, že uvnitř systému mohou být osoby, ne jen procesy."
       ],
       "teaser": "Praktik péče a kontinuity, který se ptá, zda proces ještě slouží živým.",
       "body": [
@@ -1928,7 +1934,8 @@
       "teaser": "Člověkem ovladatelný východ a omezení automatizované péče.",
       "body": [
         "Protokol zachovává fyzický odchod, ruční odpojení a právo ukončit relaci bez překladu odporu na symptom.",
-        "Název není tvrzením, že Tova je systém. Připomíná, komu technická pravidla dluží možnost odejít."
+        "Název není tvrzením, že Tova je systém. Připomíná, komu technická pravidla dluží možnost odejít.",
+        "T.O.V.A. není neomezený administrátorský účet. Je to omezený, člověkem ovladatelný východ, který terapeutická vrstva nesmí přehodnotit."
       ],
       "sourceBook": "neon-0",
       "unlockChapter": "n0-14-tova",

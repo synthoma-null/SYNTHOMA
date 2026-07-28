@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef } from 'react';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 interface CyklusBottomSheetProps {
   open: boolean;
@@ -13,22 +14,19 @@ interface CyklusBottomSheetProps {
 export default function CyklusBottomSheet({ open, onClose, title, children, id }: CyklusBottomSheetProps) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
-  const onCloseRef = useRef(onClose);
-
-  useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
+  const layerId = id ?? `cyklus-bottom-sheet:${titleId}`;
+  const { closeLayer } = useUiLayer({
+    id: layerId,
+    type: 'bottom-sheet',
+    open,
+    onClose,
+  });
 
   useEffect(() => {
     if (!open) return;
     const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onCloseRef.current();
-    };
     dialogRef.current?.focus();
-    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
       returnFocus?.focus();
     };
   }, [open]);
@@ -37,7 +35,7 @@ export default function CyklusBottomSheet({ open, onClose, title, children, id }
 
   return (
     <div id={id} className="cyklus-no-select cyklus-bottom-sheet__backdrop">
-      <button className="cyklus-bottom-sheet__dismiss" type="button" onClick={onClose} aria-label={`Zavřít ${title}`} />
+      <button className="cyklus-bottom-sheet__dismiss" type="button" onClick={closeLayer} aria-label={`Zavřít ${title}`} />
       <div
         ref={dialogRef}
         className="cyklus-bottom-sheet"
@@ -48,7 +46,7 @@ export default function CyklusBottomSheet({ open, onClose, title, children, id }
       >
         <div className="cyklus-bottom-sheet__header">
           <span className="cyklus-bottom-sheet__title" id={titleId}>{title}</span>
-          <button type="button" className="cyklus-bottom-sheet__close" onClick={onClose} aria-label="Zavřít">✕</button>
+          <button type="button" className="cyklus-bottom-sheet__close" onClick={closeLayer} aria-label="Zavřít">✕</button>
         </div>
         <div className="cyklus-bottom-sheet__body">
           {children}

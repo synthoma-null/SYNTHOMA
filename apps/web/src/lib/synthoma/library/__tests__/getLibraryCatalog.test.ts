@@ -5,19 +5,20 @@ describe('getLibraryCatalog', () => {
     const catalog = await getLibraryCatalog();
     expect(catalog.collections).toHaveLength(3);
     expect(catalog.collections[0]).toMatchObject({
-      slug: 'neon-0',
-      title: 'SYNTHOMA: NEON-0',
-      availableCount: 24,
-      totalCount: 24,
-      status: 'complete',
-    });
-    expect(catalog.collections[1]?.slug).toBe('SYNTHOMA-NULL');
-    expect(catalog.collections[1]?.chapters.length).toBe(22);
-    expect(catalog.collections[2]).toMatchObject({
       slug: 'konec-podpory',
       title: 'SYNTHOMA: KONEC PODPORY',
       availableCount: 19,
       totalCount: 19,
+      status: 'complete',
+    });
+    expect(catalog.collections[0]?.chapters.every((chapter) => Boolean(chapter.summary))).toBe(true);
+    expect(catalog.collections[1]?.slug).toBe('SYNTHOMA-NULL');
+    expect(catalog.collections[1]?.chapters.length).toBe(22);
+    expect(catalog.collections[2]).toMatchObject({
+      slug: 'neon-0',
+      title: 'SYNTHOMA: NEON-0',
+      availableCount: 24,
+      totalCount: 24,
       status: 'complete',
     });
   });

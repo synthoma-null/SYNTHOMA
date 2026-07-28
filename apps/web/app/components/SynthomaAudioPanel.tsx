@@ -6,6 +6,7 @@ import { tracks, type Track } from '../../src/data/playlist';
 import { getSharedAudio } from '../../src/lib/audio';
 import { updateUiPreferences } from '../../src/lib/uiPreferences';
 import { useLang } from '../../src/lib/LangContext';
+import { useUiLayer } from '../../src/components/ui-layer/UiLayerProvider';
 
 const AUDIO_COPY = {
   cs: { ambient: 'DOPROVODNÝ ZVUK', external: 'Externí stopa', empty: 'Bez aktivní stopy', close: 'Zavřít hudební přehrávač', position: 'Pozice skladby', of: 'z', previous: 'Předchozí skladba', pause: 'Pozastavit hudbu', play: 'Přehrát hudbu', next: 'Další skladba', unmute: 'Zapnout zvuk hudby', mute: 'Ztlumit hudbu', library: 'KNIHOVNA STOP', music: 'Hudba', muted: 'ztlumeno', playing: 'přehrává se', paused: 'pozastaveno', activeTrack: 'Aktivní skladba', playTrack: 'Přehrát skladbu' },
@@ -70,6 +71,17 @@ export default function SynthomaAudioPanel() {
   const activeTrackRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
   const restoreFocusRef = useRef(true);
+  const closeAudio = useCallback(() => {
+    restoreFocusRef.current = true;
+    setOpen(false);
+  }, []);
+  const { closeLayer } = useUiLayer({
+    id: 'audio-panel',
+    type: 'audio',
+    open,
+    onClose: closeAudio,
+    restoreFocus: () => document.getElementById('toggle-audio-panel-btn')?.focus(),
+  });
 
   const syncTrackFromSource = useCallback((audio: HTMLAudioElement) => {
     const source = audio.currentSrc || audio.src || audio.querySelector('source')?.src || '';
@@ -196,18 +208,6 @@ export default function SynthomaAudioPanel() {
   }, [copy, muted, open, playing]);
 
   useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        restoreFocusRef.current = true;
-        setOpen(false);
-      }
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [open]);
-
-  useEffect(() => {
     if (!open || externalTitle) return;
     activeTrackRef.current?.scrollIntoView({ block: 'nearest' });
   }, [externalTitle, open, trackIndex]);
@@ -220,14 +220,14 @@ export default function SynthomaAudioPanel() {
 
   return (
     <div id="synthoma-audio-panel" className={`synthoma-audio-panel is-open${isCyklusGameplay ? ' cyklus-no-select' : ''}`}>
-      <button className="synthoma-audio-panel__backdrop" type="button" aria-label={copy.close} onClick={() => setOpen(false)} />
+      <button className="synthoma-audio-panel__backdrop" type="button" aria-label={copy.close} onClick={closeLayer} />
       <section className="synthoma-audio-panel__surface" role="dialog" aria-modal="true" aria-labelledby="synthoma-audio-title">
         <header className="synthoma-audio-panel__header">
           <div>
             <span className="synthoma-audio-panel__kicker">{copy.ambient}{' // '}{playing ? 'ACTIVE' : 'PAUSED'}</span>
             <h2 id="synthoma-audio-title">SYNTHOMA {String(trackIndex + 1).padStart(2, '0')}</h2>
           </div>
-          <button ref={closeRef} className="synthoma-audio-panel__close" type="button" aria-label={copy.close} onClick={() => setOpen(false)}>
+          <button ref={closeRef} className="synthoma-audio-panel__close" type="button" aria-label={copy.close} onClick={closeLayer}>
             <AudioIcon name="close" />
           </button>
         </header>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import type { LibraryCollection } from '../../lib/synthoma/library/libraryTypes';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 export interface LibraryCoverDialogProps {
   collection: LibraryCollection;
@@ -10,13 +10,12 @@ export interface LibraryCoverDialogProps {
 }
 
 export default function LibraryCoverDialog({ collection, onClose, onEnter }: LibraryCoverDialogProps) {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  const { closeLayer } = useUiLayer({
+    id: `library-cover:${collection.slug}`,
+    type: 'library-dialog',
+    open: true,
+    onClose,
+  });
 
   return (
     <div
@@ -24,11 +23,11 @@ export default function LibraryCoverDialog({ collection, onClose, onEnter }: Lib
       role="dialog"
       aria-modal="true"
       aria-label={`Přebal: ${collection.title}`}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => { if (e.target === e.currentTarget) closeLayer(); }}
       style={collection.cover ? { '--cover-image': `url(${collection.cover})` } as React.CSSProperties : undefined}
     >
       <div className="synthoma-detail-dialog os-surface library-cover-dialog">
-        <button className="synthoma-detail-dialog__close" onClick={onClose} aria-label="Zavřít přebal" type="button">✕</button>
+        <button className="synthoma-detail-dialog__close" onClick={closeLayer} aria-label="Zavřít přebal" type="button">✕</button>
         <div className="library-cover-dialog__body">
           {collection.cover ? (
             <img className="library-cover-dialog__cover" src={collection.cover} alt="" loading="lazy" decoding="async" />

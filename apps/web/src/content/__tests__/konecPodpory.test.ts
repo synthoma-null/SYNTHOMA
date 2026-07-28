@@ -20,6 +20,7 @@ describe('SYNTHOMA: KONEC PODPORY content contract', () => {
       directory: 'SYNTHOMA-KONEC_PODPORY',
       title: 'SYNTHOMA: KONEC PODPORY',
       language: 'cs',
+      order: 0,
       status: 'complete',
     });
     expect(chapters).toHaveLength(19);
@@ -27,6 +28,7 @@ describe('SYNTHOMA: KONEC PODPORY content contract', () => {
     expect(chapters.every((chapter) => chapter.status === 'final' && chapter.accessPolicy === 'free')).toBe(true);
     expect(chapters[0]?.id).toBe('kp-00-podporovano');
     expect(chapters[18]?.id).toBe('kp-18-konec-podpory');
+    expect(chapters.every((chapter) => typeof chapter.summary === 'string' && chapter.summary.length > 40)).toBe(true);
   });
 
   it('keeps previous and next navigation inside the collection', () => {

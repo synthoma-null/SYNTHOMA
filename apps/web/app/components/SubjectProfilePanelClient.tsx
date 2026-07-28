@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import ProfileDashboard from '../../src/components/profile/ProfileDashboard';
 import LocalSubjectProfile from '../../src/components/profile/LocalSubjectProfile';
 import { useLang } from '../../src/lib/LangContext';
+import { useUiLayer } from '../../src/components/ui-layer/UiLayerProvider';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -43,6 +44,13 @@ export default function SubjectProfilePanelClient() {
     restoreFocusRef.current = restoreFocus;
     setOpen(false);
   }, []);
+  const { closeLayer } = useUiLayer({
+    id: 'subject-profile',
+    type: 'profile',
+    open,
+    onClose: () => closePanel(),
+    restoreFocus: () => returnFocusRef.current?.focus(),
+  });
 
   useEffect(() => {
     const toggle = () => (open ? closePanel() : openPanel());
@@ -81,11 +89,6 @@ export default function SubjectProfilePanelClient() {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        closePanel();
-        return;
-      }
       if (event.key !== 'Tab') return;
       const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
       if (focusable.length === 0) return;
@@ -122,17 +125,17 @@ export default function SubjectProfilePanelClient() {
   return (
     <div className={`id-panel-root${isCyklusGameplay ? ' id-panel-root--cyklus cyklus-no-select' : ''}`}>
       <div id="profile-panel-root" className={`profile-panel-root${open ? ' open' : ''}`}>
-        {open && <button className="profile-panel-backdrop" type="button" tabIndex={-1} aria-label="Zavřít profil kliknutím mimo panel" onClick={() => closePanel()} />}
+        {open && <button className="profile-panel-backdrop" type="button" tabIndex={-1} aria-label="Zavřít profil kliknutím mimo panel" onClick={closeLayer} />}
         <div id="id-panel-popup" ref={dialogRef} className={`profile-panel-popup${open ? ' visible' : ''}`} role="dialog" aria-modal="true" aria-label={t('profile.panel.aria')} aria-hidden={open ? undefined : true}>
           <div className="profile-panel-header">
             <span className="profile-panel-title">{t('profile.panel.title')}</span>
-            <button ref={closeRef} className="profile-panel-close btn btn-sm" type="button" aria-label={t('profile.panel.close')} onClick={() => closePanel()}>×</button>
+            <button ref={closeRef} className="profile-panel-close btn btn-sm" type="button" aria-label={t('profile.panel.close')} onClick={closeLayer}>×</button>
           </div>
           <div className="profile-panel-body">
             {open && status === 'loading' ? (
               <div className="profile-skeleton" data-profile-state="loading" aria-busy="true" aria-label="Načítání identity"><span /><span /><span /></div>
             ) : open && status === 'authenticated' && session?.user ? (
-              <ProfileDashboard userId={userId} nickname={session.user.name ?? ''} mode="popup" onClose={() => closePanel()} />
+              <ProfileDashboard userId={userId} nickname={session.user.name ?? ''} mode="popup" onClose={closeLayer} />
             ) : open && status !== 'loading' ? (
               <LocalSubjectProfile />
             ) : null}

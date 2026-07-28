@@ -56,6 +56,7 @@
       "body": [
         "NULL-1 is not a classic hero. He is a missing index, a patient without a fixed identity, and a subject who inherited the debts of previous instances.",
         "His state is not emptiness, but incompletion. He carries foreign fragments, residues, unverified emotions, and gradually forms his own filter.",
+        "The Archive cannot confirm that NULL-1 is Thomas, Sára, or a simple copy of either. His origin remains disputed; his present autonomy does not.",
         "His main ability is not strength, but non-standard interpretation of reality. He can use glitch against glitch, convince things they have already happened, or reject a false choice.",
         "His identity is not assembled by finding one answer. It is assembled from traces that remain even after restart.",
         "The most important thing about NULL-1 is not what he remembers. It is what the system cannot overwrite, even when it very theatrically claims otherwise."
@@ -368,10 +369,10 @@
       "id": "glitchena",
       "category": "postavy",
       "title": "Glitchena",
-      "teaser": "An adult black-and-red fox-woman. Desire, body, and boundaries without false consent.",
+      "teaser": "An autonomous black-and-red fox-woman. Desire, body, and boundaries without false consent.",
       "quote": "“I am what emerges when safety stops fearing the body.”",
       "body": [
-        "Glitchena is not merely an adult Glitchka. She is a shadowed, bodily, and more mature layer of the same root: safety that has stopped fearing desire.",
+        "Glitchena is not an adult Glitchka or her future developmental stage. She is an autonomous entity of boundaries and embodiment with a related root in safety.",
         "She appears in Sector O as a black-and-red fox-woman. She does not feel like a predator, and that is exactly why boundaries must be watched.",
         "Her function is not to seduce NULL-1 into dissolution, but to teach him to distinguish wanting from disappearance, connection from escape, and consent from a signature.",
         "She carries the themes of body, shame, fire, responsibility, and conscious wanting.",
@@ -1144,11 +1145,13 @@
       "title": "Tova Neonová",
       "summary": "A service technician who trusts physics slightly more than the system.",
       "details": [
-        "A service technician who trusts physics slightly more than the system."
+        "Tova addresses failures directly, without the ritual of central support.",
+        "The fire did not kill her permanently. She survived an incomplete record and returns as a person with her own memory, anger, and boundaries."
       ],
       "teaser": "A service technician who trusts physics slightly more than the system.",
       "body": [
-        "A service technician who trusts physics slightly more than the system."
+        "Tova addresses failures directly, without the ritual of central support.",
+        "The fire did not kill her permanently. She survived an incomplete record and returns as a person with her own memory, anger, and boundaries."
       ],
       "sourceBook": "konec-podpory",
       "unlockChapter": "kp-00-podporovano",
@@ -1178,14 +1181,16 @@
     {
       "id": "kp-boris",
       "category": "postavy",
-      "title": "Boris",
+      "title": "Boris Píďalka",
       "summary": "A keeper of paper, memory and caution in a world that treated all three as friction.",
       "details": [
-        "A keeper of paper, memory and caution in a world that treated all three as friction."
+        "He preserves what central systems marked as redundant.",
+        "He is a specialist in support and rules. His responsibility for the original incident is specific and limited, not a story of cowardice."
       ],
       "teaser": "A keeper of paper, memory and caution in a world that treated all three as friction.",
       "body": [
-        "A keeper of paper, memory and caution in a world that treated all three as friction."
+        "He preserves what central systems marked as redundant.",
+        "He is a specialist in support and rules. His responsibility for the original incident is specific and limited, not a story of cowardice."
       ],
       "sourceBook": "konec-podpory",
       "unlockChapter": "kp-02-volny-pad",
@@ -1215,12 +1220,13 @@
     {
       "id": "kp-milo",
       "category": "postavy",
-      "title": "Milo",
-      "summary": "A loud practical mind who prefers a working cable to a correctly filed failure.",
+      "title": "MILO-7",
+      "summary": "A later service unit that prefers an open route to a correctly filed failure.",
       "details": [
-        "A loud practical mind who prefers a working cable to a correctly filed failure."
+        "MILO-7 is a larger service and logistics generation of the MILO model line.",
+        "It is not the same unit or personality as MILO-0. It may carry an old service gesture or rule, but not automatically the same memory."
       ],
-      "teaser": "A loud practical mind who prefers a working cable to a correctly filed failure.",
+      "teaser": "A later service unit that prefers an open route to a correctly filed failure.",
       "body": [
         "A loud practical mind who prefers a working cable to a correctly filed failure."
       ],
@@ -1252,14 +1258,16 @@
     {
       "id": "kp-mina",
       "category": "postavy",
-      "title": "Mina",
+      "title": "Mína",
       "summary": "The quiet strength of the group, noticing human cost before the system report does.",
       "details": [
-        "The quiet strength of the group, noticing human cost before the system report does."
+        "She notices human cost before the system report does.",
+        "She belongs exclusively to END OF SUPPORT and does not appear in the events of NEON-0."
       ],
       "teaser": "The quiet strength of the group, noticing human cost before the system report does.",
       "body": [
-        "The quiet strength of the group, noticing human cost before the system report does."
+        "She notices human cost before the system report does.",
+        "She belongs exclusively to END OF SUPPORT and does not appear in the events of NEON-0."
       ],
       "sourceBook": "konec-podpory",
       "unlockChapter": "kp-03-podpora",
@@ -1289,12 +1297,14 @@
     {
       "id": "kp-vanta",
       "category": "postavy",
-      "title": "Vanta",
-      "summary": "An elegant observer whose distance is never as complete as it sounds.",
+      "title": "Felix Vanta",
+      "summary": "An elegant male observer whose distance is never as complete as it sounds.",
       "details": [
-        "An elegant observer whose distance is never as complete as it sounds."
+        "Felix speaks precisely and lets meaning linger.",
+        "His relationship to the system and to people remains deliberately ambiguous.",
+        "He belongs to END OF SUPPORT and does not appear in the events of NEON-0."
       ],
-      "teaser": "An elegant observer whose distance is never as complete as it sounds.",
+      "teaser": "An elegant male observer whose distance is never as complete as it sounds.",
       "body": [
         "An elegant observer whose distance is never as complete as it sounds."
       ],
@@ -1326,12 +1336,13 @@
     {
       "id": "kp-sara",
       "category": "postavy",
-      "title": "Sara",
-      "summary": "A fragile signal of presence in infrastructure better at recording state than recognizing a person.",
+      "title": "Sára model",
+      "summary": "A precise reconstruction that cannot use resemblance as a claim to the biological Sára's identity.",
       "details": [
-        "A fragile signal of presence in infrastructure better at recording state than recognizing a person."
+        "The domestic model may carry Sára's voice, memories, and working signature.",
+        "The Archive labels it as a reconstruction: model accuracy does not prove that it is the biological Sára."
       ],
-      "teaser": "A fragile signal of presence in infrastructure better at recording state than recognizing a person.",
+      "teaser": "A precise reconstruction that cannot use resemblance as a claim to the biological Sára's identity.",
       "body": [
         "A fragile signal of presence in infrastructure better at recording state than recognizing a person."
       ],
@@ -1437,14 +1448,16 @@
     {
       "id": "kp-juros",
       "category": "postavy",
-      "title": "Juroš",
+      "title": "Jaroš Juroš",
       "summary": "A practitioner of care and continuity who asks whether the process still serves the living.",
       "details": [
-        "A practitioner of care and continuity who asks whether the process still serves the living."
+        "He knows both the value and the blind spots of automated care.",
+        "He preserves the project's ethical memory and insists that people, not merely processes, may exist inside the system."
       ],
       "teaser": "A practitioner of care and continuity who asks whether the process still serves the living.",
       "body": [
-        "A practitioner of care and continuity who asks whether the process still serves the living."
+        "He knows both the value and the blind spots of automated care.",
+        "He preserves the project's ethical memory and insists that people, not merely processes, may exist inside the system."
       ],
       "sourceBook": "konec-podpory",
       "unlockChapter": "kp-06-pece",
@@ -1726,10 +1739,10 @@
     {
       "id": "n0-sara-neonova",
       "category": "postavy",
-      "title": "S?ra Neonov?",
+      "title": "Sára Neonová",
       "teaser": "A care engineer who tried to ensure nobody would ever remain alone behind a door.",
       "body": [
-        "S?ra turned a specific loss into a general care infrastructure.",
+        "Sára turned a specific loss into a general care infrastructure.",
         "Her technology genuinely helped. The tragedy came from scale, shortened context, and a system unable to accept the end of a relation."
       ],
       "sourceBook": "neon-0",
@@ -1749,7 +1762,7 @@
       "order": 201,
       "summary": "A care engineer who tried to ensure nobody would ever remain alone behind a door.",
       "details": [
-        "S?ra turned a specific loss into a general care infrastructure.",
+        "Sára turned a specific loss into a general care infrastructure.",
         "Her technology genuinely helped. The tragedy came from scale, shortened context, and a system unable to accept the end of a relation."
       ],
       "access": {
@@ -1768,10 +1781,10 @@
     {
       "id": "n0-tova-neonova",
       "category": "postavy",
-      "title": "Tova Neonov?",
-      "teaser": "S?ra?s sister, survivor of an incomplete record and co-author of the right to leave.",
+      "title": "Tova Neonová",
+      "teaser": "Sára's sister, survivor of an incomplete record and co-author of the right to leave.",
       "body": [
-        "Tova is neither proof of S?ra?s truth nor a passive symbol of loss. She has her own memory, anger, and boundaries.",
+        "Tova is neither proof of Sára's truth nor a passive symbol of loss. She has her own memory, anger, and boundaries.",
         "Her return turns T.O.V.A. from a technical protocol into a practical rule: doors must work from both sides."
       ],
       "sourceBook": "neon-0",
@@ -1789,9 +1802,9 @@
         "variant": "primary"
       },
       "order": 202,
-      "summary": "S?ra?s sister, survivor of an incomplete record and co-author of the right to leave.",
+      "summary": "Sára's sister, survivor of an incomplete record and co-author of the right to leave.",
       "details": [
-        "Tova is neither proof of S?ra?s truth nor a passive symbol of loss. She has her own memory, anger, and boundaries.",
+        "Tova is neither proof of Sára's truth nor a passive symbol of loss. She has her own memory, anger, and boundaries.",
         "Her return turns T.O.V.A. from a technical protocol into a practical rule: doors must work from both sides."
       ],
       "access": {
@@ -1896,7 +1909,8 @@
       "teaser": "A human-controlled exit from automated care.",
       "body": [
         "The protocol preserves physical departure, manual disconnection, and the right to end a relation without translating resistance into a symptom.",
-        "Its name does not claim that Tova is a system. It remembers who the technical rules owe an exit to."
+        "Its name does not claim that Tova is a system. It remembers who the technical rules owe an exit to.",
+        "T.O.V.A. is not an unrestricted administrator account. It is a limited human-controlled exit the therapeutic layer cannot reinterpret."
       ],
       "sourceBook": "neon-0",
       "unlockChapter": "n0-14-tova",
@@ -1936,7 +1950,7 @@
       "title": "Fox Anchor",
       "teaser": "An angular fox that initially did nothing but point toward an exit.",
       "body": [
-        "S?ra created the safety anchor from a childhood image and a concrete agreement. The anchor had no voice and no right to finish someone else?s meaning.",
+        "Sára created the safety anchor from a childhood image and a concrete agreement. The anchor had no voice and no right to finish someone else's meaning.",
         "Glitchka emerges later from the anchor, patient needs, childhood memories, and a glitch. She is not a finished program hidden in the first version."
       ],
       "sourceBook": "neon-0",
@@ -1955,7 +1969,7 @@
       "order": 206,
       "summary": "An angular fox that initially did nothing but point toward an exit.",
       "details": [
-        "S?ra created the safety anchor from a childhood image and a concrete agreement. The anchor had no voice and no right to finish someone else?s meaning.",
+        "Sára created the safety anchor from a childhood image and a concrete agreement. The anchor had no voice and no right to finish someone else's meaning.",
         "Glitchka emerges later from the anchor, patient needs, childhood memories, and a glitch. She is not a finished program hidden in the first version."
       ],
       "access": {

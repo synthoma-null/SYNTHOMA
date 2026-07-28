@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { getComboHint } from '../../game/cyklus/cyklusEngine';
 import { getPocketAmbientText, getPocketItems, getPrimaryMoodItem, MOOD_LABELS } from '../../game/cyklus/cyklusItemMood';
 import type { CyklusRunState } from '../../game/cyklus/cyklusTypes';
 import { PocketIcon } from './CyklusBottomNav';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 const ITEM_ACTIVATION_HINTS: Record<string, string> = {
   rubber_seal: 'Vazba +8, připraví krizovou ochranu vazby.',
@@ -97,22 +98,26 @@ export default function CyklusPocketDock({
   const panelRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(false);
 
-  const handleEscape = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Escape') onClose();
-  }, [onClose]);
+  const { closeLayer } = useUiLayer({
+    id: 'cyklus-pocket',
+    type: 'inventory',
+    open,
+    onClose,
+    restoreFocus: () => triggerRef.current?.focus(),
+    modal: false,
+  });
 
   useEffect(() => {
     if (open) {
       wasOpenRef.current = true;
       panelRef.current?.focus();
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+      return;
     }
     if (wasOpenRef.current) {
       wasOpenRef.current = false;
       triggerRef.current?.focus();
     }
-  }, [handleEscape, open]);
+  }, [open]);
 
   return (
     <div
@@ -125,7 +130,7 @@ export default function CyklusPocketDock({
         ref={triggerRef}
         className="cyklus-pocket__toggle cyklus-pocket-trigger cyklus-no-select"
         type="button"
-        onClick={onToggle}
+        onClick={open ? closeLayer : onToggle}
         aria-controls={panelId}
         aria-expanded={open}
         aria-label={`${actionLabel}, ${state.inventory.length} předmětů`}

@@ -14,7 +14,10 @@ export default function FirstVisitRedirectClient() {
     try {
       const seenVersion = readStorage(SYNTHOMA_INTRO_STORAGE_KEY, null);
       if (seenVersion !== SYNTHOMA_INTRO_VERSION) {
+        document.documentElement.setAttribute('data-synthoma-intro-pending', 'true');
         router.replace("/landing-intro");
+      } else {
+        document.documentElement.removeAttribute('data-synthoma-intro-pending');
       }
     } catch {}
   }, [pathname, router]);

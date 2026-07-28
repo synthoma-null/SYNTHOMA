@@ -1,8 +1,9 @@
 import React from 'react';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SubjectProfilePanelClient from '../../../../app/components/SubjectProfilePanelClient';
+import UiLayerProvider from '../../ui-layer/UiLayerProvider';
 
 jest.mock('next/navigation', () => ({ usePathname: jest.fn(), useRouter: jest.fn() }));
 jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
@@ -34,7 +35,10 @@ describe('SubjectProfilePanelClient', () => {
     useRouter.mockReturnValue({ replace });
     useSession.mockReturnValue({ data: null, status: 'unauthenticated' });
     window.history.replaceState({}, '', '/books');
+    jest.spyOn(window.history, 'back').mockImplementation(() => {});
   });
+
+  afterEach(() => jest.restoreAllMocks());
 
   it('is the only Identity/Profile owner mounted by the root layout', () => {
     const layout = readFileSync(join(process.cwd(), 'app/layout.tsx'), 'utf8');
@@ -79,6 +83,17 @@ describe('SubjectProfilePanelClient', () => {
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
     await screen.findByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' });
     expect(document.querySelector('.id-panel-root')).toHaveClass('cyklus-no-select');
+  });
+
+  it('closes the profile on browser Back without leaving the route', async () => {
+    render(<UiLayerProvider><SubjectProfilePanelClient /></UiLayerProvider>);
+    act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+
+    fireEvent.popState(window);
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(window.location.pathname).toBe('/books');
   });
 
   it('keeps profile scrolling inside the viewport-bounded content panel', () => {

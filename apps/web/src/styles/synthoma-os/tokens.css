@@ -129,13 +129,13 @@
 
   --font-reading: "Text03", "Segoe UI", Arial, sans-serif;
 
-  --text-caption: 0.8125rem;
-  --text-label: 0.875rem;
-  --text-small: 0.9375rem;
-  --text-ui: 1rem;
-  --text-body: 1.0625rem;
-  --text-card: 1.0625rem;
-  --text-reader: 1.1875rem;
+  --text-caption: 0.875rem;
+  --text-label: 0.9375rem;
+  --text-small: 1rem;
+  --text-ui: 1.0625rem;
+  --text-body: 1.125rem;
+  --text-card: 1.125rem;
+  --text-reader: 1.25rem;
   --line-caption: 1.45;
   --line-ui: 1.55;
   --line-body: 1.7;
@@ -222,20 +222,20 @@
 @media (min-width: 1024px) {
   :root,
   [data-theme] {
-    --text-caption: 0.875rem;
-    --text-label: 0.9375rem;
-    --text-small: 1rem;
-    --text-ui: 1.0625rem;
-    --text-body: 1.125rem;
-    --text-card: 1.125rem;
-    --text-reader: 1.25rem;
+    --text-caption: 0.9375rem;
+    --text-label: 1rem;
+    --text-small: 1.0625rem;
+    --text-ui: 1.125rem;
+    --text-body: 1.1875rem;
+    --text-card: 1.1875rem;
+    --text-reader: 1.3125rem;
   }
 }
 
 @media (min-width: 1600px) {
   :root,
   [data-theme] {
-    --text-body: 1.15625rem;
-    --text-reader: 1.3125rem;
+    --text-body: 1.21875rem;
+    --text-reader: 1.375rem;
   }
 }

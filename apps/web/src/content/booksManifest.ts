@@ -83,6 +83,386 @@ export const MNEM_PRICE_TIERS: Record<number, string> = {
 // <content:generated-chapters>
 export const CHAPTERS: Chapter[] = [
   {
+    "id": "kp-00-podporovano",
+    "title": "00. PODPOROVÁNO",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 0,
+    "packageIds": []
+  },
+  {
+    "id": "kp-01-oznameni",
+    "title": "01. OZNÁMENÍ",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 1,
+    "packageIds": []
+  },
+  {
+    "id": "kp-02-volny-pad",
+    "title": "02. VOLNÝ PÁD",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 2,
+    "packageIds": []
+  },
+  {
+    "id": "kp-03-podpora",
+    "title": "03. PODPORA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 3,
+    "packageIds": []
+  },
+  {
+    "id": "kp-04-komfortni-zona",
+    "title": "04. KOMFORTNÍ ZÓNA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 4,
+    "packageIds": []
+  },
+  {
+    "id": "kp-05-objizdka",
+    "title": "05. OBJÍŽĎKA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 5,
+    "packageIds": []
+  },
+  {
+    "id": "kp-06-pece",
+    "title": "06. PÉČE",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_06_PECE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 6,
+    "packageIds": []
+  },
+  {
+    "id": "kp-07-zasilka",
+    "title": "07. ZÁSILKA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 7,
+    "packageIds": []
+  },
+  {
+    "id": "kp-08-domov",
+    "title": "08. DOMOV",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 8,
+    "packageIds": []
+  },
+  {
+    "id": "kp-09-neopravneny-uzivatel",
+    "title": "09. NEOPRÁVNĚNÝ UŽIVATEL",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 9,
+    "packageIds": []
+  },
+  {
+    "id": "kp-10-ticho",
+    "title": "10. TICHO",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 10,
+    "packageIds": []
+  },
+  {
+    "id": "kp-11-beta",
+    "title": "11. BETA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_11_BETA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 11,
+    "packageIds": []
+  },
+  {
+    "id": "kp-12-tova",
+    "title": "12. TOVA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 12,
+    "packageIds": []
+  },
+  {
+    "id": "kp-13-kontinuita",
+    "title": "13. KONTINUITA",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 13,
+    "packageIds": []
+  },
+  {
+    "id": "kp-14-reklamace",
+    "title": "14. REKLAMACE",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 14,
+    "packageIds": []
+  },
+  {
+    "id": "kp-15-migrace",
+    "title": "15. MIGRACE",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 15,
+    "packageIds": []
+  },
+  {
+    "id": "kp-16-rucni-rezim",
+    "title": "16. RUČNÍ REŽIM",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 16,
+    "packageIds": []
+  },
+  {
+    "id": "kp-17-zadna-odpoved",
+    "title": "17. ŽÁDNÁ ODPOVĚĎ",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 17,
+    "packageIds": []
+  },
+  {
+    "id": "kp-18-konec-podpory",
+    "title": "18. KONEC PODPORY",
+    "collection": "konec-podpory",
+    "filename": "SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 18,
+    "packageIds": []
+  },
+  {
+    "id": "0-inf-restart",
+    "title": "0-∞ [RESTART]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-∞ [RESTART].html",
+    "filename_en": "0-∞ [RESTART]_en.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 0,
+    "packageIds": []
+  },
+  {
+    "id": "0-0-null",
+    "title": "0-0 [NULL]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-0 [NULL].html",
+    "filename_en": "0-0 [NULL]_en.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 1,
+    "packageIds": []
+  },
+  {
+    "id": "0-1-start",
+    "title": "0-1 [START]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-1 [START].html",
+    "filename_en": "0-1 [START]_en.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 2,
+    "packageIds": []
+  },
+  {
+    "id": "0-2-run",
+    "title": "0-2 [RUN]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-2 [RUN].html",
+    "filename_en": "0-2 [RUN]_en.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 3,
+    "packageIds": []
+  },
+  {
+    "id": "0-3-discontinuum",
+    "title": "0-3 [DISCONTINUUM]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-3 [DISCONTINUUM].html",
+    "filename_en": "0-3 [DISCONTINUUM]_en.html",
+    "access": "free",
+    "mnemCost": 0,
+    "order": 4,
+    "packageIds": []
+  },
+  {
+    "id": "0-4-defragmentation",
+    "title": "0-4 [DEFRAGMENTATION]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-4 [DEFRAGMENTATION].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 5,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "teaser": "„Paměť není rozbitá. Jen odmítá lhát stejným způsobem jako včera.\"",
+    "teaser_en": "\"Memory is not broken. It just refuses to lie the same way as yesterday.\"",
+    "unlocks": "První hlubší práce s Glitchkou · fragment stabilizace · začátek osobního otisku subjektu",
+    "unlocks_en": "First deeper work with Glitchka · stabilization fragment · beginning of the subject's personal imprint",
+    "estimatedMinutes": 18
+  },
+  {
+    "id": "0-5-pause",
+    "title": "0-5 [PAUSE]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-5 [PAUSE].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 6,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "teaser": "„Ticho má ve SYNTHOMĚ strukturu. Tohle ticho má dveře.\"",
+    "teaser_en": "\"Silence has structure in SYNTHOMA. This silence has a door.\"",
+    "unlocks": "Setkání se Sarkasminým zápisníkem · pauza jako systémová funkce · první datový otisk vztahu",
+    "unlocks_en": "Encounter with Sarkasma's notebook · pause as a system function · first data imprint of a relationship",
+    "estimatedMinutes": 15
+  },
+  {
+    "id": "0-6-searching",
+    "title": "0-6 [SEARCHING]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-6 [SEARCHING].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 7,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "teaser": "„Píškoviště paměti není bezpečné místo. Je to místo, kde si vzpomínky hrají na zbraně.\"",
+    "teaser_en": "\"The memory sandbox is not a safe place. It is a place where memories play at being weapons.\"",
+    "unlocks": "Paměťová šelma · Glitchka jako průvodkyně · klíč k sektoru RUN",
+    "unlocks_en": "Memory beast · Glitchka as guide · key to the RUN sector",
+    "estimatedMinutes": 20
+  },
+  {
+    "id": "0-7-ruins",
+    "title": "0-7 [RUINS]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-7 [RUINS].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 8,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "teaser": "„Zříceniny nejsou důkaz konce. Jsou důkaz, že něco bylo dost silné, aby mohlo padnout.\"",
+    "teaser_en": "\"Ruins are not proof of an ending. They are proof that something was strong enough to fall.\"",
+    "unlocks": "Město trhlin · archivní zpráva T-AI · první záblesk minulého NULLe",
+    "unlocks_en": "City of cracks · T-AI archive message · first glimpse of the previous NULL",
+    "estimatedMinutes": 22
+  },
+  {
+    "id": "0-8-reziduum",
+    "title": "0-8 [REZIDUUM]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-8 [REZIDUUM].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 9,
+    "packageIds": [
+      "act-1",
+      "archiv-1024"
+    ],
+    "teaser": "„Reziduum je to, co zůstane po vymazání. SYNTHOMA si to pamatuje lépe než ty.\"",
+    "teaser_en": "\"Residue is what remains after deletion. SYNTHOMA remembers it better than you do.\"",
+    "unlocks": "Závěr Aktu I · archivní uzavření smyčky · odemčení profilového otisku subjektu",
+    "unlocks_en": "End of Act I · archive loop closure · unlock of the subject's profile imprint",
+    "estimatedMinutes": 25
+  },
+  {
+    "id": "0-9-sector",
+    "title": "0-9 [SECTOR]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-9 [SECTOR].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 10,
+    "packageIds": [
+      "archiv-1024"
+    ],
+    "teaser": "„Sektor není místo. Je to způsob, jak si systém pamatuje, kde jsi byl.\"",
+    "teaser_en": "\"A sector is not a place. It is the way the system remembers where you have been.\"",
+    "estimatedMinutes": 20
+  },
+  {
+    "id": "0-10-rest",
+    "title": "0-10 [REST]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-10 [REST].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 11,
+    "packageIds": [
+      "archiv-1024"
+    ],
+    "teaser": "„REST není odpočinek. Je to stav, kdy systém přestane předstírat, že ti rozumí.\"",
+    "teaser_en": "\"REST is not rest. It is a state in which the system stops pretending it understands you.\"",
+    "estimatedMinutes": 18
+  },
+  {
+    "id": "0-11-orgie",
+    "title": "0-11 [ORGIE]",
+    "collection": "SYNTHOMA-NULL",
+    "filename": "0-11 [ORGIE].html",
+    "access": "paid",
+    "mnemCost": 64,
+    "order": 12,
+    "packageIds": [
+      "archiv-1024"
+    ],
+    "teaser": "„Archiv se otevřel. To, co vypadalo jako konec, byl jen vstupní protokol.\"",
+    "teaser_en": "\"The archive opened. What looked like an ending was just an entry protocol.\"",
+    "estimatedMinutes": 30
+  },
+  {
     "id": "n0-01-bourka",
     "title": "01. [BOUŘKA]",
     "collection": "neon-0",
@@ -320,386 +700,6 @@ export const CHAPTERS: Chapter[] = [
     "access": "free",
     "mnemCost": 0,
     "order": 23,
-    "packageIds": []
-  },
-  {
-    "id": "0-inf-restart",
-    "title": "0-∞ [RESTART]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-∞ [RESTART].html",
-    "filename_en": "0-∞ [RESTART]_en.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 0,
-    "packageIds": []
-  },
-  {
-    "id": "0-0-null",
-    "title": "0-0 [NULL]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-0 [NULL].html",
-    "filename_en": "0-0 [NULL]_en.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 1,
-    "packageIds": []
-  },
-  {
-    "id": "0-1-start",
-    "title": "0-1 [START]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-1 [START].html",
-    "filename_en": "0-1 [START]_en.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 2,
-    "packageIds": []
-  },
-  {
-    "id": "0-2-run",
-    "title": "0-2 [RUN]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-2 [RUN].html",
-    "filename_en": "0-2 [RUN]_en.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 3,
-    "packageIds": []
-  },
-  {
-    "id": "0-3-discontinuum",
-    "title": "0-3 [DISCONTINUUM]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-3 [DISCONTINUUM].html",
-    "filename_en": "0-3 [DISCONTINUUM]_en.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 4,
-    "packageIds": []
-  },
-  {
-    "id": "0-4-defragmentation",
-    "title": "0-4 [DEFRAGMENTATION]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-4 [DEFRAGMENTATION].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 5,
-    "packageIds": [
-      "act-1",
-      "archiv-1024"
-    ],
-    "teaser": "„Paměť není rozbitá. Jen odmítá lhát stejným způsobem jako včera.\"",
-    "teaser_en": "\"Memory is not broken. It just refuses to lie the same way as yesterday.\"",
-    "unlocks": "První hlubší práce s Glitchkou · fragment stabilizace · začátek osobního otisku subjektu",
-    "unlocks_en": "First deeper work with Glitchka · stabilization fragment · beginning of the subject's personal imprint",
-    "estimatedMinutes": 18
-  },
-  {
-    "id": "0-5-pause",
-    "title": "0-5 [PAUSE]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-5 [PAUSE].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 6,
-    "packageIds": [
-      "act-1",
-      "archiv-1024"
-    ],
-    "teaser": "„Ticho má ve SYNTHOMĚ strukturu. Tohle ticho má dveře.\"",
-    "teaser_en": "\"Silence has structure in SYNTHOMA. This silence has a door.\"",
-    "unlocks": "Setkání se Sarkasminým zápisníkem · pauza jako systémová funkce · první datový otisk vztahu",
-    "unlocks_en": "Encounter with Sarkasma's notebook · pause as a system function · first data imprint of a relationship",
-    "estimatedMinutes": 15
-  },
-  {
-    "id": "0-6-searching",
-    "title": "0-6 [SEARCHING]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-6 [SEARCHING].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 7,
-    "packageIds": [
-      "act-1",
-      "archiv-1024"
-    ],
-    "teaser": "„Píškoviště paměti není bezpečné místo. Je to místo, kde si vzpomínky hrají na zbraně.\"",
-    "teaser_en": "\"The memory sandbox is not a safe place. It is a place where memories play at being weapons.\"",
-    "unlocks": "Paměťová šelma · Glitchka jako průvodkyně · klíč k sektoru RUN",
-    "unlocks_en": "Memory beast · Glitchka as guide · key to the RUN sector",
-    "estimatedMinutes": 20
-  },
-  {
-    "id": "0-7-ruins",
-    "title": "0-7 [RUINS]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-7 [RUINS].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 8,
-    "packageIds": [
-      "act-1",
-      "archiv-1024"
-    ],
-    "teaser": "„Zříceniny nejsou důkaz konce. Jsou důkaz, že něco bylo dost silné, aby mohlo padnout.\"",
-    "teaser_en": "\"Ruins are not proof of an ending. They are proof that something was strong enough to fall.\"",
-    "unlocks": "Město trhlin · archivní zpráva T-AI · první záblesk minulého NULLe",
-    "unlocks_en": "City of cracks · T-AI archive message · first glimpse of the previous NULL",
-    "estimatedMinutes": 22
-  },
-  {
-    "id": "0-8-reziduum",
-    "title": "0-8 [REZIDUUM]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-8 [REZIDUUM].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 9,
-    "packageIds": [
-      "act-1",
-      "archiv-1024"
-    ],
-    "teaser": "„Reziduum je to, co zůstane po vymazání. SYNTHOMA si to pamatuje lépe než ty.\"",
-    "teaser_en": "\"Residue is what remains after deletion. SYNTHOMA remembers it better than you do.\"",
-    "unlocks": "Závěr Aktu I · archivní uzavření smyčky · odemčení profilového otisku subjektu",
-    "unlocks_en": "End of Act I · archive loop closure · unlock of the subject's profile imprint",
-    "estimatedMinutes": 25
-  },
-  {
-    "id": "0-9-sector",
-    "title": "0-9 [SECTOR]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-9 [SECTOR].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 10,
-    "packageIds": [
-      "archiv-1024"
-    ],
-    "teaser": "„Sektor není místo. Je to způsob, jak si systém pamatuje, kde jsi byl.\"",
-    "teaser_en": "\"A sector is not a place. It is the way the system remembers where you have been.\"",
-    "estimatedMinutes": 20
-  },
-  {
-    "id": "0-10-rest",
-    "title": "0-10 [REST]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-10 [REST].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 11,
-    "packageIds": [
-      "archiv-1024"
-    ],
-    "teaser": "„REST není odpočinek. Je to stav, kdy systém přestane předstírat, že ti rozumí.\"",
-    "teaser_en": "\"REST is not rest. It is a state in which the system stops pretending it understands you.\"",
-    "estimatedMinutes": 18
-  },
-  {
-    "id": "0-11-orgie",
-    "title": "0-11 [ORGIE]",
-    "collection": "SYNTHOMA-NULL",
-    "filename": "0-11 [ORGIE].html",
-    "access": "paid",
-    "mnemCost": 64,
-    "order": 12,
-    "packageIds": [
-      "archiv-1024"
-    ],
-    "teaser": "„Archiv se otevřel. To, co vypadalo jako konec, byl jen vstupní protokol.\"",
-    "teaser_en": "\"The archive opened. What looked like an ending was just an entry protocol.\"",
-    "estimatedMinutes": 30
-  },
-  {
-    "id": "kp-00-podporovano",
-    "title": "00. PODPOROVÁNO",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_00_PODPOROVANO.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 0,
-    "packageIds": []
-  },
-  {
-    "id": "kp-01-oznameni",
-    "title": "01. OZNÁMENÍ",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_01_OZNAMENI.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 1,
-    "packageIds": []
-  },
-  {
-    "id": "kp-02-volny-pad",
-    "title": "02. VOLNÝ PÁD",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_02_VOLNY_PAD.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 2,
-    "packageIds": []
-  },
-  {
-    "id": "kp-03-podpora",
-    "title": "03. PODPORA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_03_PODPORA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 3,
-    "packageIds": []
-  },
-  {
-    "id": "kp-04-komfortni-zona",
-    "title": "04. KOMFORTNÍ ZÓNA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_04_KOMFORTNI_ZONA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 4,
-    "packageIds": []
-  },
-  {
-    "id": "kp-05-objizdka",
-    "title": "05. OBJÍŽĎKA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_05_OBJIZDKA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 5,
-    "packageIds": []
-  },
-  {
-    "id": "kp-06-pece",
-    "title": "06. PÉČE",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_06_PECE.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 6,
-    "packageIds": []
-  },
-  {
-    "id": "kp-07-zasilka",
-    "title": "07. ZÁSILKA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_07_ZASILKA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 7,
-    "packageIds": []
-  },
-  {
-    "id": "kp-08-domov",
-    "title": "08. DOMOV",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_08_DOMOV.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 8,
-    "packageIds": []
-  },
-  {
-    "id": "kp-09-neopravneny-uzivatel",
-    "title": "09. NEOPRÁVNĚNÝ UŽIVATEL",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_09_NEOPRAVNENY_UZIVATEL.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 9,
-    "packageIds": []
-  },
-  {
-    "id": "kp-10-ticho",
-    "title": "10. TICHO",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_10_TICHO.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 10,
-    "packageIds": []
-  },
-  {
-    "id": "kp-11-beta",
-    "title": "11. BETA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_11_BETA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 11,
-    "packageIds": []
-  },
-  {
-    "id": "kp-12-tova",
-    "title": "12. TOVA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_12_TOVA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 12,
-    "packageIds": []
-  },
-  {
-    "id": "kp-13-kontinuita",
-    "title": "13. KONTINUITA",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_13_KONTINUITA.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 13,
-    "packageIds": []
-  },
-  {
-    "id": "kp-14-reklamace",
-    "title": "14. REKLAMACE",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_14_REKLAMACE.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 14,
-    "packageIds": []
-  },
-  {
-    "id": "kp-15-migrace",
-    "title": "15. MIGRACE",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_15_MIGRACE.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 15,
-    "packageIds": []
-  },
-  {
-    "id": "kp-16-rucni-rezim",
-    "title": "16. RUČNÍ REŽIM",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_16_RUCNI_REZIM.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 16,
-    "packageIds": []
-  },
-  {
-    "id": "kp-17-zadna-odpoved",
-    "title": "17. ŽÁDNÁ ODPOVĚĎ",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_17_ZADNA_ODPOVED.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 17,
-    "packageIds": []
-  },
-  {
-    "id": "kp-18-konec-podpory",
-    "title": "18. KONEC PODPORY",
-    "collection": "konec-podpory",
-    "filename": "SYNTHOMA_KONEC_PODPORY_18_KONEC_PODPORY.html",
-    "access": "free",
-    "mnemCost": 0,
-    "order": 18,
     "packageIds": []
   }
 ];

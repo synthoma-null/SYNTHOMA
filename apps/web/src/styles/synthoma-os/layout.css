@@ -115,3 +115,7 @@
 .synthoma-global-footer a:hover,
 .synthoma-global-footer a:focus-visible { color: var(--os-accent-primary); }
 .synthoma-global-footer__signature { text-align: right; }
+.synthoma-ui-layer-lock {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
