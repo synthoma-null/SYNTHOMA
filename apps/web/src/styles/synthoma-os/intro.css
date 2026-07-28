@@ -1,38 +1,59 @@
 .synthoma-intro {
-  --intro-cyan: var(--accent-primary, #57f7ff);
-  --intro-magenta: var(--accent-secondary, #ff4fd8);
+  --intro-cyan: var(--os-accent-primary, #57f7ff);
+  --intro-magenta: var(--os-accent-secondary, #ff4fd8);
   position: fixed;
   inset: 0;
-  z-index: 1200;
+  z-index: var(--os-z-critical, 120);
   display: grid;
-  place-items: center;
   min-height: 100svh;
+  place-items: center;
   overflow: hidden;
-  color: var(--text-primary, #f4fbff);
-  background: var(--bg-deep, #010205);
+  color: var(--os-text, #f4fbff);
+  background: var(--os-bg-deep, #010205);
   isolation: isolate;
 }
 
-.synthoma-intro__noise {
-  position: absolute;
+.synthoma-intro .synthoma-media-layer {
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.synthoma-intro[data-phase="1"] .synthoma-media-layer {
+  opacity: 0.2;
+}
+
+.synthoma-intro[data-phase="2"] .synthoma-media-layer,
+.synthoma-intro[data-phase="3"] .synthoma-media-layer {
+  opacity: 0.44;
+}
+
+.synthoma-intro__scrim {
+  position: fixed;
   inset: 0;
-  z-index: -2;
-  opacity: 0.14;
+  z-index: var(--os-z-base, 1);
   background:
-    repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb, var(--intro-cyan) 10%, transparent) 4px),
-    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--intro-cyan) 12%, transparent), transparent 48%);
+    radial-gradient(circle at 50% 48%, transparent 0 10%, color-mix(in srgb, var(--os-bg) 50%, transparent) 44%, var(--os-bg) 100%),
+    linear-gradient(180deg, color-mix(in srgb, var(--os-bg) 72%, transparent), transparent 38% 62%, color-mix(in srgb, var(--os-bg) 82%, transparent));
   pointer-events: none;
+}
+
+.synthoma-intro__stage {
+  position: relative;
+  z-index: calc(var(--os-z-base, 1) + 1);
+  display: grid;
+  width: min(92vw, 70rem);
+  min-height: min(72svh, 42rem);
+  place-items: center;
 }
 
 .synthoma-intro__signal {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 50% auto auto 50%;
   display: grid;
   gap: 0.75rem;
   place-items: center;
+  opacity: 0;
   transform: translate(-50%, -50%);
-  transition: opacity 500ms ease;
 }
 
 .synthoma-intro__signal span {
@@ -41,120 +62,59 @@
   border-radius: 50%;
   background: var(--intro-cyan);
   box-shadow: 0 0 1.5rem var(--intro-cyan);
-  animation: intro-signal 1.2s ease-in-out infinite;
+  animation: intro-signal 850ms ease-in-out infinite;
 }
 
 .synthoma-intro__signal strong {
-  color: var(--text-muted, #9eb6c2);
-  font: 600 0.72rem/1.4 var(--font-mono, monospace);
-  letter-spacing: 0.12em;
+  color: var(--os-text-muted, #9eb6c2);
+  font: 700 var(--text-caption, 0.875rem)/1.4 var(--os-font-mono, monospace);
 }
 
-.synthoma-intro[data-phase]:not([data-phase="0"]) .synthoma-intro__signal {
-  opacity: 0;
-}
-
-.synthoma-intro__composition {
-  position: relative;
-  display: grid;
-  width: min(92vw, 70rem);
-  min-height: min(78svh, 48rem);
-  place-items: center;
-}
-
-.synthoma-intro__circle {
-  position: absolute;
-  width: min(68vw, 36rem);
-  opacity: 0;
-  filter: drop-shadow(0 0 2rem color-mix(in srgb, var(--intro-cyan) 25%, transparent));
-  transition: opacity 900ms ease, transform 1200ms ease;
-  transform: scale(0.88);
-}
-
-.synthoma-intro__assembly {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: min(88vw, 58rem);
-  opacity: 0;
-  transition: opacity 650ms ease, transform 800ms cubic-bezier(.2,.8,.2,1);
-  transform: translateY(1.25rem);
-}
-
-.synthoma-intro__mark {
-  width: min(24vw, 13rem);
-  margin-right: clamp(-2rem, -3vw, -0.5rem);
-}
-
-.synthoma-intro__title-image {
-  width: min(62vw, 42rem);
-}
-
-.synthoma-intro[data-phase="1"] .synthoma-intro__assembly,
-.synthoma-intro[data-phase="2"] .synthoma-intro__assembly,
-.synthoma-intro[data-phase="3"] .synthoma-intro__assembly,
-.synthoma-intro[data-phase="4"] .synthoma-intro__assembly {
+.synthoma-intro[data-phase="1"] .synthoma-intro__signal {
   opacity: 1;
-  transform: translateY(-7rem);
+  animation: intro-signal-glitch 700ms steps(2, end) both;
 }
 
-.synthoma-intro[data-phase="1"] .synthoma-intro__title-image {
-  animation: intro-split 700ms steps(2, end) 1;
-}
-
-.synthoma-intro[data-phase="3"] .synthoma-intro__circle,
-.synthoma-intro[data-phase="4"] .synthoma-intro__circle {
-  opacity: 0.58;
-  transform: scale(1);
-}
-
-.synthoma-intro__slogan,
-.synthoma-intro__rule {
-  position: absolute;
-  width: min(90vw, 58rem);
+.synthoma-intro__brand {
   margin: 0;
-  text-align: center;
   opacity: 0;
-  transition: opacity 700ms ease, transform 800ms ease;
-  transform: translateY(1rem);
+  transform: translateY(0.8rem) scale(0.97);
+  transition: opacity 650ms ease, transform 800ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.synthoma-intro[data-phase="2"] .synthoma-intro__brand,
+.synthoma-intro[data-phase="3"] .synthoma-intro__brand {
+  opacity: 1;
+  transform: translateY(-2.5rem) scale(1);
 }
 
 .synthoma-intro__slogan {
+  position: absolute;
+  top: 56%;
   display: grid;
+  width: min(90vw, 52rem);
   gap: 0.35rem;
-  font: 500 clamp(1.35rem, 3vw, 2.65rem)/1.25 var(--font-display, sans-serif);
+  margin: 0;
+  color: var(--os-text-secondary, #cad8df);
+  font: 500 clamp(1.3rem, 3vw, 2.5rem)/1.3 var(--os-font-body, sans-serif);
+  text-align: center;
   text-wrap: balance;
+  opacity: 0;
   text-shadow:
-    0 0 1.1rem color-mix(in srgb, var(--intro-cyan) 45%, transparent),
-    0.08em 0 color-mix(in srgb, var(--intro-magenta) 38%, transparent);
+    0 0 1.1rem color-mix(in srgb, var(--intro-cyan) 38%, transparent),
+    0.07em 0 color-mix(in srgb, var(--intro-magenta) 30%, transparent);
+  transform: translateY(1rem);
+  transition: opacity 700ms ease, transform 800ms ease;
 }
 
-.synthoma-intro[data-phase="2"] .synthoma-intro__slogan {
-  opacity: 1;
-  transform: translateY(5rem);
-}
-
-.synthoma-intro__rule {
-  top: 67%;
-  color: var(--text-secondary, #cad8df);
-  font: 500 clamp(1rem, 2vw, 1.45rem)/1.45 var(--font-mono, monospace);
-}
-
-.synthoma-intro[data-phase="3"] .synthoma-intro__rule,
-.synthoma-intro[data-phase="4"] .synthoma-intro__rule {
+.synthoma-intro[data-phase="3"] .synthoma-intro__slogan {
   opacity: 1;
   transform: translateY(0);
 }
 
-.synthoma-intro[data-phase="3"] .synthoma-intro__slogan,
-.synthoma-intro[data-phase="4"] .synthoma-intro__slogan {
-  opacity: 0.68;
-  transform: translateY(5rem);
-}
-
 .synthoma-intro__actions {
   position: fixed;
+  z-index: calc(var(--os-z-critical, 120) + 1);
   right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
   left: max(1rem, env(safe-area-inset-left));
@@ -168,58 +128,38 @@
   min-height: 3rem;
 }
 
+.synthoma-intro__skip {
+  color: var(--os-text-muted);
+}
+
 .synthoma-intro__enter {
   border-color: var(--intro-cyan);
   box-shadow: 0 0 1.25rem color-mix(in srgb, var(--intro-cyan) 24%, transparent);
 }
 
 @keyframes intro-signal {
-  50% { opacity: 0.35; transform: scale(0.72); }
+  50% { opacity: 0.32; transform: scale(0.72); }
 }
 
-@keyframes intro-split {
-  35% { filter: drop-shadow(-0.35rem 0 var(--intro-cyan)) drop-shadow(0.35rem 0 var(--intro-magenta)); transform: translateX(0.15rem); }
-  65% { filter: drop-shadow(0.18rem 0 var(--intro-cyan)) drop-shadow(-0.18rem 0 var(--intro-magenta)); transform: translateX(-0.1rem); }
+@keyframes intro-signal-glitch {
+  30% { filter: drop-shadow(-0.25rem 0 var(--intro-cyan)) drop-shadow(0.25rem 0 var(--intro-magenta)); }
+  65% { filter: drop-shadow(0.12rem 0 var(--intro-cyan)) drop-shadow(-0.12rem 0 var(--intro-magenta)); }
 }
 
 @media (max-width: 600px) {
-  .synthoma-intro__composition {
-    min-height: 72svh;
+  .synthoma-intro__stage {
+    min-height: 68svh;
   }
 
-  .synthoma-intro__assembly {
-    flex-direction: column;
-  }
-
-  .synthoma-intro__mark {
-    width: min(42vw, 10rem);
-    margin: 0 0 -2rem;
-  }
-
-  .synthoma-intro__title-image {
-    width: min(90vw, 30rem);
-  }
-
-  .synthoma-intro[data-phase="1"] .synthoma-intro__assembly,
-  .synthoma-intro[data-phase="2"] .synthoma-intro__assembly,
-  .synthoma-intro[data-phase="3"] .synthoma-intro__assembly,
-  .synthoma-intro[data-phase="4"] .synthoma-intro__assembly {
-    transform: translateY(-6rem);
+  .synthoma-intro[data-phase="2"] .synthoma-intro__brand,
+  .synthoma-intro[data-phase="3"] .synthoma-intro__brand {
+    transform: translateY(-2.2rem) scale(1);
   }
 
   .synthoma-intro__slogan {
+    top: 55%;
+    padding-inline: 0.5rem;
     font-size: clamp(1.2rem, 6vw, 1.7rem);
-  }
-
-  .synthoma-intro[data-phase="2"] .synthoma-intro__slogan,
-  .synthoma-intro[data-phase="3"] .synthoma-intro__slogan,
-  .synthoma-intro[data-phase="4"] .synthoma-intro__slogan {
-    transform: translateY(4.6rem);
-  }
-
-  .synthoma-intro__rule {
-    top: 66%;
-    padding-inline: 1rem;
   }
 
   .synthoma-intro__actions {
@@ -238,8 +178,9 @@
   transition-duration: 180ms !important;
 }
 
-.synthoma-intro[data-motion="off"] .synthoma-intro__noise {
-  opacity: 0.06;
+.synthoma-intro[data-motion="off"] .synthoma-media-layer__video,
+.synthoma-intro[data-motion="reduced"] .synthoma-media-layer__video {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -248,5 +189,9 @@
   .synthoma-intro *::after {
     animation: none !important;
     transition-duration: 180ms !important;
+  }
+
+  .synthoma-intro .synthoma-media-layer__video {
+    display: none;
   }
 }

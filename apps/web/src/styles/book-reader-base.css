@@ -220,16 +220,43 @@ body { font-size: var(--font-size-body); }
 
 @media (max-width: 640px) {
   .chapter-reader__article.SYNTHOMAREADER { font-size: var(--font-size-reader); }
-  .reader-dialog-status {
-    top: auto !important;
-    right: 0;
-    bottom: 0;
-    left: 0 !important;
-    width: 100%;
-    max-width: none;
-    padding: 1rem 3rem calc(1rem + env(safe-area-inset-bottom)) 1rem;
-  }
   .reader-onboarding { top: auto; right: 0; bottom: 0; left: 0; width: 100%; transform: none; }
+}
+
+@media (max-width: 768px) {
+  .reader-dialog-status {
+    --reader-bottom-bar-height: var(--os-mobile-nav-height, 58px);
+    top: auto !important;
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(var(--reader-bottom-bar-height) + env(safe-area-inset-bottom) + 12px);
+    left: max(12px, env(safe-area-inset-left)) !important;
+    z-index: var(--os-z-critical, 120);
+    width: auto;
+    max-width: none;
+    max-height: calc(
+      100dvh
+      - var(--os-command-height, 48px)
+      - var(--reader-bottom-bar-height)
+      - env(safe-area-inset-top)
+      - env(safe-area-inset-bottom)
+      - 32px
+    );
+    box-sizing: border-box;
+    padding: 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    touch-action: pan-y;
+  }
+
+  .reader-dialog-status button {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    justify-self: end;
+    margin: -0.5rem -0.5rem -2rem 0;
+    background: color-mix(in srgb, var(--book-background, #020306) 94%, var(--speaker-color));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

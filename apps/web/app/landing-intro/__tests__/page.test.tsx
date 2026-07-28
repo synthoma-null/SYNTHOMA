@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import LandingIntroPage from '../page';
 import { LangProvider } from '../../../src/lib/LangContext';
 import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../../src/lib/intro';
+import { resetUiPreferences, updateUiPreferences } from '../../../src/lib/uiPreferences';
 
 const replace = jest.fn();
 
@@ -22,32 +23,34 @@ beforeEach(() => {
       removeEventListener: jest.fn(),
     })),
   });
+  resetUiPreferences();
 });
 
 afterEach(() => {
   act(() => jest.runOnlyPendingTimers());
+  resetUiPreferences();
   jest.useRealTimers();
 });
 
 function finishAutomaticSequence() {
-  for (let phase = 0; phase < 4; phase += 1) {
-    act(() => jest.advanceTimersByTime(1700));
-  }
+  act(() => jest.advanceTimersByTime(650));
+  act(() => jest.advanceTimersByTime(800));
+  act(() => jest.advanceTimersByTime(1050));
 }
 
 describe('LandingIntroPage', () => {
-  it('uses the real composition assets and the two canonical Czech lines', () => {
+  it('uses the restored media layer, canonical wordmark and only the two slogan lines', () => {
     const { container } = render(<LandingIntroPage />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();
     expect(screen.getByText('Tma nikdy není opravdová.')).toBeInTheDocument();
     expect(screen.getByText('Je jen světlem, které se vzdalo smyslu.')).toBeInTheDocument();
-    expect(screen.getByText('Dveře musí mít kliku z obou stran.')).toBeInTheDocument();
-    expect(container.querySelector('img[src="/assets/background_logo.png"]')).toBeInTheDocument();
-    expect(container.querySelector('img[src="/assets/background_title.png"]')).toBeInTheDocument();
-    expect(container.querySelector('img[src="/assets/background_circle.png"]')).toBeInTheDocument();
+    expect(screen.queryByText('Dveře musí mít kliku z obou stran.')).not.toBeInTheDocument();
+    expect(container.querySelector('video[src="/video/SYNTHOMA1.webm"]')).toBeInTheDocument();
+    expect(container.querySelector('.synthoma-intro__circle')).not.toBeInTheDocument();
+    expect(container.querySelector('[role="log"]')).not.toBeInTheDocument();
   });
 
-  it('is skippable immediately and reveals entry only after the sequence', () => {
+  it('is skippable immediately and reveals entry after the short sequence', () => {
     render(<LandingIntroPage />);
     expect(screen.getByRole('button', { name: 'PŘESKOČIT' })).toBeEnabled();
     expect(screen.queryByRole('button', { name: 'VSTOUPIT' })).not.toBeInTheDocument();
@@ -75,16 +78,25 @@ describe('LandingIntroPage', () => {
       removeEventListener: jest.fn(),
     }));
     render(<LandingIntroPage />);
-    act(() => jest.advanceTimersByTime(450));
+    act(() => jest.advanceTimersByTime(240));
     expect(screen.getByRole('button', { name: 'VSTOUPIT' })).toBeInTheDocument();
     expect(document.querySelector('main')).toHaveAttribute('data-motion', 'reduced');
   });
 
-  it('renders English text without a locale control', () => {
+  it('shows the final static state immediately when motion is off', () => {
+    updateUiPreferences({ motionMode: 'off', backgroundMotion: 'off' });
+    render(<LandingIntroPage />);
+    expect(document.querySelector('main')).toHaveAttribute('data-motion', 'off');
+    expect(screen.getByRole('button', { name: 'VSTOUPIT' })).toBeInTheDocument();
+    expect(document.querySelector('video')).not.toBeInTheDocument();
+  });
+
+  it('renders English text without the removed second motto', () => {
     localStorage.setItem('synthoma_lang', 'en');
     render(<LangProvider><LandingIntroPage /></LangProvider>);
     expect(screen.getByText('Darkness is never real.')).toBeInTheDocument();
-    expect(screen.getByText('Doors must have a handle on both sides.')).toBeInTheDocument();
+    expect(screen.getByText('It is only light that surrendered its meaning.')).toBeInTheDocument();
+    expect(screen.queryByText('Doors must have a handle on both sides.')).not.toBeInTheDocument();
     expect(screen.queryByRole('group', { name: /jazyk|language/i })).not.toBeInTheDocument();
   });
 

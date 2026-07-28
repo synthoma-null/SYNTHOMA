@@ -2,32 +2,30 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SynthomaMediaLayer from '../../src/components/synthoma-os/SynthomaMediaLayer';
+import SynthomaWordmark from '../../src/components/synthoma/SynthomaWordmark';
+import { useUiLayer } from '../../src/components/ui-layer/UiLayerProvider';
 import { useUiPreferences } from '../../src/hooks/useUiPreferences';
-import { getEffectiveMotionMode, type EffectiveMotionMode } from '../../src/lib/uiPreferences';
-import { useLang } from '../../src/lib/LangContext';
 import { writeStorage } from '../../src/lib/browser';
 import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../src/lib/intro';
-import { useUiLayer } from '../../src/components/ui-layer/UiLayerProvider';
+import { useLang } from '../../src/lib/LangContext';
+import { getEffectiveMotionMode, type EffectiveMotionMode } from '../../src/lib/uiPreferences';
 
-const PHASE_DURATION_MS = 1700;
-const FINAL_PHASE = 4;
+const FINAL_PHASE = 3;
+const PHASE_DELAYS_MS = [650, 800, 1050] as const;
 
 const COPY = {
   cs: {
     aria: 'Příběhové intro SYNTHOMA',
-    title: 'SYNTHOMA',
     signal: 'SIGNÁL NALEZEN',
     slogan: ['Tma nikdy není opravdová.', 'Je jen světlem, které se vzdalo smyslu.'],
-    rule: 'Dveře musí mít kliku z obou stran.',
     enter: 'VSTOUPIT',
     skip: 'PŘESKOČIT',
   },
   en: {
     aria: 'SYNTHOMA story intro',
-    title: 'SYNTHOMA',
     signal: 'SIGNAL FOUND',
     slogan: ['Darkness is never real.', 'It is only light that surrendered its meaning.'],
-    rule: 'Doors must have a handle on both sides.',
     enter: 'ENTER',
     skip: 'SKIP',
   },
@@ -69,13 +67,13 @@ export default function LandingIntroPage() {
       return;
     }
     if (motion === 'reduced') {
-      const timer = window.setTimeout(() => setPhase(FINAL_PHASE), 450);
+      const timer = window.setTimeout(() => setPhase(FINAL_PHASE), 240);
       return () => window.clearTimeout(timer);
     }
     if (phase >= FINAL_PHASE) return;
     const timer = window.setTimeout(
       () => setPhase((current) => Math.min(FINAL_PHASE, current + 1)),
-      PHASE_DURATION_MS,
+      PHASE_DELAYS_MS[phase],
     );
     return () => window.clearTimeout(timer);
   }, [motion, phase]);
@@ -87,26 +85,26 @@ export default function LandingIntroPage() {
       data-phase={phase}
       data-motion={motion}
     >
-      <div className="synthoma-intro__noise" aria-hidden="true" />
-      <div className="synthoma-intro__signal" aria-hidden="true">
-        <span />
-        <strong>{copy.signal}</strong>
-      </div>
+      <SynthomaMediaLayer src="/video/SYNTHOMA1.webm" />
+      <div className="synthoma-intro__scrim" aria-hidden="true" />
 
-      <section className="synthoma-intro__composition" aria-labelledby="synthoma-intro-title">
-        <img className="synthoma-intro__circle" src="/assets/background_circle.png" alt="" />
-        <div className="synthoma-intro__assembly" aria-hidden="true">
-          <img className="synthoma-intro__mark" src="/assets/background_logo.png" alt="" />
-          <img className="synthoma-intro__title-image" src="/assets/background_title.png" alt="" />
+      <section className="synthoma-intro__stage" aria-labelledby="synthoma-intro-title">
+        <div className="synthoma-intro__signal" aria-hidden="true">
+          <span />
+          <strong>{copy.signal}</strong>
         </div>
-        <h1 id="synthoma-intro-title" className="sr-only">{copy.title}</h1>
+
+        <SynthomaWordmark
+          id="synthoma-intro-title"
+          context="intro"
+          animated={motion === 'full'}
+          className="synthoma-intro__brand"
+        />
 
         <blockquote className="synthoma-intro__slogan">
           <span>{copy.slogan[0]}</span>
           <span>{copy.slogan[1]}</span>
         </blockquote>
-
-        <p className="synthoma-intro__rule">{copy.rule}</p>
       </section>
 
       <div className="synthoma-intro__actions">

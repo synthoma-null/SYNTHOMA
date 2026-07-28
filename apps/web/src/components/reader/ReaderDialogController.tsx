@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { createPortal } from 'react-dom';
 import { getSpeaker, getSpeakerCssProperties } from '../../content/speakers';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
 
 interface ActiveDialog {
   speakerId: string;
@@ -13,12 +15,30 @@ interface ActiveDialog {
 export default function ReaderDialogController({ rootId }: { rootId: string }) {
   const [active, setActive] = useState<ActiveDialog | null>(null);
   const activeElementRef = useRef<HTMLElement | null>(null);
+  const restoreElementRef = useRef<HTMLElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const closeDialog = useCallback(() => setActive(null), []);
+  const restoreFocus = useCallback(() => restoreElementRef.current?.focus(), []);
+  const { closeLayer } = useUiLayer({
+    id: 'reader-dialog-status',
+    type: 'reader-speaker',
+    open: Boolean(active),
+    onClose: closeDialog,
+    restoreFocus,
+  });
 
   useEffect(() => {
     if (active) return;
     activeElementRef.current?.classList.remove('dialog-line--active');
     activeElementRef.current?.removeAttribute('aria-describedby');
     activeElementRef.current = null;
+  }, [active]);
+
+  useEffect(() => {
+    if (!active) return;
+    const frame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+    return () => window.cancelAnimationFrame(frame);
   }, [active]);
 
   useEffect(() => {
@@ -37,24 +57,19 @@ export default function ReaderDialogController({ rootId }: { rootId: string }) {
       Object.entries(properties).forEach(([property, value]) => dialog.style.setProperty(property, value));
     }
 
-    const close = () => {
-      activeElementRef.current?.classList.remove('dialog-line--active');
-      activeElementRef.current?.removeAttribute('aria-describedby');
-      activeElementRef.current = null;
-      setActive(null);
-    };
-
     const open = (dialog: HTMLElement) => {
       const selection = window.getSelection()?.toString().trim();
       if (selection) return;
       const speaker = getSpeaker(dialog.dataset.speaker);
       if (!speaker) return;
       if (activeElementRef.current === dialog) {
-        close();
+        closeLayer();
         return;
       }
       activeElementRef.current?.classList.remove('dialog-line--active');
+      activeElementRef.current?.removeAttribute('aria-describedby');
       activeElementRef.current = dialog;
+      restoreElementRef.current = dialog;
       dialog.classList.add('dialog-line--active');
       dialog.setAttribute('aria-describedby', 'reader-dialog-status');
       const rect = dialog.getBoundingClientRect();
@@ -75,15 +90,13 @@ export default function ReaderDialogController({ rootId }: { rootId: string }) {
       if (target && root.contains(target) && (event.key === 'Enter' || event.key === ' ')) {
         event.preventDefault();
         open(target);
-      } else if (event.key === 'Escape') {
-        close();
       }
     };
     const onOutside = (event: MouseEvent) => {
       if (!activeElementRef.current) return;
       const target = event.target;
       if (target instanceof Node && (activeElementRef.current.contains(target) || document.getElementById('reader-dialog-status')?.contains(target))) return;
-      close();
+      closeLayer();
     };
 
     root.addEventListener('click', onClick);
@@ -94,7 +107,7 @@ export default function ReaderDialogController({ rootId }: { rootId: string }) {
       document.removeEventListener('click', onOutside);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [rootId]);
+  }, [closeLayer, rootId]);
 
   if (!active) return null;
   const speaker = getSpeaker(active.speakerId);
@@ -105,12 +118,27 @@ export default function ReaderDialogController({ rootId }: { rootId: string }) {
     top: `${active.top}px`,
   } as CSSProperties;
 
-  return (
-    <div id="reader-dialog-status" className="reader-dialog-status" role="status" aria-live="polite" style={style}>
+  return createPortal(
+    <div
+      id="reader-dialog-status"
+      className="reader-dialog-status"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reader-dialog-status-title"
+      style={style}
+    >
+      <button
+        ref={closeButtonRef}
+        type="button"
+        aria-label="Zavřít informaci o dialogu"
+        onClick={closeLayer}
+      >
+        ×
+      </button>
       <span className="reader-dialog-status__eyebrow">MLUVČÍ</span>
-      <strong>{speaker.name}</strong>
+      <strong id="reader-dialog-status-title">{speaker.name}</strong>
       <span>{active.tone}</span>
-      <button type="button" aria-label="Zavřít informaci o dialogu" onClick={() => setActive(null)}>×</button>
-    </div>
+    </div>,
+    document.body,
   );
 }

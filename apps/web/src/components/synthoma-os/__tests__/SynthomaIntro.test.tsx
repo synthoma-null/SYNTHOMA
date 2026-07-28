@@ -63,11 +63,12 @@ describe('Synthoma intro integration', () => {
 
   it('does not offer replay or create media audio', () => {
     render(<LandingIntroPage />);
-    for (let phase = 0; phase < 4; phase += 1) {
-      act(() => jest.advanceTimersByTime(1700));
-    }
+    act(() => jest.advanceTimersByTime(650));
+    act(() => jest.advanceTimersByTime(800));
+    act(() => jest.advanceTimersByTime(1050));
     expect(screen.queryByRole('button', { name: 'SPUSTIT ZNOVU' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'VSTOUPIT' })).toBeEnabled();
+    expect(screen.queryByText('Dveře musí mít kliku z obou stran.')).not.toBeInTheDocument();
     expect(document.querySelectorAll('audio')).toHaveLength(0);
   });
 });
