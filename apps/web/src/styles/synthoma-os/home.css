@@ -46,7 +46,6 @@
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
   .home-light-quote__text { background: linear-gradient(105deg, var(--text-accent-primary), var(--os-text-primary) 46%, var(--text-accent-secondary)); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 }
-.home-intro-link { width: fit-content; margin-top: var(--os-space-3); color: var(--text-system); text-decoration: none; }
 .synthoma-home__format { max-width: 40rem; margin: var(--os-space-3) 0 0; padding-left: var(--os-space-3); border-left: 2px solid var(--os-text-violet); color: var(--os-text-primary); font: 600 var(--text-body)/var(--line-body) var(--os-font-body); letter-spacing: normal; }
 
 .home-primary-action { display: grid; gap: var(--os-space-2); width: min(100%, 440px); margin-top: var(--os-space-6); padding: var(--os-space-4) var(--os-space-5); color: var(--os-text); text-decoration: none; box-shadow: inset 4px 0 0 var(--os-accent-primary); }

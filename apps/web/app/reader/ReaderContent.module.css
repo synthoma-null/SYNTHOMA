@@ -340,6 +340,37 @@
   box-shadow: 0 0 6px var(--glow-primary, rgba(124,92,255,0.5));
 }
 
+.syncWarning {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  z-index: calc(var(--z-modal, 1000) - 1);
+  width: min(620px, calc(100% - 24px));
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transform: translateX(-50%);
+  color: #ffe0a3;
+  background: rgba(22, 14, 4, 0.96);
+  border: 1px solid rgba(255, 193, 74, 0.45);
+  border-radius: 9px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.syncWarning button {
+  min-width: 36px;
+  min-height: 36px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(255, 224, 163, 0.28);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 /* Reader toolbar (quick-read toggle etc.) */
 .readerToolbar {
   display: flex;

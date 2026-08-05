@@ -54,6 +54,7 @@ export default function ReaderContent() {
   const [isDebug] = useState(() => true); // Vždy zapnutý debug pro PDF tlačítko
   const [pdfBusy, setPdfBusy] = useState(false);
   const [syncDelta, setSyncDelta] = useState<SyncDelta | null>(null);
+  const [progressSyncError, setProgressSyncError] = useState<string | null>(null);
   const completionFiredRef = useRef(false);
   const readStartRef = useRef<number>(Date.now());
 
@@ -155,9 +156,9 @@ export default function ReaderContent() {
   }, [effectiveUrl, effectiveChapterId, chapterMeta]);
 
   useEffect(() => {
-    try {
-      saveLastChapterPath(effectiveUrl);
-    } catch {}
+    if (!saveLastChapterPath(effectiveUrl)) {
+      setProgressSyncError('Prohlížeč blokuje místní uložení pozice ve čtení.');
+    }
   }, [effectiveUrl]);
 
   // Recommended track modal + persistent mini badge
@@ -216,18 +217,20 @@ export default function ReaderContent() {
         // Save completed progress to DB
         const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';
         const readMs = Math.max(0, Date.now() - readStartRef.current);
-        await fetch('/api/me/progress', {
+        const progressResponse = await fetch('/api/me/progress', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chapterId, collection, chapterTitle: chapterMeta?.title, completed: true, progressPercent: 100, readMs }),
-        }).catch(() => {});
+        });
+        if (!progressResponse.ok) throw new Error(`Progress sync failed (${progressResponse.status})`);
 
         // Trigger mission activation check after chapter completion
-        await fetch('/api/me/run', {
+        const runResponse = await fetch('/api/me/run', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stabilityDelta: 0, pressureDelta: 0, shadowDelta: 0 }),
-        }).catch(() => {});
+        });
+        if (!runResponse.ok) throw new Error(`Run sync failed (${runResponse.status})`);
 
         // Fetch run state after
         const runAfter = await fetch('/api/me/run').then(r => r.ok ? r.json() : null).catch(() => null);
@@ -241,7 +244,12 @@ export default function ReaderContent() {
           shadowBefore: before?.shadow ?? 0,
           shadowAfter: after?.shadow ?? 0,
         });
-      } catch {}
+        setProgressSyncError(null);
+      } catch (error) {
+        completionFiredRef.current = false;
+        console.warn('[reader:chapter-completion-sync]', error);
+        setProgressSyncError('Dokončení kapitoly se nepodařilo synchronizovat. Při dalším posunu to zkusíme znovu.');
+      }
     })();
   }, [scrollPercent, chapterId, chapterMeta?.title, sessionStatus]);
 
@@ -256,18 +264,26 @@ export default function ReaderContent() {
       const rounded = Math.max(0, Math.min(100, Math.round(percent)));
       if (rounded === lastSaved) return;
       lastSaved = rounded;
-      saveReadingProgress({ bookId, path: chapterPath, percent: rounded, updatedAt: Date.now() });
+      if (!saveReadingProgress({ bookId, path: chapterPath, percent: rounded, updatedAt: Date.now() })) {
+        setProgressSyncError('Prohlížeč blokuje místní uložení postupu ve čtení.');
+      }
       // Throttled server persistence so ReadingProgressPanel shows real progress
       const now = Date.now();
       if (sessionStatus === 'authenticated' && !completionFiredRef.current && rounded !== lastServerSaved && now - lastServerSaveTime >= 5000) {
         lastServerSaved = rounded;
         lastServerSaveTime = now;
         const collection = (document.querySelector('.SYNTHOMAREADER') as HTMLElement | null)?.dataset.collection ?? 'SYNTHOMA-NULL';
-        fetch('/api/me/progress', {
+        void fetch('/api/me/progress', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chapterId, collection, chapterTitle: chapterMeta?.title, completed: false, progressPercent: rounded }),
-        }).catch(() => {});
+        }).then((response) => {
+          if (!response.ok) throw new Error(`Progress sync failed (${response.status})`);
+          setProgressSyncError(null);
+        }).catch((error) => {
+          console.warn('[reader:progress-sync]', error);
+          setProgressSyncError('Průběžný postup se nepodařilo uložit na účet. Připojení budeme zkoušet dál.');
+        });
       }
     };
     const compute = () => {
@@ -298,6 +314,13 @@ export default function ReaderContent() {
       <div className={styles.readingProgress} aria-hidden="true">
         <div className={styles.readingProgressBar} style={{ '--progress-width': `${scrollPercent}%` } as React.CSSProperties} />
       </div>
+
+      {progressSyncError ? (
+        <div className={styles.syncWarning} role="status">
+          <span>{progressSyncError}</span>
+          <button type="button" onClick={() => setProgressSyncError(null)} aria-label="Skrýt upozornění">×</button>
+        </div>
+      ) : null}
 
       {syncDelta && chapterId && (
         <ChapterSyncLog

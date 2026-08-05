@@ -10,10 +10,8 @@ import type { WhisperData } from '../whispers/WhisperCard';
 import ArchiveDetailDialog from './ArchiveDetailDialog';
 import ArchiveRecordCard from './ArchiveRecordCard';
 import { useAccess } from '../access/AccessProvider';
-import ContentPurchaseDialog from '../access/ContentPurchaseDialog';
 import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
-import CyklusCardCollection from './CyklusCardCollection';
 import ArchiveBookGrid from './ArchiveBookGrid';
 import type { LibraryCatalog } from '../../lib/synthoma/library/libraryTypes';
 import { getArchiveCategoryLabel } from '../../lib/synthoma/archive/archiveCategoryLabel';
@@ -23,6 +21,10 @@ import type { ArchiveCardData } from '../../../app/archive/ArchiveClient';
 const WhisperCard = dynamic(() => import('../whispers/WhisperCard'), { ssr: false });
 const WhisperForm = dynamic(() => import('../whispers/WhisperForm'), { ssr: false });
 const WhisperSubmitPanel = dynamic(() => import('../whispers/WhisperSubmitPanel'), { ssr: false });
+const ContentPurchaseDialog = dynamic(() => import('../access/ContentPurchaseDialog'));
+const CyklusCardCollection = dynamic(() => import('./CyklusCardCollection'), {
+  loading: () => <p className="synthoma-archive__empty">Načítám sbírku karet…</p>,
+});
 
 export interface SynthomaArchiveProps {
   initialCards: ArchiveCard[];
@@ -139,6 +141,13 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
           <span className="os-status__code">{t('archive.code')}</span>
           <h1 className="synthoma-archive__title">{t('archive.title')}</h1>
         </header>
+
+        {snapshot.error ? (
+          <div className="archive-sync-warning" role="status">
+            <span>{snapshot.error}</span>
+            <button className="os-command" type="button" onClick={snapshot.reload}>ZKUSIT ZNOVU</button>
+          </div>
+        ) : null}
 
         {library ? <ArchiveBookGrid collections={library.collections} locale={lang} /> : null}
 

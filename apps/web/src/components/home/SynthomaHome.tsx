@@ -27,7 +27,6 @@ export default function SynthomaHome() {
             </span>
           </blockquote>
           <p className="synthoma-home__format">{t('home.format')}</p>
-          <a className="home-intro-link os-command" href="/landing-intro?replay=1">SPUSTIT INTRO</a>
           <HomeFirstContact />
           <HomePrimaryAction />
         </section>

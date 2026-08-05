@@ -5,7 +5,7 @@ import { join } from 'path';
 import { renderToStaticMarkup } from 'react-dom/server';
 import CyklusPage from './page';
 
-jest.mock('../../src/components/cyklus/CyklusClient', () => ({
+jest.mock('./CyklusPageClient', () => ({
   __esModule: true,
   default: () => <div data-testid="cyklus-client-placeholder">Nahrává se Cyklus...</div>,
 }));

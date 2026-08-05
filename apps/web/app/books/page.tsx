@@ -4,7 +4,7 @@ import { buildPublicMetadata, requestLocale } from '../../src/lib/publicMetadata
 import SynthomaLibrary from '../../src/components/library/SynthomaLibrary';
 import '../../src/styles/library-archive.css';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await requestLocale();

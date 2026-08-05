@@ -66,6 +66,7 @@ describe('SubjectProfilePanelClient', () => {
 
   it('toggles the same dialog through the compatibility event', async () => {
     render(<SubjectProfilePanelClient />);
+    expect(screen.queryByRole('button', { name: 'Zavřít profil subjektu' })).not.toBeInTheDocument();
 
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
     expect(await screen.findByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' })).toBeInTheDocument();
@@ -74,6 +75,7 @@ describe('SubjectProfilePanelClient', () => {
 
     act(() => document.dispatchEvent(new CustomEvent('synthoma:identity-toggle')));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.queryByRole('button', { name: 'Zavřít profil subjektu' })).not.toBeInTheDocument();
   });
 
   it('applies the selection lock only when opened from Cyklus gameplay', async () => {
@@ -98,10 +100,13 @@ describe('SubjectProfilePanelClient', () => {
 
   it('keeps profile scrolling inside the viewport-bounded content panel', () => {
     const css = readFileSync(join(process.cwd(), 'src/styles/profile.css'), 'utf8');
+    const legacyCss = readFileSync(join(process.cwd(), 'src/styles/components.css'), 'utf8');
 
     expect(css).toMatch(/\.profile-panel-popup\s*\{[\s\S]*?height:\s*min\(880px, calc\(100dvh - 32px\)\)/);
-    expect(css).toMatch(/\.profile-tabs\s*\{[\s\S]*?overflow-x:\s*auto[\s\S]*?overscroll-behavior-x:\s*contain/);
+    expect(css).toContain('--profile-font-label: "Zekton"');
+    expect(css).toMatch(/\.profile-tabs\s*\{[\s\S]*?grid-template-columns:\s*repeat\(6, minmax\(0, 1fr\)\)[\s\S]*?overflow:\s*hidden/);
     expect(css).toMatch(/\.profile-content\s*\{[\s\S]*?min-height:\s*0[\s\S]*?overflow-y:\s*auto[\s\S]*?touch-action:\s*pan-y/);
-    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.profile-panel-popup\s*\{[\s\S]*?width:\s*100vw[\s\S]*?height:\s*100dvh/);
+    expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.profile-panel-popup\s*\{[\s\S]*?width:\s*100%[\s\S]*?height:\s*100dvh/);
+    expect(legacyCss).not.toContain('PROFILE PANEL (fullscreen popup');
   });
 });

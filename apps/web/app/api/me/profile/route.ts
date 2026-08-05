@@ -131,10 +131,6 @@ const ProfilePatchSchema = z.object({
   displayName: z.string().max(64).optional(),
   bio: z.string().max(500).optional(),
   title: z.string().max(64).optional(),
-  publicProfile: z.boolean().optional(),
-  showPsycheMap: z.boolean().optional(),
-  showProgress: z.boolean().optional(),
-  showChoices: z.boolean().optional(),
 });
 
 const SettingsPatchSchema = z.object({

@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client';
 import {
-  getCatalogEntry,
   getPackageChapterIds,
   resolveChapterId,
   type ContentAccess,
@@ -14,6 +13,10 @@ import {
   type AccessFacts,
 } from './accessCore';
 import { isPrismaSchemaCompatibilityError } from '../runtimeDatabase';
+import {
+  getManagedCatalogEntries,
+  getManagedCatalogEntry,
+} from '../content/managedContent';
 
 export { resolveContentAccessFromFacts, type AccessFacts } from './accessCore';
 
@@ -135,17 +138,15 @@ export async function getAccessSnapshotWithClient(
   userId: string | null,
   requests: readonly AccessRequest[],
 ): Promise<AccessSnapshot> {
-  const entries = requests.map((request) => {
-    const entry = getCatalogEntry(request.contentType, request.contentId);
-    if (!entry) {
-      throw new EconomyError(
-        'CONTENT_NOT_FOUND',
-        `Obsah ${request.contentType}:${request.contentId} neexistuje.`,
-        404,
-      );
+  let entries;
+  try {
+    entries = await getManagedCatalogEntries(client, requests);
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith('CONTENT_NOT_FOUND:')) {
+      throw new EconomyError('CONTENT_NOT_FOUND', 'Požadovaný obsah neexistuje.', 404);
     }
-    return entry;
-  });
+    throw error;
+  }
   const [facts, balance] = await Promise.all([
     loadAccessFacts(client, userId, requests),
     userId ? getMnemBalance(userId, client) : Promise.resolve(0),
@@ -170,7 +171,7 @@ export async function getContentAccess(
   contentType: ContentType,
   contentId: string,
 ): Promise<ContentAccess> {
-  const entry = getCatalogEntry(contentType, contentId);
+  const entry = await getManagedCatalogEntry(contentType, contentId);
   if (!entry) {
     throw new EconomyError('CONTENT_NOT_FOUND', 'Obsah nebyl nalezen.', 404);
   }

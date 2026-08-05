@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { auth } from '../../../auth';
-import { getBookCollection, getChapterCatalogEntry, type ContentAccess } from '../../../src/content/catalog';
+import type { ContentAccess } from '../../../src/content/catalog';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
-import { readChapterDocument } from '../../../src/server/chapters/chapterDocument';
 import { getContentAccess } from '../../../src/server/economy';
-import { getPublicChapterDocument } from '../../../src/server/public-ai/contentService';
 import { reportRuntimeDatabaseError } from '../../../src/server/runtimeDatabase';
+import {
+  getManagedChapterContext,
+  readManagedChapterDocument,
+} from '../../../src/server/content/managedContent';
 import ChapterAccessGate from './ChapterAccessGate';
 import ChapterReaderArticle from './ChapterReaderArticle';
 import ChapterStructuredData from './ChapterStructuredData';
@@ -21,10 +23,10 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await params;
   const locale = (await searchParams)?.locale === 'en' ? 'en' : 'cs';
-  const chapter = getChapterCatalogEntry(id);
-  if (!chapter) notFound();
-  const collection = getBookCollection(chapter.collection);
-  if (!collection) notFound();
+  const context = await getManagedChapterContext(id);
+  if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden') notFound();
+  const { chapter } = context.managed;
+  const collection = context.book;
 
   const chapterTitle = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
   const title = `${chapterTitle} | ${collection.title}`;
@@ -50,7 +52,7 @@ export async function generateMetadata(
     description,
     alternates: {
       canonical: canonicalUrl,
-      languages: chapter.filenameEn
+      languages: chapter.filenameEn || context.managed.bodyHtmlEn
         ? { cs: chapterUrl, en: `${chapterUrl}?locale=en`, 'x-default': chapterUrl }
         : { cs: chapterUrl, 'x-default': chapterUrl },
     },
@@ -58,7 +60,7 @@ export async function generateMetadata(
     openGraph: {
       type: 'article', url: canonicalUrl, title, description, siteName: 'SYNTHOMA',
       locale: locale === 'en' ? 'en_US' : 'cs_CZ',
-      alternateLocale: chapter.filenameEn ? (locale === 'en' ? ['cs_CZ'] : ['en_US']) : undefined,
+      alternateLocale: chapter.filenameEn || context.managed.bodyHtmlEn ? (locale === 'en' ? ['cs_CZ'] : ['en_US']) : undefined,
       images: [{ url: image, alt: `${chapterTitle} — ${collection.title}` }],
     },
     twitter: { card: 'summary_large_image', title, description, images: [image] },
@@ -70,8 +72,27 @@ export default async function ChapterPage(
 ) {
   const { id } = await params;
   const locale = (await searchParams)?.locale === 'en' ? 'en' : 'cs';
-  const chapter = getChapterCatalogEntry(id);
-  if (!chapter) notFound();
+  let context;
+  try {
+    context = await getManagedChapterContext(id);
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('chapter-page-catalog', error);
+    return (
+      <main className="story chapter-access-gate" id="main-content">
+        <section className="panel glass os-surface">
+          <p className="os-status__code">LOG [CHAPTER_CATALOG]</p>
+          <h1>Katalog je dočasně nedostupný</h1>
+          <p>Obsah zůstává bezpečně uzavřený. Zkus načtení zopakovat.</p>
+          <p className="os-status__reference">REF {report.correlationId}</p>
+          <a className="btn btn-outline" href="/books">ZPĚT DO KNIHOVNY</a>
+        </section>
+      </main>
+    );
+  }
+  if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden') notFound();
+  const managed = context.managed;
+  const chapter = managed.chapter;
+  const collection = context.book;
 
   if (chapter.availability !== 'published') {
     const unavailableAccess: ContentAccess = {
@@ -81,13 +102,13 @@ export default async function ChapterPage(
     };
     return (
       <>
-        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
+        <ChapterStructuredData chapter={chapter} collection={collection} locale={locale} accessibleForFree={false} />
         <ChapterAccessGate chapterId={chapter.id} chapterTitle={locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title} access={unavailableAccess} unavailable locale={locale} />
       </>
     );
   }
 
-  if (locale === 'en' && !chapter.filenameEn) {
+  if (locale === 'en' && !chapter.filenameEn && !managed.bodyHtmlEn) {
     return (
       <main className="story chapter-access-gate" id="main-content">
         <section className="panel glass os-surface">
@@ -101,17 +122,20 @@ export default async function ChapterPage(
   }
 
   if (chapter.accessPolicy === 'free') {
-    const publicChapter = await getPublicChapterDocument(chapter.id, locale);
-    if (!publicChapter?.bodyHtml) notFound();
+    const document = await readManagedChapterDocument(managed, locale).catch(() => null);
+    if (!document?.bodyHtml) notFound();
     return (
       <>
-        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree wordCount={publicChapter.wordCount} />
+        <ChapterStructuredData chapter={chapter} collection={collection} locale={locale} accessibleForFree wordCount={document.wordCount} />
         <ChapterReaderArticle
           chapter={chapter}
+          collection={collection}
+          collectionChapters={context.chapters}
           locale={locale}
-          sourceLocale={publicChapter.sourceLocale}
-          bodyHtml={publicChapter.bodyHtml}
-          publicMachineLinks
+          sourceLocale={document.sourceLocale}
+          bodyHtml={document.bodyHtml}
+          hasEnglish={Boolean(chapter.filenameEn || managed.bodyHtmlEn)}
+          publicMachineLinks={!managed.isCustom && !managed.overridden && !collection.overridden}
         />
       </>
     );
@@ -130,7 +154,7 @@ export default async function ChapterPage(
     };
     return (
       <>
-        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
+        <ChapterStructuredData chapter={chapter} collection={collection} locale={locale} accessibleForFree={false} />
         <ChapterAccessGate
           chapterId={chapter.id}
           chapterTitle={chapter.title}
@@ -144,15 +168,18 @@ export default async function ChapterPage(
   }
 
   if (access.canAccess) {
-    const document = await readChapterDocument(chapter, locale);
+    const document = await readManagedChapterDocument(managed, locale);
     return (
       <>
-        <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} wordCount={document.wordCount} />
+        <ChapterStructuredData chapter={chapter} collection={collection} locale={locale} accessibleForFree={false} wordCount={document.wordCount} />
         <ChapterReaderArticle
           chapter={chapter}
+          collection={collection}
+          collectionChapters={context.chapters}
           locale={locale}
           sourceLocale={document.sourceLocale}
           bodyHtml={document.bodyHtml}
+          hasEnglish={Boolean(chapter.filenameEn || managed.bodyHtmlEn)}
         />
       </>
     );
@@ -160,7 +187,7 @@ export default async function ChapterPage(
 
   return (
     <>
-      <ChapterStructuredData chapter={chapter} locale={locale} accessibleForFree={false} />
+      <ChapterStructuredData chapter={chapter} collection={collection} locale={locale} accessibleForFree={false} />
       <ChapterAccessGate chapterId={chapter.id} chapterTitle={locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title} access={access} unavailable={false} locale={locale} />
     </>
   );

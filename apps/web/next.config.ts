@@ -44,7 +44,8 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: false,
+    // ESLint běží explicitně na začátku build skriptu přes současné CLI.
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: false,

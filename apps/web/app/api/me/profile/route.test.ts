@@ -61,7 +61,7 @@ const baseUser = {
   role: 'user',
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   lastLoginAt: null,
-  profile: { title: 'Subjekt', publicProfile: false, showPsycheMap: false, showProgress: true, showChoices: false },
+  profile: { title: 'Subjekt' },
   settings: { theme: 'synthoma' },
   psyche: { ni: 50 },
   choices: [],

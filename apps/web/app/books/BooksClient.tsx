@@ -97,7 +97,7 @@ export default function BooksClient({ manifest }: { manifest: Manifest }) {
       v.addEventListener('play', onPlay);
       return () => { v.removeEventListener('loadedmetadata', onLoaded); v.removeEventListener('play', onPlay); };
     } catch {}
-  }, []);
+  }, [bgVideoRef, motionAllowed]);
 
 
   return (

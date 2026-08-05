@@ -20,8 +20,7 @@ const profile: ProfileData = {
     createdAt: '2025-01-02T10:00:00.000Z',
     lastLoginAt: '2026-07-12T08:30:00.000Z',
     profile: {
-      displayName: 'Mira', bio: null, title: 'Archivní subjekt', publicProfile: false,
-      showPsycheMap: true, showProgress: true, showChoices: false,
+      displayName: 'Mira', bio: null, title: 'Archivní subjekt',
     },
     settings: null,
     psyche: {
@@ -53,7 +52,7 @@ describe('ProfileDashboard dossier', () => {
     const tablist = await screen.findByRole('tablist', { name: 'Sekce profilu subjektu' });
     const tabs = within(tablist).getAllByRole('tab');
     expect(tabs).toHaveLength(6);
-    expect(tabs.map((tab) => tab.textContent)).toEqual(['01PŘEHLED', '02PSYCHÉ', '03CYKLUS', '04ROZHODNUTÍ', '05SBÍRKA', '06PŘÍSTUP']);
+    expect(tabs.map((tab) => tab.textContent)).toEqual(['PŘEHLED', 'PSYCHÉ', 'CYKLUS', 'ROZHODNUTÍ', 'SBÍRKA', 'PŘÍSTUP']);
     expect(screen.queryByRole('tab', { name: /nastavení/i })).not.toBeInTheDocument();
     expect(screen.queryByTestId('psyche-map')).not.toBeInTheDocument();
 
@@ -82,10 +81,10 @@ describe('ProfileDashboard dossier', () => {
     render(<ProfileDashboard userId="user-1" nickname="Mira" mode="popup" />);
 
     const identity = await screen.findByRole('banner', { name: 'Identita subjektu' });
-    expect(within(identity).getByText('PROFIL SUBJEKTU')).toBeInTheDocument();
     expect(within(identity).getByText('SUBJECT // VERIFIED')).toBeInTheDocument();
     expect(within(identity).getByText('Mira')).toBeInTheDocument();
-    expect(identity).toHaveTextContent('Systém je eviduje jako osobnost.');
+    expect(identity).toHaveTextContent('ROZHODNUTÍ42');
+    expect(identity).not.toHaveTextContent('SYSTÉMOVÝ STAV');
   });
 
   it('supports Arrow, Home and End navigation in the tablist', async () => {

@@ -37,10 +37,6 @@ export async function GET(
           displayName: true,
           bio: true,
           title: true,
-          publicProfile: true,
-          showPsycheMap: true,
-          showProgress: true,
-          showChoices: true,
         },
       },
       settings: {

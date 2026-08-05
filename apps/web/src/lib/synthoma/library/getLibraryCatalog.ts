@@ -2,7 +2,9 @@ import generatedLibraryCatalog from '../../../content/generated/libraryCatalog.j
 import type { LibraryCatalog, LibraryCollection } from './libraryTypes';
 
 export async function getLibraryCatalog(): Promise<LibraryCatalog> {
-  return generatedLibraryCatalog as LibraryCatalog;
+  if (process.env.NODE_ENV === 'test') return generatedLibraryCatalog as LibraryCatalog;
+  const { getManagedLibraryCatalog } = await import('../../../server/content/managedContent');
+  return getManagedLibraryCatalog();
 }
 
 export async function getLibraryCollectionBySlug(slug: string): Promise<LibraryCollection | undefined> {

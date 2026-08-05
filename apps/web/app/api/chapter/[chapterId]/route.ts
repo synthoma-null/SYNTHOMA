@@ -1,22 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
-import { getChapterCatalogEntry, type ContentAccess } from '../../../../src/content/catalog';
+import type { ContentAccess } from '../../../../src/content/catalog';
 import { getContentAccess } from '../../../../src/server/economy';
 import { reportRuntimeDatabaseError } from '../../../../src/server/runtimeDatabase';
-import { readChapterDocument } from '../../../../src/server/chapters/chapterDocument';
+import {
+  getManagedChapterContext,
+  readManagedChapterDocument,
+} from '../../../../src/server/content/managedContent';
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ chapterId: string }> },
 ) {
   const { chapterId } = await params;
-  const chapter = getChapterCatalogEntry(chapterId);
-  if (!chapter) {
+  let context;
+  try {
+    context = await getManagedChapterContext(chapterId);
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('chapter-api-catalog', error);
+    return NextResponse.json(
+      { error: 'CHAPTER_CATALOG_UNAVAILABLE', message: 'Katalog kapitol je dočasně nedostupný.', correlationId: report.correlationId, retryable: true },
+      { status: 503, headers: { 'Cache-Control': 'private, no-store' } },
+    );
+  }
+  if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden') {
     return NextResponse.json(
       { error: 'CHAPTER_NOT_FOUND', message: 'Fragment neexistuje.' },
       { status: 404 },
     );
   }
+  const managed = context.managed;
+  const chapter = managed.chapter;
   if (chapter.availability !== 'published') {
     return NextResponse.json(
       { error: 'CONTENT_UNAVAILABLE', message: 'Fragment zatím nebyl publikován.' },
@@ -49,7 +63,7 @@ export async function GET(
 
   const locale = req.nextUrl.searchParams.get('lang') === 'en' ? 'en' : 'cs';
   try {
-    const document = await readChapterDocument(chapter, locale);
+    const document = await readManagedChapterDocument(managed, locale);
     return new NextResponse(document.sourceHtml, {
       status: 200,
       headers: {

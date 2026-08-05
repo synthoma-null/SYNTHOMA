@@ -26,6 +26,7 @@ import "../src/styles/motion-contract.css";
 import "../src/styles/pwa.css";
 import "../src/styles/site-unification.css";
 import "../src/styles/synthoma-art-direction.css";
+import "../src/styles/admin.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";

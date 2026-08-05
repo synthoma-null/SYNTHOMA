@@ -18,3 +18,25 @@
 @import "./cyklus/card-overlay.css";
 @import "./cyklus/menu-polish.css";
 @import "./cyklus/readability-theme.css";
+.cyklus-route-loading {
+  min-height: min(78vh, 760px);
+  display: grid;
+  place-content: center;
+  gap: 0.65rem;
+  padding: 2rem;
+  color: rgba(226, 237, 242, 0.9);
+  text-align: center;
+}
+
+.cyklus-route-loading span {
+  color: var(--cy-color-accent, #8ed8e6);
+  font-family: var(--cy-font-mono, 'Zekton', monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.cyklus-route-loading strong {
+  font-size: clamp(1rem, 3vw, 1.35rem);
+  font-weight: 600;
+}

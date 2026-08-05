@@ -44,8 +44,8 @@ describe('public discovery contracts', () => {
     expect(entry.openGraph).toMatchObject({ locale: 'en_US' });
   });
 
-  it('keeps every public human entry in the sitemap with a stable content date', () => {
-    const entries = sitemap();
+  it('keeps every public human entry in the sitemap with a stable content date', async () => {
+    const entries = await sitemap();
     const urls = entries.map((entry) => entry.url);
     expect(urls).toEqual(expect.arrayContaining([
       'https://www.synthoma.cz',

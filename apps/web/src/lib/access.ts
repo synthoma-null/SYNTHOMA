@@ -222,8 +222,8 @@ export async function updateRunStats(
     await prisma.userRun.create({
       data: {
         userId,
-        // TODO: cycleNumber se smí zvyšovat POUZE při skutečném restartu/cyklu (např. když stability=0
-        // nebo uživatel explicitně zvolí reset). Nikdy ji neměň v rámci normálního průchodu kapitol.
+        // Běžná čtenářská rozhodnutí cyklus nemění. Autoritativní číslo
+        // zapisuje až /api/me/cyklus/sync-profile ze stavu karetní hry.
         cycleNumber: 1,
         stability: clampRun(50 + delta.stabilityDelta),
         memoryPressure: clampRun(0 + delta.pressureDelta),
@@ -231,7 +231,7 @@ export async function updateRunStats(
       },
     });
   } else {
-    // NOTE: cycleNumber se záměrně nemění — viz TODO výše.
+    // cycleNumber se záměrně nemění; tuto funkci používá čtečka, ne Cyklus.
     await prisma.userRun.update({
       where: { userId },
       data: {

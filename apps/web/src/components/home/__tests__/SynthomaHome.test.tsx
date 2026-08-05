@@ -32,7 +32,7 @@ describe('Synthoma Home', () => {
     expect(screen.queryByText(/SUBJECT_CONTACT/)).not.toBeInTheDocument();
     expect(screen.getByText(/SYNTHOMA je interaktivní psychologický román/)).toBeInTheDocument();
     expect(screen.getByText('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.')).toBeVisible();
-    expect(screen.getByRole('link', { name: 'SPUSTIT INTRO' })).toHaveAttribute('href', '/landing-intro?replay=1');
+    expect(screen.queryByRole('link', { name: 'SPUSTIT INTRO' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'PRVNÍ NÁVŠTĚVA' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ZAČÍT PŘÍBĚH/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
     expect(screen.getByRole('link', { name: /SPUSTIT CYKLUS/ })).toHaveAttribute('href', '/cyklus');

@@ -1,16 +1,20 @@
 import type { MetadataRoute } from 'next';
-import { CHAPTER_CATALOG } from '../src/content/catalog';
 import { getPublicArchive } from '../src/server/public-ai/contentService';
 import { getPublicCards } from '../src/server/public-ai/contentService';
 import { PUBLIC_SITE_URL } from '../src/server/public-ai/config';
+import { getManagedContentCatalog } from '../src/server/content/managedContent';
 
 const LAST_MODIFIED = new Date('2026-07-18T00:00:00.000Z');
+
+export const dynamic = 'force-dynamic';
 
 function localized(url: string): Pick<MetadataRoute.Sitemap[number], 'alternates'> {
   return { alternates: { languages: { cs: url, en: `${url}${url.includes('?') ? '&' : '?'}locale=en`, 'x-default': url } } };
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const managed = await getManagedContentCatalog();
+  const visibleBooks = new Set(managed.books.filter((book) => book.visibility === 'published').map((book) => book.id));
   const staticPages: MetadataRoute.Sitemap = [
     { url: PUBLIC_SITE_URL, lastModified: LAST_MODIFIED, changeFrequency: 'weekly', priority: 1.0, ...localized(PUBLIC_SITE_URL) },
     { url: `${PUBLIC_SITE_URL}/books`, lastModified: LAST_MODIFIED, changeFrequency: 'weekly', priority: 0.9, ...localized(`${PUBLIC_SITE_URL}/books`) },
@@ -25,17 +29,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${PUBLIC_SITE_URL}/terms`, lastModified: LAST_MODIFIED, changeFrequency: 'yearly', priority: 0.3 },
   ];
 
-  const chapterPages: MetadataRoute.Sitemap = CHAPTER_CATALOG
-    .filter((chapter) => chapter.availability === 'published')
-    .map((ch) => ({
+  const chapterPages: MetadataRoute.Sitemap = managed.chapters
+    .filter((item) => visibleBooks.has(item.bookId) && item.visibility === 'published' && item.chapter.availability === 'published')
+    .map((item) => {
+      const ch = item.chapter;
+      return ({
       url: `${PUBLIC_SITE_URL}/chapter/${ch.id}`,
-      lastModified: LAST_MODIFIED,
+      lastModified: item.updatedAt ?? LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: ch.accessPolicy === 'free' ? 0.8 : 0.5,
-      alternates: { languages: ch.filenameEn
+      alternates: { languages: ch.filenameEn || item.bodyHtmlEn
         ? { cs: `${PUBLIC_SITE_URL}/chapter/${ch.id}`, en: `${PUBLIC_SITE_URL}/chapter/${ch.id}?locale=en`, 'x-default': `${PUBLIC_SITE_URL}/chapter/${ch.id}` }
         : { cs: `${PUBLIC_SITE_URL}/chapter/${ch.id}`, 'x-default': `${PUBLIC_SITE_URL}/chapter/${ch.id}` } },
-    }));
+      });
+    });
 
   const archivePages: MetadataRoute.Sitemap = getPublicArchive('cs').map((entry) => ({
     url: `${PUBLIC_SITE_URL}/archive/${entry.id}`,

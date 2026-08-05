@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import CyklusClient from '../../src/components/cyklus/CyklusClient';
+import CyklusPageClient from './CyklusPageClient';
 import { buildPublicMetadata, requestLocale } from '../../src/lib/publicMetadata';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function CyklusPage() {
   return (
     <main id="cyklus-game" className="cyklus-page cyklus-game-shell" tabIndex={-1}>
-      <CyklusClient />
+      <CyklusPageClient />
     </main>
   );
 }

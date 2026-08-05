@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
-import { getCatalogEntry, type ContentType } from '../../content/catalog';
+import type { ContentType } from '../../content/catalog';
+import { getManagedCatalogEntry } from '../content/managedContent';
 import { getAccessSnapshot, getAccessSnapshotWithClient, type AccessSnapshot } from './access';
 import { grantEntitlement } from './entitlements';
 import { EconomyError } from './errors';
@@ -42,7 +43,7 @@ export async function purchaseWithMnems(
   input: PurchaseWithMnemsInput,
 ): Promise<PurchaseResult> {
   validateIdempotencyKey(input.idempotencyKey);
-  const entry = getCatalogEntry(input.contentType, input.contentId);
+  const entry = await getManagedCatalogEntry(input.contentType, input.contentId);
   if (!entry) {
     throw new EconomyError('CONTENT_NOT_FOUND', 'Požadovaný obsah v katalogu neexistuje.', 404);
   }

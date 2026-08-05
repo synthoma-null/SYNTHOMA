@@ -12,7 +12,6 @@ export default function SubjectHeader({ nickname, title, choiceCount, readingCou
   return (
     <header className="subject-header" aria-label="Identita subjektu">
       <div className="subject-header__identity">
-        <p className="subject-profile-label"><span aria-hidden="true">◉</span> PROFIL SUBJEKTU</p>
         <p className="subject-log-label">SUBJECT // VERIFIED</p>
         <h1 className="subject-nickname">{nickname}</h1>
         <p className="subject-role-title">{title}</p>
@@ -24,12 +23,6 @@ export default function SubjectHeader({ nickname, title, choiceCount, readingCou
         <div className="subject-stat"><dt>ROZHODNUTÍ</dt><dd>{choiceCount}</dd></div>
         <div className="subject-stat"><dt>FRAGMENTY</dt><dd>{readingCount}</dd></div>
       </dl>
-
-      <p className="subject-system-status">
-        <span>SYSTÉMOVÝ STAV</span>
-        Identita konzistentní. Odchylky přijatelné.<br />
-        Systém je eviduje jako osobnost.
-      </p>
     </header>
   );
 }

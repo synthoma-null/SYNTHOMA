@@ -31,10 +31,6 @@ export interface ProfileData {
       displayName: string | null;
       bio: string | null;
       title: string;
-      publicProfile: boolean;
-      showPsycheMap: boolean;
-      showProgress: boolean;
-      showChoices: boolean;
     } | null;
     settings: {
       theme: string;
@@ -203,7 +199,7 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
               onClick={() => setActiveTab(tab.key)}
               onKeyDown={(event) => onTabKeyDown(event, index)}
             >
-              <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{tab.label}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -276,7 +272,7 @@ export default function ProfileDashboard({ userId, nickname, mode = 'standalone'
               </section>
               <section aria-labelledby="profile-privacy-title">
                 <div className="profile-section-heading"><span>DATA // CONTROL</span><h2 id="profile-privacy-title">Soukromí a data</h2></div>
-                <PrivacyPanel profile={data.user.profile} />
+                <PrivacyPanel />
               </section>
             </div>
           )}

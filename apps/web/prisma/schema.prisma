@@ -40,11 +40,6 @@ model UserProfile {
   avatarUrl   String?
   title       String  @default("Nezmapovaný subjekt")
 
-  publicProfile Boolean @default(false)
-  showPsycheMap Boolean @default(false)
-  showProgress  Boolean @default(true)
-  showChoices   Boolean @default(false)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -225,6 +220,52 @@ model AdminAuditLog {
   @@index([targetUserId, createdAt])
 }
 
+/// Databázová vrstva nad verzovaným katalogem knih. U vestavěných knih ukládá
+/// pouze administrační přepis, u nových knih celý záznam.
+model ManagedBook {
+  id           String   @id
+  isCustom     Boolean  @default(false)
+  title        String?
+  shortTitle   String?
+  description  String?  @db.Text
+  cover        String?
+  language     String?
+  sortOrder    Int?
+  status       String?
+  visibility   String   @default("published")
+  accessPolicy String   @default("inherit")
+  createdById  String
+  updatedById  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([visibility, sortOrder])
+}
+
+/// Kapitola vytvořená v administraci nebo přepis vestavěné kapitoly. HTML je
+/// při zápisu sanitizované a může zůstat null, pokud se používá verzovaný soubor.
+model ManagedChapter {
+  id           String   @id
+  bookId       String
+  isCustom     Boolean  @default(false)
+  title        String?
+  titleEn      String?
+  ordinal      String?
+  summary      String?  @db.Text
+  sortOrder    Int?
+  visibility   String   @default("published")
+  accessPolicy String   @default("inherit")
+  mnemCost     Int?
+  bodyHtml     String?  @db.Text
+  bodyHtmlEn   String?  @db.Text
+  createdById  String
+  updatedById  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([bookId, visibility, sortOrder])
+}
+
 model ExternalGrantEvent {
   id                String    @id @default(cuid())
   provider          String
@@ -305,7 +346,7 @@ model SubjectVote {
 model UserRun {
   id             String    @id @default(cuid())
   userId         String    @unique
-  // TODO: cycleNumber should only increment on a true cycle/restart (e.g. completing a restart chapter or explicit system reset), not on every chapter completion.
+  // Synchronizuje se pouze z autoritativního stavu karetního Cyklu.
   cycleNumber    Int       @default(1)
   stability      Int       @default(50)
   memoryPressure Int       @default(0)

@@ -46,8 +46,8 @@ describe('chapter SEO contracts', () => {
     expect(english.description).not.toContain('Smyčka začíná znovu');
   });
 
-  it('keeps sitemap and robots on canonical public routes', () => {
-    const urls = sitemap().map((entry) => entry.url);
+  it('keeps sitemap and robots on canonical public routes', async () => {
+    const urls = (await sitemap()).map((entry) => entry.url);
     expect(urls).toContain('https://www.synthoma.cz/chapter/0-inf-restart');
     expect(urls).toContain('https://www.synthoma.cz/chapter/kp-00-podporovano');
     expect(urls).toContain('https://www.synthoma.cz/chapter/kp-18-konec-podpory');

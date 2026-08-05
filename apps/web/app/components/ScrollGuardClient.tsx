@@ -46,8 +46,7 @@ export default function ScrollGuardClient() {
         const anchor = document.elementFromPoint(16, 16) as HTMLElement | null;
         const beforeTop = anchor?.getBoundingClientRect().top ?? null;
         // Force sync reflow by reading; then compute delta
-        // eslint-disable-next-line no-unused-expressions
-        document.body.offsetHeight;
+        void document.body.offsetHeight;
         const afterTop = anchor?.getBoundingClientRect().top ?? null;
         if (beforeTop != null && afterTop != null) {
           const dy = afterTop - beforeTop;

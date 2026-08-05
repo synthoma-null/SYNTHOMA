@@ -45,8 +45,8 @@ export function clearChoicesState(srcUrl: string): void {
   removeStorage(getChoicesStateKey(srcUrl));
 }
 
-export function saveLastChapterPath(path: string): void {
-  writeStorage("lastChapterPath", path);
+export function saveLastChapterPath(path: string): boolean {
+  return writeStorage("lastChapterPath", path);
 }
 
 export function readLastChapterPath(): string {
@@ -69,8 +69,8 @@ export function getReadingProgressKey(bookId: string): string {
   return `readingProgress:${bookId}`;
 }
 
-export function saveReadingProgress(entry: ReadingProgressEntry): void {
-  writeStorageJSON(getReadingProgressKey(entry.bookId), entry);
+export function saveReadingProgress(entry: ReadingProgressEntry): boolean {
+  return writeStorageJSON(getReadingProgressKey(entry.bookId), entry);
 }
 
 export function readReadingProgress(bookId: string): ReadingProgressEntry | null {

@@ -25,9 +25,8 @@ export function GameShell({ initialState, myPlayerId, onAction, isOnline }: Prop
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   useEffect(() => {
-    if (JSON.stringify(initialState) !== JSON.stringify(state) && isOnline) {
-      dispatch({ type: 'LOAD_STATE', state: initialState });
-    }
+    if (!isOnline) return;
+    dispatch({ type: 'LOAD_STATE', state: initialState });
   }, [initialState, isOnline]);
 
   const emit = useCallback((action: GameAction) => {
@@ -92,7 +91,7 @@ export function GameShell({ initialState, myPlayerId, onAction, isOnline }: Prop
 
       <main className="game-main">
         {state.finalRound && (
-          <div className="final-round-banner">★ FINÁLNÍ KOLO — posledních šance!</div>
+          <div className="final-round-banner">★ FINÁLNÍ KOLO — poslední šance!</div>
         )}
 
         <BoardMap

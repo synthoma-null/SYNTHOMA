@@ -2,13 +2,10 @@ export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
 import { auth } from '../../../../../../auth';
-import {
-  CHAPTER_CATALOG,
-  getChapterCatalogEntry,
-  type ChapterCatalogEntry,
-} from '../../../../../../src/content/catalog';
+import type { ChapterCatalogEntry } from '../../../../../../src/content/catalog';
 import { getAccessSnapshot } from '../../../../../../src/server/economy';
 import { reportRuntimeDatabaseError } from '../../../../../../src/server/runtimeDatabase';
+import { getManagedChapterContext } from '../../../../../../src/server/content/managedContent';
 
 function publicChapter(chapter: ChapterCatalogEntry | undefined) {
   if (!chapter) return null;
@@ -26,11 +23,18 @@ export async function GET(
   { params }: { params: Promise<{ chapterId: string }> },
 ) {
   const { chapterId } = await params;
-  const current = getChapterCatalogEntry(chapterId);
-  if (!current) {
+  let context;
+  try {
+    context = await getManagedChapterContext(chapterId);
+  } catch (error) {
+    const report = reportRuntimeDatabaseError('chapter-navigation-catalog', error);
+    return NextResponse.json({ error: 'CHAPTER_NAVIGATION_UNAVAILABLE', correlationId: report.correlationId, retryable: true }, { status: 503 });
+  }
+  if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden') {
     return NextResponse.json({ error: 'CHAPTER_NOT_FOUND' }, { status: 404 });
   }
-  const collectionChapters = CHAPTER_CATALOG.filter((chapter) => chapter.collection === current.collection);
+  const current = context.managed.chapter;
+  const collectionChapters = context.chapters;
   const index = collectionChapters.findIndex((chapter) => chapter.id === current.id);
   const previous = index > 0 ? collectionChapters[index - 1] : undefined;
   const next = index >= 0 ? collectionChapters[index + 1] : undefined;

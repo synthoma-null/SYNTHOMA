@@ -1,5 +1,10 @@
 import Link from 'next/link';
-import { CHAPTER_CATALOG, getBookCollection, type ChapterCatalogEntry } from '../../../src/content/catalog';
+import {
+  CHAPTER_CATALOG,
+  getBookCollection,
+  type BookCollectionDefinition,
+  type ChapterCatalogEntry,
+} from '../../../src/content/catalog';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 import ChapterBackground from '../../../src/components/reader/ChapterBackground';
 import ChapterReadingProgress from '../../../src/components/reader/ChapterReadingProgress';
@@ -13,10 +18,13 @@ import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument
 
 interface Props {
   chapter: ChapterCatalogEntry;
+  collection?: BookCollectionDefinition;
+  collectionChapters?: readonly ChapterCatalogEntry[];
   locale: ChapterLocale;
   sourceLocale: ChapterLocale;
   bodyHtml: string;
   publicMachineLinks?: boolean;
+  hasEnglish?: boolean;
 }
 
 function localizedRoute(chapter: ChapterCatalogEntry, locale: ChapterLocale): string {
@@ -25,19 +33,22 @@ function localizedRoute(chapter: ChapterCatalogEntry, locale: ChapterLocale): st
 
 export default function ChapterReaderArticle({
   chapter,
+  collection: managedCollection,
+  collectionChapters,
   locale,
   sourceLocale,
   bodyHtml,
   publicMachineLinks = false,
+  hasEnglish,
 }: Props) {
-  const published = CHAPTER_CATALOG.filter((entry) =>
+  const published = (collectionChapters ?? CHAPTER_CATALOG).filter((entry) =>
     entry.availability === 'published' && entry.collection === chapter.collection,
   );
   const index = published.findIndex((entry) => entry.id === chapter.id);
   const previous = index > 0 ? published[index - 1] : undefined;
   const next = index >= 0 && index < published.length - 1 ? published[index + 1] : undefined;
   const presentation = getChapterPresentation(chapter.id);
-  const collection = getBookCollection(chapter.collection);
+  const collection = managedCollection ?? getBookCollection(chapter.collection);
   const bookScope = collection?.publicId ?? 'synthoma-null';
   const isKonecPodpory = bookScope === 'konec-podpory';
   const chapterCode = chapter.ordinal;
@@ -79,7 +90,7 @@ export default function ChapterReaderArticle({
           <span className="chapter-reader__identity-title">{title}</span>
         </span>
         <div className="chapter-reader__command-end">
-          {chapter.filenameEn ? (
+          {hasEnglish ?? Boolean(chapter.filenameEn) ? (
             <Link className="chapter-reader__command" href={`${chapter.route}${locale === 'en' ? '' : '?locale=en'}`} hrefLang={locale === 'en' ? 'cs' : 'en'}>
               {locale === 'en' ? 'CS' : 'EN'}
             </Link>

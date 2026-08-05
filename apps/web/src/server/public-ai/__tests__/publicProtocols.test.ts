@@ -17,8 +17,8 @@ describe('public AI discovery protocols', () => {
     expect(value.sitemap).toBe('https://www.synthoma.cz/sitemap.xml');
   });
 
-  it('generates the sitemap from public chapter, Archive and card registries', () => {
-    const urls = sitemap().map((entry) => entry.url);
+  it('generates the sitemap from public chapter, Archive and card registries', async () => {
+    const urls = (await sitemap()).map((entry) => entry.url);
     expect(urls).toEqual(expect.arrayContaining([
       'https://www.synthoma.cz/books', 'https://www.synthoma.cz/chapter/0-0-null',
       'https://www.synthoma.cz/chapter/n0-01-bourka',

@@ -9,8 +9,10 @@ describe('LocalSubjectProfile', () => {
     render(<LocalSubjectProfile />);
     expect(screen.getByRole('heading', { name: 'LOKÁLNÍ SUBJEKT' })).toBeInTheDocument();
     expect(screen.getByText('SUBJECT // LOCAL')).toBeInTheDocument();
-    expect(screen.getByText('NEOVĚŘENÝ ZÁZNAM')).toBeInTheDocument();
-    expect(screen.getByText('LOCAL EMPTY')).toBeInTheDocument();
+    expect(screen.getByText('ULOŽENO V TOMTO ZAŘÍZENÍ')).toBeInTheDocument();
+    expect(screen.getByText('ZATÍM BEZ DAT')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'SPUSTIT CYKLUS' })).toHaveAttribute('href', '/cyklus');
+    expect(screen.queryByText('POSLEDNÍ STAV')).not.toBeInTheDocument();
     expect(screen.queryByText(/401|VERIFIED|purchase/i)).not.toBeInTheDocument();
   });
 
@@ -28,7 +30,7 @@ describe('LocalSubjectProfile', () => {
     }));
     render(<LocalSubjectProfile />);
     expect(document.querySelector('[data-profile-state="local-active"]')).toBeInTheDocument();
-    expect(screen.getByText('NEPŘIPOJENO')).toBeInTheDocument();
+    expect(screen.queryByText('NEPŘIPOJENO')).not.toBeInTheDocument();
     expect(screen.getByText('0 [RESTART]')).toBeInTheDocument();
     expect(screen.getByText(/Energie 51/)).toBeInTheDocument();
   });

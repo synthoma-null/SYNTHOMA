@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { auth } from '../../../../auth';
 import prisma from '../../../../src/lib/prisma';
+
+const moderationSchema = z.object({
+  id: z.string().min(1),
+  action: z.enum(['approve', 'reject', 'hide']),
+  chapterId: z.string().min(1).max(120).optional(),
+  emotionTags: z.array(z.string().max(40)).max(20).optional(),
+  functionTags: z.array(z.string().max(40)).max(20).optional(),
+});
 
 async function requireAdmin() {
   const session = await auth();
@@ -17,8 +26,12 @@ export async function GET(req: NextRequest) {
   if (!adminId) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const { searchParams } = new URL(req.url);
-  const status = searchParams.get('status') ?? 'pending';
-  const limit = Math.min(parseInt(searchParams.get('limit') ?? '50', 10), 200);
+  const requestedStatus = searchParams.get('status') ?? 'pending';
+  const status = ['pending', 'approved', 'rejected', 'hidden'].includes(requestedStatus)
+    ? requestedStatus
+    : 'pending';
+  const requestedLimit = Number.parseInt(searchParams.get('limit') ?? '50', 10);
+  const limit = Number.isFinite(requestedLimit) ? Math.max(1, Math.min(requestedLimit, 200)) : 50;
 
   const whispers = await prisma.whisper.findMany({
     where: { status },
@@ -49,20 +62,13 @@ export async function PATCH(req: NextRequest) {
   const adminId = await requireAdmin();
   if (!adminId) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-  const body = await req.json();
-  const { id, action, chapterId, emotionTags, functionTags } = body;
-
-  if (!id || !action) {
-    return NextResponse.json({ error: 'id a action jsou povinné.' }, { status: 400 });
+  const parsed = moderationSchema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Neplatná data moderace.' }, { status: 400 });
   }
-
-  const VALID_ACTIONS = ['approve', 'reject', 'hide'];
-  if (!VALID_ACTIONS.includes(action)) {
-    return NextResponse.json({ error: 'Neplatná akce.' }, { status: 400 });
-  }
+  const { id, action, chapterId, emotionTags, functionTags } = parsed.data;
 
   const updateData: Record<string, unknown> = {};
-
   if (action === 'approve') {
     updateData.status = 'approved';
     updateData.approvedAt = new Date();
@@ -71,15 +77,26 @@ export async function PATCH(req: NextRequest) {
     if (functionTags) updateData.functionTags = JSON.stringify(functionTags);
   } else if (action === 'reject') {
     updateData.status = 'rejected';
-  } else if (action === 'hide') {
+  } else {
     updateData.status = 'hidden';
   }
 
-  const whisper = await prisma.whisper.update({
-    where: { id },
-    data: updateData,
-    select: { id: true, status: true },
+  const whisper = await prisma.$transaction(async (tx) => {
+    const updated = await tx.whisper.update({
+      where: { id },
+      data: updateData,
+      select: { id: true, status: true, userId: true },
+    });
+    await tx.adminAuditLog.create({
+      data: {
+        actorUserId: adminId,
+        targetUserId: updated.userId,
+        action: `whisper_${action}`,
+        metadata: { whisperId: updated.id, status: updated.status },
+      },
+    });
+    return updated;
   });
 
-  return NextResponse.json(whisper);
+  return NextResponse.json({ id: whisper.id, status: whisper.status });
 }

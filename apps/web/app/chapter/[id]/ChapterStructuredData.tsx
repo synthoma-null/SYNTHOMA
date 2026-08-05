@@ -1,4 +1,8 @@
-import { getBookCollection, type ChapterCatalogEntry } from '../../../src/content/catalog';
+import {
+  getBookCollection,
+  type BookCollectionDefinition,
+  type ChapterCatalogEntry,
+} from '../../../src/content/catalog';
 import type { ChapterLocale } from '../../../src/server/chapters/chapterDocument';
 import { PUBLIC_CONTENT_UPDATED_AT } from '../../../src/server/public-ai/config';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
@@ -7,13 +11,14 @@ const BASE_URL = 'https://www.synthoma.cz';
 
 interface Props {
   chapter: ChapterCatalogEntry;
+  collection?: BookCollectionDefinition;
   locale: ChapterLocale;
   accessibleForFree: boolean;
   wordCount?: number | null;
 }
 
-export default function ChapterStructuredData({ chapter, locale, accessibleForFree, wordCount }: Props) {
-  const collection = getBookCollection(chapter.collection);
+export default function ChapterStructuredData({ chapter, collection: managedCollection, locale, accessibleForFree, wordCount }: Props) {
+  const collection = managedCollection ?? getBookCollection(chapter.collection);
   const bookTitle = collection?.title ?? chapter.collection;
   const canonical = `${BASE_URL}${chapter.route}${locale === 'en' ? '?locale=en' : ''}`;
   const title = locale === 'en' ? chapter.titleEn ?? chapter.title : chapter.title;
