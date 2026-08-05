@@ -650,7 +650,7 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: #050507;
+  background: var(--bg-primary, #050507);
   pointer-events: none;
 }
 
@@ -673,7 +673,7 @@
 .chapter-background__overlay {
   position: absolute;
   inset: 0;
-  background: var(--chapter-overlay-color, #050507);
+  background: var(--chapter-overlay-color, var(--bg-primary, #050507));
   opacity: var(--chapter-overlay-opacity, .72);
 }
 
@@ -742,7 +742,7 @@
   margin: 0 auto 2rem;
   padding: max(.65rem, env(safe-area-inset-top)) .8rem .65rem;
   border: 1px solid var(--border-secondary);
-  background: color-mix(in srgb, var(--syn-panel-solid) 97%, var(--os-bg));
+  background: var(--os-surface);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   z-index: 10;
@@ -843,7 +843,7 @@
   padding: clamp(1.2rem, 4vw, 3rem);
   border: 1px solid color-mix(in srgb, var(--border-secondary) 72%, transparent);
   border-radius: 0;
-  background: color-mix(in srgb, var(--bg-primary) var(--reader-surface-opacity, 85%), transparent);
+  background: color-mix(in srgb, var(--os-surface) var(--reader-surface-opacity, 85%), transparent);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, .32);
@@ -912,7 +912,72 @@
   border: 1px solid var(--border-secondary);
   color: var(--text-primary);
   text-decoration: none;
-  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  background: var(--os-surface);
+}
+
+html[data-theme="mono-light"] .chapter-background {
+  background: #ffffff;
+}
+
+html[data-theme="mono-light"] .chapter-background__poster,
+html[data-theme="mono-light"] .chapter-background__video,
+html[data-theme="mono-light"] .chapter-background__video.is-ready {
+  opacity: 0;
+}
+
+html[data-theme="mono-light"] .chapter-background__overlay {
+  background: #ffffff;
+  opacity: 1;
+}
+
+html[data-theme="mono-light"] .chapter-reader,
+html[data-theme="mono-light"] .chapter-reader__command-bar,
+html[data-theme="mono-light"] .chapter-reader__article.SYNTHOMAREADER,
+html[data-theme="mono-light"] .chapter-reader__navigation a,
+html[data-theme="mono-light"] .reader-dialog-status,
+html[data-theme="mono-light"] .reader-onboarding {
+  background: #ffffff;
+  color: var(--text-primary);
+}
+
+html[data-theme="mono-light"] .chapter-reader__article.SYNTHOMAREADER {
+  border-color: var(--border-secondary);
+  box-shadow: 0 18px 45px rgb(0 0 0 / .08);
+}
+
+html[data-theme="mono-light"] .SYNTHOMAREADER .chapter-content {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #1a1a1a !important;
+  filter: none !important;
+}
+
+html[data-theme="mono-light"] .SYNTHOMAREADER .chapter-content::before,
+html[data-theme="mono-light"] .SYNTHOMAREADER .chapter-content::after {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Book chapters can bring their own dark terminals, cards and overlays. In the
+   light laboratory theme the reading contract wins: every prose layer stays on
+   the white page and uses a high-contrast monochrome ink. Structural borders
+   remain visible, so effects keep their rhythm without hiding their content. */
+html[data-theme="mono-light"] .SYNTHOMAREADER .chapter-content :where(*),
+html[data-theme="mono-light"] .SYNTHOMAREADER .chapter-content :where(*)::before,
+html[data-theme="mono-light"] .SYNTHOMAREADER .chapter-content :where(*)::after {
+  border-color: rgb(26 26 26 / .2) !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #1a1a1a !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="mono-light"] .reader-onboarding {
+  box-shadow: 0 0 0 100vmax rgb(255 255 255 / .88), 0 18px 45px rgb(0 0 0 / .12);
 }
 
 .chapter-reader__navigation a:last-child { text-align: right; }

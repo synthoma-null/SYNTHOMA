@@ -8,8 +8,70 @@
 html,
 body {
   min-width: 320px;
-  background: var(--syn-black-050);
+  background: var(--os-bg);
   color: var(--os-text);
+}
+
+/* The OS tokens are intentionally dark-first. Mono Light needs an explicit
+   late bridge because this adapter is loaded after the legacy theme file. */
+html[data-theme="mono-light"],
+body[data-theme="mono-light"] {
+  --syn-black-0: #ffffff;
+  --syn-black-1: #ffffff;
+  --syn-black-2: #ffffff;
+  --syn-black-3: #f2f2ef;
+  --syn-black-000: #ffffff;
+  --syn-black-050: #ffffff;
+  --syn-black-100: #ffffff;
+  --syn-black-150: #f2f2ef;
+  --syn-panel-solid: #ffffff;
+  --syn-panel-raised: #f2f2ef;
+  --syn-text-reading: #242424;
+  --syn-text-ui: #1a1a1a;
+  --syn-text-heading: #050505;
+  --syn-text-hot: #000000;
+  --syn-text-muted: #4f4f4f;
+  --syn-text-dim: #666666;
+  --syn-border-cyan: #333333;
+  --syn-border-magenta: #666666;
+  --syn-border-dim: #c9c9c4;
+  --syn-line: #333333;
+  --syn-line-hot: #666666;
+  --syn-line-muted: #d6d6d0;
+  --ink-blue: #242424;
+  --ink-blue-hot: #111111;
+  --ink-blue-deep: #4f4f4f;
+  --ink-violet: #383838;
+  --ink-violet-soft: #484848;
+  --ink-magenta: #202020;
+  --ink-magenta-hot: #000000;
+  --ink-magenta-soft: #555555;
+  --ink-human: #303030;
+  --ink-human-soft: #4a4a4a;
+  --ink-silver-blue: #242424;
+  --ink-archive: #505050;
+  --ink-dim: #666666;
+  --ink-signal-core: #000000;
+  --ink-warning: #3a3a3a;
+  --speaker-system: #111111;
+  --speaker-system-secondary: #4f4f4f;
+  --speaker-null: #292929;
+  --speaker-null-secondary: #555555;
+  --speaker-sarkasma: #202020;
+  --speaker-sarkasma-secondary: #5a5a5a;
+  --speaker-glitchka: #111111;
+  --speaker-glitchka-secondary: #4a4a4a;
+  --speaker-glitchena: #000000;
+  --speaker-glitchena-secondary: #555555;
+  --os-bg: #ffffff;
+  --os-bg-deep: #ffffff;
+  --os-surface: #ffffff;
+  --os-surface-raised: #f2f2ef;
+  --os-axis: #deded9;
+  --os-scrim-strong: rgb(255 255 255 / 0.96);
+  --os-scrim-soft: rgb(255 255 255 / 0.84);
+  background-color: #ffffff;
+  color: var(--text-primary);
 }
 
 body {
@@ -100,7 +162,7 @@ body {
   .synthoma-system-state__panel
 ) {
   border-radius: var(--os-corner);
-  background: color-mix(in srgb, var(--syn-panel-solid) 96%, var(--os-bg));
+  background: var(--os-surface);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow:
@@ -147,7 +209,7 @@ body {
   min-height: var(--os-tap);
   border: 1px solid var(--os-border);
   border-radius: var(--os-corner);
-  background: var(--syn-black-100);
+  background: var(--os-surface-raised);
   color: var(--os-text);
 }
 
@@ -197,7 +259,7 @@ body {
   position: absolute;
   inset: auto auto -1px 1rem;
   padding-inline: .35rem;
-  background: var(--syn-panel-solid);
+  background: var(--os-surface);
   color: var(--os-accent-primary);
   font: 700 .625rem/1.4 var(--os-font-mono);
 }
@@ -215,7 +277,7 @@ body {
 }
 
 .author-reader__article {
-  background: color-mix(in srgb, var(--syn-panel-solid) 96%, var(--os-bg));
+  background: var(--os-surface);
 }
 
 .author-reader__article .autor-semantic-content :where(p, li) {
@@ -248,6 +310,33 @@ html[data-motion="reduced"] .synthoma-global-background__noise,
 html[data-motion="off"] .synthoma-global-background__noise,
 html[data-motion="off"] .synthoma-global-background__grid {
   display: none;
+}
+
+html[data-theme="mono-light"] .synthoma-media-layer {
+  background: #ffffff;
+}
+
+html[data-theme="mono-light"] .synthoma-media-layer__video,
+html[data-theme="mono-light"] .synthoma-media-layer__fallback,
+html[data-theme="mono-light"] .synthoma-media-layer__brand-art {
+  opacity: 0.035;
+  filter: grayscale(1) contrast(.72);
+}
+
+html[data-theme="mono-light"] .synthoma-global-background__grid {
+  opacity: .3;
+}
+
+html[data-theme="mono-light"] .synthoma-global-background__noise {
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / .014) 3px 4px);
+}
+
+html[data-theme="mono-light"] .synthoma-global-background__vignette {
+  background: radial-gradient(circle at 50% 38%, transparent 24%, rgb(255 255 255 / .9) 100%);
+}
+
+html[data-theme="mono-light"] .synthoma-global-background__scrim {
+  background: linear-gradient(180deg, rgb(255 255 255 / .9), rgb(255 255 255 / .97));
 }
 
 html[data-motion="off"] *,

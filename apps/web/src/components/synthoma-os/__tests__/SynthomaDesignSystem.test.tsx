@@ -60,6 +60,7 @@ describe('Synthoma OS design foundation', () => {
     const child = screen.getByTestId('portal-child');
     const portal = child.parentElement as HTMLElement;
     expect(portal).toHaveAttribute('data-synthoma-theme', 'synthoma');
+    expect(portal).not.toHaveAttribute('data-theme');
     expect(portal).toHaveAttribute('data-synthoma-text-scale', '1');
 
     act(() => {

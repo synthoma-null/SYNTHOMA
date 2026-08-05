@@ -44,4 +44,15 @@ describe('Reader appearance contract', () => {
     expect(controls).not.toContain('glassBlur');
     expect(controls).not.toContain('glassEnabled');
   });
+
+  it('keeps every Mono Light reader layer bright, including the legacy host and content overlay', () => {
+    const readerCss = read('src/styles/reader.css');
+    const legacyReaderCss = read('app/reader/ReaderContent.module.css');
+    const bridgeCss = read('src/styles/site-unification.css');
+    expect(bridgeCss).toMatch(/body\[data-theme="mono-light"\][\s\S]*?--os-bg:\s*#ffffff/);
+    expect(readerCss).toMatch(/html\[data-theme="mono-light"\] \.chapter-background[\s\S]*?background:\s*#ffffff/);
+    expect(readerCss).toMatch(/html\[data-theme="mono-light"\] \.SYNTHOMAREADER \.chapter-content\s*\{[\s\S]*?background-color:\s*#ffffff\s*!important/);
+    expect(readerCss).toMatch(/html\[data-theme="mono-light"\] \.SYNTHOMAREADER \.chapter-content :where\(\*\)[\s\S]*?color:\s*#1a1a1a\s*!important/);
+    expect(legacyReaderCss).toMatch(/\.bgHost[\s\S]*?background-color:\s*var\(--os-bg\)/);
+  });
 });

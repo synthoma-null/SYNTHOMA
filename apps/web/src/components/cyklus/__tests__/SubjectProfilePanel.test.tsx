@@ -103,7 +103,7 @@ describe('SubjectProfilePanelClient', () => {
     const legacyCss = readFileSync(join(process.cwd(), 'src/styles/components.css'), 'utf8');
 
     expect(css).toMatch(/\.profile-panel-popup\s*\{[\s\S]*?height:\s*min\(880px, calc\(100dvh - 32px\)\)/);
-    expect(css).toContain('--profile-font-label: "Zekton"');
+    expect(css).toContain('--profile-font-label: var(--os-font-ui');
     expect(css).toMatch(/\.profile-tabs\s*\{[\s\S]*?grid-template-columns:\s*repeat\(6, minmax\(0, 1fr\)\)[\s\S]*?overflow:\s*hidden/);
     expect(css).toMatch(/\.profile-content\s*\{[\s\S]*?min-height:\s*0[\s\S]*?overflow-y:\s*auto[\s\S]*?touch-action:\s*pan-y/);
     expect(css).toMatch(/@media \(max-width: 767px\)[\s\S]*?\.profile-panel-popup\s*\{[\s\S]*?width:\s*100%[\s\S]*?height:\s*100dvh/);
