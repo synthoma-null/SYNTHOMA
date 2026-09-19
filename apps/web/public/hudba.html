@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080c12">
+  <title>Hudba · SYNTHOMA</title>
+  <meta name="description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
+  <meta property="og:title" content="Hudba · SYNTHOMA">
+  <meta property="og:description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
+  <meta property="og:type" content="website">
+  <style>
+    :root{color-scheme:dark;--bg:#080c12;--panel:#10171f;--line:#26313d;--text:#edf4f5;--muted:#9baab8;--accent:#91f7e3}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100svh}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 10% 30%,#0d303144,transparent 60%),radial-gradient(ellipse at 95% 90%,#40203a33,transparent 50%)}
+    main{position:relative;max-width:1120px;margin:auto;padding:44px 40px 64px}header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:48px}.brand{font-size:14px;font-weight:700;letter-spacing:.28em}.label{font:11px monospace;letter-spacing:.17em;color:var(--muted);text-transform:uppercase}.brand i{display:inline-block;width:7px;height:7px;background:var(--accent);margin-right:13px;box-shadow:0 0 17px #91f7e377}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.13fr);gap:64px}.player{min-width:0;position:sticky;top:32px;align-self:start}.art{aspect-ratio:1.35;position:relative;display:grid;place-items:center;overflow:hidden;background:linear-gradient(140deg,#11252a,#0d1019 60%,#231622);border:1px solid #33434a;margin-bottom:28px}.art:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 5px,#080c122d 5px 6px)}
+    .disc{width:64%;aspect-ratio:1;border-radius:50%;position:relative;background:repeating-radial-gradient(circle,#141c23 0 2px,#28353c 3px,#0b1118 4px 7px);box-shadow:0 18px 65px #0008;display:grid;place-items:center;border:1px solid #48615d}.disc:before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 30deg,transparent,#9aeee12b,transparent 45%,#b8779620,transparent 85%)}.disc:after{content:"S";display:grid;place-items:center;width:28%;aspect-ratio:1;border:1px solid #7db8b055;border-radius:50%;background:#142b2c;color:var(--accent);font:28px Georgia,serif;z-index:1}.art-tag{position:absolute;bottom:16px;left:18px;font:10px monospace;letter-spacing:.18em;color:#aac4c6}.art-index{position:absolute;right:18px;top:16px;font:11px monospace;color:#aac4c6}
+    h1{font-size:40px;letter-spacing:-.04em;margin:0 0 10px;font-weight:500}h2{font-size:26px;line-height:1.2;letter-spacing:-.03em;margin:9px 0 22px;font-weight:500;min-height:32px}.status{color:var(--accent);font:11px monospace;letter-spacing:.12em;text-transform:uppercase}audio{width:100%;height:42px;display:block;margin-bottom:16px}.transport{display:flex;gap:10px}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.transport button{border:1px solid var(--line);background:transparent;color:var(--text);padding:12px 16px;font-size:12px;border-radius:3px}.transport button:hover:not(:disabled){border-color:var(--accent)}button:disabled{opacity:.35;cursor:default}.error{font-size:13px;line-height:1.6;color:#ffb6b6}.collection-head{margin-bottom:26px}.collection-head p{margin:0;color:var(--muted);font-size:13px}ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}li{border-bottom:1px solid var(--line)}.track{width:100%;display:flex;align-items:center;gap:18px;text-align:left;padding:20px 14px;border:0;background:transparent;color:var(--text);min-height:64px;border-left:2px solid transparent}.track:hover{background:#ffffff05}.track[aria-current=true]{background:#91f7e30a;border-left-color:var(--accent)}.number{font:11px monospace;color:var(--muted);min-width:18px}.track-name{flex:1;font-size:15px;line-height:1.4}.symbol{color:var(--muted);font-size:12px;width:18px;text-align:center}.track[aria-current=true] .number,.track[aria-current=true] .symbol{color:var(--accent)}footer{margin-top:42px;color:#83939f;font:10px monospace;letter-spacing:.16em}
+    @media(max-width:760px){main{padding:24px 20px 40px}header{margin-bottom:28px;padding-bottom:20px}.layout{grid-template-columns:1fr;gap:32px}.player{position:static}.art{aspect-ratio:2;margin-bottom:22px}.disc{width:43%}h1{font-size:32px}.collection-head{margin-bottom:20px}.track{padding:18px 12px}h2{font-size:25px}footer{margin-top:28px}}
+  </style>
+</head>
+<body>
+<main>
+  <header><span class="brand"><i aria-hidden="true"></i>SYNTHOMA</span><span class="label">Hudba / 01</span></header>
+  <div class="layout">
+    <section class="player" aria-label="Přehrávač">
+      <div class="art" aria-hidden="true"><span class="art-index" id="art-index">—</span><div class="disc"></div><span class="art-tag">SYNTHOMA · AUDIO</span></div>
+      <div class="status" id="status" role="status">Načítání skladeb…</div>
+      <h2 id="current-title">Hudba</h2>
+      <audio id="audio" controls preload="metadata" controlslist="nodownload" aria-label="Přehrávač hudby"></audio>
+      <div class="transport"><button id="previous" type="button" disabled>← Předchozí</button><button id="next" type="button" disabled>Další →</button><button id="retry" type="button" hidden>Zkusit znovu</button></div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <noscript><p>Pro načtení skladeb zapněte JavaScript v prohlížeči.</p></noscript>
+    </section>
+    <section aria-labelledby="collection-title">
+      <div class="collection-head"><h1 id="collection-title">Stačí poslouchat.</h1><p id="track-count">Načítání…</p></div>
+      <ol id="tracks" aria-label="Seznam skladeb"></ol>
+    </section>
+  </div>
+  <footer>SYNTHOMA / HUDBA</footer>
+</main>
+<script>
+(() => {
+  'use strict';
+  let tracks = [];
+  let buttons = [];
+  const audio = document.getElementById('audio');
+  const list = document.getElementById('tracks');
+  const title = document.getElementById('current-title');
+  const status = document.getElementById('status');
+  const error = document.getElementById('error');
+  const previous = document.getElementById('previous');
+  const next = document.getElementById('next');
+  const retry = document.getElementById('retry');
+  let current = -1;
+  let request = 0;
+  function renderTracks() {
+  list.replaceChildren();
+  buttons = tracks.map((track, index) => {
+    const li = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'track';
+    const number = document.createElement('span');
+    number.className = 'number';
+    number.textContent = String(index + 1).padStart(2, '0');
+    const text = document.createElement('span');
+    text.className = 'track-name';
+    text.textContent = track.title;
+    const symbol = document.createElement('span');
+    symbol.className = 'symbol';
+    symbol.setAttribute('aria-hidden', 'true');
+    button.append(number, text, symbol);
+    button.addEventListener('click', () => {
+      if (index === current && !audio.paused) audio.pause();
+      else select(index);
+    });
+    li.append(button);
+    list.append(li);
+    return button;
+  });
+  }
+  function update() {
+    buttons.forEach((button, index) => {
+      const playing = current === index && !audio.paused;
+      button.setAttribute('aria-current', String(current === index));
+      button.setAttribute('aria-label', (playing ? 'Pozastavit: ' : 'Přehrát: ') + tracks[index].title);
+      button.lastElementChild.textContent = playing ? 'Ⅱ' : '▷';
+    });
+    previous.disabled = current <= 0;
+    next.disabled = current < 0 || current >= tracks.length - 1;
+    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = audio.paused ? 'paused' : 'playing';
+  }
+  function metadata() {
+    if ('mediaSession' in navigator && 'MediaMetadata' in window) {
+      navigator.mediaSession.metadata = new MediaMetadata({title: tracks[current].title, artist: 'SYNTHOMA'});
+    }
+  }
+  function loadTrack(index) {
+    current = index;
+    audio.src = tracks[current].url;
+    title.textContent = tracks[current].title;
+    document.getElementById('art-index').textContent = String(current + 1).padStart(2, '0') + ' / ' + tracks.length;
+    audio.setAttribute('aria-label', 'Přehrát ' + tracks[current].title);
+    metadata();
+  }
+  async function select(index) {
+    if (index < 0 || index >= tracks.length) return;
+    const token = ++request;
+    error.hidden = true;
+    if (index !== current || audio.error) {
+      loadTrack(index);
+    }
+    status.textContent = 'Načítání…';
+    update();
+    try { await audio.play(); }
+    catch (cause) {
+      if (token !== request || cause.name === 'AbortError') return;
+      status.textContent = 'Přehrávání pozastaveno';
+      error.textContent = cause.name === 'NotAllowedError' ? 'Pro pokračování stiskněte přehrávání přímo v přehrávači.' : 'Skladbu se nepodařilo přehrát. Zkuste ji vybrat znovu nebo přejděte na další.';
+      error.hidden = false;
+    }
+  }
+  previous.addEventListener('click', () => select(current - 1));
+  next.addEventListener('click', () => select(current + 1));
+  audio.addEventListener('playing', () => {status.textContent = 'Právě hraje'; error.hidden = true; update();});
+  audio.addEventListener('pause', () => {status.textContent = 'Pozastaveno'; update();});
+  audio.addEventListener('waiting', () => {status.textContent = 'Načítání…';});
+  audio.addEventListener('error', () => {status.textContent = 'Skladba není dostupná'; error.textContent = 'Skladbu se nepodařilo načíst. Zkuste ji vybrat znovu nebo přejděte na další.'; error.hidden = false; update();});
+  audio.addEventListener('ended', () => {
+    if (current < tracks.length - 1) select(current + 1);
+    else {status.textContent = 'Dohráno'; update();}
+  });
+  if ('mediaSession' in navigator) {
+    const handlers = {play: () => select(current), pause: () => audio.pause(), previoustrack: () => select(current - 1), nexttrack: () => select(current + 1)};
+    Object.entries(handlers).forEach(([action, handler]) => {try {navigator.mediaSession.setActionHandler(action, handler);} catch { /* Unsupported platform action. */ }});
+  }
+  async function loadCatalog() {
+    retry.hidden = true;
+    error.hidden = true;
+    status.textContent = 'Načítání skladeb…';
+    try {
+      const response = await fetch('/api/hudba', {cache: 'no-store'});
+      if (!response.ok) throw new Error('Catalog unavailable');
+      const data = await response.json();
+      if (!Array.isArray(data) || !data.every(track => typeof track.title === 'string' && typeof track.url === 'string' && track.url.startsWith('/hudba/'))) throw new Error('Invalid catalog');
+      tracks = data;
+      renderTracks();
+      const count = tracks.length;
+      document.getElementById('track-count').textContent = count + (count === 1 ? ' skladba' : count >= 2 && count <= 4 ? ' skladby' : ' skladeb');
+      if (count) {
+        loadTrack(0);
+        status.textContent = 'Připraveno k poslechu';
+      } else {
+        status.textContent = 'Zatím tu nejsou žádné skladby';
+      }
+      update();
+    } catch {
+      status.textContent = 'Seznam není dostupný';
+      document.getElementById('track-count').textContent = 'Skladby se nepodařilo načíst';
+      error.textContent = 'Zkontrolujte připojení a zkuste načíst skladby znovu.';
+      error.hidden = false;
+      retry.hidden = false;
+    }
+  }
+  retry.addEventListener('click', loadCatalog);
+  loadCatalog();
+})();
+</script>
+</body>
+</html>
