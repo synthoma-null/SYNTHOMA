@@ -9,7 +9,7 @@
   <meta property="og:title" content="Hudba · SYNTHOMA">
   <meta property="og:description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
   <meta property="og:type" content="website">
-  <link rel="stylesheet" href="/hudba.css?v=3">
+  <link rel="stylesheet" href="/hudba.css?v=4">
 </head>
 <body>
 <main>
@@ -26,6 +26,8 @@
     </section>
     <section aria-labelledby="collection-title">
       <div class="collection-head"><h1 id="collection-title">Stačí poslouchat.</h1><p id="track-count">Načítání…</p></div>
+      <p class="order-hint" id="order-help">Pořadí změníš přetažením za ⠿. Na klávesnici použij šipky ↑ a ↓.</p>
+      <p class="sr-only" id="order-status" role="status"></p>
       <ol id="tracks" aria-label="Seznam skladeb"></ol>
     </section>
   </div>
@@ -46,6 +48,66 @@
   const retry = document.getElementById('retry');
   let current = -1;
   let request = 0;
+  const orderKey = 'synthoma.music.order.v1';
+  let drag = null;
+  function restoreOrder(catalog) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(orderKey));
+      if (!Array.isArray(saved)) return catalog;
+      const remaining = new Map(catalog.map(track => [track.url, track]));
+      const ordered = [];
+      saved.forEach(url => { if (remaining.has(url)) { ordered.push(remaining.get(url)); remaining.delete(url); } });
+      return [...ordered, ...remaining.values()];
+    } catch { return catalog; }
+  }
+  function moveTrack(from, to) {
+    if (from === to || to < 0 || to >= tracks.length) return;
+    const playingUrl = tracks[current]?.url;
+    const [moved] = tracks.splice(from, 1);
+    tracks.splice(to, 0, moved);
+    current = tracks.findIndex(track => track.url === playingUrl);
+    let saved = true;
+    try { localStorage.setItem(orderKey, JSON.stringify(tracks.map(track => track.url))); } catch { saved = false; }
+    renderTracks();
+    update();
+    list.children[to].querySelector('.drag-handle').focus({preventScroll: true});
+    document.getElementById('order-status').textContent = moved.title + ': pozice ' + (to + 1) + ' z ' + tracks.length + (saved ? '.' : '. Pořadí platí pouze do zavření stránky; prohlížeč nepovolil uložení.');
+  }
+  function markDrop() {
+    if (!drag || !drag.started) return;
+    const rows = [...list.children];
+    rows.forEach(row => row.classList.remove('drop-before', 'drop-after'));
+    const others = rows.filter(row => row !== drag.row);
+    drag.to = others.filter(row => {const box = row.getBoundingClientRect(); return drag.y > box.top + box.height / 2;}).length;
+    if (drag.to < others.length) others[drag.to].classList.add('drop-before');
+    else others.at(-1)?.classList.add('drop-after');
+    drag.row.style.transform = 'translateY(' + (drag.y - drag.startY + window.scrollY - drag.scrollY) + 'px)';
+  }
+  function scrollDrag() {
+    if (!drag) return;
+    if (drag.started) {
+      const edge = 72;
+      const speed = drag.y < edge ? -Math.min(12, (edge - drag.y) / 4) : drag.y > innerHeight - edge ? Math.min(12, (drag.y - innerHeight + edge) / 4) : 0;
+      if (speed) window.scrollBy(0, speed);
+      markDrop();
+    }
+    drag.frame = requestAnimationFrame(scrollDrag);
+  }
+  function finishDrag(commit) {
+    if (!drag) return;
+    const finished = drag;
+    drag = null;
+    cancelAnimationFrame(finished.frame);
+    finished.row.style.transform = '';
+    finished.row.classList.remove('dragging');
+    list.classList.remove('is-dragging');
+    [...list.children].forEach(row => row.classList.remove('drop-before', 'drop-after'));
+    if (finished.handle.hasPointerCapture(finished.pointerId)) finished.handle.releasePointerCapture(finished.pointerId);
+    if (commit && finished.started) moveTrack(finished.from, finished.to);
+  }
+  document.addEventListener('keydown', event => {if (event.key === 'Escape' && drag) {event.preventDefault(); finishDrag(false);}});
+  window.addEventListener('blur', () => finishDrag(false));
+  document.addEventListener('visibilitychange', () => {if (document.hidden) finishDrag(false);});
   function renderTracks() {
   list.replaceChildren();
   buttons = tracks.map((track, index) => {
@@ -68,6 +130,37 @@
       else select(index);
     });
     li.append(button);
+    const handle = document.createElement('button');
+    handle.type = 'button';
+    handle.className = 'drag-handle';
+    handle.textContent = '⠿';
+    handle.setAttribute('aria-label', 'Změnit pořadí: ' + track.title);
+    handle.setAttribute('aria-describedby', 'order-help');
+    handle.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      if (!drag) moveTrack(index, index + (event.key === 'ArrowUp' ? -1 : 1));
+    });
+    handle.addEventListener('pointerdown', event => {
+      if (drag || !event.isPrimary || event.button !== 0 || tracks.length < 2) return;
+      handle.setPointerCapture(event.pointerId);
+      drag = {handle, row: li, from: index, to: index, pointerId: event.pointerId, startY: event.clientY, y: event.clientY, scrollY: window.scrollY, started: false, frame: 0};
+      drag.frame = requestAnimationFrame(scrollDrag);
+    });
+    handle.addEventListener('pointermove', event => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      drag.y = event.clientY;
+      if (!drag.started && Math.abs(drag.y - drag.startY) > 6) {
+        drag.started = true;
+        li.classList.add('dragging');
+        list.classList.add('is-dragging');
+      }
+      markDrop();
+    });
+    handle.addEventListener('pointerup', event => {if (drag?.pointerId === event.pointerId) finishDrag(true);});
+    handle.addEventListener('pointercancel', () => finishDrag(false));
+    handle.addEventListener('lostpointercapture', () => finishDrag(false));
+    li.append(handle);
     list.append(li);
     return button;
   });
@@ -81,6 +174,7 @@
     });
     previous.disabled = current <= 0;
     next.disabled = current < 0 || current >= tracks.length - 1;
+    if (current >= 0) document.getElementById('art-index').textContent = String(current + 1).padStart(2, '0') + ' / ' + tracks.length;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = audio.paused ? 'paused' : 'playing';
   }
   function metadata() {
@@ -150,7 +244,7 @@
       if (!response.ok) throw new Error('Catalog unavailable');
       const data = await response.json();
       if (!Array.isArray(data) || !data.every(track => typeof track.title === 'string' && typeof track.url === 'string' && track.url.startsWith('/hudba/'))) throw new Error('Invalid catalog');
-      tracks = data;
+      tracks = restoreOrder(data);
       renderTracks();
       const count = tracks.length;
       document.getElementById('track-count').textContent = count + (count === 1 ? ' skladba' : count >= 2 && count <= 4 ? ' skladby' : ' skladeb');
