@@ -2,14 +2,14 @@
 <html lang="cs">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#010205">
   <title>Hudba · SYNTHOMA</title>
   <meta name="description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
   <meta property="og:title" content="Hudba · SYNTHOMA">
   <meta property="og:description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
   <meta property="og:type" content="website">
-  <link rel="stylesheet" href="/hudba.css?v=2">
+  <link rel="stylesheet" href="/hudba.css?v=3">
 </head>
 <body>
 <main>
@@ -19,7 +19,7 @@
       <div class="art" aria-hidden="true"><span class="art-index" id="art-index">—</span><span class="art-tag">SYNTHOMA · AUDIO</span></div>
       <div class="status" id="status" role="status">Načítání skladeb…</div>
       <h2 id="current-title">Hudba</h2>
-      <audio id="audio" controls preload="metadata" controlslist="nodownload" aria-label="Přehrávač hudby"></audio>
+      <audio id="audio" controls playsinline preload="none" controlslist="nodownload" aria-label="Přehrávač hudby"></audio>
       <div class="transport"><button id="previous" type="button" disabled>← Předchozí</button><button id="next" type="button" disabled>Další →</button><button id="retry" type="button" hidden>Zkusit znovu</button></div>
       <p id="error" class="error" role="alert" hidden></p>
       <noscript><p>Pro načtení skladeb zapněte JavaScript v prohlížeči.</p></noscript>
@@ -85,7 +85,7 @@
   }
   function metadata() {
     if ('mediaSession' in navigator && 'MediaMetadata' in window) {
-      navigator.mediaSession.metadata = new MediaMetadata({title: tracks[current].title, artist: 'SYNTHOMA'});
+      navigator.mediaSession.metadata = new MediaMetadata({title: tracks[current].title, artist: 'SYNTHOMA', artwork: [{src: '/assets/icon_512.png', sizes: '512x512', type: 'image/png'}]});
     }
   }
   function loadTrack(index) {
@@ -124,8 +124,22 @@
     else {status.textContent = 'Dohráno'; update();}
   });
   if ('mediaSession' in navigator) {
-    const handlers = {play: () => select(current), pause: () => audio.pause(), previoustrack: () => select(current - 1), nexttrack: () => select(current + 1)};
+    const seek = (time) => {
+      if (Number.isFinite(audio.duration)) audio.currentTime = Math.max(0, Math.min(time, audio.duration));
+    };
+    const handlers = {
+      play: () => select(current), pause: () => audio.pause(),
+      previoustrack: () => select(current - 1), nexttrack: () => select(current + 1),
+      seekto: (event) => seek(event.seekTime),
+      seekbackward: (event) => seek(audio.currentTime - (event.seekOffset || 10)),
+      seekforward: (event) => seek(audio.currentTime + (event.seekOffset || 10)),
+    };
     Object.entries(handlers).forEach(([action, handler]) => {try {navigator.mediaSession.setActionHandler(action, handler);} catch { /* Unsupported platform action. */ }});
+    const updatePosition = () => {
+      if (!navigator.mediaSession.setPositionState || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+      try { navigator.mediaSession.setPositionState({duration: audio.duration, playbackRate: audio.playbackRate, position: Math.min(audio.currentTime, audio.duration)}); } catch { /* Older media session implementation. */ }
+    };
+    ['loadedmetadata', 'timeupdate', 'seeked', 'ratechange'].forEach(event => audio.addEventListener(event, updatePosition));
   }
   async function loadCatalog() {
     retry.hidden = true;
