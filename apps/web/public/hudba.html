@@ -3,29 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080c12">
+  <meta name="theme-color" content="#010205">
   <title>Hudba · SYNTHOMA</title>
   <meta name="description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
   <meta property="og:title" content="Hudba · SYNTHOMA">
   <meta property="og:description" content="Hudba ze SYNTHOMY. Stačí poslouchat.">
   <meta property="og:type" content="website">
-  <style>
-    :root{color-scheme:dark;--bg:#080c12;--panel:#10171f;--line:#26313d;--text:#edf4f5;--muted:#9baab8;--accent:#91f7e3}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100svh}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 10% 30%,#0d303144,transparent 60%),radial-gradient(ellipse at 95% 90%,#40203a33,transparent 50%)}
-    main{position:relative;max-width:1120px;margin:auto;padding:44px 40px 64px}header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:48px}.brand{font-size:14px;font-weight:700;letter-spacing:.28em}.label{font:11px monospace;letter-spacing:.17em;color:var(--muted);text-transform:uppercase}.brand i{display:inline-block;width:7px;height:7px;background:var(--accent);margin-right:13px;box-shadow:0 0 17px #91f7e377}
-    .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.13fr);gap:64px}.player{min-width:0;position:sticky;top:32px;align-self:start}.art{aspect-ratio:1.35;position:relative;display:grid;place-items:center;overflow:hidden;background:linear-gradient(140deg,#11252a,#0d1019 60%,#231622);border:1px solid #33434a;margin-bottom:28px}.art:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 5px,#080c122d 5px 6px)}
-    .disc{width:64%;aspect-ratio:1;border-radius:50%;position:relative;background:repeating-radial-gradient(circle,#141c23 0 2px,#28353c 3px,#0b1118 4px 7px);box-shadow:0 18px 65px #0008;display:grid;place-items:center;border:1px solid #48615d}.disc:before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 30deg,transparent,#9aeee12b,transparent 45%,#b8779620,transparent 85%)}.disc:after{content:"S";display:grid;place-items:center;width:28%;aspect-ratio:1;border:1px solid #7db8b055;border-radius:50%;background:#142b2c;color:var(--accent);font:28px Georgia,serif;z-index:1}.art-tag{position:absolute;bottom:16px;left:18px;font:10px monospace;letter-spacing:.18em;color:#aac4c6}.art-index{position:absolute;right:18px;top:16px;font:11px monospace;color:#aac4c6}
-    h1{font-size:40px;letter-spacing:-.04em;margin:0 0 10px;font-weight:500}h2{font-size:26px;line-height:1.2;letter-spacing:-.03em;margin:9px 0 22px;font-weight:500;min-height:32px}.status{color:var(--accent);font:11px monospace;letter-spacing:.12em;text-transform:uppercase}audio{width:100%;height:42px;display:block;margin-bottom:16px}.transport{display:flex;gap:10px}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.transport button{border:1px solid var(--line);background:transparent;color:var(--text);padding:12px 16px;font-size:12px;border-radius:3px}.transport button:hover:not(:disabled){border-color:var(--accent)}button:disabled{opacity:.35;cursor:default}.error{font-size:13px;line-height:1.6;color:#ffb6b6}.collection-head{margin-bottom:26px}.collection-head p{margin:0;color:var(--muted);font-size:13px}ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}li{border-bottom:1px solid var(--line)}.track{width:100%;display:flex;align-items:center;gap:18px;text-align:left;padding:20px 14px;border:0;background:transparent;color:var(--text);min-height:64px;border-left:2px solid transparent}.track:hover{background:#ffffff05}.track[aria-current=true]{background:#91f7e30a;border-left-color:var(--accent)}.number{font:11px monospace;color:var(--muted);min-width:18px}.track-name{flex:1;font-size:15px;line-height:1.4}.symbol{color:var(--muted);font-size:12px;width:18px;text-align:center}.track[aria-current=true] .number,.track[aria-current=true] .symbol{color:var(--accent)}footer{margin-top:42px;color:#83939f;font:10px monospace;letter-spacing:.16em}
-    @media(max-width:760px){main{padding:24px 20px 40px}header{margin-bottom:28px;padding-bottom:20px}.layout{grid-template-columns:1fr;gap:32px}.player{position:static}.art{aspect-ratio:2;margin-bottom:22px}.disc{width:43%}h1{font-size:32px}.collection-head{margin-bottom:20px}.track{padding:18px 12px}h2{font-size:25px}footer{margin-top:28px}}
-  </style>
+  <link rel="stylesheet" href="/hudba.css?v=2">
 </head>
 <body>
 <main>
-  <header><span class="brand"><i aria-hidden="true"></i>SYNTHOMA</span><span class="label">Hudba / 01</span></header>
+  <header><a class="brand" href="/" aria-label="SYNTHOMA — hlavní stránka"><span class="wordmark">SYNTHOMA</span><span class="home-label">← Hlavní stránka</span></a><span class="label">Hudba / 01</span></header>
   <div class="layout">
     <section class="player" aria-label="Přehrávač">
-      <div class="art" aria-hidden="true"><span class="art-index" id="art-index">—</span><div class="disc"></div><span class="art-tag">SYNTHOMA · AUDIO</span></div>
+      <div class="art" aria-hidden="true"><span class="art-index" id="art-index">—</span><span class="art-tag">SYNTHOMA · AUDIO</span></div>
       <div class="status" id="status" role="status">Načítání skladeb…</div>
       <h2 id="current-title">Hudba</h2>
       <audio id="audio" controls preload="metadata" controlslist="nodownload" aria-label="Přehrávač hudby"></audio>
@@ -38,7 +29,7 @@
       <ol id="tracks" aria-label="Seznam skladeb"></ol>
     </section>
   </div>
-  <footer>SYNTHOMA / HUDBA</footer>
+  <footer><span>SYNTHOMA / HUDBA</span><span>POZORNOST NENÍ VLASTNICTVÍ.</span></footer>
 </main>
 <script>
 (() => {
