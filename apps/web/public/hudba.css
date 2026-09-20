@@ -94,3 +94,11 @@ footer{flex-wrap:wrap}
 #tracks .drop-before:before{top:-2px}#tracks .drop-after:after{bottom:-2px}
 .is-dragging{overflow-anchor:none;user-select:none}
 @media(max-width:380px){#tracks .track{gap:8px;padding-inline:8px}#tracks .track-name{font-size:17px}}
+.app-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:-20px 0 24px}
+.app-tools button,dialog button{min-height:48px;padding:12px 16px;background:#050910;border:1px solid var(--syn-border-cyan);color:#8ae9ff;font:19px VT323,monospace}
+.app-tools span{font-size:16px;color:var(--syn-text-reading)}
+.offline-notice{padding:14px;border:1px solid var(--syn-yellow);color:#f8e74c;font:16px/1.5 Text03,sans-serif}
+dialog{max-width:min(520px,calc(100% - 32px));max-height:80svh;overflow:auto;padding:24px;background:#050910;color:var(--syn-text-hot);border:1px solid var(--syn-cyan);box-shadow:inset -2px 0 var(--syn-magenta)}
+dialog::backdrop{background:#010205dd}dialog h2{font-size:26px;margin-top:0}dialog h3{font-size:19px;color:#8ae9ff}dialog p{font:17px/1.55 Text03,sans-serif}dialog .install-note{color:var(--syn-text-reading)}
+@media(max-width:760px){.app-tools{margin:0 0 16px}.app-tools button{width:100%}dialog{padding:18px}}
+@media(display-mode:standalone){.app-tools:has(#pwa-status:empty){display:none}}

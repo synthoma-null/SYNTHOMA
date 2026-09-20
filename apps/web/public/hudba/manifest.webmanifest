@@ -1,0 +1,19 @@
+{
+  "id": "/hudba/",
+  "name": "SYNTHOMA Hudba",
+  "short_name": "SYNTHOMA Hudba",
+  "description": "Samostatný hudební přehrávač SYNTHOMA s vlastním pořadím skladeb.",
+  "lang": "cs",
+  "start_url": "/hudba/index.html",
+  "scope": "/hudba/",
+  "display": "standalone",
+  "background_color": "#010205",
+  "theme_color": "#010205",
+  "categories": ["music", "entertainment"],
+  "prefer_related_applications": false,
+  "icons": [
+    {"src": "/hudba/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/hudba/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/hudba/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
