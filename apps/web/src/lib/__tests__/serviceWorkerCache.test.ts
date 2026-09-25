@@ -57,7 +57,7 @@ describe('PWA service worker contract', () => {
 
   it('clones the Workbox network response before the asynchronous cache write', () => {
     // Minifiers rename locals differently across builds; preserve the data-flow check.
-    expect(worker).toMatch(/async fetchAndCachePut\((?<request>[\w$]+)\)\{const (?<response>[\w$]+)=await this\.fetch\(\k<request>\),(?<copy>[\w$]+)=\k<response>\.clone\(\);return this\.waitUntil\(this\.cachePut\(\k<request>,\k<copy>\)\),\k<response>\}/);
+    expect(worker).toMatch(/async fetchAndCachePut\(([\w$]+)\)\{const ([\w$]+)=await this\.fetch\(\1\),([\w$]+)=\2\.clone\(\);return this\.waitUntil\(this\.cachePut\(\1,\3\)\),\2\}/);
   });
 
   it('deletes incompatible SYNTHOMA caches and notifies controlled clients', () => {
