@@ -138,7 +138,7 @@
 .synthoma-intro__brand,
 .synthoma-intro__slogan > span { opacity: 0; transform: translateY(0.75rem); transition: opacity 800ms ease, transform 800ms ease; }
 .synthoma-intro:not([data-phase="0"]) .synthoma-intro__brand,
-.synthoma-intro:is([data-phase="2"], [data-phase="3"], [data-phase="4"]) .synthoma-intro__slogan > span:first-child,
+.synthoma-intro:is([data-phase="2"], [data-phase="3"], [data-phase="4"]) .synthoma-intro__slogan > span:first-of-type,
 .synthoma-intro:is([data-phase="3"], [data-phase="4"]) .synthoma-intro__slogan > span:last-child { opacity: 1; transform: none; }
 .synthoma-intro__slogan > span { position: relative; text-shadow: 0 2px 5px #010205, 0 0 1.1rem color-mix(in srgb, var(--intro-cyan) 55%, transparent), 0.07em 0 color-mix(in srgb, var(--intro-magenta) 45%, transparent); }
 .synthoma-intro__slogan > span::before,
