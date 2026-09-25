@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { isIntroCompleteForDocument } from '../../lib/intro';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type PropsWithChildren } from 'react';
 import {
   PWA_CACHE_PREFIX,
@@ -78,7 +79,8 @@ export default function PwaProvider({ children }: PropsWithChildren) {
   const [installedNotice, setInstalledNotice] = useState(false);
   const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
   const reloadingRef = useRef(false);
-  const criticalInteraction = isPwaCriticalPath(pathname);
+  const criticalInteraction = isPwaCriticalPath(pathname)
+    || (pathname === '/' && !isIntroCompleteForDocument());
 
   const refreshCacheStatus = useCallback(async () => {
     if (!('caches' in window)) {
@@ -288,7 +290,7 @@ export default function PwaProvider({ children }: PropsWithChildren) {
 
   return <PwaContext.Provider value={value}>
     {children}
-    {installPromptVisible ? <InstallPrompt onInstall={install} onDismiss={dismissInstall} /> : null}
+    {installPromptVisible && !criticalInteraction ? <InstallPrompt onInstall={install} onDismiss={dismissInstall} /> : null}
     {updateAvailable && !updateDismissed && !criticalInteraction ? <UpdatePrompt onApply={applyUpdate} onDismiss={() => setUpdateDismissed(true)} /> : null}
     {installedNotice ? <div className="pwa-toast" role="status">SYNTHOMA byla nainstalována.</div> : null}
   </PwaContext.Provider>;

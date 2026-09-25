@@ -1,16 +1,10 @@
+import { hashGameToken, verifyGameToken, gameIdentitySchema, limitGameWrite } from '../../../../../src/server/security/gameIdentity';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../../auth';
 import prisma from '../../../../../src/lib/prisma';
 import { PLAYER_COLORS } from '../../../../../src/game/constants';
 import type { GameState } from '../../../../../src/game/types';
 
-function hashToken(token: string): string {
-  let h = 0;
-  for (let i = 0; i < token.length; i++) {
-    h = (Math.imul(31, h) + token.charCodeAt(i)) | 0;
-  }
-  return h.toString(16);
-}
 
 // GET /api/game/rooms/[code] — poll state
 export async function GET(
@@ -19,7 +13,7 @@ export async function GET(
 ) {
   const { code } = await params;
   const session = await auth();
-  const clientToken = req.nextUrl.searchParams.get('ct') ?? undefined;
+  const clientToken = req.headers.get('X-Game-Token') ?? undefined;
 
   const room = await (prisma as unknown as import('@prisma/client').PrismaClient).gameRoom.findUnique({
     where: { code },
@@ -34,7 +28,7 @@ export async function GET(
     if (session?.user?.id && p.userId === session.user.id) {
       mySeatIndex = p.seatIndex; break;
     }
-    if (clientToken && p.clientTokenHash && p.clientTokenHash === hashToken(clientToken)) {
+    if (clientToken && p.clientTokenHash && verifyGameToken(clientToken, p.clientTokenHash)) {
       mySeatIndex = p.seatIndex; break;
     }
   }
@@ -72,12 +66,12 @@ export async function POST(
 ) {
   const { code } = await params;
   const session = await auth();
-  const body = await req.json() as { nickname: string; clientToken?: string };
-  const { nickname, clientToken } = body;
-
-  if (!nickname?.trim()) {
-    return NextResponse.json({ error: 'Nickname required' }, { status: 400 });
-  }
+  const limited = await limitGameWrite(req.headers, 'join', 15);
+  if (limited) return limited;
+  const parsed = gameIdentitySchema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: 'Invalid player identity' }, { status: 400 });
+  const { nickname, clientToken } = parsed.data;
+  if (!session?.user?.id && !clientToken) return NextResponse.json({ error: 'Player identity required' }, { status: 401 });
 
   const pc = prisma as unknown as import('@prisma/client').PrismaClient;
 
@@ -87,6 +81,8 @@ export async function POST(
   });
 
   if (!room) return NextResponse.json({ error: 'Room not found' }, { status: 404 });
+  const previousPlayer = room.players.find(player => (session?.user?.id && player.userId === session.user.id) || (clientToken && verifyGameToken(clientToken, player.clientTokenHash)));
+  if (previousPlayer) return NextResponse.json({ playerId: previousPlayer.id, seatIndex: previousPlayer.seatIndex, color: previousPlayer.color });
   if (room.status !== 'lobby') return NextResponse.json({ error: 'Game already started' }, { status: 400 });
   if (room.players.length >= room.maxPlayers) return NextResponse.json({ error: 'Room full' }, { status: 400 });
 
@@ -113,25 +109,15 @@ export async function POST(
     ],
   };
 
-  const player = await pc.gameRoomPlayer.create({
-    data: {
-      roomId: room.id,
-      userId: session?.user?.id ?? null,
-      clientTokenHash: clientToken ? hashToken(clientToken) : null,
-      nickname,
-      seatIndex,
-      color,
-      isHost: false,
-    },
+  const player = await pc.$transaction(async tx => {
+    const changed = await tx.gameRoom.updateMany({
+      where: { id: room.id, status: 'lobby', stateVersion: room.stateVersion },
+      data: { stateJson: updatedState as unknown as import('@prisma/client').Prisma.InputJsonValue, stateVersion: { increment: 1 } },
+    });
+    if (changed.count !== 1) return null;
+    return tx.gameRoomPlayer.create({ data: { roomId: room.id, userId: session?.user?.id ?? null,
+      clientTokenHash: clientToken ? hashGameToken(clientToken) : null, nickname, seatIndex, color, isHost: false } });
   });
-
-  await pc.gameRoom.update({
-    where: { id: room.id },
-    data: {
-      stateJson: updatedState as unknown as import('@prisma/client').Prisma.InputJsonValue,
-      stateVersion: { increment: 1 },
-    },
-  });
-
+  if (!player) return NextResponse.json({ error: 'Room changed. Try joining again.' }, { status: 409 });
   return NextResponse.json({ playerId: player.id, seatIndex, color });
 }

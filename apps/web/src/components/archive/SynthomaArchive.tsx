@@ -10,6 +10,7 @@ import type { WhisperData } from '../whispers/WhisperCard';
 import ArchiveDetailDialog from './ArchiveDetailDialog';
 import ArchiveRecordCard from './ArchiveRecordCard';
 import { useAccess } from '../access/AccessProvider';
+import { normalizeSearch } from '../../lib/contentSearch';
 import { useLang } from '../../lib/LangContext';
 import type { TKey } from '../../lib/i18n';
 import ArchiveBookGrid from './ArchiveBookGrid';
@@ -36,6 +37,8 @@ const WHISPER_SORTS = ['random', 'resonance', 'new'] as const;
 
 export default function SynthomaArchive({ initialCards, library }: SynthomaArchiveProps) {
   const { t, lang } = useLang();
+  const [query, setQuery] = useState('');
+  const [hideSpoilers, setHideSpoilers] = useState(false);
   const [openCardId, setOpenCardId] = useState<string | null>(null);
   const [whisperFilter, setWhisperFilter] = useState<string>('all');
   const [whisperSort, setWhisperSort] = useState<string>('random');
@@ -111,8 +114,16 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
           visibility: resolveArchiveCardVisibility(card, access, Boolean(access)),
         };
       })
+      .filter(entry => {
+        if (entry.visibility === 'hidden') return false;
+        const requiredChapter = entry.card.unlockChapter ?? entry.card.access?.requiredChapterId;
+        if (hideSpoilers && ((entry.card.spoilerLevel ?? 0) > 0 || requiredChapter) && !snapshot.progress.some(item => item.chapterId === requiredChapter && item.completed)) return false;
+        const publicText = `${entry.card.title} ${entry.card.teaser} ${(entry.card.tags ?? []).join(' ')}`;
+        const text = entry.visibility === 'full' ? `${publicText} ${entry.card.body.join(' ')} ${(entry.card.details ?? []).join(' ')}` : publicText;
+        return normalizeSearch(text).includes(normalizeSearch(query));
+      })
       .sort((a, b) => (a.card.order ?? 999) - (b.card.order ?? 999));
-  }, [bookFilter, cards, getCachedAccess]);
+  }, [bookFilter, cards, getCachedAccess, query, hideSpoilers, snapshot.progress]);
 
   const completedChapters = snapshot.progress.filter((p) => p.completed);
   const currentChapter = snapshot.progress.find((p) => !p.completed && p.progressPercent && p.progressPercent > 0);
@@ -202,6 +213,13 @@ export default function SynthomaArchive({ initialCards, library }: SynthomaArchi
 
         <section className="synthoma-archive__section" aria-label={t('archive.records.aria')}>
           <h2 className="synthoma-archive__section-title">{t('archive.records.title')}</h2>
+          <div className="content-search">
+            <label>{lang === 'en' ? 'Search characters, topics and records' : 'Hledat postavy, témata a záznamy'}
+              <input type="search" value={query} onChange={event => setQuery(event.target.value)} />
+            </label>
+            <label className="content-search__toggle"><input type="checkbox" checked={hideSpoilers} onChange={event => setHideSpoilers(event.target.checked)} />{lang === 'en' ? 'Hide spoilers from unread chapters' : 'Skrýt spoilery z nepřečtených kapitol'}</label>
+          </div>
+          {displayCards.length === 0 && <p role="status">{lang === 'en' ? 'No matching records.' : 'Žádné odpovídající záznamy.'}</p>}
           <div className="synthoma-archive__book-filters" role="group" aria-label={lang === 'en' ? 'Filter records by book' : 'Filtrovat záznamy podle knihy'}>
             {([
               ['all', lang === 'en' ? 'ALL' : 'VŠE'],

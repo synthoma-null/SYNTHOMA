@@ -64,7 +64,6 @@ export default function SynthomaPortalRoot({ children }: PropsWithChildren) {
   return (
     <div
       className="synthoma-portal-root"
-      data-theme={context.theme}
       data-synthoma-theme={context.theme}
       data-synthoma-text-scale={context.textScale}
       data-synthoma-density={context.density}

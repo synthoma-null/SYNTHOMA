@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { PWA_VERSION } from '../pwa';
 
 describe('PWA service worker contract', () => {
   const worker = fs.readFileSync(path.join(process.cwd(), 'public/sw.js'), 'utf8');
@@ -7,7 +8,7 @@ describe('PWA service worker contract', () => {
   const providerSource = fs.readFileSync(path.join(process.cwd(), 'src/components/pwa/PwaProvider.tsx'), 'utf8');
   const layoutSource = fs.readFileSync(path.join(process.cwd(), 'app/layout.tsx'), 'utf8');
   const pwaCss = fs.readFileSync(path.join(process.cwd(), 'src/styles/pwa.css'), 'utf8');
-  const nextConfig = fs.readFileSync(path.join(process.cwd(), 'next.config.ts'), 'utf8');
+  const nextConfig = fs.readFileSync(path.join(process.cwd(), 'next.config.ts'), 'utf8').replace(/\r\n/g, '\n');
 
   it('generates one versioned Workbox worker with explicit runtime caches', () => {
     expect(worker).toContain('workbox:core');
@@ -20,18 +21,19 @@ describe('PWA service worker contract', () => {
     expect(buildSource).toContain('cleanupOutdatedCaches: true');
     expect(buildSource).toContain('navigationPreload: true');
     expect(buildSource).toContain('skipWaiting: true');
-    expect(buildSource).toContain("const PWA_VERSION = '1.0.0-pwa.6'");
-    expect(worker).toContain('1.0.0-pwa.6');
+    expect(buildSource).toContain("fs.readFile('src/lib/pwa.ts'");
+    expect(worker).toContain(PWA_VERSION);
     for (const asset of [
       '/assets/background_logo.png',
       '/assets/favicon.ico',
-      '/assets/og-synthoma.png',
       '/assets/icon_256.png',
       '/assets/icon_512.png',
       '/assets/icon_1024.png',
     ]) {
       expect(buildSource).toContain(`{ url: '${asset}', revision: suffix }`);
     }
+    expect(worker).not.toContain('/assets/og-synthoma.png');
+    expect(buildSource).toContain('globPatterns: shellCss');
   });
 
   it('keeps private routes and every API response network-only', () => {
@@ -54,7 +56,8 @@ describe('PWA service worker contract', () => {
   });
 
   it('clones the Workbox network response before the asynchronous cache write', () => {
-    expect(worker).toMatch(/await this\.fetch\(t\),s=e\.clone\(\);return this\.waitUntil\(this\.cachePut\(t,s\)\),e/);
+    // Minifiers rename locals differently across builds; preserve the data-flow check.
+    expect(worker).toMatch(/async fetchAndCachePut\(([\w$]+)\)\{const ([\w$]+)=await this\.fetch\(\1\),([\w$]+)=\2\.clone\(\);return this\.waitUntil\(this\.cachePut\(\1,\3\)\),\2\}/);
   });
 
   it('deletes incompatible SYNTHOMA caches and notifies controlled clients', () => {

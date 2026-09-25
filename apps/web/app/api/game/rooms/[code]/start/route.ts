@@ -1,3 +1,4 @@
+import { verifyGameToken, gameStartSchema, limitGameWrite } from '../../../../../../src/server/security/gameIdentity';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../../../auth';
 import prisma from '../../../../../../src/lib/prisma';
@@ -7,13 +8,6 @@ import type { GameState } from '../../../../../../src/game/types';
 type PC = import('@prisma/client').PrismaClient;
 const pc = prisma as unknown as PC;
 
-function hashToken(token: string): string {
-  let h = 0;
-  for (let i = 0; i < token.length; i++) {
-    h = (Math.imul(31, h) + token.charCodeAt(i)) | 0;
-  }
-  return h.toString(16);
-}
 
 // POST /api/game/rooms/[code]/start — host starts the game
 export async function POST(
@@ -22,8 +16,11 @@ export async function POST(
 ) {
   const { code } = await params;
   const session = await auth();
-  const body = await req.json().catch(() => ({})) as { playerId?: string; clientToken?: string };
-  const { playerId, clientToken } = body;
+  const limited = await limitGameWrite(req.headers, 'start');
+  if (limited) return limited;
+  const parsed = gameStartSchema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: 'Invalid player identity' }, { status: 400 });
+  const { playerId, clientToken } = parsed.data;
 
   const room = await pc.gameRoom.findUnique({
     where: { code },
@@ -39,7 +36,7 @@ export async function POST(
     hostPlayer?.userId === session.user.id || room.hostUserId === session.user.id
   );
   const isHostByToken = clientToken && hostPlayer?.clientTokenHash &&
-    hostPlayer.clientTokenHash === hashToken(clientToken);
+    verifyGameToken(clientToken, hostPlayer.clientTokenHash);
   const isHostByPlayerId = playerId && hostPlayer?.id === playerId && (isHostBySession || isHostByToken);
 
   const isHost = isHostBySession || isHostByToken || isHostByPlayerId;
@@ -56,8 +53,8 @@ export async function POST(
     })),
   });
 
-  await pc.gameRoom.update({
-    where: { id: room.id },
+  const started = await pc.gameRoom.updateMany({
+    where: { id: room.id, status: 'lobby', stateVersion: room.stateVersion },
     data: {
       status: 'playing',
       startedAt: new Date(),
@@ -66,5 +63,6 @@ export async function POST(
     },
   });
 
+  if (started.count !== 1) return NextResponse.json({ error: 'Room changed. Try again.' }, { status: 409 });
   return NextResponse.json({ started: true, stateVersion: room.stateVersion + 1 });
 }

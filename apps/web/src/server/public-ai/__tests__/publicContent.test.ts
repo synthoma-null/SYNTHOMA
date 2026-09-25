@@ -5,8 +5,11 @@ import { bookApi, booksApi, chapterApi, chaptersApi } from '../apiHandlers';
 import { cardApi, cardsApi } from '../cardHandlers';
 import { getPublicArchive, getPublicAuthor, getPublicCard, getPublicCards, getPublicChapterDocument, getPublicChapters } from '../contentService';
 import { archiveMarkdown, authorMarkdown, bookMarkdown, chapterMarkdown, siteMarkdown } from '../markdown';
-import { resetPublicRateLimitsForTests } from '../rateLimit';
+import { resetPublicRateLimitsForTests } from './helpers/rateLimitStore';
+jest.mock('../../security/rateLimit', () => ({ ...jest.requireActual('../../security/rateLimit'), consumeRateLimit: require('./helpers/rateLimitStore').consumeRateLimit }));
 import { resolveCardPublicVisibility } from '../visibility';
+import { chapterMarkdownRoute } from '../markdownHandlers';
+import { GET as fullTextExport } from '../../../../app/llms-full.txt/route';
 
 function request(path: string, headers?: HeadersInit) {
   return new Request(`https://www.synthoma.cz${path}`, headers ? { headers } : undefined);
@@ -99,9 +102,21 @@ describe('public content visibility', () => {
   it('never exposes locked chapter text or hidden cards through detail APIs', async () => {
     const locked = await chapterApi(request('/api/public/v1/chapters/0-4-defragmentation'), '0-4-defragmentation');
     expect(await locked.json()).toMatchObject({ visibility: 'publicMetadata', data: { text: null, markdown: null } });
-    const hidden = cardApi(request('/api/public/v1/cards/tutorial_00_welcome'), 'tutorial_00_welcome');
+    const hidden = await cardApi(request('/api/public/v1/cards/tutorial_00_welcome'), 'tutorial_00_welcome');
     expect(hidden.status).toBe(404);
-    const page = cardsApi(request('/api/public/v1/cards?limit=1'));
+    const page = await cardsApi(request('/api/public/v1/cards?limit=1'));
     expect((await page.json()).data.items).toHaveLength(1);
+  });
+
+  it('does not cache full chapter bodies after publication rules can change', async () => {
+    const responses = await Promise.all([
+      chapterApi(request('/api/public/v1/chapters/0-inf-restart'), '0-inf-restart'),
+      chapterMarkdownRoute('cs', ['0-inf-restart.md']),
+      fullTextExport(),
+    ]);
+    for (const response of responses) {
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Cache-Control')).toBe('private, no-store');
+    }
   });
 });

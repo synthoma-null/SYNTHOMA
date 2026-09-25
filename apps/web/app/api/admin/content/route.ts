@@ -134,13 +134,9 @@ async function contentSnapshot() {
   };
 }
 
-export async function GET(req: NextRequest) {
-  if (!(await requireAdmin())) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  const chapterId = req.nextUrl.searchParams.get('chapterId')?.trim();
-  if (!chapterId) return NextResponse.json(await contentSnapshot());
-
+async function chapterDetail(chapterId: string) {
   const managed = await getManagedChapter(chapterId);
-  if (!managed) return NextResponse.json({ error: 'Kapitola nebyla nalezena.' }, { status: 404 });
+  if (!managed) return null;
   let bodyHtml = managed.bodyHtml;
   let bodyHtmlEn = managed.bodyHtmlEn;
   if (!bodyHtml && !managed.isCustom) {
@@ -152,7 +148,7 @@ export async function GET(req: NextRequest) {
   } else if (bodyHtml) {
     bodyHtml = (await readManagedChapterDocument(managed, 'cs')).bodyHtml;
   }
-  return NextResponse.json({
+  return {
     id: managed.chapter.id,
     bookId: managed.bookId,
     title: managed.chapter.fullTitle,
@@ -167,7 +163,28 @@ export async function GET(req: NextRequest) {
     bodyHtml: bodyHtml ?? '',
     bodyHtmlEn: bodyHtmlEn ?? '',
     isCustom: managed.isCustom,
-  });
+  };
+}
+
+
+export async function GET(req: NextRequest) {
+  if (!(await requireAdmin())) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  const chapterId = req.nextUrl.searchParams.get('chapterId')?.trim();
+  if (!chapterId) return NextResponse.json(await contentSnapshot());
+  if (req.nextUrl.searchParams.get('history') === '1') {
+    const revisions = await prisma.adminAuditLog.findMany({ where: { action: 'content_chapter_revision', reference: chapterId },
+      select: { id: true, createdAt: true }, orderBy: { createdAt: 'desc' }, take: 50 });
+    return NextResponse.json({ revisions });
+  }
+  const revisionId = req.nextUrl.searchParams.get('revisionId');
+  if (revisionId) {
+    const revision = await prisma.adminAuditLog.findFirst({ where: { id: revisionId, action: 'content_chapter_revision', reference: chapterId } });
+    const metadata = revision?.metadata as { snapshot?: object } | null;
+    if (!metadata?.snapshot) return NextResponse.json({ error: 'Verze nebyla nalezena.' }, { status: 404 });
+    return NextResponse.json({ ...metadata.snapshot, visibility: 'hidden' });
+  }
+  const detail = await chapterDetail(chapterId);
+  return detail ? NextResponse.json(detail) : NextResponse.json({ error: 'Kapitola nebyla nalezena.' }, { status: 404 });
 }
 
 export async function POST(req: NextRequest) {
@@ -194,7 +211,7 @@ export async function POST(req: NextRequest) {
           language: data.language ?? 'cs',
           sortOrder: data.sortOrder ?? 100,
           status: data.status ?? 'ongoing',
-          visibility: data.visibility ?? 'published',
+          visibility: 'hidden',
           accessPolicy: data.accessPolicy === 'inherit' ? 'free' : data.accessPolicy ?? 'free',
           createdById: adminId,
           updatedById: adminId,
@@ -225,11 +242,11 @@ export async function POST(req: NextRequest) {
           ordinal: cleanOptional(data.ordinal) ?? null,
           summary: cleanOptional(data.summary) ?? null,
           sortOrder: data.sortOrder ?? 0,
-          visibility: data.visibility ?? 'published',
+          visibility: 'hidden',
           accessPolicy: data.accessPolicy === 'inherit' ? 'free' : data.accessPolicy ?? 'free',
           mnemCost: data.accessPolicy === 'entitlement' ? data.mnemCost ?? 64 : null,
           bodyHtml,
-          bodyHtmlEn: sanitizedBody(data.bodyHtmlEn) ?? null,
+          bodyHtmlEn: data.bodyHtmlEn?.trim() ? sanitizedBody(data.bodyHtmlEn) ?? null : null,
           createdById: adminId,
           updatedById: adminId,
         },
@@ -290,14 +307,19 @@ export async function PATCH(req: NextRequest) {
       if (!catalog.books.some((book) => book.id === data.bookId)) return NextResponse.json({ error: 'Cílová kniha neexistuje.' }, { status: 400 });
     }
     let bodyHtml: string | undefined;
-    let bodyHtmlEn: string | undefined;
+    let bodyHtmlEn: string | null | undefined;
     try {
       bodyHtml = sanitizedBody(data.bodyHtml);
-      bodyHtmlEn = sanitizedBody(data.bodyHtmlEn);
+      bodyHtmlEn = data.bodyHtmlEn === undefined ? undefined : data.bodyHtmlEn.trim() ? sanitizedBody(data.bodyHtmlEn) : null;
     } catch {
       return NextResponse.json({ error: 'HTML kapitoly nesmí být prázdné ani obsahovat pouze zakázané prvky.' }, { status: 400 });
     }
+    const previousVersion = await chapterDetail(data.id);
     await prisma.$transaction(async (tx) => {
+      if (previousVersion) await tx.adminAuditLog.create({ data: {
+        actorUserId: adminId, targetUserId: adminId, action: 'content_chapter_revision', reference: data.id,
+        metadata: { snapshot: JSON.parse(JSON.stringify(previousVersion)) },
+      } });
       await tx.managedChapter.upsert({
         where: { id: data.id },
         create: {

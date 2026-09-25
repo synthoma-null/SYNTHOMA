@@ -8,18 +8,18 @@ import {
   getPublicChapterDocument,
   getPublicChapters,
 } from './contentService';
-import { localeFromRequest, paginate, publicEnvelope, publicError, publicJson } from './response';
+import { localeFromRequest, paginate, publicEnvelope, publicError, publicJson, publicNoStoreJson } from './response';
 import { enforcePublicRateLimit } from './rateLimit';
 
-function localeOrError(request: Request): PublicLocale | Response {
-  const limited = enforcePublicRateLimit(request, 'read');
+async function localeOrError(request: Request): Promise<PublicLocale | Response> {
+  const limited = await enforcePublicRateLimit(request, 'read');
   if (limited) return limited;
   const locale = localeFromRequest(request);
   return locale ?? publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
 }
 
 export async function siteApi(request: Request): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   return publicJson(request, publicEnvelope({
     id: 'synthoma', locale, title: 'SYNTHOMA', canonicalUrl: absolutePublicUrl('/'), visibility: 'publicFull',
@@ -35,7 +35,7 @@ export async function siteApi(request: Request): Promise<Response> {
 }
 
 export async function authorApi(request: Request): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const author = await getPublicAuthor(locale);
   return publicJson(request, publicEnvelope({
@@ -46,7 +46,7 @@ export async function authorApi(request: Request): Promise<Response> {
 }
 
 export async function booksApi(request: Request): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const books = await getPublicBooks(locale);
   return publicJson(request, publicEnvelope({
@@ -57,7 +57,7 @@ export async function booksApi(request: Request): Promise<Response> {
 }
 
 export async function bookApi(request: Request, id: string): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const book = await getPublicBook(locale, id);
   if (!book) return publicError(request, 404, 'NOT_FOUND', 'Unknown public book.');
@@ -77,7 +77,7 @@ function chapterMetadata(chapter: Awaited<ReturnType<typeof getPublicChapterDocu
 }
 
 export async function chaptersApi(request: Request): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const chapters = await getPublicChapters(locale);
   const page = paginate(request, chapters.map(chapterMetadata));
@@ -90,11 +90,11 @@ export async function chaptersApi(request: Request): Promise<Response> {
 }
 
 export async function chapterApi(request: Request, id: string): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const chapter = await getPublicChapterDocument(id, locale);
   if (!chapter) return publicError(request, 404, 'NOT_FOUND', 'Unknown chapter.');
-  return publicJson(request, publicEnvelope({
+  return publicNoStoreJson(request, publicEnvelope({
     id: chapter.id, locale, title: chapter.title, canonicalUrl: chapter.canonicalUrl, visibility: chapter.visibility, updatedAt: chapter.updatedAt,
     data: {
       status: chapter.status, sourceLocale: chapter.sourceLocale, summary: chapter.summary,
@@ -122,7 +122,7 @@ function archiveData(entry: ReturnType<typeof getPublicArchive>[number]) {
 }
 
 export async function archiveApi(request: Request): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const page = paginate(request, getPublicArchive(locale).map(archiveData));
   if (!page) return publicError(request, 400, 'INVALID_CURSOR', 'The pagination cursor is invalid.');
@@ -134,7 +134,7 @@ export async function archiveApi(request: Request): Promise<Response> {
 }
 
 export async function archiveEntryApi(request: Request, id: string): Promise<Response> {
-  const locale = localeOrError(request);
+  const locale = await localeOrError(request);
   if (locale instanceof Response) return locale;
   const entry = getPublicArchiveEntry(id, locale);
   if (!entry) return publicError(request, 404, 'NOT_FOUND', 'Unknown or private archive entry.');

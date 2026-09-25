@@ -12,16 +12,16 @@ export interface LibraryChapterListProps {
 }
 
 export default function LibraryChapterList({ collection, progressByChapterId, onLockedClick }: LibraryChapterListProps) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <ol className="library-chapter-list" aria-label={`Kapitoly sbírky ${collection.title}`}>
       {collection.chapters.map((ch) => {
         const progress = progressByChapterId[ch.id];
         const isLocked = ch.access === 'locked';
         const isUnavailable = ch.access === 'unavailable';
-        const href = `/chapter/${encodeURIComponent(ch.id)}`;
-        const isContinue = progress && !progress.completed && progress.percent > 0;
-        const isCompleted = progress?.completed;
+        const href = `/chapter/${encodeURIComponent(ch.id)}${lang === 'en' ? '?locale=en' : ''}`;
+        const isContinue = progress && !progress.completed && progress.percent > 0 && progress.percent < 100;
+        const isCompleted = progress?.completed || (progress?.percent ?? 0) >= 100;
 
         const lockedLabel = ch.mnemCost ? `${ch.mnemCost} MNEM` : t('action.locked');
 

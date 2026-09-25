@@ -1,21 +1,17 @@
+import { hashGameToken, createRoomSchema, limitGameWrite, newRoomCode } from '../../../../src/server/security/gameIdentity';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../auth';
 import prisma from '../../../../src/lib/prisma';
 import { createGameState } from '../../../../src/game/setup';
 import { ROOM_CODE_LENGTH, PLAYER_COLORS } from '../../../../src/game/constants';
 
-function generateRoomCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({ length: ROOM_CODE_LENGTH }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-}
-
 async function uniqueRoomCode(): Promise<string> {
-  let code = generateRoomCode();
+  let code = newRoomCode(ROOM_CODE_LENGTH);
   let attempts = 0;
   while (attempts < 10) {
     const exists = await prisma.gameRoom.findUnique({ where: { code } });
     if (!exists) return code;
-    code = generateRoomCode();
+    code = newRoomCode(ROOM_CODE_LENGTH);
     attempts++;
   }
   return code;
@@ -24,12 +20,12 @@ async function uniqueRoomCode(): Promise<string> {
 // POST /api/game/rooms — create a new room
 export async function POST(req: NextRequest) {
   const session = await auth();
-  const body = await req.json() as { nickname: string; mode?: string; clientToken?: string };
-  const { nickname, mode = 'party', clientToken } = body;
-
-  if (!nickname?.trim()) {
-    return NextResponse.json({ error: 'Nickname required' }, { status: 400 });
-  }
+  const limited = await limitGameWrite(req.headers, 'create', 5);
+  if (limited) return limited;
+  const parsed = createRoomSchema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: 'Neplatná přezdívka, režim nebo identita hráče.' }, { status: 400 });
+  const { nickname, mode, clientToken } = parsed.data;
+  if (!session?.user?.id && !clientToken) return NextResponse.json({ error: 'Player identity required' }, { status: 401 });
 
   const code = await uniqueRoomCode();
   const color = PLAYER_COLORS[0];
@@ -50,7 +46,7 @@ export async function POST(req: NextRequest) {
       players: {
         create: {
           ...(session?.user?.id ? { userId: session.user.id } : {}),
-          ...(clientToken ? { clientTokenHash: hashToken(clientToken) } : {}),
+          ...(clientToken ? { clientTokenHash: hashGameToken(clientToken) } : {}),
           nickname,
           seatIndex: 0,
           color,
@@ -86,12 +82,4 @@ export async function GET() {
   });
 
   return NextResponse.json({ rooms });
-}
-
-function hashToken(token: string): string {
-  let h = 0;
-  for (let i = 0; i < token.length; i++) {
-    h = (Math.imul(31, h) + token.charCodeAt(i)) | 0;
-  }
-  return h.toString(16);
 }

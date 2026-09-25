@@ -31,8 +31,8 @@ function bodyError(request: Request, error: unknown): Response {
   return publicError(request, 400, 'INVALID_REQUEST', 'Request does not match the public Cyklus schema.');
 }
 
-export function cyklusRules(request: Request): Response {
-  const limited = enforcePublicRateLimit(request, 'read');
+export async function cyklusRules(request: Request): Promise<Response> {
+  const limited = await enforcePublicRateLimit(request, 'read');
   if (limited) return limited;
   const locale = resolvePublicLocale(new URL(request.url).searchParams.get('locale'));
   if (!locale) return publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
@@ -44,7 +44,7 @@ export function cyklusRules(request: Request): Response {
       stats: ['energy', 'memory', 'bond', 'control'],
       objective: locale === 'cs' ? 'Udrz vsechny staty nad 0 a pod 100.' : 'Keep every stat above 0 and below 100.',
       choices: ['yes', 'no'],
-      isolation: 'No account, MNEM, entitlements, collection, progression or database writes.',
+      isolation: 'No account, MNEM, entitlements, collection or progression changes. Only shared abuse-prevention counters are persisted.',
       stateTokenTtlMinutes: 60,
     },
     links: { start: absolutePublicUrl('/api/public/v1/cyklus/run'), choose: absolutePublicUrl('/api/public/v1/cyklus/choice'), cards: absolutePublicUrl('/cards') },
@@ -52,7 +52,7 @@ export function cyklusRules(request: Request): Response {
 }
 
 export async function startCyklusRun(request: Request): Promise<Response> {
-  const limited = enforcePublicRateLimit(request, 'run');
+  const limited = await enforcePublicRateLimit(request, 'run');
   if (limited) return limited;
   try {
     const parsed = startSchema.safeParse(await parseBody(request));
@@ -81,7 +81,7 @@ function tokenError(request: Request, error: PublicTokenError): Response {
 }
 
 export async function chooseCyklus(request: Request): Promise<Response> {
-  const limited = enforcePublicRateLimit(request, 'choice');
+  const limited = await enforcePublicRateLimit(request, 'choice');
   if (limited) return limited;
   try {
     const parsed = choiceSchema.safeParse(await parseBody(request));

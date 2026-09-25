@@ -2,6 +2,8 @@
 
 Next.js (App Router) + React aplikace pro interaktivní cyberpunk čtečku.
 
+Aktuální stav: [audit](docs/AUDIT-2026-09-08.md) a [provedené opravy včetně podmínek nasazení](docs/REPAIRS-2026-09-08.md). Nastavení obnovy hesla a důvěryhodné proxy popisuje `apps/web/.env.example`.
+
 > **Monorepo poznámka**: Repo je monorepo jen strukturou (pro budoucí rozšíření). Zatím se všechna instalace a práce děje v `apps/web/`.
 
 ---
@@ -18,7 +20,7 @@ npm run dev
 # → http://localhost:3000
 ```
 
-**Doporučená verze Node**: 20 LTS (ověř v `package.json` engines nebo nastav `.nvmrc`)
+**Doporučená verze Node**: 24 (ověř v `package.json` engines nebo nastav `.nvmrc`)
 
 ---
 
@@ -26,12 +28,12 @@ npm run dev
 
 - **Domů**: [http://localhost:3000/](http://localhost:3000/)
 - **Knihovna**: [http://localhost:3000/books](http://localhost:3000/books)
-- **Kapitola (SEO URL)**: `http://localhost:3000/chapter/0-inf-restart` → přesměruje do čtečky  
+- **Kapitola (SEO URL)**: `http://localhost:3000/chapter/0-inf-restart` → hlavní stránka kapitoly se čtečkou
 - **Čtečka (přímý přístup)**: `http://localhost:3000/reader?chapter=0-inf-restart`  
   _Legacy způsob (stále funkční):_ `http://localhost:3000/reader?u=/books/SYNTHOMA-NULL/0-∞%20%5BRESTART%5D.html`
 - **Archiv**: [http://localhost:3000/archive](http://localhost:3000/archive)
 - **Landing**: [http://localhost:3000/landing-intro](http://localhost:3000/landing-intro)
-- **Katalog obsahu**: `apps/web/src/content/catalog.ts` ← zdroj pravdy pro knihy a kapitoly
+- **Katalog obsahu**: `apps/web/src/content/catalog.ts` ← výchozí katalog; publikované úpravy spravuje databáze ManagedBook/ManagedChapter
 - **Generovaný manifest knih**: `apps/web/public/books/manifest.json` ← needitovat ručně
 - **Verze balíčků**: `apps/web/package.json` ← aktuální dependencies
 
@@ -41,7 +43,8 @@ npm run dev
 
 ```bash
 cd apps/web
-npm run build    # prisma generate + next build
+npx prisma migrate deploy  # aplikovat migrace na zamýšlenou databázi před nasazením aplikace
+npm run build    # lint, kontrola obsahu, ikony, Prisma klient, Next.js a service worker
 npm start        # produkční server na port 3000
 ```
 
@@ -59,7 +62,7 @@ SYNTHOMACZ/
 │   │   ├── archive/             # /archive
 │   │   ├── autor/               # /autor
 │   │   ├── books/               # /books knihovna
-│   │   ├── chapter/[id]/        # /chapter/<id> SEO URL → redirect na /reader
+│   │   ├── chapter/[id]/        # /chapter/<id> hlavní stránka kapitoly se čtečkou
 │   │   ├── components/          # Sdílené komponenty
 │   │   ├── landing-intro/       # /landing-intro (standalone page)
 │   │   ├── login/               # /login (noindex)
@@ -134,7 +137,7 @@ Máte prázdný repo: https://github.com/synthoma-null/SYNTHOMA.git
 
 **Před prvním commitem:**
 1. ✅ Zkontroluj, že máš `.gitignore` (měl by ignorovat `.env.local`, `node_modules`, `.next`)
-2. ✅ Doporučená Node verze: přidej `.nvmrc` s obsahem `20` (nebo tvoje LTS verze)
+2. ✅ Doporučená Node verze: přidej `.nvmrc` s obsahem `24` (nebo tvoje LTS verze)
 
 ```bash
 # V kořeni projektu
@@ -606,4 +609,3 @@ Reference stylů:
 
 - `apps/web/src/styles/components.css` – sekce „TEXT FX (utilities)“
 - `apps/web/src/styles/effects.css` – sekce „Chapter Text Effects“ a CRT/overlay
-

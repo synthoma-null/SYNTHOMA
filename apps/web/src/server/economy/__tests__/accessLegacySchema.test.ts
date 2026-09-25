@@ -9,6 +9,8 @@ function schemaError(code: 'P2021' | 'P2022') {
 
 function clientWithEntitlements(entitlementFindMany: jest.Mock) {
   return {
+    managedBook: { findMany: jest.fn().mockResolvedValue([]) },
+    managedChapter: { findMany: jest.fn().mockResolvedValue([]) },
     user: { findUnique: jest.fn().mockResolvedValue({ role: 'user' }) },
     entitlement: { findMany: entitlementFindMany },
     readingProgress: { findMany: jest.fn().mockResolvedValue([]) },

@@ -243,7 +243,7 @@ export async function getManagedContentCatalog(
   client?: ManagedContentClient,
 ): Promise<ManagedContentCatalog> {
   // Jednotkové testy statického katalogu nesmějí potřebovat vzdálenou databázi.
-  if (process.env.NODE_ENV === 'test' && process.env.MANAGED_CONTENT_DATABASE_TESTS !== '1') {
+  if (!client && process.env.NODE_ENV === 'test' && process.env.MANAGED_CONTENT_DATABASE_TESTS !== '1') {
     return mergeManagedContent({ books: [], chapters: [] });
   }
   const resolvedClient = client ?? (await import('../../lib/prisma')).default;
@@ -268,6 +268,10 @@ export async function getManagedChapterContext(
   chapters: ChapterCatalogEntry[];
 } | undefined> {
   const catalog = await getManagedContentCatalog(client);
+  return getChapterContextFromCatalog(reference, catalog);
+}
+
+export function getChapterContextFromCatalog(reference: string, catalog: ManagedContentCatalog) {
   const staticId = getChapterCatalogEntry(reference)?.id;
   const managed = catalog.chapters.find((item) => item.chapter.id === (staticId ?? reference));
   if (!managed) return undefined;

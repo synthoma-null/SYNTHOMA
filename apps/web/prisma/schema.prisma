@@ -13,6 +13,7 @@ model User {
   nickname      String    @unique
   nicknameLower String    @unique
   passwordHash  String
+  sessionVersion Int      @default(0)
   role          String    @default("user")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -28,6 +29,37 @@ model User {
   purchases    Purchase[]
   accessCodes  AccessCode[]
   cyklusRun    CyklusRun?
+  passwordResets PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  tokenHash String @id
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model SecurityRateLimit {
+  key String @id
+  count Int @default(1)
+  expiresAt DateTime
+  @@index([expiresAt])
+}
+
+model CheckoutOrder {
+  id String @id
+  userId String
+  packageId String?
+  chapterId String?
+  name String
+  priceCents Int
+  currency String @default("czk")
+  packageMnems Int?
+  stripeSessionId String? @unique
+  createdAt DateTime @default(now())
+  @@index([userId])
 }
 
 model UserProfile {

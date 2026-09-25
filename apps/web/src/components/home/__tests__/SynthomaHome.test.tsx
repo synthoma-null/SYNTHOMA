@@ -8,6 +8,8 @@ import SynthomaFooter from '../../synthoma-os/SynthomaFooter';
 
 jest.mock('next/navigation', () => ({ useRouter: () => ({ replace: jest.fn() }) }));
 
+jest.mock('next-auth/react', () => ({ useSession: () => ({ data: null, status: 'unauthenticated' }) }));
+
 describe('Synthoma Home', () => {
   let store: Record<string, string>;
 
@@ -19,11 +21,11 @@ describe('Synthoma Home', () => {
 
   afterEach(() => jest.restoreAllMocks());
 
-  it('renders one literal brand, the three public paths and all sectors', () => {
+  it('renders one main reading action and each secondary sector once', () => {
     render(<SynthomaHome />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toHaveTextContent('SYNTHOMA');
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' }).querySelector('br')).toBeNull();
-    expect(document.querySelectorAll('[data-home-primary-action]')).toHaveLength(0);
+    expect(document.querySelectorAll('[data-home-primary-action]')).toHaveLength(1);
     const sectors = screen.getByRole('navigation', { name: 'Sektory SYNTHOMA' });
     expect(within(sectors).getByRole('link', { name: /KNIHOVNA/ })).toBeInTheDocument();
     expect(within(sectors).getByRole('link', { name: /ARCHIV/ })).toBeInTheDocument();
@@ -34,9 +36,10 @@ describe('Synthoma Home', () => {
     expect(screen.getByText('Tma nikdy není opravdová, je jen světlem, které se vzdalo smyslu.')).toBeVisible();
     expect(screen.queryByRole('link', { name: 'SPUSTIT INTRO' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'PRVNÍ NÁVŠTĚVA' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /ZAČÍT PŘÍBĚH/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
-    expect(screen.getByRole('link', { name: /SPUSTIT CYKLUS/ })).toHaveAttribute('href', '/cyklus');
-    expect(screen.getByRole('link', { name: /POCHOPIT SVĚT/ })).toHaveAttribute('href', '/archive');
+    expect(screen.getByRole('link', { name: /Začít číst zdarma/ })).toHaveAttribute('href', '/chapter/0-inf-restart');
+    expect(document.querySelectorAll('a[href="/cyklus"]')).toHaveLength(1);
+    expect(document.querySelectorAll('a[href="/archive"]')).toHaveLength(1);
+    expect(document.querySelector('a[href*="landing-intro"]')).toBeNull();
     expect(screen.getByText(/První stopy jsou veřejné/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'PŘIHLÁSIT' })).toHaveAttribute('href', '/login');
     expect(screen.getByRole('link', { name: 'REGISTROVAT' })).toHaveAttribute('href', '/register');
@@ -57,7 +60,7 @@ describe('Synthoma Home', () => {
   it('continues an active Cyklus when no reading resume exists', async () => {
     store.synthoma_cyklus_run_v1 = JSON.stringify({ status: 'playing' });
     render(<SynthomaHome />);
-    await waitFor(() => expect(screen.getByRole('link', { name: /POKRAČOVAT V CYKLU/ })).toHaveAttribute('href', '/cyklus'));
+    await waitFor(() => expect(screen.getByRole('link', { name: /CYKLUS.*POKRAČOVAT/ })).toHaveAttribute('href', '/cyklus'));
   });
 
   it('leaves the decorative background video to the global shell', () => {
@@ -86,20 +89,16 @@ describe('Synthoma Home', () => {
     expect(within(nav).getByRole('link', { name: 'AI / API' })).toHaveAttribute('href', '/ai/api?locale=en');
     expect(screen.getByRole('navigation', { name: 'SYNTHOMA sectors' })).toHaveTextContent('LIBRARY');
     expect(screen.getByText(/SYNTHOMA is an interactive psychological novel/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /START THE STORY/ })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
-    expect(screen.getByRole('link', { name: /START THE CYCLE/ })).toHaveAttribute('href', '/cyklus?locale=en');
-    expect(screen.getByRole('link', { name: /UNDERSTAND THE WORLD/ })).toHaveAttribute('href', '/archive?locale=en');
+    expect(screen.getByRole('link', { name: /Start reading for free/ })).toHaveAttribute('href', '/chapter/0-inf-restart?locale=en');
+    expect(screen.getByRole('link', { name: /CYKLUS/ })).toHaveAttribute('href', '/cyklus?locale=en');
+    expect(screen.getByRole('link', { name: /ARCHIVE/ })).toHaveAttribute('href', '/archive?locale=en');
   });
 
-  it('keeps the story, Cycle and Archive as the three explicit first-contact paths', () => {
+  it('avoids duplicate first-contact choices and an intro replay link', () => {
     render(<SynthomaHome />);
-    const paths = Array.from(document.querySelectorAll('[data-first-contact-path]'));
-    expect(paths.map((path) => path.getAttribute('data-first-contact-path'))).toEqual([
-      '/chapter/0-inf-restart',
-      '/cyklus',
-      '/archive',
-    ]);
-    expect(paths[0]).toHaveClass('home-first-contact__path--primary');
+    expect(document.querySelectorAll('[data-first-contact-path]')).toHaveLength(0);
+    expect(document.querySelectorAll('a[href="/chapter/0-inf-restart"]')).toHaveLength(1);
+    expect(document.querySelector('a[href*="landing-intro"]')).toBeNull();
   });
 
   it('delegates legal links and safe-area spacing to the global footer', () => {

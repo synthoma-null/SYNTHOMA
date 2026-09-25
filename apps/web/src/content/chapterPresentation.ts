@@ -17,7 +17,7 @@ export interface ChapterPresentation {
   accessibilityLabel: string;
 }
 
-const DEFAULT_POSTER = BOOK_COLLECTION.cover ?? '/assets/og-synthoma.png';
+const DEFAULT_POSTER = BOOK_COLLECTION.cover ?? '/assets/og-synthoma.jpg';
 
 const PUBLISHED_POSTERS: Readonly<Record<string, string>> = {
   '0-inf-restart': '/chapters/posters/0-inf-restart.webp',
@@ -37,7 +37,7 @@ const PUBLISHED_POSTERS: Readonly<Record<string, string>> = {
 
 function createPresentation(chapter: (typeof CHAPTER_CATALOG)[number]): ChapterPresentation {
   const collection = getBookCollection(chapter.collection);
-  const poster = PUBLISHED_POSTERS[chapter.id] ?? collection?.cover ?? '/assets/og-synthoma.png';
+  const poster = PUBLISHED_POSTERS[chapter.id] ?? collection?.cover ?? '/assets/og-synthoma.jpg';
   return {
     chapterId: chapter.id,
     video: chapter.backgroundVideo

@@ -36,7 +36,7 @@ export default async function ArchivePage() {
 
   const normalized = normalizeArchiveCards(cards);
   const publicCards = getPublicArchive(locale);
-  const library = await getLibraryCatalog();
+  const library = await getLibraryCatalog().catch(() => undefined);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -56,7 +56,7 @@ export default async function ArchivePage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       <noscript>
         <div className="archive-public-fallback">
           <h1>{locale === 'en' ? 'Living Archive' : 'Živý archiv'}</h1>

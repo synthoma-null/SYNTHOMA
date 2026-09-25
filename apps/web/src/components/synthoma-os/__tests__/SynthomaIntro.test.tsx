@@ -2,7 +2,9 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import LandingIntroPage from '../../../../app/landing-intro/page';
 import FirstVisitRedirectClient from '../../../../app/components/FirstVisitRedirectClient';
 import UiLayerProvider from '../../ui-layer/UiLayerProvider';
-import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../../lib/intro';
+import * as intro from '../../../lib/intro';
+
+jest.mock('../../../lib/intro', () => ({ ...jest.requireActual('../../../lib/intro'), isIntroCompleteForDocument: jest.fn(), completeIntroForDocument: jest.fn() }));
 
 jest.mock('next/navigation', () => ({ useRouter: jest.fn(), usePathname: jest.fn() }));
 const { useRouter, usePathname } = require('next/navigation');
@@ -14,6 +16,9 @@ describe('Synthoma intro integration', () => {
     jest.useFakeTimers();
     localStorage.clear();
     replace.mockClear();
+    jest.mocked(intro.isIntroCompleteForDocument).mockReturnValue(false);
+    jest.mocked(intro.completeIntroForDocument).mockImplementation(() => { jest.mocked(intro.isIntroCompleteForDocument).mockReturnValue(true); });
+    window.history.replaceState({}, '', '/');
     useRouter.mockReturnValue({ replace });
     usePathname.mockReturnValue('/');
     (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
@@ -31,24 +36,29 @@ describe('Synthoma intro integration', () => {
     jest.restoreAllMocks();
   });
 
-  it('redirects only when the current intro version has not been seen', () => {
+  it('shows the intro on a fresh visit even if old storage marks it complete', () => {
     const first = render(<FirstVisitRedirectClient />);
     expect(replace).toHaveBeenCalledWith('/landing-intro');
-    expect(document.documentElement).toHaveAttribute('data-synthoma-intro-pending', 'true');
+    expect(document.documentElement).not.toHaveAttribute('data-synthoma-intro-pending');
     first.unmount();
 
     replace.mockClear();
-    localStorage.setItem(SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION);
+    localStorage.setItem(intro.SYNTHOMA_INTRO_STORAGE_KEY, intro.SYNTHOMA_INTRO_VERSION);
     render(<FirstVisitRedirectClient />);
-    expect(replace).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledWith('/landing-intro');
     expect(document.documentElement).not.toHaveAttribute('data-synthoma-intro-pending');
   });
 
-  it('can skip immediately and records completion', () => {
+  it('offers one final entry action without looping on return', () => {
     render(<LandingIntroPage />);
-    fireEvent.click(screen.getByRole('button', { name: 'PŘESKOČIT' }));
-    expect(localStorage.getItem(SYNTHOMA_INTRO_STORAGE_KEY)).toBe(SYNTHOMA_INTRO_VERSION);
+    for (const delay of [650, 900, 1200, 900]) act(() => jest.advanceTimersByTime(delay));
+    expect(screen.getAllByRole('button')).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'VSTOUPIT' }));
+    expect(intro.isIntroCompleteForDocument()).toBe(true);
     expect(replace).toHaveBeenCalledWith('/');
+    replace.mockClear();
+    render(<FirstVisitRedirectClient />);
+    expect(replace).not.toHaveBeenCalled();
   });
 
   it('treats browser Back as closing the intro layer', () => {
@@ -57,17 +67,16 @@ describe('Synthoma intro integration', () => {
 
     fireEvent.popState(window);
 
-    expect(localStorage.getItem(SYNTHOMA_INTRO_STORAGE_KEY)).toBe(SYNTHOMA_INTRO_VERSION);
+    expect(intro.isIntroCompleteForDocument()).toBe(true);
     expect(replace).toHaveBeenCalledWith('/');
   });
 
   it('does not offer replay or create media audio', () => {
     render(<LandingIntroPage />);
-    act(() => jest.advanceTimersByTime(650));
-    act(() => jest.advanceTimersByTime(800));
-    act(() => jest.advanceTimersByTime(1050));
+    for (const delay of [650, 900, 1200, 900]) act(() => jest.advanceTimersByTime(delay));
     expect(screen.queryByRole('button', { name: 'SPUSTIT ZNOVU' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'VSTOUPIT' })).toBeEnabled();
+    expect(screen.getAllByRole('button')).toHaveLength(1);
     expect(screen.queryByText('Dveře musí mít kliku z obou stran.')).not.toBeInTheDocument();
     expect(document.querySelectorAll('audio')).toHaveLength(0);
   });

@@ -9,6 +9,7 @@ jest.mock('next-auth/react', () => ({ useSession: jest.fn() }));
 
 jest.mock('../../../lib/readerState', () => ({
   readReadingProgress: jest.fn(),
+  readChapterProgress: jest.fn(() => null),
   saveLastChapterPath: jest.fn(),
   saveReadingProgress: jest.fn(),
 }));
@@ -23,13 +24,15 @@ const props = {
 describe('ChapterReadingProgress', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    localStorage.clear();
+    (saveReadingProgress as jest.Mock).mockReturnValue(true);
     (readReadingProgress as jest.Mock).mockReturnValue(null);
     Object.defineProperty(document.documentElement, 'scrollHeight', { configurable: true, value: 1000 });
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: 500 });
     Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
     Object.defineProperty(window, 'requestAnimationFrame', { configurable: true, value: (callback: FrameRequestCallback) => { callback(0); return 1; } });
     Object.defineProperty(window, 'cancelAnimationFrame', { configurable: true, value: jest.fn() });
-    global.fetch = jest.fn().mockResolvedValue({ ok: true }) as jest.Mock;
+    global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ progress: [] }) }) as jest.Mock;
     (useSession as jest.Mock).mockReturnValue({ data: { user: { id: 'reader-1' } }, status: 'authenticated' });
   });
 
@@ -38,6 +41,7 @@ describe('ChapterReadingProgress', () => {
     await waitFor(() => expect(saveReadingProgress).toHaveBeenCalled());
     expect(getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
 
+    await waitFor(() => expect(saveReadingProgress).toHaveBeenCalled());
     Object.defineProperty(window, 'scrollY', { configurable: true, value: 500 });
     fireEvent.scroll(window);
     await waitFor(() => expect(getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100'));
@@ -63,6 +67,7 @@ describe('ChapterReadingProgress', () => {
 
   it('does not complete a chapter with decisions before the final choice', async () => {
     const { getByRole } = render(<ChapterReadingProgress {...props} hasDecisions />);
+    await waitFor(() => expect(saveReadingProgress).toHaveBeenCalled());
     Object.defineProperty(window, 'scrollY', { configurable: true, value: 500 });
     fireEvent.scroll(window);
 

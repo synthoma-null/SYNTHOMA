@@ -11,8 +11,31 @@
 
 .profile-panel-popup,
 .profile-page {
-  --profile-font-label: "Zekton", "Segoe UI", Arial, sans-serif;
-  --profile-font-body: var(--font-reading, "Text03", "Segoe UI", Arial, sans-serif);
+  --profile-font-label: var(--os-font-ui, "Zekton", "Segoe UI", Arial, sans-serif);
+  --profile-font-body: var(--os-font-body, var(--font-reading, "Text03", "Segoe UI", Arial, sans-serif));
+  --cy-bg: var(--os-bg);
+  --cy-bg-elevated: var(--os-bg-deep);
+  --cy-surface-1: var(--os-surface);
+  --cy-surface-2: var(--os-surface-raised);
+  --cy-surface-3: color-mix(in srgb, var(--os-surface-raised) 82%, var(--os-bg));
+  --cy-text: var(--os-text);
+  --cy-text-soft: var(--os-text-secondary);
+  --cy-text-dim: var(--os-text-muted);
+  --cy-line: var(--os-border);
+  --cy-line-strong: var(--os-border-strong);
+  --cy-line-subtle: var(--os-axis);
+  --cy-accent-primary: var(--os-accent-primary);
+  --cy-accent-secondary: var(--os-accent-secondary);
+  --cy-accent-danger: var(--os-danger);
+  --cy-accent-success: var(--os-success);
+  --cy-focus-ring: var(--os-focus-ring);
+  --cy-button-bg: var(--os-surface);
+  --cy-button-hover: var(--os-surface-raised);
+  --cy-button-active: color-mix(in srgb, var(--os-accent-primary) 10%, var(--os-surface));
+  --cy-grid-color: var(--os-axis);
+  --cy-shadow: 0 20px 60px color-mix(in srgb, var(--os-bg) 76%, transparent);
+  --cy-glow-primary: none;
+  --cy-theme-radius: var(--os-corner);
   --cy-font-mono: var(--profile-font-label);
   --cy-text-soft: color-mix(in srgb, var(--cy-text) 90%, var(--cy-bg));
   --cy-text-dim: color-mix(in srgb, var(--cy-text) 80%, var(--cy-bg));
@@ -714,4 +737,178 @@
 @media (prefers-reduced-motion: reduce) {
   .profile-panel-popup { transition: none; }
   .profile-skeleton span { animation: none; }
+}
+
+/* SYNTHOMA OS bridge: the dossier follows the same surface and type contract
+   as the command shell, reader and administration. */
+.profile-panel-popup {
+  border-left-color: var(--os-border-strong);
+  box-shadow: 0 24px 72px color-mix(in srgb, var(--os-bg) 76%, transparent);
+}
+
+.profile-panel-header {
+  min-height: var(--os-command-height);
+}
+
+.profile-panel-title {
+  color: var(--os-accent-primary);
+  font-family: var(--os-font-ui);
+  font-size: var(--text-label);
+  letter-spacing: .08em;
+}
+
+.profile-panel-close {
+  min-width: var(--os-command-height);
+  color: var(--os-text);
+}
+
+.subject-dossier {
+  border-left: 1px solid var(--os-border-strong);
+  background-color: var(--os-surface);
+  background-image:
+    linear-gradient(var(--os-axis) 1px, transparent 1px),
+    linear-gradient(90deg, var(--os-axis) 1px, transparent 1px);
+}
+
+.subject-header,
+.profile-tabs,
+.subject-dossier__topbar {
+  background: var(--os-surface-raised);
+}
+
+.profile-content {
+  background: color-mix(in srgb, var(--os-surface) 96%, var(--os-bg));
+  color: var(--os-text);
+  font-family: var(--os-font-body);
+  font-size: var(--text-small);
+}
+
+.subject-nickname,
+.profile-section-heading h2,
+.subject-dossier__topbar strong {
+  font-family: var(--os-font-heading);
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.profile-overview__summaries h3,
+.profile-decision-timeline__body > strong,
+.profile-collection__items strong,
+.mnem-package-name,
+.progress-item-title {
+  font-family: var(--os-font-ui);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.subject-role-title,
+.profile-section-heading p,
+.profile-overview__summaries p,
+.profile-empty,
+.profile-data-notice,
+.profile-error p,
+.subject-auth-gate p,
+.local-subject-profile__footer p,
+.privacy-panel :is(p, li) {
+  font-size: var(--text-small);
+  font-weight: 600;
+  line-height: var(--line-ui);
+}
+
+:is(
+  .subject-log-label,
+  .subject-verification,
+  .profile-section-heading > span,
+  .profile-overview__summaries > section > span,
+  .subject-dossier__topbar span,
+  .subject-stat dt,
+  .profile-overview__metrics dt,
+  .profile-access__facts dt,
+  .profile-collection__metrics dt,
+  .profile-collection__items span,
+  .profile-decision-timeline__body > span,
+  .profile-decision-timeline__body dt,
+  .profile-decision-timeline__body time
+) {
+  color: var(--os-text-secondary);
+  font-family: var(--os-font-ui);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  line-height: var(--line-caption);
+}
+
+:is(
+  .profile-overview__metrics dd,
+  .profile-access__facts dd,
+  .profile-collection__metrics dd
+) {
+  color: var(--os-text);
+  font-family: var(--os-font-body);
+  font-size: var(--text-small);
+  font-weight: 700;
+  line-height: var(--line-ui);
+}
+
+.profile-tab {
+  min-height: var(--os-tap);
+  font-family: var(--os-font-ui);
+  font-size: var(--text-caption);
+  font-weight: 700;
+}
+
+.profile-tab.active,
+.profile-tab[aria-selected='true'] {
+  box-shadow: inset 0 -2px var(--os-accent-primary);
+}
+
+.subject-stat,
+.profile-overview__metrics > div,
+.profile-access__facts > div,
+.profile-collection__metrics > div,
+.profile-overview__summaries > section,
+.profile-collection > section,
+.profile-access > section,
+.profile-decision-timeline__body,
+.psyche-imprint,
+.progress-item,
+.mnem-package {
+  min-width: 0;
+  border-radius: var(--os-corner);
+  border-color: var(--os-border);
+  background: var(--os-surface-raised);
+}
+
+:is(
+  .subject-stat dd,
+  .subject-stat dt,
+  .profile-overview__metrics dd,
+  .profile-overview__metrics dt,
+  .profile-access__facts dd,
+  .profile-access__facts dt,
+  .profile-collection__metrics dd,
+  .profile-collection__metrics dt
+) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.profile-panel-popup :where(.btn:not(.profile-panel-close)),
+.profile-page :where(.btn) {
+  border-radius: var(--os-corner);
+  font-family: var(--os-font-ui);
+  font-size: var(--text-caption);
+}
+
+@media (max-width: 767px) {
+  .profile-panel-popup {
+    width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border: 0;
+  }
+
+  .profile-tabs {
+    scrollbar-color: var(--os-border-strong) var(--os-surface);
+  }
 }

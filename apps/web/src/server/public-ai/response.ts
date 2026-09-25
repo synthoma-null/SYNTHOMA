@@ -57,7 +57,7 @@ export function publicMarkdown(body: string, status = 200): NextResponse {
     status,
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': PUBLIC_CACHE_CONTROL,
+      'Cache-Control': 'private, no-store',
       'Content-Type': 'text/markdown; charset=utf-8',
       'Last-Modified': new Date(PUBLIC_CONTENT_UPDATED_AT).toUTCString(),
     },

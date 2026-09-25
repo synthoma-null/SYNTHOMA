@@ -4539,3 +4539,8 @@
     animation: none !important;
   }
 }
+
+.cc-overlay--compact .cc-panel { max-width: 38rem; padding: 1rem; gap: .75rem; max-height: 75svh; overflow-y: auto; }
+.cc-overlay--compact .cc-body { font-size: 1rem; }
+.cc-overlay--compact .cc-actions { gap: .5rem; }
+.cc-overlay--compact .cc-btn { min-height: 44px; flex: 1 1 auto; }

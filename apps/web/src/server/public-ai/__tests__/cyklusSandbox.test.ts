@@ -5,7 +5,8 @@ import type { CyklusEffect } from '../../../game/cyklus/cyklusTypes';
 import { applyPublicCyklusChoice, createPublicCyklusState, publicCardView } from '../cyklusSandbox';
 import { openPublicCyklusState, PublicTokenError, sealPublicCyklusState } from '../cyklusToken';
 import { chooseCyklus, startCyklusRun } from '../gameHandlers';
-import { resetPublicRateLimitsForTests } from '../rateLimit';
+import { resetPublicRateLimitsForTests } from './helpers/rateLimitStore';
+jest.mock('../../security/rateLimit', () => ({ ...jest.requireActual('../../security/rateLimit'), consumeRateLimit: require('./helpers/rateLimitStore').consumeRateLimit }));
 import { resolveCardPublicVisibility } from '../visibility';
 
 describe('public Cyklus sandbox', () => {

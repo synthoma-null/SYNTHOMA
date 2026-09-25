@@ -15,6 +15,7 @@ describe('PWA runtime helpers', () => {
     expect(isPwaCriticalPath('/reader')).toBe(true);
     expect(isPwaCriticalPath('/cyklus/void')).toBe(true);
     expect(isPwaCriticalPath('/login')).toBe(true);
+    expect(isPwaCriticalPath('/landing-intro')).toBe(true);
     expect(isPwaCriticalPath('/books')).toBe(false);
   });
 

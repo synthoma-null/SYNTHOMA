@@ -33,6 +33,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     entries: entries.map((entry) => ({
       ...entry,
+      ...(entry.action === 'content_chapter_revision' ? { metadata: { chapterId: entry.reference, revisionId: entry.id } } : {}),
       actor: userById.get(entry.actorUserId) ?? null,
       target: userById.get(entry.targetUserId) ?? null,
     })),

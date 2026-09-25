@@ -13,6 +13,7 @@ export type ReadingProgressEntry = {
   percent: number;
   completed?: boolean;
   lastBlockId?: string;
+  userId?: string;
   updatedAt: number;
 };
 
@@ -70,9 +71,16 @@ export function getReadingProgressKey(bookId: string): string {
 }
 
 export function saveReadingProgress(entry: ReadingProgressEntry): boolean {
+  if (entry.chapterId) writeStorageJSON(`readingChapter:${entry.bookId}:${entry.chapterId}`, entry);
   return writeStorageJSON(getReadingProgressKey(entry.bookId), entry);
 }
 
 export function readReadingProgress(bookId: string): ReadingProgressEntry | null {
   return readStorageJSON<ReadingProgressEntry | null>(getReadingProgressKey(bookId), null);
+}
+
+export function readChapterProgress(bookId: string, chapterId: string): ReadingProgressEntry | null {
+  const chapter = readStorageJSON<ReadingProgressEntry | null>(`readingChapter:${bookId}:${chapterId}`, null);
+  const latest = readReadingProgress(bookId);
+  return chapter ?? (latest?.chapterId === chapterId ? latest : null);
 }

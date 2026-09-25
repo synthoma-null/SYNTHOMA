@@ -4,6 +4,7 @@ import { resolveChapterId } from './src/content/catalog';
 import { isReaderInfoPath } from './src/content/readerInfo';
 
 const LOCALE_COOKIE = 'synthoma_locale';
+const isChapterSlug = (value: string) => value.length <= 100 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 
 function resolveRequestLocale(request: NextRequest): 'cs' | 'en' {
   const queryLocale = request.nextUrl.searchParams.get('locale');
@@ -24,11 +25,23 @@ function nextWithLocale(request: NextRequest, locale: 'cs' | 'en') {
 export function middleware(request: NextRequest) {
   const locale = resolveRequestLocale(request);
 
+  // Legacy files must pass through the same current publication/access checks.
+  // Never serve the repository's original HTML after an editor changes its policy.
+  if (request.nextUrl.pathname.startsWith('/books/') && /\.html?$/i.test(request.nextUrl.pathname)) {
+    const chapterId = resolveChapterId(request.nextUrl.pathname);
+    if (!chapterId) return NextResponse.rewrite(new URL('/_not-found', request.url), { status: 404 });
+    const target = new URL(`/chapter/${chapterId}`, request.url);
+    if (locale === 'en' || /_en\.html?$/i.test(request.nextUrl.pathname)) target.searchParams.set('locale', 'en');
+    const response = NextResponse.redirect(target, 307);
+    response.headers.set('Cache-Control', 'private, no-store');
+    return response;
+  }
+
   if (request.nextUrl.pathname === '/reader') {
     const reference = request.nextUrl.searchParams.get('chapter')
       ?? request.nextUrl.searchParams.get('u');
     if (isReaderInfoPath(reference)) return nextWithLocale(request, locale);
-    const chapterId = reference ? resolveChapterId(reference) : undefined;
+    const chapterId = reference ? resolveChapterId(reference) ?? (isChapterSlug(reference) ? reference : undefined) : undefined;
     const target = new URL(chapterId ? `/chapter/${encodeURIComponent(chapterId)}` : '/books', request.url);
 
     if (chapterId && locale === 'en') {
@@ -44,7 +57,7 @@ export function middleware(request: NextRequest) {
     const isChapterPage = Boolean(chapterReference) && !nestedRoute;
     const isChapterSocialImage = nestedRoute === 'opengraph-image' && !extraRoute;
 
-    if (!resolveChapterId(chapterReference ?? '') || (!isChapterPage && !isChapterSocialImage)) {
+    if (!(resolveChapterId(chapterReference ?? '') || isChapterSlug(chapterReference ?? '')) || (!isChapterPage && !isChapterSocialImage)) {
       return NextResponse.rewrite(new URL('/_not-found', request.url), { status: 404 });
     }
   }
@@ -60,5 +73,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api/|_next/|assets/|audio/|videos/|sw\\.js|manifest\\.json|favicon\\.ico|robots\\.txt|sitemap\\.xml|.*\\.[a-zA-Z0-9]+$).*)'],
+  matcher: ['/books/:path*', '/((?!api/|_next/|assets/|audio/|videos/|sw\\.js|manifest\\.json|favicon\\.ico|robots\\.txt|sitemap\\.xml|.*\\.[a-zA-Z0-9]+$).*)'],
 };

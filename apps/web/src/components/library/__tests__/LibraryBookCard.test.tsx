@@ -7,7 +7,10 @@ const collection: LibraryCollection = {
   title: 'SYNTHOMA-NULL',
   description: 'Smyčka začíná znovu.',
   cover: '/books/SYNTHOMA-NULL/SYNTHOMA_cover.png',
-  chapters: [],
+  chapters: ['free', 'free', 'owned', 'locked', 'unavailable'].map((access, i) => ({
+    id: `chapter-${i}`, title: `Chapter ${i}`, path: `/chapter/chapter-${i}`, filename: '',
+    collectionSlug: 'SYNTHOMA-NULL', order: i, access: access as 'free' | 'owned' | 'locked' | 'unavailable', mnemCost: null, packageIds: [],
+  })),
   availableCount: 3,
   totalCount: 5,
 };
@@ -19,7 +22,7 @@ describe('LibraryBookCard', () => {
     expect(btn).toBeInTheDocument();
     expect(screen.getByText('SYNTHOMA-NULL')).toBeInTheDocument();
     expect(screen.getByText('Smyčka začíná znovu.')).toBeInTheDocument();
-    expect(screen.getByText('5 kapitol')).toBeInTheDocument();
+    expect(screen.getByText('4 vydaných · 1 připravujeme')).toBeInTheDocument();
     expect(screen.getByText('OTEVŘÍT')).toBeInTheDocument();
     expect(screen.getByTestId('book-card')).toHaveAttribute('data-chapter-count', '5');
   });
@@ -27,7 +30,7 @@ describe('LibraryBookCard', () => {
   it('uses fallback description when none is provided', () => {
     const { description: _, ...noDesc } = collection;
     render(<LibraryBookCard collection={noDesc} onClick={jest.fn()} />);
-    expect(screen.getByText('Dostupných 3 / 5 kapitol')).toBeInTheDocument();
+    expect(screen.getByText('Dostupných 3 / 4 vydaných · 1 připravujeme')).toBeInTheDocument();
   });
 
   it('shows continue CTA when there is unfinished progress', () => {
@@ -36,9 +39,9 @@ describe('LibraryBookCard', () => {
     expect(screen.getByText('pokračovat 42%')).toBeInTheDocument();
   });
 
-  it('marks a completed collection and keeps its total chapter count visible', () => {
+  it('distinguishes published chapters from upcoming chapters in a completed collection', () => {
     render(<LibraryBookCard collection={{ ...collection, status: 'complete', totalCount: 19 }} onClick={jest.fn()} />);
-    expect(screen.getByText('DOKONČENO · 19 kapitol')).toBeInTheDocument();
+    expect(screen.getByText('DOKONČENO · 4 vydaných · 1 připravujeme')).toBeInTheDocument();
   });
 
   it('calls onClick with collection slug when clicked', () => {

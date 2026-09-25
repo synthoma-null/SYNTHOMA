@@ -16,6 +16,7 @@ const customJestConfig = {
     '<rootDir>/node_modules/',
     '<rootDir>/.next/',
     '<rootDir>/src/game/cyklus/__tests__/cyklusSimRunner.ts',
+    '<rootDir>/src/server/public-ai/__tests__/helpers/',
   ],
 }
 

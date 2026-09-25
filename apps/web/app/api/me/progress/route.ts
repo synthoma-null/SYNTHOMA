@@ -5,6 +5,7 @@ import { auth } from '../../../../auth';
 import prisma from '../../../../src/lib/prisma';
 
 const ProgressSchema = z.object({
+  expectedUserId: z.string().optional(),
   collection: z.string().min(1),
   chapterId: z.string().min(1),
   chapterTitle: z.string().optional(),
@@ -27,36 +28,23 @@ export async function POST(req: NextRequest) {
     }
 
     const d = parsed.data;
-    const completionUpdate = d.completed
-      ? { completed: true, completedAt: new Date() }
-      : {};
-    const record = await prisma.readingProgress.upsert({
-      where: {
-        userId_collection_chapterId: {
-          userId,
-          collection: d.collection,
-          chapterId: d.chapterId,
-        },
-      },
-      create: {
-        userId,
-        collection: d.collection,
-        chapterId: d.chapterId,
-        chapterTitle: d.chapterTitle ?? null,
-        lastBlockId: d.lastBlockId ?? null,
-        progressPercent: d.progressPercent,
-        readMs: d.readMs,
-        completed: d.completed,
-        completedAt: d.completed ? new Date() : null,
-      },
-      update: {
-        chapterTitle: d.chapterTitle ?? null,
-        lastBlockId: d.lastBlockId ?? null,
-        progressPercent: d.completed ? 100 : d.progressPercent,
-        readMs: d.readMs,
-        // Completion is monotonic. A later autosave must not reopen a chapter.
-        ...completionUpdate,
-      },
+    if (d.expectedUserId && d.expectedUserId !== userId) return NextResponse.json({ error: 'Account changed' }, { status: 409 });
+    const key = { userId, collection: d.collection, chapterId: d.chapterId };
+    const record = await prisma.$transaction(async tx => {
+      const row = await tx.readingProgress.upsert({
+        where: { userId_collection_chapterId: key },
+        create: { ...key, chapterTitle: d.chapterTitle ?? null, lastBlockId: d.lastBlockId ?? null,
+          progressPercent: d.completed ? 100 : d.progressPercent, readMs: d.readMs,
+          completed: d.completed, completedAt: d.completed ? new Date() : null },
+        update: {},
+      });
+      // Conditional database writes cannot regress when requests arrive out of order.
+      await tx.readingProgress.updateMany({ where: { ...key, progressPercent: { lt: d.completed ? 100 : d.progressPercent } },
+        data: { progressPercent: d.completed ? 100 : d.progressPercent, chapterTitle: d.chapterTitle ?? null,
+          ...(d.lastBlockId ? { lastBlockId: d.lastBlockId } : {}) } });
+      if (d.completed) await tx.readingProgress.updateMany({ where: { ...key, completed: false }, data: { completed: true, completedAt: new Date(), progressPercent: 100 } });
+      await tx.readingProgress.updateMany({ where: { ...key, readMs: { lt: d.readMs } }, data: { readMs: d.readMs } });
+      return row;
     });
 
     return NextResponse.json({ ok: true, id: record.id });

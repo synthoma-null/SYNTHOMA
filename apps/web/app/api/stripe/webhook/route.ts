@@ -4,10 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import Stripe from 'stripe';
 import prisma from '../../../../src/lib/prisma';
-import { getCatalogEntry, isContentType, type ContentType } from '../../../../src/content/catalog';
+import { isContentType, type ContentType } from '../../../../src/content/catalog';
+import { getManagedCatalogEntry } from '../../../../src/server/content/managedContent';
 import { getPackageById } from '../../../../src/content/booksManifest';
 import {
   grantEntitlement,
+  grantMnems,
   grantPackage,
   lockMnemAccount,
   runSerializableTransaction,
@@ -40,7 +42,15 @@ export async function POST(req: NextRequest) {
   }
 
   const metadata = checkout.metadata ?? {};
-  const grantType = metadata.grantType;
+  const order = metadata.orderId ? await prisma.checkoutOrder.findUnique({ where: { id: metadata.orderId } }) : null;
+  if (metadata.orderId && (!order || order.userId !== metadata.userId ||
+      (order.stripeSessionId && order.stripeSessionId !== checkout.id) ||
+      order.priceCents !== checkout.amount_total || order.currency !== checkout.currency ||
+      (order.packageId ?? null) !== (metadata.packageId ?? null) ||
+      (order.chapterId ?? null) !== (metadata.contentId ?? null))) {
+    return NextResponse.json({ error: 'Order verification failed' }, { status: 400 });
+  }
+  const grantType = order ? (order.packageId ? 'package' : 'content') : metadata.grantType;
   const packageId = metadata.packageId ?? null;
   const rawContentType = metadata.contentType ?? null;
   const contentType: ContentType | null = rawContentType && isContentType(rawContentType)
@@ -58,12 +68,12 @@ export async function POST(req: NextRequest) {
     }))?.id ?? null;
   }
 
-  const validPackage = grantType === 'package' && packageId && getPackageById(packageId);
+  const validPackage = grantType === 'package' && packageId && (order?.packageId === packageId || getPackageById(packageId));
   const validContent =
     grantType === 'content' &&
     contentType &&
     contentId &&
-    getCatalogEntry(contentType, contentId)?.availability === 'published';
+    (order?.chapterId === contentId || (await getManagedCatalogEntry(contentType, contentId))?.availability === 'published');
 
   if (!userId || (!validPackage && !validContent)) {
     try {
@@ -113,7 +123,11 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        if (validPackage && packageId) {
+        if (validPackage && packageId && order && order.packageMnems !== null) {
+          await grantEntitlement({ userId, contentType: 'package', contentId: packageId, source: 'stripe', sourceReference: checkout.id }, tx);
+          await grantMnems({ userId, amount: order.packageMnems, reason: `Balíček: ${order.name}`, packageId,
+            idempotencyKey: `stripe:order:${order.id}:mnems`, externalReference: checkout.id }, tx);
+        } else if (validPackage && packageId) {
           await grantPackage({
             userId,
             packageId,

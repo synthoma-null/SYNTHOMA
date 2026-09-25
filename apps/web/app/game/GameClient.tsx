@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { getGameClientToken } from '../../src/lib/gameIdentity';
 import { useRouter } from 'next/navigation';
 
 export default function GameClient() {
@@ -11,18 +12,9 @@ export default function GameClient() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const clientToken = (() => {
-    if (typeof window === 'undefined') return '';
-    let t = localStorage.getItem('synthoma_game_token');
-    if (!t) {
-      t = Math.random().toString(36).slice(2) + Date.now().toString(36);
-      localStorage.setItem('synthoma_game_token', t);
-    }
-    return t;
-  })();
-
   const createRoom = async () => {
     if (!nickname.trim()) { setError('Zadej přezdívku.'); return; }
+    const clientToken = getGameClientToken();
     setLoading(true); setError('');
     try {
       const res = await fetch('/api/game/rooms', {
@@ -46,6 +38,7 @@ export default function GameClient() {
   const joinRoom = async () => {
     if (!nickname.trim()) { setError('Zadej přezdívku.'); return; }
     if (!joinCode.trim()) { setError('Zadej kód místnosti.'); return; }
+    const clientToken = getGameClientToken();
     setLoading(true); setError('');
     try {
       const code = joinCode.trim().toUpperCase();
@@ -68,14 +61,14 @@ export default function GameClient() {
   return (
     <div className="game-entry">
       <div className="game-entry-inner">
-        <h1 className="game-entry-title">SYNTHOMA: CYKLUS</h1>
+        <h1 className="game-entry-title">Nezlob Prázdnotu</h1>
         <p className="game-entry-subtitle">
-          Solo swipe-based psychologická roguelite. 4 staty, itemy, sektory, imprinty, restarty.
+          Online tahová hra pro 2–6 hráčů. Vytvoř místnost nebo se připoj k přátelům.
         </p>
 
-        <a href="/cyklus" className="btn-game-primary game-entry-main-btn">ZAČÍT CYKLUS →</a>
+        <a href="/cyklus" className="btn-game-primary game-entry-main-btn">CYKLUS — PRO JEDNOHO →</a>
 
-        <div className="game-entry-divider">— NEBO PARTY MÓD —</div>
+        <div className="game-entry-divider">— NEZLOB PRÁZDNOTU · PRO 2–6 HRÁČŮ —</div>
 
         <p className="game-entry-subtitle game-entry-subtitle--party">
           Online tahová party hra <em>Nezlob Prázdnotu</em> pro 2–6 hráčů. Přesuň fragmenty do Jádra dřív, než tě pohltí Prázdnota.

@@ -14,7 +14,7 @@ const SECTORS = [
 
 export default function HomeSectorLinks() {
   const [activeRun, setActiveRun] = useState(false);
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   useEffect(() => {
     setActiveRun(hasActiveCyklusRun());
@@ -36,7 +36,7 @@ export default function HomeSectorLinks() {
         ].join(' ').trim();
 
         return (
-          <Link className={classes} data-home-sector={sector.href.slice(1)} href={sector.href} key={sector.href}>
+          <Link className={classes} data-home-sector={sector.href.slice(1)} href={lang === 'en' ? `${sector.href}?locale=en` : sector.href} key={sector.href}>
             <span className="home-sector-link__index">{sector.index}</span>
             <span className="home-sector-link__copy"><strong>{t(sector.labelKey as TKey)}</strong><span>{detail}</span></span>
             <span className="home-sector-link__marker">{marker}</span>

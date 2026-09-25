@@ -44,7 +44,7 @@ html[data-theme="synthoma"] .synthoma-shell::before {
     linear-gradient(90deg, rgb(73 135 160 / 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.8), transparent 86%);
-  opacity: 0.32;
+  opacity: 0.16;
 }
 
 html[data-theme="synthoma"] .synthoma-shell::after {
@@ -52,7 +52,7 @@ html[data-theme="synthoma"] .synthoma-shell::after {
     linear-gradient(90deg, transparent 0 7%, rgb(0 182 241 / 0.16) 7% 8.5%, transparent 8.5% 78%, rgb(238 38 208 / 0.13) 78% 80%, transparent 80%) 0 18% / 100% 1px no-repeat,
     linear-gradient(90deg, transparent 0 64%, rgb(238 38 208 / 0.11) 64% 68%, transparent 68%) 0 73% / 100% 1px no-repeat,
     repeating-linear-gradient(0deg, transparent 0 5px, rgb(217 244 251 / 0.013) 5px 6px);
-  opacity: 0.55;
+  opacity: 0.18;
 }
 
 html[data-theme="synthoma"] :where(
@@ -293,9 +293,7 @@ html[data-theme="synthoma"] :where(
   background: var(--syn-black-3);
   color: var(--syn-text-hot);
   box-shadow:
-    inset 2px 0 0 var(--syn-cyan),
-    inset -2px 0 0 var(--syn-magenta),
-    0 0 8px rgb(0 182 241 / 0.12);
+    inset 2px 0 0 var(--syn-cyan);
 }
 
 html[data-theme="synthoma"] :where(
@@ -310,8 +308,7 @@ html[data-theme="synthoma"] :where(.btn-primary, .os-button--primary) {
   background: linear-gradient(90deg, rgb(0 79 124 / 0.18), var(--syn-black-2) 42%, rgb(112 0 93 / 0.14));
   color: var(--syn-text-hot);
   box-shadow:
-    inset 3px 0 0 var(--syn-cyan),
-    inset -3px 0 0 var(--syn-magenta);
+    inset 3px 0 0 var(--syn-cyan);
 }
 
 html[data-theme="synthoma"] :where(input, select, textarea) {
@@ -1300,9 +1297,7 @@ html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__article 
   .text
 ) {
   color: var(--book-body-text);
-  text-shadow:
-    -0.3px 0 rgb(53 189 247 / 0.1),
-    0.3px 0 rgb(223 97 203 / 0.075);
+  text-shadow: none;
 }
 
 html[data-theme="synthoma"] .chapter-reader[data-book] .chapter-reader__article .chapter-content .log {
@@ -1438,7 +1433,7 @@ html[data-theme="synthoma"] #control-panel .control-center__effective strong {
 /* Motion-off keeps the chromatic identity without animated flicker. */
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="synthoma"] .synthoma-shell::after {
-    opacity: 0.34;
+    opacity: 0.12;
   }
 
   html[data-theme="synthoma"] :where(
@@ -1472,3 +1467,58 @@ html[data-theme="synthoma"][data-noise="off"] .synthoma-shell::after {
     width: 100%;
   }
 }
+
+/* Reading surfaces stay quiet; authored chapter effects keep their own rules. */
+html[data-theme] .chapter-reader .chapter-reader__command-bar { clip-path: none; }
+html[data-theme] .chapter-reader .chapter-reader__command-bar::before { content: none; }
+@media (max-width: 767px) {
+  .chapter-reader .chapter-rail { display: none; }
+}
+.synthoma-shell:has(.chapter-reader)::before,
+.synthoma-shell:has(.chapter-reader)::after { display: none; }
+.chapter-reader__command,
+.chapter-reader__utilities button {
+ min-height: 44px;
+ font-size: .875rem;
+ line-height: 1.4;
+ padding: .5rem .65rem;
+}
+.chapter-reader__identity-meta,
+.chapter-reader__progress-label { font-size: .8125rem; line-height: 1.5; }
+.chapter-reader__utilities button:focus-visible {
+ outline: 2px solid var(--os-focus-ring); outline-offset: 3px;
+}
+html[data-theme="synthoma"] .home-light-quote {
+ background: transparent; border-color: var(--syn-border-dim);
+}
+/* Keep the existing semantic sector colors; only remove competing text layers. */
+html[data-theme="synthoma"] .home-sector-link[data-home-sector] :is(.home-sector-link__index, .home-sector-link__marker) {
+ color: var(--home-sector-accent);
+}
+html[data-theme="synthoma"] .home-sector-link--featured[data-home-sector] {
+ border-left-color: var(--home-sector-accent);
+ background: linear-gradient(90deg, color-mix(in srgb, var(--home-sector-accent) 10%, var(--syn-black-1)), var(--syn-black-1));
+}
+html[data-theme="synthoma"] .home-sector-link--featured[data-home-sector]:hover {
+ background: linear-gradient(90deg, color-mix(in srgb, var(--home-sector-accent) 16%, var(--syn-black-2)), var(--syn-black-1));
+}
+html[data-theme="synthoma"] .home-sector-link[data-home-sector] .home-sector-link__copy strong {
+ color: var(--home-sector-accent);
+ -webkit-text-fill-color: currentColor;
+ background: none;
+ text-shadow: none;
+}
+html[data-theme="synthoma"] :is(.home-primary-action, .home-first-contact__path--primary) {
+ border-color: var(--syn-cyan);
+}
+
+html[data-theme="synthoma"] .synthoma-home :is(.synthoma-home__format, .synthoma-home__statement, .home-first-contact__guest p, .home-first-contact__guest small, .home-first-contact__paths small, .home-sector-link__copy > span) {
+ color: #cbd5df; text-shadow: none;
+}
+html[data-theme="synthoma"] .synthoma-home :is(.home-primary-action__label, .home-first-contact__path--primary strong) {
+ color: #edf4f7; text-shadow: none;
+}
+html[data-theme="synthoma"] .synthoma-home :is(.home-primary-action__code, .home-primary-action__detail) { color: #b7c7d2; }
+/* Keep update messages readable in the supported light theme as well. */
+html[data-theme="mono-light"] .pwa-dialog { background: #fff; color: #17212b; }
+html[data-theme="mono-light"] .pwa-dialog :is(h2, p) { color: #17212b; text-shadow: none; }

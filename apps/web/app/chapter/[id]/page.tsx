@@ -14,7 +14,7 @@ import ChapterReaderArticle from './ChapterReaderArticle';
 import ChapterStructuredData from './ChapterStructuredData';
 
 const BASE_URL = 'https://www.synthoma.cz';
-const DEFAULT_OG_IMAGE = `${BASE_URL}/assets/og-synthoma.png`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/assets/og-synthoma.jpg`;
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +23,9 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await params;
   const locale = (await searchParams)?.locale === 'en' ? 'en' : 'cs';
-  const context = await getManagedChapterContext(id);
+  let context;
+  try { context = await getManagedChapterContext(id); }
+  catch { return { title: locale === 'en' ? 'Chapter temporarily unavailable | SYNTHOMA' : 'Kapitola dočasně nedostupná | SYNTHOMA', robots: { index: false, follow: false } }; }
   if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden') notFound();
   const { chapter } = context.managed;
   const collection = context.book;

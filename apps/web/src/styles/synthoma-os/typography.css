@@ -2,6 +2,7 @@
 [data-theme] {
   --os-font-display: var(--font-family-heading, var(--font-family-primary)), system-ui, sans-serif;
   --os-font-heading: var(--font-family-heading, var(--font-family-primary)), system-ui, sans-serif;
+  --os-font-ui: var(--font-family-ui, var(--font-family-primary)), system-ui, sans-serif;
   --os-font-body: var(--font-family-primary), system-ui, sans-serif;
   --os-font-mono: var(--font-family-mono, var(--font-family-primary)), ui-monospace, Consolas, monospace;
   --os-text-display: clamp(3rem, 9vw, 7.5rem);

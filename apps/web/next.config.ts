@@ -39,6 +39,7 @@ function getSecurityHeaders() {
 }
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['sanitize-html', 'htmlparser2', 'domhandler', 'domutils', 'domelementtype', 'dom-serializer', 'entities', 'launder'],
   env: {
     NEXT_PUBLIC_SYNTHOMA_BUILD_ID: pwaBuildId,
   },

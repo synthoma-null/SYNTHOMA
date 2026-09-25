@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useUiLayer } from '../ui-layer/UiLayerProvider';
+import { isIntroCompleteForDocument } from '../../lib/intro';
 import { getConsent, saveConsent } from '../../lib/consent';
 import { useLang } from '../../lib/LangContext';
 
@@ -11,7 +14,10 @@ type Prefs = {
 };
 
 export default function CookieConsent() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const pathname = usePathname();
+  const panel = useRef<HTMLDivElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
   const [show, setShow] = useState(false);
   const [detail, setDetail] = useState(false);
   const [prefs, setPrefs] = useState<Prefs>({ preferences: true, analytics: false, readerTrace: false });
@@ -28,23 +34,32 @@ export default function CookieConsent() {
     setDetail(false);
   };
 
-  if (!show) return null;
+  const visible = show && pathname !== '/landing-intro' && (pathname !== '/' || isIntroCompleteForDocument());
+  useUiLayer({ id: 'cookie-consent', type: 'consent', open: visible, onClose: () => setShow(false), restoreFocus: () => previousFocus.current?.focus() });
+  useEffect(() => {
+    if (!visible) return;
+    previousFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    panel.current?.querySelector<HTMLElement>('button, input')?.focus();
+    const trap = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      const elements = Array.from(panel.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), a[href]') ?? []);
+      const first = elements[0]; const last = elements.at(-1);
+      if (!panel.current?.contains(document.activeElement)) { event.preventDefault(); first?.focus(); }
+      else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', trap);
+    return () => { document.removeEventListener('keydown', trap); previousFocus.current?.focus(); };
+  }, [visible, detail]);
+  if (!visible) return null;
 
   return (
-    <div className="cc-overlay" role="dialog" aria-modal="true" aria-label={t('cc.aria')}>
-      <div className="cc-panel os-surface--glass">
-        <div className="cc-log">
-          <span className="cc-log-prefix">{t('cc.log.prefix')}</span>
-          <span className="cc-log-msg">{t('cc.log.msg')}</span>
-        </div>
-
+    <div className="cc-overlay cc-overlay--compact" role="dialog" aria-modal="true" aria-label={t('cc.aria')}>
+      <div ref={panel} className="cc-panel os-surface--glass">
         {!detail ? (
           <>
             <p className="cc-body">
-              {t('cc.body')}
-            </p>
-            <p className="cc-body cc-flavor">
-              {t('cc.flavor')}
+              {lang === 'en' ? 'Choose whether to save your preferences, reading trace and analytics. Optional storage is up to you.' : 'Vyber si ukládání nastavení, čtenářské stopy a analytiky. Volitelné ukládání je na tobě.'}
             </p>
             <div className="cc-actions">
               <button

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { readReadingProgress } from '../../readerState';
+import { readReadingProgress, readChapterProgress } from '../../readerState';
 import type { LibraryChapter, LibraryCollection, LibraryReadingProgress } from './libraryTypes';
 
 export interface LibraryProgressRecord {
@@ -17,14 +17,12 @@ export interface LibraryProgressSnapshot {
   loading: boolean;
 }
 
-function getFilenameFromPath(path: string): string {
-  return decodeURIComponent(path.split('/').pop() || '');
-}
-
 export function useLibraryProgress(collections: LibraryCollection[]) {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
+  const userId = session?.user?.id;
   const [serverProgress, setServerProgress] = useState<Array<{ chapterId: string; completed: boolean; progressPercent?: number; updatedAt?: string }>>([]);
   const [loading, setLoading] = useState(true);
+  const [loadedUserId, setLoadedUserId] = useState<string>();
 
   useEffect(() => {
     if (status === 'loading') return;
@@ -33,50 +31,46 @@ export function useLibraryProgress(collections: LibraryCollection[]) {
       setLoading(false);
       return;
     }
+    let cancelled = false;
+    setServerProgress([]);
+    setLoadedUserId(undefined);
     setLoading(true);
     fetch('/api/me/progress', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
+        if (cancelled) return;
         setServerProgress(Array.isArray(data?.progress) ? data.progress : []);
+        setLoadedUserId(userId);
       })
       .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [status]);
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [status, userId]);
 
   const snapshot = useMemo<LibraryProgressSnapshot>(() => {
     const byChapterId: Record<string, LibraryProgressRecord> = {};
     const byCollection: Record<string, LibraryReadingProgress> = {};
 
     for (const col of collections) {
-      const local = readReadingProgress(col.slug);
-      if (local) {
-        byCollection[col.slug] = {
-          collectionSlug: col.slug,
-          path: local.path,
-          percent: local.percent,
-          updatedAt: local.updatedAt,
-        };
-      }
-
+      const recent = readReadingProgress(col.slug);
       for (const ch of col.chapters) {
-        const isLocal = local?.path === ch.path;
-        const percent = isLocal ? local.percent : 0;
-        const server = serverProgress.find((p) => p.chapterId === ch.id);
-        const completed = server?.completed ?? false;
-        const updatedAt = local?.updatedAt ? local.updatedAt : server?.updatedAt ? new Date(server.updatedAt).getTime() : 0;
-
-        byChapterId[ch.id] = {
-          chapterId: ch.id,
-          path: ch.path,
-          percent: completed ? 100 : percent,
-          completed,
-          updatedAt,
-        };
+        const stored = readChapterProgress(col.slug, ch.id) ?? (recent?.path === ch.path ? recent : null);
+        const local = stored?.userId && stored.userId !== userId ? null : stored;
+        const server = status === 'authenticated' && loadedUserId === userId
+          ? serverProgress.find(p => p.chapterId === ch.id)
+          : undefined;
+        const completed = Boolean(server?.completed || local?.completed);
+        const percent = completed ? 100 : Math.max(local?.percent ?? 0, server?.progressPercent ?? 0);
+        const updatedAt = Math.max(local?.updatedAt ?? 0, server?.updatedAt ? new Date(server.updatedAt).getTime() : 0);
+        byChapterId[ch.id] = { chapterId: ch.id, path: ch.path, percent, completed, updatedAt };
+        if ((local || server) && (!byCollection[col.slug] || updatedAt > (byCollection[col.slug]?.updatedAt ?? 0))) {
+          byCollection[col.slug] = { collectionSlug: col.slug, path: ch.path, percent, updatedAt };
+        }
       }
     }
 
     return { byChapterId, byCollection, loading };
-  }, [collections, serverProgress, loading]);
+  }, [collections, serverProgress, loading, userId, loadedUserId, status]);
 
   return snapshot;
 }

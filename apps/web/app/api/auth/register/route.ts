@@ -4,15 +4,16 @@ import { hash } from 'bcryptjs';
 import { z } from 'zod';
 import prisma from '../../../../src/lib/prisma';
 import { grantMnems } from '../../../../src/server/economy';
+import { consumeRateLimit, requestAddress } from '../../../../src/server/security/rateLimit';
 
 const RegisterSchema = z.object({
-  email: z.string().email('Neplatný e-mail.'),
+  email: z.string().max(254).email('Neplatný e-mail.'),
   nickname: z
     .string()
     .min(3, 'Přezdívka musí mít 3–24 znaků.')
     .max(24, 'Přezdívka musí mít 3–24 znaků.')
     .regex(/^[a-zA-Z0-9_]+$/, 'Přezdívka může obsahovat pouze písmena, čísla a podtržítko.'),
-  password: z.string().min(8, 'Heslo musí mít alespoň 8 znaků.'),
+  password: z.string().min(8, 'Heslo musí mít alespoň 8 znaků.').refine((value) => new TextEncoder().encode(value).length <= 72, 'Heslo je příliš dlouhé (max. 72 bajtů).'),
   passwordConfirm: z.string(),
 }).refine((d) => d.password === d.passwordConfirm, {
   message: 'Hesla se neshodují.',
@@ -21,6 +22,8 @@ const RegisterSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    const limit = await consumeRateLimit('register', requestAddress(req.headers), 5, 3_600_000);
+    if (!limit.allowed) return NextResponse.json({ error: 'Příliš mnoho pokusů. Zkus to později.' }, { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } });
     const body = await req.json();
     const parsed = RegisterSchema.safeParse(body);
     if (!parsed.success) {
