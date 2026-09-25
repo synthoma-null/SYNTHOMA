@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useUiPreferences } from '../../hooks/useUiPreferences';
 import { clearReaderDecisionState } from '../../lib/readerDecisions';
 import { updateUiPreferences } from '../../lib/uiPreferences';
@@ -21,6 +21,8 @@ export default function ReaderCommandUtilities({
   hasDecisions = false,
 }: Props) {
   const [speaking, setSpeaking] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreToggle = useRef<HTMLButtonElement>(null);
   const preferences = useUiPreferences();
   const copy = locale === 'en'
     ? { focus: 'FOCUS', focusExit: 'EXIT FOCUS', help: 'HELP', share: 'SHARE' }
@@ -82,8 +84,16 @@ export default function ReaderCommandUtilities({
   };
 
   return (
-    <div className="chapter-reader__utilities" aria-label={locale === 'en' ? 'Reader tools' : 'Nástroje čtečky'}>
+    <div className="chapter-reader__utilities" aria-label={locale === 'en' ? 'Reader tools' : 'Nástroje čtečky'} onKeyDown={(event) => {
+      if (event.key === 'Escape' && moreOpen) {
+        event.stopPropagation();
+        setMoreOpen(false);
+        moreToggle.current?.focus();
+      }
+    }}>
       <button type="button" aria-label={locale === 'en' ? 'Read chapter aloud' : 'Přečíst kapitolu nahlas'} aria-pressed={speaking} onClick={toggleSpeech}>TTS</button>
+      <button ref={moreToggle} className="reader-more-toggle" type="button" aria-expanded={moreOpen} aria-controls="reader-more-tools" onClick={() => setMoreOpen(!moreOpen)}>{locale === 'en' ? 'More' : 'Další'}</button>
+      <div id="reader-more-tools" className="reader-more-tools" data-open={moreOpen}>
       <button
         type="button"
         data-reader-tool="focus"
@@ -102,6 +112,7 @@ export default function ReaderCommandUtilities({
         </button>
       ) : null}
       <button type="button" aria-label={locale === 'en' ? 'Share chapter' : 'Sdílet kapitolu'} onClick={() => void share()}>{copy.share}</button>
+      </div>
     </div>
   );
 }

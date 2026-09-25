@@ -49,3 +49,8 @@
 
 .os-button__prefix,
 .os-button__suffix { display: inline-flex; align-items: center; }
+
+.content-search { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1rem; margin: 1.5rem 0; }
+.content-search label { display: grid; gap: .5rem; flex: 1 1 16rem; color: var(--os-text); }
+.content-search input[type="search"], .content-search select { width: 100%; min-height: 44px; padding: .7rem; font: inherit; color: var(--os-text); background: var(--os-bg-deep); border: 1px solid var(--os-border-strong); }
+.content-search .content-search__toggle { display: flex; align-items: center; min-height: 44px; }

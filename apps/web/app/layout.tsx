@@ -2,9 +2,6 @@
 import "../src/styles/effects-primitives.css";
 import "../src/styles/effects-semantic.css";
 import "../src/styles/effects-atmosphere.css";
-import "../src/styles/effects-books/null.css";
-import "../src/styles/effects-books/konec-podpory.css";
-import "../src/styles/effects-books/neon-0.css";
 import "../src/styles/components.css";
 import "../src/styles/components-dialog.css";
 import "../src/styles/components-choice.css";
@@ -12,21 +9,14 @@ import "../src/styles/effects.css";
 import "../src/styles/themes.css";
 import "../src/styles/synthoma-os/index.css";
 import "../src/styles/synthoma-wordmark.css";
-import "../src/styles/reader.css";
-import "../src/styles/book-reader-base.css";
-import "../src/styles/auth.css";
 import "../src/styles/profile.css";
 import "../src/styles/paywall.css";
-import "../src/styles/game.css";
-import "../src/styles/game-v1.css";
-import "../src/styles/cyklus.css";
 import "../src/styles/control-panel-os.css";
 import "../src/styles/audio-panel.css";
 import "../src/styles/motion-contract.css";
 import "../src/styles/pwa.css";
 import "../src/styles/site-unification.css";
 import "../src/styles/synthoma-art-direction.css";
-import "../src/styles/admin.css";
 
 import GlobalAudioClient from "./components/GlobalAudioClient";
 import SynthomaAudioPanel from "./components/SynthomaAudioPanel";
@@ -61,9 +51,10 @@ import UiPreferencesRuntime from "../src/components/preferences/UiPreferencesRun
 import { UI_PREFERENCE_BOOTSTRAP } from "../src/lib/uiPreferenceBootstrap";
 import { SYNTHOMA_DESCRIPTOR } from "../src/lib/publicMetadata";
 import { SYNTHOMA_ASSETS } from "../src/lib/brandAssets";
+import ReadingSyncClient from './components/ReadingSyncClient';
 import FirstVisitRedirectClient from "./components/FirstVisitRedirectClient";
 import UiLayerProvider from "../src/components/ui-layer/UiLayerProvider";
-import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from "../src/lib/intro";
+
 
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
@@ -213,7 +204,7 @@ function buildSiteJsonLd(locale: 'cs' | 'en') { return {
       "inLanguage": ["cs", "en"],
       "genre": ["Cyberpunk", "Interactive Fiction", "Glitch Noir"],
       "isAccessibleForFree": true,
-      "image": "https://www.synthoma.cz/assets/og-synthoma.png",
+      "image": "https://www.synthoma.cz/assets/og-synthoma.jpg",
       "hasPart": [
         { "@type": "Book", "name": "SYNTHOMA-NULL", "url": "https://www.synthoma.cz/books" },
         { "@type": "CollectionPage", "name": "Archiv SYNTHOMA", "url": "https://www.synthoma.cz/archive" },
@@ -273,27 +264,6 @@ export default async function RootLayout({ children }: PropsWithChildren) {
               pointer-events: none;
               transition: opacity 250ms ease, visibility 0s linear 250ms;
             }
-            html[data-synthoma-intro-pending="true"] #app-shell {
-              visibility: hidden;
-            }
-          ` }}
-        />
-
-        <script
-          id="synthoma-intro-first-paint"
-          dangerouslySetInnerHTML={{ __html: `
-            (function () {
-              if (window.location.pathname !== "/") return;
-              try {
-                if (window.localStorage.getItem(${JSON.stringify(SYNTHOMA_INTRO_STORAGE_KEY)}) !== ${JSON.stringify(SYNTHOMA_INTRO_VERSION)}) {
-                  document.documentElement.setAttribute("data-synthoma-intro-pending", "true");
-                  window.location.replace("/landing-intro");
-                }
-              } catch (_) {
-                document.documentElement.setAttribute("data-synthoma-intro-pending", "true");
-                window.location.replace("/landing-intro");
-              }
-            })();
           ` }}
         />
 
@@ -364,6 +334,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <LangProvider initialLang={initialLang}>
         <UiLayerProvider>
         <FirstVisitRedirectClient />
+        <ReadingSyncClient />
 
         <AccessProvider>
 

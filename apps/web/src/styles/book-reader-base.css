@@ -54,7 +54,7 @@ body { font-size: var(--font-size-body); }
 }
 
 .chapter-reader__article.SYNTHOMAREADER .chapter-content p {
-  margin-block: 0 1.05rem;
+  margin-block: 0 1em;
 }
 
 .chapter-reader__article.SYNTHOMAREADER .chapter-content > p:not(.log):not(.choice),
@@ -65,7 +65,7 @@ body { font-size: var(--font-size-body); }
 }
 
 .chapter-reader__article.SYNTHOMAREADER .chapter-content .log {
-  font-size: 0.78em !important;
+  font-size: 0.875em !important;
 }
 
 .chapter-reader__article.SYNTHOMAREADER .chapter-content :where(.log, [class*="terminal"], [class*="system"], .dialogSystem, .dialog1024) {

@@ -1,6 +1,8 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { usePathname } from 'next/navigation';
 import PwaProvider, { usePwa } from '../PwaProvider';
 import { PWA_INSTALL_DISMISSED_KEY, PWA_VISIT_COUNT_KEY } from '../../../lib/pwa';
+jest.mock('next/navigation', () => ({ usePathname: jest.fn(() => '/books') }));
 
 function StateProbe() {
   const pwa = usePwa();
@@ -12,6 +14,7 @@ describe('PwaProvider install flow', () => {
   const session = new Map<string, string>();
 
   beforeEach(() => {
+    jest.mocked(usePathname).mockReturnValue('/books');
     local.clear();
     session.clear();
     jest.mocked(window.matchMedia).mockImplementation((query) => ({
@@ -53,6 +56,14 @@ describe('PwaProvider install flow', () => {
     expect(event.prompt).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'NAINSTALOVAT' }));
     await waitFor(() => expect(event.prompt).toHaveBeenCalledTimes(1));
+  });
+
+  it.each(['/landing-intro', '/'])('keeps installation prompts out of the intro flow at %s', async (pathname) => {
+    jest.mocked(usePathname).mockReturnValue(pathname);
+    render(<PwaProvider><StateProbe /></PwaProvider>);
+    act(() => window.dispatchEvent(installEvent()));
+    await waitFor(() => expect(screen.getByTestId('state')).toHaveTextContent('"canPromptInstall":true'));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('stores the cooldown after dismissal and hides after appinstalled', async () => {

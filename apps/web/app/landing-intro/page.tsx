@@ -6,45 +6,45 @@ import SynthomaMediaLayer from '../../src/components/synthoma-os/SynthomaMediaLa
 import SynthomaWordmark from '../../src/components/synthoma/SynthomaWordmark';
 import { useUiLayer } from '../../src/components/ui-layer/UiLayerProvider';
 import { useUiPreferences } from '../../src/hooks/useUiPreferences';
-import { writeStorage } from '../../src/lib/browser';
-import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from '../../src/lib/intro';
+import { completeIntroForDocument } from '../../src/lib/intro';
 import { useLang } from '../../src/lib/LangContext';
 import { getEffectiveMotionMode, type EffectiveMotionMode } from '../../src/lib/uiPreferences';
 
-const FINAL_PHASE = 3;
-const PHASE_DELAYS_MS = [650, 800, 1050] as const;
-
 const COPY = {
   cs: {
-    aria: 'Příběhové intro SYNTHOMA',
-    signal: 'SIGNÁL NALEZEN',
+    aria: 'Vítejte v SYNTHOMA',
     slogan: ['Tma nikdy není opravdová.', 'Je jen světlem, které se vzdalo smyslu.'],
     enter: 'VSTOUPIT',
-    skip: 'PŘESKOČIT',
   },
   en: {
-    aria: 'SYNTHOMA story intro',
-    signal: 'SIGNAL FOUND',
+    aria: 'Welcome to SYNTHOMA',
     slogan: ['Darkness is never real.', 'It is only light that surrendered its meaning.'],
     enter: 'ENTER',
-    skip: 'SKIP',
   },
 } as const;
+
+function quoteLetters(text: string, line: number) {
+  return Array.from(text, (letter, index) =>
+    index % 11 === 3 && /\p{L}/u.test(letter)
+      ? <span key={index} className="synthoma-intro__letter" style={{ animationDelay: `${1.8 + line * 2.1 + index * 0.14}s` }}>{letter}</span>
+      : letter,
+  );
+}
 
 export default function LandingIntroPage() {
   const router = useRouter();
   const { lang } = useLang();
   const copy = COPY[lang];
   const preferences = useUiPreferences();
-  const [systemReduced, setSystemReduced] = useState(false);
   const [phase, setPhase] = useState(0);
+  const [systemReduced, setSystemReduced] = useState(false);
   const motion: EffectiveMotionMode = getEffectiveMotionMode(preferences, systemReduced);
 
   const finishIntro = useCallback(() => {
-    writeStorage(SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION);
+    completeIntroForDocument();
     document.documentElement.removeAttribute('data-synthoma-intro-pending');
-    router.replace('/');
-  }, [router]);
+    router.replace(`/${window.location.search || (lang === 'en' ? '?locale=en' : '')}`);
+  }, [router, lang]);
 
   const { closeLayer } = useUiLayer({
     id: 'story-intro',
@@ -62,19 +62,9 @@ export default function LandingIntroPage() {
   }, []);
 
   useEffect(() => {
-    if (motion === 'off') {
-      setPhase(FINAL_PHASE);
-      return;
-    }
-    if (motion === 'reduced') {
-      const timer = window.setTimeout(() => setPhase(FINAL_PHASE), 240);
-      return () => window.clearTimeout(timer);
-    }
-    if (phase >= FINAL_PHASE) return;
-    const timer = window.setTimeout(
-      () => setPhase((current) => Math.min(FINAL_PHASE, current + 1)),
-      PHASE_DELAYS_MS[phase],
-    );
+    if (motion !== 'full') { setPhase(4); return; }
+    if (phase >= 4) return;
+    const timer = window.setTimeout(() => setPhase(value => value + 1), [650, 900, 1200, 900][phase]);
     return () => window.clearTimeout(timer);
   }, [motion, phase]);
 
@@ -82,18 +72,13 @@ export default function LandingIntroPage() {
     <main
       className="synthoma-intro"
       aria-label={copy.aria}
-      data-phase={phase}
       data-motion={motion}
+      data-phase={phase}
     >
       <SynthomaMediaLayer src="/video/SYNTHOMA1.webm" />
       <div className="synthoma-intro__scrim" aria-hidden="true" />
 
       <section className="synthoma-intro__stage" aria-labelledby="synthoma-intro-title">
-        <div className="synthoma-intro__signal" aria-hidden="true">
-          <span />
-          <strong>{copy.signal}</strong>
-        </div>
-
         <SynthomaWordmark
           id="synthoma-intro-title"
           context="intro"
@@ -102,21 +87,16 @@ export default function LandingIntroPage() {
         />
 
         <blockquote className="synthoma-intro__slogan">
-          <span>{copy.slogan[0]}</span>
-          <span>{copy.slogan[1]}</span>
+          <p className="sr-only">{copy.slogan.join(' ')}</p>
+          <span aria-hidden="true" data-text={copy.slogan[0]}>{quoteLetters(copy.slogan[0], 0)}</span>
+          <span aria-hidden="true" data-text={copy.slogan[1]}>{quoteLetters(copy.slogan[1], 1)}</span>
         </blockquote>
-      </section>
-
-      <div className="synthoma-intro__actions">
-        <button className="os-command synthoma-intro__skip" type="button" onClick={closeLayer}>
-          {copy.skip}
-        </button>
-        {phase >= FINAL_PHASE ? (
+        {phase >= 4 && <div className="synthoma-intro__actions">
           <button className="os-command synthoma-intro__enter" type="button" onClick={closeLayer} autoFocus>
             {copy.enter}
           </button>
-        ) : null}
-      </div>
+        </div>}
+      </section>
     </main>
   );
 }

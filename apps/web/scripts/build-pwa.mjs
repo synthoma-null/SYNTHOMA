@@ -1,7 +1,9 @@
 import { generateSW } from 'workbox-build';
 import fs from 'node:fs/promises';
 
-const PWA_VERSION = '1.0.0-pwa.6';
+const pwaSource = await fs.readFile('src/lib/pwa.ts', 'utf8');
+const PWA_VERSION = pwaSource.match(/PWA_VERSION = '([^']+)'/)?.[1];
+if (!PWA_VERSION) throw new Error('PWA version is missing');
 const buildId = (process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'local')
   .replace(/[^a-z0-9.-]/gi, '-')
   .slice(0, 16)
@@ -9,10 +11,14 @@ const buildId = (process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 
 const suffix = `${PWA_VERSION}-${buildId}`.replace(/[^a-z0-9.-]/gi, '-').toLowerCase();
 const isSensitive = ({ url }) => url.origin === self.location.origin && (
   url.pathname.startsWith('/api/')
+  || url.pathname.startsWith('/chapter/')
+  || (url.pathname.startsWith('/books/') && /\.html?$/i.test(url.pathname))
+  || url.pathname === '/reader'
   || url.pathname === '/profile'
   || url.pathname.startsWith('/admin')
   || url.pathname.startsWith('/login')
   || url.pathname.startsWith('/register')
+  || url.pathname.startsWith('/reset-password')
   || url.pathname.startsWith('/purchase')
 );
 const isNextStream = ({ request, url }) => url.origin === self.location.origin && (
@@ -24,10 +30,19 @@ const isNextStream = ({ request, url }) => url.origin === self.location.origin &
 const safeCachePlugin = {
   cacheWillUpdate: async ({ response }) => {
     const contentType = response.headers.get('content-type') || '';
-    if (response.bodyUsed || contentType.includes('text/x-component')) return null;
+    if (response.bodyUsed || /private|no-store/i.test(response.headers.get('cache-control') || '') || contentType.includes('text/x-component')) return null;
     return response.status === 0 || response.status === 200 ? response.clone() : null;
   },
 };
+
+// Only the offline page and shared shell need their CSS at installation time.
+// Route-specific CSS is cached when the reader actually visits that route.
+const appManifest = JSON.parse(await fs.readFile('.next/app-build-manifest.json', 'utf8'));
+const shellCss = [...new Set([
+  ...(appManifest.pages['/layout'] ?? []),
+  ...(appManifest.pages['/offline/page'] ?? []),
+].filter((file) => file.endsWith('.css')).map((file) => file.replace(/^static\//, '')))];
+if (shellCss.length === 0) throw new Error('Offline shell CSS missing from Next.js build manifest');
 
 const { count, size, warnings } = await generateSW({
   cacheId: `synthoma-shell-${suffix}`,
@@ -36,7 +51,7 @@ const { count, size, warnings } = await generateSW({
   skipWaiting: true,
   swDest: 'public/sw.js',
   globDirectory: '.next/static',
-  globPatterns: ['css/*.css'],
+  globPatterns: shellCss,
   modifyURLPrefix: { '': '/_next/static/' },
   additionalManifestEntries: [
     { url: '/offline', revision: suffix },
@@ -45,7 +60,6 @@ const { count, size, warnings } = await generateSW({
     { url: '/assets/background_logo.png', revision: suffix },
     { url: '/assets/background_title.png', revision: suffix },
     { url: '/assets/favicon.ico', revision: suffix },
-    { url: '/assets/og-synthoma.png', revision: suffix },
     { url: '/assets/icon_256.png', revision: suffix },
     { url: '/assets/icon_512.png', revision: suffix },
     { url: '/assets/icon_1024.png', revision: suffix },

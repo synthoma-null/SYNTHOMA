@@ -1,5 +1,7 @@
 'use client';
 
+import { sanitizeChapterHtml } from '../../../src/lib/sanitizeChapterHtml';
+
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type {
@@ -84,16 +86,7 @@ const EFFECT_GROUPS: Array<{ label: string; effects: EffectTemplate[] }> = [
   },
 ];
 
-function sanitizePreviewHtml(source: string): string {
-  return source
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
-    .replace(/<(?:meta|link|base)\b[^>]*>/gi, '')
-    .replace(/<\/?(?:html|head|body)\b[^>]*>/gi, '')
-    .replace(/\s(?:on\w+|style)\s*=\s*(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\s(?:href|src)\s*=\s*(["'])\s*javascript:[\s\S]*?\1/gi, '')
-    .trim();
-}
+const sanitizePreviewHtml = sanitizeChapterHtml;
 
 function draftFromBook(book: AdminContentBook): BookDraft {
   return {
@@ -138,6 +131,7 @@ export default function AdminContentTab({ onChanged }: { onChanged: () => void }
   const [creatingBook, setCreatingBook] = useState(false);
   const [chapterDraft, setChapterDraft] = useState<ChapterDraft | null>(null);
   const [creatingChapter, setCreatingChapter] = useState(false);
+  const [revisions, setRevisions] = useState<Array<{ id: string; createdAt: string }>>([]);
   const [editorLocale, setEditorLocale] = useState<EditorLocale>('cs');
   const [loading, setLoading] = useState(true);
   const [chapterLoading, setChapterLoading] = useState(false);
@@ -210,7 +204,7 @@ export default function AdminContentTab({ onChanged }: { onChanged: () => void }
     setCreatingChapter(false);
     setBookDraft({
       id: '', title: '', shortTitle: '', description: '', cover: '',
-      sortOrder: snapshot.books.length + 10, status: 'ongoing', visibility: 'published', accessPolicy: 'free',
+      sortOrder: snapshot.books.length + 10, status: 'ongoing', visibility: 'hidden', accessPolicy: 'free',
     });
   }
 
@@ -261,6 +255,7 @@ export default function AdminContentTab({ onChanged }: { onChanged: () => void }
 
   async function editChapter(chapter: AdminContentChapter) {
     if (!selectedBook) return;
+    setRevisions([]);
     setChapterLoading(true);
     setError(null);
     setFeedback(null);
@@ -292,15 +287,39 @@ export default function AdminContentTab({ onChanged }: { onChanged: () => void }
     }
   }
 
+  async function loadHistory() {
+    if (!chapterDraft) return;
+    setError(null);
+    try {
+      const response = await fetch(`/api/admin/content?chapterId=${encodeURIComponent(chapterDraft.id)}&history=1`, { cache: 'no-store' });
+      const data = await readAdminResponse<{ revisions: Array<{ id: string; createdAt: string }> }>(response);
+      setRevisions(data.revisions);
+      if (!data.revisions.length) setFeedback('Tato kapitola zatím nemá uloženou předchozí verzi.');
+    } catch (requestError) { setError(errorMessage(requestError)); }
+  }
+
+  async function loadRevision(revisionId: string) {
+    if (!chapterDraft || !revisionId) return;
+    setChapterLoading(true); setError(null);
+    try {
+      const response = await fetch(`/api/admin/content?chapterId=${encodeURIComponent(chapterDraft.id)}&revisionId=${encodeURIComponent(revisionId)}`, { cache: 'no-store' });
+      const restored = await readAdminResponse<AdminContentChapterDetail>(response);
+      setChapterDraft({ ...draftFromChapter(restored), visibility: 'hidden' });
+      setFeedback('Starší verze je načtena v editoru jako skrytý koncept. Zkontroluj náhled a ulož ji.');
+    } catch (requestError) { setError(errorMessage(requestError)); }
+    finally { setChapterLoading(false); }
+  }
+
   function startChapter() {
     if (!selectedBook) return;
+    setRevisions([]);
     setCreatingChapter(true);
     setFeedback(null);
     setError(null);
     setEditorLocale('cs');
     setChapterDraft({
       id: '', bookId: selectedBook.id, title: '', titleEn: '', ordinal: '', summary: '',
-      sortOrder: selectedBook.chapters.length, visibility: 'published', accessPolicy: 'free',
+      sortOrder: selectedBook.chapters.length, visibility: 'hidden', accessPolicy: 'free',
       mnemCost: 64, bodyHtml: chapterTemplate, bodyHtmlEn: '', isCustom: true,
     });
   }
@@ -342,7 +361,7 @@ export default function AdminContentTab({ onChanged }: { onChanged: () => void }
     const payload = {
       entity: 'chapter',
       ...editableChapter,
-      bodyHtmlEn: chapterDraft.bodyHtmlEn.trim() || undefined,
+      bodyHtmlEn: chapterDraft.bodyHtmlEn.trim(),
       mnemCost: chapterDraft.accessPolicy === 'entitlement' ? chapterDraft.mnemCost : null,
     };
     try {
@@ -498,7 +517,13 @@ export default function AdminContentTab({ onChanged }: { onChanged: () => void }
                   <label>Označení<input value={chapterDraft.ordinal} onChange={(event) => setChapterDraft({ ...chapterDraft, ordinal: event.target.value })} placeholder="03" /></label>
                   <label>Pořadí<input type="number" value={chapterDraft.sortOrder} onChange={(event) => setChapterDraft({ ...chapterDraft, sortOrder: Number(event.target.value) })} /></label>
                 </div>
-                <label>Viditelnost<select value={chapterDraft.visibility} onChange={(event) => setChapterDraft({ ...chapterDraft, visibility: event.target.value as AdminContentVisibility })}><option value="published">Viditelná</option><option value="hidden">Skrytá</option></select></label>
+                {!creatingChapter && <button type="button" className="admin-action admin-action--secondary" disabled={saving || chapterLoading} onClick={() => void loadHistory()}>NAČÍST HISTORII VERZÍ</button>}
+                {!creatingChapter && revisions.length > 0 && <label>Historie verzí<select defaultValue="" disabled={chapterLoading || saving} onChange={event => void loadRevision(event.target.value)}>
+                  <option value="">Načíst předchozí verzi do editoru…</option>
+                  {revisions.map(revision => <option key={revision.id} value={revision.id}>{new Date(revision.createdAt).toLocaleString('cs-CZ')}</option>)}
+                </select></label>}
+                {creatingChapter && <p>Nová kapitola se nejdříve uloží jako skrytý koncept.</p>}
+                <label>Viditelnost<select disabled={creatingChapter} value={chapterDraft.visibility} onChange={(event) => setChapterDraft({ ...chapterDraft, visibility: event.target.value as AdminContentVisibility })}><option value="published">Viditelná</option><option value="hidden">Skrytá</option></select></label>
                 <label>Přístup<select value={chapterDraft.accessPolicy} onChange={(event) => setChapterDraft({ ...chapterDraft, accessPolicy: event.target.value as AdminContentAccess })}><option value="inherit">Podle knihy</option><option value="free">Odemčená zdarma</option><option value="entitlement">Zamčená za MNEM</option></select></label>
                 <label>Cena MNEM<input type="number" min="1" value={chapterDraft.mnemCost} disabled={chapterDraft.accessPolicy !== 'entitlement'} onChange={(event) => setChapterDraft({ ...chapterDraft, mnemCost: Number(event.target.value) })} /></label>
                 <label>Shrnutí<textarea rows={4} value={chapterDraft.summary} onChange={(event) => setChapterDraft({ ...chapterDraft, summary: event.target.value })} /></label>

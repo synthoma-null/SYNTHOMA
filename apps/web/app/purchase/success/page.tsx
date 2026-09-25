@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useLang } from '../../../src/lib/LangContext';
 import { useEffect, useState } from 'react';
 import { useAccess, type ClientAccessSnapshot } from '../../../src/components/access/AccessProvider';
 
@@ -8,6 +9,10 @@ type VerificationState = 'verifying' | 'completed' | 'delayed' | 'failed';
 
 export default function PurchaseSuccessPage() {
   const { applySnapshot } = useAccess();
+  const { lang } = useLang();
+  const en = lang === 'en';
+  const href = (path: string) => en ? `${path}?locale=en` : path;
+  const headings = en ? { completed: 'ACCESS CONFIRMED', verifying: 'VERIFYING PAYMENT', delayed: 'CONFIRMATION DELAYED', failed: 'WE COULD NOT VERIFY ACCESS' } : { completed: 'PŘÍSTUP POTVRZEN', verifying: 'OVĚŘUJI PLATBU', delayed: 'POTVRZENÍ SE ZDRŽELO', failed: 'PŘÍSTUP SE NEPODAŘILO OVĚŘIT' };
   const [state, setState] = useState<VerificationState>('verifying');
 
   useEffect(() => {
@@ -18,6 +23,7 @@ export default function PurchaseSuccessPage() {
     }
     let cancelled = false;
     let attempts = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     const verify = async () => {
       attempts += 1;
       try {
@@ -39,32 +45,33 @@ export default function PurchaseSuccessPage() {
       } catch {
         // The webhook may still be in flight. Keep the state honest and retry briefly.
       }
-      if (attempts < 15) window.setTimeout(verify, 1000);
+      if (attempts < 15) timer = setTimeout(verify, 1000);
       else setState('delayed');
     };
     void verify();
-    return () => { cancelled = true; };
+    return () => { cancelled = true; if (timer) clearTimeout(timer); };
   }, [applySnapshot]);
 
   return (
     <main className="auth-page">
       <div className="auth-container os-surface os-surface--glass glitch-bg">
         <h1 className="auth-title glitch">
-          {state === 'completed' ? 'PŘÍSTUP POTVRZEN' : 'OVĚŘUJI PLATBU'}
+          {headings[state]}
         </h1>
         <div className="auth-log">
           <span className="auth-log-prefix">LOG [{state.toUpperCase()}]:</span>
           <span className="auth-log-msg">
-            {state === 'completed' && 'Webhook zapsal entitlement. Paměťový otisk je aktivní.'}
-            {state === 'verifying' && 'Platební návrat přijat. Čekám na podepsaný Stripe webhook.'}
-            {state === 'delayed' && 'Potvrzení trvá déle. Platbu neopakuj; stav se dokončí na serveru.'}
-            {state === 'failed' && 'Grant nelze přiřadit. Kontaktuj podporu s ID Stripe session.'}
+            {state === 'completed' && (en ? 'Your access is active. You can start reading.' : 'Přístup je aktivní. Můžeš začít číst.')}
+            {state === 'verifying' && (en ? 'Waiting for payment confirmation.' : 'Čekáme na potvrzení platby.')}
+            {state === 'delayed' && (en ? 'Confirmation is taking longer. Do not pay again.' : 'Potvrzení trvá déle. Platbu neopakuj.')}
+            {state === 'failed' && (en ? 'Contact support and include the payment reference.' : 'Kontaktuj podporu a přilož referenci platby.')}
           </span>
         </div>
+        {(state === 'failed' || state === 'delayed') && <p><a href="mailto:null1@synthoma.cz">null1@synthoma.cz</a></p>}
         <div className="purchase-success-links">
-          <Link href="/profile" className="btn">PROFIL</Link>
-          <Link href="/books" className="btn">KNIHOVNA</Link>
-          {state === 'completed' ? <Link href="/books" className="btn">ČÍST</Link> : null}
+          <Link href={href("/profile")} className="btn">{en ? "PROFILE" : "PROFIL"}</Link>
+          <Link href={href("/books")} className="btn">{en ? "LIBRARY" : "KNIHOVNA"}</Link>
+          {state === 'completed' ? <Link href={href("/books")} className="btn">{en ? "READ" : "ČÍST"}</Link> : null}
         </div>
       </div>
     </main>

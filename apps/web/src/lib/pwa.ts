@@ -1,4 +1,4 @@
-export const PWA_VERSION = '1.0.0-pwa.6';
+export const PWA_VERSION = '1.0.0-pwa.8';
 export const PWA_BUILD_ID = process.env.NEXT_PUBLIC_SYNTHOMA_BUILD_ID || 'local';
 export const PWA_CACHE_PREFIX = 'synthoma-';
 export const PWA_INSTALL_DISMISSED_KEY = 'synthoma_pwa_install_dismissed_at';
@@ -7,6 +7,7 @@ export const PWA_VISIT_SESSION_KEY = 'synthoma_pwa_visit_counted';
 export const PWA_INSTALL_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000;
 
 export const PWA_CRITICAL_PATH_PREFIXES = [
+  '/landing-intro',
   '/chapter/',
   '/reader',
   '/cyklus',

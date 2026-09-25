@@ -3,13 +3,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { auth } from '../../../../auth';
 import { getPackageById } from '../../../../src/content/booksManifest';
-import { getChapterCatalogEntry } from '../../../../src/content/catalog';
+import { getManagedChapter } from '../../../../src/server/content/managedContent';
+import prisma from '../../../../src/lib/prisma';
+import { createHash } from 'node:crypto';
+import { siteOrigin } from '../../../../src/server/siteOrigin';
 
 export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
     apiVersion: '2026-06-24.dahlia',
   });
-  const ORIGIN = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const ORIGIN = siteOrigin();
   const session = await auth();
   const userId = session?.user?.id ?? null;
 
@@ -41,18 +44,21 @@ export async function POST(req: NextRequest) {
   let grantType: 'package' | 'content';
   let finalPackageId: string | null = null;
   let finalChapterId: string | null = null;
+  let packageMnems: number | null = null;
 
   if (packageId && !(packageId === 'single-fragment' && chapterId)) {
     const pkg = getPackageById(packageId);
     if (!pkg) return NextResponse.json({ error: 'Balíček nenalezen' }, { status: 404 });
     name = pkg.name;
+    packageMnems = pkg.mnems;
     priceCents = pkg.priceCzk * 100;
     finalPackageId = pkg.id;
     grantType = 'package';
   } else {
-    const ch = chapterId ? getChapterCatalogEntry(chapterId) : undefined;
+    const managed = chapterId ? await getManagedChapter(chapterId) : undefined;
+    const ch = managed?.chapter;
     if (!ch) return NextResponse.json({ error: 'Fragment nenalezen' }, { status: 404 });
-    if (ch.availability !== 'published' || ch.accessPolicy === 'free') {
+    if (managed?.visibility !== 'published' || ch.availability !== 'published' || ch.accessPolicy === 'free') {
       return NextResponse.json({ error: 'Tento fragment nelze koupit.' }, { status: 409 });
     }
     const single = getPackageById('single-fragment');
@@ -63,7 +69,17 @@ export async function POST(req: NextRequest) {
     grantType = 'content';
   }
 
+  const orderId = createHash('sha256').update(`${userId}:${idempotencyKey}`).digest('hex');
+  const order = await prisma.checkoutOrder.upsert({
+    where: { id: orderId },
+    create: { id: orderId, userId, packageId: finalPackageId, chapterId: finalChapterId, name, priceCents, packageMnems },
+    update: {},
+  });
+  if (order.userId !== userId || order.packageId !== finalPackageId || order.chapterId !== finalChapterId) {
+    return NextResponse.json({ error: 'Tento požadavek již patří jinému nákupu.' }, { status: 409 });
+  }
   const metadata: Record<string, string> = {
+    orderId: order.id,
     grantType,
     userId,
   };
@@ -80,8 +96,8 @@ export async function POST(req: NextRequest) {
       {
         price_data: {
           currency: 'czk',
-          product_data: { name },
-          unit_amount: priceCents,
+          product_data: { name: order.name },
+          unit_amount: order.priceCents,
         },
         quantity: 1,
       },
@@ -91,5 +107,6 @@ export async function POST(req: NextRequest) {
     cancel_url: `${ORIGIN}/books`,
   }, { idempotencyKey: `checkout:${userId}:${idempotencyKey}` });
 
+  await prisma.checkoutOrder.update({ where: { id: order.id }, data: { stripeSessionId: checkoutSession.id } });
   return NextResponse.json({ url: checkoutSession.url });
 }

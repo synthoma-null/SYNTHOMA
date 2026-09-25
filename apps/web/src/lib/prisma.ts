@@ -8,7 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function makePrisma() {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 15000, max: 10 });
   const adapter = new PrismaPg(pool);
   return {
     pool,

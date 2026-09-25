@@ -4,7 +4,7 @@ export const SYNTHOMA_ASSETS = {
   logo: '/assets/background_logo.png',
   title: '/assets/background_title.png',
   favicon: '/assets/favicon.ico',
-  openGraph: '/assets/og-synthoma.png',
+  openGraph: '/assets/og-synthoma.jpg',
   icon: {
     256: '/assets/icon_256.png',
     512: '/assets/icon_512.png',

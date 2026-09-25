@@ -1076,3 +1076,21 @@ html[data-theme="mono-light"] .reader-onboarding {
   }
 
   /* Konec revize. Testuj to na mobilu, ať ti to nerozbije scroll jako moje trpělivost při auditu! 😜 Pokud chceš víc, piš – jsem tu na záchranu tvých stylů před kolapsem. 🚀 */
+
+/* Reader utilities remain reachable on small screens. */
+.reader-more-toggle { display: none; }
+.reader-more-tools { display: contents; }
+.chapter-reader__utilities { position: relative; }
+@media (max-width: 767px) {
+  .chapter-reader__command-bar { overflow: visible; }
+  .chapter-reader__utilities .reader-more-toggle,
+  .chapter-reader__command-end > .chapter-reader__command { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; }
+  .chapter-reader__utilities > button:first-child { font-size: .875rem; min-height: 44px; }
+  .reader-more-tools { display: none; }
+  .reader-more-tools[data-open="true"] { display: grid; position: absolute; top: 100%; right: 0; z-index: 60; width: min(17rem, 85vw); padding: .5rem; background: var(--bg-primary, #050810); border: 1px solid var(--text-secondary); box-shadow: 0 6px 20px #0008; }
+  .chapter-reader__utilities .reader-more-tools button { display: flex; align-items: center; min-height: 44px; font-size: .875rem; text-align: left; }
+  .chapter-reader--focus .reader-more-tools { display: contents; }
+  .chapter-reader--focus .reader-more-tools button:not([data-reader-tool="focus"]) { display: none; }
+}
+
+.chapter-reader__save-status { margin: .5rem 0; color: var(--os-text-secondary); font-size: .875rem; text-align: right; }

@@ -1,25 +1,19 @@
 "use client";
-
-import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-
-import { readStorage } from "../../src/lib/browser";
-import { SYNTHOMA_INTRO_STORAGE_KEY, SYNTHOMA_INTRO_VERSION } from "../../src/lib/intro";
+import { useEffect, useRef } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { isIntroCompleteForDocument } from '../../src/lib/intro';
 
 export default function FirstVisitRedirectClient() {
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
+  const checked = useRef(false);
   useEffect(() => {
-    if (pathname !== '/') return;
-    try {
-      const seenVersion = readStorage(SYNTHOMA_INTRO_STORAGE_KEY, null);
-      if (seenVersion !== SYNTHOMA_INTRO_VERSION) {
-        document.documentElement.setAttribute('data-synthoma-intro-pending', 'true');
-        router.replace("/landing-intro");
-      } else {
-        document.documentElement.removeAttribute('data-synthoma-intro-pending');
-      }
-    } catch {}
+    if (checked.current) return;
+    document.documentElement.removeAttribute('data-synthoma-intro-pending');
+    if (pathname === '/' && !isIntroCompleteForDocument()) {
+      checked.current = true;
+      router.replace(`/landing-intro${window.location.search}`);
+    }
   }, [pathname, router]);
   return null;
 }

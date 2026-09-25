@@ -178,6 +178,16 @@
   100% { transform: translate(0, 0) scale(1) skewX(0deg); opacity: 1; }
 }
 
+.synthoma-wordmark[data-animated="false"],
+.synthoma-wordmark[data-animated="false"] .synthoma-wordmark__layer {
+  animation: none;
+  transform: none;
+  will-change: auto;
+}
+
+.synthoma-wordmark[data-animated="false"] .synthoma-wordmark__layer { opacity: 0.18; }
+.synthoma-wordmark[data-animated="false"] .synthoma-wordmark__char { will-change: auto; }
+
 @media (prefers-reduced-motion: reduce) {
   .synthoma-wordmark,
   .synthoma-wordmark__layer--magenta,

@@ -18,13 +18,13 @@ function cardData(card: PublicCardDocument) {
   };
 }
 
-function requestLocale(request: Request): PublicLocale | Response {
-  const limited = enforcePublicRateLimit(request, 'read');
+async function requestLocale(request: Request): Promise<PublicLocale | Response> {
+  const limited = await enforcePublicRateLimit(request, 'read');
   return limited ?? localeFromRequest(request) ?? publicError(request, 400, 'UNSUPPORTED_LOCALE', 'Supported locales are cs and en.');
 }
 
-export function cardsApi(request: Request): Response {
-  const locale = requestLocale(request);
+export async function cardsApi(request: Request): Promise<Response> {
+  const locale = await requestLocale(request);
   if (locale instanceof Response) return locale;
   const page = paginate(request, getPublicCards(locale).map(cardData));
   if (!page) return publicError(request, 400, 'INVALID_CURSOR', 'The pagination cursor is invalid.');
@@ -35,8 +35,8 @@ export function cardsApi(request: Request): Response {
   }));
 }
 
-export function cardApi(request: Request, id: string): Response {
-  const locale = requestLocale(request);
+export async function cardApi(request: Request, id: string): Promise<Response> {
+  const locale = await requestLocale(request);
   if (locale instanceof Response) return locale;
   const card = getPublicCard(id, locale);
   if (!card) return publicError(request, 404, 'NOT_FOUND', 'Unknown or hidden Cyklus card.');

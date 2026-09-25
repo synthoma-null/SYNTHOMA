@@ -1,4 +1,5 @@
 /** @jest-environment node */
+jest.mock('next-auth/react', () => ({ useSession: () => ({ data: null, status: 'unauthenticated' }) }));
 
 import fs from 'node:fs';
 import path from 'node:path';

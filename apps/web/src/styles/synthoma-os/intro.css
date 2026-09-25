@@ -7,24 +7,16 @@
   display: grid;
   min-height: 100svh;
   place-items: center;
-  overflow: hidden;
+  overflow-y: auto;
+  padding: max(2rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
   color: var(--os-text, #f4fbff);
   background: var(--os-bg-deep, #010205);
   isolation: isolate;
 }
 
 .synthoma-intro .synthoma-media-layer {
-  opacity: 0;
-  transition: opacity 900ms ease;
-}
-
-.synthoma-intro[data-phase="1"] .synthoma-media-layer {
-  opacity: 0.2;
-}
-
-.synthoma-intro[data-phase="2"] .synthoma-media-layer,
-.synthoma-intro[data-phase="3"] .synthoma-media-layer {
-  opacity: 0.44;
+  opacity: 1;
+  --os-media-opacity: 0.9;
 }
 
 .synthoma-intro__scrim {
@@ -32,8 +24,8 @@
   inset: 0;
   z-index: var(--os-z-base, 1);
   background:
-    radial-gradient(circle at 50% 48%, transparent 0 10%, color-mix(in srgb, var(--os-bg) 50%, transparent) 44%, var(--os-bg) 100%),
-    linear-gradient(180deg, color-mix(in srgb, var(--os-bg) 72%, transparent), transparent 38% 62%, color-mix(in srgb, var(--os-bg) 82%, transparent));
+    radial-gradient(ellipse at center, rgb(1 2 5 / 0.32), transparent 65%),
+    linear-gradient(180deg, rgb(1 2 5 / 0.3), transparent 28% 72%, rgb(1 2 5 / 0.4));
   pointer-events: none;
 }
 
@@ -41,135 +33,80 @@
   position: relative;
   z-index: calc(var(--os-z-base, 1) + 1);
   display: grid;
-  width: min(92vw, 70rem);
-  min-height: min(72svh, 42rem);
-  place-items: center;
-}
-
-.synthoma-intro__signal {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  display: grid;
-  gap: 0.75rem;
-  place-items: center;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-}
-
-.synthoma-intro__signal span {
-  width: 0.55rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--intro-cyan);
-  box-shadow: 0 0 1.5rem var(--intro-cyan);
-  animation: intro-signal 850ms ease-in-out infinite;
-}
-
-.synthoma-intro__signal strong {
-  color: var(--os-text-muted, #9eb6c2);
-  font: 700 var(--text-caption, 0.875rem)/1.4 var(--os-font-mono, monospace);
-}
-
-.synthoma-intro[data-phase="1"] .synthoma-intro__signal {
-  opacity: 1;
-  animation: intro-signal-glitch 700ms steps(2, end) both;
+  width: min(100%, 70rem);
+  gap: clamp(1.5rem, 5svh, 3rem);
+  justify-items: center;
+  text-align: center;
 }
 
 .synthoma-intro__brand {
   margin: 0;
-  opacity: 0;
-  transform: translateY(0.8rem) scale(0.97);
-  transition: opacity 650ms ease, transform 800ms cubic-bezier(.2, .8, .2, 1);
-}
-
-.synthoma-intro[data-phase="2"] .synthoma-intro__brand,
-.synthoma-intro[data-phase="3"] .synthoma-intro__brand {
-  opacity: 1;
-  transform: translateY(-2.5rem) scale(1);
 }
 
 .synthoma-intro__slogan {
-  position: absolute;
-  top: 56%;
   display: grid;
-  width: min(90vw, 52rem);
+  width: min(100%, 52rem);
   gap: 0.35rem;
   margin: 0;
-  color: var(--os-text-secondary, #cad8df);
-  font: 500 clamp(1.3rem, 3vw, 2.5rem)/1.3 var(--os-font-body, sans-serif);
+  font: 800 clamp(1.3rem, 3vw, 2.5rem)/1.3 var(--os-font-heading);
   text-align: center;
   text-wrap: balance;
-  opacity: 0;
-  text-shadow:
-    0 0 1.1rem color-mix(in srgb, var(--intro-cyan) 38%, transparent),
-    0.07em 0 color-mix(in srgb, var(--intro-magenta) 30%, transparent);
-  transform: translateY(1rem);
-  transition: opacity 700ms ease, transform 800ms ease;
-}
-
-.synthoma-intro[data-phase="3"] .synthoma-intro__slogan {
-  opacity: 1;
-  transform: translateY(0);
+  color: var(--syn-text-hot, #edf8fb);
+  text-shadow: 0 2px 4px #010205, 0 0 1rem #010205;
 }
 
 .synthoma-intro__actions {
-  position: fixed;
-  z-index: calc(var(--os-z-critical, 120) + 1);
-  right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
-  left: max(1rem, env(safe-area-inset-left));
   display: flex;
   justify-content: center;
-  gap: 0.75rem;
+  width: 100%;
+  padding-top: clamp(0.5rem, 2svh, 1.5rem);
 }
 
 .synthoma-intro__actions .os-command {
-  min-width: 9rem;
-  min-height: 3rem;
-}
-
-.synthoma-intro__skip {
-  color: var(--os-text-muted);
+  min-width: min(100%, 13rem);
+  min-height: 3.25rem;
 }
 
 .synthoma-intro__enter {
+  position: relative;
+  overflow: hidden;
+  padding: 0.9rem 2.5rem;
+  color: var(--syn-text-hot, #edf8fb);
+  letter-spacing: 0.2em;
+  background: linear-gradient(120deg, rgb(6 31 43 / 0.95), rgb(2 7 16 / 0.96));
   border-color: var(--intro-cyan);
-  box-shadow: 0 0 1.25rem color-mix(in srgb, var(--intro-cyan) 24%, transparent);
+  box-shadow: inset 0 0 1rem rgb(87 247 255 / 0.08), 0 0 1.5rem color-mix(in srgb, var(--intro-cyan) 32%, transparent);
+  text-shadow: 0 0 0.7rem rgb(87 247 255 / 0.6);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  animation: intro-enter-reveal 600ms ease-out both;
 }
 
-@keyframes intro-signal {
-  50% { opacity: 0.32; transform: scale(0.72); }
+.synthoma-intro__enter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgb(87 247 255 / 0.18) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: intro-enter-scan 4.8s ease-in-out 1s infinite;
 }
 
-@keyframes intro-signal-glitch {
-  30% { filter: drop-shadow(-0.25rem 0 var(--intro-cyan)) drop-shadow(0.25rem 0 var(--intro-magenta)); }
-  65% { filter: drop-shadow(0.12rem 0 var(--intro-cyan)) drop-shadow(-0.12rem 0 var(--intro-magenta)); }
+.synthoma-intro__enter:hover,
+.synthoma-intro__enter:focus-visible {
+  transform: translateY(-2px);
+  border-color: #d0fdff;
+  box-shadow: inset 0 0 1.3rem rgb(87 247 255 / 0.16), -4px 0 1.5rem rgb(87 247 255 / 0.35), 4px 0 1.5rem rgb(255 79 216 / 0.22);
 }
 
-@media (max-width: 600px) {
-  .synthoma-intro__stage {
-    min-height: 68svh;
-  }
-
-  .synthoma-intro[data-phase="2"] .synthoma-intro__brand,
-  .synthoma-intro[data-phase="3"] .synthoma-intro__brand {
-    transform: translateY(-2.2rem) scale(1);
-  }
-
-  .synthoma-intro__slogan {
-    top: 55%;
-    padding-inline: 0.5rem;
-    font-size: clamp(1.2rem, 6vw, 1.7rem);
-  }
-
-  .synthoma-intro__actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .synthoma-intro__actions .os-command:only-child {
-    grid-column: 2;
-  }
+.synthoma-intro__enter:focus-visible { outline: 2px solid var(--intro-cyan); outline-offset: 5px; }
+.synthoma-intro__enter:active { transform: translateY(1px) scale(0.98); }
+@keyframes intro-enter-reveal {
+  from { opacity: 0; translate: 0 0.6rem; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes intro-enter-scan {
+  0%, 65% { transform: translateX(-120%); }
+  90%, 100% { transform: translateX(120%); }
 }
 
 .synthoma-intro[data-motion="reduced"] *,
@@ -195,3 +132,45 @@
     display: none;
   }
 }
+
+/* Video, wordmark, two lines, then one entry action. Keep space stable. */
+.synthoma-intro__stage { grid-template-rows: auto auto 5rem; }
+.synthoma-intro__brand,
+.synthoma-intro__slogan > span { opacity: 0; transform: translateY(0.75rem); transition: opacity 800ms ease, transform 800ms ease; }
+.synthoma-intro:not([data-phase="0"]) .synthoma-intro__brand,
+.synthoma-intro:is([data-phase="2"], [data-phase="3"], [data-phase="4"]) .synthoma-intro__slogan > span:first-child,
+.synthoma-intro:is([data-phase="3"], [data-phase="4"]) .synthoma-intro__slogan > span:last-child { opacity: 1; transform: none; }
+.synthoma-intro__slogan > span { position: relative; text-shadow: 0 2px 5px #010205, 0 0 1.1rem color-mix(in srgb, var(--intro-cyan) 55%, transparent), 0.07em 0 color-mix(in srgb, var(--intro-magenta) 45%, transparent); }
+.synthoma-intro__slogan > span::before,
+.synthoma-intro__slogan > span::after {
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  animation: intro-quote-glitch 3.8s steps(1, end) infinite;
+}
+.synthoma-intro__slogan > span::before {
+  color: var(--intro-cyan);
+  animation-direction: reverse;
+}
+.synthoma-intro__slogan > span::after { color: var(--intro-magenta); }
+.synthoma-intro__slogan > span:last-child::before,
+.synthoma-intro__slogan > span:last-child::after { animation-delay: 0.25s; }
+.synthoma-intro__letter { animation: intro-letter-fade 8.7s linear infinite; }
+@keyframes intro-letter-fade {
+  0%, 88%, 97%, 100% { opacity: 1; }
+  90%, 93% { opacity: 0.16; }
+  95% { opacity: 0.55; }
+}
+@keyframes intro-quote-glitch {
+  0%, 80%, 100% { transform: none; opacity: 0; clip-path: inset(42% 0 35%); }
+  82% { transform: translate(5px, -1px); opacity: .85; clip-path: inset(15% 0 55%); }
+  86% { transform: translate(-4px, 1px); opacity: .7; clip-path: inset(48% 0 12%); }
+  90% { transform: translate(3px, 0); opacity: .8; clip-path: inset(30% 0 38%); }
+  94% { transform: translate(-2px, -1px); opacity: .45; clip-path: inset(65% 0 5%); }
+}
+.synthoma-intro[data-motion="reduced"] *::before,
+.synthoma-intro[data-motion="off"] *::before,
+.synthoma-intro[data-motion="reduced"] *::after,
+.synthoma-intro[data-motion="off"] *::after { animation: none !important; }

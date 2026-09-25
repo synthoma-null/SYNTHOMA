@@ -49,7 +49,7 @@ export default function RoomClient() {
   const fetchRoom = useCallback(async () => {
     const ct = localStorage.getItem('synthoma_game_token') ?? '';
     try {
-      const res = await fetch(`/api/game/rooms/${code}?ct=${encodeURIComponent(ct)}`);
+      const res = await fetch(`/api/game/rooms/${code}`, { headers: { 'X-Game-Token': ct }, cache: 'no-store' });
       if (!res.ok) {
         const d = await res.json() as { error?: string };
         setError(d.error ?? 'Místnost nenalezena.');

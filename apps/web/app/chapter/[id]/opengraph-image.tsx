@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { notFound } from 'next/navigation';
-import { getBookCollection, getChapterCatalogEntry } from '../../../src/content/catalog';
+import { getManagedChapterContext } from '../../../src/server/content/managedContent';
 import { getChapterPresentation } from '../../../src/content/chapterPresentation';
 
 export const alt = 'Kapitola SYNTHOMA';
@@ -11,11 +11,12 @@ const BASE_URL = 'https://www.synthoma.cz';
 
 export default async function ChapterOpenGraphImage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const chapter = getChapterCatalogEntry(id);
-  if (!chapter) notFound();
-  const collection = getBookCollection(chapter.collection);
+  const context = await getManagedChapterContext(id);
+  if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden' || context.managed.chapter.availability !== 'published') notFound();
+  const chapter = context.managed.chapter;
+  const collection = context.book;
   const presentation = getChapterPresentation(chapter.id);
-  const poster = `${BASE_URL}${presentation?.poster ?? collection?.cover ?? '/assets/og-synthoma.png'}`;
+  const poster = `${BASE_URL}${presentation?.poster ?? collection?.cover ?? '/assets/og-synthoma.jpg'}`;
 
   return new ImageResponse(
     <div

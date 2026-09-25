@@ -1,3 +1,5 @@
+import { sanitizeChapterHtml } from '../../lib/sanitizeChapterHtml';
+
 const BLOCK_END = /<\/(?:article|aside|blockquote|div|h[1-6]|li|ol|p|section|ul)>/gi;
 const BREAKS = /<(?:br|hr)\s*\/?>/gi;
 
@@ -13,16 +15,7 @@ export function decodeCanonicalEntities(value: string): string {
     .replace(/&#x([0-9a-f]+);/gi, (_, code: string) => String.fromCodePoint(Number.parseInt(code, 16)));
 }
 
-export function sanitizeCanonicalHtml(source: string): string {
-  return source
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
-    .replace(/<(?:meta|link|base)\b[^>]*>/gi, '')
-    .replace(/<\/?(?:html|head|body)\b[^>]*>/gi, '')
-    .replace(/\s(?:on\w+|style)\s*=\s*(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\s(?:href|src)\s*=\s*(["'])\s*javascript:[\s\S]*?\1/gi, '')
-    .trim();
-}
+export const sanitizeCanonicalHtml = sanitizeChapterHtml;
 
 export function canonicalHtmlToText(source: string): string {
   return decodeCanonicalEntities(

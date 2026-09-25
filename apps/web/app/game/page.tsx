@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import GameClient from './GameClient';
 
 export const metadata: Metadata = {
-  title: 'Prázdnota na tahu | SYNTHOMA',
-  description: 'Tahová kooperativní karetní hra v univerzu SYNTHOMA. Stabilizuj sektory. Poraz Nekonečný Formulář.',
+  title: 'Nezlob Prázdnotu | SYNTHOMA',
+  description: 'Online tahová hra pro 2–6 hráčů v univerzu SYNTHOMA. Přesuň fragmenty do Jádra dřív, než tě pohltí Prázdnota.',
   alternates: {
     canonical: 'https://www.synthoma.cz/game',
   },

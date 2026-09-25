@@ -40,6 +40,7 @@ export default function SynthomaWordmark({ context, animated = true, className, 
       id={id}
       ref={rootRef}
       data-testid={dataTestId}
+      data-animated={animated}
       className={`synthoma-wordmark synthoma-wordmark--${context}${className ? ` ${className}` : ''}`}
     >
       <span className="synthoma-wordmark__layer synthoma-wordmark__layer--magenta" aria-hidden="true">{TITLE}</span>

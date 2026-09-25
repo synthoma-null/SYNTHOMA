@@ -29,7 +29,7 @@ export default function ChapterStructuredData({ chapter, collection: managedColl
     ? (chapter.metadata?.teaserEn ?? englishFallback)
     : (chapter.metadata?.teaser ?? chapter.summary ?? '');
   const presentation = getChapterPresentation(chapter.id);
-  const image = `${BASE_URL}${presentation?.poster ?? collection?.cover ?? '/assets/og-synthoma.png'}`;
+  const image = `${BASE_URL}${presentation?.poster ?? collection?.cover ?? '/assets/og-synthoma.jpg'}`;
   const data = {
     '@context': 'https://schema.org',
     '@graph': [

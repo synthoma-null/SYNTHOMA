@@ -5,7 +5,8 @@ import PublicApiPage from '../../../../app/ai/api/page';
 import { cyklusDiscovery } from '../discovery';
 import { chooseCyklus, startCyklusRun } from '../gameHandlers';
 import { publicOpenApi } from '../openapi';
-import { resetPublicRateLimitsForTests } from '../rateLimit';
+import { resetPublicRateLimitsForTests } from './helpers/rateLimitStore';
+jest.mock('../../security/rateLimit', () => ({ ...jest.requireActual('../../security/rateLimit'), consumeRateLimit: require('./helpers/rateLimitStore').consumeRateLimit }));
 
 function linksFrom(html: string): string[] {
   return [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map((match) => match[1]!);

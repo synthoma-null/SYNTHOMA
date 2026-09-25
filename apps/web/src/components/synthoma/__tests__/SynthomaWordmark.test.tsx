@@ -12,6 +12,11 @@ beforeEach(() => {
 });
 
 describe('SynthomaWordmark', () => {
+  it('disables both JavaScript glitches and CSS motion for a quiet wordmark', () => {
+    render(<SynthomaWordmark context="home" animated={false} />);
+    expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toHaveAttribute('data-animated', 'false');
+    expect(attachGlitchHeading).not.toHaveBeenCalled();
+  });
   it('renders the SYNTHOMA text for screen readers', () => {
     render(<SynthomaWordmark context="intro" />);
     expect(screen.getByRole('heading', { name: 'SYNTHOMA' })).toBeInTheDocument();

@@ -37,14 +37,20 @@ function buildBookJsonLd(catalog: Awaited<ReturnType<typeof getLibraryCatalog>>)
 
 export default async function BooksPage() {
   const locale = await requestLocale();
-  const catalog = await getLibraryCatalog();
+  const catalog = await getLibraryCatalog().catch(() => null);
+  if (!catalog) return <main className="synthoma-system-state"><section className="synthoma-system-state__panel" role="alert">
+    <h1>{locale === 'en' ? 'The library is temporarily unavailable' : 'Knihovna je dočasně nedostupná'}</h1>
+    <p>{locale === 'en' ? 'We cannot verify the current catalog. Try again shortly, or explore the public archive.' : 'Aktuální katalog teď nelze ověřit. Zkus to za chvíli, nebo prozkoumej veřejný archiv.'}</p>
+    <p><a className="os-command" href={locale === 'en' ? '/books?locale=en' : '/books'}>{locale === 'en' ? 'Try again' : 'Zkusit znovu'}</a></p>
+    <a className="os-command" href={locale === 'en' ? '/archive?locale=en' : '/archive'}>{locale === 'en' ? 'Open archive' : 'Otevřít archiv'}</a>
+  </section></main>;
   const jsonLd = buildBookJsonLd(catalog);
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <noscript>
         <div className="books-fallback">

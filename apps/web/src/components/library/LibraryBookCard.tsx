@@ -10,14 +10,14 @@ export interface LibraryBookCardProps {
 }
 
 export default function LibraryBookCard({ collection, progressRecord, onClick }: LibraryBookCardProps) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const completed = progressRecord ? (progressRecord.completed ?? progressRecord.percent >= 100) : false;
   const hasProgress = progressRecord && progressRecord.percent > 0 && !completed;
-  const description = collection.description || `${t('books.available.capital')} ${collection.availableCount} / ${collection.totalCount} ${t('books.chapters')}`;
+  const description = collection.description || `${t('books.available.capital')} ${collection.availableCount} / ${collection.chapters.filter((chapter) => chapter.access !== 'unavailable').length} ${lang === 'en' ? 'published' : 'vydaných'} · ${collection.chapters.filter((chapter) => chapter.access === 'unavailable').length} ${lang === 'en' ? 'upcoming' : 'připravujeme'}`;
   const cta = hasProgress ? t('action.continue') : t('action.open');
   const status = hasProgress
     ? `${t('books.continue').toLocaleLowerCase()} ${Math.round(progressRecord.percent)}%`
-    : `${collection.status === 'complete' ? `${t('books.status.complete')} · ` : ''}${collection.totalCount} ${t('books.chapters')}`;
+    : `${collection.status === 'complete' ? `${t('books.status.complete')} · ` : ''}${collection.chapters.filter((chapter) => chapter.access !== 'unavailable').length} ${lang === 'en' ? 'published' : 'vydaných'} · ${collection.chapters.filter((chapter) => chapter.access === 'unavailable').length} ${lang === 'en' ? 'upcoming' : 'připravujeme'}`;
 
   return (
     <button

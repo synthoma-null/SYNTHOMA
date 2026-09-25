@@ -1,0 +1,145 @@
+{
+  "migration": {
+    "migration_name": "20260908180000_audit_security",
+    "finished_at": "2026-09-08T16:41:14.110Z",
+    "rolled_back_at": null
+  },
+  "beforeCheckedAt": "2026-09-08T16:40:47.765Z",
+  "afterCheckedAt": "2026-09-08T16:41:56.755Z",
+  "beforeCounts": {
+    "User": "4",
+    "Entitlement": "38",
+    "Purchase": "1",
+    "ManagedBook": "0",
+    "ManagedChapter": "0"
+  },
+  "afterCounts": {
+    "User": "4",
+    "Entitlement": "38",
+    "Purchase": "1",
+    "ManagedBook": "0",
+    "ManagedChapter": "0"
+  },
+  "columns": [
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "id",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "userId",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "packageId",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "chapterId",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "priceCents",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "currency",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": "'czk'::text"
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "packageMnems",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "stripeSessionId",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "CheckoutOrder",
+      "column_name": "createdAt",
+      "data_type": "timestamp without time zone",
+      "is_nullable": "NO",
+      "column_default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "table_name": "PasswordResetToken",
+      "column_name": "tokenHash",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "PasswordResetToken",
+      "column_name": "userId",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "PasswordResetToken",
+      "column_name": "expiresAt",
+      "data_type": "timestamp without time zone",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "SecurityRateLimit",
+      "column_name": "key",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "SecurityRateLimit",
+      "column_name": "count",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": "1"
+    },
+    {
+      "table_name": "SecurityRateLimit",
+      "column_name": "expiresAt",
+      "data_type": "timestamp without time zone",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "User",
+      "column_name": "sessionVersion",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": "0"
+    }
+  ],
+  "note": "Read-only schema/count verification; this report is not a data backup."
+}

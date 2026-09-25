@@ -4,16 +4,16 @@ import sharp from 'sharp';
 
 const root = process.cwd();
 const requiredIcons = [
-  ['pwa-192x192.png', 192],
-  ['pwa-512x512.png', 512],
-  ['pwa-maskable-192x192.png', 192],
-  ['pwa-maskable-512x512.png', 512],
-  ['pwa-monochrome-512x512.png', 512],
-  ['apple-touch-icon-180x180.png', 180],
+  ['assets/generated/icon-192.png', 192],
+  ['assets/icon_512.png', 512],
+  ['assets/generated/maskable-icon-192.png', 192],
+  ['assets/generated/maskable-icon-512.png', 512],
+  ['assets/generated/monochrome-icon-512.png', 512],
+  ['assets/generated/apple-touch-icon-180.png', 180],
 ];
 
 for (const [name, expected] of requiredIcons) {
-  const file = path.join(root, 'public', 'icons', name);
+  const file = path.join(root, 'public', name);
   const metadata = await sharp(file).metadata();
   if (metadata.width !== expected || metadata.height !== expected || metadata.format !== 'png') {
     throw new Error(`${name}: expected ${expected}x${expected} PNG, got ${metadata.width}x${metadata.height} ${metadata.format}`);
@@ -42,10 +42,9 @@ for (const marker of requiredMarkers) {
   if (!sw.includes(marker)) throw new Error(`Service worker is missing ${marker}`);
 }
 
-const precacheStart = sw.indexOf('[{url:');
-const precacheEnd = sw.indexOf('}]),function(t){const e=', precacheStart);
-const precacheBlock = precacheStart >= 0 && precacheEnd > precacheStart ? sw.slice(precacheStart, precacheEnd) : '';
-const precacheEntries = precacheBlock.match(/\{url:/g) ?? [];
+const precacheEntries = [...sw.matchAll(/\{url:"([^"]+)"/g)].map((match) => match[1]);
+if (!precacheEntries.includes('/offline')) throw new Error('Offline page missing from precache');
+if (precacheEntries.includes('/assets/og-synthoma.png')) throw new Error('Social image must not be downloaded during PWA installation');
 const report = {
   serviceWorkerBytes: stat.size,
   precacheEntries: precacheEntries.length,

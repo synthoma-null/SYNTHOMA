@@ -6,7 +6,7 @@ import CyklusCardPoster from '../CyklusCardPoster';
 
 describe('Cyklus complete no-selection contract', () => {
   const foundation = readFileSync(join(process.cwd(), 'src/styles/cyklus/foundation.css'), 'utf8');
-  const client = readFileSync(join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8');
+  const client = readFileSync(join(process.cwd(), 'src/components/cyklus/CyklusClient.tsx'), 'utf8').replace(/\r\n/g, '\n');
 
   it('locks text, touch callouts and image dragging with form field exceptions', () => {
     expect(foundation).toMatch(/\.cyklus-no-select,\s*\.cyklus-no-select \*/);

@@ -23,6 +23,7 @@ if (
 const environment = {
   ...process.env,
   DATABASE_URL: connectionString,
+  DIRECT_URL: connectionString,
   NODE_ENV: 'test',
 };
 

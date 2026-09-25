@@ -8,7 +8,7 @@ import { useLang } from '../../../src/lib/LangContext';
 
 export default function LoginForm() {
   const router = useRouter();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -83,6 +83,7 @@ export default function LoginForm() {
         {isPending ? t('auth.login.pending') : t('auth.login.submit')}
       </button>
 
+      <p className="auth-switch"><Link href={lang === 'en' ? '/reset-password?locale=en' : '/reset-password'}>{lang === 'en' ? 'Forgot your password?' : 'Zapomenuté heslo?'}</Link></p>
       <p className="auth-switch">
         {t('auth.login.switch')}{' '}
         <Link href="/register" className="auth-link">{t('id.register')}</Link>

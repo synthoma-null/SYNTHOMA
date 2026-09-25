@@ -8,7 +8,8 @@ import { normalizeArchiveCards } from '../../lib/synthoma/archive/normalizeArchi
 import type { ArchiveCard } from '../../lib/synthoma/archive/archiveTypes';
 import type { ArchiveCardData } from '../../../app/archive/ArchiveClient';
 import {
-  getManagedChapterContext,
+  getChapterContextFromCatalog,
+  type ManagedContentCatalog,
   getManagedContentCatalog,
   readManagedChapterDocument,
 } from '../content/managedContent';
@@ -41,8 +42,8 @@ export interface PublicChapterDocument {
   nextId: string | null;
 }
 
-export async function getPublicChapterDocument(reference: string, locale: PublicLocale): Promise<PublicChapterDocument | null> {
-  const context = await getManagedChapterContext(reference);
+export async function getPublicChapterDocument(reference: string, locale: PublicLocale, snapshot?: ManagedContentCatalog): Promise<PublicChapterDocument | null> {
+  const context = getChapterContextFromCatalog(reference, snapshot ?? await getManagedContentCatalog());
   if (!context || context.managed.visibility === 'hidden' || context.book.visibility === 'hidden') return null;
   const chapter = context.managed.chapter;
   const collection = context.book;
@@ -90,18 +91,18 @@ export async function getPublicChapterDocument(reference: string, locale: Public
 
 export async function getPublicChapters(locale: PublicLocale): Promise<PublicChapterDocument[]> {
   const catalog = await getManagedContentCatalog();
-  return Promise.all(catalog.chapters.map((item) => getPublicChapterDocument(item.chapter.id, locale)))
+  return Promise.all(catalog.chapters.map((item) => getPublicChapterDocument(item.chapter.id, locale, catalog)))
     .then((entries) => entries.filter((entry): entry is PublicChapterDocument => Boolean(entry)));
 }
 
-export async function getPublicBook(locale: PublicLocale, reference = 'synthoma-null') {
-  const catalog = await getManagedContentCatalog();
+export async function getPublicBook(locale: PublicLocale, reference = 'synthoma-null', snapshot?: ManagedContentCatalog) {
+  const catalog = snapshot ?? await getManagedContentCatalog();
   const collection = catalog.books.find((book) => book.id === reference || book.slug.toLowerCase() === reference.toLowerCase());
   if (!collection || collection.visibility === 'hidden') return null;
   const chapters = await Promise.all(
     catalog.chapters
       .filter((item) => item.bookId === collection.id && item.visibility === 'published')
-      .map((item) => getPublicChapterDocument(item.chapter.id, locale)),
+      .map((item) => getPublicChapterDocument(item.chapter.id, locale, catalog)),
   ).then((entries) => entries.filter((entry): entry is PublicChapterDocument => Boolean(entry)));
   return {
     id: collection.publicId,
@@ -116,7 +117,7 @@ export async function getPublicBook(locale: PublicLocale, reference = 'synthoma-
 
 export async function getPublicBooks(locale: PublicLocale) {
   const catalog = await getManagedContentCatalog();
-  return Promise.all(catalog.books.map((collection) => getPublicBook(locale, collection.id)))
+  return Promise.all(catalog.books.map((collection) => getPublicBook(locale, collection.id, catalog)))
     .then((books) => books.filter((book): book is NonNullable<typeof book> => Boolean(book)));
 }
 

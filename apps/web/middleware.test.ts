@@ -27,6 +27,19 @@ function routeRequest(path: string): NextRequest {
 }
 
 describe('chapter route guard', () => {
+  it('allows editor-created slugs and upgrades their legacy reader links', () => {
+    expect(middleware(routeRequest('/chapter/editor-created-chapter')).headers.get('x-middleware-next')).toBe('1');
+    expect(middleware(routeRequest('/reader?chapter=editor-created-chapter')).headers.get('location')).toBe('https://www.synthoma.cz/chapter/editor-created-chapter');
+  });
+
+  it('sends old public HTML links through the current access gate without caching', () => {
+    const response = middleware(routeRequest('/books/SYNTHOMA-NULL/0-%E2%88%9E%20%5BRESTART%5D.html'));
+    expect(response.status).toBe(307);
+    expect(response.headers.get('location')).toBe('https://www.synthoma.cz/chapter/0-inf-restart');
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(middleware(routeRequest('/books/unknown.html')).status).toBe(404);
+  });
+
   it('allows canonical chapter IDs and existing aliases', () => {
     const canonical = middleware(routeRequest('/chapter/0-0-null'));
     const alias = middleware(routeRequest('/chapter/null'));
@@ -35,16 +48,16 @@ describe('chapter route guard', () => {
     expect(alias.headers.get('x-middleware-next')).toBe('1');
   });
 
-  it('allows the social image only below a known chapter', () => {
+  it('defers chapter existence and social image access to the server catalog', () => {
     const known = middleware(routeRequest('/chapter/0-0-null/opengraph-image'));
     const unknown = middleware(routeRequest('/chapter/unknown-chapter/opengraph-image'));
 
     expect(known.headers.get('x-middleware-next')).toBe('1');
-    expect(unknown.status).toBe(404);
+    expect(unknown.headers.get('x-middleware-next')).toBe('1');
   });
 
-  it('rewrites unknown chapter IDs to a hard 404', () => {
-    const response = middleware(routeRequest('/chapter/unknown-chapter'));
+  it('rejects malformed nested chapter routes', () => {
+    const response = middleware(routeRequest('/chapter/unknown-chapter/extra/nested'));
 
     expect(response.status).toBe(404);
     expect(response.headers.get('x-middleware-rewrite')).toBe(
