@@ -34,3 +34,11 @@ build/
 # Misc
 *.local
 *.pid
+
+# Local scratch files and imported patch bundles
+/tmp/
+/apps/web/synthoma_cyklus_cards_patch_*/
+
+# Blender source projects and autosave backups
+*.[bB][lL][eE][nN][dD]
+*.[bB][lL][eE][nN][dD][0-9]*

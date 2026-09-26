@@ -33,7 +33,6 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-    "synthoma_cyklus_cards_patch_v17"
+    "node_modules"
   ]
 }
